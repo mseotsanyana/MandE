@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/project_name_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:hint="@string/project_name_hint" />
+
+    <EditText
+        android:id="@+id/project_description_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/project_name_id"
+        android:hint="@string/project_description_hint" />
+
+    <EditText
+        android:id="@+id/project_country_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/project_description_id"
+        android:hint="@string/project_country_hint" />
+
+    <EditText
+        android:id="@+id/project_region_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/project_country_id"
+        android:hint="@string/project_region_hint" />
+
+    <Spinner
+        android:id="@+id/project_status_id"
+        android:entries="@array/status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/project_region_id"
+        android:prompt="@string/project_status_hint" />
+
+    <EditText
+        android:id="@+id/project_startdate_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/project_status_id"
+        android:hint="@string/project_startdate_hint" />
+
+    <EditText
+        android:id="@+id/project_closedate_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/project_startdate_id"
+        android:hint="@string/project_closedate_hint" />
+
+    <Spinner
+        android:id="@+id/project_manager_id"
+        android:entries="@array/manager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/project_closedate_id"
+        android:prompt="@string/project_manager_hint" />
+
+    <LinearLayout
+        android:id="@+id/layout_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/project_manager_id"
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        android:weightSum="2" >
+
+        <Button
+            android:id="@+id/button_save_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/Save"/>
+
+        <Button
+            android:id="@+id/button_cancel_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/Cancel"/>
+    </LinearLayout>
+
+
+</RelativeLayout>

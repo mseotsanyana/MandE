@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="4dp"
+    android:layout_margin="6dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/selector_row">
+
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="@color/bkg_card"
+            android:gravity="center_vertical"
+            android:text="project"
+            android:textColor="@android:color/white"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description "
+            android:gravity="center_vertical"
+            android:textSize="16dp"
+            android:layout_below="@id/txtName"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/valDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="text"
+            android:gravity="center_vertical"
+            android:textSize="16dp"
+            android:layout_alignBaseline="@+id/txtDescription"
+            android:layout_alignBottom="@+id/txtDescription"
+            android:layout_toRightOf="@id/txtDescription" />
+
+        <TextView
+            android:id="@+id/txtCountry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Country "
+            android:gravity="center_vertical"
+            android:textSize="16dp"
+            android:layout_below="@id/txtDescription"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/valCountry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="text"
+            android:gravity="center_vertical"
+            android:textSize="16dp"
+            android:layout_alignBaseline="@+id/txtCountry"
+            android:layout_alignBottom="@+id/txtDescription"
+            android:layout_toRightOf="@id/txtDescription" />
+
+        <TextView
+            android:id="@+id/txtRegion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Region "
+            android:gravity="center_vertical"
+            android:textSize="16dp"
+            android:layout_below="@id/txtCountry"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/valRegion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="text"
+            android:gravity="center_vertical"
+            android:textSize="16dp"
+            android:layout_alignBaseline="@+id/txtRegion"
+            android:layout_alignBottom="@+id/txtDescription"
+            android:layout_toRightOf="@id/txtDescription" />
+
+        <TextView
+            android:id="@+id/txtStartDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start Date "
+            android:gravity="center_vertical"
+            android:textSize="16dp"
+            android:layout_below="@id/txtRegion"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/valStartDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="text"
+            android:gravity="center_vertical"
+            android:textSize="16dp"
+            android:layout_alignBaseline="@+id/txtStartDate"
+            android:layout_alignBottom="@+id/txtDescription"
+            android:layout_toRightOf="@id/txtDescription" />
+
+        <TextView
+            android:id="@+id/txtCloseDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Close Date "
+            android:gravity="center_vertical"
+            android:textSize="16dp"
+            android:layout_below="@id/txtStartDate"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/valCloseDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="text"
+            android:gravity="center_vertical"
+            android:textSize="16dp"
+            android:layout_alignBaseline="@+id/txtCloseDate"
+            android:layout_alignBottom="@+id/txtDescription"
+            android:layout_toRightOf="@id/txtDescription" />
+
+        <TextView
+            android:id="@+id/txtStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status "
+            android:gravity="center_vertical"
+            android:textSize="16dp"
+            android:layout_below="@id/txtCloseDate"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/valStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="text"
+            android:gravity="center_vertical"
+            android:textSize="16dp"
+            android:layout_alignBaseline="@+id/txtStatus"
+            android:layout_alignBottom="@+id/txtDescription"
+            android:layout_toRightOf="@id/txtDescription" />
+
+
+        <TextView
+             android:id="@+id/txtManager"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="Manager "
+            android:gravity="center_vertical"
+             android:textSize="16dp"
+             android:layout_below="@id/txtStatus"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/valManager"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="text"
+            android:gravity="center_vertical"
+            android:textSize="16dp"
+            android:layout_alignBaseline="@+id/txtManager"
+            android:layout_alignBottom="@+id/txtDescription"
+            android:layout_toRightOf="@id/txtDescription" />
+
+        <ImageView
+            android:id="@+id/quick_action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_more2"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="1dp"
+            android:layout_below="@id/txtManager" />
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

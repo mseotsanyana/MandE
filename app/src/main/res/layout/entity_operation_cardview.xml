@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="3dp"
+    android:orientation="horizontal">
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view_permission"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        card_view:cardBackgroundColor="@color/colorAccent"
+        card_view:cardCornerRadius="4dp">
+
+        <com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout
+            android:id="@+id/expandableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+                <!--
+                    android:background="@drawable/list_row_selector"
+                -->
+                <!-- Operation Name -->
+                <TextView
+                    android:id="@+id/textViewName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textStyle="bold" />
+
+                <!-- Operation Description -->
+                <TextView
+                    android:id="@+id/textViewDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textViewName"
+                    android:layout_marginTop="1dip"
+                    android:textSize="@dimen/text_size_small_medium" />
+
+                <!-- See Operations under the Entity -->
+                <TextView
+                    android:id="@+id/textViewExapandOperationIcon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_size_medium" />
+
+                <!-- Details of the Permission -->
+                <TextView
+                    android:id="@+id/textViewOperationDetailIcon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@id/textViewDescription"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginTop="1dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_size_very_large"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:padding="8dp">
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutOperations"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textViewOperations"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Permission Settings : "
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_size_medium"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/tableLayoutOperation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/linearLayoutOperations"
+                    android:layout_marginTop="3dp"
+                    android:shrinkColumns="*"
+                    android:stretchColumns="*">
+
+                    <TableRow
+                        android:id="@+id/tableRowOperations"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textViewEmpty"
+                            android:text="" />
+
+                        <TextView
+                            android:id="@+id/textViewCreate"
+                            android:text="Create"
+                            android:textStyle="bold"
+                            android:typeface="serif" />
+
+                        <TextView
+                            android:id="@+id/textViewRead"
+                            android:text="Read"
+                            android:textStyle="bold"
+                            android:typeface="serif" />
+
+                        <TextView
+                            android:id="@+id/textViewUpdate"
+                            android:text="@string/Edit"
+                            android:textStyle="bold"
+                            android:typeface="serif" />
+
+                        <TextView
+                            android:id="@+id/textViewDelete"
+                            android:text="Delete"
+                            android:textStyle="bold"
+                            android:typeface="serif" />
+
+                        <TextView
+                            android:id="@+id/textViewSynchronize"
+                            android:text="Sync"
+                            android:textStyle="bold"
+                            android:typeface="serif" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/tableRowOwner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textViewOwner"
+                            android:text="Owner"
+                            android:textStyle="bold" />
+
+                        <android.support.v7.widget.AppCompatCheckBox
+                            android:id="@+id/checkBoxOwnerCreate"
+                            android:gravity="center_horizontal">
+
+                        </android.support.v7.widget.AppCompatCheckBox>
+
+                        <android.support.v7.widget.AppCompatCheckBox
+                            android:id="@+id/checkBoxOwnerRead"
+                            android:gravity="center_horizontal">
+
+                        </android.support.v7.widget.AppCompatCheckBox>
+
+                        <android.support.v7.widget.AppCompatCheckBox
+                            android:id="@+id/checkBoxOwnerUpdate"
+                            android:gravity="center_horizontal">
+
+                        </android.support.v7.widget.AppCompatCheckBox>
+
+                        <android.support.v7.widget.AppCompatCheckBox
+                            android:id="@+id/checkBoxOwnerDelete"
+                            android:gravity="center_horizontal">
+
+                        </android.support.v7.widget.AppCompatCheckBox>
+
+                        <android.support.v7.widget.AppCompatCheckBox
+                            android:id="@+id/checkBoxOwnerSynch"
+                            android:gravity="center_horizontal">
+
+                        </android.support.v7.widget.AppCompatCheckBox>
+
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/tableRowGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textViewGroup"
+                            android:text="Group"
+                            android:textStyle="bold" />
+
+                        <android.support.v7.widget.AppCompatCheckBox
+                            android:id="@+id/checkBoxGroupCreate"
+                            android:gravity="center_horizontal"></android.support.v7.widget.AppCompatCheckBox>
+
+                        <android.support.v7.widget.AppCompatCheckBox
+                            android:id="@+id/checkBoxGroupRead"
+                            android:gravity="center_horizontal"></android.support.v7.widget.AppCompatCheckBox>
+
+                        <android.support.v7.widget.AppCompatCheckBox
+                            android:id="@+id/checkBoxGroupUpdate"
+                            android:gravity="center_horizontal"></android.support.v7.widget.AppCompatCheckBox>
+
+                        <android.support.v7.widget.AppCompatCheckBox
+                            android:id="@+id/checkBoxGroupDelete"
+                            android:gravity="center_horizontal"></android.support.v7.widget.AppCompatCheckBox>
+
+                        <android.support.v7.widget.AppCompatCheckBox
+                            android:id="@+id/checkBoxGroupSynch"
+                            android:gravity="center_horizontal"></android.support.v7.widget.AppCompatCheckBox>
+
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/tableRowOther"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textViewOther"
+                            android:text="Other"
+                            android:textStyle="bold" />
+
+                        <android.support.v7.widget.AppCompatCheckBox
+                            android:id="@+id/checkBoxOtherCreate"
+                            android:gravity="center_horizontal"></android.support.v7.widget.AppCompatCheckBox>
+
+                        <android.support.v7.widget.AppCompatCheckBox
+                            android:id="@+id/checkBoxOtherRead"
+                            android:gravity="center_horizontal"></android.support.v7.widget.AppCompatCheckBox>
+
+                        <android.support.v7.widget.AppCompatCheckBox
+                            android:id="@+id/checkBoxOtherUpdate"
+                            android:gravity="center_horizontal"></android.support.v7.widget.AppCompatCheckBox>
+
+                        <android.support.v7.widget.AppCompatCheckBox
+                            android:id="@+id/checkBoxOtherDelete"
+                            android:gravity="center_horizontal"></android.support.v7.widget.AppCompatCheckBox>
+
+                        <android.support.v7.widget.AppCompatCheckBox
+                            android:id="@+id/checkBoxOtherSynch"
+                            android:gravity="center_horizontal"></android.support.v7.widget.AppCompatCheckBox>
+
+                    </TableRow>
+
+                </TableLayout>
+
+                <RelativeLayout
+                    android:id="@+id/linearLayoutStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/tableLayoutOperation">
+
+                    <TextView
+                        android:id="@+id/textViewStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Status Settings: "
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_size_medium"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycleViewStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textViewStatus"
+                        android:scrollbars="vertical" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutModify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/linearLayoutStatus"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/buttonUpdate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Save"
+                        android:textColor="@color/colorAccent" />
+
+                    <Button
+                        android:id="@+id/buttonReset"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Reset"
+                        android:textColor="@color/colorAccent" />
+                </LinearLayout>
+
+            </RelativeLayout>
+        </com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

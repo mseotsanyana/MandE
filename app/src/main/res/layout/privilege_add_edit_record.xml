@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch
+        android:id="@+id/appCompatSpinnerRole"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hintText="Select Role" />
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/editTextPrivilegeName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_below="@+id/appCompatSpinnerRole"
+        android:hint="Privilege Name"
+        android:singleLine="true" >
+
+        <requestFocus />
+    </android.support.v7.widget.AppCompatEditText>
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/editTextPrivilegeDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/editTextPrivilegeName"
+        android:hint="Privilege Description"
+        android:singleLine="true" />
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,493 @@
+<resources>
+    <!-- for drawer navigation header -->
+    <string name="date">22 Oct 2015</string>
+    <string name="website">https://en.wikipedia.org/wiki/Film</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <!-- shapes from font file -->
+    <string name="fa_admin">&#xf0c0;</string>
+    <string name="fa_profile">&#xf007;</string>
+    <string name="fa_notification">&#xf0f3;</string>
+    <string name="fa_setting">&#xf013;</string>
+    <string name="fa_upload">&#xf093;</string>
+    <string name="fa_download">&#xf019;</string>
+    <string name="fa_logout">&#xf08b;</string>
+    <string name="fa_chevron_right">&#xf054;</string>
+    <string name="fa_chevron_down">&#xf078;</string>
+
+    <!-- icons for bottom navigation menu -->
+    <string name="fa_login">&#xf090;</string>
+    <string name="fa_envelope">&#xf0e0;</string>
+
+    <!-- icons for users -->
+    <string name="fa_name">&#xf007;</string>
+    <string name="fa_address">&#xf015;</string>
+    <string name="fa_email">&#xf0e0;</string>
+    <string name="fa_website">&#xf0ac;</string>
+    <string name="fa_phone">&#xf098;</string>
+    <string name="fa_plus">&#xf067;</string>
+    <string name="fa_minus">&#xf068;</string>
+    <string name="fa_angle_up">&#xf106;</string>
+    <string name="fa_angle_up_v1">&#xf0de;</string>
+    <string name="fa_angle_down">&#xf107;</string>
+    <string name="fa_angle_down_v1">&#xf0dd;</string>
+    <string name="fa_ellipsis_h">&#xf141;</string>
+    <string name="fa_ellipsis_v">&#xf142;</string>
+    <string name="fa_exclamation_triangle">&#xf071;</string>
+    <string name="fa_filter">&#xf0b0;</string>
+
+    <!-- CRUDS Operations -->
+    <string name="fa_join">&#xf0c0;</string>
+    <string name="fa_create">&#xf0fe;</string>
+    <string name="fa_read">&#xf02d;</string>
+    <string name="fa_update">&#xf044;</string>
+    <string name="fa_delete">&#xf1f8;</string>
+    <string name="fa_sync">&#xf021;</string>
+    <string name="fa_save">&#xf0c7;</string>
+    <string name="fa_actions">&#xf022;</string>
+
+    <!-- Permission Icons-->
+    <string name="fa_groups">&#xf0c0;</string>
+    <string name="fa_statuses">&#xf201;</string>
+    <string name="fa_perms">&#xf085;</string>
+    <string name="fa_com_attr">&#xf057;</string>
+
+    <string name="Add">Add</string>
+    <string name="Edit">Edit</string>
+    <string name="Delete">Delete</string>
+    <string name="Save">Save</string>
+    <string name="Change">Change</string>
+    <string name="Cancel">Cancel</string>
+
+
+    <!-- END -->
+
+    <string name="hello">Choose one of the features below.</string>
+    <!--
+    <string name="app_name">Dashboard Demo</string>
+-->
+    <string name="description_logo">Demo</string>
+
+    <string name="description_about">About</string>
+    <string name="description_home">Home</string>
+    <string name="description_search">Search</string>
+
+    <string name="title_about">About</string>
+    <string name="title_home">Home</string>
+    <string name="title_search">Search</string>
+
+    <string name="about_intro">This app is a demo to show you how to do an Android app based on the Dashboard pattern that has been used in apps like Twitter, Google IO, and Evernote.</string>
+    <string name="search_intro">Content for the Search page goes here.</string>
+
+
+    <string name="app_name">iMonitorPerformance</string>
+    <string name="welcome">Welcome to theME</string>
+    <string name="Admin">Admin</string>
+    <string name="Planning">Planning</string>
+    <string name="Monitoring">Monitoring</string>
+    <string name="Evaluation">Evaluation</string>
+    <string name="hint_text">Type here to filter&#8230;</string>
+    <!--
+    <string name="project_list_title">List of Projects</string>
+    -->
+
+    <string name="project_name_hint">Project Name</string>
+    <string name="project_description_hint">Project Description</string>
+    <string name="project_country_hint">Project Country</string>
+    <string name="project_region_hint">Project Region</string>
+    <string name="project_status_hint">Project Status</string>
+    <string name="project_startdate_hint">Project Starting Date</string>
+    <string name="project_closedate_hint">Project Closing Date</string>
+    <string name="project_manager_hint">Project Manager</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="openDrawer">open_drawer</string>
+    <string name="closeDrawer">close_drawer</string>
+
+    <!-- Navigation Drawer menu labels (saved in menu/activity_main_drawer) -->
+    <string name="nav_home">Home</string>
+    <string name="nav_photos">Photos</string>
+    <string name="nav_movies">Movies</string>
+    <string name="nav_notifications">Notifications</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_uploadings">Uploadings</string>
+
+    <string name="nav_about_us">About Us</string>
+
+    <!-- Toolbar titles when navigation menu item is selected -->
+    <string-array name="nav_item_fragment_titles">
+        <item>Home</item>
+        <item>Photos</item>
+        <item>Movies</item>
+        <item>Notifications</item>
+        <item>Settings</item>
+        <item>Uploadings</item>
+    </string-array>
+
+    <string name="activity_title_about_us">About Us</string>
+    <string name="activity_title_privacy_policy">Privacy Policy</string>
+    <string name="action_clear_all">Clear All</string>
+    <string name="action_logout">Logout</string>
+    <string name="action_mark_all_read">Mark All as Read</string>
+    <string name="privacy_policy">Privacy Policy</string>
+
+    <string name="item">Item 1</string>
+    <string name="click_me">Click me</string>
+
+    <string name="contentdesc4pic2">Content</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- FIXME -->
+    <string-array name="status">
+        <item>initial</item>
+        <item>active</item>
+        <item>inactive</item>
+        <item>close</item>
+    </string-array>
+
+    <!-- FIXME -->
+    <string-array name="manager">
+        <item>Motlatsi</item>
+        <item>Likeleli</item>
+        <item>Lesedi</item>
+        <item>Thato</item>
+    </string-array>
+
+
+    <!-- the address strings -->
+    <string name="address_list_title">Addresses</string>
+    <string name="address_hint_street">Street</string>
+    <string name="address_hint_city">City</string>
+    <string name="address_hint_province">Provice</string>
+    <string name="address_hint_postal_code">Postal Code</string>
+    <string name="address_hint_country">Country</string>
+
+    <!-- the user strings -->
+    <string name="user_list_title">Users</string>
+    <string name="user_profile">Profile : </string>
+    <string name="user_hint_organization">Organization</string>
+    <string name="user_hint_firstname">First Name</string>
+    <string name="user_hint_lastname">Last Name</string>
+    <string name="user_hint_gender">I am</string>
+    <string name="user_male">Male</string>
+    <string name="user_female">Female</string>
+    <string name="user_hint_designation">Job Title</string>
+    <string name="user_address">Address : </string>
+    <string name="user_hint_address">Address</string>
+    <string name="user_hint_email">Email</string>
+    <string name="user_hint_website">Website</string>
+    <string name="user_hint_phone">Phone</string>
+    <string name="user_hint_password">Password</string>
+    <string name="user_hint_confirm_password">Confirm Password</string>
+    <string name="text_save">Save</string>
+    <string name="text_change">Change</string>
+    <string name="text_cancel">Cancel</string>
+
+    <!-- the role strings -->
+    <string name="role_list_title">Roles</string>
+    <string name="role_hint_owner">Owner :</string>
+    <string name="role_hint_group">Group :</string>
+    <string name="role_hint_permission">Permission :</string>
+
+    <!-- the role strings -->
+    <string name="entity_list_title">Roles</string>
+    <string name="entity_hint_owner">Owner :</string>
+    <string name="entity_hint_group">Group :</string>
+    <string name="entity_hint_permission">Permission :</string>
+
+    <!-- the permission strings -->
+    <string name="permission_list_title">Permissions</string>
+
+    <!-- the privilege strings -->
+    <string name="privilege_list_title">Privileges</string>
+
+    <string name="privilege_add_title">Add Privilege</string>
+    <string name="privilege_add_question">Are you sure you want to CREATE privilege </string>
+    <string name="privilege_add_success">The privilege successfully created </string>
+    <string name="privilege_add_error">Error occurred while creating a new privilege. </string>
+
+    <string name="privilege_read_title">Read Privilege</string>
+    <string name="privilege_read_question">Are you sure you want to READ privilege </string>
+    <string name="privilege_read_success">The privilege successfully read </string>
+    <string name="privilege_read_error">Error occurred while reading a new privilege. </string>
+
+    <string name="privilege_edit_title">Edit Privilege</string>
+    <string name="privilege_edit_question">Are you sure you want to UPDATE privilege </string>
+    <string name="privilege_edit_success">The privilege has been successfully updated. </string>
+    <string name="privilege_edit_error">Error occurred while updating a privilege. </string>
+
+    <string name="privilege_del_title">Delete Privilege</string>
+    <string name="privilege_del_question">Are you sure you want to DELETE privilege </string>
+    <string name="privilege_del_success">The privilege successfully deleted </string>
+    <string name="privilege_del_error">Error occurred while deleting a privilege. </string>
+
+    <string name="privilege_sync_title">Sync Privilege</string>
+    <string name="privilege_sync_question">Do you want to SYNCHRONIZE privilege </string>
+    <string name="privilege_sync_success">The privilege successfully synchronized </string>
+    <string name="privilege_sync_error">Error occurred while synchronizing a privilege. </string>
+
+    <string name="privilege_change_title">Change Privilege</string>
+    <string name="privilege_change_question">Do you want to CHANGE privilege </string>
+    <string name="privilege_change_success">The privilege has been successfully changed </string>
+    <string name="privilege_change_error">Error occurred while changing a privilege. </string>
+
+    <string name="privilege_filter_add_title">Filter Entities to Add.</string>
+    <string name="privilege_filter_remove_title">Filter Entities to Remove.</string>
+    <string name="privilege_filter_error">Filtering Error.</string>
+    <string name="privilege_filter_error_msg">Error in filtering entities...</string>
+
+    <!-- the organization strings -->
+    <string name="organization_list_title">Organizations</string>
+
+    <!-- the project strings -->
+    <string name="project_list_title">Programmes/Projects</string>
+
+    <!-- the triangle method strings -->
+    <string name="triangle_list_title">CES Triangle</string>
+
+    <!-- the goal strings -->
+    <string name="goal_list_title">Goals</string>
+
+    <!-- the outcome strings -->
+    <string name="outcome_list_title">Outcomes</string>
+
+    <!-- the output strings -->
+    <string name="output_list_title">Outputs</string>
+
+
+    <!-- the activity strings -->
+    <string name="activity_list_title">Activities</string>
+
+    <!-- the indicator strings -->
+    <string name="indicator_list_title">Indicators</string>
+
+    <!-- the MoV strings -->
+    <string name="mov_list_title">MoVs</string>
+
+    <!-- the risk strings -->
+    <string name="risk_list_title">Risks</string>
+
+    <!-- the workplan strings -->
+    <string name="workplan_list_title">Work plans</string>
+
+    <!-- the budget strings -->
+    <string name="budget_list_title">Budgets</string>
+
+    <!-- the resource strings -->
+    <string name="resource_list_title">Resources</string>
+
+    <!-- the evaluation strings -->
+    <string name="evaluation_list_title">Evaluations</string>
+
+    <!-- the criterion strings -->
+    <string name="criterion_list_title">Criteria</string>
+
+    <!-- the question strings -->
+    <string name="question_list_title">Questions</string>
+
+    <!-- the category strings -->
+    <string name="category_list_title">Categories</string>
+
+    <!-- the evaluating strings -->
+    <string name="evaluating_list_title">Evaluating</string>
+
+    <!-- the monitoring strings -->
+    <string name="monitoring_list_title">Monitoring</string>
+
+    <!-- the report strings -->
+    <string name="report_list_title">Reports</string>
+
+    <!-- the alert strings -->
+    <string name="alert_list_title">Alerts</string>
+
+    <!--
+        <string-array name="sports_array">
+            <item>Shuttle Badminton</item>
+            <item>Tennis</item>
+            <item>Table Tennis</item>
+            <item>Basket Ball</item>
+            <item>Foot Ball</item>
+            <item>Volley Ball</item>
+            <item>Hockey</item>
+            <item>Swimming</item>
+
+            <item>Shuttle Badminton 2</item>
+            <item>Tennis 2</item>
+            <item>Table Tennis 2</item>
+            <item>Basket Ball 2</item>
+            <item>Foot Ball 2</item>
+            <item>Volley Ball 2</item>
+            <item>Hockey 2</item>
+            <item>Swimming 2</item>
+
+            <item>Shuttle Badminton 3</item>
+            <item>Tennis 3</item>
+            <item>Table Tennis 3</item>
+            <item>Basket Ball 3</item>
+            <item>Foot Ball 3</item>
+            <item>Volley Ball 3</item>
+            <item>Hockey 3</item>
+            <item>Swimming 3</item>
+
+            <item>Shuttle Badminton 4</item>
+            <item>Tennis 4</item>
+            <item>Table Tennis 4</item>
+            <item>Basket Ball 4</item>
+            <item>Foot Ball 4</item>
+            <item>Volley Ball 4</item>
+            <item>Hockey 4</item>
+            <item>Swimming 4</item>
+
+            <item>Shuttle Badminton 5</item>
+            <item>Tennis 5</item>
+            <item>Table Tennis 5</item>
+            <item>Basket Ball 5</item>
+            <item>Foot Ball 5</item>
+            <item>Volley Ball 5</item>
+            <item>Hockey 5</item>
+            <item>Swimming 5</item>
+        </string-array>
+    -->
+    <!-- home page details -->
+    <string name="text_login">Login</string>
+    <string name="text_create">Create</string>
+    <string name="text_join">Join</string>
+    <string name="text_settings">Settings</string>
+
+    <!-- login page details -->
+    <string name="error_message_name">Enter Full Name</string>
+    <string name="error_message_email">Enter Valid Email</string>
+    <string name="error_message_age">Enter Age</string>
+    <string name="error_message_password">Enter Password</string>
+    <string name="success_message">Registration Successful</string>
+    <string name="text_not_member">No account yet? Create one</string>
+    <string name="text_already_member">Already a member? Login</string>
+    <string name="error_email_exists">Email Already Exists</string>
+    <string name="error_password_match">Password Does Not Matches</string>
+    <string name="error_valid_email_password">Wrong Email or Password</string>
+
+
+    <string name="title_activity_settings">Settings</string>
+    <string name="choose_email_client">Choose email client</string>
+    <string name="title_network_type">Network Type</string>
+    <string name="pref_network_type_entries">entries</string>
+    <string name="summary_network_type">select the prefered download network type</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+    <!--
+        <string name="pref_title_social_recommendations">Enable social recommendations</string>
+        <string name="pref_description_social_recommendations">Recommendations for people to contact
+            based on your message history
+        </string>
+
+        <string name="pref_title_display_name">Display name</string>
+        <string name="pref_default_display_name">John Smith</string>
+
+        <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+
+        <string-array name="pref_example_list_titles">
+            <item>Always</item>
+            <item>When possible</item>
+            <item>Never</item>
+        </string-array>
+        <string-array name="pref_example_list_values">
+            <item>1</item>
+            <item>0</item>
+            <item>-1</item>
+        </string-array>
+    -->
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+
+    <string name="pref_title_sync_frequency">Sync frequency</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string-array name="list_preference_entries">
+        <item>Entry 1</item>
+        <item>Entry 2</item>
+        <item>Entry 3</item>
+    </string-array>
+
+    <string-array name="list_preference_entry_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="multi_select_list_preference_default_value" />
+
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">Notifications</string>
+
+    <string name="pref_title_new_message_notifications">New message notifications</string>
+
+    <string name="pref_title_ringtone">Ringtone</string>
+
+    <string name="pref_title_vibrate">Vibrate</string>
+
+
+    <!-- Server Synchronization -->
+    <string name="sync_category_title">Server Synchronization</string>
+    <string name="perform_sync">perform_sync</string>
+    <string name="enable_sync">Enable Auto Sync</string>
+
+    <string name="networktype_category_title">Network Type</string>
+    <string name="networktype_title">Choose Network Type</string>
+    <string name="network_type">network_type</string>
+
+    <string name="devicestate_category_title">Device State</string>
+    <string name="device_idle_title">Device Idling </string>
+    <string name="device_charging_title">Device Charging </string>
+    <string name="device_idle">device_idle</string>
+    <string name="device_charging">device_charging</string>
+
+    <string name="syncperiod_category_title">Sync Period</string>
+    <string name="syncperiod_title">Choose Sync Period</string>
+    <string name="syncperiod_interval">syncperiod_interval</string>
+
+    <string name="hours_title">Enter Number of Minutes</string>
+    <string name="dialog_title">Enter Minutes</string>
+    <string name="number_hours">number_hours</string>
+
+    <string name="persist_category_title">Persistence</string>
+    <string name="persist_title">Persist Across Reboots</string>
+    <string name="persist">persist</string>
+
+    <string name="full_name">full_name</string>
+    <string name="email_address">email_address</string>
+
+    <string name="notifications_new_message">notifications_new_message</string>
+    <string name="notification_ringtone">notification_ringtone</string>
+
+    <string name="pref_ringtone_silent">Silent</string>
+    <string name="summary_choose_ringtone">Choose notification sound</string>
+    <string name="department_of_energy">Department of Energy</string>
+
+
+</resources>

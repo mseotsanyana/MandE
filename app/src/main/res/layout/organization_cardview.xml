@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view_company"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="4dp"
+    android:layout_margin="6dp">
+
+    <com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout
+        android:id="@+id/organization_expandable_layout"
+        app:expWithParentScroll="true"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/card_view_company">
+
+        <!-- level 1 -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_row">
+
+            <TextView
+                android:id="@+id/organization_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:background="@color/bkg_card"
+                android:gravity="center_vertical"
+                android:text=""
+                android:textColor="@android:color/white"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <!-- action_listlist layout for organization details except values-->
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/organization_detail_recyclerview_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/organization_id"/>
+        </RelativeLayout>
+        <!-- action_listlist layout for organization details for values-->
+
+        <!-- level 2 -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_row"
+            android:orientation="horizontal">
+
+            <!-- action_listlist layout for organization more except values-->
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/organization_more_recyclerview_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- action_listlist layout for organization values except values -->
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view_values"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/organization_more_recyclerview_id"
+                card_view:cardCornerRadius="4dp"
+                android:layout_margin="6dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/selector_row"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/valValueHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:background="@color/colorRed"
+                        android:gravity="center"
+                        android:text="Country"
+                        android:textColor="@android:color/white"
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
+
+                    <!-- action_listlist layout for organization values except values-->
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/organization_values_recyclerview_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/valValueHeader"/>
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+        </RelativeLayout>
+
+    </com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout>
+</android.support.v7.widget.CardView>

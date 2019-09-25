@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <!-- include a toolbar layout -->
+    <include layout="@layout/me_toolbar_layout" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/me_toolbar"
+        android:orientation="vertical">
+
+        <!-- action_list list layout -->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/permissionRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical" />
+    </LinearLayout>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- the FAB layout -->
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/permissionFAB"
+            style="@style/FabStyle"
+            android:layout_gravity="bottom|end" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</RelativeLayout>

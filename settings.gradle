@@ -1,0 +1,7 @@
+include ':app', ':treeadapterlibrary', ':expandablelayoutlibrary', ':multiselectspinnerlibrary', ':quickactionlibrary',':validatorlibrary', ':viewpagerlibrary'
+project(':quickactionlibrary').projectDir = new File(settingsDir, '../Libraries/quickactionlibrary')
+project(':expandablelayoutlibrary').projectDir = new File(settingsDir, '../Libraries/expandablelayoutlibrary')
+project(':treeadapterlibrary').projectDir = new File(settingsDir, '../Libraries/treeadapterlibrary')
+project(':multiselectspinnerlibrary').projectDir = new File(settingsDir, '../Libraries/multiselectspinnerlibrary')
+project(':validatorlibrary').projectDir = new File(settingsDir, '../Libraries/validatorlibrary')
+project(':viewpagerlibrary').projectDir = new File(settingsDir, '../Libraries/viewpagerlibrary')

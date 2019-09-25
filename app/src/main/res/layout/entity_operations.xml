@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.AppCompatCheckBox
+        android:id="@+id/appCompatCheckBoxAllOperations"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_margin="10dp"
+        android:text="Select (or Deselect) All Operations"
+        android:textColor="@color/colorAccent"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/seperatorView"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_below="@id/appCompatCheckBoxAllOperations"
+        android:background="@android:color/holo_green_dark" />
+
+    <RelativeLayout
+        android:id="@+id/showLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/seperatorView"
+        android:orientation="vertical">
+
+        <com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout
+            android:id="@+id/expandableLayoutOwner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutOwner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <!-- operation group name -->
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/textViewNameOwner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Owner"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textStyle="bold" />
+
+                <!-- operation group description -->
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/textViewDescriptionOwner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textViewNameOwner"
+                    android:text="Owner"
+                    android:textSize="@dimen/text_size_small_medium" />
+
+                <!-- check box for owner operation -->
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/checkBoxOperationOwner"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_toLeftOf="@id/textViewStatusIconOwner"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_size_medium" />
+
+                <!-- Right Arrow -->
+                <TextView
+                    android:id="@+id/textViewStatusIconOwner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="5dp"
+                    android:text="Details"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_size_large" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutOwnerHidden"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp">
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/appCompatCheckBoxAllOwnerStatuses"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:text="Select (or Deselect) All Statuses"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:id="@+id/seperatorViewOwner"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:layout_below="@+id/appCompatCheckBoxAllOwnerStatuses"
+                    android:background="@android:color/holo_green_dark" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerViewStatusOwner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/seperatorViewOwner"
+                    android:scrollbars="vertical" />
+
+            </RelativeLayout>
+
+        </com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout>
+
+        <com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout
+            android:id="@+id/expandableLayoutGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/expandableLayoutOwner">
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <!-- operation group name -->
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/textViewNameGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Own organization"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textStyle="bold" />
+
+                <!-- operation group description -->
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/textViewDescriptionGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textViewNameGroup"
+                    android:text="Add records to own organization's entity"
+                    android:textSize="@dimen/text_size_small_medium" />
+
+                <!-- check box for owner operation -->
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/checkBoxOperationGroup"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_toLeftOf="@id/textViewStatusIconGroup"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_size_medium" />
+
+                <!-- Right Arrow -->
+                <TextView
+                    android:id="@+id/textViewStatusIconGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="5dp"
+                    android:text="Details"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_size_large" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutGroupHidden"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp">
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/appCompatCheckBoxAllGroupStatuses"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:text="Select (or Deselect) All Statuses"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:id="@+id/seperatorViewGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:layout_below="@+id/appCompatCheckBoxAllGroupStatuses"
+                    android:background="@android:color/holo_green_dark" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerViewStatusGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/seperatorViewGroup"
+                    android:scrollbars="vertical" />
+
+            </RelativeLayout>
+
+        </com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout>
+
+        <com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout
+            android:id="@+id/expandableLayoutOther"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/expandableLayoutGroup">
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutOther"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <!-- operation group name -->
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/textViewNameOther"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Other organization"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textStyle="bold" />
+
+                <!-- operation group description -->
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/textViewDescriptionOther"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textViewNameOther"
+                    android:text="Add records to other organizations' entity"
+                    android:textSize="@dimen/text_size_small_medium" />
+
+                <!-- check box for owner operation -->
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/checkBoxOperationOther"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_toLeftOf="@id/textViewStatusIconOther"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_size_medium" />
+
+                <!-- Right Arrow -->
+                <TextView
+                    android:id="@+id/textViewStatusIconOther"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="5dp"
+                    android:text="Details"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_size_large" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutOtherHidden"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp">
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/appCompatCheckBoxAllOtherStatuses"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:text="Select (or Deselect) All Statuses"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:id="@+id/seperatorViewOther"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:layout_below="@+id/appCompatCheckBoxAllOtherStatuses"
+                    android:background="@android:color/holo_green_dark" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerViewStatusOther"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/seperatorViewOther"
+                    android:scrollbars="vertical" />
+
+            </RelativeLayout>
+
+        </com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/expandableLayoutOther">
+
+            <View
+                android:id="@+id/seperatorView2"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="3dp"
+                android:background="@android:color/holo_green_dark" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

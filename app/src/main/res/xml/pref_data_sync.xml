@@ -1,0 +1,61 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
+         dismiss it. -->
+    <!-- NOTE: ListPreference's summary should be set to its value by the activity
+         code. -->
+    <PreferenceCategory android:title="@string/sync_category_title">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="perform_sync"
+            android:summary="Enable or disable data sync"
+            android:title="@string/enable_sync" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/networktype_category_title">
+        <ListPreference
+            android:defaultValue="1"
+            android:dependency="perform_sync"
+            android:entries="@array/network_type"
+            android:entryValues="@array/network_type_value"
+            android:key="network_type"
+            android:summary="Select a network type"
+            android:title="@string/networktype_title" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/devicestate_category_title">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:dependency="perform_sync"
+            android:key="@string/device_idle"
+            android:title="@string/device_idle_title" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:dependency="perform_sync"
+            android:key="@string/device_charging"
+            android:title="@string/device_charging_title" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/syncperiod_category_title">
+        <ListPreference
+            android:defaultValue="1"
+            android:dependency="perform_sync"
+            android:entries="@array/syncperiod_interval"
+            android:entryValues="@array/syncperiod_interval_values"
+            android:key="syncperiod_interval"
+            android:summary="Define how often sync will be performed"
+            android:title="@string/syncperiod_title" />
+        <EditTextPreference
+            android:defaultValue="1"
+            android:dependency="perform_sync"
+            android:dialogMessage="@string/dialog_title"
+            android:dialogTitle="@string/hours_title"
+            android:inputType="numberDecimal"
+            android:key="number_hours"
+            android:summary="Enter Number of Minutes"
+            android:title="@string/hours_title" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/persist_category_title">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:dependency="perform_sync"
+            android:key="@string/persist"
+            android:title="@string/persist_title" />
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -1,0 +1,217 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:2:1-88:12
+INJECTED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:2:1-88:12
+INJECTED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:2:1-88:12
+INJECTED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:2:1-88:12
+MERGED from [:quickactionlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\quickactionlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-17:12
+MERGED from [:treeadapterlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\treeadapterlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-17:12
+MERGED from [:expandablelayoutlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\expandablelayoutlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-17:12
+MERGED from [:multiselectspinnerlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\multiselectspinnerlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-17:12
+MERGED from [:validatorlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\validatorlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-11:12
+MERGED from [:viewpagerlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\viewpagerlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-11:12
+MERGED from [com.android.support:design:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\80dd247c5a85170a507e20a1cf4afb18\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-v4:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\50e615c01ad3761f7ca22052149edda6\AndroidManifest.xml:17:1-22:12
+MERGED from [com.github.rey5137:material:1.2.2] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\33da275451226752613d322433b4a7e2\AndroidManifest.xml:2:1-11:12
+MERGED from [com.android.support:recyclerview-v7:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\a4b09a6c9cc1d7efb4b49c4616afe558\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:cardview-v7:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\d0d027c26e07c26ea0612e1bbae14a98\AndroidManifest.xml:17:1-22:12
+MERGED from [com.amulyakhare:com.amulyakhare.textdrawable:1.0.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\963b7e895fffaa8e501c1db2eb9b12fa\AndroidManifest.xml:2:1-14:12
+MERGED from [de.hdodenhof:circleimageview:2.2.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\88a353d06f9d38e466cfe81e57f3fe89\AndroidManifest.xml:2:1-11:12
+MERGED from [com.android.volley:volley:1.1.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\5499df198f1143f4a348240661185e8c\AndroidManifest.xml:2:1-11:12
+MERGED from [com.android.support:appcompat-v7:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\4d0b7b5af1ae6b5d39bbc013a3bf9b57\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support.constraint:constraint-layout:1.1.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\b231bae32e09a0274ede21d355d137e5\AndroidManifest.xml:2:1-11:12
+MERGED from [com.android.support:support-media-compat:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\aa07860a88d654e03b6a3b55df141fc1\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-fragment:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\848a915d859f99bb84418b705588cc2c\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:animated-vector-drawable:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\909e69cbba8bb327886ed2d2cd7fa70f\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-ui:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\9a0e2b0a4bf3830721b2a68dec3e8780\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-utils:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\63969f7602662e8b9da22c75f129a5f7\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-vector-drawable:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\1b8ced7489bca7bdf848b359ec0786b7\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:transition:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\f62ede651fb416010444c67aea9743db\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-compat:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\620ede3aca3c8347b9ce48537a8c8898\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:runtime:1.1.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\1b8f5f72e962b6b5cbe6f64bda36fb88\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:livedata-core:1.1.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\4ff79c2ed84955990b807b9024a78aa8\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:viewmodel:1.1.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\5b3470de78b3f4bd3fdc843c7a66b5e6\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.core:runtime:1.1.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\d5efad9e927208f278d4e0817a5089a9\AndroidManifest.xml:17:1-22:12
+INJECTED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:2:1-88:12
+INJECTED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:2:1-88:12
+INJECTED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:2:1-88:12
+	package
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:4:5-40
+		INJECTED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:2:1-88:12
+		INJECTED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml
+	xmlns:tools
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:3:5-51
+	android:versionCode
+		INJECTED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:2:1-88:12
+		INJECTED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:2:11-69
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:35:5-80
+	android:name
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:35:22-77
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:36:5-81
+	android:name
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:36:22-78
+uses-permission#android.permission.INTERNET
+ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:38:5-67
+	android:name
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:38:22-64
+uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
+ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:39:5-80
+	android:name
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:39:22-78
+application
+ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:41:5-86:19
+MERGED from [:quickactionlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\quickactionlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:11:5-15:19
+MERGED from [:quickactionlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\quickactionlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:11:5-15:19
+MERGED from [:treeadapterlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\treeadapterlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:11:5-15:19
+MERGED from [:treeadapterlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\treeadapterlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:11:5-15:19
+MERGED from [:expandablelayoutlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\expandablelayoutlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:11:5-15:19
+MERGED from [:expandablelayoutlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\expandablelayoutlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:11:5-15:19
+MERGED from [:multiselectspinnerlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\multiselectspinnerlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:11:5-15:19
+MERGED from [:multiselectspinnerlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\multiselectspinnerlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:11:5-15:19
+MERGED from [com.amulyakhare:com.amulyakhare.textdrawable:1.0.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\963b7e895fffaa8e501c1db2eb9b12fa\AndroidManifest.xml:12:5-20
+MERGED from [com.amulyakhare:com.amulyakhare.textdrawable:1.0.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\963b7e895fffaa8e501c1db2eb9b12fa\AndroidManifest.xml:12:5-20
+MERGED from [de.hdodenhof:circleimageview:2.2.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\88a353d06f9d38e466cfe81e57f3fe89\AndroidManifest.xml:9:5-20
+MERGED from [de.hdodenhof:circleimageview:2.2.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\88a353d06f9d38e466cfe81e57f3fe89\AndroidManifest.xml:9:5-20
+MERGED from [com.android.volley:volley:1.1.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\5499df198f1143f4a348240661185e8c\AndroidManifest.xml:9:5-20
+MERGED from [com.android.volley:volley:1.1.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\5499df198f1143f4a348240661185e8c\AndroidManifest.xml:9:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.1.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\b231bae32e09a0274ede21d355d137e5\AndroidManifest.xml:9:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.1.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\b231bae32e09a0274ede21d355d137e5\AndroidManifest.xml:9:5-20
+	android:supportsRtl
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:44:9-35
+	android:label
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:43:9-41
+	android:allowBackup
+		ADDED from [:quickactionlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\quickactionlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:9-35
+	android:icon
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:42:9-43
+	android:theme
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:45:9-40
+activity#com.me.mseotsanyana.mande.MainActivity
+ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:50:9-60:20
+	android:label
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:52:13-45
+	android:name
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:51:13-41
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:55:13-59:29
+action#android.intent.action.MAIN
+ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:56:17-69
+	android:name
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:56:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:58:17-77
+	android:name
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:58:27-74
+activity#com.me.mseotsanyana.mande.cSettingsActivity
+ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:63:9-67:20
+	android:label
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:65:13-50
+	android:name
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:64:13-46
+service#com.me.mseotsanyana.mande.BRBAC.BLL.cSyncedJobService
+ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:69:9-71:72
+	android:permission
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:71:13-69
+	android:name
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:70:13-56
+service#com.me.mseotsanyana.mande.BRBAC.BLL.cUserJobService
+ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:73:9-75:72
+	android:permission
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:75:13-69
+	android:name
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:74:13-54
+service#com.me.mseotsanyana.mande.BRBAC.BLL.cAddressJobService
+ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:76:9-78:72
+	android:permission
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:78:13-69
+	android:name
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:77:13-57
+receiver#com.me.mseotsanyana.mande.COM.cBroadcastReceiver
+ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:80:9-84:20
+	android:name
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:80:19-57
+intent-filter#action:name:android.intent.action.BOOT_COMPLETED
+ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:81:13-83:29
+action#android.intent.action.BOOT_COMPLETED
+ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:82:17-79
+	android:name
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:82:25-76
+uses-sdk
+INJECTED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml
+MERGED from [:quickactionlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\quickactionlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-9:41
+MERGED from [:quickactionlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\quickactionlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-9:41
+MERGED from [:treeadapterlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\treeadapterlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-9:41
+MERGED from [:treeadapterlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\treeadapterlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-9:41
+MERGED from [:expandablelayoutlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\expandablelayoutlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-9:41
+MERGED from [:expandablelayoutlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\expandablelayoutlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-9:41
+MERGED from [:multiselectspinnerlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\multiselectspinnerlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-9:41
+MERGED from [:multiselectspinnerlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\multiselectspinnerlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-9:41
+MERGED from [:validatorlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\validatorlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-9:41
+MERGED from [:validatorlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\validatorlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-9:41
+MERGED from [:viewpagerlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\viewpagerlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-9:41
+MERGED from [:viewpagerlibrary] C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\Libraries\viewpagerlibrary\build\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:design:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\80dd247c5a85170a507e20a1cf4afb18\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:design:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\80dd247c5a85170a507e20a1cf4afb18\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\50e615c01ad3761f7ca22052149edda6\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\50e615c01ad3761f7ca22052149edda6\AndroidManifest.xml:20:5-44
+MERGED from [com.github.rey5137:material:1.2.2] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\33da275451226752613d322433b4a7e2\AndroidManifest.xml:7:5-9:41
+MERGED from [com.github.rey5137:material:1.2.2] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\33da275451226752613d322433b4a7e2\AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:recyclerview-v7:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\a4b09a6c9cc1d7efb4b49c4616afe558\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:recyclerview-v7:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\a4b09a6c9cc1d7efb4b49c4616afe558\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:cardview-v7:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\d0d027c26e07c26ea0612e1bbae14a98\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:cardview-v7:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\d0d027c26e07c26ea0612e1bbae14a98\AndroidManifest.xml:20:5-44
+MERGED from [com.amulyakhare:com.amulyakhare.textdrawable:1.0.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\963b7e895fffaa8e501c1db2eb9b12fa\AndroidManifest.xml:8:5-10:41
+MERGED from [com.amulyakhare:com.amulyakhare.textdrawable:1.0.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\963b7e895fffaa8e501c1db2eb9b12fa\AndroidManifest.xml:8:5-10:41
+MERGED from [de.hdodenhof:circleimageview:2.2.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\88a353d06f9d38e466cfe81e57f3fe89\AndroidManifest.xml:5:5-7:41
+MERGED from [de.hdodenhof:circleimageview:2.2.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\88a353d06f9d38e466cfe81e57f3fe89\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.volley:volley:1.1.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\5499df198f1143f4a348240661185e8c\AndroidManifest.xml:7:5-43
+MERGED from [com.android.volley:volley:1.1.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\5499df198f1143f4a348240661185e8c\AndroidManifest.xml:7:5-43
+MERGED from [com.android.support:appcompat-v7:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\4d0b7b5af1ae6b5d39bbc013a3bf9b57\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:appcompat-v7:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\4d0b7b5af1ae6b5d39bbc013a3bf9b57\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support.constraint:constraint-layout:1.1.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\b231bae32e09a0274ede21d355d137e5\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support.constraint:constraint-layout:1.1.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\b231bae32e09a0274ede21d355d137e5\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-media-compat:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\aa07860a88d654e03b6a3b55df141fc1\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-media-compat:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\aa07860a88d654e03b6a3b55df141fc1\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\848a915d859f99bb84418b705588cc2c\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\848a915d859f99bb84418b705588cc2c\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\909e69cbba8bb327886ed2d2cd7fa70f\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\909e69cbba8bb327886ed2d2cd7fa70f\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\9a0e2b0a4bf3830721b2a68dec3e8780\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\9a0e2b0a4bf3830721b2a68dec3e8780\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\63969f7602662e8b9da22c75f129a5f7\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\63969f7602662e8b9da22c75f129a5f7\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\1b8ced7489bca7bdf848b359ec0786b7\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\1b8ced7489bca7bdf848b359ec0786b7\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:transition:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\f62ede651fb416010444c67aea9743db\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:transition:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\f62ede651fb416010444c67aea9743db\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\620ede3aca3c8347b9ce48537a8c8898\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:27.1.1] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\620ede3aca3c8347b9ce48537a8c8898\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.1.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\1b8f5f72e962b6b5cbe6f64bda36fb88\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.1.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\1b8f5f72e962b6b5cbe6f64bda36fb88\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata-core:1.1.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\4ff79c2ed84955990b807b9024a78aa8\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata-core:1.1.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\4ff79c2ed84955990b807b9024a78aa8\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:viewmodel:1.1.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\5b3470de78b3f4bd3fdc843c7a66b5e6\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:viewmodel:1.1.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\5b3470de78b3f4bd3fdc843c7a66b5e6\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.core:runtime:1.1.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\d5efad9e927208f278d4e0817a5089a9\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.core:runtime:1.1.0] C:\Users\motlatsi.seotsanyana\.gradle\caches\transforms-2\files-2.1\d5efad9e927208f278d4e0817a5089a9\AndroidManifest.xml:20:5-44
+INJECTED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/MandE.iml" filepath="$PROJECT_DIR$/MandE.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Libraries/expandablelayoutlibrary/expandablelayoutlibrary.iml" filepath="$PROJECT_DIR$/../Libraries/expandablelayoutlibrary/expandablelayoutlibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Libraries/multiselectspinnerlibrary/multiselectspinnerlibrary.iml" filepath="$PROJECT_DIR$/../Libraries/multiselectspinnerlibrary/multiselectspinnerlibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Libraries/quickactionlibrary/quickactionlibrary.iml" filepath="$PROJECT_DIR$/../Libraries/quickactionlibrary/quickactionlibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Libraries/treeadapterlibrary/treeadapterlibrary.iml" filepath="$PROJECT_DIR$/../Libraries/treeadapterlibrary/treeadapterlibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Libraries/validatorlibrary/validatorlibrary.iml" filepath="$PROJECT_DIR$/../Libraries/validatorlibrary/validatorlibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Libraries/viewpagerlibrary/viewpagerlibrary.iml" filepath="$PROJECT_DIR$/../Libraries/viewpagerlibrary/viewpagerlibrary.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/objective_card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="3dp"
+    card_view:cardBackgroundColor="@color/colorAccent"
+    card_view:cardCornerRadius="4dp">
+
+    <com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout
+        android:id="@+id/expandableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dp">
+
+            <!-- See users under the role -->
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/textViewExpandPrivilegeIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/text_size_medium" />
+
+            <!-- Role Name -->
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/textViewName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/textViewExpandPrivilegeIcon"
+                android:layout_marginLeft="2dp"
+                android:layout_toRightOf="@+id/textViewExpandPrivilegeIcon"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold" />
+
+            <!-- Role Description -->
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/textViewDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewName"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="1dp"
+                android:layout_toRightOf="@+id/textViewExpandPrivilegeIcon"
+                android:textSize="@dimen/text_size_small_medium" />
+
+            <!-- See users under the role -->
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/textViewPrivilegeDetailIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_below="@id/textViewDescription"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="1dp"
+                android:layout_toRightOf="@+id/textViewExpandPrivilegeIcon"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/text_size_very_large"
+                android:textStyle="bold" />
+
+            <!-- Number of Users under a Role-->
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/textViewCountRole"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="5dp"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_small" />
+
+            <!-- quick action -->
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/textViewQuickActionIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="2dp"
+                android:background="@drawable/me_btn_flexible"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold" />
+
+            <!-- synchronise -->
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/textViewSyncPrivilegeIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewDescription"
+                android:layout_toLeftOf="@+id/textViewQuickActionIcon"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/me_btn_flexible"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold" />
+
+            <!-- delete privilege -->
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/textViewDeletePrivilegeIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewDescription"
+                android:layout_toLeftOf="@+id/textViewSyncPrivilegeIcon"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/me_btn_flexible"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold" />
+
+            <!-- edit privilege -->
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/textViewEditPrivilegeIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewDescription"
+                android:layout_toLeftOf="@+id/textViewDeletePrivilegeIcon"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/me_btn_flexible"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <!-- hidden layer -->
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="8dp">
+
+            <include layout="@layout/me_common_attributes"/>
+
+        </RelativeLayout>
+
+    </com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout>
+</android.support.v7.widget.CardView>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="3dp"
+    android:orientation="horizontal">
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view_permission"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="3dp"
+        card_view:cardBackgroundColor="@color/colorAccent"
+        card_view:cardCornerRadius="4dp">
+
+        <com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout
+            android:id="@+id/expandableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="6dp">
+
+                <!-- Entity Name -->
+                <TextView
+                    android:id="@+id/textViewName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textStyle="bold" />
+
+                <!-- Entity Description -->
+                <TextView
+                    android:id="@+id/textViewDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textViewName"
+                    android:layout_marginTop="1dip"
+                    android:textSize="@dimen/text_size_small_medium" />
+
+                <!-- See Entities under the Role -->
+                <TextView
+                    android:id="@+id/textViewExapandEntityIcon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_size_medium" />
+
+                <!-- Details of the Permission -->
+                <TextView
+                    android:id="@+id/textViewEntityDetailIcon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@id/textViewDescription"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginTop="1dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_size_very_large"
+                    android:textStyle="bold" />
+
+                <!-- save entity common attributes -->
+                <!--
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/textViewSaveEntityIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:padding="1dp"
+                    android:textSize="@dimen/text_size_large"
+                    android:textStyle="bold" />
+-->
+
+                <!-- delete entity
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/textViewDeleteEntityIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="5dp"
+                    android:padding="1dp"
+                    android:textSize="@dimen/text_size_large"
+                    android:textStyle="bold" />
+-->
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/textViewDeleteEntityIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textViewDescription"
+                    android:layout_toLeftOf="@+id/textViewSyncEntityIcon"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/me_btn_flexible"
+                    android:textSize="@dimen/text_size_large"
+                    android:textStyle="bold" />
+
+                <!-- synchronise entity
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/textViewSyncEntityIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textViewDescription"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="5dp"
+                    android:padding="1dp"
+                    android:textSize="@dimen/text_size_large"
+                    android:textStyle="bold" />
+                    -->
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/textViewSyncEntityIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="2dp"
+                    android:background="@drawable/me_btn_flexible"
+                    android:textSize="@dimen/text_size_large"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <!-- hidden layer -->
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/relativeLayoutHiddenLayer"
+                android:layout_width="match_parent"
+                android:layout_height="330dp"
+                android:background="@color/white"
+                android:padding="4dp">
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutModify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/seperatorView2"
+                    android:layout_alignParentRight="true"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/appCompactButtonUpdate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Save"
+                        android:textColor="@color/colorAccent" />
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/appCompactButtonReset"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Reset"
+                        android:textColor="@color/colorAccent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutEntities"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/linearLayoutModify"
+                    android:orientation="vertical">
+
+                    <android.support.design.widget.TabLayout
+                        android:id="@+id/tabLayoutEntities"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:tabBackground="@color/colorPrimaryDark"
+                        app:tabGravity="fill"
+                        app:tabMaxWidth="0dp"
+                        app:tabMode="fixed"
+                        app:tabTextColor="@color/white" />
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/viewPagerEntities"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
+            </RelativeLayout>
+        </com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

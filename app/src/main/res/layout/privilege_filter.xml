@@ -1,0 +1,12 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tableLayoutPrivileges"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <com.me.mseotsanyana.multiselectspinnerlibrary.cMultiSpinnerSearch
+        android:id="@+id/multiSpinnerSearchPrivileges"
+        android:layout_width="fill_parent"
+        android:layout_margin="10dp"
+        app:hintText="Select Privileges" />
+</TableLayout>

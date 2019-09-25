@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:id="@+id/organization_value_cardview_id"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="4dp"
+    android:layout_margin="6dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/selector_row">
+
+        <TextView
+            android:id="@+id/valHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="@color/colorRed"
+            android:gravity="center"
+            android:text="Country"
+            android:textColor="@android:color/white"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <!-- action_listlist layout for organization values except values-->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/organization_values_recyclerview_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/valHeader"/>
+
+        <TextView
+            android:id="@+id/valFooter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/valBody"
+            android:background="@color/colorRed"
+            android:gravity="center" />
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

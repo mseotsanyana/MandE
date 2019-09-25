@@ -1,0 +1,32 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tableLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+<!--
+    <Spinner
+        android:id="@+id/organizationSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+-->
+    <com.me.mseotsanyana.multiselectspinnerlibrary.cMultiSpinner
+        android:id="@+id/simpleMultiSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:visibility="gone"
+        app:hintText="Multi Selection" />
+
+    <com.me.mseotsanyana.multiselectspinnerlibrary.cMultiSpinnerSearch
+        android:id="@+id/spinnerOrganizationTree"
+        android:layout_width="fill_parent"
+        android:layout_margin="10dp"
+        app:hintText="Select Organization(s)" />
+<!--
+    <com.me.mseotsanyana.multiselectspinnerlibrary.cMultiSpinnerSearch
+        android:id="@+id/spinnerGoatTree"
+        android:layout_width="fill_parent"
+        android:layout_margin="10dp"
+        app:hintText="Select Goal(s)" />
+-->
+</TableLayout>

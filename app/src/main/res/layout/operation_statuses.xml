@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.AppCompatCheckBox
+        android:id="@+id/appCompatCheckBoxAllStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_gravity="left"
+        android:text="Select (or Deselect) All ==="
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent"
+        android:textSize="22dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/holo_green_dark"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewStatus"
+        android:scrollbars="vertical" />
+
+</LinearLayout>

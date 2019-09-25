@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="network_type">
+        <item name="none">None</item>
+        <item name="any">WiFi and Cellular</item>
+        <item name="wifi">WiFi</item>
+        <item name="service_provider">Cellular</item>
+    </string-array>
+
+    <string-array name="network_type_value">
+        <item name="none">1</item>
+        <item name="any">2</item>
+        <item name="WiFi">3</item>
+        <item name="service_provider">4</item>
+    </string-array>
+
+    <string-array name="syncperiod_interval">
+        <item name="periodic_interval">None</item>
+        <item name="periodic_interval">Periodic Interval</item>
+        <item name="override_deadline">Override Deadline</item>
+    </string-array>
+
+    <string-array name="syncperiod_interval_values">
+        <item name="periodic_interval">1</item>
+        <item name="periodic_interval">2</item>
+        <item name="override_deadline_interval">3</item>
+    </string-array>
+</resources>
