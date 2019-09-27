@@ -4,7 +4,7 @@
             "outputFile": "C:\\Users\\motlatsi.seotsanyana\\AndroidStudioProjects\\MandE\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v24\\values-v24.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\motlatsi.seotsanyana\\.gradle\\caches\\transforms-2\\files-2.1\\aa07860a88d654e03b6a3b55df141fc1\\res\\values-v24\\values-v24.xml",
+                    "source": "C:\\Users\\motlatsi.seotsanyana\\.gradle\\caches\\transforms-2\\files-2.1\\9c0db70b5ab5bab747773bbfa20f7935\\support-media-compat-27.1.1\\res\\values-v24\\values-v24.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\motlatsi.seotsanyana\\.gradle\\caches\\transforms-2\\files-2.1\\4d0b7b5af1ae6b5d39bbc013a3bf9b57\\res\\values-v24\\values-v24.xml",
+                    "source": "C:\\Users\\motlatsi.seotsanyana\\.gradle\\caches\\transforms-2\\files-2.1\\96ec3159e9cdafe31c960eb8eede719e\\appcompat-v7-27.1.1\\res\\values-v24\\values-v24.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",
