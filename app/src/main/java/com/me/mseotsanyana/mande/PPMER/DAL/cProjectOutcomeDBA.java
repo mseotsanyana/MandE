@@ -19,7 +19,7 @@ public class cProjectOutcomeDBA {
     // an object of the database helper
     private cSQLDBHelper dbHelper;
 
-    private cProjectDBA projectDBA;
+    private cLogFrameDBA projectDBA;
     private cOutcomeDBA outcomeDBA;
 
     private static final SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
@@ -27,7 +27,7 @@ public class cProjectOutcomeDBA {
 
     public cProjectOutcomeDBA(Context context) {
         dbHelper = new cSQLDBHelper(context);
-        projectDBA = new cProjectDBA(context);
+        projectDBA = new cLogFrameDBA(context);
         outcomeDBA = new cOutcomeDBA(context);
     }
 
@@ -37,7 +37,7 @@ public class cProjectOutcomeDBA {
         long result = -1;
 
         // get a project by id
-        cProjectModel projectModel = projectDBA.getProjectByID(projectOutcomeModel.getProjectID());
+        cLogFrameModel projectModel = projectDBA.getProjectByID(projectOutcomeModel.getProjectID());
         // get an outcome by id
         cOutcomeModel outcomeModel = outcomeDBA.getOutcomeByID(projectOutcomeModel.getOutcomeID());
 

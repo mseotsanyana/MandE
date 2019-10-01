@@ -18,14 +18,14 @@ public class cTriangleDBA {
     private cSQLDBHelper dbHelper;
     private static final String TAG = "dbHelper";
 
-    private cGoalDBA goalDBA;
+    private cImpactDBA goalDBA;
     private cSpecificAimDBA specificAimDBA;
     private cObjectiveDBA objectiveDBA;
 
     public cTriangleDBA(Context context) {
         dbHelper = new cSQLDBHelper(context);
 
-        goalDBA = new cGoalDBA(context);
+        goalDBA = new cImpactDBA(context);
         specificAimDBA = new cSpecificAimDBA(context);
         objectiveDBA = new cObjectiveDBA(context);
     }

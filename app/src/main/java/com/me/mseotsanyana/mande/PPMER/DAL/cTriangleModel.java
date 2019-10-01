@@ -5,15 +5,15 @@ package com.me.mseotsanyana.mande.PPMER.DAL;
  */
 
 public class cTriangleModel {
-    private cGoalModel goalModel;
+    private cImpactModel goalModel;
     private cSpecificAimModel specificAimModel;
     private cObjectiveModel objectiveModel;
 
-    public cGoalModel getGoalModel() {
+    public cImpactModel getGoalModel() {
         return goalModel;
     }
 
-    public void setGoalModel(cGoalModel goalModel) {
+    public void setGoalModel(cImpactModel goalModel) {
         this.goalModel = goalModel;
     }
 

@@ -1889,7 +1889,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_NAME + " TEXT NOT NULL, "
             + KEY_DESCRIPTION + " TEXT NULL, "
             + KEY_START_DATE + " DATE NOT NULL, "
-            + KEY_END_DATE + "DATE NOT NULL, "
+            + KEY_END_DATE + " DATE NOT NULL, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP );";

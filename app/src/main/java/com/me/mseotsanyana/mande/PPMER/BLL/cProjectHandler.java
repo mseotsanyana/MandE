@@ -3,31 +3,31 @@ package com.me.mseotsanyana.mande.PPMER.BLL;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.me.mseotsanyana.mande.PPMER.DAL.cProjectModel;
-import com.me.mseotsanyana.mande.PPMER.DAL.cProjectDBA;
+import com.me.mseotsanyana.mande.PPMER.DAL.cLogFrameDBA;
+import com.me.mseotsanyana.mande.PPMER.DAL.cLogFrameModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class cProjectHandler extends cMapper<cProjectModel, cProjectDomain>
+public class cProjectHandler extends cMapper<cLogFrameModel, cProjectDomain>
 {
-    private cProjectDBA projectDBA;
+    private cLogFrameDBA projectDBA;
     private Context context;
 
     public cProjectHandler(Context context) {
-        projectDBA = new cProjectDBA(context);
+        projectDBA = new cLogFrameDBA(context);
         this.context = context;
     }
 
     //public cProjectHandler() {
-        //projectDb = new cProjectDBA();
+        //projectDb = new cLogFrameDBA();
     //}
 
     // business rules for adding a project
     public boolean addProject(cProjectDomain domain) {
         // mapp the business domain to the model
-        cProjectModel model = this.DomainToModel(domain);
+        cLogFrameModel model = this.DomainToModel(domain);
         return projectDBA.addProject(model);
     }
 
@@ -35,7 +35,7 @@ public class cProjectHandler extends cMapper<cProjectModel, cProjectDomain>
     public boolean addProjectFromExcel(cProjectDomain domain) {
         //Toast.makeText(context, "TEST "+sheet.getPhysicalNumberOfRows(),
         //        Toast.LENGTH_SHORT).show();
-        cProjectModel model = this.DomainToModel(domain);
+        cLogFrameModel model = this.DomainToModel(domain);
         return projectDBA.addProjectFromExcel(model);
     }
 
@@ -43,7 +43,7 @@ public class cProjectHandler extends cMapper<cProjectModel, cProjectDomain>
     // business rules for deleting a project
     public boolean deleteProject(cProjectDomain domain) {
         // mapping the business domain to the model
-        cProjectModel model = this.DomainToModel(domain);
+        cLogFrameModel model = this.DomainToModel(domain);
         return projectDBA.deleteProject(model);
     }
 
@@ -55,7 +55,7 @@ public class cProjectHandler extends cMapper<cProjectModel, cProjectDomain>
     // business rules for deleting a project
     public boolean updateProject(cProjectDomain domain) {
         // mapping the business domain to the model
-        cProjectModel model = this.DomainToModel(domain);
+        cLogFrameModel model = this.DomainToModel(domain);
         return projectDBA.updateProject(model);
     }
 
@@ -64,7 +64,7 @@ public class cProjectHandler extends cMapper<cProjectModel, cProjectDomain>
     }
 
     public ArrayList<cProjectDomain> getProjectList() {
-        List<cProjectModel> projectModel = projectDBA.getProjectList();
+        List<cLogFrameModel> projectModel = projectDBA.getProjectList();
 
         ArrayList<cProjectDomain> projectDomain = new ArrayList<>();
         cProjectDomain domain;
@@ -89,7 +89,7 @@ public class cProjectHandler extends cMapper<cProjectModel, cProjectDomain>
             int parent = projectModelTree.get(i).getpId();
             int type = projectModelTree.get(i).getType();
 
-            cGoalModel goalModel = (cGoalModel) goalModelTree.get(i).getModelObject();
+            cImpactModel goalModel = (cImpactModel) goalModelTree.get(i).getModelObject();
 
             goalDomain = ModelToDomain(goalModel);
 
@@ -101,7 +101,7 @@ public class cProjectHandler extends cMapper<cProjectModel, cProjectDomain>
     */
 
     @Override
-    protected cProjectDomain ModelToDomain(cProjectModel model) {
+    protected cProjectDomain ModelToDomain(cLogFrameModel model) {
         cProjectDomain domain = new cProjectDomain();
 
         domain.setProjectID(model.getProjectID());
@@ -122,8 +122,8 @@ public class cProjectHandler extends cMapper<cProjectModel, cProjectDomain>
     }
 
     @Override
-    protected cProjectModel DomainToModel(cProjectDomain domain) {
-        cProjectModel model = new cProjectModel();
+    protected cLogFrameModel DomainToModel(cProjectDomain domain) {
+        cLogFrameModel model = new cLogFrameModel();
 
         model.setProjectID(domain.getProjectID());
         model.setOverallAimID(domain.getOverallAimID());

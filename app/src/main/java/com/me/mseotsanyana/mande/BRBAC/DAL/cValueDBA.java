@@ -139,7 +139,7 @@ public class cValueDBA {
         // open the cursor to be used to traverse the dataset
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(organizationID)});
 
-        // looping to a record which satisfies the condition and store in cProjectModel object
+        // looping to a record which satisfies the condition and store in cLogFrameModel object
         try {
             if (cursor.moveToFirst()) {
                 do {

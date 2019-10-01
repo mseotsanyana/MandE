@@ -2,20 +2,20 @@ package com.me.mseotsanyana.mande.PPMER.BLL;
 
 import android.content.Context;
 
-import com.me.mseotsanyana.mande.PPMER.DAL.cGoalDBA;
-import com.me.mseotsanyana.mande.PPMER.DAL.cGoalModel;
+import com.me.mseotsanyana.mande.PPMER.DAL.cImpactDBA;
+import com.me.mseotsanyana.mande.PPMER.DAL.cImpactModel;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class cGoalHandler extends cMapper<cGoalModel, cGoalDomain>
+public class cGoalHandler extends cMapper<cImpactModel, cGoalDomain>
 {
-    private cGoalDBA goalDBA;
+    private cImpactDBA goalDBA;
     private Context context;
 
     public cGoalHandler(Context context) {
-        goalDBA = new cGoalDBA(context);
+        goalDBA = new cImpactDBA(context);
         this.setContext(context);
     }
 
@@ -29,13 +29,13 @@ public class cGoalHandler extends cMapper<cGoalModel, cGoalDomain>
 
     // business rules for adding a value from excel
     public boolean addGoalFromExcel(cGoalDomain domain) {
-        cGoalModel model = this.DomainToModel(domain);
+        cImpactModel model = this.DomainToModel(domain);
         return goalDBA.addGoalFromExcel(model);
     }
 
     // business rules for adding a value from excel
     public boolean addGoal(cGoalDomain domain) {
-        cGoalModel model = this.DomainToModel(domain);
+        cImpactModel model = this.DomainToModel(domain);
         return goalDBA.addGoal(model);
     }
 
@@ -45,8 +45,8 @@ public class cGoalHandler extends cMapper<cGoalModel, cGoalDomain>
     }
 
     public ArrayList<cGoalDomain> getGoalList(){
-        List<cGoalModel> goalModelList = goalDBA.getGoalList();
-        cGoalModel goalModel;
+        List<cImpactModel> goalModelList = goalDBA.getGoalList();
+        cImpactModel goalModel;
 
         ArrayList<cGoalDomain> goalDomain = new ArrayList<>();
         cGoalDomain domain;
@@ -71,7 +71,7 @@ public class cGoalHandler extends cMapper<cGoalModel, cGoalDomain>
             int parent = goalModelTree.get(i).getParentID();
             int type = goalModelTree.get(i).getType();
 
-            cGoalModel goalModel = (cGoalModel) goalModelTree.get(i).getModelObject();
+            cImpactModel goalModel = (cImpactModel) goalModelTree.get(i).getModelObject();
 
             goalDomain = ModelToDomain(goalModel);
 
@@ -82,8 +82,8 @@ public class cGoalHandler extends cMapper<cGoalModel, cGoalDomain>
     }
 
     @Override
-	protected cGoalModel DomainToModel(cGoalDomain domain) {
-        cGoalModel model = new cGoalModel();
+	protected cImpactModel DomainToModel(cGoalDomain domain) {
+        cImpactModel model = new cImpactModel();
 
         model.setGoalID(domain.getGoalID());
         model.setOrganizationID(domain.getOrganizationID());
@@ -96,7 +96,7 @@ public class cGoalHandler extends cMapper<cGoalModel, cGoalDomain>
 	}
 
 	@Override
-	protected cGoalDomain ModelToDomain(cGoalModel model) {
+	protected cGoalDomain ModelToDomain(cImpactModel model) {
         cGoalDomain domain = new cGoalDomain();
 
         domain.setGoalID(model.getGoalID());
