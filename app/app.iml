@@ -178,5 +178,17 @@
     <orderEntry type="module" module-name="multiselectspinnerlibrary" />
     <orderEntry type="module" module-name="validatorlibrary" />
     <orderEntry type="module" module-name="viewpagerlibrary" />
+    <orderEntry type="module" module-name="quickactionlibrary" />
+    <orderEntry type="module" module-name="treeadapterlibrary" />
+    <orderEntry type="module" module-name="expandablelayoutlibrary" />
+    <orderEntry type="module" module-name="multiselectspinnerlibrary" />
+    <orderEntry type="module" module-name="validatorlibrary" />
+    <orderEntry type="module" module-name="viewpagerlibrary" />
+    <orderEntry type="module" module-name="quickactionlibrary" />
+    <orderEntry type="module" module-name="treeadapterlibrary" />
+    <orderEntry type="module" module-name="expandablelayoutlibrary" />
+    <orderEntry type="module" module-name="multiselectspinnerlibrary" />
+    <orderEntry type="module" module-name="validatorlibrary" />
+    <orderEntry type="module" module-name="viewpagerlibrary" />
   </component>
 </module>

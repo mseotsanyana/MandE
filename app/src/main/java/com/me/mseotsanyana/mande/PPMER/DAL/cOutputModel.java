@@ -27,64 +27,159 @@ public class cOutputModel {
     /* many to many */
     private ArrayList<cActivityModel> activityModels;
     private ArrayList<cRaidModel> raidModels;
+    private ArrayList<cQuestionModel> questionModels;
     private ArrayList<cOutputOutcomeModel> outputOutcomeModels;
-    private ArrayList<cActivityOutputModel> activityOutputModels;
-    private ArrayList<cOutputQuestionModel> outputQuestionModels;
 
-    private class cOutputOutcomeModel{
-        private cOutputModel outputModel;
-        private cOutcomeModel outcomeModel;
-        private cLogFrameModel parentModel;
-        private cLogFrameModel childModel;
+    public class cOutputOutcomeModel{
+        private int outputID;
+        private int outcomeID;
+        private int parentID;
+        private int childID;
+        private int serverID;
+        private int ownerID;
+        private int orgID;
+        private int groupBITS;
+        private int permsBITS;
+        private int statusBITS;
+        private Date createdDate;
+        private Date modifiedDate;
+        private Date syncedDate;
 
-        public cOutputOutcomeModel(cOutputModel outputModel, cOutcomeModel outcomeModel,
-                                   cLogFrameModel parentModel, cLogFrameModel childModel) {
-            this.outputModel = outputModel;
-            this.outcomeModel = outcomeModel;
-            this.parentModel = parentModel;
-            this.childModel = childModel;
+        public cOutputOutcomeModel(){}
+
+        public cOutputOutcomeModel(int outputID, int outcomeID, int parentID, int childID,
+                                   int serverID, int ownerID, int orgID, int groupBITS, int permsBITS,
+                                   int statusBITS, Date createdDate, Date modifiedDate, Date syncedDate) {
+            this.outputID = outputID;
+            this.outcomeID = outcomeID;
+            this.parentID = parentID;
+            this.childID = childID;
+            this.serverID = serverID;
+            this.ownerID = ownerID;
+            this.orgID = orgID;
+            this.groupBITS = groupBITS;
+            this.permsBITS = permsBITS;
+            this.statusBITS = statusBITS;
+            this.createdDate = createdDate;
+            this.modifiedDate = modifiedDate;
+            this.syncedDate = syncedDate;
+        }
+
+        public int getOutputID() {
+            return outputID;
+        }
+
+        public void setOutputID(int outputID) {
+            this.outputID = outputID;
+        }
+
+        public int getOutcomeID() {
+            return outcomeID;
+        }
+
+        public void setOutcomeID(int outcomeID) {
+            this.outcomeID = outcomeID;
+        }
+
+        public int getParentID() {
+            return parentID;
+        }
+
+        public void setParentID(int parentID) {
+            this.parentID = parentID;
+        }
+
+        public int getChildID() {
+            return childID;
+        }
+
+        public void setChildID(int childID) {
+            this.childID = childID;
+        }
+
+        public int getServerID() {
+            return serverID;
+        }
+
+        public void setServerID(int serverID) {
+            this.serverID = serverID;
+        }
+
+        public int getOwnerID() {
+            return ownerID;
+        }
+
+        public void setOwnerID(int ownerID) {
+            this.ownerID = ownerID;
+        }
+
+        public int getOrgID() {
+            return orgID;
+        }
+
+        public void setOrgID(int orgID) {
+            this.orgID = orgID;
+        }
+
+        public int getGroupBITS() {
+            return groupBITS;
+        }
+
+        public void setGroupBITS(int groupBITS) {
+            this.groupBITS = groupBITS;
+        }
+
+        public int getPermsBITS() {
+            return permsBITS;
+        }
+
+        public void setPermsBITS(int permsBITS) {
+            this.permsBITS = permsBITS;
+        }
+
+        public int getStatusBITS() {
+            return statusBITS;
+        }
+
+        public void setStatusBITS(int statusBITS) {
+            this.statusBITS = statusBITS;
+        }
+
+        public Date getCreatedDate() {
+            return createdDate;
+        }
+
+        public void setCreatedDate(Date createdDate) {
+            this.createdDate = createdDate;
+        }
+
+        public Date getModifiedDate() {
+            return modifiedDate;
+        }
+
+        public void setModifiedDate(Date modifiedDate) {
+            this.modifiedDate = modifiedDate;
+        }
+
+        public Date getSyncedDate() {
+            return syncedDate;
+        }
+
+        public void setSyncedDate(Date syncedDate) {
+            this.syncedDate = syncedDate;
         }
     }
 
-    private class cActivityOutputModel{
-        private cActivityModel activityModel;
-        private cOutputModel outputModel;
-        private cLogFrameModel parentModel;
-        private cLogFrameModel childModel;
-
-        public cActivityOutputModel(cActivityModel activityModel, cOutputModel outputModel,
-                                    cLogFrameModel parentModel, cLogFrameModel childModel) {
-            this.activityModel = activityModel;
-            this.outputModel = outputModel;
-            this.parentModel = parentModel;
-            this.childModel = childModel;
-        }
-    }
-
-    private class cOutputQuestionModel{
-        private cOutputModel outputModel;
-        private cQuestionModel questionModel;
-        private cCriteriaModel criteriaModel;
-
-        public cOutputQuestionModel(cOutputModel outputModel, cQuestionModel questionModel,
-                                    cCriteriaModel criteriaModel) {
-            this.outputModel = outputModel;
-            this.questionModel = questionModel;
-            this.criteriaModel = criteriaModel;
-        }
-    }
+    public cOutputModel(){}
 
     public cOutputModel(int ID, int serverID, int ownerID, int orgID,
                         int groupBITS, int permsBITS, int statusBITS,
-                        String name, String description, Date startDate, Date endDate,
-                        Date createdDate, Date modifiedDate, Date syncedDate,
-                        cLogFrameModel logFrameModel, cOutcomeModel outcomeModel,
-                        ArrayList<cOutputModel> outputModels,
-                        ArrayList<cActivityModel> activityModels,
-                        ArrayList<cRaidModel> raidModels,
-                        ArrayList<cOutputOutcomeModel> outputOutcomeModels,
-                        ArrayList<cActivityOutputModel> activityOutputModels,
-                        ArrayList<cOutputQuestionModel> outputQuestionModels) {
+                        String name, String description, Date startDate,
+                        Date endDate, Date createdDate, Date modifiedDate,
+                        Date syncedDate, cLogFrameModel logFrameModel,
+                        cOutcomeModel outcomeModel, ArrayList<cOutputModel> outputModels,
+                        ArrayList<cActivityModel> activityModels, ArrayList<cRaidModel> raidModels,
+                        ArrayList<cQuestionModel> questionModels, ArrayList<cOutputOutcomeModel> outputOutcomeModels) {
         this.ID = ID;
         this.serverID = serverID;
         this.ownerID = ownerID;
@@ -104,9 +199,8 @@ public class cOutputModel {
         this.outputModels = outputModels;
         this.activityModels = activityModels;
         this.raidModels = raidModels;
+        this.questionModels = questionModels;
         this.outputOutcomeModels = outputOutcomeModels;
-        this.activityOutputModels = activityOutputModels;
-        this.outputQuestionModels = outputQuestionModels;
     }
 
     public int getID() {
@@ -253,28 +347,28 @@ public class cOutputModel {
         this.activityModels = activityModels;
     }
 
+    public ArrayList<cRaidModel> getRaidModels() {
+        return raidModels;
+    }
+
+    public void setRaidModels(ArrayList<cRaidModel> raidModels) {
+        this.raidModels = raidModels;
+    }
+
+    public ArrayList<cQuestionModel> getQuestionModels() {
+        return questionModels;
+    }
+
+    public void setQuestionModels(ArrayList<cQuestionModel> questionModels) {
+        this.questionModels = questionModels;
+    }
+
     public ArrayList<cOutputOutcomeModel> getOutputOutcomeModels() {
         return outputOutcomeModels;
     }
 
     public void setOutputOutcomeModels(ArrayList<cOutputOutcomeModel> outputOutcomeModels) {
         this.outputOutcomeModels = outputOutcomeModels;
-    }
-
-    public ArrayList<cActivityOutputModel> getActivityOutputModels() {
-        return activityOutputModels;
-    }
-
-    public void setActivityOutputModels(ArrayList<cActivityOutputModel> activityOutputModels) {
-        this.activityOutputModels = activityOutputModels;
-    }
-
-    public ArrayList<cOutputQuestionModel> getOutputQuestionModels() {
-        return outputQuestionModels;
-    }
-
-    public void setOutputQuestionModels(ArrayList<cOutputQuestionModel> outputQuestionModels) {
-        this.outputQuestionModels = outputQuestionModels;
     }
 }
 

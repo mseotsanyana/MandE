@@ -27,7 +27,7 @@ public class cImpactModel {
     /* many to many */
     private ArrayList<cOutcomeModel> outcomeModels;
     private ArrayList<cRaidModel> raidModels;
-    private ArrayList<cOutcomeImpactModel> outcomeImpactModels;
+    //private ArrayList<cOutcomeImpactModel> outcomeImpactModels;
     private ArrayList<cImpactQuestionModel> impactQuestionModels;
 
     private class cOutcomeImpactModel{
@@ -87,7 +87,7 @@ public class cImpactModel {
         this.logFrameModel = logFrameModel;
         this.outcomeModels = outcomeModels;
         this.impactModels = impactModels;
-        this.outcomeImpactModels = outcomeImpactModels;
+        //this.outcomeImpactModels = outcomeImpactModels;
         this.impactQuestionModels = impactQuestionModels;
         this.raidModels = raidModels;
     }
@@ -227,7 +227,7 @@ public class cImpactModel {
     public void setImpactModels(ArrayList<cImpactModel> impactModels) {
         this.impactModels = impactModels;
     }
-
+/*
     public ArrayList<cOutcomeImpactModel> getOutcomeImpactModels() {
         return outcomeImpactModels;
     }
@@ -235,7 +235,7 @@ public class cImpactModel {
     public void setOutcomeImpactModels(ArrayList<cOutcomeImpactModel> outcomeImpactModels) {
         this.outcomeImpactModels = outcomeImpactModels;
     }
-
+*/
     public ArrayList<cImpactQuestionModel> getImpactQuestionModels() {
         return impactQuestionModels;
     }

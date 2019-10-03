@@ -3,20 +3,35 @@ package com.me.mseotsanyana.mande.PPMER.DAL;
 import java.util.Date;
 
 public class cIndicatorModel {
-	private int indicatorID;
+    private int ID;
+    private int serverID;
     private int ownerID;
-    private int statusID;
-    private String indicatorName;
-    private String indicatorDescription;
-    private int indicatorType;
-    private Date createDate;
+    private int orgID;
+    private int groupBITS;
+    private int permsBITS;
+    private int statusBITS;
+    private String name;
+    private String description;
+    private Date startDate;
+    private Date endDate;
+    private Date createdDate;
+    private Date modifiedDate;
+    private Date syncedDate;
 
-    public int getIndicatorID() {
-        return indicatorID;
+    public int getID() {
+        return ID;
     }
 
-    public void setIndicatorID(int indicatorID) {
-        this.indicatorID = indicatorID;
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public int getServerID() {
+        return serverID;
+    }
+
+    public void setServerID(int serverID) {
+        this.serverID = serverID;
     }
 
     public int getOwnerID() {
@@ -27,45 +42,91 @@ public class cIndicatorModel {
         this.ownerID = ownerID;
     }
 
-    public int getStatusID() {
-        return statusID;
+    public int getOrgID() {
+        return orgID;
     }
 
-    public void setStatusID(int statusID) {
-        this.statusID = statusID;
+    public void setOrgID(int orgID) {
+        this.orgID = orgID;
     }
 
-    public String getIndicatorName() {
-        return indicatorName;
+    public int getGroupBITS() {
+        return groupBITS;
     }
 
-    public void setIndicatorName(String indicatorName) {
-        this.indicatorName = indicatorName;
+    public void setGroupBITS(int groupBITS) {
+        this.groupBITS = groupBITS;
     }
 
-    public String getIndicatorDescription() {
-        return indicatorDescription;
+    public int getPermsBITS() {
+        return permsBITS;
     }
 
-    public void setIndicatorDescription(String indicatorDescription) {
-        this.indicatorDescription = indicatorDescription;
+    public void setPermsBITS(int permsBITS) {
+        this.permsBITS = permsBITS;
     }
 
-    public int getIndicatorType() {
-        return indicatorType;
+    public int getStatusBITS() {
+        return statusBITS;
     }
 
-    public void setIndicatorType(int indicatorType) {
-        this.indicatorType = indicatorType;
+    public void setStatusBITS(int statusBITS) {
+        this.statusBITS = statusBITS;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public String getName() {
+        return name;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setName(String name) {
+        this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public Date getSyncedDate() {
+        return syncedDate;
+    }
+
+    public void setSyncedDate(Date syncedDate) {
+        this.syncedDate = syncedDate;
+    }
 }

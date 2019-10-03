@@ -22,20 +22,9 @@ public class cActivityDBA {
         dbHelper = new cSQLDBHelper(context);
     }
 
-
-    public boolean deleteAllActivities() {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_ACTIVITY, null, null);
-
-        // close the database connection
-        db.close();
-
-        return result > -1;
-    }
-
+    /*
+     * the function adding a specific activity
+     */
     public boolean addActivity(cActivityModel activityModel) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -44,19 +33,28 @@ public class cActivityDBA {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ACTIVITY_ID, activityModel.getActivityID());
-        cv.put(cSQLDBHelper.KEY_ACTIVITY_OWNER_ID, activityModel.getOwnerID());
-        cv.put(cSQLDBHelper.KEY_ACTIVITY_NAME, activityModel.getActivityName());
-        cv.put(cSQLDBHelper.KEY_ACTIVITY_DESCRIPTION, activityModel.getActivityDescription());
-        cv.put(cSQLDBHelper.KEY_ACTIVITY_DATE, formatter.format(activityModel.getCreateDate()));
+        cv.put(cSQLDBHelper.KEY_ID, activityModel.getID());
+        cv.put(cSQLDBHelper.KEY_SERVER_ID, activityModel.getServerID());
+        cv.put(cSQLDBHelper.KEY_OWNER_ID, activityModel.getOwnerID());
+        cv.put(cSQLDBHelper.KEY_ORG_ID, activityModel.getOrgID());
+        cv.put(cSQLDBHelper.KEY_GROUP_BITS, activityModel.getGroupBITS());
+        cv.put(cSQLDBHelper.KEY_PERMS_BITS, activityModel.getPermsBITS());
+        cv.put(cSQLDBHelper.KEY_STATUS_BITS, activityModel.getStatusBITS());
+        cv.put(cSQLDBHelper.KEY_NAME, activityModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, activityModel.getDescription());
+        cv.put(cSQLDBHelper.KEY_START_DATE, formatter.format(activityModel.getStartDate()));
+        cv.put(cSQLDBHelper.KEY_END_DATE, formatter.format(activityModel.getEndDate()));
+        cv.put(cSQLDBHelper.KEY_CREATED_DATE, formatter.format(activityModel.getCreatedDate()));
+        cv.put(cSQLDBHelper.KEY_MODIFIED_DATE, formatter.format(activityModel.getModifiedDate()));
+        cv.put(cSQLDBHelper.KEY_SYNCED_DATE, formatter.format(activityModel.getSyncedDate()));
 
-        // insert outcome record
+        // insert project details
         try {
-            if (db.insert(cSQLDBHelper.TABLE_ACTIVITY, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblACTIVITY, null, cv) < 0) {
                 return false;
             }
-        } catch (Exception ex) {
-            Log.d("Exception in importing ", ex.getMessage().toString());
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in adding OUTPUT "+e.getMessage().toString());
         }
 
         // close the database connection
@@ -65,31 +63,192 @@ public class cActivityDBA {
         return true;
     }
 
-    public cActivityModel getActivityByID(int activityID) {
+    /*
+     * the function adding a specific activity outcome
+     */
+    public boolean addActivityOutput(cActivityModel.cActivityOutputModel activityOutputModel){
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // create content object for storing data
+        ContentValues cv = new ContentValues();
+
+        // assign values to the table fields
+        cv.put(cSQLDBHelper.KEY_OUTPUT_FK_ID, activityOutputModel.getActivityID());
+        cv.put(cSQLDBHelper.KEY_OUTPUT_FK_ID, activityOutputModel.getOutputID());
+        cv.put(cSQLDBHelper.KEY_PARENT_FK_ID, activityOutputModel.getParentID());
+        cv.put(cSQLDBHelper.KEY_CHILD_FK_ID, activityOutputModel.getChildID());
+        cv.put(cSQLDBHelper.KEY_SERVER_ID, activityOutputModel.getServerID());
+        cv.put(cSQLDBHelper.KEY_OWNER_ID, activityOutputModel.getOwnerID());
+        cv.put(cSQLDBHelper.KEY_ORG_ID, activityOutputModel.getOrgID());
+        cv.put(cSQLDBHelper.KEY_GROUP_BITS, activityOutputModel.getGroupBITS());
+        cv.put(cSQLDBHelper.KEY_PERMS_BITS, activityOutputModel.getPermsBITS());
+        cv.put(cSQLDBHelper.KEY_STATUS_BITS, activityOutputModel.getStatusBITS());
+        cv.put(cSQLDBHelper.KEY_CREATED_DATE, formatter.format(activityOutputModel.getCreatedDate()));
+        cv.put(cSQLDBHelper.KEY_MODIFIED_DATE, formatter.format(activityOutputModel.getModifiedDate()));
+        cv.put(cSQLDBHelper.KEY_SYNCED_DATE, formatter.format(activityOutputModel.getSyncedDate()));
+
+        // insert project details
+        try {
+            if (db.insert(cSQLDBHelper.TABLE_tblACTIVITY_OUTPUT, null, cv) < 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in adding OUTPUT_OUTPUTs "+e.getMessage().toString());
+        }
+
+        // close the database connection
+        db.close();
+
+        return true;
+    }
+
+    /*
+     * the function delete all activities
+     */
+    public boolean deleteActivities() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        try {
+            if(db.delete(cSQLDBHelper.TABLE_tblACTIVITY, null, null) < 0){
+                return false;
+            }
+        }catch (Exception e){
+            Log.d(TAG, "Exception in deleting all OUTPUTs "+e.getMessage().toString());
+        }
+
+        // close the database connection
+        db.close();
+
+        return true;
+    }
+
+    /*
+     * the function delete all activity outcomes
+     */
+    public boolean deleteActivityOutputs() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        try {
+            if(db.delete(cSQLDBHelper.TABLE_tblACTIVITY_OUTPUT, null, null) < 0){
+                return false;
+            }
+        }catch (Exception e){
+            Log.d(TAG, "Exception in deleting all ACTIVITY_OUTPUTs "+e.getMessage().toString());
+        }
+
+        // close the database connection
+        db.close();
+
+        return true;
+    }
+
+    /*
+     * the function fetches all activitys
+     */
+    public ArrayList<cActivityModel> getActivityModels() {
+        // list of activitys
+        ArrayList<cActivityModel> activityModels = new ArrayList<>();
+
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        // construct a selection query
+        String selectQuery = "SELECT * FROM "+ cSQLDBHelper.TABLE_tblACTIVITY;
+
+        // construct an argument cursor
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    cActivityModel activityModel = new cActivityModel();
+
+                    activityModel.setID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    activityModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+                    activityModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    activityModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+                    activityModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    activityModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    activityModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    activityModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    activityModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    activityModel.setStartDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+                    activityModel.setEndDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+                    activityModel.setCreatedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    activityModel.setModifiedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    activityModel.setSyncedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+
+                    activityModels.add(activityModel);
+
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in reading all OUTPUTs "+e.getMessage().toString());
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+
+        // close the database connection
+        db.close();
+
+        return activityModels;
+    }
+
+    // get activity outcomes
+    public ArrayList<cOutputModel> getActivityOutputsByID(int activityID) {
+        // list of child outcome
+        ArrayList<cOutputModel> outcomeModels = new ArrayList<cOutputModel>();
+
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
         // construct a selection query
         String selectQuery = "SELECT * FROM " +
-                cSQLDBHelper.TABLE_ACTIVITY + " WHERE " +
-                cSQLDBHelper.KEY_ACTIVITY_ID + "= ?";
+                cSQLDBHelper.TABLE_tblACTIVITY + " activity, " +
+                cSQLDBHelper.TABLE_tblOUTPUT + " output, " +
+                cSQLDBHelper.TABLE_tblACTIVITY_OUTPUT + " activity_output " +
+                " WHERE activity."+cSQLDBHelper.KEY_ID+" = activity_output."+cSQLDBHelper.KEY_ACTIVITY_FK_ID +
+                " AND activity."+cSQLDBHelper.KEY_LOGFRAME_FK_ID + " = activity_output."+cSQLDBHelper.KEY_PARENT_FK_ID +
+                " AND output."+cSQLDBHelper.KEY_ID + " = activity_output."+cSQLDBHelper.KEY_OUTPUT_FK_ID +
+                " AND output."+cSQLDBHelper.KEY_LOGFRAME_FK_ID +" = activity_output."+cSQLDBHelper.KEY_CHILD_FK_ID +
+                " AND activity."+cSQLDBHelper.KEY_ID +" = ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(activityID)});
 
-        cActivityModel activity = new cActivityModel();
-
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    activity.setActivityID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ACTIVITY_ID)));
-                    activity.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ACTIVITY_OWNER_ID)));
-                    activity.setActivityName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ACTIVITY_NAME)));
-                    activity.setActivityDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ACTIVITY_DESCRIPTION)));
-                    activity.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ACTIVITY_DATE))));
+
+                    cOutputModel outcomeModel = new cOutputModel();
+
+                    outcomeModel.setID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    outcomeModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+                    outcomeModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    outcomeModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+                    outcomeModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    outcomeModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    outcomeModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    outcomeModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    outcomeModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    outcomeModel.setStartDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+                    outcomeModel.setEndDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+                    outcomeModel.setCreatedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    outcomeModel.setModifiedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    outcomeModel.setSyncedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+
+                    outcomeModels.add(outcomeModel);
 
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
-            Log.d(TAG, "Error while trying to get projects from database");
+            Log.d(TAG, "Exception in reading all ACTIVITY_OUTPUTs "+e.getMessage().toString());
         } finally {
             if (cursor != null && !cursor.isClosed()) {
                 cursor.close();
@@ -99,43 +258,6 @@ public class cActivityDBA {
         // close the database connection
         db.close();
 
-        return activity;
-    }
-
-
-    public List<cActivityModel> getActivityList() {
-
-        List<cActivityModel> activityModelList = new ArrayList<>();
-
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM "+ cSQLDBHelper.TABLE_ACTIVITY, null);
-
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    cActivityModel activity = new cActivityModel();
-
-                    activity.setActivityID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ACTIVITY_ID)));
-                    activity.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ACTIVITY_OWNER_ID)));
-                    activity.setActivityName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ACTIVITY_NAME)));
-                    activity.setActivityDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ACTIVITY_DESCRIPTION)));
-                    activity.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ACTIVITY_DATE))));
-
-                    activityModelList.add(activity);
-
-                } while (cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Error while trying to get projects from database");
-        } finally {
-            if (cursor != null && !cursor.isClosed()) {
-                cursor.close();
-            }
-        }
-
-        // close the database connection
-        db.close();
-
-        return activityModelList;
+        return outcomeModels;
     }
 }

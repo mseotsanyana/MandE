@@ -27,7 +27,7 @@ public class cImpactDBA
         dbHelper = new cSQLDBHelper(context);
     }
 
-    public boolean addGoalFromExcel(cImpactModel impactModel) {
+    public boolean addImpact(cImpactModel impactModel) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -35,18 +35,28 @@ public class cImpactDBA
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_OVERALLAIM_ID, goalModel.getGoalID());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, goalModel.getOrganizationID());
-        cv.put(cSQLDBHelper.KEY_OVERALLAIM_NAME, goalModel.getGoalName());
-        cv.put(cSQLDBHelper.KEY_OVERALLAIM_DESCRIPTION, goalModel.getGoalDescription());
+        cv.put(cSQLDBHelper.KEY_ID, impactModel.getID());
+        cv.put(cSQLDBHelper.KEY_SERVER_ID, impactModel.getServerID());
+        cv.put(cSQLDBHelper.KEY_OWNER_ID, impactModel.getOwnerID());
+        cv.put(cSQLDBHelper.KEY_ORG_ID, impactModel.getOrgID());
+        cv.put(cSQLDBHelper.KEY_GROUP_BITS, impactModel.getGroupBITS());
+        cv.put(cSQLDBHelper.KEY_PERMS_BITS, impactModel.getPermsBITS());
+        cv.put(cSQLDBHelper.KEY_STATUS_BITS, impactModel.getStatusBITS());
+        cv.put(cSQLDBHelper.KEY_NAME, impactModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, impactModel.getDescription());
+        cv.put(cSQLDBHelper.KEY_START_DATE, formatter.format(impactModel.getStartDate()));
+        cv.put(cSQLDBHelper.KEY_END_DATE, formatter.format(impactModel.getEndDate()));
+        cv.put(cSQLDBHelper.KEY_CREATED_DATE, formatter.format(impactModel.getCreatedDate()));
+        cv.put(cSQLDBHelper.KEY_MODIFIED_DATE, formatter.format(impactModel.getModifiedDate()));
+        cv.put(cSQLDBHelper.KEY_SYNCED_DATE, formatter.format(impactModel.getSyncedDate()));
 
-        // insert value record
+        // insert project details
         try {
-            if (db.insert(cSQLDBHelper.tblTABLE_IMPACT, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblIMPACT, null, cv) < 0) {
                 return false;
             }
-        } catch (Exception ex) {
-            Log.d("Exception in importing ", ex.getMessage().toString());
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in importing "+e.getMessage().toString());
         }
 
         // close the database connection
@@ -55,102 +65,89 @@ public class cImpactDBA
         return true;
     }
 
-
-    public boolean addGoal(cImpactModel goalModel){
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // create content object for storing data
-        ContentValues cv = new ContentValues();
-
-        // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_OVERALLAIM_ID, goalModel.getGoalID());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, goalModel.getOrganizationID());
-        cv.put(cSQLDBHelper.KEY_OVERALLAIM_OWNER_ID, goalModel.getOwnerID());
-        cv.put(cSQLDBHelper.KEY_OVERALLAIM_NAME, goalModel.getGoalName());
-        cv.put(cSQLDBHelper.KEY_OVERALLAIM_DESCRIPTION, goalModel.getGoalDescription());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_CREATED_DATE, formatter.format(goalModel.getCreateDate()));
-
-
-        // insert impact record
-        long result = db.insert(cSQLDBHelper.TABLE_OVERALLAIM,null,cv);
-
-        // close the database connection
-        db.close();
-
-        return result > -1;
-    }
-
-    public boolean deleteAllGoals() {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_OVERALLAIM, null, null);
-
-        // close the database connection
-        db.close();
-
-        return result > -1;
-    }
-
-    public boolean deleteGoal(int impactID){
+    /*
+     * the function delate a specific logframe
+     */
+    public boolean deleteImpact(cImpactModel impactModel) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // delete a record of a specific ID
-        long result = db.delete(cSQLDBHelper.TABLE_OVERALLAIM, cSQLDBHelper.KEY_PROJECT_ID + "= ?", new String[] {String.valueOf(impactID)});
+        try {
+            if(db.delete(cSQLDBHelper.TABLE_tblIMPACT, cSQLDBHelper.KEY_ID + " = ?",
+                    new String[]{String.valueOf(impactModel.getID())}) < 0){
+                return false;
+            }
+        }catch (Exception e){
+            Log.d(TAG, "Exception in deleting "+e.getMessage().toString());
+        }
 
         // close the database connection
         db.close();
 
-        return result > -1;
+        return true;
     }
 
-    public boolean upadateGoal(cImpactModel goalModel){
+    /*
+     * the function delete all impacts
+     */
+    public boolean deleteImpacts() {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        // create content object for storing data
-        ContentValues cv = new ContentValues();
-
-        // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_OVERALLAIM_NAME, goalModel.getGoalName());
-        cv.put(cSQLDBHelper.KEY_OVERALLAIM_DESCRIPTION, goalModel.getGoalDescription());
-
-        // update a specific record
-        long result = db.update(cSQLDBHelper.TABLE_OVERALLAIM, cv, cSQLDBHelper.KEY_PROJECT_ID
-                + "= ?", new String[] { String.valueOf(goalModel.getGoalID()) });
+        // delete all records
+        try {
+            if(db.delete(cSQLDBHelper.TABLE_tblIMPACT, null, null) < 0){
+                return false;
+            }
+        }catch (Exception e){
+            Log.d(TAG, "Exception in deleting all logframes "+e.getMessage().toString());
+        }
 
         // close the database connection
         db.close();
 
-        return result > -1;
+        return true;
     }
 
-    public List<cImpactModel> getGoalList() {
-        List<cImpactModel> goalModelList = new ArrayList<>();
+    /*
+     * the function fetches all impacts
+     */
+    public ArrayList<cImpactModel> getImpactModels() {
+        // list of impacts
+        ArrayList<cImpactModel> impactModels = new ArrayList<>();
+
+        // open the connection to the database
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM "+ cSQLDBHelper.TABLE_OVERALLAIM, null);
+
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ cSQLDBHelper.TABLE_tblIMPACT, null);
 
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    cImpactModel goalModel = new cImpactModel();
-                    // populate overall aim (goal) model object
-                    goalModel.setGoalID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OVERALLAIM_ID)));
-                    goalModel.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
-                    goalModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OVERALLAIM_OWNER_ID)));
-                    goalModel.setGoalName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_OVERALLAIM_NAME)));
-                    goalModel.setGoalDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_OVERALLAIM_DESCRIPTION)));
-                    goalModel.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_OVERALLAIM_DATE))));
-                    // add model overall aim (goal) into the action_list
-                    goalModelList.add(goalModel);
+                    cImpactModel impactModel = new cImpactModel();
+
+                    impactModel.setID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    impactModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+                    impactModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    impactModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+                    impactModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    impactModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    impactModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    impactModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    impactModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    impactModel.setStartDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+                    impactModel.setEndDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+                    impactModel.setCreatedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    impactModel.setModifiedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    impactModel.setSyncedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+
+                    impactModels.add(impactModel);
 
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
-            Log.d(TAG, "Error while trying to get values from database");
+            Log.d(TAG, "Error while trying to get projects from database");
         } finally {
             if (cursor != null && !cursor.isClosed()) {
                 cursor.close();
@@ -160,101 +157,60 @@ public class cImpactDBA
         // close the database connection
         db.close();
 
-        return goalModelList;
+        return impactModels;
     }
 
-    cImpactModel getGoalById(int goalID){
-        // open connection to read only
+    // get impacts for a given impact ID
+    public ArrayList<cImpactModel> getImpactsByID(int impactID) {
+        // list of impacts
+        ArrayList<cImpactModel> impactModels = new ArrayList<>();
+
+        // open the connection to the database
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         // construct a selection query
-        String selectQuery =  "SELECT * FROM " +
-                cSQLDBHelper.TABLE_OVERALLAIM + " WHERE " +
-                cSQLDBHelper.KEY_OVERALLAIM_ID + "= ?";
+        String selectQuery = "SELECT * FROM "+
+                cSQLDBHelper.TABLE_tblIMPACT + " impact "+
+                " WHERE impact."+cSQLDBHelper.KEY_ID + " = ?";
 
-        int iCount = 0;
-        cImpactModel goalModel = new cImpactModel();
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(impactID)});
 
-        // open the cursor to be used to traverse the dataset
-        Cursor cursor = db.rawQuery(selectQuery, new String[] { String.valueOf(goalID) } );
-
-        // looping to a record which satisfies the condition and store in cImpactModel object
-        if (cursor.moveToFirst())
-        {
-            do
-            {
-                goalModel.setGoalID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OVERALLAIM_ID)));
-                goalModel.setGoalName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_OVERALLAIM_NAME)));
-                goalModel.setGoalDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_OVERALLAIM_DESCRIPTION)));
-            } while (cursor.moveToNext());
-        }
-
-        // close the cursor
-        cursor.close();
-
-        // close the database connection
-        db.close();
-
-        return goalModel;
-    }
-
-    public boolean deleteAllGoalsByProject(int projectID){
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // delete a record of a specific ID
-        long result = db.delete(cSQLDBHelper.TABLE_OVERALLAIM, cSQLDBHelper.KEY_OVERALLAIM_ID + "= ?", new String[] {String.valueOf(projectID)});
-
-        // close the database connection
-        db.close();
-
-        return result > -1;
-    }
-
-    public List<cTreeModel> getGoalTree() {
-        // open connection to read only
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        // construct a selection query for goals
-        String selectOverallAimQuery   = "SELECT * FROM " + cSQLDBHelper.TABLE_OVERALLAIM;
-
-        // open the goal cursor to be used to traverse the dataset
-        Cursor goalCursor = db.rawQuery(selectOverallAimQuery, null);
-
-        // the action_list of two fields to be populated and returned
-        List<cTreeModel> goalTreeList = new ArrayList<>();
-
-        // looping through all goal rows and adding to tree action_list
-        if (goalCursor.moveToFirst()) {
-            try {
+        try {
+            if (cursor.moveToFirst()) {
                 do {
-                    cTreeModel treeData = new cTreeModel(
-                            goalCursor.getInt(goalCursor.getColumnIndex(cSQLDBHelper.KEY_OVERALLAIM_ID))+1,
-                            goalCursor.getInt(goalCursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)),
-                            1,
-                            new cImpactModel(
-                                    goalCursor.getInt(goalCursor.getColumnIndex(cSQLDBHelper.KEY_OVERALLAIM_ID)),
-                                    goalCursor.getInt(goalCursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)),
-                                    goalCursor.getInt(goalCursor.getColumnIndex(cSQLDBHelper.KEY_OVERALLAIM_OWNER_ID)),
-                                    goalCursor.getString(goalCursor.getColumnIndex(cSQLDBHelper.KEY_OVERALLAIM_NAME)),
-                                    goalCursor.getString(goalCursor.getColumnIndex(cSQLDBHelper.KEY_OVERALLAIM_DESCRIPTION)),
-                                    formatter.parse(goalCursor.getString(goalCursor.getColumnIndex(cSQLDBHelper.KEY_OVERALLAIM_DATE)))
-                            )
-                    );
+                    cImpactModel impactModel = new cImpactModel();
 
-                    goalTreeList.add(treeData);
+                    impactModel.setID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    impactModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+                    impactModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    impactModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+                    impactModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    impactModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    impactModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    impactModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    impactModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    impactModel.setStartDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+                    impactModel.setEndDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+                    impactModel.setCreatedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    impactModel.setModifiedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    impactModel.setSyncedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
-                } while (goalCursor.moveToNext());
-            }catch (Exception e) {
-                Log.d(TAG, "Error while trying to get values from database");
-            } finally {
-                if (goalCursor != null && !goalCursor.isClosed())
-                    goalCursor.close();
+                    impactModels.add(impactModel);
+
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Error while trying to get projects from database");
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
             }
         }
+
         // close the database connection
         db.close();
 
-        return goalTreeList;
+        return impactModels;
     }
+
 }
