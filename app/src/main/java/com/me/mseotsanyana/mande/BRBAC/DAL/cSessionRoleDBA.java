@@ -52,12 +52,12 @@ public class cSessionRoleDBA {
             ContentValues cv = new ContentValues();
 
             cv.put(cSQLDBHelper.KEY_SESSION_FK_ID, sessionModel.getSessionID());
-            cv.put(cSQLDBHelper.KEY_ROLE_FK_ID, roleModel.getRoleID());
+            cv.put(cSQLDBHelper.KEY_SESSION_FK_ID, roleModel.getRoleID());
             cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, organizationModel.getOrganizationID());
-            //cv.put(cSQLDBHelper.KEY_SESSION_ROLE_DATE, formatter.format(sessionRoleModel.getCreateDate()));
+            //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(sessionRoleModel.getCreateDate()));
 
             // insert session role record
-            result = db.insert(cSQLDBHelper.TABLE_SESSION_ROLE, null, cv);
+            result = db.insert(cSQLDBHelper.TABLE_tblSESSION, null, cv);
         }
 
         // close the database connection
@@ -81,15 +81,15 @@ public class cSessionRoleDBA {
             ContentValues cv = new ContentValues();
 
             cv.put(cSQLDBHelper.KEY_SESSION_FK_ID, sessionModel.getSessionID());
-            cv.put(cSQLDBHelper.KEY_ROLE_FK_ID, groupModel.getRoleID());
-            cv.put(cSQLDBHelper.KEY_SESSION_ROLE_OWNER_ID, sessionRoleModel.getOwnerID());
-            cv.put(cSQLDBHelper.KEY_SESSION_ROLE_GROUP_BITS, sessionRoleModel.getGroupBITS());
-            cv.put(cSQLDBHelper.KEY_SESSION_ROLE_PERMS_BITS, sessionRoleModel.getPermsBITS());
-            cv.put(cSQLDBHelper.KEY_SESSION_ROLE_STATUS_BITS, sessionRoleModel.getStatusBITS());
-            //cv.put(cSQLDBHelper.KEY_SESSION_ROLE_DATE, formatter.format(sessionRoleModel.getCreateDate()));
+            cv.put(cSQLDBHelper.KEY_SESSION_FK_ID, groupModel.getRoleID());
+            cv.put(cSQLDBHelper.KEY_OWNER_ID, sessionRoleModel.getOwnerID());
+            cv.put(cSQLDBHelper.KEY_GROUP_BITS, sessionRoleModel.getGroupBITS());
+            cv.put(cSQLDBHelper.KEY_PERMS_BITS, sessionRoleModel.getPermsBITS());
+            cv.put(cSQLDBHelper.KEY_STATUS_BITS, sessionRoleModel.getStatusBITS());
+            //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(sessionRoleModel.getCreateDate()));
 
             // insert session group record
-            result = db.insert(cSQLDBHelper.TABLE_SESSION_ROLE, null, cv);
+            result = db.insert(cSQLDBHelper.TABLE_tblSESSION, null, cv);
         }
 
         // close the database connection
@@ -103,7 +103,7 @@ public class cSessionRoleDBA {
         List<cSessionRoleModel> sessionRoleModels = new ArrayList<>();
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM "+ cSQLDBHelper.TABLE_SESSION_ROLE, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ cSQLDBHelper.TABLE_tblSESSION, null);
 
         try {
             if (cursor.moveToFirst()) {
@@ -111,12 +111,12 @@ public class cSessionRoleDBA {
                     cSessionRoleModel sessionRole = new cSessionRoleModel();
 
                     sessionRole.setSessionID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_FK_ID)));
-                    sessionRole.setRoleID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_FK_ID)));
-                    sessionRole.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_ROLE_OWNER_ID)));
-                    sessionRole.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_ROLE_GROUP_BITS)));
-                    sessionRole.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_ROLE_PERMS_BITS)));
-                    sessionRole.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_ROLE_STATUS_BITS)));
-                    //sessionRole.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_ROLE_DATE))));
+                    sessionRole.setRoleID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_FK_ID)));
+                    sessionRole.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    sessionRole.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    sessionRole.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    sessionRole.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    //sessionRole.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                     sessionRoleModels.add(sessionRole);
 
@@ -144,30 +144,30 @@ public class cSessionRoleDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT * FROM "+
-                cSQLDBHelper.TABLE_SESSION + " session, " +
-                cSQLDBHelper.TABLE_ROLE + " role, " +
-                cSQLDBHelper.TABLE_SESSION_ROLE +" session_role " +
-                "WHERE session."+cSQLDBHelper.KEY_SESSION_ID+" = session_role."+cSQLDBHelper.KEY_SESSION_FK_ID+
-                " AND role."+cSQLDBHelper.KEY_ROLE_ID+" = session_role."+cSQLDBHelper.KEY_ROLE_FK_ID+
-                " AND "+ roleID +" = role."+cSQLDBHelper.KEY_ROLE_ID, null);
+                cSQLDBHelper.TABLE_tblSESSION + " session, " +
+                cSQLDBHelper.TABLE_tblROLE + " role, " +
+                cSQLDBHelper.TABLE_tblSESSION +" session_role " +
+                "WHERE session."+cSQLDBHelper.KEY_ID+" = session_role."+cSQLDBHelper.KEY_SESSION_FK_ID+
+                " AND role."+cSQLDBHelper.KEY_ID+" = session_role."+cSQLDBHelper.KEY_SESSION_FK_ID+
+                " AND "+ roleID +" = role."+cSQLDBHelper.KEY_ID, null);
 
         try {
             if (cursor.moveToFirst()) {
                 do {
                     cSessionModel session = new cSessionModel();
 
-                    session.setSessionID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_ID)));
-                    session.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_OWNER_ID)));
-                    session.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_GROUP_BITS)));
-                    session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_PERMS_BITS)));
-                    session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_STATUS_BITS)));
-                    session.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_NAME)));
-                    session.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_SURNAME)));
-                    session.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_DESCRIPTION)));
-                    session.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_EMAIL)));
-                    session.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_PASSWORD)));
-                    session.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_SALT)));
-                    //session.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_DATE))));
+                    session.setSessionID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    session.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    session.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    session.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    session.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SURNAME)));
+                    session.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    session.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_EMAIL)));
+                    session.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PASSWORD)));
+                    session.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SALT)));
+                    //session.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                     sessionModels.add(session);
 
@@ -193,31 +193,31 @@ public class cSessionRoleDBA {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT role." + cSQLDBHelper.KEY_ROLE_ID + ", role." +
-                cSQLDBHelper.KEY_ROLE_NAME + ", role." + cSQLDBHelper.KEY_ROLE_DESCRIPTION + ", role." +
-                cSQLDBHelper.KEY_ROLE_CREATED_DATE + " FROM " +
-                cSQLDBHelper.TABLE_SESSION + " session, " +
-                cSQLDBHelper.TABLE_ROLE + " role, " +
-                cSQLDBHelper.TABLE_SESSION_ROLE +" session_role " +
-                "WHERE session."+cSQLDBHelper.KEY_SESSION_ID+" = session_role."+cSQLDBHelper.KEY_SESSION_FK_ID+
-                " AND role."+cSQLDBHelper.KEY_ROLE_ID+" = session_role."+cSQLDBHelper.KEY_ROLE_FK_ID+
-                " AND "+ sessionID +" = session."+cSQLDBHelper.KEY_SESSION_ID, null);
+        Cursor cursor = db.rawQuery("SELECT role." + cSQLDBHelper.KEY_ID + ", role." +
+                cSQLDBHelper.KEY_NAME + ", role." + cSQLDBHelper.KEY_DESCRIPTION + ", role." +
+                cSQLDBHelper.KEY_CREATED_DATE + " FROM " +
+                cSQLDBHelper.TABLE_tblSESSION + " session, " +
+                cSQLDBHelper.TABLE_tblROLE + " role, " +
+                cSQLDBHelper.TABLE_tblSESSION +" session_role " +
+                "WHERE session."+cSQLDBHelper.KEY_ID+" = session_role."+cSQLDBHelper.KEY_SESSION_FK_ID+
+                " AND role."+cSQLDBHelper.KEY_ID+" = session_role."+cSQLDBHelper.KEY_ROLE_FK_ID+
+                " AND "+ sessionID +" = session."+cSQLDBHelper.KEY_ID, null);
 
         try {
             if (cursor.moveToFirst()) {
                 do {
                     cRoleModel role = new cRoleModel();
 
-                    role.setRoleID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_ID)));
+                    role.setRoleID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                     //role.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
-                    //role.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_OWNER_ID)));
-                    //role.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_GROUP_BITS)));
-                    //role.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_PERMS_BITS)));
-                    //role.setTypeBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_TYPE_BITS)));
-                    //role.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_STATUS_BITS)));
-                    role.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_NAME)));
-                    role.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_DESCRIPTION)));
-                    //role.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_DATE))));
+                    //role.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    //role.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    //role.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    //role.setTypeBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_TYPE_BITS)));
+                    //role.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    role.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    role.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    //role.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                     roleModels.add(role);
 
@@ -243,18 +243,18 @@ public class cSessionRoleDBA {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT role." + cSQLDBHelper.KEY_ROLE_ID + " FROM " +
-                cSQLDBHelper.TABLE_SESSION + " session, " +
-                cSQLDBHelper.TABLE_ROLE + " role, " +
-                cSQLDBHelper.TABLE_SESSION_ROLE +" session_role " +
-                "WHERE session."+cSQLDBHelper.KEY_SESSION_ID+" = session_role."+cSQLDBHelper.KEY_SESSION_FK_ID+
-                " AND role."+cSQLDBHelper.KEY_ROLE_ID+" = session_role."+cSQLDBHelper.KEY_ROLE_FK_ID+
-                " AND "+ sessionID +" = session."+cSQLDBHelper.KEY_SESSION_ID, null);
+        Cursor cursor = db.rawQuery("SELECT role." + cSQLDBHelper.KEY_ID + " FROM " +
+                cSQLDBHelper.TABLE_tblSESSION + " session, " +
+                cSQLDBHelper.TABLE_tblROLE + " role, " +
+                cSQLDBHelper.TABLE_tblSESSION +" session_role " +
+                "WHERE session."+cSQLDBHelper.KEY_ID+" = session_role."+cSQLDBHelper.KEY_SESSION_FK_ID+
+                " AND role."+cSQLDBHelper.KEY_ID+" = session_role."+cSQLDBHelper.KEY_ROLE_FK_ID+
+                " AND "+ sessionID +" = session."+cSQLDBHelper.KEY_ID, null);
 
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    roleIDs.add(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_ID)));
+                    roleIDs.add(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {

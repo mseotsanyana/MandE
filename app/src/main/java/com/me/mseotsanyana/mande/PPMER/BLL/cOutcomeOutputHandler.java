@@ -21,6 +21,7 @@ public class cOutcomeOutputHandler extends cMapper<cOutcomeOutputModel, cOutcome
         outcomeOutputDBA = new cOutcomeOutputDBA(context);
         this.context = context;
     }
+    /*
     // business rules for adding a outcome output
     public boolean addOutcomeOutput(cOutcomeOutputDomain domain) {
         // map the business domain to the model
@@ -41,7 +42,7 @@ public class cOutcomeOutputHandler extends cMapper<cOutcomeOutputModel, cOutcome
 
         return outcomeOutputDomain;
     }
-
+*/
     @Override
     protected cOutcomeOutputModel DomainToModel(cOutcomeOutputDomain domain) {
         cOutcomeOutputModel model = new cOutcomeOutputModel();

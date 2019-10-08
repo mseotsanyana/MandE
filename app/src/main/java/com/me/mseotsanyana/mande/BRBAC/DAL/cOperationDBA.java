@@ -33,7 +33,7 @@ public class cOperationDBA {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_OPERATION, null, null);
+        long result = db.delete(cSQLDBHelper.TABLE_tblOPERATION, null, null);
 
         // close the database connection
         db.close();
@@ -49,14 +49,14 @@ public class cOperationDBA {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_OPERATION_ID, operationModel.getOperationID());
-        cv.put(cSQLDBHelper.KEY_OPERATION_NAME, operationModel.getName());
-        cv.put(cSQLDBHelper.KEY_OPERATION_DESCRIPTION, operationModel.getDescription());
-        //cv.put(cSQLDBHelper.KEY_OPERATION_DATE, formatter.format(operationModel.getCreateDate()));
+        cv.put(cSQLDBHelper.KEY_ID, operationModel.getOperationID());
+        cv.put(cSQLDBHelper.KEY_NAME, operationModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, operationModel.getDescription());
+        //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(operationModel.getCreateDate()));
 
         // insert outcome record
         try {
-            if (db.insert(cSQLDBHelper.TABLE_OPERATION, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblOPERATION, null, cv) < 0) {
                 return false;
             }
         } catch (Exception ex) {
@@ -77,18 +77,18 @@ public class cOperationDBA {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_OPERATION_ID, actionModel.getOperationID());
-        cv.put(cSQLDBHelper.KEY_OPERATION_OWNER_ID, actionModel.getOwnerID());
-        cv.put(cSQLDBHelper.KEY_OPERATION_GROUP_BITS, actionModel.getGroupBITS());
-        cv.put(cSQLDBHelper.KEY_OPERATION_PERMS_BITS, actionModel.getPermsBITS());
-        cv.put(cSQLDBHelper.KEY_OPERATION_STATUS_BITS, actionModel.getStatusBITS());
-        cv.put(cSQLDBHelper.KEY_OPERATION_NAME, actionModel.getName());
-        cv.put(cSQLDBHelper.KEY_OPERATION_DESCRIPTION, actionModel.getDescription());
-        //cv.put(cSQLDBHelper.KEY_OPERATION_DATE, formatter.format(actionModel.getCreateDate()));
+        cv.put(cSQLDBHelper.KEY_ID, actionModel.getOperationID());
+        cv.put(cSQLDBHelper.KEY_OWNER_ID, actionModel.getOwnerID());
+        cv.put(cSQLDBHelper.KEY_GROUP_BITS, actionModel.getGroupBITS());
+        cv.put(cSQLDBHelper.KEY_PERMS_BITS, actionModel.getPermsBITS());
+        cv.put(cSQLDBHelper.KEY_STATUS_BITS, actionModel.getStatusBITS());
+        cv.put(cSQLDBHelper.KEY_NAME, actionModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, actionModel.getDescription());
+        //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(actionModel.getCreateDate()));
 
         // insert outcome record
         try {
-            if (db.insert(cSQLDBHelper.TABLE_OPERATION, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblOPERATION, null, cv) < 0) {
                 return false;
             }
         } catch (Exception ex) {
@@ -106,8 +106,8 @@ public class cOperationDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         // construct a selection query
         String selectQuery = "SELECT * FROM " +
-                cSQLDBHelper.TABLE_OPERATION + " WHERE " +
-                cSQLDBHelper.KEY_OPERATION_ID + "= ?";
+                cSQLDBHelper.TABLE_tblOPERATION + " WHERE " +
+                cSQLDBHelper.KEY_ID + "= ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(operationID)});
 
@@ -116,14 +116,14 @@ public class cOperationDBA {
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    operation.setOperationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_ID)));
-                    operation.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_OWNER_ID)));
-                    operation.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_GROUP_BITS)));
-                    operation.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_PERMS_BITS)));
-                    operation.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_STATUS_BITS)));
-                    operation.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_NAME)));
-                    operation.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_DESCRIPTION)));
-                    //operation.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_DATE))));
+                    operation.setOperationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    operation.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    operation.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    operation.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    operation.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    operation.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    operation.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    //operation.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                 } while (cursor.moveToNext());
             }
@@ -147,21 +147,21 @@ public class cOperationDBA {
         List<cOperationModel> operationModelList = new ArrayList<>();
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM "+ cSQLDBHelper.TABLE_OPERATION, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ cSQLDBHelper.TABLE_tblOPERATION, null);
 
         try {
             if (cursor.moveToFirst()) {
                 do {
                     cOperationModel type = new cOperationModel();
 
-                    type.setOperationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_ID)));
-                    type.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_OWNER_ID)));
-                    type.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_GROUP_BITS)));
-                    type.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_PERMS_BITS)));
-                    type.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_STATUS_BITS)));
-                    type.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_NAME)));
-                    type.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_DESCRIPTION)));
-                    //type.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_DATE))));
+                    type.setOperationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    type.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    type.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    type.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    type.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    type.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    type.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    //type.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                     operationModelList.add(type);
 

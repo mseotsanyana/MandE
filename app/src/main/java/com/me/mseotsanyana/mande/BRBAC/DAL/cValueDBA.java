@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static com.me.mseotsanyana.mande.PPMER.DAL.cSQLDBHelper.TABLE_VALUE;
+import static com.me.mseotsanyana.mande.PPMER.DAL.cSQLDBHelper.TABLE_tblVALUE;
 
 /**
  * Created by mseotsanyana on 2017/05/25.
@@ -38,14 +38,14 @@ public class cValueDBA {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_VALUE_ID, valueModel.getValueID());
+        cv.put(cSQLDBHelper.KEY_ID, valueModel.getValueID());
         cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, valueModel.getOrganizationID());
-        cv.put(cSQLDBHelper.KEY_VALUE_OWNER_ID, valueModel.getOwnerID());
-        cv.put(cSQLDBHelper.KEY_VALUE_NAME, valueModel.getValueName());
-        //cv.put(cSQLDBHelper.KEY_VALUE_DATE, formatter.format(valueModel.getCreateDate()));
+        cv.put(cSQLDBHelper.KEY_OWNER_ID, valueModel.getOwnerID());
+        cv.put(cSQLDBHelper.KEY_NAME, valueModel.getValueName());
+        //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(valueModel.getCreateDate()));
 
         // insert value record
-        long result = db.insert(TABLE_VALUE, null, cv);
+        long result = db.insert(TABLE_tblVALUE, null, cv);
 
         // close the database connection
         db.close();
@@ -61,15 +61,15 @@ public class cValueDBA {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_VALUE_ID, valueModel.getValueID());
+        cv.put(cSQLDBHelper.KEY_ID, valueModel.getValueID());
         cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, valueModel.getOrganizationID());
-        cv.put(cSQLDBHelper.KEY_VALUE_OWNER_ID, valueModel.getOwnerID());
-        cv.put(cSQLDBHelper.KEY_VALUE_NAME, valueModel.getValueName());
-        //cv.put(cSQLDBHelper.KEY_VALUE_DATE, formatter.format(valueModel.getCreateDate()));
+        cv.put(cSQLDBHelper.KEY_OWNER_ID, valueModel.getOwnerID());
+        cv.put(cSQLDBHelper.KEY_NAME, valueModel.getValueName());
+        //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(valueModel.getCreateDate()));
 
         // insert value record
         try {
-            if (db.insert(TABLE_VALUE, null, cv) < 0) {
+            if (db.insert(TABLE_tblVALUE, null, cv) < 0) {
                 return false;
             }
         } catch (Exception ex) {
@@ -88,7 +88,7 @@ public class cValueDBA {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // delete all records
-        long result = db.delete(TABLE_VALUE, null, null);
+        long result = db.delete(TABLE_tblVALUE, null, null);
 
         // close the database connection
         db.close();
@@ -99,18 +99,18 @@ public class cValueDBA {
     public List<cValueModel> getListOfValues() {
         List<cValueModel> valueModelList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM "+ TABLE_VALUE, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ TABLE_tblVALUE, null);
 
         try {
             if (cursor.moveToFirst()) {
                 do {
                     cValueModel valueModel = new cValueModel();
                     // populate value model object
-                    valueModel.setValueID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_VALUE_ID)));
+                    valueModel.setValueID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                     valueModel.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
-                    valueModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_VALUE_OWNER_ID)));
-                    valueModel.setValueName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_VALUE_NAME)));
-                    //valueModel.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_VALUE_DATE))));
+                    valueModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    valueModel.setValueName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    //valueModel.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
                     // add model value into the action_list
                     valueModelList.add(valueModel);
 
@@ -133,7 +133,7 @@ public class cValueDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         // construct a selection query
-        String selectQuery = "SELECT  * FROM " + TABLE_VALUE + " WHERE "
+        String selectQuery = "SELECT  * FROM " + TABLE_tblVALUE + " WHERE "
                 + cSQLDBHelper.KEY_ORGANIZATION_FK_ID + " = ?";
 
         // open the cursor to be used to traverse the dataset
@@ -145,11 +145,11 @@ public class cValueDBA {
                 do {
                     cValueModel valueModel = new cValueModel();
                     // populate value model object
-                    valueModel.setValueID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_VALUE_ID)));
+                    valueModel.setValueID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                     valueModel.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
-                    valueModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_VALUE_OWNER_ID)));
-                    valueModel.setValueName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_VALUE_NAME)));
-                    //valueModel.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_VALUE_DATE))));
+                    valueModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    valueModel.setValueName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    //valueModel.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
                     // add model value into the action_list
                     valueModelList.add(valueModel);
 

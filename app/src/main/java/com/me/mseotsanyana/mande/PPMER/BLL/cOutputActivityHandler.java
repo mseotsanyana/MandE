@@ -21,6 +21,7 @@ public class cOutputActivityHandler extends cMapper<cOutputActivityModel, cOutpu
         outputActivityDBA = new cOutputActivityDBA(context);
         this.context = context;
     }
+   /*
     // business rules for adding a output activity
     public boolean addOutputActivity(cOutputActivityDomain domain) {
         // map the business domain to the model
@@ -41,7 +42,7 @@ public class cOutputActivityHandler extends cMapper<cOutputActivityModel, cOutpu
 
         return outputActivityDomain;
     }
-
+*/
     @Override
     protected cOutputActivityModel DomainToModel(cOutputActivityDomain domain) {
         cOutputActivityModel model = new cOutputActivityModel();

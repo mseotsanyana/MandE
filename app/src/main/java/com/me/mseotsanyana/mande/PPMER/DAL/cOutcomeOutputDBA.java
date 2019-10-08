@@ -30,7 +30,7 @@ public class cOutcomeOutputDBA {
         outcomeDBA = new cOutcomeDBA(context);
         outputDBA = new cOutputDBA(context);
     }
-
+/*
     public boolean addOutcomeOutput(cOutcomeOutputModel outcomeOutputModel){
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -94,4 +94,6 @@ public class cOutcomeOutputDBA {
 
         return outcomeOutputModelList;
     }
+
+ */
 }

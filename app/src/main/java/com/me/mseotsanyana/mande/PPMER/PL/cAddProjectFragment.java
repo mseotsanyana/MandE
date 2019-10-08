@@ -172,7 +172,7 @@ public class cAddProjectFragment extends DialogFragment {
                 }
 
                 projectHandler = new cProjectHandler(getActivity());
-                boolean result = projectHandler.addProject(projectDomain);
+                /*--boolean result = projectHandler.addProject(projectDomain);
 
                 if (result) {
                     callback.onAddProject(projectDomain);
@@ -180,7 +180,7 @@ public class cAddProjectFragment extends DialogFragment {
                     Toast.makeText(getActivity(),
                             "Unable to Add Project",
                             Toast.LENGTH_SHORT).show();
-                }
+                }*/
                 dismiss();
             }
         });

@@ -637,7 +637,7 @@ public class cMainFragment extends Fragment {
 
                     case 1:
                         // get all CES from database
-                        final ArrayList<cGoalDomain> goalDomains = goalHandler.getGoalList();
+                        //final ArrayList<cGoalDomain> goalDomains = goalHandler.getGoalList();
                         final ArrayList<cSpecificAimDomain> specificAimDomains = specificAimHandler.getSpecificAimList();
                         final ArrayList<cObjectiveDomain> objectiveDomains = objectiveHandler.getObjectiveList();
 
@@ -669,7 +669,7 @@ public class cMainFragment extends Fragment {
                         multiSpinnerSearch.setItems(keyPairBoolDatas, -1, new cSpinnerListener() {
                             @Override
                             public void onItemsSelected(List<cKeyPairBoolData> items) {
-                                updateCESTree(items, goalDomains, specificAimDomains, objectiveDomains);
+                                //updateCESTree(items, goalDomains, specificAimDomains, objectiveDomains);
                             }
                         });
 
@@ -689,7 +689,7 @@ public class cMainFragment extends Fragment {
 
                         // 3. populate the trees objects with the data from database
                         organizationTree = organizationHandler.getOrganizationList();
-                        goalTree = goalHandler.getGoalList();
+                        //goalTree = goalHandler.getGoalList();
 
                         // 4. populate (ids, names and bools) record with data for merging popurses
                         keyPairBoolOrganizationTree = cDashboardFilter.getKeyPairBoolOrganizationTree(organizationTree);
@@ -793,8 +793,8 @@ public class cMainFragment extends Fragment {
                                 (cMultiSpinnerSearch) filterLayout.findViewById(R.id.spinnerProjectTree);
 
                         // 3. populate the trees objects with the data from database
-                        goalTree = goalHandler.getGoalList();
-                        projectTree = projectHandler.getProjectList();
+                        //goalTree = goalHandler.getGoalList();
+                        //projectTree = projectHandler.getProjectList();
 
                         // 4. populate (ids, names and bools) record with data for merging popurses
                         keyPairBoolGoalTree = cDashboardFilter.getKeyPairBoolGoalTree(goalTree);
@@ -887,10 +887,10 @@ public class cMainFragment extends Fragment {
                                 (cMultiSpinnerSearch) filterLayout.findViewById(R.id.spinnerOutcomeTree);
 
                         // 3. populate the trees objects with the data from database
-                        projectTree = projectHandler.getProjectList();
-                        outcomeTree = outcomeHandler.getOutcomeList();
+                        //projectTree = projectHandler.getProjectList();
+                        //outcomeTree = outcomeHandler.getOutcomeList();
 
-                        projectOutcomeTree = projectOutcomeHandler.getProjectOutcomeList();
+                        //projectOutcomeTree = projectOutcomeHandler.getProjectOutcomeList();
 
                         // 4. populate (ids, names and bools) record with data for merging popurses
                         keyPairBoolProjectTree = cDashboardFilter.getKeyPairBoolProjectTree(projectTree);
@@ -970,10 +970,10 @@ public class cMainFragment extends Fragment {
                                 (cMultiSpinnerSearch) filterLayout.findViewById(R.id.spinnerOutputTree);
 
                         // 3. populate the trees objects with the data from database
-                        outcomeTree = outcomeHandler.getOutcomeList();
-                        outputTree = outputHandler.getOutputList();
+                        //outcomeTree = outcomeHandler.getOutcomeList();
+                        //outputTree = outputHandler.getOutputList();
 
-                        outcomeOutputTree = outcomeOutputHandler.getOutcomeOutputList();
+                        //outcomeOutputTree = outcomeOutputHandler.getOutcomeOutputList();
 
                         // 4. populate (ids, names and bools) record with data for merging popurses
                         keyPairBoolOutcomeTree = cDashboardFilter.getKeyPairBoolOutcomeTree(outcomeTree);
@@ -1053,10 +1053,10 @@ public class cMainFragment extends Fragment {
                                 (cMultiSpinnerSearch) filterLayout.findViewById(R.id.spinnerActivityTree);
 
                         // 3. populate the trees objects with the data from database
-                        outputTree = outputHandler.getOutputList();
-                        activityTree = activityHandler.getActivityList();
+                        //outputTree = outputHandler.getOutputList();
+                        //activityTree = activityHandler.getActivityList();
 
-                        outputActivityTree = outputActivityHandler.getOutputActivityList();
+                        //outputActivityTree = outputActivityHandler.getOutputActivityList();
 
                         // 4. populate (ids, names and bools) record with data for merging popurses
                         keyPairBoolOutputTree   = cDashboardFilter.getKeyPairBoolOutputTree(outputTree);

@@ -34,7 +34,7 @@ public class cUserDBA {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_USER, null, null);
+        long result = db.delete(cSQLDBHelper.TABLE_tblUSER, null, null);
 
         // close the database connection
         db.close();
@@ -50,24 +50,24 @@ public class cUserDBA {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_USER_ID, userModel.getUserID());
+        cv.put(cSQLDBHelper.KEY_ID, userModel.getUserID());
         cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, userModel.getOrganizationID());
         cv.put(cSQLDBHelper.KEY_ADDRESS_FK_ID, userModel.getAddressID());
-        cv.put(cSQLDBHelper.KEY_USER_NAME, userModel.getName());
-        cv.put(cSQLDBHelper.KEY_USER_SURNAME, userModel.getSurname());
-        cv.put(cSQLDBHelper.KEY_USER_GENDER, userModel.getGender());
-        cv.put(cSQLDBHelper.KEY_USER_PHOTO, userModel.getPhotoPath());
-        cv.put(cSQLDBHelper.KEY_USER_DESCRIPTION, userModel.getDescription());
-        cv.put(cSQLDBHelper.KEY_USER_EMAIL, userModel.getEmail());
-        cv.put(cSQLDBHelper.KEY_USER_WEBSITE, userModel.getWebsite());
-        cv.put(cSQLDBHelper.KEY_USER_PHONE, userModel.getPhone());
-        cv.put(cSQLDBHelper.KEY_USER_PASSWORD, userModel.getPassword());
-        cv.put(cSQLDBHelper.KEY_USER_SALT, userModel.getSalt());
-        //cv.put(cSQLDBHelper.KEY_USER_DATE, formatter.format(userModel.getCreateDate()));
+        cv.put(cSQLDBHelper.KEY_NAME, userModel.getName());
+        cv.put(cSQLDBHelper.KEY_SURNAME, userModel.getSurname());
+        cv.put(cSQLDBHelper.KEY_GENDER, userModel.getGender());
+        cv.put(cSQLDBHelper.KEY_PHOTO, userModel.getPhotoPath());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, userModel.getDescription());
+        cv.put(cSQLDBHelper.KEY_EMAIL, userModel.getEmail());
+        cv.put(cSQLDBHelper.KEY_WEBSITE, userModel.getWebsite());
+        cv.put(cSQLDBHelper.KEY_PHONE, userModel.getPhone());
+        cv.put(cSQLDBHelper.KEY_PASSWORD, userModel.getPassword());
+        cv.put(cSQLDBHelper.KEY_SALT, userModel.getSalt());
+        //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(userModel.getCreateDate()));
 
         // insert outcome record
         try {
-            if (db.insert(cSQLDBHelper.TABLE_USER, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblUSER, null, cv) < 0) {
                 return false;
             }
         } catch (Exception ex) {
@@ -88,24 +88,24 @@ public class cUserDBA {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_USER_PHOTO, userModel.getPhotoPath());
+        cv.put(cSQLDBHelper.KEY_PHOTO, userModel.getPhotoPath());
 
         cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, userModel.getOrganizationID());
         cv.put(cSQLDBHelper.KEY_ADDRESS_FK_ID, userModel.getAddressID());
-        cv.put(cSQLDBHelper.KEY_USER_NAME, userModel.getName());
-        cv.put(cSQLDBHelper.KEY_USER_SURNAME, userModel.getSurname());
-        cv.put(cSQLDBHelper.KEY_USER_GENDER, userModel.getGender());
-        cv.put(cSQLDBHelper.KEY_USER_DESCRIPTION, userModel.getDescription());
-        cv.put(cSQLDBHelper.KEY_USER_EMAIL, userModel.getEmail());
-        cv.put(cSQLDBHelper.KEY_USER_WEBSITE, userModel.getWebsite());
-        cv.put(cSQLDBHelper.KEY_USER_PHONE, userModel.getPhone());
-        cv.put(cSQLDBHelper.KEY_USER_PASSWORD, userModel.getPassword());
-        cv.put(cSQLDBHelper.KEY_USER_SALT, userModel.getSalt());
+        cv.put(cSQLDBHelper.KEY_NAME, userModel.getName());
+        cv.put(cSQLDBHelper.KEY_SURNAME, userModel.getSurname());
+        cv.put(cSQLDBHelper.KEY_GENDER, userModel.getGender());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, userModel.getDescription());
+        cv.put(cSQLDBHelper.KEY_EMAIL, userModel.getEmail());
+        cv.put(cSQLDBHelper.KEY_WEBSITE, userModel.getWebsite());
+        cv.put(cSQLDBHelper.KEY_PHONE, userModel.getPhone());
+        cv.put(cSQLDBHelper.KEY_PASSWORD, userModel.getPassword());
+        cv.put(cSQLDBHelper.KEY_SALT, userModel.getSalt());
 
         // insert outcome record
-        long id = db.insert(cSQLDBHelper.TABLE_USER, null, cv);
+        long id = db.insert(cSQLDBHelper.TABLE_tblUSER, null, cv);
         /*try {
-            if (db.insert(cSQLDBHelper.TABLE_USER, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblUSER, null, cv) < 0) {
                 return false;
             }
         } catch (Exception ex) {
@@ -129,29 +129,29 @@ public class cUserDBA {
         Timestamp ts = new Timestamp(date.getTime());
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_USER_ID, userModel.getUserID());
-        cv.put(cSQLDBHelper.KEY_USER_PHOTO, userModel.getPhotoPath());
+        cv.put(cSQLDBHelper.KEY_ID, userModel.getUserID());
+        cv.put(cSQLDBHelper.KEY_PHOTO, userModel.getPhotoPath());
         cv.put(cSQLDBHelper.KEY_ADDRESS_FK_ID, userModel.getAddressID());
-        cv.put(cSQLDBHelper.KEY_USER_OWNER_ID, userModel.getOwnerID());
-        cv.put(cSQLDBHelper.KEY_USER_GROUP_BITS, userModel.getGroupBITS());
-        cv.put(cSQLDBHelper.KEY_USER_PERMS_BITS, userModel.getPermsBITS());
-        cv.put(cSQLDBHelper.KEY_USER_STATUS_BITS, userModel.getStatusBITS());
-        cv.put(cSQLDBHelper.KEY_USER_PHOTO, userModel.getPhotoPath());
-        cv.put(cSQLDBHelper.KEY_USER_NAME, userModel.getName());
-        cv.put(cSQLDBHelper.KEY_USER_SURNAME, userModel.getSurname());
-        cv.put(cSQLDBHelper.KEY_USER_GENDER, userModel.getGender());
-        cv.put(cSQLDBHelper.KEY_USER_DESCRIPTION, userModel.getDescription());
-        cv.put(cSQLDBHelper.KEY_USER_EMAIL, userModel.getEmail());
-        cv.put(cSQLDBHelper.KEY_USER_WEBSITE, userModel.getWebsite());
-        cv.put(cSQLDBHelper.KEY_USER_PHONE, userModel.getPhone());
-        cv.put(cSQLDBHelper.KEY_USER_PASSWORD, userModel.getPassword());
-        cv.put(cSQLDBHelper.KEY_USER_SALT, userModel.getSalt());
+        cv.put(cSQLDBHelper.KEY_OWNER_ID, userModel.getOwnerID());
+        cv.put(cSQLDBHelper.KEY_GROUP_BITS, userModel.getGroupBITS());
+        cv.put(cSQLDBHelper.KEY_PERMS_BITS, userModel.getPermsBITS());
+        cv.put(cSQLDBHelper.KEY_STATUS_BITS, userModel.getStatusBITS());
+        cv.put(cSQLDBHelper.KEY_PHOTO, userModel.getPhotoPath());
+        cv.put(cSQLDBHelper.KEY_NAME, userModel.getName());
+        cv.put(cSQLDBHelper.KEY_SURNAME, userModel.getSurname());
+        cv.put(cSQLDBHelper.KEY_GENDER, userModel.getGender());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, userModel.getDescription());
+        cv.put(cSQLDBHelper.KEY_EMAIL, userModel.getEmail());
+        cv.put(cSQLDBHelper.KEY_WEBSITE, userModel.getWebsite());
+        cv.put(cSQLDBHelper.KEY_PHONE, userModel.getPhone());
+        cv.put(cSQLDBHelper.KEY_PASSWORD, userModel.getPassword());
+        cv.put(cSQLDBHelper.KEY_SALT, userModel.getSalt());
 
-        cv.put(cSQLDBHelper.KEY_USER_MODIFIED_DATE, formatter.format(ts));
+        cv.put(cSQLDBHelper.KEY_MODIFIED_DATE, formatter.format(ts));
 
         // update a specific record
-        long result = db.update(cSQLDBHelper.TABLE_USER, cv,
-                cSQLDBHelper.KEY_USER_ID + "= ?",
+        long result = db.update(cSQLDBHelper.TABLE_tblUSER, cv,
+                cSQLDBHelper.KEY_ID + "= ?",
                 new String[]{String.valueOf(userModel.getUserID())});
 
         // close the database connection
@@ -165,8 +165,8 @@ public class cUserDBA {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // delete a specific record
-        long result = db.delete(cSQLDBHelper.TABLE_USER,
-                cSQLDBHelper.KEY_USER_ID + "= ?",
+        long result = db.delete(cSQLDBHelper.TABLE_tblUSER,
+                cSQLDBHelper.KEY_ID + "= ?",
                 new String[]{String.valueOf(userID)});
 
         // close the database connection
@@ -180,8 +180,8 @@ public class cUserDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         // construct a selection query
         String selectQuery = "SELECT * FROM " +
-                cSQLDBHelper.TABLE_USER + " WHERE " +
-                cSQLDBHelper.KEY_USER_ID + "= ?";
+                cSQLDBHelper.TABLE_tblUSER + " WHERE " +
+                cSQLDBHelper.KEY_ID + "= ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(userID)});
 
@@ -209,24 +209,24 @@ public class cUserDBA {
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    user.setUserID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_ID)));
+                    user.setUserID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                     user.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
                     user.setAddressID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ADDRESS_FK_ID)));
-                    user.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_OWNER_ID)));
-                    user.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_GROUP_BITS)));
-                    user.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_PERMS_BITS)));
-                    user.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_STATUS_BITS)));
-                    user.setPhotoPath(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_PHOTO)));
-                    user.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_NAME)));
-                    user.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_SURNAME)));
-                    user.setGender(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_GENDER)));
-                    user.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_DESCRIPTION)));
-                    user.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_EMAIL)));
-                    user.setWebsite(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_WEBSITE)));
-                    user.setPhone(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_PHONE)));
-                    user.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_PASSWORD)));
-                    user.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_SALT)));
-                    //user.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_DATE))));
+                    user.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    user.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    user.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    user.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    user.setPhotoPath(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PHOTO)));
+                    user.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    user.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SURNAME)));
+                    user.setGender(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_GENDER)));
+                    user.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    user.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_EMAIL)));
+                    user.setWebsite(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_WEBSITE)));
+                    user.setPhone(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PHONE)));
+                    user.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PASSWORD)));
+                    user.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SALT)));
+                    //user.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                 } while (cursor.moveToNext());
             }
@@ -251,8 +251,8 @@ public class cUserDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         // construct a selection query
         String selectQuery = "SELECT * FROM " +
-                cSQLDBHelper.TABLE_USER + " WHERE " +
-                cSQLDBHelper.KEY_USER_EMAIL+" = ? "+" AND "+cSQLDBHelper.KEY_USER_PASSWORD+" = ?";
+                cSQLDBHelper.TABLE_tblUSER + " WHERE " +
+                cSQLDBHelper.KEY_EMAIL+" = ? "+" AND "+cSQLDBHelper.KEY_PASSWORD+" = ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{email, password});
 
@@ -262,24 +262,24 @@ public class cUserDBA {
                 do {
                     user = new cUserModel();
 
-                    user.setUserID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_ID)));
+                    user.setUserID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                     user.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
                     user.setAddressID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ADDRESS_FK_ID)));
-                    user.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_OWNER_ID)));
-                    user.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_GROUP_BITS)));
-                    user.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_PERMS_BITS)));
-                    user.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_STATUS_BITS)));
-                    user.setPhotoPath(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_PHOTO)));
-                    user.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_NAME)));
-                    user.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_SURNAME)));
-                    user.setGender(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_GENDER)));
-                    user.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_DESCRIPTION)));
-                    user.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_EMAIL)));
-                    user.setWebsite(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_WEBSITE)));
-                    user.setPhone(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_PHONE)));
-                    user.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_PASSWORD)));
-                    user.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_SALT)));
-                    //user.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_DATE))));
+                    user.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    user.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    user.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    user.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    user.setPhotoPath(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PHOTO)));
+                    user.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    user.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SURNAME)));
+                    user.setGender(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_GENDER)));
+                    user.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    user.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_EMAIL)));
+                    user.setWebsite(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_WEBSITE)));
+                    user.setPhone(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PHONE)));
+                    user.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PASSWORD)));
+                    user.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SALT)));
+                    //user.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                 } while (cursor.moveToNext());
             }
@@ -306,24 +306,24 @@ public class cUserDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String selectQuery = "SELECT "+cSQLDBHelper.KEY_ORGANIZATION_FK_ID+", "+
-                cSQLDBHelper.KEY_USER_ID+", "+cSQLDBHelper.KEY_USER_PHOTO+", "+
-                cSQLDBHelper.KEY_ADDRESS_FK_ID+", "+cSQLDBHelper.KEY_USER_OWNER_ID+", "+
-                cSQLDBHelper.KEY_USER_GROUP_BITS+", "+cSQLDBHelper.KEY_USER_PERMS_BITS+", "+
-                cSQLDBHelper.KEY_USER_STATUS_BITS+", "+cSQLDBHelper.KEY_USER_NAME+", "+
-                cSQLDBHelper.KEY_USER_SURNAME+", "+ cSQLDBHelper.KEY_USER_DESCRIPTION+", "+
-                cSQLDBHelper.KEY_USER_GENDER+", "+cSQLDBHelper.KEY_USER_EMAIL+", "+
-                cSQLDBHelper.KEY_USER_WEBSITE+", "+cSQLDBHelper.KEY_USER_PHONE+", "+
-                cSQLDBHelper.KEY_USER_PASSWORD+", "+ cSQLDBHelper.KEY_USER_SALT+", "+
-                cSQLDBHelper.KEY_USER_CREATED_DATE +", "+
-                cSQLDBHelper.KEY_USER_MODIFIED_DATE +", "+
-                cSQLDBHelper.KEY_USER_SYNCED_DATE+
-                " FROM "+ cSQLDBHelper.TABLE_USER +
-                " WHERE ((("+cSQLDBHelper.KEY_USER_OWNER_ID+" = ?) " +
-                " AND (("+cSQLDBHelper.KEY_USER_PERMS_BITS+" & ?) != 0)) " +
-                " OR ((("+cSQLDBHelper.KEY_USER_GROUP_BITS +" & ?) != 0) " +
-                " AND (("+cSQLDBHelper.KEY_USER_PERMS_BITS+" & ?) != 0)) "+
-                " OR ((("+cSQLDBHelper.KEY_USER_GROUP_BITS +" & ?) != 0) " +
-                " AND (("+cSQLDBHelper.KEY_USER_PERMS_BITS+" & ?) != 0)))";
+                cSQLDBHelper.KEY_ID+", "+cSQLDBHelper.KEY_PHOTO+", "+
+                cSQLDBHelper.KEY_ADDRESS_FK_ID+", "+cSQLDBHelper.KEY_OWNER_ID+", "+
+                cSQLDBHelper.KEY_GROUP_BITS+", "+cSQLDBHelper.KEY_PERMS_BITS+", "+
+                cSQLDBHelper.KEY_STATUS_BITS+", "+cSQLDBHelper.KEY_NAME+", "+
+                cSQLDBHelper.KEY_SURNAME+", "+ cSQLDBHelper.KEY_DESCRIPTION+", "+
+                cSQLDBHelper.KEY_GENDER+", "+cSQLDBHelper.KEY_EMAIL+", "+
+                cSQLDBHelper.KEY_WEBSITE+", "+cSQLDBHelper.KEY_PHONE+", "+
+                cSQLDBHelper.KEY_PASSWORD+", "+ cSQLDBHelper.KEY_SALT+", "+
+                cSQLDBHelper.KEY_CREATED_DATE +", "+
+                cSQLDBHelper.KEY_MODIFIED_DATE +", "+
+                cSQLDBHelper.KEY_SYNCED_DATE+
+                " FROM "+ cSQLDBHelper.TABLE_tblUSER +
+                " WHERE ((("+cSQLDBHelper.KEY_OWNER_ID+" = ?) " +
+                " AND (("+cSQLDBHelper.KEY_PERMS_BITS+" & ?) != 0)) " +
+                " OR ((("+cSQLDBHelper.KEY_GROUP_BITS +" & ?) != 0) " +
+                " AND (("+cSQLDBHelper.KEY_PERMS_BITS+" & ?) != 0)) "+
+                " OR ((("+cSQLDBHelper.KEY_GROUP_BITS +" & ?) != 0) " +
+                " AND (("+cSQLDBHelper.KEY_PERMS_BITS+" & ?) != 0)))";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{
                 String.valueOf(userID),String.valueOf(operationBITS),
@@ -335,29 +335,29 @@ public class cUserDBA {
                 do {
                     cUserModel user = new cUserModel();
                     user.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
-                    user.setUserID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_ID)));
-                    user.setPhotoPath(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_PHOTO)));
+                    user.setUserID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    user.setPhotoPath(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PHOTO)));
                     user.setAddressID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ADDRESS_FK_ID)));
                     //user.s(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
-                    user.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_OWNER_ID)));
-                    user.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_GROUP_BITS)));
-                    user.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_PERMS_BITS)));
-                    user.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_STATUS_BITS)));
-                    user.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_NAME)));
-                    user.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_SURNAME)));
-                    user.setGender(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_GENDER)));
-                    user.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_DESCRIPTION)));
-                    user.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_EMAIL)));
-                    user.setWebsite(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_WEBSITE)));
-                    user.setPhone(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_PHONE)));
-                    user.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_PASSWORD)));
-                    user.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_SALT)));
+                    user.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    user.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    user.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    user.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    user.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    user.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SURNAME)));
+                    user.setGender(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_GENDER)));
+                    user.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    user.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_EMAIL)));
+                    user.setWebsite(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_WEBSITE)));
+                    user.setPhone(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PHONE)));
+                    user.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PASSWORD)));
+                    user.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SALT)));
                     user.setCreatedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(
-                            cSQLDBHelper.KEY_USER_CREATED_DATE))));
+                            cSQLDBHelper.KEY_CREATED_DATE))));
                     user.setModifiedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(
-                            cSQLDBHelper.KEY_USER_MODIFIED_DATE))));
+                            cSQLDBHelper.KEY_MODIFIED_DATE))));
                     user.setSyncedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(
-                            cSQLDBHelper.KEY_USER_SYNCED_DATE))));
+                            cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     userModelList.add(user);
 
@@ -387,13 +387,13 @@ public class cUserDBA {
 
         // array of columns to fetch
         String[] columns = {
-                cSQLDBHelper.KEY_USER_ID
+                cSQLDBHelper.KEY_ID
         };
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         // selection criteria
-        String selection = cSQLDBHelper.KEY_USER_EMAIL + " = ?";
+        String selection = cSQLDBHelper.KEY_EMAIL + " = ?";
 
         // selection argument
         String[] selectionArgs = {email};
@@ -404,7 +404,7 @@ public class cUserDBA {
         * SQL query equivalent to this query function is
         * SELECT user_id FROM user WHERE user_email = 'jack@androidtutorialshub.com';
         */
-        Cursor cursor = db.query(cSQLDBHelper.TABLE_USER, //Table to query
+        Cursor cursor = db.query(cSQLDBHelper.TABLE_tblUSER, //Table to query
                 columns,                                  //columns to return
                 selection,                                //columns for the WHERE clause
                 selectionArgs,                            //The values for the WHERE clause
@@ -434,13 +434,13 @@ public class cUserDBA {
 
         // array of columns to fetch
         String[] columns = {
-               cSQLDBHelper.KEY_USER_ID
+               cSQLDBHelper.KEY_ID
         };
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         // selection criteria
-        String selection = cSQLDBHelper.KEY_USER_EMAIL + " = ?" + " AND " + cSQLDBHelper.KEY_USER_PASSWORD + " = ?";
+        String selection = cSQLDBHelper.KEY_EMAIL + " = ?" + " AND " + cSQLDBHelper.KEY_PASSWORD + " = ?";
 
         // selection arguments
         String[] selectionArgs = {email, password};
@@ -451,7 +451,7 @@ public class cUserDBA {
         * SQL query equivalent to this query function is
         * SELECT user_id FROM user WHERE user_email = 'jack@androidtutorialshub.com' AND user_password = 'qwerty';
         */
-        Cursor cursor = db.query(cSQLDBHelper.TABLE_USER, //Table to query
+        Cursor cursor = db.query(cSQLDBHelper.TABLE_tblUSER, //Table to query
                 columns,                                  //columns to return
                 selection,                                //columns for the WHERE clause
                 selectionArgs,                            //The values for the WHERE clause
@@ -464,19 +464,19 @@ public class cUserDBA {
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    user.setUserID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_ID)));
-                    user.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_OWNER_ID)));
-                    user.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_GROUP_BITS)));
-                    user.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_PERMS_BITS)));
-                    user.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_STATUS_BITS)));
-                    user.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_NAME)));
-                    user.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_SURNAME)));
-                    user.setGender(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_GENDER)));
-                    user.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_DESCRIPTION)));
-                    user.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_EMAIL)));
-                    user.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_PASSWORD)));
-                    user.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_SALT)));
-                    //user.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_DATE))));
+                    user.setUserID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    user.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    user.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    user.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    user.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    user.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    user.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SURNAME)));
+                    user.setGender(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_GENDER)));
+                    user.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    user.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_EMAIL)));
+                    user.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PASSWORD)));
+                    user.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SALT)));
+                    //user.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                 } while (cursor.moveToNext());
             }
@@ -505,11 +505,11 @@ public class cUserDBA {
 
         ContentValues newPhotoValue = new ContentValues();
 
-        newPhotoValue.put(cSQLDBHelper.KEY_USER_PHOTO, photoPath);
+        newPhotoValue.put(cSQLDBHelper.KEY_PHOTO, photoPath);
 
-        int updatedUserID = db.update(cSQLDBHelper.TABLE_USER,
+        int updatedUserID = db.update(cSQLDBHelper.TABLE_tblUSER,
                 newPhotoValue,
-                cSQLDBHelper.KEY_USER_ID + " = ? ",
+                cSQLDBHelper.KEY_ID + " = ? ",
                 new String[]{Long.toString(userID)});
 
         db.close();
@@ -528,19 +528,19 @@ public class cUserDBA {
 
         // After the query, the cursor points to the first database row
         // returned by the request
-        Cursor cursor = db.query(cSQLDBHelper.TABLE_USER,
-                null /**All columns */,
+        Cursor cursor = null;/*db.query(cSQLDBHelper.TABLE_tblUSER,
+                null All columns ,
                 cSQLDBHelper.KEY_UNIT_ID + " = ? ",
                 new String[]{Long.toString(userID)},
                 null,
                 null,
-                null);
+                null);*/
 
         String photoPath = null;
         if (cursor != null && cursor.moveToFirst()) {
             // Get the path of the picture from the database row pointed by
             // the cursor using the getColumnIndex method of the cursor.
-            int columnIndex  = cursor.getColumnIndex(cSQLDBHelper.KEY_USER_PHOTO);
+            int columnIndex  = cursor.getColumnIndex(cSQLDBHelper.KEY_PHOTO);
             photoPath = cursor.getString(columnIndex);
             cursor.close();
         }

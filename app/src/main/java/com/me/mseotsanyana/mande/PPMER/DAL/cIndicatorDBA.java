@@ -22,7 +22,7 @@ public class cIndicatorDBA {
         dbHelper = new cSQLDBHelper(context);
     }
 
-
+/*
     public boolean deleteAllIndicators() {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -144,4 +144,6 @@ public class cIndicatorDBA {
 
         return indicatorModelList;
     }
+
+ */
 }

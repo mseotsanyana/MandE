@@ -26,7 +26,7 @@ public class cGoalHandler extends cMapper<cImpactModel, cGoalDomain>
     public void setContext(Context context) {
         this.context = context;
     }
-
+/***
     // business rules for adding a value from excel
     public boolean addGoalFromExcel(cGoalDomain domain) {
         cImpactModel model = this.DomainToModel(domain);
@@ -80,32 +80,33 @@ public class cGoalHandler extends cMapper<cImpactModel, cGoalDomain>
 
         return goalDomainTree;
     }
-
-    @Override
+ ***/
+@Override
 	protected cImpactModel DomainToModel(cGoalDomain domain) {
         cImpactModel model = new cImpactModel();
-
+/*
         model.setGoalID(domain.getGoalID());
         model.setOrganizationID(domain.getOrganizationID());
         model.setOwnerID(domain.getOwnerID());
         model.setGoalName(domain.getGoalName());
         model.setGoalDescription(domain.getGoalDescription());
         model.setCreateDate(domain.getCreateDate());
-
+*/
 		return model;
 	}
 
 	@Override
 	protected cGoalDomain ModelToDomain(cImpactModel model) {
         cGoalDomain domain = new cGoalDomain();
-
+/*
         domain.setGoalID(model.getGoalID());
         domain.setOrganizationID(model.getOrganizationID());
         domain.setOwnerID(model.getOwnerID());
         domain.setGoalName(model.getGoalName());
         domain.setGoalDescription(model.getGoalDescription());
         domain.setCreateDate(model.getCreateDate());
-
+*/
 		return domain;
 	}
+
 }

@@ -27,19 +27,7 @@ public class cInputModel {
 	private cHumanSetModel humanSetModel;
 	private cMaterialModel materialModel;
 	private cBudgetModel budgetModel;
-    private ArrayList<cInputQuestionModel> inputQuestionModels;
-
-	private class cInputQuestionModel{
-		private int inputID;
-		private int questionID;
-		private int criteriaID;
-
-		public cInputQuestionModel(int inputID, int questionID, int criteriaID) {
-			this.inputID = inputID;
-			this.questionID = questionID;
-			this.criteriaID = criteriaID;
-		}
-	}
+    private ArrayList<cQuestionModel> questionModels;
 
 	public cInputModel(){}
 
@@ -49,7 +37,7 @@ public class cInputModel {
 					   Date modifiedDate, Date syncedDate, cLogFrameModel logFrameModel,
 					   cActivityModel activityModel, cHumanSetModel humanSetModel,
 					   cMaterialModel materialModel, cBudgetModel budgetModel,
-					   ArrayList<cInputQuestionModel> inputQuestionModels) {
+					   ArrayList<cQuestionModel> questionModels) {
 		this.ID = ID;
 		this.serverID = serverID;
 		this.ownerID = ownerID;
@@ -67,7 +55,7 @@ public class cInputModel {
 		this.humanSetModel = humanSetModel;
 		this.materialModel = materialModel;
 		this.budgetModel = budgetModel;
-		this.inputQuestionModels = inputQuestionModels;
+		this.questionModels = questionModels;
 	}
 
 	public int getID() {
@@ -222,12 +210,12 @@ public class cInputModel {
 		this.budgetModel = budgetModel;
 	}
 
-	public ArrayList<cInputQuestionModel> getInputQuestionModels() {
-		return inputQuestionModels;
+	public ArrayList<cQuestionModel> getQuestionModels() {
+		return questionModels;
 	}
 
-	public void setInputQuestionModels(ArrayList<cInputQuestionModel> inputQuestionModels) {
-		this.inputQuestionModels = inputQuestionModels;
+	public void setQuestionModels(ArrayList<cQuestionModel> questionModels) {
+		this.questionModels = questionModels;
 	}
 }
 

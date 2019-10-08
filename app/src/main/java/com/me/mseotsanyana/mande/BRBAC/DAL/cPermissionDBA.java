@@ -54,7 +54,7 @@ public class cPermissionDBA {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_PERMISSION, null, null);
+        long result = db.delete(cSQLDBHelper.TABLE_tblPERMISSION, null, null);
 
         // close the database connection
         db.close();
@@ -84,7 +84,7 @@ public class cPermissionDBA {
             cv.put(cSQLDBHelper.KEY_STATUS_FK_ID, statusModel.getStatusID());
 
             // insert permission group record
-            result = db.insert(cSQLDBHelper.TABLE_PERMISSION, null, cv);
+            result = db.insert(cSQLDBHelper.TABLE_tblPERMISSION, null, cv);
         }
 
         // close the database connection
@@ -126,14 +126,14 @@ public class cPermissionDBA {
             cv.put(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID, entityModel.getTypeID());
             cv.put(cSQLDBHelper.KEY_OPERATION_FK_ID, operationModel.getOperationID());
             cv.put(cSQLDBHelper.KEY_STATUS_FK_ID, statusModel.getStatusID());
-            cv.put(cSQLDBHelper.KEY_PERMISSION_OWNER_ID, permissionModel.getOwnerID());
-            cv.put(cSQLDBHelper.KEY_PERMISSION_ORG_ID, permissionModel.getOrgID());
-            cv.put(cSQLDBHelper.KEY_PERMISSION_GROUP_BITS, permissionModel.getGroupBITS());
-            cv.put(cSQLDBHelper.KEY_PERMISSION_PERMS_BITS, permissionModel.getPermsBITS());
-            cv.put(cSQLDBHelper.KEY_PERMISSION_STATUS_BITS, permissionModel.getStatusBITS());
+            cv.put(cSQLDBHelper.KEY_OWNER_ID, permissionModel.getOwnerID());
+            cv.put(cSQLDBHelper.KEY_ORG_ID, permissionModel.getOrgID());
+            cv.put(cSQLDBHelper.KEY_GROUP_BITS, permissionModel.getGroupBITS());
+            cv.put(cSQLDBHelper.KEY_PERMS_BITS, permissionModel.getPermsBITS());
+            cv.put(cSQLDBHelper.KEY_STATUS_BITS, permissionModel.getStatusBITS());
 
             // insert permission group record
-            result = db.insert(cSQLDBHelper.TABLE_PERMISSION, null, cv);
+            result = db.insert(cSQLDBHelper.TABLE_tblPERMISSION, null, cv);
         }
 
         // close the database connection
@@ -169,17 +169,17 @@ public class cPermissionDBA {
             cv.put(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID, entityModel.getTypeID());
             cv.put(cSQLDBHelper.KEY_OPERATION_FK_ID, operationModel.getOperationID());
             cv.put(cSQLDBHelper.KEY_STATUS_FK_ID, statusModel.getStatusID());
-            cv.put(cSQLDBHelper.KEY_PERMISSION_OWNER_ID, permissionModel.getOwnerID());
-            cv.put(cSQLDBHelper.KEY_PERMISSION_ORG_ID, permissionModel.getOrgID());
-            cv.put(cSQLDBHelper.KEY_PERMISSION_GROUP_BITS, permissionModel.getGroupBITS());
-            cv.put(cSQLDBHelper.KEY_PERMISSION_PERMS_BITS, permissionModel.getPermsBITS());
-            cv.put(cSQLDBHelper.KEY_PERMISSION_STATUS_BITS, permissionModel.getStatusBITS());
-            cv.put(cSQLDBHelper.KEY_PERMISSION_CREATED_DATE, sdf.format(permissionModel.getCreatedDate()));
-            cv.put(cSQLDBHelper.KEY_PERMISSION_MODIFIED_DATE, sdf.format(permissionModel.getModifiedDate()));
-            cv.put(cSQLDBHelper.KEY_PERMISSION_SYNCED_DATE, sdf.format(permissionModel.getSyncedDate()));
+            cv.put(cSQLDBHelper.KEY_OWNER_ID, permissionModel.getOwnerID());
+            cv.put(cSQLDBHelper.KEY_ORG_ID, permissionModel.getOrgID());
+            cv.put(cSQLDBHelper.KEY_GROUP_BITS, permissionModel.getGroupBITS());
+            cv.put(cSQLDBHelper.KEY_PERMS_BITS, permissionModel.getPermsBITS());
+            cv.put(cSQLDBHelper.KEY_STATUS_BITS, permissionModel.getStatusBITS());
+            cv.put(cSQLDBHelper.KEY_CREATED_DATE, sdf.format(permissionModel.getCreatedDate()));
+            cv.put(cSQLDBHelper.KEY_MODIFIED_DATE, sdf.format(permissionModel.getModifiedDate()));
+            cv.put(cSQLDBHelper.KEY_SYNCED_DATE, sdf.format(permissionModel.getSyncedDate()));
 
             // update a specific record
-            result = db.update(cSQLDBHelper.TABLE_PERMISSION, cv,
+            result = db.update(cSQLDBHelper.TABLE_tblPERMISSION, cv,
                     cSQLDBHelper.KEY_PRIVILEGE_FK_ID + " = ? AND " +
                             cSQLDBHelper.KEY_ENTITY_FK_ID + " = ? AND " +
                             cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + "= ? AND " +
@@ -220,7 +220,7 @@ public class cPermissionDBA {
                 (operationModel != null) && (statusModel != null))) {
 
             // delete a specific record
-            result = db.delete(cSQLDBHelper.TABLE_PERMISSION,
+            result = db.delete(cSQLDBHelper.TABLE_tblPERMISSION,
                     cSQLDBHelper.KEY_PRIVILEGE_FK_ID + " = ? AND " +
                             cSQLDBHelper.KEY_ENTITY_FK_ID + " = ? AND " +
                             cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + "= ? AND " +
@@ -245,7 +245,7 @@ public class cPermissionDBA {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // delete a specific record
-        long result = db.delete(cSQLDBHelper.TABLE_PERMISSION,
+        long result = db.delete(cSQLDBHelper.TABLE_tblPERMISSION,
                 cSQLDBHelper.KEY_PRIVILEGE_FK_ID + " = ? AND " +
                         cSQLDBHelper.KEY_ENTITY_FK_ID + " = ? AND " +
                         cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + "= ? AND " +
@@ -266,7 +266,7 @@ public class cPermissionDBA {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // delete a specific record
-        long result = db.delete(cSQLDBHelper.TABLE_PERMISSION,
+        long result = db.delete(cSQLDBHelper.TABLE_tblPERMISSION,
                 cSQLDBHelper.KEY_ORGANIZATION_FK_ID + " = ? AND " +
                         cSQLDBHelper.KEY_PRIVILEGE_FK_ID + " = ? AND " +
                         cSQLDBHelper.KEY_ENTITY_FK_ID + "= ? AND " +
@@ -288,15 +288,15 @@ public class cPermissionDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         // construct a selection query
-        //String selectQuery = "SELECT * FROM " + cSQLDBHelper.TABLE_PERMISSION;
+        //String selectQuery = "SELECT * FROM " + cSQLDBHelper.TABLE_tblPERMISSION;
 
-        String selectQuery = "SELECT * FROM " + cSQLDBHelper.TABLE_PERMISSION +
-                " WHERE (((" + cSQLDBHelper.KEY_PERMISSION_GROUP_BITS + " & ?) = ?) " +
-                " OR (((" + cSQLDBHelper.KEY_PERMISSION_OWNER_ID + " = ?) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMISSION_PERMS_BITS + " & ?) != 0)) " +
-                " OR (((" + cSQLDBHelper.KEY_PERMISSION_GROUP_BITS + " & ?) != 0) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMISSION_PERMS_BITS + " & ?) != 0))" +
-                " AND ((" + cSQLDBHelper.KEY_PERMISSION_STATUS_BITS + " & ?) != 0)))";
+        String selectQuery = "SELECT * FROM " + cSQLDBHelper.TABLE_tblPERMISSION +
+                " WHERE (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) = ?) " +
+                " OR (((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & ?) != 0)) " +
+                " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & ?) != 0))" +
+                " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0)))";
 
         //Cursor cursor = db.rawQuery(selectQuery, null);
         Cursor cursor = db.rawQuery(selectQuery, new String[]{
@@ -322,10 +322,10 @@ public class cPermissionDBA {
                     permissionModel.setPrivilegeModel(privilegeModel);
                     permissionModel.setEntityModel(entityModel);
                     permissionModel.setOperationModel(operationModel);
-                    permissionModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_OWNER_ID)));
-                    permissionModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_GROUP_BITS)));
-                    permissionModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_PERMS_BITS)));
-                    permissionModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_STATUS_BITS)));
+                    permissionModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    permissionModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    permissionModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    permissionModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
 
                     permissionModels.add(permissionModel);
 
@@ -356,7 +356,7 @@ public class cPermissionDBA {
         String selectQuery = "SELECT " + cSQLDBHelper.KEY_PRIVILEGE_FK_ID + ", " +
                 cSQLDBHelper.KEY_ENTITY_FK_ID + ", " + cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + ", " +
                 "SUM(DISTINCT " + cSQLDBHelper.KEY_OPERATION_FK_ID + ") AS operations FROM " +
-                cSQLDBHelper.TABLE_PERMISSION + " GROUP BY " + cSQLDBHelper.KEY_PRIVILEGE_FK_ID + ", " +
+                cSQLDBHelper.TABLE_tblPERMISSION + " GROUP BY " + cSQLDBHelper.KEY_PRIVILEGE_FK_ID + ", " +
                 cSQLDBHelper.KEY_ENTITY_FK_ID + ", " + cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID;
 
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -371,11 +371,11 @@ public class cPermissionDBA {
                     //permissionModel.setTypeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID)));
                     //permissionModel.setOperationID(cursor.getInt(cursor.getColumnIndex("operations")));
                     //permissionModel.setStatuses(cursor.getInt(cursor.getColumnIndex("statuses")));
-                    //permissionModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_OWNER_ID)));
-                    //permissionModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_GROUP_BITS)));
-                    //permissionModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_PERMS_BITS)));
-                    //permissionModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_STATUS_BITS)));
-                    //permissionModel.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_DATE))));
+                    //permissionModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    //permissionModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    //permissionModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    //permissionModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    //permissionModel.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                     permissionModels.add(permissionModel);
 
@@ -400,7 +400,7 @@ public class cPermissionDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         // construct a selection query
         String selectQuery = "SELECT * FROM " +
-                cSQLDBHelper.TABLE_PERMISSION + " WHERE " +
+                cSQLDBHelper.TABLE_tblPERMISSION + " WHERE " +
                 cSQLDBHelper.KEY_PRIVILEGE_FK_ID + "= ? AND " +
                 cSQLDBHelper.KEY_ENTITY_FK_ID + "= ? AND " +
                 cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + "= ? AND " +
@@ -425,11 +425,11 @@ public class cPermissionDBA {
                     permission.setPrivilegeModel(privilegeModel);
                     permission.setEntityModel(entityModel);
                     permission.setOperationModel(operationModel);
-                    permission.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_OWNER_ID)));
-                    permission.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_GROUP_BITS)));
-                    permission.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_PERMS_BITS)));
-                    permission.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_STATUS_BITS)));
-                    //permission.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_DATE))));
+                    permission.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    permission.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    permission.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    permission.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    //permission.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
@@ -444,7 +444,7 @@ public class cPermissionDBA {
         db.close();
 
         return permission;
-    }                //cSQLDBHelper.KEY_ROLE_DATE
+    }                //cSQLDBHelper.KEY_DATE
 
 
     public cPermissionModel getPermissionByIDs(int privilegeID, int entityID, int typeID) {
@@ -452,7 +452,7 @@ public class cPermissionDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         // construct a selection query
         String selectQuery = "SELECT * FROM " +
-                cSQLDBHelper.TABLE_PERMISSION + " WHERE " +
+                cSQLDBHelper.TABLE_tblPERMISSION + " WHERE " +
                 cSQLDBHelper.KEY_PRIVILEGE_FK_ID + "= ? AND " +
                 cSQLDBHelper.KEY_ENTITY_FK_ID + "= ? AND " +
                 cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + "= ?";
@@ -477,10 +477,10 @@ public class cPermissionDBA {
                     permission.setEntityModel(entityModel);
                     permission.setOperationModel(operationModel);
 
-                    permission.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_OWNER_ID)));
-                    permission.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_GROUP_BITS)));
-                    permission.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_PERMS_BITS)));
-                    permission.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_STATUS_BITS)));
+                    permission.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    permission.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    permission.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    permission.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
@@ -504,16 +504,16 @@ public class cPermissionDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT * FROM " +
-                cSQLDBHelper.TABLE_PRIVILEGE + " privilege," + cSQLDBHelper.TABLE_PERMISSION + " permission" +
-                " WHERE privilege." + cSQLDBHelper.KEY_ROLE_FK_ID + " = permission." + cSQLDBHelper.KEY_PRIVILEGE_FK_ID +
-                " AND " + privilegeID + " = privilege." + cSQLDBHelper.KEY_ROLE_FK_ID, null);
+                cSQLDBHelper.TABLE_tblPRIVILEGE + " privilege," + cSQLDBHelper.TABLE_tblPERMISSION + " permission" +
+                " WHERE privilege." + cSQLDBHelper.KEY_ID + " = permission." + cSQLDBHelper.KEY_PRIVILEGE_FK_ID +
+                " AND " + privilegeID + " = privilege." + cSQLDBHelper.KEY_ID, null);
         /*
-        Cursor cursor = db.rawQuery("SELECT permission." + cSQLDBHelper.KEY_ROLE_FK_ID + ", permission." +
+        Cursor cursor = db.rawQuery("SELECT permission." + cSQLDBHelper.KEY_FK_ID + ", permission." +
                 cSQLDBHelper.KEY_ENTITY_FK_ID + ", permission." + cSQLDBHelper.KEY_OPERATION_FK_ID + ", permission." +
                 cSQLDBHelper.KEY_OPERATION_TYPE_FK_ID + ", permission." + cSQLDBHelper.KEY_STATUS_FK_ID +
-                " FROM "+ cSQLDBHelper.TABLE_ROLE +" role," + cSQLDBHelper.TABLE_PERMISSION +" permission" +
-                " WHERE role." + cSQLDBHelper.KEY_ROLE_ID +" = permission." + cSQLDBHelper.KEY_ROLE_FK_ID +
-                " AND "+ roleID + "= role." + cSQLDBHelper.KEY_ROLE_ID, null);
+                " FROM "+ cSQLDBHelper.TABLE_tblROLE +" role," + cSQLDBHelper.TABLE_tblPERMISSION +" permission" +
+                " WHERE role." + cSQLDBHelper.KEY_ID +" = permission." + cSQLDBHelper.KEY_FK_ID +
+                " AND "+ roleID + "= role." + cSQLDBHelper.KEY_ID, null);
         */
         try {
             if (cursor.moveToFirst()) {
@@ -532,11 +532,11 @@ public class cPermissionDBA {
                     permission.setPrivilegeModel(privilegeModel);
                     permission.setEntityModel(entityModel);
                     permission.setOperationModel(operationModel);
-                    permission.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_OWNER_ID)));
-                    permission.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_GROUP_BITS)));
-                    permission.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_PERMS_BITS)));
-                    permission.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_STATUS_BITS)));
-                    //permission.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_DATE))));
+                    permission.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    permission.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    permission.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    permission.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    //permission.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                     permissionModels.add(permission);
 
@@ -560,13 +560,13 @@ public class cPermissionDBA {
 
         ArrayList<cPermissionModel> permissionModels = new ArrayList<>();
 
-        String selectQuery = "SELECT privilege." + cSQLDBHelper.KEY_ROLE_FK_ID + " AS privilegeID, " +
+        String selectQuery = "SELECT privilege." + cSQLDBHelper.KEY_ID + " AS privilegeID, " +
                 " permission." + cSQLDBHelper.KEY_ENTITY_FK_ID + " AS entities, " +
                 " permission." + cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + " AS entity_type, " +
                 " SUM(DISTINCT " + cSQLDBHelper.KEY_OPERATION_FK_ID + ") AS operations " +
-                " FROM " + cSQLDBHelper.TABLE_PRIVILEGE + " privilege," + cSQLDBHelper.TABLE_PERMISSION + " permission" +
-                " WHERE privilege." + cSQLDBHelper.KEY_ROLE_FK_ID + " = permission." + cSQLDBHelper.KEY_PRIVILEGE_FK_ID +
-                " AND privilege." + cSQLDBHelper.KEY_ROLE_FK_ID + " = ? GROUP BY entities";
+                " FROM " + cSQLDBHelper.TABLE_tblPRIVILEGE + " privilege," + cSQLDBHelper.TABLE_tblPERMISSION + " permission" +
+                " WHERE privilege." + cSQLDBHelper.KEY_ID + " = permission." + cSQLDBHelper.KEY_PRIVILEGE_FK_ID +
+                " AND privilege." + cSQLDBHelper.KEY_ID + " = ? GROUP BY entities";
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -613,15 +613,15 @@ public class cPermissionDBA {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String selectQuery = "SELECT role." + cSQLDBHelper.KEY_ROLE_ID + ", role." +
-                cSQLDBHelper.KEY_ROLE_NAME + ", role." + cSQLDBHelper.KEY_ROLE_DESCRIPTION + ", role." +
-                cSQLDBHelper.KEY_ROLE_CREATED_DATE + " FROM " +
-                cSQLDBHelper.TABLE_PRIVILEGE + " privilege, " +
-                cSQLDBHelper.TABLE_ROLE + " role, " +
-                cSQLDBHelper.TABLE_PERMISSION + " privilege_role " +
-                "WHERE privilege." + cSQLDBHelper.KEY_ROLE_FK_ID + " = privilege_role." + cSQLDBHelper.KEY_PRIVILEGE_FK_ID +
-                " AND role." + cSQLDBHelper.KEY_ROLE_ID + " = privilege_role." + cSQLDBHelper.KEY_ROLE_FK_ID +
-                " AND privilege." + cSQLDBHelper.KEY_ROLE_FK_ID + " = ?";
+        String selectQuery = "SELECT role." + cSQLDBHelper.KEY_ID + ", role." +
+                cSQLDBHelper.KEY_NAME + ", role." + cSQLDBHelper.KEY_DESCRIPTION + ", role." +
+                cSQLDBHelper.KEY_CREATED_DATE + " FROM " +
+                cSQLDBHelper.TABLE_tblPRIVILEGE + " privilege, " +
+                cSQLDBHelper.TABLE_tblROLE + " role, " +
+                cSQLDBHelper.TABLE_tblPERMISSION + " privilege_role " +
+                "WHERE privilege." + cSQLDBHelper.KEY_ID + " = privilege_role." + cSQLDBHelper.KEY_PRIVILEGE_FK_ID +
+                " AND role." + cSQLDBHelper.KEY_ID + " = privilege_role." + cSQLDBHelper.KEY_ID +
+                " AND privilege." + cSQLDBHelper.KEY_ID + " = ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(privilegeID)});
 
@@ -630,15 +630,15 @@ public class cPermissionDBA {
                 do {
                     cRoleModel role = new cRoleModel();
 
-                    role.setRoleID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_ID)));
+                    role.setRoleID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                     role.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
-                    role.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_OWNER_ID)));
-                    role.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_GROUP_BITS)));
-                    role.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_PERMS_BITS)));
-                    role.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_STATUS_BITS)));
-                    role.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_NAME)));
-                    role.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_DESCRIPTION)));
-                    //role.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_DATE))));
+                    role.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    role.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    role.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    role.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    role.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    role.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    //role.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                     roleModels.add(role);
 
@@ -664,18 +664,18 @@ public class cPermissionDBA {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT role." + cSQLDBHelper.KEY_ROLE_ID + " FROM " +
-                cSQLDBHelper.TABLE_PERMISSION + " permission, " +
-                cSQLDBHelper.TABLE_ROLE + " role, " +
-                cSQLDBHelper.TABLE_PERMISSION + " permission_role " +
-                "WHERE permission." + cSQLDBHelper.KEY_ROLE_FK_ID + " = permission_role." + cSQLDBHelper.KEY_ROLE_FK_ID +
-                " AND role." + cSQLDBHelper.KEY_ROLE_ID + " = permission_role." + cSQLDBHelper.KEY_ROLE_FK_ID +
-                " AND " + permissionID + " = permission." + cSQLDBHelper.KEY_ROLE_FK_ID, null);
+        Cursor cursor = db.rawQuery("SELECT role." + cSQLDBHelper.KEY_ID + " FROM " +
+                cSQLDBHelper.TABLE_tblPERMISSION + " permission, " +
+                cSQLDBHelper.TABLE_tblROLE + " role, " +
+                cSQLDBHelper.TABLE_tblPERMISSION + " permission_role " +
+                "WHERE permission." + cSQLDBHelper.KEY_ID + " = permission_role." + cSQLDBHelper.KEY_ID +
+                " AND role." + cSQLDBHelper.KEY_ID + " = permission_role." + cSQLDBHelper.KEY_ID +
+                " AND " + permissionID + " = permission." + cSQLDBHelper.KEY_ID, null);
 
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    roleIDs.add(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_ID)));
+                    roleIDs.add(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
@@ -701,13 +701,13 @@ public class cPermissionDBA {
         ArrayList<cPermissionTreeModel> permissionTreeModels = new ArrayList<>();
 
         String selectQueryPerms = "SELECT * " +
-                " FROM " + cSQLDBHelper.TABLE_PERMISSION +
-                " WHERE (((" + cSQLDBHelper.KEY_PERMISSION_GROUP_BITS + " & ?) = ?) " +
-                " OR (((" + cSQLDBHelper.KEY_PERMISSION_OWNER_ID + " = ?) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMISSION_PERMS_BITS + " & ?) != 0)) " +
-                " OR (((" + cSQLDBHelper.KEY_PERMISSION_GROUP_BITS + " & ?) != 0) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMISSION_PERMS_BITS + " & ?) != 0)) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMISSION_STATUS_BITS + " & ?) != 0))) " +
+                " FROM " + cSQLDBHelper.TABLE_tblPERMISSION +
+                " WHERE (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) = ?) " +
+                " OR (((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & ?) != 0)) " +
+                " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & ?) != 0)) " +
+                " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0))) " +
                 " GROUP BY " + cSQLDBHelper.KEY_ORGANIZATION_FK_ID + ", " +
                 cSQLDBHelper.KEY_PRIVILEGE_FK_ID + ", " +
                 cSQLDBHelper.KEY_ENTITY_FK_ID + ", " +
@@ -744,13 +744,13 @@ public class cPermissionDBA {
                             privilegeID, entityModel);
 
                     selectQueryOps = "SELECT " + cSQLDBHelper.KEY_OPERATION_FK_ID +
-                            " FROM " + cSQLDBHelper.TABLE_PERMISSION +
-                            " WHERE ((((" + cSQLDBHelper.KEY_PERMISSION_GROUP_BITS + " & ?) = ?) " +
-                            " OR (((" + cSQLDBHelper.KEY_PERMISSION_OWNER_ID + " = ?) " +
-                            " AND ((" + cSQLDBHelper.KEY_PERMISSION_PERMS_BITS + " & ?) != 0)) " +
-                            " OR (((" + cSQLDBHelper.KEY_PERMISSION_GROUP_BITS + " & ?) != 0) " +
-                            " AND ((" + cSQLDBHelper.KEY_PERMISSION_PERMS_BITS + " & ?) != 0)) " +
-                            " AND ((" + cSQLDBHelper.KEY_PERMISSION_STATUS_BITS + " & ?) != 0))) " +
+                            " FROM " + cSQLDBHelper.TABLE_tblPERMISSION +
+                            " WHERE ((((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) = ?) " +
+                            " OR (((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
+                            " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & ?) != 0)) " +
+                            " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
+                            " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & ?) != 0)) " +
+                            " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0))) " +
                             " AND ((" + cSQLDBHelper.KEY_ORGANIZATION_FK_ID + " = ? ) " +
                             " AND (" + cSQLDBHelper.KEY_PRIVILEGE_FK_ID + " = ? ) " +
                             " AND (" + cSQLDBHelper.KEY_ENTITY_FK_ID + " = ? ) " +
@@ -792,13 +792,13 @@ public class cPermissionDBA {
                     if (!operationModels.isEmpty()) {
 
                         selectQueryOpsStatus = "SELECT * " +
-                                " FROM " + cSQLDBHelper.TABLE_PERMISSION +
-                                " WHERE ((((" + cSQLDBHelper.KEY_PERMISSION_GROUP_BITS + " & ?) = ?) " +
-                                " OR (((" + cSQLDBHelper.KEY_PERMISSION_OWNER_ID + " = ?) " +
-                                " AND ((" + cSQLDBHelper.KEY_PERMISSION_PERMS_BITS + " & ?) != 0)) " +
-                                " OR (((" + cSQLDBHelper.KEY_PERMISSION_GROUP_BITS + " & ?) != 0) " +
-                                " AND ((" + cSQLDBHelper.KEY_PERMISSION_PERMS_BITS + " & ?) != 0)) " +
-                                " AND ((" + cSQLDBHelper.KEY_PERMISSION_STATUS_BITS + " & ?) != 0))) " +
+                                " FROM " + cSQLDBHelper.TABLE_tblPERMISSION +
+                                " WHERE ((((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) = ?) " +
+                                " OR (((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
+                                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & ?) != 0)) " +
+                                " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
+                                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & ?) != 0)) " +
+                                " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0))) " +
                                 " AND ((" + cSQLDBHelper.KEY_ORGANIZATION_FK_ID + " = ? )" +
                                 " AND (" + cSQLDBHelper.KEY_PRIVILEGE_FK_ID + " = ? )" +
                                 " AND (" + cSQLDBHelper.KEY_ENTITY_FK_ID + " = ? )" +
@@ -848,23 +848,23 @@ public class cPermissionDBA {
 
                                     // set permission details other than a composite key
                                     permissionModel.setOwnerID(cursorOpsStatus.getInt(
-                                            cursorOpsStatus.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_OWNER_ID)));
+                                            cursorOpsStatus.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
                                     permissionModel.setOrgID(cursorOpsStatus.getInt(
-                                            cursorOpsStatus.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_ORG_ID)));
+                                            cursorOpsStatus.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
 
                                     permissionModel.setGroupBITS(cursorOpsStatus.getInt(
-                                            cursorOpsStatus.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_GROUP_BITS)));
+                                            cursorOpsStatus.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
                                     permissionModel.setPermsBITS(cursorOpsStatus.getInt(
-                                            cursorOpsStatus.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_PERMS_BITS)));
+                                            cursorOpsStatus.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
                                     permissionModel.setStatusBITS(cursorOpsStatus.getInt(
-                                            cursorOpsStatus.getColumnIndex(cSQLDBHelper.KEY_PERMISSION_STATUS_BITS)));
+                                            cursorOpsStatus.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
 
                                     permissionModel.setCreatedDate(sdf.parse(cursorOpsStatus.getString(cursorOpsStatus.getColumnIndex(
-                                            cSQLDBHelper.KEY_PERMISSION_CREATED_DATE))));
+                                            cSQLDBHelper.KEY_CREATED_DATE))));
                                     permissionModel.setModifiedDate(sdf.parse(cursorOpsStatus.getString(cursorOpsStatus.getColumnIndex(
-                                            cSQLDBHelper.KEY_PERMISSION_MODIFIED_DATE))));
+                                            cSQLDBHelper.KEY_MODIFIED_DATE))));
                                     permissionModel.setSyncedDate(sdf.parse(cursorOpsStatus.getString(cursorOpsStatus.getColumnIndex(
-                                            cSQLDBHelper.KEY_PERMISSION_SYNCED_DATE))));
+                                            cSQLDBHelper.KEY_SYNCED_DATE))));
 
                                     //Log.d(TAG, "Permission Model = "+gson.toJson(permissionModel));
 
@@ -912,7 +912,7 @@ public class cPermissionDBA {
         String selectQueryPerms = "SELECT " + cSQLDBHelper.KEY_PRIVILEGE_FK_ID + ", " +
                 cSQLDBHelper.KEY_ENTITY_FK_ID + ", " + cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + ", " +
                 cSQLDBHelper.KEY_OPERATION_FK_ID +
-                " FROM " + cSQLDBHelper.TABLE_PERMISSION +
+                " FROM " + cSQLDBHelper.TABLE_tblPERMISSION +
                 " WHERE  " + cSQLDBHelper.KEY_PRIVILEGE_FK_ID + " = ? AND " +
                 cSQLDBHelper.KEY_ENTITY_FK_ID + " = ? AND " +
                 cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + " = ?";
@@ -981,7 +981,7 @@ public class cPermissionDBA {
         // construct a selection query
         String selectQuery = "SELECT " + cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + ", " +
                 " SUM(DISTINCT " + cSQLDBHelper.KEY_ENTITY_FK_ID + ") AS entityBITS " +
-                " FROM " + cSQLDBHelper.TABLE_PERMISSION +
+                " FROM " + cSQLDBHelper.TABLE_tblPERMISSION +
                 " WHERE " + cSQLDBHelper.KEY_PRIVILEGE_FK_ID +
                 " IN (" + TextUtils.join(",",
                 Collections.nCopies(privileges.length, "?")) + ")" +
@@ -1030,7 +1030,7 @@ public class cPermissionDBA {
         String selectQuery = "SELECT " + cSQLDBHelper.KEY_ENTITY_FK_ID + ", " +
                 cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + ", " +
                 " SUM(DISTINCT " + cSQLDBHelper.KEY_OPERATION_FK_ID + ") AS operationBITS " +
-                " FROM " + cSQLDBHelper.TABLE_PERMISSION +
+                " FROM " + cSQLDBHelper.TABLE_tblPERMISSION +
                 " WHERE " + cSQLDBHelper.KEY_PRIVILEGE_FK_ID +
                 " IN (" + TextUtils.join(",",
                 Collections.nCopies(privileges.length, "?")) + ")" +
@@ -1082,7 +1082,7 @@ public class cPermissionDBA {
         String selectQuery = "SELECT " + cSQLDBHelper.KEY_ENTITY_FK_ID + ", " +
                 cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + ", " + cSQLDBHelper.KEY_OPERATION_FK_ID + ", " +
                 " SUM(DISTINCT " + cSQLDBHelper.KEY_STATUS_FK_ID + ") AS statusBITS " +
-                " FROM " + cSQLDBHelper.TABLE_PERMISSION +
+                " FROM " + cSQLDBHelper.TABLE_tblPERMISSION +
                 " WHERE " + cSQLDBHelper.KEY_PRIVILEGE_FK_ID +
                 " IN (" + TextUtils.join(",",
                 Collections.nCopies(privileges.length, "?")) + ")" +

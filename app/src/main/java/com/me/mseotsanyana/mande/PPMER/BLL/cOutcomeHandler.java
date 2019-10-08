@@ -15,7 +15,7 @@ public class cOutcomeHandler extends cMapper<cOutcomeModel, cOutcomeDomain>{
         outcomeDBA = new cOutcomeDBA(context);
         this.context = context;
     }
-
+/*
     public boolean deleteAllOutcomes() {
         return outcomeDBA.deleteAllOutcomes();
     }
@@ -39,30 +39,30 @@ public class cOutcomeHandler extends cMapper<cOutcomeModel, cOutcomeDomain>{
 
         return outcomeDomain;
     }
-
+*/
 	@Override
 	protected cOutcomeModel DomainToModel(cOutcomeDomain domain) {
         cOutcomeModel model = new cOutcomeModel();
-
+/*
         model.setOutcomeID(domain.getOutcomeID());
         model.setOwnerID(domain.getOwnerID());
         model.setOutcomeName(domain.getOutcomeName());
         model.setOutcomeDescription(domain.getOutcomeDescription());
         model.setCreateDate(domain.getCreateDate());
-
+*/
         return model;
 	}
 
 	@Override
 	protected cOutcomeDomain ModelToDomain(cOutcomeModel model) {
 		cOutcomeDomain domain = new cOutcomeDomain();
-
+/*
 		domain.setOutcomeID(model.getOutcomeID());
 		domain.setOwnerID(model.getOwnerID());
 		domain.setOutcomeName(model.getOutcomeName());
 		domain.setOutcomeDescription(model.getOutcomeDescription());
 		domain.setCreateDate(model.getCreateDate());
-
+*/
 		return domain;
 	}
 }

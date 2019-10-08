@@ -30,7 +30,7 @@ public class cProjectOutcomeDBA {
         projectDBA = new cLogFrameDBA(context);
         outcomeDBA = new cOutcomeDBA(context);
     }
-
+/*
     public boolean addProjectOutcome(cProjectOutcomeModel projectOutcomeModel){
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -94,4 +94,6 @@ public class cProjectOutcomeDBA {
 
         return projectOutcomeModelList;
     }
+
+ */
 }

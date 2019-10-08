@@ -33,7 +33,7 @@ public class cEntityDBA {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_ENTITY, null, null);
+        long result = db.delete(cSQLDBHelper.TABLE_tblENTITY, null, null);
 
         // close the database connection
         db.close();
@@ -49,15 +49,15 @@ public class cEntityDBA {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ENTITY_ID, objectModel.getEntityID());
+        cv.put(cSQLDBHelper.KEY_ID, objectModel.getEntityID());
         cv.put(cSQLDBHelper.KEY_ENTITY_TYPE_ID, objectModel.getTypeID());
-        cv.put(cSQLDBHelper.KEY_ENTITY_NAME, objectModel.getName());
-        cv.put(cSQLDBHelper.KEY_ENTITY_DESCRIPTION, objectModel.getDescription());
-        //cv.put(cSQLDBHelper.KEY_ENTITY_DATE, formatter.format(objectModel.getCreateDate()));
+        cv.put(cSQLDBHelper.KEY_NAME, objectModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, objectModel.getDescription());
+        //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(objectModel.getCreateDate()));
 
         // insert outcome record
         try {
-            if (db.insert(cSQLDBHelper.TABLE_ENTITY, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblENTITY, null, cv) < 0) {
                 return false;
             }
         } catch (Exception ex) {
@@ -78,18 +78,18 @@ public class cEntityDBA {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ENTITY_ID, objectModel.getEntityID());
-        cv.put(cSQLDBHelper.KEY_ENTITY_OWNER_ID, objectModel.getOwnerID());
-        cv.put(cSQLDBHelper.KEY_ENTITY_GROUP_BITS, objectModel.getGroupBITS());
-        cv.put(cSQLDBHelper.KEY_ENTITY_PERMS_BITS, objectModel.getPermsBITS());
-        cv.put(cSQLDBHelper.KEY_ENTITY_STATUS_BITS, objectModel.getStatusBITS());
-        cv.put(cSQLDBHelper.KEY_ENTITY_NAME, objectModel.getName());
-        cv.put(cSQLDBHelper.KEY_ENTITY_DESCRIPTION, objectModel.getDescription());
-        //cv.put(cSQLDBHelper.KEY_ENTITY_DATE, formatter.format(objectModel.getCreateDate()));
+        cv.put(cSQLDBHelper.KEY_ID, objectModel.getEntityID());
+        cv.put(cSQLDBHelper.KEY_OWNER_ID, objectModel.getOwnerID());
+        cv.put(cSQLDBHelper.KEY_GROUP_BITS, objectModel.getGroupBITS());
+        cv.put(cSQLDBHelper.KEY_PERMS_BITS, objectModel.getPermsBITS());
+        cv.put(cSQLDBHelper.KEY_STATUS_BITS, objectModel.getStatusBITS());
+        cv.put(cSQLDBHelper.KEY_NAME, objectModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, objectModel.getDescription());
+        //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(objectModel.getCreateDate()));
 
         // insert outcome record
         try {
-            if (db.insert(cSQLDBHelper.TABLE_ENTITY, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblENTITY, null, cv) < 0) {
                 return false;
             }
         } catch (Exception ex) {
@@ -107,8 +107,8 @@ public class cEntityDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         // construct a selection query
         String selectQuery = "SELECT * FROM " +
-                cSQLDBHelper.TABLE_ENTITY + " WHERE " +
-                cSQLDBHelper.KEY_ENTITY_ID + " = ? AND "+ cSQLDBHelper.KEY_ENTITY_TYPE_ID + " = ?";
+                cSQLDBHelper.TABLE_tblENTITY + " WHERE " +
+                cSQLDBHelper.KEY_ID + " = ? AND "+ cSQLDBHelper.KEY_ENTITY_TYPE_ID + " = ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(entityID), String.valueOf(typeID)});
 
@@ -117,15 +117,15 @@ public class cEntityDBA {
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    entity.setEntityID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_ID)));
+                    entity.setEntityID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                     entity.setTypeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_TYPE_ID)));
-                    entity.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_OWNER_ID)));
-                    entity.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_GROUP_BITS)));
-                    entity.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_PERMS_BITS)));
-                    entity.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_STATUS_BITS)));
-                    entity.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_NAME)));
-                    entity.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_DESCRIPTION)));
-                    //entity.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_DATE))));
+                    entity.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    entity.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    entity.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    entity.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    entity.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    entity.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    //entity.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                 } while (cursor.moveToNext());
             }
@@ -148,8 +148,8 @@ public class cEntityDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         // construct a selection query
         String selectQuery = "SELECT * FROM " +
-                cSQLDBHelper.TABLE_ENTITY + " WHERE " +
-                cSQLDBHelper.KEY_ENTITY_ID + "= ?";
+                cSQLDBHelper.TABLE_tblENTITY + " WHERE " +
+                cSQLDBHelper.KEY_ID + "= ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(entityID)});
 
@@ -158,7 +158,7 @@ public class cEntityDBA {
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    entityName = cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_NAME));
+                    entityName = cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME));
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
@@ -180,22 +180,22 @@ public class cEntityDBA {
         List<cEntityModel> objectModelList = new ArrayList<>();
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM "+ cSQLDBHelper.TABLE_ENTITY, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ cSQLDBHelper.TABLE_tblENTITY, null);
 
         try {
             if (cursor.moveToFirst()) {
                 do {
                     cEntityModel object = new cEntityModel();
 
-                    object.setEntityID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_ID)));
+                    object.setEntityID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                     object.setTypeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_TYPE_ID)));
-                    object.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_OWNER_ID)));
-                    object.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_GROUP_BITS)));
-                    object.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_PERMS_BITS)));
-                    object.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_STATUS_BITS)));
-                    object.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_NAME)));
-                    object.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_DESCRIPTION)));
-                    //object.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_DATE))));
+                    object.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    object.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    object.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    object.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    object.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    object.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    //object.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                     objectModelList.add(object);
 

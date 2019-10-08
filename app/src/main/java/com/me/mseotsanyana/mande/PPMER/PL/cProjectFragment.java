@@ -191,8 +191,8 @@ public class cProjectFragment extends Fragment implements cAddProjectFragment.On
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     // delete from database
-                                    boolean result = projectHandler.deleteProject(projectDomain);
-                                    if (result)
+                                    //--boolean result = projectHandler.deleteProject(projectDomain);
+                                    if (true)
                                     {
                                         // remove from a action_list in the adapter class
                                         //-projectAdapter.removeItem(cardPosition);

@@ -148,7 +148,7 @@ public class cUploadMEData {
                     if (sheet == null) {
                         return null;
                     }
-
+/*
                     switch (i) {
                         case 0:
                             //delete all organizations
@@ -452,6 +452,7 @@ public class cUploadMEData {
                         default:
                             break;
                     }
+                    */
                 }
             } catch (Exception e) {
                 //Log.e("Error: ", e.getMessage());

@@ -38,20 +38,20 @@ public class cOrganizationDBA {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_ID, organizationModel.getOrganizationID());
+        cv.put(cSQLDBHelper.KEY_ID, organizationModel.getOrganizationID());
         cv.put(cSQLDBHelper.KEY_ADDRESS_FK_ID, organizationModel.getAddressID());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_OWNER_ID, organizationModel.getOwnerID());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_NAME, organizationModel.getOrganizationName());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_TELEPHONE, organizationModel.getTelephone());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FAX, organizationModel.getFax());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_VISION, organizationModel.getVision());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_MISSION, organizationModel.getMission());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_EMAIL, organizationModel.getEmailAddress());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_WEBSITE, organizationModel.getWebsite());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_CREATED_DATE, formatter.format(organizationModel.getCreateDate()));
+        cv.put(cSQLDBHelper.KEY_OWNER_ID, organizationModel.getOwnerID());
+        cv.put(cSQLDBHelper.KEY_NAME, organizationModel.getOrganizationName());
+        cv.put(cSQLDBHelper.KEY_TELEPHONE, organizationModel.getTelephone());
+        cv.put(cSQLDBHelper.KEY_FAX, organizationModel.getFax());
+        cv.put(cSQLDBHelper.KEY_VISION, organizationModel.getVision());
+        cv.put(cSQLDBHelper.KEY_MISSION, organizationModel.getMission());
+        cv.put(cSQLDBHelper.KEY_EMAIL, organizationModel.getEmailAddress());
+        cv.put(cSQLDBHelper.KEY_WEBSITE, organizationModel.getWebsite());
+        cv.put(cSQLDBHelper.KEY_CREATED_DATE, formatter.format(organizationModel.getCreateDate()));
 
         // insert value record
-        long result = db.insert(cSQLDBHelper.TABLE_ORGANIZATION, null, cv);
+        long result = db.insert(cSQLDBHelper.TABLE_tblORGANIZATION, null, cv);
 
         // close the database connection
         db.close();
@@ -67,19 +67,19 @@ public class cOrganizationDBA {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_ID, organizationModel.getOrganizationID());
+        cv.put(cSQLDBHelper.KEY_ID, organizationModel.getOrganizationID());
         cv.put(cSQLDBHelper.KEY_ADDRESS_FK_ID, organizationModel.getAddressID());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_NAME, organizationModel.getOrganizationName());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_TELEPHONE, organizationModel.getTelephone());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FAX, organizationModel.getFax());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_VISION, organizationModel.getVision());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_MISSION, organizationModel.getMission());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_EMAIL, organizationModel.getEmailAddress());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_WEBSITE, organizationModel.getWebsite());
+        cv.put(cSQLDBHelper.KEY_NAME, organizationModel.getOrganizationName());
+        cv.put(cSQLDBHelper.KEY_TELEPHONE, organizationModel.getTelephone());
+        cv.put(cSQLDBHelper.KEY_FAX, organizationModel.getFax());
+        cv.put(cSQLDBHelper.KEY_VISION, organizationModel.getVision());
+        cv.put(cSQLDBHelper.KEY_MISSION, organizationModel.getMission());
+        cv.put(cSQLDBHelper.KEY_EMAIL, organizationModel.getEmailAddress());
+        cv.put(cSQLDBHelper.KEY_WEBSITE, organizationModel.getWebsite());
 
         // insert value record
         try {
-            if (db.insert(cSQLDBHelper.TABLE_ORGANIZATION, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblORGANIZATION, null, cv) < 0) {
                 return false;
             }
         } catch (Exception ex) {
@@ -97,7 +97,7 @@ public class cOrganizationDBA {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_ORGANIZATION, null, null);
+        long result = db.delete(cSQLDBHelper.TABLE_tblORGANIZATION, null, null);
 
         // close the database connection
         db.close();
@@ -113,13 +113,13 @@ public class cOrganizationDBA {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String selectQuery = "SELECT * FROM "+ cSQLDBHelper.TABLE_ORGANIZATION +
-                " WHERE ((("+cSQLDBHelper.KEY_ORGANIZATION_OWNER_ID + " = ?) " +
-                " AND (("+cSQLDBHelper.KEY_ORGANIZATION_PERMS_BITS + " & ?) != 0)) " +
-                " OR ((("+cSQLDBHelper.KEY_ORGANIZATION_GROUP_BITS + " & ?) != 0) " +
-                " AND (("+cSQLDBHelper.KEY_ORGANIZATION_PERMS_BITS + " & ?) != 0)) "+
-                " OR ((("+cSQLDBHelper.KEY_ORGANIZATION_GROUP_BITS + " & ?) != 0) " +
-                " AND (("+cSQLDBHelper.KEY_ORGANIZATION_PERMS_BITS + " & ?) != 0)))";
+        String selectQuery = "SELECT * FROM "+ cSQLDBHelper.TABLE_tblORGANIZATION +
+                " WHERE ((("+cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
+                " AND (("+cSQLDBHelper.KEY_PERMS_BITS + " & ?) != 0)) " +
+                " OR ((("+cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
+                " AND (("+cSQLDBHelper.KEY_PERMS_BITS + " & ?) != 0)) "+
+                " OR ((("+cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
+                " AND (("+cSQLDBHelper.KEY_PERMS_BITS + " & ?) != 0)))";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{
                 String.valueOf(userID),String.valueOf(operationBITS),
@@ -131,17 +131,17 @@ public class cOrganizationDBA {
                 do {
                     cOrganizationModel organizationModel = new cOrganizationModel();
                     // populate organization model object
-                    organizationModel.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_ID)));
+                    organizationModel.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                     organizationModel.setAddressID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ADDRESS_FK_ID)));
-                    organizationModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_OWNER_ID)));
-                    organizationModel.setOrganizationName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_NAME)));
-                    organizationModel.setTelephone(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_TELEPHONE)));
-                    organizationModel.setFax(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FAX)));
-                    organizationModel.setVision(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_VISION)));
-                    organizationModel.setMission(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_MISSION)));
-                    organizationModel.setEmailAddress(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_EMAIL)));
-                    organizationModel.setWebsite(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_WEBSITE)));
-                    organizationModel.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_CREATED_DATE))));
+                    organizationModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    organizationModel.setOrganizationName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    organizationModel.setTelephone(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_TELEPHONE)));
+                    organizationModel.setFax(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_FAX)));
+                    organizationModel.setVision(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_VISION)));
+                    organizationModel.setMission(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MISSION)));
+                    organizationModel.setEmailAddress(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_EMAIL)));
+                    organizationModel.setWebsite(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_WEBSITE)));
+                    organizationModel.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
                     // add model organization into the action_list
                     organizationModelList.add(organizationModel);
 
@@ -165,24 +165,24 @@ public class cOrganizationDBA {
     public List<cOrganizationModel> getOrganizationList() {
         List<cOrganizationModel> organizationModelList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM "+ cSQLDBHelper.TABLE_ORGANIZATION, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ cSQLDBHelper.TABLE_tblORGANIZATION, null);
 
         try {
             if (cursor.moveToFirst()) {
                 do {
                     cOrganizationModel organizationModel = new cOrganizationModel();
                     // populate organization model object
-                    organizationModel.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_ID)));
+                    organizationModel.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                     organizationModel.setAddressID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ADDRESS_FK_ID)));
-                    organizationModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_OWNER_ID)));
-                    organizationModel.setOrganizationName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_NAME)));
-                    organizationModel.setTelephone(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_TELEPHONE)));
-                    organizationModel.setFax(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FAX)));
-                    organizationModel.setVision(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_VISION)));
-                    organizationModel.setMission(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_MISSION)));
-                    organizationModel.setEmailAddress(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_EMAIL)));
-                    organizationModel.setWebsite(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_WEBSITE)));
-                    organizationModel.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_CREATED_DATE))));
+                    organizationModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    organizationModel.setOrganizationName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    organizationModel.setTelephone(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_TELEPHONE)));
+                    organizationModel.setFax(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_FAX)));
+                    organizationModel.setVision(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_VISION)));
+                    organizationModel.setMission(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MISSION)));
+                    organizationModel.setEmailAddress(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_EMAIL)));
+                    organizationModel.setWebsite(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_WEBSITE)));
+                    organizationModel.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
                     // add model organization into the action_list
                     organizationModelList.add(organizationModel);
 
@@ -203,8 +203,8 @@ public class cOrganizationDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            String selectQuery = "SELECT " + cSQLDBHelper.KEY_ORGANIZATION_ID +", "+ cSQLDBHelper.KEY_ORGANIZATION_NAME + " FROM "
-                    + cSQLDBHelper.TABLE_ORGANIZATION;
+            String selectQuery = "SELECT " + cSQLDBHelper.KEY_ID +", "+ cSQLDBHelper.KEY_NAME + " FROM "
+                    + cSQLDBHelper.TABLE_tblORGANIZATION;
 
             Cursor cursor = db.rawQuery(selectQuery, null);
 
@@ -222,10 +222,10 @@ public class cOrganizationDBA {
 
         try {
             // construct a selection query
-            String selectQuery = "SELECT "+ cSQLDBHelper.KEY_ORGANIZATION_ID +", "+ cSQLDBHelper.KEY_ORGANIZATION_NAME + " FROM "
-                    + cSQLDBHelper.TABLE_ORGANIZATION
+            String selectQuery = "SELECT "+ cSQLDBHelper.KEY_ID +", "+ cSQLDBHelper.KEY_NAME + " FROM "
+                    + cSQLDBHelper.TABLE_tblORGANIZATION
                     + " WHERE " +
-                    cSQLDBHelper.KEY_ORGANIZATION_ID + "= ?";
+                    cSQLDBHelper.KEY_ID + "= ?";
 
             // open the cursor to be used to traverse the dataset
             Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(organizationID)});
@@ -244,19 +244,19 @@ public class cOrganizationDBA {
 
         try {
             // construct a selection query
-            String selectQuery = "SELECT "+ cSQLDBHelper.KEY_ORGANIZATION_ID +", "
-                    + cSQLDBHelper.KEY_ORGANIZATION_NAME + " FROM "
-                    + cSQLDBHelper.TABLE_ORGANIZATION
+            String selectQuery = "SELECT "+ cSQLDBHelper.KEY_ID +", "
+                    + cSQLDBHelper.KEY_NAME + " FROM "
+                    + cSQLDBHelper.TABLE_tblORGANIZATION
                     + " WHERE " +
-                    cSQLDBHelper.KEY_ORGANIZATION_ID + "= ?";
+                    cSQLDBHelper.KEY_ID + "= ?";
 
             // open the cursor to be used to traverse the dataset
             Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(organizationID)});
             cOrganizationModel model = new cOrganizationModel();
 
             if (cursor.moveToFirst()) {
-                model.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_ID)));
-                model.setOrganizationName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_NAME)));
+                model.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                model.setOrganizationName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
             }
             return model;
 
@@ -272,7 +272,7 @@ public class cOrganizationDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         // construct a selection query for organization
-        String selectOrganizationQuery = "SELECT * FROM " + cSQLDBHelper.TABLE_ORGANIZATION;
+        String selectOrganizationQuery = "SELECT * FROM " + cSQLDBHelper.TABLE_tblORGANIZATION;
 
         // open the organization cursor to be used to traverse the dataset
         Cursor organizationCursor = db.rawQuery(selectOrganizationQuery, null);
@@ -286,12 +286,12 @@ public class cOrganizationDBA {
             try {
                 do {
                     cTreeModel treeData = new cTreeModel(
-                            organizationCursor.getInt(organizationCursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_ID)),
+                            organizationCursor.getInt(organizationCursor.getColumnIndex(cSQLDBHelper.KEY_ID)),
                             -1,
                             0,
                             new cOrganizationModel(
-                                    organizationCursor.getInt(organizationCursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_ID)),
-                                    organizationCursor.getString(organizationCursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_NAME))
+                                    organizationCursor.getInt(organizationCursor.getColumnIndex(cSQLDBHelper.KEY_ID)),
+                                    organizationCursor.getString(organizationCursor.getColumnIndex(cSQLDBHelper.KEY_NAME))
                             )
                     );
 

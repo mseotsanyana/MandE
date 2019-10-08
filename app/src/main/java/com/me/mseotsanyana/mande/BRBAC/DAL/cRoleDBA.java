@@ -35,7 +35,7 @@ public class cRoleDBA {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_ROLE, null, null);
+        long result = db.delete(cSQLDBHelper.TABLE_tblROLE, null, null);
 
         // close the database connection
         db.close();
@@ -51,15 +51,15 @@ public class cRoleDBA {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ROLE_ID, roleModel.getRoleID());
+        cv.put(cSQLDBHelper.KEY_ID, roleModel.getRoleID());
         cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, roleModel.getOrganizationID());
-        cv.put(cSQLDBHelper.KEY_ROLE_NAME, roleModel.getName());
-        cv.put(cSQLDBHelper.KEY_ROLE_DESCRIPTION, roleModel.getDescription());
-        //cv.put(cSQLDBHelper.KEY_ROLE_DATE, formatter.format(roleModel.getCreateDate()));
+        cv.put(cSQLDBHelper.KEY_NAME, roleModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, roleModel.getDescription());
+        //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(roleModel.getCreateDate()));
 
         // insert outcome record
         try {
-            if (db.insert(cSQLDBHelper.TABLE_ROLE, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblROLE, null, cv) < 0) {
                 return false;
             }
         } catch (Exception ex) {
@@ -80,19 +80,19 @@ public class cRoleDBA {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ROLE_ID, groupModel.getRoleID());
+        cv.put(cSQLDBHelper.KEY_ID, groupModel.getRoleID());
         cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, groupModel.getOrganizationID());
-        cv.put(cSQLDBHelper.KEY_ROLE_OWNER_ID, groupModel.getOwnerID());
-        cv.put(cSQLDBHelper.KEY_ROLE_GROUP_BITS, groupModel.getGroupBITS());
-        cv.put(cSQLDBHelper.KEY_ROLE_PERMS_BITS, groupModel.getPermsBITS());
-        cv.put(cSQLDBHelper.KEY_ROLE_STATUS_BITS, groupModel.getStatusBITS());
-        cv.put(cSQLDBHelper.KEY_ROLE_NAME, groupModel.getName());
-        cv.put(cSQLDBHelper.KEY_ROLE_DESCRIPTION, groupModel.getDescription());
-        //cv.put(cSQLDBHelper.KEY_ROLE_DATE, formatter.format(groupModel.getCreateDate()));
+        cv.put(cSQLDBHelper.KEY_OWNER_ID, groupModel.getOwnerID());
+        cv.put(cSQLDBHelper.KEY_GROUP_BITS, groupModel.getGroupBITS());
+        cv.put(cSQLDBHelper.KEY_PERMS_BITS, groupModel.getPermsBITS());
+        cv.put(cSQLDBHelper.KEY_STATUS_BITS, groupModel.getStatusBITS());
+        cv.put(cSQLDBHelper.KEY_NAME, groupModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, groupModel.getDescription());
+        //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(groupModel.getCreateDate()));
 
         // insert outcome record
         try {
-            if (db.insert(cSQLDBHelper.TABLE_ROLE, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblROLE, null, cv) < 0) {
                 return false;
             }
         } catch (Exception ex) {
@@ -110,8 +110,8 @@ public class cRoleDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         // construct a selection query
         String selectQuery = "SELECT * FROM " +
-                cSQLDBHelper.TABLE_ROLE + " WHERE " +
-                cSQLDBHelper.KEY_ROLE_ID + "= ?";
+                cSQLDBHelper.TABLE_tblROLE + " WHERE " +
+                cSQLDBHelper.KEY_ID + "= ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(roleID)});
 
@@ -120,17 +120,17 @@ public class cRoleDBA {
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    role.setRoleID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_ID)));
+                    role.setRoleID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                     role.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
-                    role.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_OWNER_ID)));
-                    role.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_GROUP_BITS)));
-                    role.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_PERMS_BITS)));
-                    role.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_STATUS_BITS)));
-                    role.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_NAME)));
-                    role.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_DESCRIPTION)));
-                    role.setCreatedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_CREATED_DATE))));
-                    role.setModifiedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_MODIFIED_DATE))));
-                    role.setSyncedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_SYNCED_DATE))));
+                    role.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    role.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    role.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    role.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    role.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    role.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    role.setCreatedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    role.setModifiedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    role.setSyncedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                 } while (cursor.moveToNext());
             }
@@ -157,12 +157,12 @@ public class cRoleDBA {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String selectQuery = "SELECT * FROM "+ cSQLDBHelper.TABLE_ROLE +
-                " WHERE ((("+cSQLDBHelper.KEY_ROLE_GROUP_BITS +" & ?) != 0) " +
-                " OR (("+cSQLDBHelper.KEY_ROLE_OWNER_ID+" = ?) " +
-                " AND (("+cSQLDBHelper.KEY_ROLE_PERMS_BITS+" & ?) != 0)) " +
-                " OR ((("+cSQLDBHelper.KEY_ROLE_GROUP_BITS +" & ?) != 0) " +
-                " AND (("+cSQLDBHelper.KEY_ROLE_PERMS_BITS+" & ?) != 0)))";
+        String selectQuery = "SELECT * FROM "+ cSQLDBHelper.TABLE_tblROLE +
+                " WHERE ((("+cSQLDBHelper.KEY_GROUP_BITS +" & ?) != 0) " +
+                " OR (("+cSQLDBHelper.KEY_OWNER_ID+" = ?) " +
+                " AND (("+cSQLDBHelper.KEY_PERMS_BITS+" & ?) != 0)) " +
+                " OR ((("+cSQLDBHelper.KEY_GROUP_BITS +" & ?) != 0) " +
+                " AND (("+cSQLDBHelper.KEY_PERMS_BITS+" & ?) != 0)))";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{
                 String.valueOf(primaryRole),
@@ -174,17 +174,17 @@ public class cRoleDBA {
                 do {
                     cRoleModel role = new cRoleModel();
 
-                    role.setRoleID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_ID)));
+                    role.setRoleID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                     role.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
-                    role.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_OWNER_ID)));
-                    role.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_GROUP_BITS)));
-                    role.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_PERMS_BITS)));
-                    role.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_STATUS_BITS)));
-                    role.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_NAME)));
-                    role.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_DESCRIPTION)));
-                    role.setCreatedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_CREATED_DATE))));
-                    role.setModifiedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_MODIFIED_DATE))));
-                    role.setSyncedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_SYNCED_DATE))));
+                    role.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    role.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    role.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    role.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    role.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    role.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    role.setCreatedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    role.setModifiedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    role.setSyncedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     groupModelList.add(role);
 
@@ -216,19 +216,19 @@ public class cRoleDBA {
         Timestamp ts = new Timestamp(date.getTime());
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ROLE_ID, roleModel.getRoleID());
+        cv.put(cSQLDBHelper.KEY_ID, roleModel.getRoleID());
         cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, roleModel.getOrganizationID());
-        cv.put(cSQLDBHelper.KEY_ROLE_OWNER_ID, roleModel.getOwnerID());
-        cv.put(cSQLDBHelper.KEY_ROLE_GROUP_BITS, roleModel.getGroupBITS());
-        cv.put(cSQLDBHelper.KEY_ROLE_PERMS_BITS, roleModel.getPermsBITS());
-        cv.put(cSQLDBHelper.KEY_ROLE_STATUS_BITS, roleModel.getStatusBITS());
-        cv.put(cSQLDBHelper.KEY_ROLE_NAME, roleModel.getName());
-        cv.put(cSQLDBHelper.KEY_ROLE_DESCRIPTION, roleModel.getDescription());
-        cv.put(cSQLDBHelper.KEY_ROLE_MODIFIED_DATE, sdf.format(ts));
+        cv.put(cSQLDBHelper.KEY_OWNER_ID, roleModel.getOwnerID());
+        cv.put(cSQLDBHelper.KEY_GROUP_BITS, roleModel.getGroupBITS());
+        cv.put(cSQLDBHelper.KEY_PERMS_BITS, roleModel.getPermsBITS());
+        cv.put(cSQLDBHelper.KEY_STATUS_BITS, roleModel.getStatusBITS());
+        cv.put(cSQLDBHelper.KEY_NAME, roleModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, roleModel.getDescription());
+        cv.put(cSQLDBHelper.KEY_MODIFIED_DATE, sdf.format(ts));
 
         // update a specific record
-        long result = db.update(cSQLDBHelper.TABLE_ROLE, cv,
-                cSQLDBHelper.KEY_ROLE_ID + "= ? AND "+
+        long result = db.update(cSQLDBHelper.TABLE_tblROLE, cv,
+                cSQLDBHelper.KEY_ID + "= ? AND "+
                         cSQLDBHelper.KEY_ORGANIZATION_FK_ID +" = ?",
                 new String[]{String.valueOf(roleModel.getRoleID()),
                         String.valueOf(roleModel.getOrganizationID())});

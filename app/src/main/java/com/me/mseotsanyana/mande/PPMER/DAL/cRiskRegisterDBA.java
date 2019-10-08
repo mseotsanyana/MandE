@@ -22,7 +22,7 @@ public class cRiskRegisterDBA {
         dbHelper = new cSQLDBHelper(context);
     }
 
-
+/*
     public boolean deleteAllRiskRegister() {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -141,4 +141,6 @@ public class cRiskRegisterDBA {
 
         return outputModelList;
     }
+
+ */
 }

@@ -51,13 +51,13 @@ public class cMenuRoleDBA {
 
             ContentValues cv = new ContentValues();
 
-            cv.put(cSQLDBHelper.KEY_MENU_FK_ID, menuModel.getMenuID());
-            cv.put(cSQLDBHelper.KEY_ROLE_FK_ID, roleModel.getRoleID());
+            cv.put(cSQLDBHelper.KEY_ID, menuModel.getMenuID());
+            cv.put(cSQLDBHelper.KEY_ID, roleModel.getRoleID());
             cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, organizationModel.getOrganizationID());
-            //cv.put(cSQLDBHelper.KEY_MENU_ROLE_DATE, formatter.format(menuRoleModel.getCreateDate()));
+            //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(menuRoleModel.getCreateDate()));
 
             // insert menu group record
-            result = db.insert(cSQLDBHelper.TABLE_MENU_ROLE, null, cv);
+            result = db.insert(cSQLDBHelper.TABLE_tblMENU, null, cv);
         }
 
         // close the database connection
@@ -80,16 +80,16 @@ public class cMenuRoleDBA {
 
             ContentValues cv = new ContentValues();
 
-            cv.put(cSQLDBHelper.KEY_MENU_FK_ID, menuModel.getMenuID());
-            cv.put(cSQLDBHelper.KEY_ROLE_FK_ID, roleModel.getRoleID());
-            cv.put(cSQLDBHelper.KEY_MENU_ROLE_OWNER_ID, menuRoleModel.getOwnerID());
-            cv.put(cSQLDBHelper.KEY_MENU_ROLE_GROUP_BITS, menuRoleModel.getGroupBITS());
-            cv.put(cSQLDBHelper.KEY_MENU_ROLE_PERMS_BITS, menuRoleModel.getPermsBITS());
-            cv.put(cSQLDBHelper.KEY_MENU_ROLE_STATUS_BITS, menuRoleModel.getStatusBITS());
-            //cv.put(cSQLDBHelper.KEY_MENU_ROLE_DATE, formatter.format(menuRoleModel.getCreateDate()));
+            cv.put(cSQLDBHelper.KEY_ID, menuModel.getMenuID());
+            cv.put(cSQLDBHelper.KEY_ID, roleModel.getRoleID());
+            cv.put(cSQLDBHelper.KEY_OWNER_ID, menuRoleModel.getOwnerID());
+            cv.put(cSQLDBHelper.KEY_GROUP_BITS, menuRoleModel.getGroupBITS());
+            cv.put(cSQLDBHelper.KEY_PERMS_BITS, menuRoleModel.getPermsBITS());
+            cv.put(cSQLDBHelper.KEY_STATUS_BITS, menuRoleModel.getStatusBITS());
+            //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(menuRoleModel.getCreateDate()));
 
             // insert menu group record
-            result = db.insert(cSQLDBHelper.TABLE_MENU_ROLE, null, cv);
+            result = db.insert(cSQLDBHelper.TABLE_tblMENU, null, cv);
         }
 
         // close the database connection
@@ -103,20 +103,20 @@ public class cMenuRoleDBA {
         List<cMenuRoleModel> menuRoleModelList = new ArrayList<>();
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM "+ cSQLDBHelper.TABLE_USER_ROLE, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ cSQLDBHelper.TABLE_tblUSER, null);
 
         try {
             if (cursor.moveToFirst()) {
                 do {
                     cMenuRoleModel menuRole = new cMenuRoleModel();
 
-                    menuRole.setMenuID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_FK_ID)));
-                    menuRole.setRoleID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_FK_ID)));
-                    menuRole.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_ROLE_OWNER_ID)));
-                    menuRole.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_ROLE_GROUP_BITS)));
-                    menuRole.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_ROLE_PERMS_BITS)));
-                    menuRole.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_ROLE_STATUS_BITS)));
-                    //menuRole.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_ROLE_DATE))));
+                    menuRole.setMenuID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    menuRole.setRoleID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    menuRole.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    menuRole.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    menuRole.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    menuRole.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    //menuRole.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                     menuRoleModelList.add(menuRole);
 
@@ -142,31 +142,31 @@ public class cMenuRoleDBA {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT menu."+cSQLDBHelper.KEY_MENU_ID + ", menu." +
-                cSQLDBHelper.KEY_MENU_NAME + ", menu."+cSQLDBHelper.KEY_MENU_CREATED_DATE + " FROM "+
-                cSQLDBHelper.TABLE_MENU + " menu, " +
-                cSQLDBHelper.TABLE_ROLE + " role, " +
-                cSQLDBHelper.TABLE_MENU_ROLE +" menu_role " +
-                " WHERE menu."+cSQLDBHelper.KEY_MENU_ID+" = menu_role." + cSQLDBHelper.KEY_MENU_FK_ID +
-                " AND role."+cSQLDBHelper.KEY_ROLE_ID + " = menu_role." + cSQLDBHelper.KEY_ROLE_FK_ID +
-                " AND role."+cSQLDBHelper.KEY_ROLE_ID + " = "+ roleID +
-                " AND menu."+cSQLDBHelper.KEY_MENU_PARENT_ID + " = "+ 0, null);
+        Cursor cursor = db.rawQuery("SELECT menu."+cSQLDBHelper.KEY_ID + ", menu." +
+                cSQLDBHelper.KEY_NAME + ", menu."+cSQLDBHelper.KEY_CREATED_DATE + " FROM "+
+                cSQLDBHelper.TABLE_tblMENU + " menu, " +
+                cSQLDBHelper.TABLE_tblROLE + " role, " +
+                cSQLDBHelper.TABLE_tblMENU +" menu_role " +
+                " WHERE menu."+cSQLDBHelper.KEY_ID+" = menu_role." + cSQLDBHelper.KEY_ID +
+                " AND role."+cSQLDBHelper.KEY_ID + " = menu_role." + cSQLDBHelper.KEY_ID +
+                " AND role."+cSQLDBHelper.KEY_ID + " = "+ roleID +
+                " AND menu."+cSQLDBHelper.KEY_PARENT_FK_ID + " = "+ 0, null);
 
         try {
             if (cursor.moveToFirst()) {
                 do {
                     cMenuModel menu = new cMenuModel();
 
-                    menu.setMenuID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_ID)));
-                    //menu.setParentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_PARENT_ID)));
-                    //menu.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_OWNER_ID)));
-                    //menu.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_GROUP_BITS)));
-                    //menu.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_PERMS_BITS)));
-                    //menu.setTypeBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_TYPE_BITS)));
-                    //menu.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_STATUS_BITS)));
-                    menu.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_NAME)));
-                    //menu.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_DESCRIPTION)));
-                    //menu.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_DATE))));
+                    menu.setMenuID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    //menu.setParentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_ID)));
+                    //menu.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    //menu.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    //menu.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    //menu.setTypeBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_TYPE_BITS)));
+                    //menu.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    menu.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    //menu.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    //menu.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                     menuModels.add(menu);
 
@@ -193,27 +193,27 @@ public class cMenuRoleDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT * FROM "+
-                cSQLDBHelper.TABLE_MENU + " menu, " +
-                cSQLDBHelper.TABLE_ROLE + " role, " +
-                cSQLDBHelper.TABLE_MENU_ROLE +" menu_role " +
-                "WHERE menu."+cSQLDBHelper.KEY_MENU_ID+" = menu_role."+cSQLDBHelper.KEY_MENU_FK_ID+
-                " AND role."+cSQLDBHelper.KEY_ROLE_ID+" = menu_role."+cSQLDBHelper.KEY_ROLE_FK_ID+
-                " AND "+ menuID +" = menu."+cSQLDBHelper.KEY_MENU_ID, null);
+                cSQLDBHelper.TABLE_tblMENU + " menu, " +
+                cSQLDBHelper.TABLE_tblROLE + " role, " +
+                cSQLDBHelper.TABLE_tblMENU +" menu_role " +
+                "WHERE menu."+cSQLDBHelper.KEY_ID+" = menu_role."+cSQLDBHelper.KEY_ID+
+                " AND role."+cSQLDBHelper.KEY_ID+" = menu_role."+cSQLDBHelper.KEY_ID+
+                " AND "+ menuID +" = menu."+cSQLDBHelper.KEY_ID, null);
 
         try {
             if (cursor.moveToFirst()) {
                 do {
                     cRoleModel role = new cRoleModel();
 
-                    role.setRoleID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_ID)));
+                    role.setRoleID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                     role.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
-                    role.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_OWNER_ID)));
-                    role.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_GROUP_BITS)));
-                    role.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_PERMS_BITS)));
-                    role.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_STATUS_BITS)));
-                    role.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_NAME)));
-                    role.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_DESCRIPTION)));
-                    //role.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_DATE))));
+                    role.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    role.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    role.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    role.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    role.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    role.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    //role.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                     roleModels.add(role);
 

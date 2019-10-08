@@ -16,7 +16,7 @@ public class cActivityHandler extends cMapper<cActivityModel, cActivityDomain> {
         activityDBA = new cActivityDBA(context);
         this.context = context;
     }
-
+/*
     public boolean deleteAllActivities() {
         return activityDBA.deleteAllActivities();
     }
@@ -41,31 +41,31 @@ public class cActivityHandler extends cMapper<cActivityModel, cActivityDomain> {
         return activityDomain;
     }
 
-
+*/
 
     @Override
     protected cActivityModel DomainToModel(cActivityDomain domain) {
         cActivityModel model = new cActivityModel();
-
+/*
         model.setActivityID(domain.getActivityID());
         model.setOwnerID(domain.getOwnerID());
         model.setActivityName(domain.getActivityName());
         model.setActivityDescription(domain.getActivityDescription());
         model.setCreateDate(domain.getCreateDate());
-
+*/
         return model;
     }
 
     @Override
     protected cActivityDomain ModelToDomain(cActivityModel model) {
         cActivityDomain domain = new cActivityDomain();
-
+/*
         domain.setActivityID(model.getActivityID());
         domain.setOwnerID(model.getOwnerID());
         domain.setActivityName(model.getActivityName());
         domain.setActivityDescription(model.getActivityDescription());
         domain.setCreateDate(model.getCreateDate());
-
+*/
         return domain;
     }
 }

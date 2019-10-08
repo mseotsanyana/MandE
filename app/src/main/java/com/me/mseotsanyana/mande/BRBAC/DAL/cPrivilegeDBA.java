@@ -35,7 +35,7 @@ public class cPrivilegeDBA {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_PRIVILEGE, null, null);
+        long result = db.delete(cSQLDBHelper.TABLE_tblPRIVILEGE, null, null);
 
         // close the database connection
         db.close();
@@ -52,7 +52,7 @@ public class cPrivilegeDBA {
         if (privilegeModel != null) {
 
             // delete a specific record
-            result = db.delete(cSQLDBHelper.TABLE_PRIVILEGE,
+            result = db.delete(cSQLDBHelper.TABLE_tblPRIVILEGE,
                     cSQLDBHelper.KEY_ROLE_FK_ID + " = ?",
                     new String[]{String.valueOf(privilegeModel.getPrivilegeID())});
         }
@@ -74,13 +74,13 @@ public class cPrivilegeDBA {
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, privilegeModel.getOrganizationID());
         cv.put(cSQLDBHelper.KEY_ROLE_FK_ID, privilegeModel.getPrivilegeID());
-        cv.put(cSQLDBHelper.KEY_PRIVILEGE_NAME, privilegeModel.getName());
-        cv.put(cSQLDBHelper.KEY_PRIVILEGE_DESCRIPTION, privilegeModel.getDescription());
-        //cv.put(cSQLDBHelper.KEY_PRIVILEGE_DATE, formatter.format(privilegeModel.getCreateDate()));
+        cv.put(cSQLDBHelper.KEY_NAME, privilegeModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, privilegeModel.getDescription());
+        //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(privilegeModel.getCreateDate()));
 
         // insert outcome record
         try {
-            if (db.insert(cSQLDBHelper.TABLE_PRIVILEGE, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblPRIVILEGE, null, cv) < 0) {
                 return false;
             }
         } catch (Exception ex) {
@@ -103,17 +103,17 @@ public class cPrivilegeDBA {
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, privilegeModel.getOrganizationID());
         cv.put(cSQLDBHelper.KEY_ROLE_FK_ID, privilegeModel.getPrivilegeID());
-        cv.put(cSQLDBHelper.KEY_PRIVILEGE_ORG_ID, privilegeModel.getOrgID());
-        cv.put(cSQLDBHelper.KEY_PRIVILEGE_OWNER_ID, privilegeModel.getOwnerID());
-        cv.put(cSQLDBHelper.KEY_PRIVILEGE_GROUP_BITS, privilegeModel.getGroupBITS());
-        cv.put(cSQLDBHelper.KEY_PRIVILEGE_PERMS_BITS, privilegeModel.getPermsBITS());
-        cv.put(cSQLDBHelper.KEY_PRIVILEGE_STATUS_BITS, privilegeModel.getStatusBITS());
-        cv.put(cSQLDBHelper.KEY_PRIVILEGE_NAME, privilegeModel.getName());
-        cv.put(cSQLDBHelper.KEY_PRIVILEGE_DESCRIPTION, privilegeModel.getDescription());
+        cv.put(cSQLDBHelper.KEY_ORG_ID, privilegeModel.getOrgID());
+        cv.put(cSQLDBHelper.KEY_OWNER_ID, privilegeModel.getOwnerID());
+        cv.put(cSQLDBHelper.KEY_GROUP_BITS, privilegeModel.getGroupBITS());
+        cv.put(cSQLDBHelper.KEY_PERMS_BITS, privilegeModel.getPermsBITS());
+        cv.put(cSQLDBHelper.KEY_STATUS_BITS, privilegeModel.getStatusBITS());
+        cv.put(cSQLDBHelper.KEY_NAME, privilegeModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, privilegeModel.getDescription());
 
         // insert outcome record
         try {
-            if (db.insert(cSQLDBHelper.TABLE_PRIVILEGE, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblPRIVILEGE, null, cv) < 0) {
                 return false;
             }
         } catch (Exception ex) {
@@ -140,17 +140,17 @@ public class cPrivilegeDBA {
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, model.getOrganizationID());
         cv.put(cSQLDBHelper.KEY_ROLE_FK_ID, model.getPrivilegeID());
-        cv.put(cSQLDBHelper.KEY_PRIVILEGE_OWNER_ID, model.getOwnerID());
-        cv.put(cSQLDBHelper.KEY_PRIVILEGE_ORG_ID, model.getOrgID());
-        cv.put(cSQLDBHelper.KEY_PRIVILEGE_GROUP_BITS, model.getGroupBITS());
-        cv.put(cSQLDBHelper.KEY_PRIVILEGE_PERMS_BITS, model.getPermsBITS());
-        cv.put(cSQLDBHelper.KEY_PRIVILEGE_STATUS_BITS, model.getStatusBITS());
-        cv.put(cSQLDBHelper.KEY_PRIVILEGE_NAME, model.getName());
-        cv.put(cSQLDBHelper.KEY_PRIVILEGE_DESCRIPTION, model.getDescription());
-        cv.put(cSQLDBHelper.KEY_PRIVILEGE_MODIFIED_DATE, sdf.format(timestamp));
+        cv.put(cSQLDBHelper.KEY_OWNER_ID, model.getOwnerID());
+        cv.put(cSQLDBHelper.KEY_ORG_ID, model.getOrgID());
+        cv.put(cSQLDBHelper.KEY_GROUP_BITS, model.getGroupBITS());
+        cv.put(cSQLDBHelper.KEY_PERMS_BITS, model.getPermsBITS());
+        cv.put(cSQLDBHelper.KEY_STATUS_BITS, model.getStatusBITS());
+        cv.put(cSQLDBHelper.KEY_NAME, model.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, model.getDescription());
+        cv.put(cSQLDBHelper.KEY_MODIFIED_DATE, sdf.format(timestamp));
 
         // update a specific record
-        long result = db.update(cSQLDBHelper.TABLE_PRIVILEGE, cv,
+        long result = db.update(cSQLDBHelper.TABLE_tblPRIVILEGE, cv,
                 cSQLDBHelper.KEY_ORGANIZATION_FK_ID +" = ? AND "+
                         cSQLDBHelper.KEY_ROLE_FK_ID + "= ?"
                         ,
@@ -168,7 +168,7 @@ public class cPrivilegeDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         // construct a selection query
         String selectQuery = "SELECT * FROM " +
-                cSQLDBHelper.TABLE_PRIVILEGE + " WHERE " +
+                cSQLDBHelper.TABLE_tblPRIVILEGE + " WHERE " +
                 cSQLDBHelper.KEY_ORGANIZATION_FK_ID + "= ? AND " +
                 cSQLDBHelper.KEY_ROLE_FK_ID + "= ?";
 
@@ -182,16 +182,16 @@ public class cPrivilegeDBA {
                 do {
                     privilege.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
                     privilege.setPrivilegeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_FK_ID)));
-                    privilege.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_OWNER_ID)));
-                    privilege.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_ORG_ID)));
-                    privilege.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_GROUP_BITS)));
-                    privilege.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_PERMS_BITS)));
-                    privilege.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_STATUS_BITS)));
-                    privilege.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_NAME)));
-                    privilege.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_DESCRIPTION)));
-                    privilege.setCreatedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_CREATED_DATE))));
-                    privilege.setModifiedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_MODIFIED_DATE))));
-                    privilege.setSyncedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_SYNCED_DATE))));
+                    privilege.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    privilege.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+                    privilege.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    privilege.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    privilege.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    privilege.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    privilege.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    privilege.setCreatedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    privilege.setModifiedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    privilege.setSyncedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
@@ -215,7 +215,7 @@ public class cPrivilegeDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String selectQuery = "SELECT * FROM " +
-                cSQLDBHelper.TABLE_PRIVILEGE + " WHERE " +
+                cSQLDBHelper.TABLE_tblPRIVILEGE + " WHERE " +
                 cSQLDBHelper.KEY_ORGANIZATION_FK_ID + "= ? AND " +
                 cSQLDBHelper.KEY_ROLE_FK_ID + "= ?";
 
@@ -229,15 +229,15 @@ public class cPrivilegeDBA {
 
                     privilege.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
                     privilege.setPrivilegeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_FK_ID)));
-                    privilege.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_NAME)));
-                    privilege.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_DESCRIPTION)));
-                    privilege.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_OWNER_ID)));
-                    privilege.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_GROUP_BITS)));
-                    privilege.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_PERMS_BITS)));
-                    privilege.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_STATUS_BITS)));
-                    privilege.setCreatedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_CREATED_DATE))));
-                    privilege.setModifiedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_MODIFIED_DATE))));
-                    privilege.setSyncedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_SYNCED_DATE))));
+                    privilege.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    privilege.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    privilege.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    privilege.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    privilege.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    privilege.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    privilege.setCreatedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    privilege.setModifiedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    privilege.setSyncedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     privilegeModels.add(privilege);
 
@@ -266,12 +266,12 @@ public class cPrivilegeDBA {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String selectQuery = "SELECT * FROM "+ cSQLDBHelper.TABLE_PRIVILEGE +
-                " WHERE ((("+cSQLDBHelper.KEY_PRIVILEGE_GROUP_BITS +" & ?) != 0) " +
-                " OR (("+cSQLDBHelper.KEY_PRIVILEGE_OWNER_ID+" = ?) " +
-                " AND (("+cSQLDBHelper.KEY_PRIVILEGE_PERMS_BITS+" & ?) != 0)) " +
-                " OR ((("+cSQLDBHelper.KEY_PRIVILEGE_GROUP_BITS +" & ?) != 0) " +
-                " AND (("+cSQLDBHelper.KEY_PRIVILEGE_PERMS_BITS+" & ?) != 0)))";
+        String selectQuery = "SELECT * FROM "+ cSQLDBHelper.TABLE_tblPRIVILEGE +
+                " WHERE ((("+cSQLDBHelper.KEY_GROUP_BITS +" & ?) != 0) " +
+                " OR (("+cSQLDBHelper.KEY_OWNER_ID+" = ?) " +
+                " AND (("+cSQLDBHelper.KEY_PERMS_BITS+" & ?) != 0)) " +
+                " OR ((("+cSQLDBHelper.KEY_GROUP_BITS +" & ?) != 0) " +
+                " AND (("+cSQLDBHelper.KEY_PERMS_BITS+" & ?) != 0)))";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{
                 String.valueOf(primaryRole),
@@ -285,14 +285,14 @@ public class cPrivilegeDBA {
 
                     privilege.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
                     privilege.setPrivilegeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_FK_ID)));
-                    privilege.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_OWNER_ID)));
-                    privilege.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_ORG_ID)));
-                    privilege.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_GROUP_BITS)));
-                    privilege.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_PERMS_BITS)));
-                    privilege.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_STATUS_BITS)));
-                    privilege.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_NAME)));
-                    privilege.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_DESCRIPTION)));
-                    //menu.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_DATE))));
+                    privilege.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    privilege.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+                    privilege.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    privilege.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    privilege.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    privilege.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    privilege.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    //menu.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                     privilegeModelList.add(privilege);
 

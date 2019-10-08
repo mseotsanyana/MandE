@@ -30,7 +30,7 @@ public class cOutputActivityDBA {
         outputDBA = new cOutputDBA(context);
         activityDBA = new cActivityDBA(context);
     }
-
+/*
     public boolean addOuputActivity(cOutputActivityModel outputActivityModel){
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -94,4 +94,6 @@ public class cOutputActivityDBA {
 
         return outputActivityModelList;
     }
+
+ */
 }

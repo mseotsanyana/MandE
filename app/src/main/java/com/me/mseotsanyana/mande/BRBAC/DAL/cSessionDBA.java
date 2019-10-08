@@ -32,7 +32,7 @@ public class cSessionDBA {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_SESSION, null, null);
+        long result = db.delete(cSQLDBHelper.TABLE_tblSESSION, null, null);
 
         // close the database connection
         db.close();
@@ -48,24 +48,24 @@ public class cSessionDBA {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_SESSION_ID, sessionModel.getSessionID());
+        cv.put(cSQLDBHelper.KEY_ID, sessionModel.getSessionID());
         cv.put(cSQLDBHelper.KEY_USER_FK_ID, sessionModel.getUserID());
         cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, sessionModel.getOrganizationID());
         cv.put(cSQLDBHelper.KEY_ADDRESS_FK_ID, sessionModel.getAddressID());
-        cv.put(cSQLDBHelper.KEY_SESSION_NAME, sessionModel.getName());
-        cv.put(cSQLDBHelper.KEY_SESSION_SURNAME, sessionModel.getSurname());
-        cv.put(cSQLDBHelper.KEY_SESSION_PHOTO, sessionModel.getPhotoPath());
-        cv.put(cSQLDBHelper.KEY_SESSION_DESCRIPTION, sessionModel.getDescription());
-        cv.put(cSQLDBHelper.KEY_SESSION_EMAIL, sessionModel.getEmail());
-        cv.put(cSQLDBHelper.KEY_SESSION_WEBSITE, sessionModel.getWebsite());
-        cv.put(cSQLDBHelper.KEY_SESSION_PHONE, sessionModel.getPhone());
-        cv.put(cSQLDBHelper.KEY_SESSION_PASSWORD, sessionModel.getPassword());
-        cv.put(cSQLDBHelper.KEY_SESSION_SALT, sessionModel.getSalt());
-        //cv.put(cSQLDBHelper.KEY_SESSION_DATE, formatter.format(sessionModel.getCreateDate()));
+        cv.put(cSQLDBHelper.KEY_NAME, sessionModel.getName());
+        cv.put(cSQLDBHelper.KEY_SURNAME, sessionModel.getSurname());
+        cv.put(cSQLDBHelper.KEY_PHOTO, sessionModel.getPhotoPath());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, sessionModel.getDescription());
+        cv.put(cSQLDBHelper.KEY_EMAIL, sessionModel.getEmail());
+        cv.put(cSQLDBHelper.KEY_WEBSITE, sessionModel.getWebsite());
+        cv.put(cSQLDBHelper.KEY_PHONE, sessionModel.getPhone());
+        cv.put(cSQLDBHelper.KEY_PASSWORD, sessionModel.getPassword());
+        cv.put(cSQLDBHelper.KEY_SALT, sessionModel.getSalt());
+        //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(sessionModel.getCreateDate()));
 
         // insert outcome record
         try {
-            if (db.insert(cSQLDBHelper.TABLE_SESSION, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblSESSION, null, cv) < 0) {
                 return false;
             }
         } catch (Exception ex) {
@@ -86,22 +86,22 @@ public class cSessionDBA {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_SESSION_ID, sessionModel.getSessionID());
-        cv.put(cSQLDBHelper.KEY_SESSION_OWNER_ID, sessionModel.getOwnerID());
-        cv.put(cSQLDBHelper.KEY_SESSION_GROUP_BITS, sessionModel.getGroupBITS());
-        cv.put(cSQLDBHelper.KEY_SESSION_PERMS_BITS, sessionModel.getPermsBITS());
-        cv.put(cSQLDBHelper.KEY_SESSION_STATUS_BITS, sessionModel.getStatusBITS());
-        cv.put(cSQLDBHelper.KEY_SESSION_NAME, sessionModel.getName());
-        cv.put(cSQLDBHelper.KEY_SESSION_SURNAME, sessionModel.getSurname());
-        cv.put(cSQLDBHelper.KEY_SESSION_DESCRIPTION, sessionModel.getDescription());
-        cv.put(cSQLDBHelper.KEY_SESSION_EMAIL, sessionModel.getEmail());
-        cv.put(cSQLDBHelper.KEY_SESSION_PASSWORD, sessionModel.getPassword());
-        cv.put(cSQLDBHelper.KEY_SESSION_SALT, sessionModel.getSalt());
-        //cv.put(cSQLDBHelper.KEY_SESSION_DATE, formatter.format(sessionModel.getCreateDate()));
+        cv.put(cSQLDBHelper.KEY_ID, sessionModel.getSessionID());
+        cv.put(cSQLDBHelper.KEY_OWNER_ID, sessionModel.getOwnerID());
+        cv.put(cSQLDBHelper.KEY_GROUP_BITS, sessionModel.getGroupBITS());
+        cv.put(cSQLDBHelper.KEY_PERMS_BITS, sessionModel.getPermsBITS());
+        cv.put(cSQLDBHelper.KEY_STATUS_BITS, sessionModel.getStatusBITS());
+        cv.put(cSQLDBHelper.KEY_NAME, sessionModel.getName());
+        cv.put(cSQLDBHelper.KEY_SURNAME, sessionModel.getSurname());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, sessionModel.getDescription());
+        cv.put(cSQLDBHelper.KEY_EMAIL, sessionModel.getEmail());
+        cv.put(cSQLDBHelper.KEY_PASSWORD, sessionModel.getPassword());
+        cv.put(cSQLDBHelper.KEY_SALT, sessionModel.getSalt());
+        //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(sessionModel.getCreateDate()));
 
         // insert outcome record
         try {
-            if (db.insert(cSQLDBHelper.TABLE_SESSION, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblSESSION, null, cv) < 0) {
                 return false;
             }
         } catch (Exception ex) {
@@ -119,8 +119,8 @@ public class cSessionDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         // construct a selection query
         String selectQuery = "SELECT * FROM " +
-                cSQLDBHelper.TABLE_SESSION + " WHERE " +
-                cSQLDBHelper.KEY_SESSION_ID + "= ?";
+                cSQLDBHelper.TABLE_tblSESSION + " WHERE " +
+                cSQLDBHelper.KEY_ID + "= ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(sessionID)});
 
@@ -129,18 +129,18 @@ public class cSessionDBA {
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    session.setSessionID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_ID)));
-                    session.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_OWNER_ID)));
-                    session.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_GROUP_BITS)));
-                    session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_PERMS_BITS)));
-                    session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_STATUS_BITS)));
-                    session.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_NAME)));
-                    session.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_SURNAME)));
-                    session.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_DESCRIPTION)));
-                    session.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_EMAIL)));
-                    session.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_PASSWORD)));
-                    session.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_SALT)));
-                    //session.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_DATE))));
+                    session.setSessionID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    session.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    session.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    session.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    session.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SURNAME)));
+                    session.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    session.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_EMAIL)));
+                    session.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PASSWORD)));
+                    session.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SALT)));
+                    //session.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                 } while (cursor.moveToNext());
             }
@@ -165,8 +165,8 @@ public class cSessionDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         // construct a selection query
         String selectQuery = "SELECT * FROM " +
-                cSQLDBHelper.TABLE_SESSION + " WHERE " +
-                cSQLDBHelper.KEY_SESSION_EMAIL+" = ? "+" AND "+cSQLDBHelper.KEY_SESSION_PASSWORD+" = ?";
+                cSQLDBHelper.TABLE_tblSESSION + " WHERE " +
+                cSQLDBHelper.KEY_EMAIL+" = ? "+" AND "+cSQLDBHelper.KEY_PASSWORD+" = ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{email, password});
 
@@ -176,18 +176,18 @@ public class cSessionDBA {
                 do {
                     session = new cSessionModel();
 
-                    session.setSessionID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_ID)));
-                    session.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_OWNER_ID)));
-                    session.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_GROUP_BITS)));
-                    session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_PERMS_BITS)));
-                    session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_STATUS_BITS)));
-                    session.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_NAME)));
-                    session.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_SURNAME)));
-                    session.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_DESCRIPTION)));
-                    session.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_EMAIL)));
-                    session.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_PASSWORD)));
-                    session.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_SALT)));
-                    //session.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_DATE))));
+                    session.setSessionID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    session.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    session.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    session.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    session.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SURNAME)));
+                    session.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    session.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_EMAIL)));
+                    session.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PASSWORD)));
+                    session.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SALT)));
+                    //session.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                 } while (cursor.moveToNext());
             }
@@ -211,25 +211,25 @@ public class cSessionDBA {
         List<cSessionModel> sessionModelList = new ArrayList<>();
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM "+ cSQLDBHelper.TABLE_SESSION, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ cSQLDBHelper.TABLE_tblSESSION, null);
 
         try {
             if (cursor.moveToFirst()) {
                 do {
                     cSessionModel session = new cSessionModel();
 
-                    session.setSessionID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_ID)));
-                    session.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_OWNER_ID)));
-                    session.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_GROUP_BITS)));
-                    session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_PERMS_BITS)));
-                    session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_STATUS_BITS)));
-                    session.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_NAME)));
-                    session.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_SURNAME)));
-                    session.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_DESCRIPTION)));
-                    session.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_EMAIL)));
-                    session.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_PASSWORD)));
-                    session.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_SALT)));
-                    //session.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_DATE))));
+                    session.setSessionID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    session.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    session.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    session.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    session.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SURNAME)));
+                    session.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    session.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_EMAIL)));
+                    session.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PASSWORD)));
+                    session.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SALT)));
+                    //session.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                     sessionModelList.add(session);
 
@@ -259,13 +259,13 @@ public class cSessionDBA {
 
         // array of columns to fetch
         String[] columns = {
-                cSQLDBHelper.KEY_SESSION_ID
+                cSQLDBHelper.KEY_ID
         };
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         // selection criteria
-        String selection = cSQLDBHelper.KEY_SESSION_EMAIL + " = ?";
+        String selection = cSQLDBHelper.KEY_EMAIL + " = ?";
 
         // selection argument
         String[] selectionArgs = {email};
@@ -276,7 +276,7 @@ public class cSessionDBA {
         * SQL query equivalent to this query function is
         * SELECT session_id FROM session WHERE session_email = 'jack@androidtutorialshub.com';
         */
-        Cursor cursor = db.query(cSQLDBHelper.TABLE_SESSION, //Table to query
+        Cursor cursor = db.query(cSQLDBHelper.TABLE_tblSESSION, //Table to query
                 columns,                                  //columns to return
                 selection,                                //columns for the WHERE clause
                 selectionArgs,                            //The values for the WHERE clause
@@ -306,13 +306,13 @@ public class cSessionDBA {
 
         // array of columns to fetch
         String[] columns = {
-               cSQLDBHelper.KEY_SESSION_ID
+               cSQLDBHelper.KEY_ID
         };
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         // selection criteria
-        String selection = cSQLDBHelper.KEY_SESSION_EMAIL + " = ?" + " AND " + cSQLDBHelper.KEY_SESSION_PASSWORD + " = ?";
+        String selection = cSQLDBHelper.KEY_EMAIL + " = ?" + " AND " + cSQLDBHelper.KEY_PASSWORD + " = ?";
 
         // selection arguments
         String[] selectionArgs = {email, password};
@@ -323,7 +323,7 @@ public class cSessionDBA {
         * SQL query equivalent to this query function is
         * SELECT session_id FROM session WHERE session_email = 'jack@androidtutorialshub.com' AND session_password = 'qwerty';
         */
-        Cursor cursor = db.query(cSQLDBHelper.TABLE_SESSION, //Table to query
+        Cursor cursor = db.query(cSQLDBHelper.TABLE_tblSESSION, //Table to query
                 columns,                                  //columns to return
                 selection,                                //columns for the WHERE clause
                 selectionArgs,                            //The values for the WHERE clause
@@ -336,18 +336,18 @@ public class cSessionDBA {
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    session.setSessionID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_ID)));
-                    session.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_OWNER_ID)));
-                    session.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_GROUP_BITS)));
-                    session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_PERMS_BITS)));
-                    session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_STATUS_BITS)));
-                    session.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_NAME)));
-                    session.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_SURNAME)));
-                    session.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_DESCRIPTION)));
-                    session.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_EMAIL)));
-                    session.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_PASSWORD)));
-                    session.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_SALT)));
-                    //session.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SESSION_DATE))));
+                    session.setSessionID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    session.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    session.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    session.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    session.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SURNAME)));
+                    session.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    session.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_EMAIL)));
+                    session.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PASSWORD)));
+                    session.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SALT)));
+                    //session.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                 } while (cursor.moveToNext());
             }

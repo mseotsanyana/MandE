@@ -33,7 +33,7 @@ public class cMenuDBA {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_MENU, null, null);
+        long result = db.delete(cSQLDBHelper.TABLE_tblMENU, null, null);
 
         // close the database connection
         db.close();
@@ -49,15 +49,15 @@ public class cMenuDBA {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_MENU_ID, menuModel.getMenuID());
-        cv.put(cSQLDBHelper.KEY_MENU_PARENT_ID, menuModel.getParentID());
-        cv.put(cSQLDBHelper.KEY_MENU_NAME, menuModel.getName());
-        cv.put(cSQLDBHelper.KEY_MENU_DESCRIPTION, menuModel.getDescription());
-        //cv.put(cSQLDBHelper.KEY_MENU_DATE, formatter.format(menuModel.getCreateDate()));
+        cv.put(cSQLDBHelper.KEY_ID, menuModel.getMenuID());
+        cv.put(cSQLDBHelper.KEY_PARENT_FK_ID, menuModel.getParentID());
+        cv.put(cSQLDBHelper.KEY_NAME, menuModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, menuModel.getDescription());
+        //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(menuModel.getCreateDate()));
 
         // insert outcome record
         try {
-            if (db.insert(cSQLDBHelper.TABLE_MENU, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblMENU, null, cv) < 0) {
                 return false;
             }
         } catch (Exception ex) {
@@ -78,19 +78,19 @@ public class cMenuDBA {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_MENU_ID, menuModel.getMenuID());
-        cv.put(cSQLDBHelper.KEY_MENU_PARENT_ID, menuModel.getParentID());
-        cv.put(cSQLDBHelper.KEY_MENU_OWNER_ID, menuModel.getOwnerID());
-        cv.put(cSQLDBHelper.KEY_MENU_GROUP_BITS, menuModel.getGroupBITS());
-        cv.put(cSQLDBHelper.KEY_MENU_PERMS_BITS, menuModel.getPermsBITS());
-        cv.put(cSQLDBHelper.KEY_MENU_STATUS_BITS, menuModel.getStatusBITS());
-        cv.put(cSQLDBHelper.KEY_MENU_NAME, menuModel.getName());
-        cv.put(cSQLDBHelper.KEY_MENU_DESCRIPTION, menuModel.getDescription());
-        //cv.put(cSQLDBHelper.KEY_MENU_DATE, formatter.format(menuModel.getCreateDate()));
+        cv.put(cSQLDBHelper.KEY_ID, menuModel.getMenuID());
+        cv.put(cSQLDBHelper.KEY_PARENT_FK_ID, menuModel.getParentID());
+        cv.put(cSQLDBHelper.KEY_OWNER_ID, menuModel.getOwnerID());
+        cv.put(cSQLDBHelper.KEY_GROUP_BITS, menuModel.getGroupBITS());
+        cv.put(cSQLDBHelper.KEY_PERMS_BITS, menuModel.getPermsBITS());
+        cv.put(cSQLDBHelper.KEY_STATUS_BITS, menuModel.getStatusBITS());
+        cv.put(cSQLDBHelper.KEY_NAME, menuModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, menuModel.getDescription());
+        //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(menuModel.getCreateDate()));
 
         // insert outcome record
         try {
-            if (db.insert(cSQLDBHelper.TABLE_MENU, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblMENU, null, cv) < 0) {
                 return false;
             }
         } catch (Exception ex) {
@@ -108,8 +108,8 @@ public class cMenuDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         // construct a selection query
         String selectQuery = "SELECT * FROM " +
-                cSQLDBHelper.TABLE_MENU + " WHERE " +
-                cSQLDBHelper.KEY_MENU_ID + "= ?";
+                cSQLDBHelper.TABLE_tblMENU + " WHERE " +
+                cSQLDBHelper.KEY_ID + "= ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(menuID)});
 
@@ -118,15 +118,15 @@ public class cMenuDBA {
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    menu.setMenuID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_ID)));
-                    menu.setParentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_PARENT_ID)));
-                    menu.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_OWNER_ID)));
-                    menu.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_GROUP_BITS)));
-                    menu.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_PERMS_BITS)));
-                    menu.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_STATUS_BITS)));
-                    menu.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_NAME)));
-                    menu.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_DESCRIPTION)));
-                    //menu.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_DATE))));
+                    menu.setMenuID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    menu.setParentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
+                    menu.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    menu.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    menu.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    menu.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    menu.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    menu.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    //menu.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                 } while (cursor.moveToNext());
             }
@@ -150,22 +150,22 @@ public class cMenuDBA {
         List<cMenuModel> menuModelList = new ArrayList<>();
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM "+ cSQLDBHelper.TABLE_MENU, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ cSQLDBHelper.TABLE_tblMENU, null);
 
         try {
             if (cursor.moveToFirst()) {
                 do {
                     cMenuModel menu = new cMenuModel();
 
-                    menu.setMenuID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_ID)));
-                    menu.setParentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_PARENT_ID)));
-                    menu.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_OWNER_ID)));
-                    menu.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_GROUP_BITS)));
-                    menu.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_PERMS_BITS)));
-                    menu.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_STATUS_BITS)));
-                    menu.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_NAME)));
-                    menu.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_DESCRIPTION)));
-                    //menu.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_DATE))));
+                    menu.setMenuID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    menu.setParentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
+                    menu.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    menu.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    menu.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    menu.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    menu.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    menu.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    //menu.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                     menuModelList.add(menu);
 
@@ -193,8 +193,8 @@ public class cMenuDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String selectQuery = "SELECT * FROM " +
-                cSQLDBHelper.TABLE_MENU + " WHERE " +
-                cSQLDBHelper.KEY_MENU_PARENT_ID + "= ?";
+                cSQLDBHelper.TABLE_tblMENU + " WHERE " +
+                cSQLDBHelper.KEY_PARENT_FK_ID + "= ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(menuID)});
 
@@ -203,15 +203,15 @@ public class cMenuDBA {
                 do {
                     cMenuModel menu = new cMenuModel();
 
-                    menu.setMenuID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_ID)));
-                    menu.setParentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_PARENT_ID)));
-                    menu.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_OWNER_ID)));
-                    menu.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_GROUP_BITS)));
-                    menu.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_PERMS_BITS)));
-                    menu.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_STATUS_BITS)));
-                    menu.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_NAME)));
-                    menu.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_DESCRIPTION)));
-                    //menu.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MENU_DATE))));
+                    menu.setMenuID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    menu.setParentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
+                    menu.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    menu.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    menu.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    menu.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    menu.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    menu.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    //menu.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                     menuModelList.add(menu);
 

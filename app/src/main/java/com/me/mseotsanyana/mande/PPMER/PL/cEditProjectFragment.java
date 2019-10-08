@@ -227,7 +227,7 @@ public class cEditProjectFragment extends DialogFragment implements AdapterView.
                 }
 
                 projectHandler = new cProjectHandler(getActivity());
-                boolean result = projectHandler.updateProject(projectDomain);
+                /*--boolean result = projectHandler.updateProject(projectDomain);
 
                 if (result) {
                     callback.onEditProject(projectDomain);
@@ -235,7 +235,7 @@ public class cEditProjectFragment extends DialogFragment implements AdapterView.
                     Toast.makeText(getActivity(),
                             "Unable to Edit Project",
                             Toast.LENGTH_SHORT).show();
-                }
+                }*/
                 dismiss();
             }
         });

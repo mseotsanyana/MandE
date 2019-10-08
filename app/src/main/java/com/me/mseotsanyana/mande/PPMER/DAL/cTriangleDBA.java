@@ -29,7 +29,7 @@ public class cTriangleDBA {
         specificAimDBA = new cSpecificAimDBA(context);
         objectiveDBA = new cObjectiveDBA(context);
     }
-
+/*
     public List<cTriangleModel> getTriangleList() {
 
         List<cTriangleModel> triangleModelList = new ArrayList<>();
@@ -39,4 +39,6 @@ public class cTriangleDBA {
 
         return triangleModelList;
     }
+
+ */
 }

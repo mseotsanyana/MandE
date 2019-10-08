@@ -16,7 +16,7 @@ public class cIndicatorHandler extends cMapper<cIndicatorModel, cIndicatorDomain
         indicatorDBA = new cIndicatorDBA(context);
         this.context = context;
     }
-
+/*
     public boolean deleteAllIndicators() {
         return indicatorDBA.deleteAllIndicators();
     }
@@ -40,11 +40,11 @@ public class cIndicatorHandler extends cMapper<cIndicatorModel, cIndicatorDomain
 
         return indicatorDomain;
     }
-
+*/
     @Override
     protected cIndicatorModel DomainToModel(cIndicatorDomain domain) {
         cIndicatorModel model = new cIndicatorModel();
-
+/*
         model.setIndicatorID(domain.getIndicatorID());
         model.setOwnerID(domain.getOwnerID());
         model.setStatusID(domain.getStatusID());
@@ -52,14 +52,14 @@ public class cIndicatorHandler extends cMapper<cIndicatorModel, cIndicatorDomain
         model.setIndicatorDescription(domain.getIndicatorDescription());
         model.setIndicatorType(domain.getIndicatorType());
         model.setCreateDate(domain.getCreateDate());
-
+*/
         return model;
     }
 
     @Override
     protected cIndicatorDomain ModelToDomain(cIndicatorModel model) {
         cIndicatorDomain domain = new cIndicatorDomain();
-
+/*
         domain.setIndicatorID(model.getIndicatorID());
         domain.setOwnerID(model.getOwnerID());
         domain.setStatusID(model.getStatusID());
@@ -67,7 +67,7 @@ public class cIndicatorHandler extends cMapper<cIndicatorModel, cIndicatorDomain
         domain.setIndicatorDescription(model.getIndicatorDescription());
         domain.setIndicatorType(model.getIndicatorType());
         domain.setCreateDate(model.getCreateDate());
-
+*/
         return domain;
     }
 }

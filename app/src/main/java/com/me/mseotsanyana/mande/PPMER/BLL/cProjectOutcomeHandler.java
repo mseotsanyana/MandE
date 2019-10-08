@@ -21,6 +21,7 @@ public class cProjectOutcomeHandler extends cMapper<cProjectOutcomeModel, cProje
         projectOutcomeDBA = new cProjectOutcomeDBA(context);
         this.context = context;
     }
+/*
     // business rules for adding a project
     public boolean addProjectOutcome(cProjectOutcomeDomain domain) {
         // mapp the business domain to the model
@@ -41,7 +42,7 @@ public class cProjectOutcomeHandler extends cMapper<cProjectOutcomeModel, cProje
 
         return projectOutcomeDomain;
     }
-
+*/
     @Override
     protected cProjectOutcomeModel DomainToModel(cProjectOutcomeDomain domain) {
         cProjectOutcomeModel model = new cProjectOutcomeModel();

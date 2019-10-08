@@ -23,7 +23,7 @@ public class cProjectHandler extends cMapper<cLogFrameModel, cProjectDomain>
     //public cProjectHandler() {
         //projectDb = new cLogFrameDBA();
     //}
-
+/***
     // business rules for adding a project
     public boolean addProject(cProjectDomain domain) {
         // mapp the business domain to the model
@@ -98,12 +98,12 @@ public class cProjectHandler extends cMapper<cLogFrameModel, cProjectDomain>
 
         return null;
     }
-    */
 
+***/
     @Override
     protected cProjectDomain ModelToDomain(cLogFrameModel model) {
         cProjectDomain domain = new cProjectDomain();
-
+/*
         domain.setProjectID(model.getProjectID());
         domain.setOverallAimID(model.getOverallAimID());
         domain.setSpecificAimID(model.getSpecificAimID());
@@ -117,14 +117,14 @@ public class cProjectHandler extends cMapper<cLogFrameModel, cProjectDomain>
         domain.setCreateDate(model.getCreateDate());
         domain.setStartDate(model.getStartDate());
         domain.setCloseDate(model.getCloseDate());
-
+*/
         return domain;
     }
 
     @Override
     protected cLogFrameModel DomainToModel(cProjectDomain domain) {
         cLogFrameModel model = new cLogFrameModel();
-
+/*
         model.setProjectID(domain.getProjectID());
         model.setOverallAimID(domain.getOverallAimID());
         model.setSpecificAimID(domain.getSpecificAimID());
@@ -138,7 +138,7 @@ public class cProjectHandler extends cMapper<cLogFrameModel, cProjectDomain>
         model.setCreateDate(domain.getCreateDate());
         model.setStartDate(domain.getStartDate());
         model.setCloseDate(domain.getCloseDate());
-
+*/
         return model;
     }
 
