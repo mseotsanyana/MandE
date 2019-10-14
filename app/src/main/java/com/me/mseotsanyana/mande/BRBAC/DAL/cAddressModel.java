@@ -11,6 +11,7 @@ public class cAddressModel {
     private int addressID;
     private int serverID;
     private int ownerID;
+    private int orgID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
@@ -22,6 +23,26 @@ public class cAddressModel {
     private Date createdDate;
     private Date modifiedDate;
     private Date syncedDate;
+
+    cAddressModel(){}
+
+    cAddressModel(cAddressModel addressModel){
+        this.setAddressID(addressModel.getAddressID());
+        this.setServerID(addressModel.getServerID());
+        this.setOwnerID(addressModel.getOwnerID());
+        this.setOrgID(addressModel.getOrgID());
+        this.setGroupBITS(addressModel.getGroupBITS());
+        this.setPermsBITS(addressModel.getPermsBITS());
+        this.setStatusBITS(addressModel.getStatusBITS());
+        this.setStreet(addressModel.getStreet());
+        this.setCity(addressModel.getCity());
+        this.setProvince(addressModel.getProvince());
+        this.setPostalCode(addressModel.getPostalCode());
+        this.setCountry(addressModel.getCountry());
+        this.setCreatedDate(addressModel.getCreatedDate());
+        this.setModifiedDate(addressModel.getModifiedDate());
+        this.setSyncedDate(addressModel.getSyncedDate());
+    }
 
     public int getAddressID() {
         return addressID;
@@ -45,6 +66,14 @@ public class cAddressModel {
 
     public void setOwnerID(int ownerID) {
         this.ownerID = ownerID;
+    }
+
+    public int getOrgID() {
+        return orgID;
+    }
+
+    public void setOrgID(int orgID) {
+        this.orgID = orgID;
     }
 
     public int getGroupBITS() {

@@ -1,14 +1,10 @@
 package com.me.mseotsanyana.mande.BRBAC.DAL;
 
+import java.io.Serializable;
 import java.util.Date;
 
-/**
- * Created by mseotsanyana on 2017/05/25.
- */
-
-public class cValueModel {
-    private int valueID;
-    private int organizationID;
+public class cSettingModel implements Serializable {
+    private int settingID;
     private int serverID;
     private int ownerID;
     private int orgID;
@@ -22,20 +18,30 @@ public class cValueModel {
     private Date modifiedDate;
     private Date syncedDate;
 
-    public int getValueID() {
-        return valueID;
+    cSettingModel(){}
+
+    cSettingModel(cSettingModel settingModel){
+        this.setSettingID(settingModel.getSettingID());
+        this.setServerID(settingModel.getServerID());
+        this.setOwnerID(settingModel.getOwnerID());
+        this.setOrgID(settingModel.getOrgID());
+        this.setGroupBITS(settingModel.getGroupBITS());
+        this.setPermsBITS(settingModel.getPermsBITS());
+        this.setStatusBITS(settingModel.getStatusBITS());
+        this.setName(settingModel.getName());
+        this.setDescription(settingModel.getDescription());
+        this.setSettingValue(settingModel.getSettingValue());
+        this.setCreatedDate(settingModel.getCreatedDate());
+        this.setModifiedDate(settingModel.getModifiedDate());
+        this.setSyncedDate(settingModel.getSyncedDate());
     }
 
-    public void setValueID(int valueID) {
-        this.valueID = valueID;
+    public int getSettingID() {
+        return settingID;
     }
 
-    public int getOrganizationID() {
-        return organizationID;
-    }
-
-    public void setOrganizationID(int organizationID) {
-        this.organizationID = organizationID;
+    public void setSettingID(int settingID) {
+        this.settingID = settingID;
     }
 
     public int getServerID() {

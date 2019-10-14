@@ -1,40 +1,55 @@
 package com.me.mseotsanyana.mande.BRBAC.DAL;
 
-
 import java.util.Date;
+import java.util.Set;
 
-/**
- * Created by mseotsanyana on 2017/06/27.
- */
-
-public class cPermissionModel {
-    private int privilegeID;
+public class cNotificationModel {
+    private int notificationID;
     private int entityID;
     private int entityTypeID;
-    private int operationID;
-    private int statusID;
-
     private int serverID;
     private int ownerID;
     private int orgID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
+    private String name;
+    private String description;
     private Date createdDate;
     private Date modifiedDate;
     private Date syncedDate;
 
-    private cPrivilegeModel privilegeModel;
     private cEntityModel entityModel;
-    private cOperationModel operationModel;
-    private cStatusModel statusModel;
 
-    public int getPrivilegeID() {
-        return privilegeID;
+    private Set<cUserModel> publisherModels;
+    private Set<cUserModel> subscriberModels;
+    private Set<cSettingModel> settingModels;
+
+    cNotificationModel(){}
+
+    cNotificationModel(cNotificationModel notificationModel){
+        this.setNotificationID(notificationModel.getNotificationID());
+        this.setEntityID(notificationModel.getEntityID());
+        this.setEntityTypeID(notificationModel.getEntityTypeID());
+        this.setServerID(notificationModel.getServerID());
+        this.setOwnerID(notificationModel.getOwnerID());
+        this.setOrgID(notificationModel.getOrgID());
+        this.setGroupBITS(notificationModel.getGroupBITS());
+        this.setPermsBITS(notificationModel.getPermsBITS());
+        this.setStatusBITS(notificationModel.getStatusBITS());
+        this.setName(notificationModel.getName());
+        this.setDescription(notificationModel.getDescription());
+        this.setCreatedDate(notificationModel.getCreatedDate());
+        this.setModifiedDate(notificationModel.getModifiedDate());
+        this.setSyncedDate(notificationModel.getSyncedDate());
     }
 
-    public void setPrivilegeID(int privilegeID) {
-        this.privilegeID = privilegeID;
+    public int getNotificationID() {
+        return notificationID;
+    }
+
+    public void setNotificationID(int notificationID) {
+        this.notificationID = notificationID;
     }
 
     public int getEntityID() {
@@ -51,22 +66,6 @@ public class cPermissionModel {
 
     public void setEntityTypeID(int entityTypeID) {
         this.entityTypeID = entityTypeID;
-    }
-
-    public int getOperationID() {
-        return operationID;
-    }
-
-    public void setOperationID(int operationID) {
-        this.operationID = operationID;
-    }
-
-    public int getStatusID() {
-        return statusID;
-    }
-
-    public void setStatusID(int statusID) {
-        this.statusID = statusID;
     }
 
     public int getServerID() {
@@ -117,6 +116,22 @@ public class cPermissionModel {
         this.statusBITS = statusBITS;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -141,14 +156,6 @@ public class cPermissionModel {
         this.syncedDate = syncedDate;
     }
 
-    public cPrivilegeModel getPrivilegeModel() {
-        return privilegeModel;
-    }
-
-    public void setPrivilegeModel(cPrivilegeModel privilegeModel) {
-        this.privilegeModel = privilegeModel;
-    }
-
     public cEntityModel getEntityModel() {
         return entityModel;
     }
@@ -157,19 +164,27 @@ public class cPermissionModel {
         this.entityModel = entityModel;
     }
 
-    public cOperationModel getOperationModel() {
-        return operationModel;
+    public Set<cUserModel> getPublisherModels() {
+        return publisherModels;
     }
 
-    public void setOperationModel(cOperationModel operationModel) {
-        this.operationModel = operationModel;
+    public void setPublisherModels(Set<cUserModel> publisherModels) {
+        this.publisherModels = publisherModels;
     }
 
-    public cStatusModel getStatusModel() {
-        return statusModel;
+    public Set<cUserModel> getSubscriberModels() {
+        return subscriberModels;
     }
 
-    public void setStatusModel(cStatusModel statusModel) {
-        this.statusModel = statusModel;
+    public void setSubscriberModels(Set<cUserModel> subscriberModels) {
+        this.subscriberModels = subscriberModels;
+    }
+
+    public Set<cSettingModel> getSettingModels() {
+        return settingModels;
+    }
+
+    public void setSettingModels(Set<cSettingModel> settingModels) {
+        this.settingModels = settingModels;
     }
 }

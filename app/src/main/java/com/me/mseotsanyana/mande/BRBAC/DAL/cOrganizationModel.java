@@ -2,41 +2,56 @@ package com.me.mseotsanyana.mande.BRBAC.DAL;
 
 import com.me.mseotsanyana.mande.BRBAC.DAL.cValueModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
-public class cOrganizationModel
-{
+public class cOrganizationModel implements Serializable {
     private int organizationID;
-    private int addressID;
-
+    private int serverID;
     private int ownerID;
-    private String organizationName;
-    private String telephone;
+    private int orgID;
+    private int groupBITS;
+    private int permsBITS;
+    private int statusBITS;
+    private String name;
+    private String phone;
     private String fax;
-
     private String vision;
     private String mission;
-    private String emailAddress;
+    private String email;
     private String website;
-    private Date createDate;
+    private Date createdDate;
+    private Date modifiedDate;
+    private Date syncedDate;
 
-    public cOrganizationModel(){
+    Set<cUserModel> userModelSet;
+    Set<cRoleModel> roleModelSet;
+    Set<cValueModel> valueModelSet;
+    Set<cAddressModel> addressModelSet;
 
-    }
+    cOrganizationModel(){}
 
-    cOrganizationModel(int organizationID, String organizationName){
-        this.organizationID = organizationID;
-        this.organizationName = organizationName;
-    }
-
-    cOrganizationModel(int organizationID, int contactPersonID, int ownerID,
-                       String organizationName, String physicalAddress, String telephone,
-                       String fax, String vision, String mission, List<cValueModel> values,
-                       String emailAddress, String website, Date createDate){
-        this.organizationID = organizationID;
-        this.organizationName = organizationName;
+    cOrganizationModel(cOrganizationModel organizationModel){
+        this.setOrganizationID(organizationModel.getOrganizationID());
+        this.setServerID(organizationModel.getServerID());
+        this.setOwnerID(organizationModel.getOwnerID());
+        this.setOrgID(organizationModel.getOwnerID());
+        this.setGroupBITS(organizationModel.getGroupBITS());
+        this.setPermsBITS(organizationModel.getPermsBITS());
+        this.setStatusBITS(organizationModel.getStatusBITS());
+        this.setName(organizationModel.getName());
+        this.setPhone(organizationModel.getPhone());
+        this.setFax(organizationModel.getFax());
+        this.setVision(organizationModel.getVision());
+        this.setMission(organizationModel.getMission());
+        this.setEmail(organizationModel.getEmail());
+        this.setWebsite(organizationModel.getWebsite());
+        this.setCreatedDate(organizationModel.getCreatedDate());
+        this.setModifiedDate(organizationModel.getModifiedDate());
+        this.setSyncedDate(organizationModel.getSyncedDate());
     }
 
     public int getOrganizationID() {
@@ -47,12 +62,12 @@ public class cOrganizationModel
         this.organizationID = organizationID;
     }
 
-    public int getAddressID() {
-        return addressID;
+    public int getServerID() {
+        return serverID;
     }
 
-    public void setAddressID(int addressID) {
-        this.addressID = addressID;
+    public void setServerID(int serverID) {
+        this.serverID = serverID;
     }
 
     public int getOwnerID() {
@@ -63,28 +78,52 @@ public class cOrganizationModel
         this.ownerID = ownerID;
     }
 
-    public String getOrganizationName() {
-        return organizationName;
+    public int getOrgID() {
+        return orgID;
     }
 
-    public void setOrganizationName(String organizationName) {
-        this.organizationName = organizationName;
+    public void setOrgID(int orgID) {
+        this.orgID = orgID;
     }
 
-    public String getEmailAddress() {
-        return emailAddress;
+    public int getGroupBITS() {
+        return groupBITS;
     }
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
+    public void setGroupBITS(int groupBITS) {
+        this.groupBITS = groupBITS;
     }
 
-    public String getTelephone() {
-        return telephone;
+    public int getPermsBITS() {
+        return permsBITS;
     }
 
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
+    public void setPermsBITS(int permsBITS) {
+        this.permsBITS = permsBITS;
+    }
+
+    public int getStatusBITS() {
+        return statusBITS;
+    }
+
+    public void setStatusBITS(int statusBITS) {
+        this.statusBITS = statusBITS;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getFax() {
@@ -111,6 +150,14 @@ public class cOrganizationModel
         this.mission = mission;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getWebsite() {
         return website;
     }
@@ -119,12 +166,59 @@ public class cOrganizationModel
         this.website = website;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public Date getSyncedDate() {
+        return syncedDate;
+    }
+
+    public void setSyncedDate(Date syncedDate) {
+        this.syncedDate = syncedDate;
+    }
+
+    public Set<cUserModel> getUserModelSet() {
+        return userModelSet;
+    }
+
+    public void setUserModelSet(Set<cUserModel> userModelSet) {
+        this.userModelSet = userModelSet;
+    }
+
+    public Set<cRoleModel> getRoleModelSet() {
+        return roleModelSet;
+    }
+
+    public void setRoleModelSet(Set<cRoleModel> roleModelSet) {
+        this.roleModelSet = roleModelSet;
+    }
+
+    public Set<cValueModel> getValueModelSet() {
+        return valueModelSet;
+    }
+
+    public void setValueModelSet(Set<cValueModel> valueModelSet) {
+        this.valueModelSet = valueModelSet;
+    }
+
+    public Set<cAddressModel> getAddressModelSet() {
+        return addressModelSet;
+    }
+
+    public void setAddressModelSet(Set<cAddressModel> addressModelSet) {
+        this.addressModelSet = addressModelSet;
+    }
 }

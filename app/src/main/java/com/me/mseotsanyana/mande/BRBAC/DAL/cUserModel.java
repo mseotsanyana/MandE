@@ -2,16 +2,18 @@ package com.me.mseotsanyana.mande.BRBAC.DAL;
 
 
 import java.util.Date;
+import java.util.Set;
 
 public class cUserModel {
     private int userID;
     private int organizationID;
-    private int addressID;
+    private int serverID;
     private int ownerID;
+    private int orgID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
-    private String photoPath;
+    private String photo;
     private String name;
     private String surname;
     private String gender;
@@ -28,8 +30,20 @@ public class cUserModel {
     private Date modifiedDate;
     private Date syncedDate;
 
+    cOrganizationModel organizationModel;
+
+    Set<cAddressModel> addressModelSet;
+    Set<cSessionModel> sessionModelSet;
+    Set<cRoleModel> roleModelSet;
+    Set<cNotificationModel> publisherModelSet;
+    Set<cNotificationModel> subscriberModelSet;
+
     public int getUserID() {
         return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
     public int getOrganizationID() {
@@ -40,16 +54,12 @@ public class cUserModel {
         this.organizationID = organizationID;
     }
 
-    public int getAddressID() {
-        return addressID;
+    public int getServerID() {
+        return serverID;
     }
 
-    public void setAddressID(int addressID) {
-        this.addressID = addressID;
-    }
-
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setServerID(int serverID) {
+        this.serverID = serverID;
     }
 
     public int getOwnerID() {
@@ -58,6 +68,14 @@ public class cUserModel {
 
     public void setOwnerID(int ownerID) {
         this.ownerID = ownerID;
+    }
+
+    public int getOrgID() {
+        return orgID;
+    }
+
+    public void setOrgID(int orgID) {
+        this.orgID = orgID;
     }
 
     public int getGroupBITS() {
@@ -84,12 +102,12 @@ public class cUserModel {
         this.statusBITS = statusBITS;
     }
 
-    public String getPhotoPath() {
-        return photoPath;
+    public String getPhoto() {
+        return photo;
     }
 
-    public void setPhotoPath(String photoPath) {
-        this.photoPath = photoPath;
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     public String getName() {
@@ -210,5 +228,53 @@ public class cUserModel {
 
     public void setSyncedDate(Date syncedDate) {
         this.syncedDate = syncedDate;
+    }
+
+    public cOrganizationModel getOrganizationModel() {
+        return organizationModel;
+    }
+
+    public void setOrganizationModel(cOrganizationModel organizationModel) {
+        this.organizationModel = organizationModel;
+    }
+
+    public Set<cAddressModel> getAddressModelSet() {
+        return addressModelSet;
+    }
+
+    public void setAddressModelSet(Set<cAddressModel> addressModelSet) {
+        this.addressModelSet = addressModelSet;
+    }
+
+    public Set<cSessionModel> getSessionModelSet() {
+        return sessionModelSet;
+    }
+
+    public void setSessionModelSet(Set<cSessionModel> sessionModelSet) {
+        this.sessionModelSet = sessionModelSet;
+    }
+
+    public Set<cRoleModel> getRoleModelSet() {
+        return roleModelSet;
+    }
+
+    public void setRoleModelSet(Set<cRoleModel> roleModelSet) {
+        this.roleModelSet = roleModelSet;
+    }
+
+    public Set<cNotificationModel> getPublisherModelSet() {
+        return publisherModelSet;
+    }
+
+    public void setPublisherModelSet(Set<cNotificationModel> publisherModelSet) {
+        this.publisherModelSet = publisherModelSet;
+    }
+
+    public Set<cNotificationModel> getSubscriberModelSet() {
+        return subscriberModelSet;
+    }
+
+    public void setSubscriberModelSet(Set<cNotificationModel> subscriberModelSet) {
+        this.subscriberModelSet = subscriberModelSet;
     }
 }

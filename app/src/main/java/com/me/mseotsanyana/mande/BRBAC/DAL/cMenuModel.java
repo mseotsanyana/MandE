@@ -1,6 +1,7 @@
 package com.me.mseotsanyana.mande.BRBAC.DAL;
 
 import java.util.Date;
+import java.util.Set;
 
 /**
  * Created by mseotsanyana on 2017/08/24.
@@ -9,14 +10,21 @@ import java.util.Date;
 public class cMenuModel {
     private int menuID;
     private int parentID;
+    private int serverID;
     private int ownerID;
+    private int orgID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
     private String name;
     private String description;
-    private Date createDate;
+    private int settingValue;
+    private Date createdDate;
+    private Date modifiedDate;
+    private Date syncedDate;
 
+    private Set<cMenuModel> menuModelSet;
+    private Set<cRoleModel> roleModelSet;
 
     public int getMenuID() {
         return menuID;
@@ -34,12 +42,28 @@ public class cMenuModel {
         this.parentID = parentID;
     }
 
+    public int getServerID() {
+        return serverID;
+    }
+
+    public void setServerID(int serverID) {
+        this.serverID = serverID;
+    }
+
     public int getOwnerID() {
         return ownerID;
     }
 
     public void setOwnerID(int ownerID) {
         this.ownerID = ownerID;
+    }
+
+    public int getOrgID() {
+        return orgID;
+    }
+
+    public void setOrgID(int orgID) {
+        this.orgID = orgID;
     }
 
     public int getGroupBITS() {
@@ -82,11 +106,51 @@ public class cMenuModel {
         this.description = description;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public int getSettingValue() {
+        return settingValue;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setSettingValue(int settingValue) {
+        this.settingValue = settingValue;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public Date getSyncedDate() {
+        return syncedDate;
+    }
+
+    public void setSyncedDate(Date syncedDate) {
+        this.syncedDate = syncedDate;
+    }
+
+    public Set<cMenuModel> getMenuModelSet() {
+        return menuModelSet;
+    }
+
+    public void setMenuModelSet(Set<cMenuModel> menuModelSet) {
+        this.menuModelSet = menuModelSet;
+    }
+
+    public Set<cRoleModel> getRoleModelSet() {
+        return roleModelSet;
+    }
+
+    public void setRoleModelSet(Set<cRoleModel> roleModelSet) {
+        this.roleModelSet = roleModelSet;
     }
 }

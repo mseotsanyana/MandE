@@ -7,8 +7,9 @@ import java.util.Date;
  */
 
 public class cPrivilegeModel {
-    private int organizationID;
     private int privilegeID;
+    private int roleID;
+    private int serverID;
     private int ownerID;
     private int orgID;
     private int groupBITS;
@@ -20,13 +21,7 @@ public class cPrivilegeModel {
     private Date modifiedDate;
     private Date syncedDate;
 
-    public int getOrganizationID() {
-        return organizationID;
-    }
-
-    public void setOrganizationID(int organizationID) {
-        this.organizationID = organizationID;
-    }
+    private cPermissionModel permissionModel;
 
     public int getPrivilegeID() {
         return privilegeID;
@@ -34,6 +29,22 @@ public class cPrivilegeModel {
 
     public void setPrivilegeID(int privilegeID) {
         this.privilegeID = privilegeID;
+    }
+
+    public int getRoleID() {
+        return roleID;
+    }
+
+    public void setRoleID(int roleID) {
+        this.roleID = roleID;
+    }
+
+    public int getServerID() {
+        return serverID;
+    }
+
+    public void setServerID(int serverID) {
+        this.serverID = serverID;
     }
 
     public int getOwnerID() {
@@ -115,5 +126,13 @@ public class cPrivilegeModel {
 
     public void setSyncedDate(Date syncedDate) {
         this.syncedDate = syncedDate;
+    }
+
+    public cPermissionModel getPermissionModel() {
+        return permissionModel;
+    }
+
+    public void setPermissionModel(cPermissionModel permissionModel) {
+        this.permissionModel = permissionModel;
     }
 }

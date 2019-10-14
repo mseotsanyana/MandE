@@ -1,6 +1,7 @@
 package com.me.mseotsanyana.mande.BRBAC.DAL;
 
 import java.util.Date;
+import java.util.Set;
 
 /**
  * Created by mseotsanyana on 2017/08/24.
@@ -9,7 +10,9 @@ import java.util.Date;
 public class cRoleModel {
     private int roleID;
     private int organizationID;
+    private int serverID;
     private int ownerID;
+    private int orgID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
@@ -18,6 +21,12 @@ public class cRoleModel {
     private Date createdDate;
     private Date modifiedDate;
     private Date syncedDate;
+
+    private cOrganizationModel organizationModel;
+
+    private Set<cUserModel> userModelSet;
+    private Set<cMenuModel> menuModelSet;
+    private Set<cPrivilegeModel> privilegeModelSet;
 
     public int getRoleID() {
         return roleID;
@@ -35,12 +44,28 @@ public class cRoleModel {
         this.organizationID = organizationID;
     }
 
+    public int getServerID() {
+        return serverID;
+    }
+
+    public void setServerID(int serverID) {
+        this.serverID = serverID;
+    }
+
     public int getOwnerID() {
         return ownerID;
     }
 
     public void setOwnerID(int ownerID) {
         this.ownerID = ownerID;
+    }
+
+    public int getOrgID() {
+        return orgID;
+    }
+
+    public void setOrgID(int orgID) {
+        this.orgID = orgID;
     }
 
     public int getGroupBITS() {
@@ -105,5 +130,37 @@ public class cRoleModel {
 
     public void setSyncedDate(Date syncedDate) {
         this.syncedDate = syncedDate;
+    }
+
+    public cOrganizationModel getOrganizationModel() {
+        return organizationModel;
+    }
+
+    public void setOrganizationModel(cOrganizationModel organizationModel) {
+        this.organizationModel = organizationModel;
+    }
+
+    public Set<cUserModel> getUserModelSet() {
+        return userModelSet;
+    }
+
+    public void setUserModelSet(Set<cUserModel> userModelSet) {
+        this.userModelSet = userModelSet;
+    }
+
+    public Set<cMenuModel> getMenuModelSet() {
+        return menuModelSet;
+    }
+
+    public void setMenuModelSet(Set<cMenuModel> menuModelSet) {
+        this.menuModelSet = menuModelSet;
+    }
+
+    public Set<cPrivilegeModel> getPrivilegeModelSet() {
+        return privilegeModelSet;
+    }
+
+    public void setPrivilegeModelSet(Set<cPrivilegeModel> privilegeModelSet) {
+        this.privilegeModelSet = privilegeModelSet;
     }
 }
