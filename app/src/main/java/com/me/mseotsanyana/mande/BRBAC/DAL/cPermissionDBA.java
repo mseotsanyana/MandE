@@ -4,52 +4,311 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.me.mseotsanyana.mande.COM.cEntityBITS;
-import com.me.mseotsanyana.mande.COM.cOperationBITS;
-import com.me.mseotsanyana.mande.COM.cStatusBITS;
 import com.me.mseotsanyana.mande.PPMER.DAL.cSQLDBHelper;
+import com.me.mseotsanyana.mande.Util.cConstant;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
-import static com.me.mseotsanyana.mande.Util.cConstant.FORMAT_DATE;
-
 /**
- * Created by mseotsanyana on 2017/06/27.
+ * Created by mseotsanyana on 2017/08/24.
  */
 
 public class cPermissionDBA {
-    private static final String TAG = "cPermissionDBA";
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+    private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
+    private static String TAG = cPermissionDBA.class.getSimpleName();
 
     // an object of the database helper
     private cSQLDBHelper dbHelper;
-
     private cEntityDBA entityDBA;
     private cOperationDBA operationDBA;
-    private cStatusDBA statusDBA;
-
-
 
     public cPermissionDBA(Context context) {
         dbHelper = new cSQLDBHelper(context);
-//        entityDBA = new cEntityDBA(context);
-        //       operationDBA = new cOperationDBA(context);
-        //       statusDBA = new cStatusDBA(context);
 
+        entityDBA    = new cEntityDBA(context);
+        operationDBA = new cOperationDBA(context);
     }
 
-    public boolean deleteAllPermissions() {
+    /* ##################################### CREATE ACTIONS ##################################### */
+
+    public boolean addPermissionFromExcel(cPermissionModel permissionModel,
+                                          ArrayList<Integer> statuses) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // create content object for storing data
+        ContentValues cv = new ContentValues();
+
+        // assign values to the table fields
+        cv.put(cSQLDBHelper.KEY_PRIVILEGE_FK_ID, permissionModel.getPrivilegeID());
+        cv.put(cSQLDBHelper.KEY_ENTITY_FK_ID, permissionModel.getEntityID());
+        cv.put(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID, permissionModel.getEntityTypeID());
+        cv.put(cSQLDBHelper.KEY_OPERATION_FK_ID, permissionModel.getOperationID());
+
+        // insert outcome record
+        try {
+            if (db.insert(cSQLDBHelper.TABLE_tblPERMISSION, null, cv) < 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            Log.d(TAG,"Exception in importing: "+e.getMessage());
+        }
+
+        // close the database connection
+        db.close();
+
+        return true;
+    }
+
+    public boolean addPermission(cPermissionModel permissionModel) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // create content object for storing data
+        ContentValues cv = new ContentValues();
+
+        // assign values to the table fields
+        cv.put(cSQLDBHelper.KEY_PRIVILEGE_FK_ID, permissionModel.getPrivilegeID());
+        cv.put(cSQLDBHelper.KEY_ENTITY_FK_ID, permissionModel.getEntityID());
+        cv.put(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID, permissionModel.getEntityTypeID());
+        cv.put(cSQLDBHelper.KEY_OPERATION_FK_ID, permissionModel.getOperationID());
+        cv.put(cSQLDBHelper.KEY_SERVER_ID, permissionModel.getServerID());
+        cv.put(cSQLDBHelper.KEY_ORG_ID, permissionModel.getOrgID());
+        cv.put(cSQLDBHelper.KEY_OWNER_ID, permissionModel.getOwnerID());
+        cv.put(cSQLDBHelper.KEY_GROUP_BITS, permissionModel.getGroupBITS());
+        cv.put(cSQLDBHelper.KEY_PERMS_BITS, permissionModel.getPermsBITS());
+        cv.put(cSQLDBHelper.KEY_STATUS_BITS, permissionModel.getStatusBITS());
+
+        // insert outcome record
+        try {
+            if (db.insert(cSQLDBHelper.TABLE_tblPERMISSION, null, cv) < 0) {
+                return false;
+            }
+        } catch (Exception ex) {
+            Log.d("Exception in importing ", ex.getMessage().toString());
+        }
+
+        // close the database connection
+        db.close();
+
+        return true;
+    }
+
+    /* ###################################### READ ACTIONS ###################################### */
+
+    /**
+     * Read and filer permissions
+     * @param userID
+     * @param orgID
+     * @param primaryRole
+     * @param secondaryRoles
+     * @param operationBITS
+     * @param statusBITS
+     * @return
+     */
+    public List<cPermissionModel> getPermissionList(
+            int userID, int orgID, int primaryRole,
+            int secondaryRoles, int operationBITS, int statusBITS) {
+
+        List<cPermissionModel> permissionModels = new ArrayList<>();
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String selectQuery = "SELECT * FROM "+ cSQLDBHelper.TABLE_tblPERMISSION +
+                " WHERE ((("+cSQLDBHelper.KEY_GROUP_BITS +" & ?) != 0) " +
+                " OR (("+cSQLDBHelper.KEY_OWNER_ID+" = ?) " +
+                " AND (("+cSQLDBHelper.KEY_PERMS_BITS+" & ?) != 0)) " +
+                " OR ((("+cSQLDBHelper.KEY_GROUP_BITS +" & ?) != 0) " +
+                " AND (("+cSQLDBHelper.KEY_PERMS_BITS+" & ?) != 0)))";
+
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{
+                String.valueOf(primaryRole),
+                String.valueOf(userID),String.valueOf(operationBITS),
+                String.valueOf(secondaryRoles),String.valueOf(operationBITS)});
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    cPermissionModel permission = new cPermissionModel();
+
+                    permission.setPrivilegeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_FK_ID)));
+                    permission.setEntityID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_FK_ID)));
+                    permission.setEntityTypeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID)));
+                    permission.setOperationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_FK_ID)));
+                    permission.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+                    permission.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    permission.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+                    permission.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    permission.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    permission.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    permission.setCreatedDate(
+                            sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    permission.setModifiedDate(
+                            sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    permission.setSyncedDate(
+                            sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+
+                    // construct an entity object
+                    permission.setEntityModel(new cEntityModel(
+                            entityDBA.getEntityByID(permission.getEntityID(), permission.getEntityTypeID())));
+
+                    // construct an operation object
+                    permission.setOperationModel(new cOperationModel(operationDBA.getOperationByID(permission.getOperationID())));
+
+                    // populate permission statuses
+                    permission.setStatusModelSet(getStatusesByPermissionID(
+                            permission.getPrivilegeID(), permission.getEntityID(),
+                            permission.getEntityTypeID(), permission.getOperationID()));
+
+                    permissionModels.add(permission);
+
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Error while trying to get projects from database");
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+
+        // close the database connection
+        db.close();
+
+        return permissionModels;
+    }
+
+    /**
+     * Read statuses by permission ID
+     * @param privilegeID
+     * @param entityID
+     * @param entityTypeID
+     * @param operationID
+     * @return
+     */
+    public Set<cStatusModel> getStatusesByPermissionID(int privilegeID, int entityID, int entityTypeID, int operationID) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Set<cStatusModel> statusModelSet = new HashSet();
+
+        // construct a selection query
+        String selectQuery = "SELECT " +
+                "status." + cSQLDBHelper.KEY_ID + ", status." + cSQLDBHelper.KEY_SERVER_ID + ", " +
+                "status." + cSQLDBHelper.KEY_OWNER_ID + ", status." + cSQLDBHelper.KEY_ORG_ID + ", " +
+                "status." + cSQLDBHelper.KEY_GROUP_BITS +", status." + cSQLDBHelper.KEY_PERMS_BITS + ", " +
+                "status." + cSQLDBHelper.KEY_STATUS_BITS +", status." + cSQLDBHelper.KEY_NAME + ", " +
+                "status." + cSQLDBHelper.KEY_DESCRIPTION +", status." + cSQLDBHelper.KEY_CREATED_DATE + ", " +
+                "status." + cSQLDBHelper.KEY_MODIFIED_DATE +", status." + cSQLDBHelper.KEY_SYNCED_DATE +
+                " FROM " +
+                cSQLDBHelper.TABLE_tblPERMISSION + " perm, " +
+                cSQLDBHelper.TABLE_tblSTATUS + " status, " +
+                cSQLDBHelper.TABLE_tblPERM_STATUS + " perm_status " +
+                " WHERE perm."+cSQLDBHelper.KEY_PRIVILEGE_FK_ID + " = perm_status."+cSQLDBHelper.KEY_PRIVILEGE_FK_ID +
+                " AND perm."+cSQLDBHelper.KEY_ENTITY_FK_ID + " = perm_status."+cSQLDBHelper.KEY_ENTITY_FK_ID +
+                " AND perm."+cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + " = perm_status."+cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID +
+                " AND perm."+cSQLDBHelper.KEY_OPERATION_FK_ID + " = perm_status."+cSQLDBHelper.KEY_OPERATION_FK_ID +
+                " AND status."+cSQLDBHelper.KEY_ID + " = perm_status."+cSQLDBHelper.KEY_STATUS_FK_ID +
+                " AND perm."+cSQLDBHelper.KEY_PRIVILEGE_FK_ID +" = ? AND perm."+cSQLDBHelper.KEY_ENTITY_FK_ID +" = ?" +
+                " AND perm."+cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID +" = ? AND perm."+cSQLDBHelper.KEY_OPERATION_FK_ID +" = ?";
+
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(privilegeID), String.valueOf(entityID),
+                String.valueOf(entityTypeID), String.valueOf(operationID)});
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+
+                    cStatusModel status = new cStatusModel();
+
+                    status.setStatusID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    status.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+                    status.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    status.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+                    status.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    status.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    status.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    status.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    status.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    status.setCreatedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    status.setModifiedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    status.setSyncedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+
+                    statusModelSet.add(status);
+
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Error while trying to get projects from database");
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+
+        // close the database connection
+        db.close();
+
+        return statusModelSet;
+    }
+
+    /* ############################################# UPDATE ACTIONS ############################################# */
+
+    public boolean updatePermission(cPermissionModel model){
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // create content object for storing data
+        ContentValues cv = new ContentValues();
+
+        Date date= new Date();
+        Timestamp timestamp = new Timestamp(date.getTime());
+
+        // assign values to the table fields
+        //cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, model.getOrganizationID());
+        cv.put(cSQLDBHelper.KEY_ROLE_FK_ID, model.getPrivilegeID());
+        cv.put(cSQLDBHelper.KEY_OWNER_ID, model.getOwnerID());
+        cv.put(cSQLDBHelper.KEY_ORG_ID, model.getOrgID());
+        cv.put(cSQLDBHelper.KEY_GROUP_BITS, model.getGroupBITS());
+        cv.put(cSQLDBHelper.KEY_PERMS_BITS, model.getPermsBITS());
+        cv.put(cSQLDBHelper.KEY_STATUS_BITS, model.getStatusBITS());
+        cv.put(cSQLDBHelper.KEY_NAME, model.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, model.getDescription());
+        cv.put(cSQLDBHelper.KEY_MODIFIED_DATE, sdf.format(timestamp));
+
+        // update a specific record
+        long result = db.update(cSQLDBHelper.TABLE_tblPERMISSION, cv,
+                cSQLDBHelper.KEY_ORGANIZATION_FK_ID +" = ? AND "+
+                        cSQLDBHelper.KEY_ROLE_FK_ID + "= ?"
+                ,
+                new String[]{String.valueOf(model.getPrivilegeID()),
+                        String.valueOf(model.getEntityID())});
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+
+    /* ############################################# DELETE ACTIONS ############################################# */
+
+    /**
+     * Delete all permissions
+     * @return
+     */
+    public boolean deletePermissions() {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -62,175 +321,23 @@ public class cPermissionDBA {
         return result > -1;
     }
 
-    public boolean addPermissionFromExcel(cPermissionModel permissionModel) {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        long result = -1;
 
-        cPrivilegeModel privilegeModel = permissionModel.getPrivilegeModel();
-        cEntityModel entityModel = permissionModel.getEntityModel();
-        cOperationModel operationModel = permissionModel.getOperationModel();
-        cStatusModel statusModel = permissionModel.getStatusModel();
-
-        if ((privilegeModel != null) && (entityModel != null) && (operationModel != null) && (statusModel != null)) {
-
-            ContentValues cv = new ContentValues();
-
-            cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, permissionModel.getOrganizationID());
-            cv.put(cSQLDBHelper.KEY_PRIVILEGE_FK_ID, privilegeModel.getPrivilegeID());
-            cv.put(cSQLDBHelper.KEY_ENTITY_FK_ID, entityModel.getEntityID());
-            cv.put(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID, entityModel.getTypeID());
-            cv.put(cSQLDBHelper.KEY_OPERATION_FK_ID, operationModel.getOperationID());
-            cv.put(cSQLDBHelper.KEY_STATUS_FK_ID, statusModel.getStatusID());
-
-            // insert permission group record
-            result = db.insert(cSQLDBHelper.TABLE_tblPERMISSION, null, cv);
-        }
-
-        // close the database connection
-        db.close();
-
-        return result > -1;
-    }
-
-    public boolean updatePermissionFromExcel(cPermissionModel permissionModel) {
-
-        return true;
-    }
-
-    public boolean addPermission(cPermissionModel permissionModel) {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        long result = -1;
-
-        cPrivilegeModel privilegeModel = null;
-        cEntityModel entityModel = null;
-        cOperationModel operationModel = null;
-        cStatusModel statusModel = null;
-
-        if (permissionModel != null) {
-            privilegeModel = permissionModel.getPrivilegeModel();
-            entityModel = permissionModel.getEntityModel();
-            operationModel = permissionModel.getOperationModel();
-            statusModel = permissionModel.getStatusModel();
-        }
-
-        if (((privilegeModel != null) && (entityModel != null) &&
-                (operationModel != null) && (statusModel != null))) {
-
-            ContentValues cv = new ContentValues();
-
-            cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, permissionModel.getOrganizationID());
-            cv.put(cSQLDBHelper.KEY_PRIVILEGE_FK_ID, privilegeModel.getPrivilegeID());
-            cv.put(cSQLDBHelper.KEY_ENTITY_FK_ID, entityModel.getEntityID());
-            cv.put(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID, entityModel.getTypeID());
-            cv.put(cSQLDBHelper.KEY_OPERATION_FK_ID, operationModel.getOperationID());
-            cv.put(cSQLDBHelper.KEY_STATUS_FK_ID, statusModel.getStatusID());
-            cv.put(cSQLDBHelper.KEY_OWNER_ID, permissionModel.getOwnerID());
-            cv.put(cSQLDBHelper.KEY_ORG_ID, permissionModel.getOrgID());
-            cv.put(cSQLDBHelper.KEY_GROUP_BITS, permissionModel.getGroupBITS());
-            cv.put(cSQLDBHelper.KEY_PERMS_BITS, permissionModel.getPermsBITS());
-            cv.put(cSQLDBHelper.KEY_STATUS_BITS, permissionModel.getStatusBITS());
-
-            // insert permission group record
-            result = db.insert(cSQLDBHelper.TABLE_tblPERMISSION, null, cv);
-        }
-
-        // close the database connection
-        db.close();
-
-        return result > -1;
-    }
-
-    public boolean updatePermission(cPermissionModel permissionModel) {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        long result = -1;
-
-        cPrivilegeModel privilegeModel = null;
-        cEntityModel entityModel = null;
-        cOperationModel operationModel = null;
-        cStatusModel statusModel = null;
-
-        if (permissionModel != null) {
-            privilegeModel = permissionModel.getPrivilegeModel();
-            entityModel = permissionModel.getEntityModel();
-            operationModel = permissionModel.getOperationModel();
-            statusModel = permissionModel.getStatusModel();
-        }
-
-        if (((privilegeModel != null) && (entityModel != null) &&
-                (operationModel != null) && (statusModel != null))) {
-
-            ContentValues cv = new ContentValues();
-            // assign values to the table fields
-            cv.put(cSQLDBHelper.KEY_PRIVILEGE_FK_ID, privilegeModel.getPrivilegeID());
-            cv.put(cSQLDBHelper.KEY_ENTITY_FK_ID, entityModel.getEntityID());
-            cv.put(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID, entityModel.getTypeID());
-            cv.put(cSQLDBHelper.KEY_OPERATION_FK_ID, operationModel.getOperationID());
-            cv.put(cSQLDBHelper.KEY_STATUS_FK_ID, statusModel.getStatusID());
-            cv.put(cSQLDBHelper.KEY_OWNER_ID, permissionModel.getOwnerID());
-            cv.put(cSQLDBHelper.KEY_ORG_ID, permissionModel.getOrgID());
-            cv.put(cSQLDBHelper.KEY_GROUP_BITS, permissionModel.getGroupBITS());
-            cv.put(cSQLDBHelper.KEY_PERMS_BITS, permissionModel.getPermsBITS());
-            cv.put(cSQLDBHelper.KEY_STATUS_BITS, permissionModel.getStatusBITS());
-            cv.put(cSQLDBHelper.KEY_CREATED_DATE, sdf.format(permissionModel.getCreatedDate()));
-            cv.put(cSQLDBHelper.KEY_MODIFIED_DATE, sdf.format(permissionModel.getModifiedDate()));
-            cv.put(cSQLDBHelper.KEY_SYNCED_DATE, sdf.format(permissionModel.getSyncedDate()));
-
-            // update a specific record
-            result = db.update(cSQLDBHelper.TABLE_tblPERMISSION, cv,
-                    cSQLDBHelper.KEY_PRIVILEGE_FK_ID + " = ? AND " +
-                            cSQLDBHelper.KEY_ENTITY_FK_ID + " = ? AND " +
-                            cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + "= ? AND " +
-                            cSQLDBHelper.KEY_OPERATION_FK_ID + " = ? AND " +
-                            cSQLDBHelper.KEY_STATUS_FK_ID + " = ?",
-                    new String[]{String.valueOf(privilegeModel.getPrivilegeID()),
-                            String.valueOf(entityModel.getEntityID()),
-                            String.valueOf(entityModel.getTypeID()),
-                            String.valueOf(operationModel.getOperationID()),
-                            String.valueOf(statusModel.getStatusID())});
-
-            // close the database connection
-            db.close();
-
-        }
-
-        return result > -1;
-    }
-
+    /**
+     * Delete a specific permission
+     * @param permissionModel
+     * @return
+     */
     public boolean deletePermission(cPermissionModel permissionModel) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         long result = -1;
 
-        cPrivilegeModel privilegeModel = null;
-        cEntityModel entityModel = null;
-        cOperationModel operationModel = null;
-        cStatusModel statusModel = null;
-
         if (permissionModel != null) {
-            privilegeModel = permissionModel.getPrivilegeModel();
-            entityModel = permissionModel.getEntityModel();
-            operationModel = permissionModel.getOperationModel();
-            statusModel = permissionModel.getStatusModel();
-        }
-
-        if (((privilegeModel != null) && (entityModel != null) &&
-                (operationModel != null) && (statusModel != null))) {
 
             // delete a specific record
             result = db.delete(cSQLDBHelper.TABLE_tblPERMISSION,
-                    cSQLDBHelper.KEY_PRIVILEGE_FK_ID + " = ? AND " +
-                            cSQLDBHelper.KEY_ENTITY_FK_ID + " = ? AND " +
-                            cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + "= ? AND " +
-                            cSQLDBHelper.KEY_OPERATION_FK_ID + " = ? AND " +
-                            cSQLDBHelper.KEY_STATUS_FK_ID + " = ?",
-                    new String[]{String.valueOf(privilegeModel.getPrivilegeID()),
-                            String.valueOf(entityModel.getEntityID()),
-                            String.valueOf(entityModel.getTypeID()),
-                            String.valueOf(operationModel.getOperationID()),
-                            String.valueOf(statusModel.getStatusID())});
+                    cSQLDBHelper.KEY_ROLE_FK_ID + " = ?",
+                    new String[]{String.valueOf(permissionModel.getPrivilegeID())});
         }
 
         // close the database connection
@@ -239,886 +346,6 @@ public class cPermissionDBA {
         return result > -1;
     }
 
+    /* ############################################# SYNCED ACTIONS ############################################# */
 
-    public boolean deletePermissionByIDs(int privilegeID, int entityID, int typeID, int operationID, int statusID) {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // delete a specific record
-        long result = db.delete(cSQLDBHelper.TABLE_tblPERMISSION,
-                cSQLDBHelper.KEY_PRIVILEGE_FK_ID + " = ? AND " +
-                        cSQLDBHelper.KEY_ENTITY_FK_ID + " = ? AND " +
-                        cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + "= ? AND " +
-                        cSQLDBHelper.KEY_OPERATION_FK_ID + " = ? AND " +
-                        cSQLDBHelper.KEY_STATUS_FK_ID + " = ?",
-                new String[]{String.valueOf(privilegeID), String.valueOf(entityID),
-                        String.valueOf(typeID), String.valueOf(operationID),
-                        String.valueOf(statusID)});
-
-        // close the database connection
-        db.close();
-
-        return result > -1;
-    }
-
-    public boolean deletePermissionByEntityIDs(int organizationID, int privilegeID, int entityID, int typeID) {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // delete a specific record
-        long result = db.delete(cSQLDBHelper.TABLE_tblPERMISSION,
-                cSQLDBHelper.KEY_ORGANIZATION_FK_ID + " = ? AND " +
-                        cSQLDBHelper.KEY_PRIVILEGE_FK_ID + " = ? AND " +
-                        cSQLDBHelper.KEY_ENTITY_FK_ID + "= ? AND " +
-                        cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + " = ?",
-                new String[]{String.valueOf(organizationID), String.valueOf(privilegeID),
-                        String.valueOf(entityID), String.valueOf(typeID)});
-
-        // close the database connection
-        db.close();
-
-        return result > -1;
-    }
-
-    public List<cPermissionModel> getPermissionList(
-            int userID, int primaryRole, int secondaryRoles, int operationBITS, int statusBITS) {
-
-        List<cPermissionModel> permissionModels = new ArrayList<>();
-
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        // construct a selection query
-        //String selectQuery = "SELECT * FROM " + cSQLDBHelper.TABLE_tblPERMISSION;
-
-        String selectQuery = "SELECT * FROM " + cSQLDBHelper.TABLE_tblPERMISSION +
-                " WHERE (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) = ?) " +
-                " OR (((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & ?) != 0)) " +
-                " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & ?) != 0))" +
-                " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0)))";
-
-        //Cursor cursor = db.rawQuery(selectQuery, null);
-        Cursor cursor = db.rawQuery(selectQuery, new String[]{
-                String.valueOf(primaryRole), String.valueOf(primaryRole),
-                String.valueOf(userID), String.valueOf(operationBITS),
-                String.valueOf(secondaryRoles), String.valueOf(operationBITS),
-                String.valueOf(statusBITS)});
-
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    cPermissionModel permissionModel = new cPermissionModel();
-
-                    cPrivilegeModel privilegeModel = new cPrivilegeModel();
-                    cEntityModel entityModel = new cEntityModel();
-                    cOperationModel operationModel = new cOperationModel();
-
-                    privilegeModel.setPrivilegeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_FK_ID)));
-                    entityModel.setEntityID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_FK_ID)));
-                    entityModel.setTypeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID)));
-                    operationModel.setOperationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_FK_ID)));
-
-                    permissionModel.setPrivilegeModel(privilegeModel);
-                    permissionModel.setEntityModel(entityModel);
-                    permissionModel.setOperationModel(operationModel);
-                    permissionModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    permissionModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    permissionModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    permissionModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-
-                    permissionModels.add(permissionModel);
-
-                } while (cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Error while trying to get permission groups from database");
-        } finally {
-            if (cursor != null && !cursor.isClosed()) {
-                cursor.close();
-            }
-        }
-
-        // close the database connection
-        db.close();
-
-        return permissionModels;
-    }
-
-
-    public List<cPermissionModel> getDistinctPermissionList() {
-
-        List<cPermissionModel> permissionModels = new ArrayList<>();
-
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        // construct a selection query
-        String selectQuery = "SELECT " + cSQLDBHelper.KEY_PRIVILEGE_FK_ID + ", " +
-                cSQLDBHelper.KEY_ENTITY_FK_ID + ", " + cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + ", " +
-                "SUM(DISTINCT " + cSQLDBHelper.KEY_OPERATION_FK_ID + ") AS operations FROM " +
-                cSQLDBHelper.TABLE_tblPERMISSION + " GROUP BY " + cSQLDBHelper.KEY_PRIVILEGE_FK_ID + ", " +
-                cSQLDBHelper.KEY_ENTITY_FK_ID + ", " + cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID;
-
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    cPermissionModel permissionModel = new cPermissionModel();
-
-                    //permissionModel.setPrivilegeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_FK_ID)));
-                    //permissionModel.setEntityID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_FK_ID)));
-                    //permissionModel.setTypeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID)));
-                    //permissionModel.setOperationID(cursor.getInt(cursor.getColumnIndex("operations")));
-                    //permissionModel.setStatuses(cursor.getInt(cursor.getColumnIndex("statuses")));
-                    //permissionModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    //permissionModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    //permissionModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    //permissionModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    //permissionModel.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
-
-                    permissionModels.add(permissionModel);
-
-                } while (cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Error while trying to get permission groups from database");
-        } finally {
-            if (cursor != null && !cursor.isClosed()) {
-                cursor.close();
-            }
-        }
-
-        // close the database connection
-        db.close();
-
-        return permissionModels;
-    }
-
-    public cPermissionModel getPermissionByIDs(int privilegeID, int entityID, int typeID, int operationID) {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        // construct a selection query
-        String selectQuery = "SELECT * FROM " +
-                cSQLDBHelper.TABLE_tblPERMISSION + " WHERE " +
-                cSQLDBHelper.KEY_PRIVILEGE_FK_ID + "= ? AND " +
-                cSQLDBHelper.KEY_ENTITY_FK_ID + "= ? AND " +
-                cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + "= ? AND " +
-                cSQLDBHelper.KEY_OPERATION_FK_ID + " = ?";
-
-        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(privilegeID),
-                String.valueOf(entityID), String.valueOf(typeID), String.valueOf(operationID)});
-
-        cPermissionModel permission = new cPermissionModel();
-        cPrivilegeModel privilegeModel = new cPrivilegeModel();
-        cEntityModel entityModel = new cEntityModel();
-        cOperationModel operationModel = new cOperationModel();
-
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    privilegeModel.setPrivilegeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_FK_ID)));
-                    entityModel.setEntityID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_FK_ID)));
-                    entityModel.setTypeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID)));
-                    operationModel.setOperationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_FK_ID)));
-
-                    permission.setPrivilegeModel(privilegeModel);
-                    permission.setEntityModel(entityModel);
-                    permission.setOperationModel(operationModel);
-                    permission.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    permission.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    permission.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    permission.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    //permission.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
-                } while (cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Error while trying to get projects from database");
-        } finally {
-            if (cursor != null && !cursor.isClosed()) {
-                cursor.close();
-            }
-        }
-
-        // close the database connection
-        db.close();
-
-        return permission;
-    }                //cSQLDBHelper.KEY_DATE
-
-
-    public cPermissionModel getPermissionByIDs(int privilegeID, int entityID, int typeID) {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        // construct a selection query
-        String selectQuery = "SELECT * FROM " +
-                cSQLDBHelper.TABLE_tblPERMISSION + " WHERE " +
-                cSQLDBHelper.KEY_PRIVILEGE_FK_ID + "= ? AND " +
-                cSQLDBHelper.KEY_ENTITY_FK_ID + "= ? AND " +
-                cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + "= ?";
-
-        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(privilegeID),
-                String.valueOf(entityID), String.valueOf(typeID)});
-
-        cPermissionModel permission = new cPermissionModel();
-        cPrivilegeModel privilegeModel = new cPrivilegeModel();
-        cEntityModel entityModel = new cEntityModel();
-        cOperationModel operationModel = new cOperationModel();
-
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    privilegeModel.setPrivilegeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_FK_ID)));
-                    entityModel.setEntityID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_FK_ID)));
-                    entityModel.setTypeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID)));
-                    operationModel.setOperationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_FK_ID)));
-
-                    permission.setPrivilegeModel(privilegeModel);
-                    permission.setEntityModel(entityModel);
-                    permission.setOperationModel(operationModel);
-
-                    permission.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    permission.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    permission.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    permission.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                } while (cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Error while trying to get projects from database");
-        } finally {
-            if (cursor != null && !cursor.isClosed()) {
-                cursor.close();
-            }
-        }
-
-        // close the database connection
-        db.close();
-
-        return permission;
-    }
-
-    public ArrayList<cPermissionModel> getPermissionsByPrivilegeID(int privilegeID) {
-
-        ArrayList<cPermissionModel> permissionModels = new ArrayList<>();
-
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery("SELECT * FROM " +
-                cSQLDBHelper.TABLE_tblPRIVILEGE + " privilege," + cSQLDBHelper.TABLE_tblPERMISSION + " permission" +
-                " WHERE privilege." + cSQLDBHelper.KEY_ID + " = permission." + cSQLDBHelper.KEY_PRIVILEGE_FK_ID +
-                " AND " + privilegeID + " = privilege." + cSQLDBHelper.KEY_ID, null);
-        /*
-        Cursor cursor = db.rawQuery("SELECT permission." + cSQLDBHelper.KEY_FK_ID + ", permission." +
-                cSQLDBHelper.KEY_ENTITY_FK_ID + ", permission." + cSQLDBHelper.KEY_OPERATION_FK_ID + ", permission." +
-                cSQLDBHelper.KEY_OPERATION_TYPE_FK_ID + ", permission." + cSQLDBHelper.KEY_STATUS_FK_ID +
-                " FROM "+ cSQLDBHelper.TABLE_tblROLE +" role," + cSQLDBHelper.TABLE_tblPERMISSION +" permission" +
-                " WHERE role." + cSQLDBHelper.KEY_ID +" = permission." + cSQLDBHelper.KEY_FK_ID +
-                " AND "+ roleID + "= role." + cSQLDBHelper.KEY_ID, null);
-        */
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    cPermissionModel permission = new cPermissionModel();
-
-                    cPrivilegeModel privilegeModel = new cPrivilegeModel();
-                    cEntityModel entityModel = new cEntityModel();
-                    cOperationModel operationModel = new cOperationModel();
-
-                    privilegeModel.setPrivilegeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_FK_ID)));
-                    entityModel.setEntityID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_FK_ID)));
-                    entityModel.setTypeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID)));
-                    operationModel.setOperationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_FK_ID)));
-
-                    permission.setPrivilegeModel(privilegeModel);
-                    permission.setEntityModel(entityModel);
-                    permission.setOperationModel(operationModel);
-                    permission.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    permission.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    permission.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    permission.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    //permission.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
-
-                    permissionModels.add(permission);
-
-                } while (cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Error while trying to execute: 'getPermissionsByPrivilegeID()'");
-        } finally {
-            if (cursor != null && !cursor.isClosed()) {
-                cursor.close();
-            }
-        }
-
-        // close the database connection
-        db.close();
-
-        return permissionModels;
-    }
-
-    public ArrayList<cPermissionModel> getPermissionBITSByPrivilegeID(int privilegeID) {
-
-        ArrayList<cPermissionModel> permissionModels = new ArrayList<>();
-
-        String selectQuery = "SELECT privilege." + cSQLDBHelper.KEY_ID + " AS privilegeID, " +
-                " permission." + cSQLDBHelper.KEY_ENTITY_FK_ID + " AS entities, " +
-                " permission." + cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + " AS entity_type, " +
-                " SUM(DISTINCT " + cSQLDBHelper.KEY_OPERATION_FK_ID + ") AS operations " +
-                " FROM " + cSQLDBHelper.TABLE_tblPRIVILEGE + " privilege," + cSQLDBHelper.TABLE_tblPERMISSION + " permission" +
-                " WHERE privilege." + cSQLDBHelper.KEY_ID + " = permission." + cSQLDBHelper.KEY_PRIVILEGE_FK_ID +
-                " AND privilege." + cSQLDBHelper.KEY_ID + " = ? GROUP BY entities";
-
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(privilegeID)});
-
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    cPermissionModel permission = new cPermissionModel();
-                    cPrivilegeModel privilegeModel = new cPrivilegeModel();
-                    cEntityModel entityModel = new cEntityModel();
-                    cOperationModel operationModel = new cOperationModel();
-
-                    privilegeModel.setPrivilegeID(cursor.getInt(cursor.getColumnIndex("privilegeID")));
-                    entityModel.setEntityID(cursor.getInt(cursor.getColumnIndex("entities")));
-                    entityModel.setTypeID(cursor.getInt(cursor.getColumnIndex("entity_type")));
-                    operationModel.setOperationID(cursor.getInt(cursor.getColumnIndex("operations")));
-
-                    permission.setPrivilegeModel(privilegeModel);
-                    permission.setEntityModel(entityModel);
-                    permission.setOperationModel(operationModel);
-
-                    permissionModels.add(permission);
-
-                } while (cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Error while trying to execute: 'getPermissionBITSByPrivilegeID()'");
-        } finally {
-            if (cursor != null && !cursor.isClosed()) {
-                cursor.close();
-            }
-        }
-
-        // close the database connection
-        db.close();
-
-        return permissionModels;
-    }
-
-    public List<cRoleModel> getRolesByPrivilegeID(int privilegeID) {
-
-        List<cRoleModel> roleModels = new ArrayList<>();
-
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        String selectQuery = "SELECT role." + cSQLDBHelper.KEY_ID + ", role." +
-                cSQLDBHelper.KEY_NAME + ", role." + cSQLDBHelper.KEY_DESCRIPTION + ", role." +
-                cSQLDBHelper.KEY_CREATED_DATE + " FROM " +
-                cSQLDBHelper.TABLE_tblPRIVILEGE + " privilege, " +
-                cSQLDBHelper.TABLE_tblROLE + " role, " +
-                cSQLDBHelper.TABLE_tblPERMISSION + " privilege_role " +
-                "WHERE privilege." + cSQLDBHelper.KEY_ID + " = privilege_role." + cSQLDBHelper.KEY_PRIVILEGE_FK_ID +
-                " AND role." + cSQLDBHelper.KEY_ID + " = privilege_role." + cSQLDBHelper.KEY_ID +
-                " AND privilege." + cSQLDBHelper.KEY_ID + " = ?";
-
-        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(privilegeID)});
-
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    cRoleModel role = new cRoleModel();
-
-                    role.setRoleID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    role.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
-                    role.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    role.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    role.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    role.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    role.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    role.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    //role.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
-
-                    roleModels.add(role);
-
-                } while (cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Error while trying to get permission groups from database");
-        } finally {
-            if (cursor != null && !cursor.isClosed()) {
-                cursor.close();
-            }
-        }
-
-        // close the database connection
-        db.close();
-
-        return roleModels;
-    }
-
-    public ArrayList<Integer> getRoleIDsByPermissionID(int permissionID) {
-
-        ArrayList<Integer> roleIDs = new ArrayList<>();
-
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery("SELECT role." + cSQLDBHelper.KEY_ID + " FROM " +
-                cSQLDBHelper.TABLE_tblPERMISSION + " permission, " +
-                cSQLDBHelper.TABLE_tblROLE + " role, " +
-                cSQLDBHelper.TABLE_tblPERMISSION + " permission_role " +
-                "WHERE permission." + cSQLDBHelper.KEY_ID + " = permission_role." + cSQLDBHelper.KEY_ID +
-                " AND role." + cSQLDBHelper.KEY_ID + " = permission_role." + cSQLDBHelper.KEY_ID +
-                " AND " + permissionID + " = permission." + cSQLDBHelper.KEY_ID, null);
-
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    roleIDs.add(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                } while (cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Error while trying to get permission groups from database");
-        } finally {
-            if (cursor != null && !cursor.isClosed()) {
-                cursor.close();
-            }
-        }
-
-        // close the database connection
-        db.close();
-
-        return roleIDs;
-    }
-
-
-    public ArrayList<cPermissionTreeModel> getPermissionTreeDetails(
-            int userID, int primaryRole, int secondaryRoles, int operationBITS, int statusBITS) {
-
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        ArrayList<cPermissionTreeModel> permissionTreeModels = new ArrayList<>();
-
-        String selectQueryPerms = "SELECT * " +
-                " FROM " + cSQLDBHelper.TABLE_tblPERMISSION +
-                " WHERE (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) = ?) " +
-                " OR (((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & ?) != 0)) " +
-                " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & ?) != 0)) " +
-                " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0))) " +
-                " GROUP BY " + cSQLDBHelper.KEY_ORGANIZATION_FK_ID + ", " +
-                cSQLDBHelper.KEY_PRIVILEGE_FK_ID + ", " +
-                cSQLDBHelper.KEY_ENTITY_FK_ID + ", " +
-                cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID;
-
-        Cursor cursorPerms = db.rawQuery(selectQueryPerms, new String[]{
-                String.valueOf(primaryRole), String.valueOf(primaryRole),
-                String.valueOf(userID), String.valueOf(operationBITS),
-                String.valueOf(secondaryRoles), String.valueOf(operationBITS),
-                String.valueOf(statusBITS)});
-
-        String selectQueryOps, selectQueryOpsStatus;
-        Cursor cursorOps = null, cursorOpsStatus = null;
-
-        Gson gson = new Gson();
-
-        try {
-            if (cursorPerms.moveToFirst()) {
-                do {
-                    int organizationID = cursorPerms.getInt(cursorPerms.getColumnIndex(
-                            cSQLDBHelper.KEY_ORGANIZATION_FK_ID));
-                    int privilegeID = cursorPerms.getInt(cursorPerms.getColumnIndex(
-                            cSQLDBHelper.KEY_PRIVILEGE_FK_ID));
-                    int entityID = cursorPerms.getInt(cursorPerms.getColumnIndex(
-                            cSQLDBHelper.KEY_ENTITY_FK_ID));
-                    int typeID = cursorPerms.getInt(cursorPerms.getColumnIndex(
-                            cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID));
-
-                    cEntityModel entityModel = new cEntityModel();
-                    entityModel.setEntityID(entityID);
-                    entityModel.setTypeID(typeID);
-
-                    cPermissionTreeModel model = new cPermissionTreeModel(organizationID,
-                            privilegeID, entityModel);
-
-                    selectQueryOps = "SELECT " + cSQLDBHelper.KEY_OPERATION_FK_ID +
-                            " FROM " + cSQLDBHelper.TABLE_tblPERMISSION +
-                            " WHERE ((((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) = ?) " +
-                            " OR (((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
-                            " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & ?) != 0)) " +
-                            " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                            " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & ?) != 0)) " +
-                            " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0))) " +
-                            " AND ((" + cSQLDBHelper.KEY_ORGANIZATION_FK_ID + " = ? ) " +
-                            " AND (" + cSQLDBHelper.KEY_PRIVILEGE_FK_ID + " = ? ) " +
-                            " AND (" + cSQLDBHelper.KEY_ENTITY_FK_ID + " = ? ) " +
-                            " AND (" + cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + " = ?)))";
-
-                    // query operations of the privilege, entity and type
-                    cursorOps = db.rawQuery(selectQueryOps, new String[]{
-                            String.valueOf(primaryRole), String.valueOf(primaryRole),
-                            String.valueOf(userID), String.valueOf(operationBITS),
-                            String.valueOf(secondaryRoles), String.valueOf(operationBITS),
-                            String.valueOf(statusBITS),
-                            String.valueOf(model.getOrganizationID()),
-                            String.valueOf(model.getPrivilegeID()),
-                            String.valueOf(model.getEntityModel().getEntityID()),
-                            String.valueOf(model.getEntityModel().getTypeID())});
-
-                    Set<Integer> ops = new HashSet<>();
-                    if (cursorOps.moveToFirst()) {
-                        do {
-                            ops.add(cursorOps.getInt(
-                                    cursorOps.getColumnIndex(cSQLDBHelper.KEY_OPERATION_FK_ID)));
-                        } while (cursorOps.moveToNext());
-                    }
-
-                    // permission details map
-                    HashMap<cOperationModel, HashMap<cStatusModel, cPermissionModel>>
-                            operationMap = new HashMap<>();
-
-                    // prepare the operation models list
-                    List<Integer> listOps = new ArrayList<Integer>(ops);
-                    List<cOperationModel> operationModels = new ArrayList<>();
-                    for (int i = 0; i < listOps.size(); i++) {
-                        cOperationModel operationModel = new cOperationModel();
-                        operationModel.setOperationID(listOps.get(i));
-                        operationModels.add(i, operationModel);
-                    }
-
-                    //
-                    if (!operationModels.isEmpty()) {
-
-                        selectQueryOpsStatus = "SELECT * " +
-                                " FROM " + cSQLDBHelper.TABLE_tblPERMISSION +
-                                " WHERE ((((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) = ?) " +
-                                " OR (((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
-                                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & ?) != 0)) " +
-                                " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & ?) != 0)) " +
-                                " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0))) " +
-                                " AND ((" + cSQLDBHelper.KEY_ORGANIZATION_FK_ID + " = ? )" +
-                                " AND (" + cSQLDBHelper.KEY_PRIVILEGE_FK_ID + " = ? )" +
-                                " AND (" + cSQLDBHelper.KEY_ENTITY_FK_ID + " = ? )" +
-                                " AND (" + cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + " = ? )" +
-                                " AND (" + cSQLDBHelper.KEY_OPERATION_FK_ID + " = ? )))";
-
-                        for (int i = 0; i < operationModels.size(); i++) {
-                            cursorOpsStatus = db.rawQuery(selectQueryOpsStatus, new String[]{
-                                    String.valueOf(primaryRole), String.valueOf(primaryRole),
-                                    String.valueOf(userID), String.valueOf(operationBITS),
-                                    String.valueOf(secondaryRoles), String.valueOf(operationBITS),
-                                    String.valueOf(statusBITS),
-                                    String.valueOf(model.getOrganizationID()),
-                                    String.valueOf(model.getPrivilegeID()),
-                                    String.valueOf(model.getEntityModel().getEntityID()),
-                                    String.valueOf(model.getEntityModel().getTypeID()),
-                                    String.valueOf(operationModels.get(i).getOperationID())});
-
-                            if (cursorOpsStatus.moveToFirst()) {
-                                // add status and other details
-                                HashMap<cStatusModel, cPermissionModel>
-                                        statusMap = new HashMap<>();
-                                do {
-                                    // permission details
-                                    cPermissionModel permissionModel = new cPermissionModel();
-
-                                    cPrivilegeModel privilegeModel = new cPrivilegeModel();
-                                    cOperationModel operationModel = new cOperationModel();
-                                    cStatusModel statusModel = new cStatusModel();
-
-                                    permissionModel.setOrganizationID(cursorOpsStatus.getInt(
-                                            cursorOpsStatus.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
-                                    privilegeModel.setPrivilegeID(cursorOpsStatus.getInt(
-                                            cursorOpsStatus.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_FK_ID)));
-                                    operationModel.setOperationID(cursorOpsStatus.getInt(
-                                            cursorOpsStatus.getColumnIndex(cSQLDBHelper.KEY_OPERATION_FK_ID)));
-                                    statusModel.setStatusID(cursorOpsStatus.getInt(
-                                            cursorOpsStatus.getColumnIndex(cSQLDBHelper.KEY_STATUS_FK_ID)));
-
-                                    //Log.d(TAG, "Status Model = "+gson.toJson(statusModel));
-
-                                    // set a composite key
-                                    permissionModel.setPrivilegeModel(privilegeModel);
-                                    permissionModel.setEntityModel(entityModel);
-                                    permissionModel.setOperationModel(operationModel);
-                                    permissionModel.setStatusModel(statusModel);
-
-                                    // set permission details other than a composite key
-                                    permissionModel.setOwnerID(cursorOpsStatus.getInt(
-                                            cursorOpsStatus.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                                    permissionModel.setOrgID(cursorOpsStatus.getInt(
-                                            cursorOpsStatus.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-
-                                    permissionModel.setGroupBITS(cursorOpsStatus.getInt(
-                                            cursorOpsStatus.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                                    permissionModel.setPermsBITS(cursorOpsStatus.getInt(
-                                            cursorOpsStatus.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                                    permissionModel.setStatusBITS(cursorOpsStatus.getInt(
-                                            cursorOpsStatus.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-
-                                    permissionModel.setCreatedDate(sdf.parse(cursorOpsStatus.getString(cursorOpsStatus.getColumnIndex(
-                                            cSQLDBHelper.KEY_CREATED_DATE))));
-                                    permissionModel.setModifiedDate(sdf.parse(cursorOpsStatus.getString(cursorOpsStatus.getColumnIndex(
-                                            cSQLDBHelper.KEY_MODIFIED_DATE))));
-                                    permissionModel.setSyncedDate(sdf.parse(cursorOpsStatus.getString(cursorOpsStatus.getColumnIndex(
-                                            cSQLDBHelper.KEY_SYNCED_DATE))));
-
-                                    //Log.d(TAG, "Permission Model = "+gson.toJson(permissionModel));
-
-                                    statusMap.put(statusModel, permissionModel);
-
-
-                                } while (cursorOpsStatus.moveToNext());
-
-                                // add all the details
-                                operationMap.put(operationModels.get(i), statusMap);
-                            }
-                        }
-                    }
-
-                    // update operation details
-                    model.setPermModelDetails(operationMap);
-
-                    // add the tree model
-                    permissionTreeModels.add(model);
-
-                } while (cursorPerms.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Error while trying to execute: 'getPermissionTreeDetails()'");
-        } finally {
-            if (cursorPerms != null && !cursorPerms.isClosed()) {
-                cursorPerms.close();
-                //cursorOps.close();
-            }
-        }
-
-        // close the database connection
-        db.close();
-
-        return permissionTreeModels;
-    }
-
-
-    public ArrayList<cOperationModel> getEntityOperations(int privilegeID, int entityID, int typeID) {
-
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        ArrayList<cOperationModel> operationModels = new ArrayList<>();
-
-        String selectQueryPerms = "SELECT " + cSQLDBHelper.KEY_PRIVILEGE_FK_ID + ", " +
-                cSQLDBHelper.KEY_ENTITY_FK_ID + ", " + cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + ", " +
-                cSQLDBHelper.KEY_OPERATION_FK_ID +
-                " FROM " + cSQLDBHelper.TABLE_tblPERMISSION +
-                " WHERE  " + cSQLDBHelper.KEY_PRIVILEGE_FK_ID + " = ? AND " +
-                cSQLDBHelper.KEY_ENTITY_FK_ID + " = ? AND " +
-                cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + " = ?";
-
-        Cursor cursorPerms = db.rawQuery(selectQueryPerms, new String[]{
-                String.valueOf(privilegeID),
-                String.valueOf(entityID),
-                String.valueOf(typeID)});
-        try {
-            if (cursorPerms.moveToFirst()) {
-                do {
-                    // create objects to hold data
-                    /*
-                    cPermissionModel permission = new cPermissionModel();
-                    cPrivilegeModel privilegeModel = new cPrivilegeModel();
-                    cEntityModel entityModel = new cEntityModel();
-                    */
-                    cOperationModel operationModel = new cOperationModel();
-
-                    // get all privileges, entities and entity types and operations
-                    /*
-                    privilegeModel.setPrivilegeID(cursorPerms.getInt(cursorPerms.getColumnIndex(
-                            cSQLDBHelper.KEY_PRIVILEGE_FK_ID)));
-                    entityModel.setEntityID(cursorPerms.getInt(cursorPerms.getColumnIndex(
-                            cSQLDBHelper.KEY_ENTITY_FK_ID)));
-                    entityModel.setTypeID(cursorPerms.getInt(cursorPerms.getColumnIndex(
-                            cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID)));
-                    */
-                    operationModel.setOperationID(cursorPerms.getInt(cursorPerms.getColumnIndex(
-                            cSQLDBHelper.KEY_OPERATION_FK_ID)));
-
-                    // set the objects to the permission object
-                    /*
-                    permission.setPrivilegeModel(privilegeModel);
-                    permission.setEntityModel(entityModel);
-                    permission.setOperationModel(operationModel);
-                    */
-
-                    // add data to the list
-                    operationModels.add(operationModel);
-
-                } while (cursorPerms.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Error while trying to execute: 'getEntityOperations()'");
-        } finally {
-            if (cursorPerms != null && !cursorPerms.isClosed()) {
-                cursorPerms.close();
-            }
-        }
-        return operationModels;
-    }
-
-
-    public List<cEntityBITS> getEntitiesBIT(ArrayList<cPrivilegeModel> privilegeModels) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        List<cEntityBITS> entityBITS = new ArrayList<>();
-
-        String[] privileges = new String[privilegeModels.size()];
-        for (int i = 0; i < privilegeModels.size(); i++) {
-            privileges[i] = String.valueOf(privilegeModels.get(i).getPrivilegeID());
-        }
-
-
-        // construct a selection query
-        String selectQuery = "SELECT " + cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + ", " +
-                " SUM(DISTINCT " + cSQLDBHelper.KEY_ENTITY_FK_ID + ") AS entityBITS " +
-                " FROM " + cSQLDBHelper.TABLE_tblPERMISSION +
-                " WHERE " + cSQLDBHelper.KEY_PRIVILEGE_FK_ID +
-                " IN (" + TextUtils.join(",",
-                Collections.nCopies(privileges.length, "?")) + ")" +
-                " GROUP BY " + cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID;
-
-        Cursor cursor = db.rawQuery(selectQuery, privileges);
-
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    cEntityBITS entityBIT = new cEntityBITS();
-
-                    entityBIT.setTypeID(cursor.getInt(
-                            cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID)));
-                    entityBIT.setEntityBITS(cursor.getInt(cursor.getColumnIndex("entityBITS")));
-
-                    entityBITS.add(entityBIT);
-
-                } while (cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Error while trying to get permission groups from database");
-        } finally {
-            if (cursor != null && !cursor.isClosed()) {
-                cursor.close();
-            }
-        }
-
-        // close the database connection
-        db.close();
-
-        return entityBITS;
-    }
-
-    public List<cOperationBITS> getOperationsBIT(ArrayList<cPrivilegeModel> privilegeModels) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        List<cOperationBITS> operationBITS = new ArrayList<>();
-
-        String[] privileges = new String[privilegeModels.size()];
-        for (int i = 0; i < privilegeModels.size(); i++) {
-            privileges[i] = String.valueOf(privilegeModels.get(i).getPrivilegeID());
-        }
-
-        // construct a selection query
-        String selectQuery = "SELECT " + cSQLDBHelper.KEY_ENTITY_FK_ID + ", " +
-                cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + ", " +
-                " SUM(DISTINCT " + cSQLDBHelper.KEY_OPERATION_FK_ID + ") AS operationBITS " +
-                " FROM " + cSQLDBHelper.TABLE_tblPERMISSION +
-                " WHERE " + cSQLDBHelper.KEY_PRIVILEGE_FK_ID +
-                " IN (" + TextUtils.join(",",
-                Collections.nCopies(privileges.length, "?")) + ")" +
-                " GROUP BY " + cSQLDBHelper.KEY_ENTITY_FK_ID + ", " + cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID;
-
-        Cursor cursor = db.rawQuery(selectQuery, privileges);
-
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    cOperationBITS operationBIT = new cOperationBITS();
-
-                    operationBIT.setEntityID(cursor.getInt(
-                            cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_FK_ID)));
-                    operationBIT.setTypeID(cursor.getInt(
-                            cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID)));
-                    operationBIT.setOperationBITS(cursor.getInt(
-                            cursor.getColumnIndex("operationBITS")));
-
-                    operationBITS.add(operationBIT);
-
-                } while (cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Error while trying to get permission groups from database");
-        } finally {
-            if (cursor != null && !cursor.isClosed()) {
-                cursor.close();
-            }
-        }
-
-        // close the database connection
-        db.close();
-
-        return operationBITS;
-    }
-
-    public List<cStatusBITS> getStatusesBIT(ArrayList<cPrivilegeModel> privilegeModels) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        List<cStatusBITS> statusBITS = new ArrayList<>();
-
-        String[] privileges = new String[privilegeModels.size()];
-        for (int i = 0; i < privilegeModels.size(); i++) {
-            privileges[i] = String.valueOf(privilegeModels.get(i).getPrivilegeID());
-        }
-
-        // construct a selection query
-        String selectQuery = "SELECT " + cSQLDBHelper.KEY_ENTITY_FK_ID + ", " +
-                cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + ", " + cSQLDBHelper.KEY_OPERATION_FK_ID + ", " +
-                " SUM(DISTINCT " + cSQLDBHelper.KEY_STATUS_FK_ID + ") AS statusBITS " +
-                " FROM " + cSQLDBHelper.TABLE_tblPERMISSION +
-                " WHERE " + cSQLDBHelper.KEY_PRIVILEGE_FK_ID +
-                " IN (" + TextUtils.join(",",
-                Collections.nCopies(privileges.length, "?")) + ")" +
-                " GROUP BY " + cSQLDBHelper.KEY_ENTITY_FK_ID + ", " +
-                cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + ", " + cSQLDBHelper.KEY_OPERATION_FK_ID;
-
-        Cursor cursor = db.rawQuery(selectQuery, privileges);
-
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    cStatusBITS statusBIT = new cStatusBITS();
-
-                    statusBIT.setEntityID(cursor.getInt(
-                            cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_FK_ID)));
-                    statusBIT.setTypeID(cursor.getInt(
-                            cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID)));
-                    statusBIT.setOperationID(cursor.getInt(
-                            cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_FK_ID)));
-                    statusBIT.setStatusBITS(cursor.getInt(cursor.getColumnIndex("statusBITS")));
-
-                    statusBITS.add(statusBIT);
-
-                } while (cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Error while trying to get permission groups from database");
-        } finally {
-            if (cursor != null && !cursor.isClosed()) {
-                cursor.close();
-            }
-        }
-
-        // close the database connection
-        db.close();
-
-        return statusBITS;
-    }
 }

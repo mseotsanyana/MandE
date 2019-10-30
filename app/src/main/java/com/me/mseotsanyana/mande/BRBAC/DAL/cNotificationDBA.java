@@ -29,14 +29,21 @@ public class cNotificationDBA {
         entityDBA = new cEntityDBA(context);
     }
 
-    /* ############################################# CREATE ACTIONS ############################################# */
+    /* ##################################### CREATE ACTIONS ##################################### */
 
     /**
      * Add notifications from an excel file
-     * @param settingModel
-     * @return Boolean
+     *
+     * @param notificationModel
+     * @param publishers
+     * @param subscribers
+     * @param settings
+     * @return
      */
-    public boolean addNotificationFromExcel(cNotificationModel settingModel) {
+    public boolean addNotificationFromExcel(cNotificationModel notificationModel,
+                                            ArrayList<Integer> publishers,
+                                            ArrayList<Integer> subscribers,
+                                            ArrayList<Integer> settings ) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -44,9 +51,9 @@ public class cNotificationDBA {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, settingModel.getNotificationID());
-        cv.put(cSQLDBHelper.KEY_NAME, settingModel.getName());
-        cv.put(cSQLDBHelper.KEY_DESCRIPTION, settingModel.getDescription());
+        cv.put(cSQLDBHelper.KEY_ID, notificationModel.getNotificationID());
+        cv.put(cSQLDBHelper.KEY_NAME, notificationModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, notificationModel.getDescription());
 
         // insert a record
         try {

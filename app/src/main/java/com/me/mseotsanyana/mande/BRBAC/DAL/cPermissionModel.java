@@ -1,10 +1,10 @@
 package com.me.mseotsanyana.mande.BRBAC.DAL;
 
-
 import java.util.Date;
+import java.util.Set;
 
 /**
- * Created by mseotsanyana on 2017/06/27.
+ * Created by mseotsanyana on 2017/08/24.
  */
 
 public class cPermissionModel {
@@ -12,22 +12,39 @@ public class cPermissionModel {
     private int entityID;
     private int entityTypeID;
     private int operationID;
-    private int statusID;
-
     private int serverID;
     private int ownerID;
     private int orgID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
+    private String name;
+    private String description;
     private Date createdDate;
     private Date modifiedDate;
     private Date syncedDate;
 
-    private cPrivilegeModel privilegeModel;
-    private cEntityModel entityModel;
-    private cOperationModel operationModel;
-    private cStatusModel statusModel;
+    cEntityModel entityModel;
+    cOperationModel operationModel;
+    Set<cStatusModel> statusModelSet;
+
+    public cPermissionModel(){}
+
+    public cPermissionModel(cPermissionModel permissionModel){
+        this.setPrivilegeID(permissionModel.getPrivilegeID());
+        this.setEntityID(permissionModel.getEntityID());
+        this.setEntityTypeID(permissionModel.getEntityTypeID());
+        this.setOperationID(permissionModel.getOperationID());
+        this.setServerID(permissionModel.getServerID());
+        this.setOwnerID(permissionModel.getOwnerID());
+        this.setOrgID(permissionModel.getOrgID());
+        this.setGroupBITS(permissionModel.getGroupBITS());
+        this.setPermsBITS(permissionModel.getPermsBITS());
+        this.setStatusBITS(permissionModel.getStatusBITS());
+        this.setCreatedDate(permissionModel.getCreatedDate());
+        this.setModifiedDate(permissionModel.getModifiedDate());
+        this.setSyncedDate(permissionModel.getSyncedDate());
+    }
 
     public int getPrivilegeID() {
         return privilegeID;
@@ -61,14 +78,6 @@ public class cPermissionModel {
         this.operationID = operationID;
     }
 
-    public int getStatusID() {
-        return statusID;
-    }
-
-    public void setStatusID(int statusID) {
-        this.statusID = statusID;
-    }
-
     public int getServerID() {
         return serverID;
     }
@@ -84,6 +93,7 @@ public class cPermissionModel {
     public void setOwnerID(int ownerID) {
         this.ownerID = ownerID;
     }
+
 
     public int getOrgID() {
         return orgID;
@@ -117,6 +127,22 @@ public class cPermissionModel {
         this.statusBITS = statusBITS;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -141,14 +167,6 @@ public class cPermissionModel {
         this.syncedDate = syncedDate;
     }
 
-    public cPrivilegeModel getPrivilegeModel() {
-        return privilegeModel;
-    }
-
-    public void setPrivilegeModel(cPrivilegeModel privilegeModel) {
-        this.privilegeModel = privilegeModel;
-    }
-
     public cEntityModel getEntityModel() {
         return entityModel;
     }
@@ -165,11 +183,11 @@ public class cPermissionModel {
         this.operationModel = operationModel;
     }
 
-    public cStatusModel getStatusModel() {
-        return statusModel;
+    public Set<cStatusModel> getStatusModelSet() {
+        return statusModelSet;
     }
 
-    public void setStatusModel(cStatusModel statusModel) {
-        this.statusModel = statusModel;
+    public void setStatusModelSet(Set<cStatusModel> statusModelSet) {
+        this.statusModelSet = statusModelSet;
     }
 }

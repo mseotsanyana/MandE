@@ -32,8 +32,6 @@ import com.me.mseotsanyana.mande.BRBAC.BLL.cOperationHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cPermissionDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cPermissionHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cPermissionTreeDomain;
-import com.me.mseotsanyana.mande.BRBAC.BLL.cPrivilegeDomain;
-import com.me.mseotsanyana.mande.BRBAC.BLL.cPrivilegeHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cRoleDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cRoleHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
@@ -72,7 +70,7 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
     private ArrayList<cPermissionDomain> selectedPermissions;
 
     private cRoleHandler roleHandler;
-    private cPrivilegeHandler privilegeHandler;
+    private cPermissionHandler privilegeHandler;
     private cPermissionHandler permissionHandler;
     private cOperationHandler operationHandler;
     private cStatusHandler statusHandler;
@@ -134,7 +132,7 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
         // getting a action_list with all projects in a database
 
         roleHandler = new cRoleHandler(getActivity(), session);
-        privilegeHandler = new cPrivilegeHandler(getActivity(), session);
+        privilegeHandler = new cPermissionHandler(getActivity(), session);
         permissionHandler = new cPermissionHandler(getActivity(), session);
         operationHandler = new cOperationHandler(getActivity());
         statusHandler = new cStatusHandler(getActivity());
@@ -227,7 +225,7 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
         final AppCompatEditText editTextPrivilegeDescription =
                 (AppCompatEditText) formElementsView.findViewById(R.id.editTextPrivilegeDescription);
 
-        final cPrivilegeDomain privilege = new cPrivilegeDomain();
+        final cPermissionDomain privilege = new cPermissionDomain();
 
         /** read roles to populate the spinner **/
         new cReadRoles().execute(singleSpinnerSearchRole, privilege);
@@ -295,13 +293,13 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
     /**
      * create new privilege task for adding privilege to the database
      **/
-    class cCreatePrivilegeTask extends AsyncTask<cPrivilegeDomain, Void, Boolean> {
+    class cCreatePrivilegeTask extends AsyncTask<cPermissionDomain, Void, Boolean> {
 
-        private cPrivilegeDomain privilege;
+        private cPermissionDomain privilege;
         private boolean result;
 
         @Override
-        protected Boolean doInBackground(cPrivilegeDomain... cPrivilegeDomains) {
+        protected Boolean doInBackground(cPermissionDomain... cPrivilegeDomains) {
             privilege = cPrivilegeDomains[0];
             result = privilegeHandler.addPrivilege(privilege);
 
@@ -330,13 +328,13 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
     class cReadRoles extends AsyncTask<Object, Void, ArrayList<cRoleDomain>> {
 
         private cSingleSpinnerSearch singleSpinnerSearchRole;
-        private cPrivilegeDomain privilege;
+        private cPermissionDomain privilege;
 
         @Override
         protected ArrayList<cRoleDomain> doInBackground(Object... objects) {
 
             singleSpinnerSearchRole = (cSingleSpinnerSearch) objects[0];
-            privilege = (cPrivilegeDomain) objects[1];
+            privilege = (cPermissionDomain) objects[1];
 
             final ArrayList<cRoleDomain> roles = roleHandler.getRoleList(
                     session.loadUserID(),                  /* loggedIn user */
@@ -413,8 +411,7 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
             secondaryRoles = (int) objects[3];
 
             permissionTree.clear();
-            ArrayList<cTreeModel> treeModels = permissionHandler.getPermissionTree(
-                    userID, orgID, primaryRole, secondaryRoles);
+            ArrayList<cTreeModel> treeModels = null;//-permissionHandler.getPermissionTree(userID, orgID, primaryRole, secondaryRoles);
 
             if (treeModels != null) {
                 permissionTree.addAll(treeModels);
@@ -461,12 +458,12 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
         final AppCompatEditText editTextPrivilegeDescription =
                 (AppCompatEditText) formElementsView.findViewById(R.id.editTextPrivilegeDescription);
 
-        final cPrivilegeDomain privilegeDomain = new cPrivilegeDomain((cPrivilegeDomain) treeModel.getModelObject());
+        final cPermissionDomain privilegeDomain = new cPermissionDomain((cPermissionDomain) treeModel.getModelObject());
 
         /** read roles to populate the spinner **/
         new cReadRoles().execute(singleSpinnerSearchRole, privilegeDomain);
 
-        //final cPrivilegeDomain privilegeDomain = (cPrivilegeDomain) treeModel.getModelObject();
+        //final cPermissionDomain privilegeDomain = (cPermissionDomain) treeModel.getModelObject();
 
         editTextPrivilegeName.setText(privilegeDomain.getName());
         editTextPrivilegeDescription.setText(privilegeDomain.getDescription());
@@ -536,13 +533,13 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
      **/
     class cUpdatePrivilegeTask extends AsyncTask<Object, Void, Boolean> {
 
-        private cPrivilegeDomain privilegeDomain;
+        private cPermissionDomain privilegeDomain;
         private cTreeModel treeModel;
         boolean result;
 
         @Override
         protected Boolean doInBackground(Object... objects) {
-            privilegeDomain = (cPrivilegeDomain) objects[0];
+            privilegeDomain = (cPermissionDomain) objects[0];
             treeModel = (cTreeModel) objects[1];
             treeModel.setModelObject(privilegeDomain);// update the modified privilege.
             result = privilegeHandler.updatePrivilege(privilegeDomain);
@@ -567,7 +564,7 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
      **/
     @Override
     public void onDeletePrivilege(cTreeModel treeModel, int position) {
-        cPrivilegeDomain privilegeDomain = (cPrivilegeDomain) treeModel.getModelObject();
+        cPermissionDomain privilegeDomain = (cPermissionDomain) treeModel.getModelObject();
 
         new cDeletePrivilegeTask().execute(privilegeDomain, treeModel);
     }
@@ -577,13 +574,13 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
      **/
     class cDeletePrivilegeTask extends AsyncTask<Object, Void, Boolean> {
 
-        private cPrivilegeDomain privilegeDomain;
+        private cPermissionDomain privilegeDomain;
         private cTreeModel treeModel;
         boolean result;
 
         @Override
         protected Boolean doInBackground(Object... objects) {
-            privilegeDomain = (cPrivilegeDomain) objects[0];
+            privilegeDomain = (cPermissionDomain) objects[0];
             treeModel = (cTreeModel) objects[1];
             result = privilegeHandler.deletePrivilege(privilegeDomain);
             return result;
@@ -630,7 +627,7 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
 
         private cNode parentNode;
         private View filterLayout;
-        private cPrivilegeDomain privilegeDomain;
+        private cPermissionDomain privilegeDomain;
         private ArrayList<cEntityDomain> entities;
         private ArrayList<cEntityDomain> selectedEntities;
         private cOperationDomain operationDomain;
@@ -651,7 +648,7 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
         @Override
         protected void onPostExecute(final ArrayList<cEntityDomain> entityDomains) {
             cTreeModel parentTreeModel = (cTreeModel) parentNode.getObj();
-            privilegeDomain = (cPrivilegeDomain) parentTreeModel.getModelObject();
+            privilegeDomain = (cPermissionDomain) parentTreeModel.getModelObject();
             //Log.d(TAG, gson.toJson(privilegeDomain));
 
             ArrayList<cNode> childNodes = parentNode.getChildren();
@@ -721,10 +718,10 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
                         cPermissionDomain permissionDomain = new cPermissionDomain();
 
                         permissionDomain.setOrganizationID(session.loadOrganizationID());
-                        permissionDomain.setPrivilegeDomain(privilegeDomain);
-                        permissionDomain.setEntityDomain(selectedEntities.get(j));
-                        permissionDomain.setOperationDomain(operationDomain);
-                        permissionDomain.setStatusDomain(statusDomain);
+                        //-permissionDomain.setPrivilegeDomain(privilegeDomain);
+                        //-permissionDomain.setEntityDomain(selectedEntities.get(j));
+                        //-permissionDomain.setOperationDomain(operationDomain);
+                        //-permissionDomain.setStatusDomain(statusDomain);
                         permissionDomain.setOwnerID(session.loadUserID());
                         permissionDomain.setOrgID(session.loadOrganizationID());
                         permissionDomain.setGroupBITS(session.loadPrimaryRole(
@@ -795,7 +792,7 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
         protected Boolean doInBackground(Object... objects) {
             permissions = (ArrayList<cPermissionDomain>) objects[0];
             for (int i = 0; i < permissions.size(); i++) {
-                result = permissionHandler.addPermission(permissions.get(i));
+                result = true;//-permissionHandler.addPermission(permissions.get(i));
                 if (!result) {
                     return false;
                 }
@@ -803,10 +800,10 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
 
             /** clear adapter for refreshing purposes **/
             permissionTree.clear();
-            treeModels = permissionHandler.getPermissionTree(
-                    session.loadUserID(), session.loadOrganizationID(),
-                    session.loadPrimaryRole(session.loadUserID(), session.loadOrganizationID()),
-                    session.loadSecondaryRoles(session.loadUserID(), session.loadOrganizationID()));
+            //-treeModels = permissionHandler.getPermissionTree(
+            //-        session.loadUserID(), session.loadOrganizationID(),
+            //-        session.loadPrimaryRole(session.loadUserID(), session.loadOrganizationID()),
+            //-        session.loadSecondaryRoles(session.loadUserID(), session.loadOrganizationID()));
 
             if (treeModels != null) {
                 permissionTree.addAll(treeModels);
@@ -843,7 +840,7 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
 
         private cNode parentNode;
         private cTreeModel parentTreeModel;
-        private cPrivilegeDomain privilegeDomain;
+        private cPermissionDomain privilegeDomain;
         private ArrayList<cEntityDomain> selectedEntities;
         private View filterLayout;
         private ArrayList<cEntityDomain> entities;
@@ -861,7 +858,7 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
             ArrayList<cNode> childNodes = parentNode.getChildren();
 
             parentTreeModel = (cTreeModel) parentNode.getObj();
-            privilegeDomain = (cPrivilegeDomain) parentTreeModel.getModelObject();
+            privilegeDomain = (cPermissionDomain) parentTreeModel.getModelObject();
 
             // create a pair list of entity ids and names
             List<cKeyPairBoolData> keyPairBoolEntities = new ArrayList<>();
@@ -931,8 +928,8 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
                     for (int j = 0; j < selectedEntities.size(); j++) {
                         cPermissionDomain permissionDomain = new cPermissionDomain();
 
-                        permissionDomain.setPrivilegeDomain(privilegeDomain);
-                        permissionDomain.setEntityDomain(selectedEntities.get(j));
+                        //-permissionDomain.setPrivilegeDomain(privilegeDomain);
+                        //-permissionDomain.setEntityDomain(selectedEntities.get(j));
 
                         selectedPermissions.add(permissionDomain);
                     }
@@ -983,12 +980,12 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
         protected Boolean doInBackground(Object... objects) {
             permissionDomains = (ArrayList<cPermissionDomain>) objects[0];
             for (int i = 0; i < permissionDomains.size(); i++) {
-                int orgID = permissionDomains.get(i).getPrivilegeDomain().getOrganizationID();
-                int privilegeID = permissionDomains.get(i).getPrivilegeDomain().getPrivilegeID();
-                int entityID = permissionDomains.get(i).getEntityDomain().getEntityID();
-                int typeID = permissionDomains.get(i).getEntityDomain().getTypeID();
+                //-int orgID = permissionDomains.get(i).getPrivilegeDomain().getOrganizationID();
+                //-int privilegeID = permissionDomains.get(i).getPrivilegeDomain().getPrivilegeID();
+                //-int entityID = permissionDomains.get(i).getEntityDomain().getEntityID();
+                //-int typeID = permissionDomains.get(i).getEntityDomain().getTypeID();
 
-                result = permissionHandler.deletePermissionByEntityIDs(orgID, privilegeID, entityID, typeID);
+                //-result = permissionHandler.deletePermissionByEntityIDs(orgID, privilegeID, entityID, typeID);
                 if (!result) {
                     return false;
                 }
@@ -997,10 +994,10 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
 
             /** clear adapter for refreshing purposes **/
             permissionTree.clear();
-            treeModels = permissionHandler.getPermissionTree(
-                    session.loadUserID(), session.loadOrganizationID(),
-                    session.loadPrimaryRole(session.loadUserID(), session.loadOrganizationID()),
-                    session.loadSecondaryRoles(session.loadUserID(), session.loadOrganizationID()));
+            //-treeModels = permissionHandler.getPermissionTree(
+            //-        session.loadUserID(), session.loadOrganizationID(),
+            //-        session.loadPrimaryRole(session.loadUserID(), session.loadOrganizationID()),
+            //-        session.loadSecondaryRoles(session.loadUserID(), session.loadOrganizationID()));
 
             if (treeModels != null) {
                 permissionTree.addAll(treeModels);

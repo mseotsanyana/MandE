@@ -4,8 +4,6 @@ import android.content.Context;
 
 
 import com.me.mseotsanyana.mande.BRBAC.DAL.cMenuModel;
-import com.me.mseotsanyana.mande.BRBAC.DAL.cMenuRoleDBA;
-import com.me.mseotsanyana.mande.BRBAC.DAL.cMenuRoleModel;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cRoleModel;
 import com.me.mseotsanyana.mande.PPMER.BLL.cMapper;
 

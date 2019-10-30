@@ -20,7 +20,6 @@ import com.me.mseotsanyana.mande.BRBAC.BLL.cEntityDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cOperationDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cPermissionDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cPermissionHandler;
-import com.me.mseotsanyana.mande.BRBAC.BLL.cPrivilegeDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cStatusDomain;
 import com.me.mseotsanyana.mande.Interface.iEntityTVHInterface;
@@ -927,7 +926,7 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
             /** deal with change of part of composite key operationID and statusID **/
             for (int i = 0; i < ops.length; i++) {
                 // populate privilege details
-                cPrivilegeDomain privilegeDomain = new cPrivilegeDomain();
+                cPermissionDomain privilegeDomain = new cPermissionDomain();
                 privilegeDomain.setPrivilegeID(privilegeID);
 
                 // populate entity details

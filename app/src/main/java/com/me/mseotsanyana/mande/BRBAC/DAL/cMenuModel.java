@@ -24,7 +24,6 @@ public class cMenuModel {
     private Date syncedDate;
 
     private Set<cMenuModel> menuModelSet;
-    private Set<cRoleModel> roleModelSet;
 
     public int getMenuID() {
         return menuID;
@@ -144,13 +143,5 @@ public class cMenuModel {
 
     public void setMenuModelSet(Set<cMenuModel> menuModelSet) {
         this.menuModelSet = menuModelSet;
-    }
-
-    public Set<cRoleModel> getRoleModelSet() {
-        return roleModelSet;
-    }
-
-    public void setRoleModelSet(Set<cRoleModel> roleModelSet) {
-        this.roleModelSet = roleModelSet;
     }
 }

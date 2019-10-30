@@ -41,10 +41,10 @@ public class cUserDBA {
     /**
      * Add user from an excel file
      * @param userModel
-     * @param organizationID
+     * @param addresses
      * @return
      */
-    public boolean addUserFromExcel(cUserModel userModel, int organizationID) {
+    public boolean addUserFromExcel(cUserModel userModel, ArrayList<Integer> addresses) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -53,7 +53,7 @@ public class cUserDBA {
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ID, userModel.getUserID());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, organizationID);
+        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, userModel.getOrganizationID());
         cv.put(cSQLDBHelper.KEY_NAME, userModel.getName());
         cv.put(cSQLDBHelper.KEY_SURNAME, userModel.getSurname());
         cv.put(cSQLDBHelper.KEY_GENDER, userModel.getGender());

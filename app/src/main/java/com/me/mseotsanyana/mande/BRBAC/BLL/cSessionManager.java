@@ -28,14 +28,14 @@ public class cSessionManager extends cBitwisePermission {
     private cUserDomain userDomain;
     private ArrayList<Integer> userOrganizationIDs;
     private ArrayList<cRoleDomain> userRoles;
-    private ArrayList<cPrivilegeDomain> rolePrivileges;
+    private ArrayList<cPermissionDomain> rolePrivileges;
 
     private List<cEntityBITS> entitiesBITS;
     private List<cOperationBITS> operationsBITS;
     private List<cStatusBITS> statusesBITS;
 
     private cUserRoleHandler userRoleHandler;
-    private cPrivilegeHandler privilegeHandler;
+    private cPermissionHandler privilegeHandler;
     private cPermissionHandler permissionHandler;
 
     public cSessionManager(Context context) {
@@ -44,7 +44,7 @@ public class cSessionManager extends cBitwisePermission {
         gson     = new Gson();
 
         userRoleHandler      = new cUserRoleHandler(context, this);
-        privilegeHandler     = new cPrivilegeHandler(context, this);
+        privilegeHandler     = new cPermissionHandler(context, this);
         permissionHandler    = new cPermissionHandler(context, this);
     }
 
@@ -214,7 +214,7 @@ public class cSessionManager extends cBitwisePermission {
      *
      * @return rolePrivileges
      */
-    public ArrayList<cPrivilegeDomain> getRolePrivileges() {
+    public ArrayList<cPermissionDomain> getRolePrivileges() {
         return rolePrivileges;
     }
 
@@ -223,7 +223,7 @@ public class cSessionManager extends cBitwisePermission {
      *
      * @param rolePrivileges
      */
-    public void setRolePrivileges(ArrayList<cPrivilegeDomain> rolePrivileges) {
+    public void setRolePrivileges(ArrayList<cPermissionDomain> rolePrivileges) {
         this.rolePrivileges = rolePrivileges;
     }
 
@@ -276,11 +276,11 @@ public class cSessionManager extends cBitwisePermission {
      * @param userRoles
      * @return mergedPrivileges
      */
-    public ArrayList<cPrivilegeDomain> getMergedPrivileges(ArrayList<cRoleDomain> userRoles) {
-        ArrayList<cPrivilegeDomain> mergedPrivileges = new ArrayList<cPrivilegeDomain>();
+    public ArrayList<cPermissionDomain> getMergedPrivileges(ArrayList<cRoleDomain> userRoles) {
+        ArrayList<cPermissionDomain> mergedPrivileges = new ArrayList<cPermissionDomain>();
 
         for (int i = 0; i < userRoles.size(); i++) {
-            ArrayList<cPrivilegeDomain> privileges = privilegeHandler.getPrivilegesByIDs(
+            ArrayList<cPermissionDomain> privileges = privilegeHandler.getPrivilegesByIDs(
                     userRoles.get(i).getOrganizationID(), userRoles.get(i).getRoleID());
             mergedPrivileges.addAll(privileges);
         }

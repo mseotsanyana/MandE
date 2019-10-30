@@ -28,9 +28,12 @@ public class cOrganizationDBA {
 
     // an object of the database helper
     private cSQLDBHelper dbHelper;
+    private cAddressDBA addressDBA;
 
     public cOrganizationDBA(Context context) {
         dbHelper = new cSQLDBHelper(context);
+
+        addressDBA = new cAddressDBA(context);
     }
 
     /* ############################################# CREATE ACTIONS ############################################# */
@@ -40,7 +43,7 @@ public class cOrganizationDBA {
      * @param organizationModel
      * @return Boolean
      */
-    public boolean addOrganizationFromExcel(cOrganizationModel organizationModel) {
+    public boolean addOrganizationFromExcel(cOrganizationModel organizationModel, ArrayList<Integer> addresses) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -63,6 +66,12 @@ public class cOrganizationDBA {
             if (db.insert(cSQLDBHelper.TABLE_tblORGANIZATION, null, cv) < 0) {
                 return false;
             }
+
+            // add organization address
+            for(int address: addresses){
+                addOrganizationAddress(organizationModel.getOrganizationID(), address);
+            }
+
         } catch (Exception ex) {
             Log.d("Exception in importing ", ex.getMessage().toString());
         }
@@ -107,6 +116,21 @@ public class cOrganizationDBA {
         db.close();
 
         return result > -1;
+    }
+
+    /*
+     * Creating todo_tag
+     */
+    public long addOrganizationAddress(int _id_organization, int _id_address) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, _id_organization);
+        cv.put(cSQLDBHelper.KEY_ADDRESS_FK_ID, _id_address);
+
+        long id = db.insert(cSQLDBHelper.TABLE_tblORG_ADDRESS, null, cv);
+
+        return id;
     }
 
     /* ############################################# READ ACTIONS ############################################# */

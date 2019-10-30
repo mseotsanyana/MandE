@@ -7,39 +7,32 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.me.mseotsanyana.mande.PPMER.DAL.cSQLDBHelper;
+import com.me.mseotsanyana.mande.Util.cConstant;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * Created by mseotsanyana on 2017/08/24.
  */
 
 public class cOperationDBA {
+    private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
+    private static String TAG = cOperationDBA.class.getSimpleName();
+
     // an object of the database helper
     private cSQLDBHelper dbHelper;
-
-    private static final SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-    private static final String TAG = "dbHelper";
 
     public cOperationDBA(Context context) {
         dbHelper = new cSQLDBHelper(context);
     }
 
-    public boolean deleteAllOperations() {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_tblOPERATION, null, null);
-
-        // close the database connection
-        db.close();
-
-        return result > -1;
-    }
+    /* ############################################# CREATE ACTIONS ############################################# */
 
     public boolean addOperationFromExcel(cOperationModel operationModel) {
         // open the connection to the database
@@ -52,15 +45,14 @@ public class cOperationDBA {
         cv.put(cSQLDBHelper.KEY_ID, operationModel.getOperationID());
         cv.put(cSQLDBHelper.KEY_NAME, operationModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, operationModel.getDescription());
-        //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(operationModel.getCreateDate()));
 
         // insert outcome record
         try {
             if (db.insert(cSQLDBHelper.TABLE_tblOPERATION, null, cv) < 0) {
                 return false;
             }
-        } catch (Exception ex) {
-            Log.d("Exception in importing ", ex.getMessage().toString());
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in reading: " + e.getMessage().toString());
         }
 
         // close the database connection
@@ -79,20 +71,20 @@ public class cOperationDBA {
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ID, actionModel.getOperationID());
         cv.put(cSQLDBHelper.KEY_OWNER_ID, actionModel.getOwnerID());
+        cv.put(cSQLDBHelper.KEY_ORG_ID, actionModel.getOrgID());
         cv.put(cSQLDBHelper.KEY_GROUP_BITS, actionModel.getGroupBITS());
         cv.put(cSQLDBHelper.KEY_PERMS_BITS, actionModel.getPermsBITS());
         cv.put(cSQLDBHelper.KEY_STATUS_BITS, actionModel.getStatusBITS());
         cv.put(cSQLDBHelper.KEY_NAME, actionModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, actionModel.getDescription());
-        //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(actionModel.getCreateDate()));
 
         // insert outcome record
         try {
             if (db.insert(cSQLDBHelper.TABLE_tblOPERATION, null, cv) < 0) {
                 return false;
             }
-        } catch (Exception ex) {
-            Log.d("Exception in importing ", ex.getMessage().toString());
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in reading: " + e.getMessage());
         }
 
         // close the database connection
@@ -100,6 +92,8 @@ public class cOperationDBA {
 
         return true;
     }
+
+    /* ############################################# READ ACTIONS ############################################# */
 
     public cOperationModel getOperationByID(int operationID) {
         // open the connection to the database
@@ -115,17 +109,21 @@ public class cOperationDBA {
 
         try {
             if (cursor.moveToFirst()) {
-                do {
-                    operation.setOperationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    operation.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    operation.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    operation.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    operation.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    operation.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    operation.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    //operation.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
-
-                } while (cursor.moveToNext());
+                operation.setOperationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                operation.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+                operation.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                operation.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+                operation.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                operation.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                operation.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                operation.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                operation.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                operation.setCreatedDate(
+                        sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                operation.setModifiedDate(
+                        sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                operation.setSyncedDate(
+                        sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
             }
         } catch (Exception e) {
             Log.d(TAG, "Error while trying to get projects from database");
@@ -141,13 +139,12 @@ public class cOperationDBA {
         return operation;
     }
 
-
     public List<cOperationModel> getOperationList() {
 
         List<cOperationModel> operationModelList = new ArrayList<>();
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM "+ cSQLDBHelper.TABLE_tblOPERATION, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + cSQLDBHelper.TABLE_tblOPERATION, null);
 
         try {
             if (cursor.moveToFirst()) {
@@ -180,4 +177,25 @@ public class cOperationDBA {
 
         return operationModelList;
     }
+
+    /* ############################################# UPDATE ACTIONS ############################################# */
+
+
+    /* ############################################# DELETE ACTIONS ############################################# */
+
+    public boolean deleteAllOperations() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblOPERATION, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    /* ############################################# SYNCED ACTIONS ############################################# */
+
 }

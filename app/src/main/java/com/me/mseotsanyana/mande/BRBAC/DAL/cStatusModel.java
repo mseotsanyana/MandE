@@ -8,13 +8,34 @@ import java.util.Date;
 
 public class cStatusModel {
     private int statusID;
+    private int serverID;
     private int ownerID;
+    private int orgID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
     private String name;
     private String description;
-    private Date createDate;
+    private Date createdDate;
+    private Date modifiedDate;
+    private Date syncedDate;
+
+    public cStatusModel(){}
+
+    public cStatusModel(cStatusModel statusModel){
+        this.setStatusID(statusModel.getStatusID());
+        this.setServerID(statusModel.getServerID());
+        this.setOwnerID(statusModel.getOwnerID());
+        this.setOrgID(statusModel.getOrgID());
+        this.setGroupBITS(statusModel.getGroupBITS());
+        this.setPermsBITS(statusModel.getPermsBITS());
+        this.setStatusBITS(statusModel.getStatusBITS());
+        this.setName(statusModel.getName());
+        this.setDescription(statusModel.getDescription());
+        this.setCreatedDate(statusModel.getCreatedDate());
+        this.setModifiedDate(statusModel.getModifiedDate());
+        this.setSyncedDate(statusModel.getSyncedDate());
+    }
 
     public int getStatusID() {
         return statusID;
@@ -24,6 +45,13 @@ public class cStatusModel {
         this.statusID = statusID;
     }
 
+    public int getServerID() {
+        return serverID;
+    }
+
+    public void setServerID(int serverID) {
+        this.serverID = serverID;
+    }
 
     public int getOwnerID() {
         return ownerID;
@@ -31,6 +59,14 @@ public class cStatusModel {
 
     public void setOwnerID(int ownerID) {
         this.ownerID = ownerID;
+    }
+
+    public int getOrgID() {
+        return orgID;
+    }
+
+    public void setOrgID(int orgID) {
+        this.orgID = orgID;
     }
 
     public int getGroupBITS() {
@@ -73,11 +109,27 @@ public class cStatusModel {
         this.description = description;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public Date getSyncedDate() {
+        return syncedDate;
+    }
+
+    public void setSyncedDate(Date syncedDate) {
+        this.syncedDate = syncedDate;
     }
 }

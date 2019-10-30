@@ -40,38 +40,37 @@ public class cSQLDBHelper extends SQLiteOpenHelper
     // Database Version
     private static final int DATABASE_VERSION = 2;
 
-    //############################ START BRBAC MODULE TABLES ###########################
-    public static final String TABLE_tblADDRESS          = "tblADDRESS";         /* 1  */
-    public static final String TABLE_tblORGANIZATION     = "tblORGANIZATION";    /* 2  */
-    public static final String TABLE_tblVALUE            = "tblVALUE";           /* 3  */
-    public static final String TABLE_tblUSER             = "tblUSER";            /* 4  */
-    public static final String TABLE_tblSESSION          = "tblSESSION";         /* 5  */
-    public static final String TABLE_tblROLE             = "tblROLE";            /* 6  */
-    public static final String TABLE_tblMENU             = "tblMENU";            /* 7  */
-    public static final String TABLE_tblPERMISSION       = "tblPERMISSION";      /* 8  */
-    public static final String TABLE_tblENTITY           = "tblENTITY";          /* 9  */
-    public static final String TABLE_tblOPERATION        = "tblOPERATION";       /* 10 */
-    public static final String TABLE_tblSTATUS           = "tblSTATUS";          /* 11 */
+    //############################ START BRBAC MODULE TABLES ############################
+    public static final String TABLE_tblADDRESS      = "tblADDRESS";         /* 1  */
+    public static final String TABLE_tblORGANIZATION = "tblORGANIZATION";    /* 2  */
+    public static final String TABLE_tblVALUE        = "tblVALUE";           /* 3  */
+    public static final String TABLE_tblUSER         = "tblUSER";            /* 4  */
+    public static final String TABLE_tblSESSION      = "tblSESSION";         /* 5  */
+    public static final String TABLE_tblROLE         = "tblROLE";            /* 6  */
+    public static final String TABLE_tblMENU         = "tblMENU";            /* 7  */
+    public static final String TABLE_tblPRIVILEGE    = "tblPRIVILEGE";       /* 8  */
+    public static final String TABLE_tblENTITY       = "tblENTITY";          /* 9  */
+    public static final String TABLE_tblOPERATION    = "tblOPERATION";       /* 10 */
+    public static final String TABLE_tblSTATUS       = "tblSTATUS";          /* 11 */
 
-    public static final String TABLE_tblORG_ADDRESS      = "tblORG_ADDRESS";     /* 12 */
-    public static final String TABLE_tblUSER_ADDRESS     = "tblUSER_ADDRESS";    /* 13 */
-    public static final String TABLE_tblUSER_ROLE        = "tblUSER_ROLE";       /* 14 */
-    public static final String TABLE_tblSESSION_ROLE     = "tblSESSION_ROLE";    /* 15 */
-    public static final String TABLE_tblMENU_ROLE        = "tblMENU_ROLE";       /* 16 */
-    public static final String TABLE_tblOPERATION_STATUS = "tblOPERATION_STATUS";/* 17 */
-    public static final String TABLE_tblROLE_PERM        = "tblROLE_PERM";       /* 18 */
-    public static final String TABLE_tblPERM_ENTITY      = "tblPERM_ENTITY";     /* 19 */
-    public static final String TABLE_tblPERM_OPERATION   = "tblPERM_OPERATION";  /* 20 */
+    public static final String TABLE_tblORG_ADDRESS  = "tblORG_ADDRESS";     /* 12 */
+    public static final String TABLE_tblUSER_ADDRESS = "tblUSER_ADDRESS";    /* 13 */
+    public static final String TABLE_tblUSER_ROLE    = "tblUSER_ROLE";       /* 14 */
+    public static final String TABLE_tblSESSION_ROLE = "tblSESSION_ROLE";    /* 15 */
+    public static final String TABLE_tblMENU_ROLE    = "tblMENU_ROLE";       /* 16 */
+    public static final String TABLE_tblPERMISSION   = "tblPERMISSION";      /* 17  */
+    public static final String TABLE_tblPERM_STATUS  = "tblPERM_STATUS";     /* 18 */
 
-    public static final String TABLE_tblSETTING          = "tblSETTING";         /* 21 */
-    public static final String TABLE_tblNOTIFICATION     = "tblNOTIFICATION";    /* 22 */
-    public static final String TABLE_tblSUBSCRIBER       = "tblSUBSCRIBER";      /* 23 */
-    public static final String TABLE_tblPUBLISHER        = "tblPUBLISHER";       /* 24 */
-    public static final String TABLE_tblSETNOTIFICATION  = "tblSETNOTIFICATION"; /* 25 */
-    public static final String TABLE_tblACTIVITYLOG      = "tblACTIVITYLOG ";    /* 26 */
-    //############################# END BRBAC MODULE TABLES #############################
+    public static final String TABLE_tblSETTING          = "tblSETTING";        /* 19 */
+    public static final String TABLE_tblNOTIFICATION     = "tblNOTIFICATION";   /* 20 */
+    public static final String TABLE_tblSUBSCRIBER       = "tblSUBSCRIBER";     /* 21 */
+    public static final String TABLE_tblPUBLISHER        = "tblPUBLISHER";      /* 22 */
+    public static final String TABLE_tblSETNOTIFICATION  = "tblSETNOTIFICATION";/* 23 */
+    public static final String TABLE_tblACTIVITYLOG      = "tblACTIVITYLOG ";   /* 24 */
 
-    //########################## START PLANNING MODULE TABLES ##############################
+    //############################## END BRBAC MODULE TABLES ################################
+
+    //########################### START PLANNING MODULE TABLES ##############################
     public static final String TABLE_tblLOGFRAME          = "tblLOGFRAME";          /* 1  */
     public static final String TABLE_tblLOGFRAMETREE      = "tblLOGFRAMETREE";      /* 2  */
     public static final String TABLE_tblIMPACT            = "tblIMPACT";            /* 3  */
@@ -201,7 +200,8 @@ public class cSQLDBHelper extends SQLiteOpenHelper
     private static final String TABLE_MONITORING_DATACOLLECTION     = "MONITORING_RESULT";/* 58 */
     private static final String TABLE_EVALUATION_DATACOLLECTION     = "EVALUATION_RESULT";/* 59 */
 
-    //################################# START OF KEYS ###################################
+    //########################################## START OF KEYS ###########################################
+
     public static final String KEY_ID             = "_id";
     public static final String KEY_ENTITY_TYPE_ID = "_id_entity_type";
     public static final String KEY_OWNER_ID       = "_id_owner";
@@ -261,6 +261,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper
     public static final String KEY_ROLE_FK_ID               = "_id_role_fk";
     public static final String KEY_SESSION_FK_ID            = "_id_session_fk";
     public static final String KEY_MENU_FK_ID               = "_id_menu_fk";
+    public static final String KEY_PRIVILEGE_FK_ID          = "_id_privilege_fk";
     public static final String KEY_PERMISSION_FK_ID         = "_id_permission_fk";
     public static final String KEY_ENTITY_FK_ID             = "_id_entity_fk";
     public static final String KEY_ENTITY_TYPE_FK_ID        = "_id_entity_type_fk";
@@ -273,7 +274,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper
     public static final String KEY_ORGANIZATION_ID = "_id_todelete";
     public static final String KEY_STATUS_ID       = "_id_todelete";
 
-    //################################# END OF KEYS ###################################
+    //########################################### END OF KEYS ############################################
 
 
 
@@ -450,12 +451,14 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + "REFERENCES " + TABLE_tblMENU +"("+ KEY_ID +") "
             + "ON DELETE CASCADE ON UPDATE CASCADE);";
 
-    //-- ----------------------------------------------------------------------------------------------
-    //-- Table `tblPERMISSION`
-    //-- ----------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblPERMISSION = "CREATE TABLE " + TABLE_tblPERMISSION + "("
+    //-- --------------------------------------------------------------------------------------------
+    //-- Table `tblPRIVILEGE`
+    //-- --------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblPRIVILEGE = "CREATE TABLE " + TABLE_tblPRIVILEGE + "("
             + KEY_ID +" INTEGER NOT NULL, "
-            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
+            + KEY_ROLE_FK_ID +" INTEGER DEFAULT NULL, "
+            + KEY_ORGANIZATION_FK_ID +" INTEGER DEFAULT NULL, "
+            + KEY_SERVER_ID +" INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
@@ -466,7 +469,10 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_ID + "));";
+            + "PRIMARY KEY (" + KEY_ID + "),"
+            + "FOREIGN KEY (" + KEY_ROLE_FK_ID  +","+ KEY_ORGANIZATION_FK_ID + ") "
+            + "REFERENCES " + TABLE_tblROLE +"("+ KEY_ROLE_FK_ID  +","+ KEY_ORGANIZATION_FK_ID +") "
+            + "ON DELETE CASCADE ON UPDATE CASCADE);";
 
     //-- --------------------------------------------------------------------------------------
     //-- Table `tblENTITY`
@@ -638,11 +644,43 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + " REFERENCES " + TABLE_tblROLE +" ("+ KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
-    //-- ----------------------------------------------------------------------------------------------------------
-    //-- Table `tblOPERATION_STATUS`
-    //-- ----------------------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblOPERATION_STATUS = "CREATE TABLE " + TABLE_tblOPERATION_STATUS + "("
-            + KEY_OPERATION_FK_ID + " INTEGER NOT NULL, "
+    //-- -------------------------------------------------------------------------------------------
+    //-- Table `tblPERMISSION`
+    //-- -------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblPERMISSION = "CREATE TABLE " + TABLE_tblPERMISSION + "("
+            + KEY_PRIVILEGE_FK_ID +" INTEGER NOT NULL, "
+            + KEY_ENTITY_FK_ID +" INTEGER NOT NULL, "
+            + KEY_ENTITY_TYPE_FK_ID +" INTEGER NOT NULL, "
+            + KEY_OPERATION_FK_ID +" INTEGER NOT NULL, "
+            + KEY_SERVER_ID +" INTEGER DEFAULT NULL, "
+            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + " PRIMARY KEY (" + KEY_PRIVILEGE_FK_ID + "," + KEY_ENTITY_FK_ID +", " +
+            KEY_ENTITY_TYPE_FK_ID + "," + KEY_OPERATION_FK_ID +"),"
+            + " FOREIGN KEY (" + KEY_PRIVILEGE_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblPRIVILEGE +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_ENTITY_FK_ID + "," + KEY_ENTITY_TYPE_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblENTITY +" ("+ KEY_ID +", "+ KEY_ENTITY_TYPE_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_OPERATION_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblOPERATION +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE); ";
+
+    //-- ------------------------------------------------------------------------------------------------
+    //-- Table `tblPERM_STATUS`
+    //-- ------------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblPERM_STATUS = "CREATE TABLE " + TABLE_tblPERM_STATUS + "("
+            + KEY_PRIVILEGE_FK_ID +" INTEGER NOT NULL, "
+            + KEY_ENTITY_FK_ID +" INTEGER NOT NULL, "
+            + KEY_ENTITY_TYPE_FK_ID +" INTEGER NOT NULL, "
+            + KEY_OPERATION_FK_ID +" INTEGER NOT NULL, "
             + KEY_STATUS_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
@@ -653,91 +691,20 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_OPERATION_FK_ID + "," + KEY_STATUS_FK_ID +" ), "
-            + " FOREIGN KEY (" + KEY_OPERATION_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblOPERATION +" ("+ KEY_ID + ") "
+            + " PRIMARY KEY (" + KEY_PRIVILEGE_FK_ID + ", " + KEY_ENTITY_FK_ID +", " +
+            KEY_ENTITY_TYPE_FK_ID + "," + KEY_OPERATION_FK_ID +", " + KEY_STATUS_FK_ID +" ), "
+            + " FOREIGN KEY ("  + KEY_PRIVILEGE_FK_ID + ", " + KEY_ENTITY_FK_ID +", " +
+            KEY_ENTITY_TYPE_FK_ID + "," + KEY_OPERATION_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblPERMISSION +" (" + KEY_PRIVILEGE_FK_ID + ", " +
+            KEY_ENTITY_FK_ID +", " + KEY_ENTITY_TYPE_FK_ID + "," + KEY_OPERATION_FK_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
             + " FOREIGN KEY (" + KEY_STATUS_FK_ID + ") "
             + " REFERENCES " + TABLE_tblSTATUS +" ("+ KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
-    //-- -----------------------------------------------------------------------------------------------------------
-    //-- Table `tblROLE_PERM`
-    //-- -----------------------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblROLE_PERM = "CREATE TABLE " + TABLE_tblROLE_PERM + "("
-            + KEY_ROLE_FK_ID + " INTEGER NOT NULL, "
-            + KEY_ORGANIZATION_FK_ID + " INTEGER NOT NULL, "
-            + KEY_PERMISSION_FK_ID + " INTEGER NOT NULL, "
-            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_ROLE_FK_ID + ", " + KEY_ORGANIZATION_FK_ID +", " + KEY_PERMISSION_FK_ID +" ), "
-            + " FOREIGN KEY (" + KEY_ROLE_FK_ID +", " + KEY_ORGANIZATION_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblROLE +" ("+ KEY_ROLE_FK_ID + "," + KEY_ORGANIZATION_FK_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_PERMISSION_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblPERMISSION +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE);";
-
-    //-- -----------------------------------------------------------------------------------------------------------
-    //-- Table `tblPERM_ENTITY`
-    //-- -----------------------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblPERM_ENTITY = "CREATE TABLE " + TABLE_tblPERM_ENTITY + "("
-            + KEY_PERMISSION_FK_ID + " INTEGER NOT NULL, "
-            + KEY_ENTITY_FK_ID + " INTEGER NOT NULL, "
-            + KEY_ENTITY_TYPE_FK_ID + " INTEGER NOT NULL, "
-            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_PERMISSION_FK_ID + "," + KEY_ENTITY_FK_ID +"," + KEY_ENTITY_TYPE_FK_ID +" ), "
-            + " FOREIGN KEY (" + KEY_PERMISSION_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblPERMISSION +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_ENTITY_FK_ID +"," + KEY_ENTITY_TYPE_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblENTITY +" ("+ KEY_ID +"," + KEY_ENTITY_TYPE_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE); ";
-
-
-    //-- -------------------------------------------------------------------------------------------
-    //-- Table `tblPERM_OPERATION`
-    //-- -------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblPERM_OPERATION = "CREATE TABLE " + TABLE_tblPERM_OPERATION + "("
-            + KEY_PERMISSION_FK_ID +" INTEGER NOT NULL, "
-            + KEY_OPERATION_FK_ID +" INTEGER NOT NULL, "
-            + KEY_SERVER_ID +" INTEGER DEFAULT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
-            + KEY_NAME + " TEXT, "
-            + KEY_DESCRIPTION + " TEXT, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_PERMISSION_FK_ID + "," + KEY_OPERATION_FK_ID + "),"
-            + " FOREIGN KEY (" + KEY_PERMISSION_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblPERMISSION +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_OPERATION_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblOPERATION +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE); ";
-
-    //-- --------------------------------------------------------------------------------------------
+    //-- ----------------------------------------------------------------------------------------
     //-- Table `tblSETTING`
-    //-- --------------------------------------------------------------------------------------------
+    //-- ----------------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblSETTING = "CREATE TABLE " + TABLE_tblSETTING + "("
             + KEY_ID +" INTEGER NOT NULL, "
             + KEY_SERVER_ID +" INTEGER DEFAULT NULL, "
@@ -802,9 +769,9 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + " REFERENCES " + TABLE_tblNOTIFICATION +" ("+ KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
-    //-- -------------------------------------------------------------------------------------------
+    //-- ----------------------------------------------------------------------------------------------
     //-- Table `tblSUBSCRIBER`
-    //-- -------------------------------------------------------------------------------------------
+    //-- ----------------------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblSUBSCRIBER = "CREATE TABLE " + TABLE_tblSUBSCRIBER + "("
             + KEY_SUBSCRIBER_FK_ID +" INTEGER NOT NULL, "
             + KEY_NOTIFICATION_FK_ID +" INTEGER NOT NULL, "
@@ -871,9 +838,10 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP );";
 
-    //##################################### END of BRBAC MODULE ####################################
+    //####################################### END of BRBAC MODULE #######################################
 
-    //#################################### START PLANNING MODULE ###################################
+
+    //###################################### START PLANNING MODULE ######################################
 
     //-- ----------------------------------------------------------------------------------------
     //-- Table `tblLOGFRAME`
@@ -2549,7 +2517,6 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + "FOREIGN KEY (" + KEY_QUESTION_FK_ID + ") REFERENCES " + TABLE_QUESTION + "("+ KEY_QUESTION_ID + "),"
             + "PRIMARY KEY (" + KEY_INDICATOR_FK_ID +", "+ KEY_QUESTION_FK_ID +"));";
 
-
     // OVERALLAIM_CRITERION_QUESTION table - column names
     private static final String KEY_OVERALLAIM_CRITERION_QUESTION_OWNER_ID = "_id_owner";
 
@@ -2666,9 +2633,6 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + "PRIMARY KEY (" + KEY_EVALUATION_FK_ID +", "+ KEY_QUESTION_FK_ID +", "+ KEY_USER_FK_ID +"));";
 
 
-
-
-
     public cSQLDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         //this.context = context;
@@ -2723,13 +2687,12 @@ public class cSQLDBHelper extends SQLiteOpenHelper
         String[] create_brbac_tables = new String[]{
                 CREATE_TABLE_tblADDRESS, CREATE_TABLE_tblORGANIZATION, CREATE_TABLE_tblVALUE,
                 CREATE_TABLE_tblUSER, CREATE_TABLE_tblSESSION, CREATE_TABLE_tblROLE, CREATE_TABLE_tblMENU,
-                CREATE_TABLE_tblPERMISSION, CREATE_TABLE_tblENTITY, CREATE_TABLE_tblOPERATION,
+                CREATE_TABLE_tblPRIVILEGE, CREATE_TABLE_tblENTITY, CREATE_TABLE_tblOPERATION,
                 CREATE_TABLE_tblSTATUS, CREATE_TABLE_tblORG_ADDRESS, CREATE_TABLE_tblUSER_ADDRESS,
                 CREATE_TABLE_tblUSER_ROLE, CREATE_TABLE_tblSESSION_ROLE, CREATE_TABLE_tblMENU_ROLE,
-                CREATE_TABLE_tblOPERATION_STATUS, CREATE_TABLE_tblROLE_PERM, CREATE_TABLE_tblPERM_ENTITY,
-                CREATE_TABLE_tblPERM_OPERATION, CREATE_TABLE_tblSETTING, CREATE_TABLE_tblNOTIFICATION,
-                CREATE_TABLE_tblSUBSCRIBER, CREATE_TABLE_tblPUBLISHER, CREATE_TABLE_tblSETNOTIFICATION,
-                CREATE_TABLE_tblACTIVITYLOG
+                CREATE_TABLE_tblPERMISSION, CREATE_TABLE_tblPERM_STATUS, CREATE_TABLE_tblSETTING,
+                CREATE_TABLE_tblNOTIFICATION, CREATE_TABLE_tblSUBSCRIBER, CREATE_TABLE_tblPUBLISHER,
+                CREATE_TABLE_tblSETNOTIFICATION, CREATE_TABLE_tblACTIVITYLOG
         };
 
         String[] create_planning_tables = new String[]{
@@ -2856,7 +2819,19 @@ public class cSQLDBHelper extends SQLiteOpenHelper
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PERMISSION);*/
 
         /** drop all tables **/
-        String[] tables = new String[]{
+
+        String[] brbac_tables = new String[]{
+                TABLE_tblADDRESS, TABLE_tblORGANIZATION, TABLE_tblVALUE,
+                TABLE_tblUSER, TABLE_tblSESSION, TABLE_tblROLE, TABLE_tblMENU,
+                TABLE_tblPRIVILEGE, TABLE_tblENTITY, TABLE_tblOPERATION,
+                TABLE_tblSTATUS, TABLE_tblORG_ADDRESS, TABLE_tblUSER_ADDRESS,
+                TABLE_tblUSER_ROLE, TABLE_tblSESSION_ROLE, TABLE_tblMENU_ROLE,
+                TABLE_tblPERMISSION, TABLE_tblPERM_STATUS, TABLE_tblSETTING,
+                TABLE_tblNOTIFICATION, TABLE_tblSUBSCRIBER, TABLE_tblPUBLISHER,
+                TABLE_tblSETNOTIFICATION, TABLE_tblACTIVITYLOG
+        };
+
+        String[] planning_tables = new String[]{
                 TABLE_tblLOGFRAME, TABLE_tblLOGFRAMETREE, TABLE_tblIMPACT,
                 TABLE_tblOUTCOME, TABLE_tblOUTPUT, TABLE_tblACTIVITY,
                 TABLE_tblPRECEDINGACTIVITY, TABLE_tblINPUT, TABLE_tblOUTCOME_IMPACT,
@@ -2864,14 +2839,17 @@ public class cSQLDBHelper extends SQLiteOpenHelper
                 TABLE_tblQUESTION_GROUPING, TABLE_tblQUESTION_TYPE, TABLE_tblCHOICESET,
                 TABLE_tblQUESTION, TABLE_tblIMPACT_QUESTION, TABLE_tblOUTCOME_QUESTION,
                 TABLE_tblOUTPUT_QUESTION, TABLE_tblACTIVITY_QUESTION, TABLE_tblINPUT_QUESTION,
-                TABLE_tblRAID, TABLE_tblIMPACT_RAID, TABLE_tblOUTCOME_RAID, TABLE_tblOUTPUT_RAID,
-                TABLE_tblACTIVITY_RAID
+                TABLE_tblRAID, TABLE_tblIMPACT_RAID, TABLE_tblOUTCOME_RAID,
+                TABLE_tblOUTPUT_RAID, TABLE_tblACTIVITY_RAID
         };
 
         db.beginTransaction();
         try {
-            for (String table : tables){
-                db.execSQL("DROP TABLE IF EXISTS " + table);
+            for (String brbac_table : brbac_tables){
+                db.execSQL("DROP TABLE IF EXISTS " + brbac_table);
+            }
+            for (String planning_table : planning_tables){
+                db.execSQL("DROP TABLE IF EXISTS " + planning_table);
             }
             db.setTransactionSuccessful();
         }catch (SQLException e){
@@ -2952,369 +2930,6 @@ public class cSQLDBHelper extends SQLiteOpenHelper
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVALUATION_DATACOLLECTION);
  */
     }
-
-
-
-
-    /**
-     * This method is to fetch all user records from SQLite
-     */
-    public void populateBRBAC() {
-        populateModelsFromExcel = new cPopulateModelsFromExcel(context);
-
-
-        // AsyncTask is used that SQLite operation not blocks the UI Thread.
-        new AsyncTask<String, Integer, String>() {
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                progressDialog = new ProgressDialog(context);
-                progressDialog.setTitle("Uploading default settings...");
-                progressDialog.setMessage("Please wait.");
-                progressDialog.setIndeterminate(false);
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                progressDialog.setMax(100);
-                progressDialog.setCancelable(false);
-                progressDialog.show();
-            }
-
-            @Override
-            protected String doInBackground(String... params) {
-                try {
-                    AssetManager assetManager = context.getAssets();
-                    InputStream excelFile = assetManager.open("me_db.xlsx");
-                    Workbook workbook = new XSSFWorkbook(excelFile);
-
-
-                    int allRows = 0;
-                    ArrayList<Sheet> sheets = new ArrayList<Sheet>();
-
-                    for (int i = 0; i < listOfBRBACTables.length; i++) {
-                        Sheet sheet = workbook.getSheet(listOfBRBACTables[i]);
-
-                        sheets.add(sheet);
-                        //publishProgress(i);
-
-                        // number of rows (for all tables used for checking progress
-                        allRows = allRows + (sheet.getPhysicalNumberOfRows() - 1);
-                    }
-
-
-                    int currentRows = 0;
-                    // loop through the table action_list
-                    for (int i = 0; i < listOfBRBACTables.length; i++) {
-                        Sheet sheet = workbook.getSheet(listOfBRBACTables[i]);
-
-                        if (sheet == null) {
-                            return null;
-                        }
-
-
-                        switch (i) {
-                            case 0:
-                                for (Iterator<Row> rit = sheet.iterator(); rit.hasNext(); ) {
-                                    Row cRow = rit.next();
-
-                                    //just skip the row if row number is 0
-                                    if (cRow.getRowNum() == 0) {
-                                        continue;
-                                    }
-
-                                    // add the row into the database
-                                    populateModelsFromExcel.addAddressFromExcel(cRow);
-
-                                    // publish the progress after adding a record
-                                    currentRows++;
-                                    publishProgress(currentRows * 100 / allRows);
-                                }
-                                break;
-
-                            case 1:
-                                for (Iterator<Row> rit = sheet.iterator(); rit.hasNext(); ) {
-                                    Row cRow = rit.next();
-
-                                    //just skip the row if row number is 0
-                                    if (cRow.getRowNum() == 0) {
-                                        continue;
-                                    }
-
-                                    // add the row into the database
-                                    populateModelsFromExcel.addOrganizationFromExcel(cRow);
-
-                                    // publish the progress after adding a record
-                                    currentRows++;
-                                    publishProgress(currentRows * 100 / allRows);
-                                }
-                                break;
-
-                            case 2:
-                                for (Iterator<Row> rit = sheet.iterator(); rit.hasNext(); ) {
-                                    Row cRow = rit.next();
-
-                                    //just skip the row if row number is 0
-                                    if (cRow.getRowNum() == 0) {
-                                        continue;
-                                    }
-
-                                    // add the row into the database
-                                    populateModelsFromExcel.addValueFromExcel(cRow);
-
-                                    // publish the progress after adding a record
-                                    currentRows++;
-                                    publishProgress(currentRows * 100 / allRows);
-                                }
-                                break;
-
-                            case 3:
-                                for (Iterator<Row> rit = sheet.iterator(); rit.hasNext(); ) {
-                                    Row cRow = rit.next();
-
-                                    //just skip the row if row number is 0
-                                    if (cRow.getRowNum() == 0) {
-                                        continue;
-                                    }
-
-                                    // add the row into the database
-                                    populateModelsFromExcel.addUserFromExcel(cRow);
-
-                                    // publish the progress after adding a record
-                                    currentRows++;
-                                    publishProgress(currentRows * 100 / allRows);
-                                }
-                                break;
-
-                            case 4:
-                                for (Iterator<Row> rit = sheet.iterator(); rit.hasNext(); ) {
-                                    Row cRow = rit.next();
-
-                                    //just skip the row if row number is 0
-                                    if (cRow.getRowNum() == 0) {
-                                        continue;
-                                    }
-
-                                    // add the row into the database
-                                    populateModelsFromExcel.addSessionFromExcel(cRow);
-
-                                    // publish the progress after adding a record
-                                    currentRows++;
-                                    publishProgress(currentRows * 100 / allRows);
-                                }
-                                break;
-
-                            case 5:
-                                for (Iterator<Row> rit = sheet.iterator(); rit.hasNext(); ) {
-                                    Row cRow = rit.next();
-
-                                    //just skip the row if row number is 0
-                                    if (cRow.getRowNum() == 0) {
-                                        continue;
-                                    }
-
-                                    // add the row into the database
-                                    populateModelsFromExcel.addRoleFromExcel(cRow);
-
-                                    // publish the progress after adding a record
-                                    currentRows++;
-                                    publishProgress(currentRows * 100 / allRows);
-                                }
-                                break;
-
-                            case 6:
-                                for (Iterator<Row> rit = sheet.iterator(); rit.hasNext(); ) {
-                                    Row cRow = rit.next();
-
-                                    //just skip the row if row number is 0
-                                    if (cRow.getRowNum() == 0) {
-                                        continue;
-                                    }
-
-                                    // add the row into the database
-                                    populateModelsFromExcel.addMenuFromExcel(cRow);
-
-                                    // publish the progress after adding a record
-                                    currentRows++;
-                                    publishProgress(currentRows * 100 / allRows);
-                                }
-                                break;
-
-                            case 7:
-                                for (Iterator<Row> rit = sheet.iterator(); rit.hasNext(); ) {
-                                    Row cRow = rit.next();
-
-                                    //just skip the row if row number is 0
-                                    if (cRow.getRowNum() == 0) {
-                                        continue;
-                                    }
-
-                                    // add the row into the database
-                                    populateModelsFromExcel.addPrivilegeFromExcel(cRow);
-
-                                    // publish the progress after adding a record
-                                    currentRows++;
-                                    publishProgress(currentRows * 100 / allRows);
-                                }
-                                break;
-
-                            case 8:
-                                for (Iterator<Row> rit = sheet.iterator(); rit.hasNext(); ) {
-                                    Row cRow = rit.next();
-
-                                    //just skip the row if row number is 0
-                                    if (cRow.getRowNum() == 0) {
-                                        continue;
-                                    }
-
-                                    // add the row into the database
-                                    populateModelsFromExcel.addEntityFromExcel(cRow);
-
-                                    // publish the progress after adding a record
-                                    currentRows++;
-                                    publishProgress(currentRows * 100 / allRows);
-                                }
-                                break;
-
-                            case 9:
-                                for (Iterator<Row> rit = sheet.iterator(); rit.hasNext(); ) {
-                                    Row cRow = rit.next();
-
-                                    //just skip the row if row number is 0
-                                    if (cRow.getRowNum() == 0) {
-                                        continue;
-                                    }
-
-                                    // add the row into the database
-                                    populateModelsFromExcel.addOperationFromExcel(cRow);
-
-                                    // publish the progress after adding a record
-                                    currentRows++;
-                                    publishProgress(currentRows * 100 / allRows);
-                                }
-                                break;
-
-                            case 10:
-                                for (Iterator<Row> rit = sheet.iterator(); rit.hasNext(); ) {
-                                    Row cRow = rit.next();
-
-                                    //just skip the row if row number is 0
-                                    if (cRow.getRowNum() == 0) {
-                                        continue;
-                                    }
-
-                                    // add the row into the database
-                                    populateModelsFromExcel.addStatusFromExcel(cRow);
-
-                                    // publish the progress after adding a record
-                                    currentRows++;
-                                    publishProgress(currentRows * 100 / allRows);
-                                }
-                                break;
-
-                            case 11:
-                                for (Iterator<Row> rit = sheet.iterator(); rit.hasNext(); ) {
-                                    Row cRow = rit.next();
-
-                                    //just skip the row if row number is 0
-                                    if (cRow.getRowNum() == 0) {
-                                        continue;
-                                    }
-
-                                    // add the row into the database
-                                    populateModelsFromExcel.addUserRoleFromExcel(cRow);
-
-                                    // publish the progress after adding a record
-                                    currentRows++;
-                                    publishProgress(currentRows * 100 / allRows);
-                                }
-                                break;
-
-                            case 12:
-                                for (Iterator<Row> rit = sheet.iterator(); rit.hasNext(); ) {
-                                    Row cRow = rit.next();
-
-                                    //just skip the row if row number is 0
-                                    if (cRow.getRowNum() == 0) {
-                                        continue;
-                                    }
-
-                                    // add the row into the database
-                                    populateModelsFromExcel.addSessionRoleFromExcel(cRow);
-
-                                    // publish the progress after adding a record
-                                    currentRows++;
-                                    publishProgress(currentRows * 100 / allRows);
-                                }
-                                break;
-
-                            case 13:
-                                for (Iterator<Row> rit = sheet.iterator(); rit.hasNext(); ) {
-                                    Row cRow = rit.next();
-
-                                    //just skip the row if row number is 0
-                                    if (cRow.getRowNum() == 0) {
-                                        continue;
-                                    }
-
-                                    // add the row into the database
-                                    populateModelsFromExcel.addMenuRoleFromExcel(cRow);
-
-                                    // publish the progress after adding a record
-                                    currentRows++;
-                                    publishProgress(currentRows * 100 / allRows);
-                                }
-                                break;
-
-                            case 14:
-                                for (Iterator<Row> rit = sheet.iterator(); rit.hasNext(); ) {
-                                    Row cRow = rit.next();
-
-                                    //just skip the row if row number is 0
-                                    if (cRow.getRowNum() == 0) {
-                                        continue;
-                                    }
-
-                                    // add the row into the database
-                                    populateModelsFromExcel.addPermissionFromExcel(cRow);
-
-                                    // publish the progress after adding a record
-                                    currentRows++;
-                                    publishProgress(currentRows * 100 / allRows);
-                                }
-                                break;
-
-                            default:
-                                break;
-                        }
-                    }
-                } catch (Exception e) {
-                    Log.e("Error: ", e.getMessage());
-                    //e.printStackTrace();
-                }
-                return null;
-
-            }
-
-            @Override
-            protected void onProgressUpdate(Integer... progress) {
-                // Set progress percentage
-                progressDialog.setProgress(progress[0]);
-                //Toast.makeText(context, "tables = "+progress[0], Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            protected void onPostExecute(String result) {
-                super.onPostExecute(result);
-                if (progressDialog != null) {
-                    if (progressDialog.isShowing()) {
-                        progressDialog.dismiss();
-                        Toast.makeText(context, "Uploading complete", Toast.LENGTH_LONG).show();
-                    }
-                }
-
-            }
-        }.execute();
-    }
-
 }
 
 

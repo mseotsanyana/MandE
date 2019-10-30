@@ -3,13 +3,10 @@ package com.me.mseotsanyana.mande.BRBAC.BLL;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cRoleDBA;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cRoleModel;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cUserDBA;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cUserModel;
-import com.me.mseotsanyana.mande.BRBAC.DAL.cUserRoleDBA;
-import com.me.mseotsanyana.mande.BRBAC.DAL.cUserRoleModel;
 import com.me.mseotsanyana.mande.PPMER.BLL.cMapper;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 

@@ -25,9 +25,9 @@ public class cNotificationModel {
     private Set<cUserModel> subscriberModels;
     private Set<cSettingModel> settingModels;
 
-    cNotificationModel(){}
+    public cNotificationModel(){}
 
-    cNotificationModel(cNotificationModel notificationModel){
+    public cNotificationModel(cNotificationModel notificationModel){
         this.setNotificationID(notificationModel.getNotificationID());
         this.setEntityID(notificationModel.getEntityID());
         this.setEntityTypeID(notificationModel.getEntityTypeID());

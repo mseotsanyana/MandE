@@ -13,7 +13,6 @@ import com.me.mseotsanyana.mande.BRBAC.BLL.cMenuHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cOperationHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cOrganizationHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cPermissionHandler;
-import com.me.mseotsanyana.mande.BRBAC.BLL.cPrivilegeHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cRoleHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
@@ -27,6 +26,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -51,7 +51,7 @@ public class cUploadBRBACData extends AsyncTask<String, Integer, String> {
     private cSessionHandler sessionHandler;
     private cRoleHandler roleHandler;
     private cMenuHandler menuHandler;
-    private cPrivilegeHandler privilegeHandler;
+    private cPermissionHandler privilegeHandler;
     private cEntityHandler entityHandler;
     private cOperationHandler operationHandler;
     private cStatusHandler statusHandler;
@@ -85,7 +85,7 @@ public class cUploadBRBACData extends AsyncTask<String, Integer, String> {
         sessionHandler = new cSessionHandler(context);
         roleHandler = new cRoleHandler(context, session);
         menuHandler = new cMenuHandler(context);
-        privilegeHandler = new cPrivilegeHandler(context, session);
+        privilegeHandler = new cPermissionHandler(context, session);
         entityHandler = new cEntityHandler(context);
         operationHandler = new cOperationHandler(context);
         statusHandler = new cStatusHandler(context);
@@ -148,6 +148,8 @@ public class cUploadBRBACData extends AsyncTask<String, Integer, String> {
                 switch (i) {
                     case 0:
                         addressHandler.deleteAddresses();
+                        Sheet org_address = workbook.getSheet("ORG_ADDRESS");
+                        ArrayList<Integer> org = new ArrayList<>();
                         for (Iterator<Row> rit = sheet.iterator(); rit.hasNext(); ) {
                             Row cRow = rit.next();
 
@@ -156,8 +158,10 @@ public class cUploadBRBACData extends AsyncTask<String, Integer, String> {
                                 continue;
                             }
 
+
                             // add the row into the database
-                            populateModelsFromExcel.addAddressFromExcel(cRow);
+                            populateModelsFromExcel.addAddressFromExcel(cRow, org_address);
+                            populateAuxiliaryTable(org_address, cRow);
 
                             // publish the progress after adding a record
                             currentRows++;

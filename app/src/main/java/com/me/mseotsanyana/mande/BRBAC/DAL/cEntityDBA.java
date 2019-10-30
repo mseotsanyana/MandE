@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.me.mseotsanyana.mande.PPMER.DAL.cSQLDBHelper;
+import com.me.mseotsanyana.mande.Util.cConstant;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,28 +19,17 @@ import java.util.Locale;
  */
 
 public class cEntityDBA {
+    private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
+    private static String TAG = cEntityDBA.class.getSimpleName();
+
     // an object of the database helper
     private cSQLDBHelper dbHelper;
-
-    private static final SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-    private static final String TAG = "dbHelper";
 
     public cEntityDBA(Context context) {
         dbHelper = new cSQLDBHelper(context);
     }
 
-    public boolean deleteAllEntities() {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_tblENTITY, null, null);
-
-        // close the database connection
-        db.close();
-
-        return result > -1;
-    }
+    /* ############################################# CREATE ACTIONS ############################################# */
 
     public boolean addEntityFromExcel(cEntityModel objectModel) {
         // open the connection to the database
@@ -50,10 +40,9 @@ public class cEntityDBA {
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ID, objectModel.getEntityID());
-        cv.put(cSQLDBHelper.KEY_ENTITY_TYPE_ID, objectModel.getTypeID());
+        cv.put(cSQLDBHelper.KEY_ENTITY_TYPE_ID, objectModel.getEntityTypeID());
         cv.put(cSQLDBHelper.KEY_NAME, objectModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, objectModel.getDescription());
-        //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(objectModel.getCreateDate()));
 
         // insert outcome record
         try {
@@ -61,7 +50,7 @@ public class cEntityDBA {
                 return false;
             }
         } catch (Exception ex) {
-            Log.d("Exception in importing ", ex.getMessage().toString());
+            Log.d(TAG,"Exception in adding: "+ex.getMessage());
         }
 
         // close the database connection
@@ -79,13 +68,15 @@ public class cEntityDBA {
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ID, objectModel.getEntityID());
+        cv.put(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID, objectModel.getEntityTypeID());
+        cv.put(cSQLDBHelper.KEY_SERVER_ID, objectModel.getServerID());
         cv.put(cSQLDBHelper.KEY_OWNER_ID, objectModel.getOwnerID());
+        cv.put(cSQLDBHelper.KEY_ORG_ID, objectModel.getOrgID());
         cv.put(cSQLDBHelper.KEY_GROUP_BITS, objectModel.getGroupBITS());
         cv.put(cSQLDBHelper.KEY_PERMS_BITS, objectModel.getPermsBITS());
         cv.put(cSQLDBHelper.KEY_STATUS_BITS, objectModel.getStatusBITS());
         cv.put(cSQLDBHelper.KEY_NAME, objectModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, objectModel.getDescription());
-        //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(objectModel.getCreateDate()));
 
         // insert outcome record
         try {
@@ -102,6 +93,14 @@ public class cEntityDBA {
         return true;
     }
 
+    /* ############################################# READ ACTIONS ############################################# */
+
+    /**
+     * Read entity by ID
+     * @param entityID
+     * @param typeID
+     * @return
+     */
     public cEntityModel getEntityByID(int entityID, int typeID) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -118,19 +117,25 @@ public class cEntityDBA {
             if (cursor.moveToFirst()) {
                 do {
                     entity.setEntityID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    entity.setTypeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_TYPE_ID)));
+                    entity.setEntityTypeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_TYPE_ID)));
+                    entity.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
                     entity.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    entity.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
                     entity.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
                     entity.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
                     entity.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
                     entity.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
                     entity.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    //entity.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
-
+                    entity.setCreatedDate(
+                            sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    entity.setModifiedDate(
+                            sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    entity.setSyncedDate(
+                            sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
-            Log.d(TAG, "Error while trying to get projects from database");
+            Log.d(TAG, "Error while reading: "+e.getMessage());
         } finally {
             if (cursor != null && !cursor.isClosed()) {
                 cursor.close();
@@ -185,19 +190,23 @@ public class cEntityDBA {
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    cEntityModel object = new cEntityModel();
+                    cEntityModel entity = new cEntityModel();
 
-                    object.setEntityID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    object.setTypeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_TYPE_ID)));
-                    object.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    object.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    object.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    object.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    object.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    object.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    //object.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
-
-                    objectModelList.add(object);
+                    entity.setEntityID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    entity.setEntityTypeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_TYPE_ID)));
+                    entity.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    entity.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    entity.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    entity.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    entity.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    entity.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    entity.setCreatedDate(
+                            sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    entity.setModifiedDate(
+                            sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    entity.setSyncedDate(
+                            sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+                    objectModelList.add(entity);
 
                 } while (cursor.moveToNext());
             }
@@ -214,5 +223,27 @@ public class cEntityDBA {
 
         return objectModelList;
     }
+
+    /* ############################################# UPDATE ACTIONS ############################################# */
+
+
+    /* ############################################# DELETE ACTIONS ############################################# */
+
+    public boolean deleteEntities() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblENTITY, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    /* ############################################# SYNCED ACTIONS ############################################# */
+
+
 }
 

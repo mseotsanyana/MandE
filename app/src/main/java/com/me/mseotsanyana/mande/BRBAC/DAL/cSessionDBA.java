@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.me.mseotsanyana.mande.PPMER.DAL.cSQLDBHelper;
+import com.me.mseotsanyana.mande.Util.cConstant;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,28 +18,19 @@ import java.util.Locale;
  * Created by mseotsanyana on 2016/10/23.
  */
 public class cSessionDBA {
+    private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
+    private static String TAG = cSessionDBA.class.getSimpleName();
+
     // an object of the database helper
     private cSQLDBHelper dbHelper;
-
-    private static final SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-    private static final String TAG = "dbHelper";
+    private cUserDBA userDBA;
 
     public cSessionDBA(Context context) {
             dbHelper = new cSQLDBHelper(context);
+            userDBA  = new cUserDBA(context);
         }
 
-    public boolean deleteAllSessions() {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_tblSESSION, null, null);
-
-        // close the database connection
-        db.close();
-
-        return result > -1;
-    }
+    /* ############################################# CREATE ACTIONS ############################################# */
 
     public boolean addSessionFromExcel(cSessionModel sessionModel) {
         // open the connection to the database
@@ -50,26 +42,16 @@ public class cSessionDBA {
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ID, sessionModel.getSessionID());
         cv.put(cSQLDBHelper.KEY_USER_FK_ID, sessionModel.getUserID());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, sessionModel.getOrganizationID());
-        cv.put(cSQLDBHelper.KEY_ADDRESS_FK_ID, sessionModel.getAddressID());
         cv.put(cSQLDBHelper.KEY_NAME, sessionModel.getName());
-        cv.put(cSQLDBHelper.KEY_SURNAME, sessionModel.getSurname());
-        cv.put(cSQLDBHelper.KEY_PHOTO, sessionModel.getPhotoPath());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, sessionModel.getDescription());
-        cv.put(cSQLDBHelper.KEY_EMAIL, sessionModel.getEmail());
-        cv.put(cSQLDBHelper.KEY_WEBSITE, sessionModel.getWebsite());
-        cv.put(cSQLDBHelper.KEY_PHONE, sessionModel.getPhone());
-        cv.put(cSQLDBHelper.KEY_PASSWORD, sessionModel.getPassword());
-        cv.put(cSQLDBHelper.KEY_SALT, sessionModel.getSalt());
-        //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(sessionModel.getCreateDate()));
 
         // insert outcome record
         try {
             if (db.insert(cSQLDBHelper.TABLE_tblSESSION, null, cv) < 0) {
                 return false;
             }
-        } catch (Exception ex) {
-            Log.d("Exception in importing ", ex.getMessage().toString());
+        } catch (Exception e) {
+            Log.d(TAG,"Exception in importing: "+e.getMessage().toString());
         }
 
         // close the database connection
@@ -92,12 +74,7 @@ public class cSessionDBA {
         cv.put(cSQLDBHelper.KEY_PERMS_BITS, sessionModel.getPermsBITS());
         cv.put(cSQLDBHelper.KEY_STATUS_BITS, sessionModel.getStatusBITS());
         cv.put(cSQLDBHelper.KEY_NAME, sessionModel.getName());
-        cv.put(cSQLDBHelper.KEY_SURNAME, sessionModel.getSurname());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, sessionModel.getDescription());
-        cv.put(cSQLDBHelper.KEY_EMAIL, sessionModel.getEmail());
-        cv.put(cSQLDBHelper.KEY_PASSWORD, sessionModel.getPassword());
-        cv.put(cSQLDBHelper.KEY_SALT, sessionModel.getSalt());
-        //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(sessionModel.getCreateDate()));
 
         // insert outcome record
         try {
@@ -113,6 +90,69 @@ public class cSessionDBA {
 
         return true;
     }
+
+    /* ############################################# READ ACTIONS ############################################# */
+
+    public List<cSessionModel> getSessionList(
+            int userID, int primaryRole, int secondaryRoles, int operationBITS, int statusBITS) {
+
+        List<cSessionModel> sessionModelList = new ArrayList<>();
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String selectQuery = "SELECT * FROM "+ cSQLDBHelper.TABLE_tblROLE +
+                " WHERE ((("+cSQLDBHelper.KEY_GROUP_BITS +" & ?) != 0) " +
+                " OR (("+cSQLDBHelper.KEY_OWNER_ID+" = ?) " +
+                " AND (("+cSQLDBHelper.KEY_PERMS_BITS+" & ?) != 0)) " +
+                " OR ((("+cSQLDBHelper.KEY_GROUP_BITS +" & ?) != 0) " +
+                " AND (("+cSQLDBHelper.KEY_PERMS_BITS+" & ?) != 0)))";
+
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{
+                String.valueOf(primaryRole),
+                String.valueOf(userID),String.valueOf(operationBITS),
+                String.valueOf(secondaryRoles),String.valueOf(operationBITS)});
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    cSessionModel session = new cSessionModel();
+
+                    session.setSessionID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    session.setUserID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_FK_ID)));
+                    session.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    session.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    session.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    session.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    session.setCreatedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    session.setModifiedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    session.setSyncedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+
+                    // construct a user
+                    session.setUserModel(new cUserModel(userDBA.getUserByID(session.getUserID())));
+
+                    // populate roles for a specific session
+                    session.setRoleModelSet(userDBA.getRolesByUserID(session.getUserID()));
+
+                    sessionModelList.add(session);
+
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Error while trying to get projects from database");
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+
+        // close the database connection
+        db.close();
+
+        return sessionModelList;
+    }
+
 
     public cSessionModel getSessionByID(int sessionID) {
         // open the connection to the database
@@ -135,12 +175,7 @@ public class cSessionDBA {
                     session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
                     session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
                     session.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    session.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SURNAME)));
                     session.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    session.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_EMAIL)));
-                    session.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PASSWORD)));
-                    session.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SALT)));
-                    //session.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                 } while (cursor.moveToNext());
             }
@@ -157,7 +192,6 @@ public class cSessionDBA {
 
         return session;
     }
-
 
     public cSessionModel getSessionByEmailPassword(String email, String password) {
         cSessionModel session = null;
@@ -182,12 +216,7 @@ public class cSessionDBA {
                     session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
                     session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
                     session.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    session.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SURNAME)));
                     session.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    session.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_EMAIL)));
-                    session.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PASSWORD)));
-                    session.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SALT)));
-                    //session.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                 } while (cursor.moveToNext());
             }
@@ -205,56 +234,12 @@ public class cSessionDBA {
         return session;
     }
 
-
-    public List<cSessionModel> getSessionList() {
-
-        List<cSessionModel> sessionModelList = new ArrayList<>();
-
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM "+ cSQLDBHelper.TABLE_tblSESSION, null);
-
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    cSessionModel session = new cSessionModel();
-
-                    session.setSessionID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    session.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    session.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    session.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    session.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SURNAME)));
-                    session.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    session.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_EMAIL)));
-                    session.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PASSWORD)));
-                    session.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SALT)));
-                    //session.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
-
-                    sessionModelList.add(session);
-
-                } while (cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Error while trying to get projects from database");
-        } finally {
-            if (cursor != null && !cursor.isClosed()) {
-                cursor.close();
-            }
-        }
-
-        // close the database connection
-        db.close();
-
-        return sessionModelList;
-    }
-
     /**
-    * This method to check session exist or not
-    *
-    * @param email
-    * @return true/false
-    */
+     * This method to check session exist or not
+     *
+     * @param email
+     * @return true/false
+     */
     public boolean checkSession(String email) {
 
         // array of columns to fetch
@@ -272,10 +257,10 @@ public class cSessionDBA {
 
         // query session table with condition
         /**
-        * Here query function is used to fetch records from session table this function works like we use sql query.
-        * SQL query equivalent to this query function is
-        * SELECT session_id FROM session WHERE session_email = 'jack@androidtutorialshub.com';
-        */
+         * Here query function is used to fetch records from session table this function works like we use sql query.
+         * SQL query equivalent to this query function is
+         * SELECT session_id FROM session WHERE session_email = 'jack@androidtutorialshub.com';
+         */
         Cursor cursor = db.query(cSQLDBHelper.TABLE_tblSESSION, //Table to query
                 columns,                                  //columns to return
                 selection,                                //columns for the WHERE clause
@@ -296,17 +281,17 @@ public class cSessionDBA {
     }
 
     /**
-    * This method to check session exist or not
-    *
-    * @param email
-    * @param password
-    * @return true/false
-    */
+     * This method to check session exist or not
+     *
+     * @param email
+     * @param password
+     * @return true/false
+     */
     public cSessionModel checkSession(String email, String password) {
 
         // array of columns to fetch
         String[] columns = {
-               cSQLDBHelper.KEY_ID
+                cSQLDBHelper.KEY_ID
         };
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -319,10 +304,10 @@ public class cSessionDBA {
 
         // query session table with conditions
         /**
-        * Here query function is used to fetch records from session table this function works like we use sql query.
-        * SQL query equivalent to this query function is
-        * SELECT session_id FROM session WHERE session_email = 'jack@androidtutorialshub.com' AND session_password = 'qwerty';
-        */
+         * Here query function is used to fetch records from session table this function works like we use sql query.
+         * SQL query equivalent to this query function is
+         * SELECT session_id FROM session WHERE session_email = 'jack@androidtutorialshub.com' AND session_password = 'qwerty';
+         */
         Cursor cursor = db.query(cSQLDBHelper.TABLE_tblSESSION, //Table to query
                 columns,                                  //columns to return
                 selection,                                //columns for the WHERE clause
@@ -342,12 +327,7 @@ public class cSessionDBA {
                     session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
                     session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
                     session.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    session.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SURNAME)));
                     session.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    session.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_EMAIL)));
-                    session.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PASSWORD)));
-                    session.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SALT)));
-                    //session.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
 
                 } while (cursor.moveToNext());
             }
@@ -364,4 +344,25 @@ public class cSessionDBA {
 
         return session;
     }
+
+    /* ############################################# UPDATE ACTIONS ############################################# */
+
+    /* ############################################# DELETE ACTIONS ############################################# */
+
+
+    public boolean deleteSessions() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblSESSION, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    /* ############################################# SYNCED ACTIONS ############################################# */
+
 }

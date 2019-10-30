@@ -8,8 +8,10 @@ import java.util.Date;
 
 public class cEntityModel {
     private int entityID;
-    private int typeID;
+    private int entityTypeID;
+    private int serverID;
     private int ownerID;
+    private int orgID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
@@ -23,8 +25,10 @@ public class cEntityModel {
 
     public cEntityModel(cEntityModel entityModel){
         this.setEntityID(entityModel.getEntityID());
-        this.setTypeID(entityModel.getTypeID());
+        this.setEntityTypeID(entityModel.getEntityID());
+        this.setServerID(entityModel.getServerID());
         this.setOwnerID(entityModel.getOwnerID());
+        this.setOrgID(entityModel.getOrgID());
         this.setGroupBITS(entityModel.getGroupBITS());
         this.setPermsBITS(entityModel.getPermsBITS());
         this.setStatusBITS(entityModel.getStatusBITS());
@@ -43,12 +47,20 @@ public class cEntityModel {
         this.entityID = entityID;
     }
 
-    public int getTypeID() {
-        return typeID;
+    public int getEntityTypeID() {
+        return entityTypeID;
     }
 
-    public void setTypeID(int typeID) {
-        this.typeID = typeID;
+    public void setEntityTypeID(int entityTypeID) {
+        this.entityTypeID = entityTypeID;
+    }
+
+    public int getServerID() {
+        return serverID;
+    }
+
+    public void setServerID(int serverID) {
+        this.serverID = serverID;
     }
 
     public int getOwnerID() {
@@ -57,6 +69,14 @@ public class cEntityModel {
 
     public void setOwnerID(int ownerID) {
         this.ownerID = ownerID;
+    }
+
+    public int getOrgID() {
+        return orgID;
+    }
+
+    public void setOrgID(int orgID) {
+        this.orgID = orgID;
     }
 
     public int getGroupBITS() {

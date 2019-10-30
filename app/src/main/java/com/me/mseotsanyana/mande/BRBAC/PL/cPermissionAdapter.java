@@ -37,8 +37,6 @@ import com.me.mseotsanyana.mande.BRBAC.BLL.cOrganizationHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cPermissionDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cPermissionHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cPermissionTreeDomain;
-import com.me.mseotsanyana.mande.BRBAC.BLL.cPrivilegeDomain;
-import com.me.mseotsanyana.mande.BRBAC.BLL.cPrivilegeHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cStatusDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cStatusHandler;
@@ -46,7 +44,6 @@ import com.me.mseotsanyana.mande.BRBAC.BLL.cUserDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserHandler;
 import com.me.mseotsanyana.mande.Interface.iPermissionInterface;
 import com.me.mseotsanyana.mande.Interface.iEntityTVHInterface;
-import com.me.mseotsanyana.mande.Interface.iPrivilegeTVHInterface;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.Util.TextDrawable;
 import com.me.mseotsanyana.mande.Util.cFontManager;
@@ -111,7 +108,7 @@ public class cPermissionAdapter extends cTreeAdapter {
 
     private cUserHandler userHandler;
     private cOrganizationHandler organizationHandler;
-    private cPrivilegeHandler privilegeHandler;
+    private cPermissionHandler privilegeHandler;
     private cEntityHandler entityHandler;
     private cOperationHandler operationHandler;
     private cStatusHandler statusHandler;
@@ -179,7 +176,7 @@ public class cPermissionAdapter extends cTreeAdapter {
 
         this.userHandler = new cUserHandler(context, session);
         this.organizationHandler = new cOrganizationHandler(context, session);
-        this.privilegeHandler = new cPrivilegeHandler(context, session);
+        this.privilegeHandler = new cPermissionHandler(context, session);
         this.entityHandler = new cEntityHandler(context);
         this.operationHandler = new cOperationHandler(context);
         this.statusHandler = new cStatusHandler(context);
@@ -222,7 +219,7 @@ public class cPermissionAdapter extends cTreeAdapter {
         if (treeModel != null) {
             switch (treeModel.getType()) {
                 case PRIVILEGE:
-                    final cPrivilegeDomain privilegeDomain = (cPrivilegeDomain) treeModel.getModelObject();
+                    final cPermissionDomain privilegeDomain = (cPermissionDomain) treeModel.getModelObject();
                     final cPrivilegeTreeViewHolder PVH = ((cPrivilegeTreeViewHolder) viewHolder);
 
                     PVH.updateItem(position);
@@ -867,7 +864,7 @@ public class cPermissionAdapter extends cTreeAdapter {
     class cCommonAttributesTask extends AsyncTask<Object, Void, Object[]> {
         private cPrivilegeTreeViewHolder PVH;
         private cTreeModel treeModel;
-        private cPrivilegeDomain privilegeDomain;
+        private cPermissionDomain privilegeDomain;
 
 
         Object[] objectArrayList = new Object[5];
@@ -876,7 +873,7 @@ public class cPermissionAdapter extends cTreeAdapter {
         protected Object[] doInBackground(Object... objects) {
             PVH = (cPrivilegeTreeViewHolder) objects[0];
             treeModel = (cTreeModel) objects[1];
-            privilegeDomain = (cPrivilegeDomain) treeModel.getModelObject();
+            privilegeDomain = (cPermissionDomain) treeModel.getModelObject();
 
             // get all users from database
             final ArrayList<cUserDomain> users = userHandler.getUserList(
@@ -1163,13 +1160,13 @@ public class cPermissionAdapter extends cTreeAdapter {
      **/
     class cUpdatePrivilegeTask extends AsyncTask<Object, Void, Boolean> {
 
-        private cPrivilegeDomain privilegeDomain;
+        private cPermissionDomain privilegeDomain;
         private cTreeModel treeModel;
         boolean result;
 
         @Override
         protected Boolean doInBackground(Object... objects) {
-            privilegeDomain = (cPrivilegeDomain) objects[0];
+            privilegeDomain = (cPermissionDomain) objects[0];
             treeModel = (cTreeModel) objects[1];
             treeModel.setModelObject(privilegeDomain);// update the modified privilege.
             result = privilegeHandler.updatePrivilege(privilegeDomain);

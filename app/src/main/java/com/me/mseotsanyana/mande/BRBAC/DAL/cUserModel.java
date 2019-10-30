@@ -38,6 +38,30 @@ public class cUserModel {
     Set<cNotificationModel> publisherModelSet;
     Set<cNotificationModel> subscriberModelSet;
 
+    public cUserModel(){};
+
+    public cUserModel(cUserModel userModel){
+        this.setUserID(userModel.getUserID());
+        this.setOrganizationID(userModel.getOrganizationID());
+        this.setServerID(userModel.getServerID());
+        this.setOwnerID(userModel.getOwnerID());
+        this.setOrgID(userModel.getOrgID());
+        this.setGroupBITS(userModel.getGroupBITS());
+        this.setPermsBITS(userModel.getPermsBITS());
+        this.setStatusBITS(userModel.getStatusBITS());
+        this.setName(userModel.getName());
+        this.setSurname(userModel.getSurname());
+        this.setGender(userModel.getGender());
+        this.setDescription(userModel.getDescription());
+        this.setEmail(userModel.getEmail());
+        this.setWebsite(userModel.getWebsite());
+        this.setPhone(userModel.getPhone());
+        this.setUniqueID(userModel.getUniqueID());
+        this.setCreatedDate(userModel.getCreatedDate());
+        this.setModifiedDate(userModel.getModifiedDate());
+        this.setSyncedDate(userModel.getSyncedDate());
+    }
+
     public int getUserID() {
         return userID;
     }

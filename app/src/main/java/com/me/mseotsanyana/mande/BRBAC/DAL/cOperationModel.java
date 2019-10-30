@@ -1,6 +1,7 @@
 package com.me.mseotsanyana.mande.BRBAC.DAL;
 
 import java.util.Date;
+import java.util.Set;
 
 /**
  * Created by mseotsanyana on 2017/08/24.
@@ -8,14 +9,36 @@ import java.util.Date;
 
 public class cOperationModel {
     private int operationID;
-    private int typeID;
+    private int serverID;
     private int ownerID;
+    private int orgID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
     private String name;
     private String description;
-    private Date createDate;
+    private Date createdDate;
+    private Date modifiedDate;
+    private Date syncedDate;
+
+    private Set<cStatusModel> statusModelSet;
+
+    public cOperationModel(){}
+
+    public cOperationModel(cOperationModel operationModel){
+        this.setOperationID(operationModel.getOperationID());
+        this.setServerID(operationModel.getServerID());
+        this.setOwnerID(operationModel.getOwnerID());
+        this.setOrgID(operationModel.getOrgID());
+        this.setGroupBITS(operationModel.getGroupBITS());
+        this.setPermsBITS(operationModel.getPermsBITS());
+        this.setStatusBITS(operationModel.getStatusBITS());
+        this.setName(operationModel.getName());
+        this.setDescription(operationModel.getDescription());
+        this.setCreatedDate(operationModel.getCreatedDate());
+        this.setModifiedDate(operationModel.getModifiedDate());
+        this.setSyncedDate(operationModel.getSyncedDate());
+    }
 
     public int getOperationID() {
         return operationID;
@@ -25,12 +48,12 @@ public class cOperationModel {
         this.operationID = operationID;
     }
 
-    public int getTypeID() {
-        return typeID;
+    public int getServerID() {
+        return serverID;
     }
 
-    public void setTypeID(int typeID) {
-        this.typeID = typeID;
+    public void setServerID(int serverID) {
+        this.serverID = serverID;
     }
 
     public int getOwnerID() {
@@ -39,6 +62,14 @@ public class cOperationModel {
 
     public void setOwnerID(int ownerID) {
         this.ownerID = ownerID;
+    }
+
+    public int getOrgID() {
+        return orgID;
+    }
+
+    public void setOrgID(int orgID) {
+        this.orgID = orgID;
     }
 
     public int getGroupBITS() {
@@ -81,11 +112,35 @@ public class cOperationModel {
         this.description = description;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public Date getSyncedDate() {
+        return syncedDate;
+    }
+
+    public void setSyncedDate(Date syncedDate) {
+        this.syncedDate = syncedDate;
+    }
+
+    public Set<cStatusModel> getStatusModelSet() {
+        return statusModelSet;
+    }
+
+    public void setStatusModelSet(Set<cStatusModel> statusModelSet) {
+        this.statusModelSet = statusModelSet;
     }
 }

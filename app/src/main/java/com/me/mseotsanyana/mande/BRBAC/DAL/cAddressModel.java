@@ -24,9 +24,9 @@ public class cAddressModel {
     private Date modifiedDate;
     private Date syncedDate;
 
-    cAddressModel(){}
+    public cAddressModel(){}
 
-    cAddressModel(cAddressModel addressModel){
+    public cAddressModel(cAddressModel addressModel){
         this.setAddressID(addressModel.getAddressID());
         this.setServerID(addressModel.getServerID());
         this.setOwnerID(addressModel.getOwnerID());

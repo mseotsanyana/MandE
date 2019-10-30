@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -24,16 +23,18 @@ import java.util.Set;
 
 public class cRoleDBA {
     private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
-    private static String TAG = cSettingDBA.class.getSimpleName();
+    private static String TAG = cRoleDBA.class.getSimpleName();
 
     // an object of the database helper
     private cSQLDBHelper dbHelper;
 
     private cOrganizationDBA organizationDBA;
+    private cMenuDBA menuDBA;
 
     public cRoleDBA(Context context) {
         dbHelper        = new cSQLDBHelper(context);
         organizationDBA = new cOrganizationDBA(context);
+        menuDBA         = new cMenuDBA(context);
     }
 
     /* ############################################# CREATE ACTIONS ############################################# */
@@ -41,10 +42,10 @@ public class cRoleDBA {
     /**
      * Add role from an excel file
      * @param roleModel
-     * @param organizationID
      * @return Boolean
      */
-    public boolean addRoleFromExcel(cRoleModel roleModel, int organizationID) {
+    public boolean addRoleFromExcel(cRoleModel roleModel,  ArrayList<Integer> users,
+                                    ArrayList<Integer> sessions,  ArrayList<Integer> menus) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -53,7 +54,7 @@ public class cRoleDBA {
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ID, roleModel.getRoleID());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, organizationID);
+        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, roleModel.getOrganizationID());
         cv.put(cSQLDBHelper.KEY_NAME, roleModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, roleModel.getDescription());
 
@@ -160,14 +161,14 @@ public class cRoleDBA {
                     role.setOrganizationModel(new cOrganizationModel(
                             organizationDBA.getOrganizationByID(role.getOrganizationID())));
 
-                    // populate users for specific role
+                    // populate users for a specific role
                     role.setUserModelSet(getUsersByRoleID(role.getRoleID()));
 
-                    // populate menu items for specific role
+                    // populate menu items for a specific role
                     role.setMenuModelSet(getMenusByRoleID(role.getRoleID()));
 
-                    // populate previledges for specific role
-                    role.setPrivilegeModelSet(getPrivilegeByRoleID(role.getRoleID()));
+                    // populate permissions for a specific role
+                    role.setPrivilegeModelSet(getPrivilegesByRoleID(role.getRoleID()));
 
                     roleModelList.add(role);
 
@@ -320,6 +321,9 @@ public class cRoleDBA {
                     menu.setSyncedDate(
                             Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
+                    // populate submenu for a specific menu item
+                    menu.setMenuModelSet(menuDBA.getSubsetMenuByID(menu.getMenuID()));
+
                     menuModelSet.add(menu);
 
                 } while (cursor.moveToNext());
@@ -343,24 +347,28 @@ public class cRoleDBA {
      * @param roleID
      * @return Set
      */
-    public Set<cPrivilegeModel> getPrivilegeByRoleID(int roleID) {
+    public Set<cPrivilegeModel> getPrivilegesByRoleID(int roleID) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Set<cPrivilegeModel> privilegeModelSet = new HashSet();
 
         // construct a selection query
-        String selectQuery = "SELECT DISTINCT " + "privilege."+cSQLDBHelper.KEY_ID +", "+
-                "privilege."+cSQLDBHelper.KEY_ROLE_FK_ID + ", privilege."+cSQLDBHelper.KEY_SERVER_ID +", "+
-                "privilege." +cSQLDBHelper.KEY_OWNER_ID + ", privilege." +cSQLDBHelper.KEY_ORG_ID +", "+
-                "privilege."+cSQLDBHelper.KEY_GROUP_BITS + ", privilege." +cSQLDBHelper.KEY_PERMS_BITS +", "+
-                "privilege."+cSQLDBHelper.KEY_STATUS_BITS + ", privilege." +cSQLDBHelper.KEY_NAME+", "+
-                "privilege."+cSQLDBHelper.KEY_DESCRIPTION +", "+
-                "privilege."+cSQLDBHelper.KEY_CREATED_DATE +", "+
-                "privilege."+cSQLDBHelper.KEY_MODIFIED_DATE +", "+
-                "privilege."+cSQLDBHelper.KEY_SYNCED_DATE +
-                " FROM " + cSQLDBHelper.TABLE_tblPRIVILEGE + " privilege " +
-                " WHERE privilege."+cSQLDBHelper.KEY_ROLE_FK_ID +" = ?";
+        String selectQuery = "SELECT " + "perm."+cSQLDBHelper.KEY_ID +", "+
+                "perm."+cSQLDBHelper.KEY_SERVER_ID + ", perm." +cSQLDBHelper.KEY_OWNER_ID +", "+
+                "perm." +cSQLDBHelper.KEY_ORG_ID + ", perm."+cSQLDBHelper.KEY_GROUP_BITS +", "+
+                "perm." +cSQLDBHelper.KEY_PERMS_BITS + ", perm."+cSQLDBHelper.KEY_STATUS_BITS +", "+
+                "perm." +cSQLDBHelper.KEY_NAME + ", perm."+cSQLDBHelper.KEY_DESCRIPTION +", "+
+                "perm."+cSQLDBHelper.KEY_CREATED_DATE +", "+
+                "perm."+cSQLDBHelper.KEY_MODIFIED_DATE +", "+
+                "perm."+cSQLDBHelper.KEY_SYNCED_DATE +
+                " FROM " +
+                cSQLDBHelper.TABLE_tblROLE+ " role, " +
+                cSQLDBHelper.TABLE_tblMENU+ " perm, " +
+                cSQLDBHelper.TABLE_tblMENU_ROLE + " role_perm " +
+                " WHERE role."+cSQLDBHelper.KEY_ID + " = role_perm."+cSQLDBHelper.KEY_ROLE_FK_ID +
+                " AND menu."+cSQLDBHelper.KEY_ID + " = role_perm."+cSQLDBHelper.KEY_MENU_FK_ID +
+                " AND role."+cSQLDBHelper.KEY_ID +" = ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(roleID)});
 
@@ -371,7 +379,6 @@ public class cRoleDBA {
                     cPrivilegeModel privilege = new cPrivilegeModel();
 
                     privilege.setPrivilegeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    privilege.setRoleID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROLE_FK_ID)));
                     privilege.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
                     privilege.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
                     privilege.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));

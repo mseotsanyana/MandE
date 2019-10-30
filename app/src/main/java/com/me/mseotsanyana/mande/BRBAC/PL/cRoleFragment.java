@@ -26,7 +26,6 @@ import android.view.ViewGroup;
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cOrganizationDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cOrganizationHandler;
-import com.me.mseotsanyana.mande.BRBAC.BLL.cPrivilegeDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cRoleDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cStatusDomain;

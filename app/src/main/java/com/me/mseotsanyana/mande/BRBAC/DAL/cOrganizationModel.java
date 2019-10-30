@@ -32,9 +32,9 @@ public class cOrganizationModel implements Serializable {
     Set<cValueModel> valueModelSet;
     Set<cAddressModel> addressModelSet;
 
-    cOrganizationModel(){}
+    public cOrganizationModel(){}
 
-    cOrganizationModel(cOrganizationModel organizationModel){
+    public cOrganizationModel(cOrganizationModel organizationModel){
         this.setOrganizationID(organizationModel.getOrganizationID());
         this.setServerID(organizationModel.getServerID());
         this.setOwnerID(organizationModel.getOwnerID());

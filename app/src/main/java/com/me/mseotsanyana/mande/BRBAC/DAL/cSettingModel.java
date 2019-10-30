@@ -18,9 +18,9 @@ public class cSettingModel implements Serializable {
     private Date modifiedDate;
     private Date syncedDate;
 
-    cSettingModel(){}
+    public cSettingModel(){}
 
-    cSettingModel(cSettingModel settingModel){
+    public cSettingModel(cSettingModel settingModel){
         this.setSettingID(settingModel.getSettingID());
         this.setServerID(settingModel.getServerID());
         this.setOwnerID(settingModel.getOwnerID());

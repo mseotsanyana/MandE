@@ -1,6 +1,7 @@
 package com.me.mseotsanyana.mande.BRBAC.DAL;
 
 import java.util.Date;
+import java.util.Set;
 
 /**
  * Created by mseotsanyana on 2017/08/24.
@@ -9,6 +10,7 @@ import java.util.Date;
 public class cPrivilegeModel {
     private int privilegeID;
     private int roleID;
+    private int organizationID;
     private int serverID;
     private int ownerID;
     private int orgID;
@@ -21,7 +23,7 @@ public class cPrivilegeModel {
     private Date modifiedDate;
     private Date syncedDate;
 
-    private cPermissionModel permissionModel;
+    private Set<cPermissionModel> permissionModelSet;
 
     public int getPrivilegeID() {
         return privilegeID;
@@ -39,6 +41,14 @@ public class cPrivilegeModel {
         this.roleID = roleID;
     }
 
+    public int getOrganizationID() {
+        return organizationID;
+    }
+
+    public void setOrganizationID(int organizationID) {
+        this.organizationID = organizationID;
+    }
+
     public int getServerID() {
         return serverID;
     }
@@ -54,7 +64,6 @@ public class cPrivilegeModel {
     public void setOwnerID(int ownerID) {
         this.ownerID = ownerID;
     }
-
 
     public int getOrgID() {
         return orgID;
@@ -128,11 +137,11 @@ public class cPrivilegeModel {
         this.syncedDate = syncedDate;
     }
 
-    public cPermissionModel getPermissionModel() {
-        return permissionModel;
+    public Set<cPermissionModel> getPermissionModelSet() {
+        return permissionModelSet;
     }
 
-    public void setPermissionModel(cPermissionModel permissionModel) {
-        this.permissionModel = permissionModel;
+    public void setPermissionModelSet(Set<cPermissionModel> permissionModelSet) {
+        this.permissionModelSet = permissionModelSet;
     }
 }

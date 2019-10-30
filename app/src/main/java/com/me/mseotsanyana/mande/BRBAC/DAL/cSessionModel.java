@@ -2,29 +2,51 @@ package com.me.mseotsanyana.mande.BRBAC.DAL;
 
 
 import java.util.Date;
+import java.util.Set;
 
 public class cSessionModel {
     private int sessionID;
     private int userID;
-    private int organizationID;
-    private int addressID;
+    private int serverID;
     private int ownerID;
+    private int orgID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
-    private String photoPath;
     private String name;
-    private String surname;
     private String description;
-    private String email;
-    private String website;
-    private String phone;
-    private String uniqueID;
-    private String password;
-    private String salt;
-    private String oldPassword;
-    private String newPassword;
-    private Date createDate;
+    private Date createdDate;
+    private Date modifiedDate;
+    private Date syncedDate;
+
+    private cUserModel userModel;
+    private Set<cRoleModel> roleModelSet;
+
+    public cSessionModel(){}
+
+    public cSessionModel(cSessionModel sessionModel){
+        this.setSessionID(sessionModel.getSessionID());
+        this.setUserID(sessionModel.getUserID());
+        this.setServerID(sessionModel.getServerID());
+        this.setOwnerID(sessionModel.getOwnerID());
+        this.setOrgID(sessionModel.getOrgID());
+        this.setGroupBITS(sessionModel.getGroupBITS());
+        this.setPermsBITS(sessionModel.getPermsBITS());
+        this.setStatusBITS(sessionModel.getStatusBITS());
+        this.setName(sessionModel.getName());
+        this.setDescription(sessionModel.getDescription());
+        this.setCreatedDate(sessionModel.getCreatedDate());
+        this.setModifiedDate(sessionModel.getModifiedDate());
+        this.setSyncedDate(sessionModel.getSyncedDate());
+    }
+
+    public int getSessionID() {
+        return sessionID;
+    }
+
+    public void setSessionID(int sessionID) {
+        this.sessionID = sessionID;
+    }
 
     public int getUserID() {
         return userID;
@@ -40,6 +62,22 @@ public class cSessionModel {
 
     public void setOwnerID(int ownerID) {
         this.ownerID = ownerID;
+    }
+
+    public int getOrgID() {
+        return orgID;
+    }
+
+    public void setOrgID(int orgID) {
+        this.orgID = orgID;
+    }
+
+    public int getServerID() {
+        return serverID;
+    }
+
+    public void setServerID(int serverID) {
+        this.serverID = serverID;
     }
 
     public int getGroupBITS() {
@@ -74,14 +112,6 @@ public class cSessionModel {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -90,107 +120,43 @@ public class cSessionModel {
         this.description = description;
     }
 
-    public String getEmail() {
-        return email;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
-    public String getUniqueID() {
-        return uniqueID;
+    public Date getModifiedDate() {
+        return modifiedDate;
     }
 
-    public void setUniqueID(String uniqueID) {
-        this.uniqueID = uniqueID;
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 
-    public String getPassword() {
-        return password;
+    public Date getSyncedDate() {
+        return syncedDate;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setSyncedDate(Date syncedDate) {
+        this.syncedDate = syncedDate;
     }
 
-    public String getSalt() {
-        return salt;
+    public cUserModel getUserModel() {
+        return userModel;
     }
 
-    public void setSalt(String salt) {
-        this.salt = salt;
+    public void setUserModel(cUserModel userModel) {
+        this.userModel = userModel;
     }
 
-    public String getOldPassword() {
-        return oldPassword;
+    public Set<cRoleModel> getRoleModelSet() {
+        return roleModelSet;
     }
 
-    public void setOldPassword(String oldPassword) {
-        this.oldPassword = oldPassword;
-    }
-
-    public String getNewPassword() {
-        return newPassword;
-    }
-
-    public void setNewPassword(String newPassword) {
-        this.newPassword = newPassword;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public int getSessionID() {
-        return sessionID;
-    }
-
-    public void setSessionID(int sessionID) {
-        this.sessionID = sessionID;
-    }
-
-    public int getOrganizationID() {
-        return organizationID;
-    }
-
-    public void setOrganizationID(int organizationID) {
-        this.organizationID = organizationID;
-    }
-
-    public int getAddressID() {
-        return addressID;
-    }
-
-    public void setAddressID(int addressID) {
-        this.addressID = addressID;
-    }
-
-    public String getPhotoPath() {
-        return photoPath;
-    }
-
-    public void setPhotoPath(String photoPath) {
-        this.photoPath = photoPath;
-    }
-
-    public String getWebsite() {
-        return website;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setRoleModelSet(Set<cRoleModel> roleModelSet) {
+        this.roleModelSet = roleModelSet;
     }
 }
