@@ -13,8 +13,6 @@ public class cSessionModel {
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
-    private String name;
-    private String description;
     private Date createdDate;
     private Date modifiedDate;
     private Date syncedDate;
@@ -33,8 +31,6 @@ public class cSessionModel {
         this.setGroupBITS(sessionModel.getGroupBITS());
         this.setPermsBITS(sessionModel.getPermsBITS());
         this.setStatusBITS(sessionModel.getStatusBITS());
-        this.setName(sessionModel.getName());
-        this.setDescription(sessionModel.getDescription());
         this.setCreatedDate(sessionModel.getCreatedDate());
         this.setModifiedDate(sessionModel.getModifiedDate());
         this.setSyncedDate(sessionModel.getSyncedDate());
@@ -102,22 +98,6 @@ public class cSessionModel {
 
     public void setStatusBITS(int statusBITS) {
         this.statusBITS = statusBITS;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Date getCreatedDate() {

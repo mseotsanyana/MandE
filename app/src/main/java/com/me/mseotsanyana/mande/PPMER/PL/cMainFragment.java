@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,15 +25,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
-import com.me.mseotsanyana.mande.Util.cDashboardFilter;
+import com.me.mseotsanyana.mande.UTILITY.cConstant;
+import com.me.mseotsanyana.mande.UTILITY.cDashboardFilter;
 import com.me.mseotsanyana.mande.PPMER.BLL.cActivityDomain;
 import com.me.mseotsanyana.mande.PPMER.BLL.cActivityHandler;
 import com.me.mseotsanyana.mande.PPMER.BLL.cGoalDomain;
 import com.me.mseotsanyana.mande.PPMER.BLL.cGoalHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cMenuDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cMenuHandler;
-import com.me.mseotsanyana.mande.BRBAC.BLL.cMenuRoleHandler;
 import com.me.mseotsanyana.mande.PPMER.BLL.cObjectiveDomain;
 import com.me.mseotsanyana.mande.PPMER.BLL.cObjectiveHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cOrganizationDomain;
@@ -52,9 +54,8 @@ import com.me.mseotsanyana.mande.PPMER.BLL.cProjectOutcomeHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cRoleDomain;
 import com.me.mseotsanyana.mande.PPMER.BLL.cSpecificAimDomain;
 import com.me.mseotsanyana.mande.PPMER.BLL.cSpecificAimHandler;
-import com.me.mseotsanyana.mande.BRBAC.BLL.cUserRoleHandler;
-import com.me.mseotsanyana.mande.Util.cExpandableListAdapter;
-import com.me.mseotsanyana.mande.Util.cGridAdapter;
+import com.me.mseotsanyana.mande.UTILITY.cExpandableListAdapter;
+import com.me.mseotsanyana.mande.UTILITY.cGridAdapter;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.cSettingsActivity;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cKeyPairBoolData;
@@ -62,19 +63,23 @@ import com.me.mseotsanyana.multiselectspinnerlibrary.cMultiSpinnerSearch;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cSpinnerListener;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 
 /**
  * Created by mseotsanyana on 2016/11/02.
  */
 public class cMainFragment extends Fragment {
-    private static final String TAG = "DashboardFragment";
+    private static String TAG = cMainFragment.class.getSimpleName();
+    private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
+
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
 
     // navigation drawer declarations
@@ -113,8 +118,8 @@ public class cMainFragment extends Fragment {
     /** start declaration of filtering objects **/
     private View filterLayout;
 
-    private cUserRoleHandler userRoleHandler;
-    private cMenuRoleHandler menuRoleHandler;
+    //private cUserRoleHandler userRoleHandler;
+    //private cMenuRoleHandler menuRoleHandler;
     private cMenuHandler menuHandler;
 
     private cOrganizationHandler organizationHandler;
@@ -179,8 +184,12 @@ public class cMainFragment extends Fragment {
     public cMainFragment() {
     }
 
-    public static cMainFragment newInstance() {
+    public static cMainFragment newInstance(cSessionManager session) {
+        Bundle bundle = new Bundle();
+
+        bundle.putSerializable("SESSION", session);
         cMainFragment fragment = new cMainFragment();
+        fragment.setArguments(bundle);
 
         return fragment;
     }
@@ -190,11 +199,13 @@ public class cMainFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        session  = new cSessionManager(getActivity());
+        //session = new cSessionManager(getActivity());
 
-        userRoleHandler = new cUserRoleHandler(getActivity(), session);
-        menuRoleHandler = new cMenuRoleHandler(getActivity(), session);
-        menuHandler     = new cMenuHandler(getActivity());
+
+
+        //userRoleHandler = null;new cUserRoleHandler(getActivity(), session);
+        //menuRoleHandler = new cMenuRoleHandler(getActivity(), session);
+        menuHandler = new cMenuHandler(getActivity(), session);
 
         activity = ((AppCompatActivity) getActivity());
 
@@ -208,6 +219,8 @@ public class cMainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_fragmant, container, false);
+
+        session = (cSessionManager) getArguments().getSerializable("SESSION");
 
         // create navigation drawer menu
         navigationDrawer(view);
@@ -287,13 +300,15 @@ public class cMainFragment extends Fragment {
 
         expandableListView.addHeaderView(headerView);
 
-        List<cRoleDomain> roleDomains = userRoleHandler.getRolesByUserID(session.loadUserID());
+        Set<cRoleDomain> roleDomains = null;//session.getUserRoleSet();
+        Gson gson = new Gson();
+        //Log.d(TAG, gson.toJson(session.getUserRoleSet()));
         //List<cRoleDomain> merged_list = new ArrayList<>();
         //Toast.makeText(getActivity(), "roleDomains = "+roleDomains.get(0).getName(), Toast.LENGTH_SHORT).show();
         List<cMenuDomain> menuDomains;
         for (int i = 0; i < roleDomains.size(); i++){
             //Toast.makeText(getActivity(), "roleDomains = "+roleDomains.get(i).getName(), Toast.LENGTH_SHORT).show();
-            menuDomains = menuRoleHandler.getMenusByRoleID(roleDomains.get(i).getRoleID());
+            menuDomains = null;//menuRoleHandler.getMenusByRoleID(roleDomains.get(i).getRoleID());
             for (int j = 0; j < menuDomains.size(); j++){
                 List<String> subMenu = new ArrayList<String>();
                 //Toast.makeText(getActivity(), "menuDomains = "+menuDomains.get(j).getName(), Toast.LENGTH_SHORT).show();
@@ -598,7 +613,7 @@ public class cMainFragment extends Fragment {
                         for (int i = 0; i < allOrganizations.size(); i++) {
                             cKeyPairBoolData idNameBool = new cKeyPairBoolData();
                             idNameBool.setId(allOrganizations.get(i).getOrganizationID());
-                            idNameBool.setName(allOrganizations.get(i).getOrganizationName());
+                            idNameBool.setName(allOrganizations.get(i).getName());
                             idNameBool.setSelected(false);
                             keyPairBoolDataList.add(idNameBool);
                         }
@@ -653,7 +668,7 @@ public class cMainFragment extends Fragment {
                         for (int i = 0; i < organizationDomains.size(); i++) {
                             cKeyPairBoolData idNameBool = new cKeyPairBoolData();
                             idNameBool.setId(organizationDomains.get(i).getOrganizationID());
-                            idNameBool.setName(organizationDomains.get(i).getOrganizationName());
+                            idNameBool.setName(organizationDomains.get(i).getName());
                             idNameBool.setSelected(false);
                             keyPairBoolDatas.add(idNameBool);
                         }

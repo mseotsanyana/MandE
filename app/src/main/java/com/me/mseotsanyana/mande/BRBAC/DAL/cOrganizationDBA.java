@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.me.mseotsanyana.mande.PPMER.DAL.cSQLDBHelper;
-import com.me.mseotsanyana.mande.Util.cConstant;
+import com.me.mseotsanyana.mande.UTILITY.cConstant;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.sql.Timestamp;
@@ -15,7 +15,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -24,16 +23,13 @@ import java.util.Set;
 
 public class cOrganizationDBA {
     private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
-    private static String TAG = cSettingDBA.class.getSimpleName();
+    private static String TAG = cOrganizationDBA.class.getSimpleName();
 
     // an object of the database helper
     private cSQLDBHelper dbHelper;
-    private cAddressDBA addressDBA;
 
     public cOrganizationDBA(Context context) {
         dbHelper = new cSQLDBHelper(context);
-
-        addressDBA = new cAddressDBA(context);
     }
 
     /* ############################################# CREATE ACTIONS ############################################# */
@@ -52,7 +48,6 @@ public class cOrganizationDBA {
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ID, organizationModel.getOrganizationID());
-        cv.put(cSQLDBHelper.KEY_SERVER_ID, organizationModel.getServerID());
         cv.put(cSQLDBHelper.KEY_NAME, organizationModel.getName());
         cv.put(cSQLDBHelper.KEY_TELEPHONE, organizationModel.getPhone());
         cv.put(cSQLDBHelper.KEY_FAX, organizationModel.getFax());
@@ -67,9 +62,12 @@ public class cOrganizationDBA {
                 return false;
             }
 
-            // add organization address
+            // add organization addresses
             for(int address: addresses){
-                addOrganizationAddress(organizationModel.getOrganizationID(), address);
+                if (addOrganizationAddress(organizationModel.getOrganizationID(), address))
+                    continue;
+                else
+                    return false;
             }
 
         } catch (Exception ex) {
@@ -118,19 +116,24 @@ public class cOrganizationDBA {
         return result > -1;
     }
 
-    /*
-     * Creating todo_tag
+    /**
+     * Add auxiliary information
+     * @param organizationID
+     * @param addressID
+     * @return
      */
-    public long addOrganizationAddress(int _id_organization, int _id_address) {
+    public boolean addOrganizationAddress(int organizationID, int addressID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, _id_organization);
-        cv.put(cSQLDBHelper.KEY_ADDRESS_FK_ID, _id_address);
+        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, organizationID);
+        cv.put(cSQLDBHelper.KEY_ADDRESS_FK_ID, addressID);
 
-        long id = db.insert(cSQLDBHelper.TABLE_tblORG_ADDRESS, null, cv);
+        if (db.insert(cSQLDBHelper.TABLE_tblORG_ADDRESS, null, cv) < 0) {
+            return false;
+        }
 
-        return id;
+        return true;
     }
 
     /* ############################################# READ ACTIONS ############################################# */
@@ -534,6 +537,7 @@ public class cOrganizationDBA {
             cOrganizationModel organization = new cOrganizationModel();
 
             if (cursor.moveToFirst()) {
+
                 organization.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                 organization.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
                 organization.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
@@ -549,11 +553,11 @@ public class cOrganizationDBA {
                 organization.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_EMAIL)));
                 organization.setWebsite(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_WEBSITE)));
                 organization.setCreatedDate(
-                        sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                        Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
                 organization.setModifiedDate(
-                        sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                        Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
                 organization.setSyncedDate(
-                        sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+                        Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
             }
 
             return organization;

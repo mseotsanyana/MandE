@@ -23,7 +23,7 @@ import android.widget.TextView;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cStatusDomain;
 import com.me.mseotsanyana.mande.R;
-import com.me.mseotsanyana.mande.Util.cFontManager;
+import com.me.mseotsanyana.mande.UTILITY.cFontManager;
 
 import java.util.ArrayList;
 

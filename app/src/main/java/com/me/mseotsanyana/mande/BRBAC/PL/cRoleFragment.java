@@ -30,13 +30,12 @@ import com.me.mseotsanyana.mande.BRBAC.BLL.cRoleDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cStatusDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cStatusHandler;
-import com.me.mseotsanyana.mande.BRBAC.BLL.cUserRoleHandler;
-import com.me.mseotsanyana.mande.Interface.iPermissionInterface;
+import com.me.mseotsanyana.mande.INTERFACE.iPermissionInterface;
 import com.me.mseotsanyana.mande.PPMER.PL.cMainFragment;
 import com.me.mseotsanyana.mande.R;
-import com.me.mseotsanyana.mande.Util.TextDrawable;
-import com.me.mseotsanyana.mande.Util.cFontManager;
-import com.me.mseotsanyana.mande.Util.cParam;
+import com.me.mseotsanyana.mande.UTILITY.TextDrawable;
+import com.me.mseotsanyana.mande.UTILITY.cFontManager;
+import com.me.mseotsanyana.mande.UTILITY.cParam;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cKeyPairBoolData;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cSpinnerListener;
@@ -64,7 +63,7 @@ public class cRoleFragment extends Fragment implements iPermissionInterface {
     private MenuItem toolBarMenuItem;
 
     private cOrganizationHandler organizationHandler;
-    private cUserRoleHandler userRoleHandler;
+    //private cUserRoleHandler userRoleHandler;
     private cStatusHandler statusHandler;
 
     private cRoleDomain roleDomain;
@@ -114,7 +113,7 @@ public class cRoleFragment extends Fragment implements iPermissionInterface {
 
         // getting a action_list with all projects in a database
         organizationHandler = new cOrganizationHandler(getActivity(), session);
-        userRoleHandler = new cUserRoleHandler(getActivity(), session);
+        //userRoleHandler = new cUserRoleHandler(getActivity(), session);
         statusHandler   = new cStatusHandler(getActivity());
 
         roleUserTreeAdapter = new cRoleAdapter(getActivity(), session,
@@ -195,7 +194,7 @@ public class cRoleFragment extends Fragment implements iPermissionInterface {
                 for (int i = 0; i < orgs.size(); i++) {
                     cKeyPairBoolData idNameBool = new cKeyPairBoolData();
                     idNameBool.setId(orgs.get(i).getOrganizationID());
-                    idNameBool.setName(orgs.get(i).getOrganizationName());
+                    idNameBool.setName(orgs.get(i).getName());
                     /*if ((mPermissionDomain != null) &&
                             (mPermissionDomain.getOrganizationID() == orgs.get(i).getOrganizationID())) {
                         idNameBool.setSelected(true);
@@ -284,9 +283,9 @@ public class cRoleFragment extends Fragment implements iPermissionInterface {
             @Override
             protected Void doInBackground(cParam... param) {
                 roleUserTree.clear();
-                roleUserTree.addAll(userRoleHandler.getRoleUserTree(
+                /*roleUserTree.addAll(userRoleHandler.getRoleUserTree(
                         param[0].getUserID(), param[0].getOrgID(), param[0].getPrimaryRole(),
-                        param[0].getSecondaryRoles()));
+                        param[0].getSecondaryRoles()));*/
 
                 /*
                 roleDomains.clear();
@@ -419,7 +418,7 @@ public class cRoleFragment extends Fragment implements iPermissionInterface {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.homeItem:
-                pushFragment(cMainFragment.newInstance());
+                pushFragment(cMainFragment.newInstance(null));
                 break;
             default:
                 break;

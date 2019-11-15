@@ -31,17 +31,16 @@ import com.me.mseotsanyana.mande.BRBAC.BLL.cOperationDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cOperationHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cPermissionDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cPermissionHandler;
-import com.me.mseotsanyana.mande.BRBAC.BLL.cPermissionTreeDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cRoleDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cRoleHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cStatusDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cStatusHandler;
-import com.me.mseotsanyana.mande.Interface.iPermissionInterface;
+import com.me.mseotsanyana.mande.INTERFACE.iPermissionInterface;
 import com.me.mseotsanyana.mande.PPMER.PL.cMainFragment;
 import com.me.mseotsanyana.mande.R;
-import com.me.mseotsanyana.mande.Util.TextDrawable;
-import com.me.mseotsanyana.mande.Util.cFontManager;
+import com.me.mseotsanyana.mande.UTILITY.TextDrawable;
+import com.me.mseotsanyana.mande.UTILITY.cFontManager;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cKeyPairBoolData;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cMultiSpinnerSearch;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch;
@@ -664,9 +663,8 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
                 for (int j = 0; j < childNodes.size(); j++) {
                     /** get child entity **/
                     cTreeModel childTreeModel = (cTreeModel) childNodes.get(j).getObj();
-                    cPermissionTreeDomain permissionTreeDomain = (cPermissionTreeDomain)
-                            childTreeModel.getModelObject();
-                    cEntityDomain entityDomain = permissionTreeDomain.getEntityDomain();
+                    //cPermissionTreeDomain permissionTreeDomain = (cPermissionTreeDomain) childTreeModel.getModelObject();
+                    cEntityDomain entityDomain = null;//permissionTreeDomain.getEntityDomain();
 
                     if ((entityDomain.getEntityID() == entityDomains.get(i).getEntityID()) &&
                             (entityDomain.getTypeID() == entityDomains.get(i).getTypeID())) {
@@ -873,9 +871,9 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
                 for (int j = 0; j < childNodes.size(); j++) {
                     /** get child entity **/
                     cTreeModel treeModel = (cTreeModel) childNodes.get(j).getObj();
-                    cPermissionTreeDomain permissionTreeDomain = (cPermissionTreeDomain)
-                            treeModel.getModelObject();
-                    cEntityDomain entityDomain = permissionTreeDomain.getEntityDomain();
+                    //cPermissionTreeDomain permissionTreeDomain = (cPermissionTreeDomain)
+                            //treeModel.getModelObject();
+                    cEntityDomain entityDomain = null;//permissionTreeDomain.getEntityDomain();
 
                     if (entityDomain.getEntityID() == entityDomains.get(i).getEntityID() &&
                             entityDomain.getTypeID() == entityDomains.get(i).getTypeID()) {
@@ -1093,7 +1091,7 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.homeItem:
-                pushFragment(cMainFragment.newInstance());
+                pushFragment(cMainFragment.newInstance(null));
                 break;
             default:
                 break;

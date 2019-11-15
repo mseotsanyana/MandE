@@ -1,6 +1,11 @@
 package com.me.mseotsanyana.mande.BRBAC.DAL;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -9,8 +14,6 @@ import java.util.Set;
 
 public class cPrivilegeModel {
     private int privilegeID;
-    private int roleID;
-    private int organizationID;
     private int serverID;
     private int ownerID;
     private int orgID;
@@ -23,7 +26,8 @@ public class cPrivilegeModel {
     private Date modifiedDate;
     private Date syncedDate;
 
-    private Set<cPermissionModel> permissionModelSet;
+    private HashMap<cEntityModel,Set<cOperationModel>> permModelMap = new HashMap<>();
+    private Set<cStatusModel> statusModelSet;
 
     public int getPrivilegeID() {
         return privilegeID;
@@ -31,22 +35,6 @@ public class cPrivilegeModel {
 
     public void setPrivilegeID(int privilegeID) {
         this.privilegeID = privilegeID;
-    }
-
-    public int getRoleID() {
-        return roleID;
-    }
-
-    public void setRoleID(int roleID) {
-        this.roleID = roleID;
-    }
-
-    public int getOrganizationID() {
-        return organizationID;
-    }
-
-    public void setOrganizationID(int organizationID) {
-        this.organizationID = organizationID;
     }
 
     public int getServerID() {
@@ -137,11 +125,48 @@ public class cPrivilegeModel {
         this.syncedDate = syncedDate;
     }
 
-    public Set<cPermissionModel> getPermissionModelSet() {
-        return permissionModelSet;
+    public HashMap<cEntityModel, Set<cOperationModel>> getPermModelMap() {
+        return permModelMap;
     }
 
-    public void setPermissionModelSet(Set<cPermissionModel> permissionModelSet) {
-        this.permissionModelSet = permissionModelSet;
+    public void setPermModelMap(HashMap<cEntityModel, Set<cOperationModel>> permModelMap) {
+        this.permModelMap = permModelMap;
+    }
+
+    public Set<cStatusModel> getStatusModelSet() {
+        return statusModelSet;
+    }
+
+    public void setStatusModelSet(Set<cStatusModel> statusModelSet) {
+        this.statusModelSet = statusModelSet;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof cPrivilegeModel)) return false;
+        cPrivilegeModel that = (cPrivilegeModel) o;
+        return getPrivilegeID() == that.getPrivilegeID() &&
+                getServerID() == that.getServerID() &&
+                getOwnerID() == that.getOwnerID() &&
+                getOrgID() == that.getOrgID() &&
+                getGroupBITS() == that.getGroupBITS() &&
+                getPermsBITS() == that.getPermsBITS() &&
+                getStatusBITS() == that.getStatusBITS() &&
+                Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getDescription(), that.getDescription()) &&
+                Objects.equals(getCreatedDate(), that.getCreatedDate()) &&
+                Objects.equals(getModifiedDate(), that.getModifiedDate()) &&
+                Objects.equals(getSyncedDate(), that.getSyncedDate()) &&
+                Objects.equals(getPermModelMap(), that.getPermModelMap()) &&
+                Objects.equals(getStatusModelSet(), that.getStatusModelSet());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPrivilegeID(), getServerID(), getOwnerID(),
+                getOrgID(), getGroupBITS(), getPermsBITS(), getStatusBITS(),
+                getName(), getDescription(), getCreatedDate(), getModifiedDate(),
+                getSyncedDate(), getPermModelMap(), getStatusModelSet());
     }
 }

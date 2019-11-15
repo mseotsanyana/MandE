@@ -7,14 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.me.mseotsanyana.mande.PPMER.DAL.cSQLDBHelper;
-import com.me.mseotsanyana.mande.Util.cConstant;
+import com.me.mseotsanyana.mande.UTILITY.cConstant;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -30,6 +29,7 @@ public class cMenuDBA {
 
     public cMenuDBA(Context context) {
         dbHelper = new cSQLDBHelper(context);
+
     }
 
     /* ############################################# CREATE ACTIONS ############################################# */
@@ -53,8 +53,8 @@ public class cMenuDBA {
             if (db.insert(cSQLDBHelper.TABLE_tblMENU, null, cv) < 0) {
                 return false;
             }
-        } catch (Exception ex) {
-            Log.d("Exception in importing ", ex.getMessage().toString());
+        } catch (Exception e) {
+            Log.d(TAG,"Exception in reading: " + e.getMessage());
         }
 
         // close the database connection
@@ -98,6 +98,68 @@ public class cMenuDBA {
     }
 
     /* ############################################# READ ACTIONS ############################################# */
+
+    public Set<cMenuModel> getMenuModelSet(int userID, int orgID, int primaryRole,
+                                           int secondaryRoles, int operationBITS, int statusBITS) {
+        Set<cMenuModel> menuModelSet = new HashSet<>();
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String selectQuery = "SELECT * FROM "+ cSQLDBHelper.TABLE_tblMENU +
+                " WHERE ((("+cSQLDBHelper.KEY_GROUP_BITS +" & ?) != 0) " +
+                " OR (("+cSQLDBHelper.KEY_OWNER_ID+" = ?) " +
+                " AND (("+cSQLDBHelper.KEY_PERMS_BITS+" & ?) != 0)) " +
+                " OR ((("+cSQLDBHelper.KEY_GROUP_BITS +" & ?) != 0) " +
+                " AND (("+cSQLDBHelper.KEY_PERMS_BITS+" & ?) != 0)))";
+
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{
+                String.valueOf(primaryRole),
+                String.valueOf(userID),String.valueOf(operationBITS),
+                String.valueOf(secondaryRoles),String.valueOf(operationBITS)});
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    cMenuModel menu = new cMenuModel();
+
+                    menu.setMenuID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    menu.setParentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
+                    menu.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+                    menu.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    menu.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+                    menu.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    menu.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    menu.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    menu.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    menu.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    menu.setCreatedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    menu.setModifiedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    menu.setSyncedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+
+
+                    // populate menu for a specific parent menu
+                    menu.setMenuModelSet(getSubsetMenuByID(menu.getMenuID()));
+
+                    menuModelSet.add(menu);
+
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "ERROR READING ROLE SET:- "+e.getMessage());
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+
+        // close the database connection
+        db.close();
+
+        return menuModelSet;
+    }
 
     public List<cMenuModel> getSubMenuByID(int menuID) {
 

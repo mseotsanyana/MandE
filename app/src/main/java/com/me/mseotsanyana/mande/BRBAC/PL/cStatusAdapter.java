@@ -1,14 +1,10 @@
 package com.me.mseotsanyana.mande.BRBAC.PL;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Point;
 import android.graphics.Typeface;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +19,7 @@ import android.widget.TextView;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cStatusDomain;
 import com.me.mseotsanyana.mande.R;
-import com.me.mseotsanyana.mande.Util.cFontManager;
+import com.me.mseotsanyana.mande.UTILITY.cFontManager;
 
 import java.util.ArrayList;
 

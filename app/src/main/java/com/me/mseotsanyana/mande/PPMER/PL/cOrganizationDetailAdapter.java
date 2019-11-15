@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.me.mseotsanyana.mande.Util.cOrganizationRecord;
+import com.me.mseotsanyana.mande.UTILITY.cOrganizationRecord;
 import com.me.mseotsanyana.mande.R;
 
 import java.text.SimpleDateFormat;

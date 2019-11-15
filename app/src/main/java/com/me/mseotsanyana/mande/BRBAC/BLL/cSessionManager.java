@@ -9,16 +9,20 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.me.mseotsanyana.mande.BRBAC.DAL.cRoleModel;
 import com.me.mseotsanyana.mande.COM.cEntityBITS;
 import com.me.mseotsanyana.mande.COM.cOperationBITS;
 import com.me.mseotsanyana.mande.COM.cStatusBITS;
-import com.me.mseotsanyana.mande.Util.cBitwisePermission;
-import com.me.mseotsanyana.mande.Util.cConstant;
+import com.me.mseotsanyana.mande.UTILITY.cBitwisePermission;
+import com.me.mseotsanyana.mande.UTILITY.cConstant;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-public class cSessionManager extends cBitwisePermission {
+public class cSessionManager extends cBitwisePermission implements Serializable {
     private static String TAG = cSessionManager.class.getSimpleName();
 
     private SharedPreferences settings;
@@ -26,26 +30,41 @@ public class cSessionManager extends cBitwisePermission {
     private Gson gson;
 
     private cUserDomain userDomain;
-    private ArrayList<Integer> userOrganizationIDs;
-    private ArrayList<cRoleDomain> userRoles;
+
+    private Set<Integer> userOrganizationIDSet;
+    //private Set<cRoleDomain> userRoleSet;
+    private Set<cRoleDomain> roleDomainSet;
+    private Set<cMenuDomain> menuDomainSet;
+    private Set<cPrivilegeDomain> privilegeDomainSet;
+    private Set<cPermissionDomain> permissionDomainSet;
+    private Set<cNotificationDomain> notificationDomainSet;
+
+    private cRoleHandler roleHandler;
+    private cMenuHandler menuHandler;
+    private cPrivilegeHandler privilegeHandler;
+    private cPermissionHandler permissionHandler;
+    private cNotificationHandler notificationHandler;
+
+
     private ArrayList<cPermissionDomain> rolePrivileges;
 
     private List<cEntityBITS> entitiesBITS;
     private List<cOperationBITS> operationsBITS;
     private List<cStatusBITS> statusesBITS;
 
-    private cUserRoleHandler userRoleHandler;
-    private cPermissionHandler privilegeHandler;
-    private cPermissionHandler permissionHandler;
+
+    private int ownerID, orgID, primaryRoleBIT, secondaryRoleBITS;
 
     public cSessionManager(Context context) {
         settings = context.getSharedPreferences(cConstant.KEY_USER_PREFS, Context.MODE_PRIVATE);
         editor   = settings.edit();
         gson     = new Gson();
 
-        userRoleHandler      = new cUserRoleHandler(context, this);
-        privilegeHandler     = new cPermissionHandler(context, this);
-        permissionHandler    = new cPermissionHandler(context, this);
+        roleHandler         = new cRoleHandler(context, this);
+        menuHandler         = new cMenuHandler(context, this);
+        privilegeHandler    = new cPrivilegeHandler(context, this);
+        permissionHandler   = new cPermissionHandler(context, this);
+        notificationHandler = new cNotificationHandler(context, this);
     }
 
     /**
@@ -61,38 +80,68 @@ public class cSessionManager extends cBitwisePermission {
 
                 /* 1. user domain of the loggedIn user */
                 setUserDomain(userDomain);
-                int userID = getUserDomain().getUserID();
-                Log.d(TAG + " USER ", gson.toJson(getUserDomain()));
+                Log.d(TAG," USER PROFILE: "+ gson.toJson(userDomain));
 
-                /* 2. list of organization IDs for the loggedIn user */
-                setUserOrganizations(userRoleHandler.getOrganizationIDsByUserID(userID));
-                Log.d(TAG + " USER ORGANIZATIONS ", gson.toJson(getUserOrganizationIDs()));
+                /* compute the login details for the user */
+                ownerID           = userDomain.getUserID();
+                orgID             = userDomain.getOrgID();
+                primaryRoleBIT    = getPrimaryRoleBIT(userDomain.getRoleDomainSet());
+                secondaryRoleBITS = getSecondaryRoleBITS(userDomain.getRoleDomainSet());
+                Log.d(TAG," USER ORGANIZATION ID SET:"+
+                        " OWNER ID = "+ ownerID +
+                        "; OWNER ORG. ID = "+ orgID +
+                        "; PRIMARY ROLE BIT = "+ primaryRoleBIT +
+                        "; SECONDARY ROLE BITS = "+ secondaryRoleBITS);
+
+
+                /* 1.1 list of organization IDs for the loggedIn user */
+                //setUserOrganizationIDSet(userDomain.getRoleDomainSet());
+                //Log.d(TAG," USER ORGANIZATION IDs : "+ gson.toJson(getUserOrganizationIDSet()));
+
+                /* 2. read the user role or group domains */
+                roleDomainSet = roleHandler.getRoleDomainSet(
+                        ownerID, orgID, primaryRoleBIT, secondaryRoleBITS);
+                Log.d(TAG," ROLE SET: "+ gson.toJson(roleDomainSet));
+
+                /* 3. read the user menu item domains */
+                menuDomainSet = menuHandler.getMenuDomainSet(
+                        ownerID, orgID, primaryRoleBIT, secondaryRoleBITS);
+                Log.d(TAG," MENU SET: "+ gson.toJson(menuDomainSet));
+
+                /* 3. read the user menu item domains */
+                privilegeDomainSet = privilegeHandler.getPrivilegeDomainSet(
+                        ownerID, orgID, primaryRoleBIT, secondaryRoleBITS);
+                Log.d(TAG," PRIVILEGE SET: "+ gson.toJson(privilegeDomainSet));
 
                 /* 3. list of roles for the loggedIn user */
-                setUserRoles(userRoleHandler.getRolesByUserID(userID));
-                Log.d(TAG + " USER ROLES ", gson.toJson(getUserRoles()));
+                //setUserRoleSet(userDomain.getRoleDomainSet());
+                //Log.d(TAG, " USER ROLE or GROUP SET: "+ gson.toJson(userDomain.getRoleDomainSet()));
+
+                /* 4. role domains of the loggedIn user */
+                //setUserDomain(userDomain);
+                //Log.d(TAG," USER: "+ gson.toJson(userDomain));
 
                 /* 4. list of privileges for the loggedIn user */
-                setRolePrivileges(getMergedPrivileges(getUserRoles()));
-                Log.d(TAG + " ROLE PRIVILEGES ", gson.toJson(getRolePrivileges()));
+                //--setRolePrivileges(getMergedPrivileges(getUserRoles()));
+                //--Log.d(TAG + " ROLE PRIVILEGES ", gson.toJson(getRolePrivileges()));
 
 
-                /* ### setting of preferences for the loggedIn user ### */
+                /* ### SETTING OF PREFERENCES FOR THE LOGGED-IN USER ### */
 
                 /* 1. user profile details */
-                saveUserProfile(getUserDomain());
+                //--saveUserProfile(getUserDomain());
 
                 /* 2. user own identification */
-                saveUserID(userID);
+                //--saveUserID(userID);
 
                 /* 3. user own organization */
-                saveOrganizationID(getUserDomain().getOrganizationID());
+                //--saveOrganizationID(getUserDomain().getOrganizationID());
 
                 /* ### setting of preferences for the loggedIn user by organizations ### */
-                int primaryRole = 0, secondaryRoles = 0;
-                ArrayList<Integer> roleIDs;
-                ArrayList<Integer> orgs = userRoleHandler.getOrganizationIDsByUserID(userID);
-                for (int i = 0; i < orgs.size(); i++){
+                //--int primaryRole = 0, secondaryRoles = 0;
+                //--ArrayList<Integer> roleIDs;
+                //--ArrayList<Integer> orgs = userRoleHandler.getOrganizationIDsByUserID(userID);
+                /*for (int i = 0; i < orgs.size(); i++){
                     roleIDs = userRoleHandler.getRoleIDsByOrganizationID(orgs.get(i));
                     if (roleIDs.remove(new Integer(1))){
                         primaryRole = 1;
@@ -102,44 +151,44 @@ public class cSessionManager extends cBitwisePermission {
                         secondaryRoles |= roleIDs.get(j);
                     }
 
-                    /*
+
                     Log.d(TAG," ORG = "+ orgs.get(i)+", " +
                             "PRIMARY ROLE = "+ primaryRole+", " +
                             "SECONDARY ROLES = "+ secondaryRoles);
-                    */
 
-                    /* 1. user own organizations */
+
+                    /* 1. user own organizations
                     saveOrganizationIDS(orgs.get(i));
 
-                    /* 2. user primary role - the organization he/she belongs to */
+                    /* 2. user primary role - the organization he/she belongs to
                     savePrimaryRole(userID, orgs.get(i), primaryRole);
 
                     /* 3. user secondary roles - other organization he/she belongs to
-                     *    through roles */
+                     *    through roles
                     saveSecondaryRoles(userID, orgs.get(i), computeSecondaryRoles(getUserDomain()));
 
                     /* 4. entity bits of entities the loggedIn user has access to, grouped by
-                     *    entity types */
+                     *    entity types
                     setEntitiesBITS(permissionHandler.getEntitiesBIT(getRolePrivileges()));
                     saveEntityBITS(userID, orgs.get(i), getEntitiesBITS());
 
-                    /* 5. operation bits by entityID and entity_typeID */
+                    /* 5. operation bits by entityID and entity_typeID
                     setOperationsBITS(permissionHandler.getOperationsBIT(getRolePrivileges()));
                     saveOperationBITS(userID, orgs.get(i), getOperationsBITS());
 
-                    /* 5. status bits by entityID, typeID and operationID */
+                    /* 5. status bits by entityID, typeID and operationID
                     setStatusesBITS(permissionHandler.getStatusesBIT(getRolePrivileges()));
                     saveStatusBITS(userID, orgs.get(i), getStatusesBITS());
 
                     // reset
                     primaryRole = 0;
                     secondaryRoles = 0;
-                }
+                }*/
 
                 // once the user session has been set, the login is then set and settings saved.
-                loginUser();
+                //--loginUser();
                 //deleteSettings();
-                commitSettings();
+                //--commitSettings();
 
                 return true;
 
@@ -173,13 +222,26 @@ public class cSessionManager extends cBitwisePermission {
         this.userDomain = userDomain;
     }
 
-    /**
-     * This returns the user roles of the loggedIn user.
-     *
-     * @return userRoles
-     */
-    public ArrayList<Integer> getUserOrganizationIDs() {
-        return this.userOrganizationIDs;
+
+    public int getPrimaryRoleBIT(Set<cRoleDomain> roleDomainSet){
+        int pRoleBIT = 0;
+        for(cRoleDomain domain: roleDomainSet) {
+            if (getUserDomain().getOrganizationID() == domain.getOrganizationID()){
+                pRoleBIT = domain.getRoleID();
+                break;
+            }
+        }
+        return pRoleBIT;
+    }
+
+    public int getSecondaryRoleBITS(Set<cRoleDomain> roleDomainSet){
+        int sRoleBITS = 0;
+        for(cRoleDomain domain: roleDomainSet) {
+            if (getUserDomain().getOrganizationID() != domain.getOrganizationID()){
+                sRoleBITS |= domain.getRoleID();
+            }
+        }
+        return sRoleBITS;
     }
 
     /**
@@ -187,27 +249,40 @@ public class cSessionManager extends cBitwisePermission {
      *
      * @return userRoles
      */
-    public ArrayList<cRoleDomain> getUserRoles() {
-        return userRoles;
+    public Set<Integer> getUserOrganizationIDSet() {
+        return this.userOrganizationIDSet;
+    }
+
+    /**
+     * This returns the user roles of the loggedIn user.
+     *
+     * @return userRoles
+     */
+    /*public Set<cRoleDomain> getUserRoleSet() {
+        return this.userRoleSet;
+    }*/
+
+    /**
+     * This sets the roles of the loggedIn user
+     *
+     * @param roleDomainSet
+     */
+    public void setUserOrganizationIDSet(Set<cRoleDomain> roleDomainSet) {
+        userOrganizationIDSet = new HashSet<Integer>();
+        for(cRoleDomain domain: roleDomainSet) {
+            //Log.d(TAG,"ROLE DOMAIN = "+gson.toJson(domain));
+            this.userOrganizationIDSet.add(domain.getOrganizationID());
+        }
     }
 
     /**
      * This sets the roles of the loggedIn user
      *
-     * @param organizationIDs
+     * @param userRoleSet
      */
-    public void setUserOrganizations(ArrayList<Integer> organizationIDs) {
-        this.userOrganizationIDs = organizationIDs;
-    }
-
-    /**
-     * This sets the roles of the loggedIn user
-     *
-     * @param userRoles
-     */
-    public void setUserRoles(ArrayList<cRoleDomain> userRoles) {
-        this.userRoles = userRoles;
-    }
+    /*public void setUserRoleSet(Set<cRoleDomain> userRoleSet) {
+        this.userRoleSet = userRoleSet;
+    }*/
 
     /**
      * This returns the user privileges of the loggedIn user.
@@ -280,8 +355,8 @@ public class cSessionManager extends cBitwisePermission {
         ArrayList<cPermissionDomain> mergedPrivileges = new ArrayList<cPermissionDomain>();
 
         for (int i = 0; i < userRoles.size(); i++) {
-            ArrayList<cPermissionDomain> privileges = privilegeHandler.getPrivilegesByIDs(
-                    userRoles.get(i).getOrganizationID(), userRoles.get(i).getRoleID());
+            ArrayList<cPermissionDomain> privileges = null;//privilegeHandler.getPrivilegesByIDs(
+                    //userRoles.get(i).getOrganizationID(), userRoles.get(i).getRoleID());
             mergedPrivileges.addAll(privileges);
         }
         return mergedPrivileges;
@@ -296,6 +371,7 @@ public class cSessionManager extends cBitwisePermission {
      */
     public int computeSecondaryRoles(cUserDomain userDomain){
         int secondaryRoles = 0;
+        /*
         ArrayList<cRoleDomain> roleDomains = userRoleHandler.getRolesByUserID(
                 userDomain.getUserID());
 
@@ -305,7 +381,7 @@ public class cSessionManager extends cBitwisePermission {
 
         // remove primary role from secondary
         secondaryRoles &= ~userDomain.getOrganizationID();
-
+        */
         return secondaryRoles;
     }
 

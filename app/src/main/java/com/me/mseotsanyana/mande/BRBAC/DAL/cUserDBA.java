@@ -6,8 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.PPMER.DAL.cSQLDBHelper;
-import com.me.mseotsanyana.mande.Util.cConstant;
+import com.me.mseotsanyana.mande.UTILITY.cConstant;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -15,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -23,7 +23,7 @@ import java.util.Set;
  */
 public class cUserDBA {
     private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
-    private static String TAG = cSettingDBA.class.getSimpleName();
+    private static String TAG = cUserDBA.class.getSimpleName();
 
     // an object of the database helper
     private cSQLDBHelper dbHelper;
@@ -32,7 +32,7 @@ public class cUserDBA {
     private cOrganizationDBA organizationDBA;
 
     public cUserDBA(Context context) {
-        dbHelper        = new cSQLDBHelper(context);
+        dbHelper = new cSQLDBHelper(context);
         organizationDBA = new cOrganizationDBA(context);
     }
 
@@ -40,6 +40,7 @@ public class cUserDBA {
 
     /**
      * Add user from an excel file
+     *
      * @param userModel
      * @param addresses
      * @return
@@ -57,7 +58,6 @@ public class cUserDBA {
         cv.put(cSQLDBHelper.KEY_NAME, userModel.getName());
         cv.put(cSQLDBHelper.KEY_SURNAME, userModel.getSurname());
         cv.put(cSQLDBHelper.KEY_GENDER, userModel.getGender());
-        cv.put(cSQLDBHelper.KEY_PHOTO, userModel.getPhoto());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, userModel.getDescription());
         cv.put(cSQLDBHelper.KEY_EMAIL, userModel.getEmail());
         cv.put(cSQLDBHelper.KEY_WEBSITE, userModel.getWebsite());
@@ -70,8 +70,16 @@ public class cUserDBA {
             if (db.insert(cSQLDBHelper.TABLE_tblUSER, null, cv) < 0) {
                 return false;
             }
+
+            // add user addresses
+            for (int address : addresses) {
+                if (addUserAddress(userModel.getUserID(), address))
+                    continue;
+                else
+                    return false;
+            }
         } catch (Exception e) {
-            Log.d(TAG, "Exception in importing: "+e.getMessage().toString());
+            Log.d(TAG, "Exception in importing: " + e.getMessage().toString());
         }
 
         // close the database connection
@@ -108,7 +116,7 @@ public class cUserDBA {
                 return userID;
             }
         } catch (Exception e) {
-            Log.d(TAG,"Exception in importing: "+ e.getMessage().toString());
+            Log.d(TAG, "Exception in importing: " + e.getMessage().toString());
         }
 
         // close the database connection
@@ -117,10 +125,26 @@ public class cUserDBA {
         return userID;
     }
 
+    public boolean addUserAddress(int userID, int addressID) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+
+        cv.put(cSQLDBHelper.KEY_USER_FK_ID, userID);
+        cv.put(cSQLDBHelper.KEY_ADDRESS_FK_ID, addressID);
+
+        if (db.insert(cSQLDBHelper.TABLE_tblUSER_ADDRESS, null, cv) < 0) {
+            return false;
+        }
+
+        return true;
+    }
+
     /* ############################################# READ ACTIONS ############################################# */
 
     /**
      * Read and filter a list of users
+     *
      * @param userID
      * @param primaryRole
      * @param secondaryRoles
@@ -135,30 +159,30 @@ public class cUserDBA {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String selectQuery = "SELECT "+cSQLDBHelper.KEY_ORGANIZATION_FK_ID+", "+
-                cSQLDBHelper.KEY_ID+", "+cSQLDBHelper.KEY_PHOTO+", "+
-                cSQLDBHelper.KEY_ADDRESS_FK_ID+", "+cSQLDBHelper.KEY_OWNER_ID+", "+
-                cSQLDBHelper.KEY_GROUP_BITS+", "+cSQLDBHelper.KEY_PERMS_BITS+", "+
-                cSQLDBHelper.KEY_STATUS_BITS+", "+cSQLDBHelper.KEY_NAME+", "+
-                cSQLDBHelper.KEY_SURNAME+", "+ cSQLDBHelper.KEY_DESCRIPTION+", "+
-                cSQLDBHelper.KEY_GENDER+", "+cSQLDBHelper.KEY_EMAIL+", "+
-                cSQLDBHelper.KEY_WEBSITE+", "+cSQLDBHelper.KEY_PHONE+", "+
-                cSQLDBHelper.KEY_PASSWORD+", "+ cSQLDBHelper.KEY_SALT+", "+
-                cSQLDBHelper.KEY_CREATED_DATE +", "+
-                cSQLDBHelper.KEY_MODIFIED_DATE +", "+
-                cSQLDBHelper.KEY_SYNCED_DATE+
-                " FROM "+ cSQLDBHelper.TABLE_tblUSER +
-                " WHERE ((("+cSQLDBHelper.KEY_OWNER_ID+" = ?) " +
-                " AND (("+cSQLDBHelper.KEY_PERMS_BITS+" & ?) != 0)) " +
-                " OR ((("+cSQLDBHelper.KEY_GROUP_BITS +" & ?) != 0) " +
-                " AND (("+cSQLDBHelper.KEY_PERMS_BITS+" & ?) != 0)) "+
-                " OR ((("+cSQLDBHelper.KEY_GROUP_BITS +" & ?) != 0) " +
-                " AND (("+cSQLDBHelper.KEY_PERMS_BITS+" & ?) != 0)))";
+        String selectQuery = "SELECT " + cSQLDBHelper.KEY_ORGANIZATION_FK_ID + ", " +
+                cSQLDBHelper.KEY_ID + ", " + cSQLDBHelper.KEY_PHOTO + ", " +
+                cSQLDBHelper.KEY_ADDRESS_FK_ID + ", " + cSQLDBHelper.KEY_OWNER_ID + ", " +
+                cSQLDBHelper.KEY_GROUP_BITS + ", " + cSQLDBHelper.KEY_PERMS_BITS + ", " +
+                cSQLDBHelper.KEY_STATUS_BITS + ", " + cSQLDBHelper.KEY_NAME + ", " +
+                cSQLDBHelper.KEY_SURNAME + ", " + cSQLDBHelper.KEY_DESCRIPTION + ", " +
+                cSQLDBHelper.KEY_GENDER + ", " + cSQLDBHelper.KEY_EMAIL + ", " +
+                cSQLDBHelper.KEY_WEBSITE + ", " + cSQLDBHelper.KEY_PHONE + ", " +
+                cSQLDBHelper.KEY_PASSWORD + ", " + cSQLDBHelper.KEY_SALT + ", " +
+                cSQLDBHelper.KEY_CREATED_DATE + ", " +
+                cSQLDBHelper.KEY_MODIFIED_DATE + ", " +
+                cSQLDBHelper.KEY_SYNCED_DATE +
+                " FROM " + cSQLDBHelper.TABLE_tblUSER +
+                " WHERE (((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & ?) != 0)) " +
+                " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & ?) != 0)) " +
+                " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & ?) != 0)))";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{
-                String.valueOf(userID),String.valueOf(operationBITS),
-                String.valueOf(primaryRole),String.valueOf(operationBITS),
-                String.valueOf(secondaryRoles),String.valueOf(operationBITS)});
+                String.valueOf(userID), String.valueOf(operationBITS),
+                String.valueOf(primaryRole), String.valueOf(operationBITS),
+                String.valueOf(secondaryRoles), String.valueOf(operationBITS)});
 
         try {
             if (cursor.moveToFirst()) {
@@ -211,7 +235,7 @@ public class cUserDBA {
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
-            Log.d(TAG, e.getMessage()+" Error while trying to get users from database");
+            Log.d(TAG, e.getMessage() + " Error while trying to get users from database");
         } finally {
             if (cursor != null && !cursor.isClosed()) {
                 cursor.close();
@@ -226,6 +250,7 @@ public class cUserDBA {
 
     /**
      * Read addresses by user ID
+     *
      * @param userID
      * @return
      */
@@ -239,19 +264,19 @@ public class cUserDBA {
         String selectQuery = "SELECT " +
                 "address." + cSQLDBHelper.KEY_ID + ", address." + cSQLDBHelper.KEY_SERVER_ID + ", " +
                 "address." + cSQLDBHelper.KEY_OWNER_ID + ", address." + cSQLDBHelper.KEY_ORG_ID + ", " +
-                "address." + cSQLDBHelper.KEY_GROUP_BITS +", address." + cSQLDBHelper.KEY_PERMS_BITS + ", " +
-                "address." + cSQLDBHelper.KEY_STATUS_BITS +", address." + cSQLDBHelper.KEY_STREET + ", " +
-                "address." + cSQLDBHelper.KEY_CITY +", address." + cSQLDBHelper.KEY_PROVINCE + ", " +
-                "address." + cSQLDBHelper.KEY_POSTAL_CODE +", address." + cSQLDBHelper.KEY_COUNTRY + ", " +
-                "address." + cSQLDBHelper.KEY_CREATED_DATE +", address." + cSQLDBHelper.KEY_MODIFIED_DATE + ", " +
+                "address." + cSQLDBHelper.KEY_GROUP_BITS + ", address." + cSQLDBHelper.KEY_PERMS_BITS + ", " +
+                "address." + cSQLDBHelper.KEY_STATUS_BITS + ", address." + cSQLDBHelper.KEY_STREET + ", " +
+                "address." + cSQLDBHelper.KEY_CITY + ", address." + cSQLDBHelper.KEY_PROVINCE + ", " +
+                "address." + cSQLDBHelper.KEY_POSTAL_CODE + ", address." + cSQLDBHelper.KEY_COUNTRY + ", " +
+                "address." + cSQLDBHelper.KEY_CREATED_DATE + ", address." + cSQLDBHelper.KEY_MODIFIED_DATE + ", " +
                 "address." + cSQLDBHelper.KEY_SYNCED_DATE +
                 " FROM " +
                 cSQLDBHelper.TABLE_tblUSER + " user, " +
                 cSQLDBHelper.TABLE_tblADDRESS + " address, " +
                 cSQLDBHelper.TABLE_tblUSER_ADDRESS + " user_address " +
-                " WHERE user."+cSQLDBHelper.KEY_ID + " = user_address."+cSQLDBHelper.KEY_USER_FK_ID +
-                " AND address."+cSQLDBHelper.KEY_ID + " = user_address."+cSQLDBHelper.KEY_ADDRESS_FK_ID +
-                " AND user."+cSQLDBHelper.KEY_ID +" = ?";
+                " WHERE user." + cSQLDBHelper.KEY_ID + " = user_address." + cSQLDBHelper.KEY_USER_FK_ID +
+                " AND address." + cSQLDBHelper.KEY_ID + " = user_address." + cSQLDBHelper.KEY_ADDRESS_FK_ID +
+                " AND user." + cSQLDBHelper.KEY_ID + " = ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(userID)});
 
@@ -297,6 +322,7 @@ public class cUserDBA {
 
     /**
      * Read roles by user ID
+     *
      * @param userID
      * @return Set
      */
@@ -308,19 +334,20 @@ public class cUserDBA {
 
         // construct a selection query
         String selectQuery = "SELECT " +
-                "role." + cSQLDBHelper.KEY_ID + ", role." + cSQLDBHelper.KEY_SERVER_ID + ", " +
+                "role." + cSQLDBHelper.KEY_ID + ", role." + cSQLDBHelper.KEY_ORGANIZATION_FK_ID + ", " +
+                "role." + cSQLDBHelper.KEY_SERVER_ID + ", " +
                 "role." + cSQLDBHelper.KEY_OWNER_ID + ", role." + cSQLDBHelper.KEY_ORG_ID + ", " +
-                "role." + cSQLDBHelper.KEY_GROUP_BITS +", role." + cSQLDBHelper.KEY_PERMS_BITS + ", " +
-                "role." + cSQLDBHelper.KEY_STATUS_BITS +", role." + cSQLDBHelper.KEY_NAME + ", " +
-                "role." + cSQLDBHelper.KEY_DESCRIPTION +", role." + cSQLDBHelper.KEY_CREATED_DATE + ", " +
-                "role." + cSQLDBHelper.KEY_MODIFIED_DATE +", role." + cSQLDBHelper.KEY_SYNCED_DATE +
+                "role." + cSQLDBHelper.KEY_GROUP_BITS + ", role." + cSQLDBHelper.KEY_PERMS_BITS + ", " +
+                "role." + cSQLDBHelper.KEY_STATUS_BITS + ", role." + cSQLDBHelper.KEY_NAME + ", " +
+                "role." + cSQLDBHelper.KEY_DESCRIPTION + ", role." + cSQLDBHelper.KEY_CREATED_DATE + ", " +
+                "role." + cSQLDBHelper.KEY_MODIFIED_DATE + ", role." + cSQLDBHelper.KEY_SYNCED_DATE +
                 " FROM " +
                 cSQLDBHelper.TABLE_tblUSER + " user, " +
                 cSQLDBHelper.TABLE_tblROLE + " role, " +
                 cSQLDBHelper.TABLE_tblUSER_ROLE + " user_role " +
-                " WHERE user."+cSQLDBHelper.KEY_ID + " = user_role."+cSQLDBHelper.KEY_USER_FK_ID +
-                " AND role."+cSQLDBHelper.KEY_ID + " = user_role."+cSQLDBHelper.KEY_ROLE_FK_ID +
-                " AND user."+cSQLDBHelper.KEY_ID +" = ?";
+                " WHERE user." + cSQLDBHelper.KEY_ID + " = user_role." + cSQLDBHelper.KEY_USER_FK_ID +
+                " AND role." + cSQLDBHelper.KEY_ID + " = user_role." + cSQLDBHelper.KEY_ROLE_FK_ID +
+                " AND user." + cSQLDBHelper.KEY_ID + " = ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(userID)});
 
@@ -353,7 +380,7 @@ public class cUserDBA {
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
-            Log.d(TAG, "Error while trying to get projects from database");
+            Log.d(TAG, "Error reading: "+e.getMessage());
         } finally {
             if (cursor != null && !cursor.isClosed()) {
                 cursor.close();
@@ -368,6 +395,7 @@ public class cUserDBA {
 
     /**
      * Read and filter notifications/messages by subscriber ID
+     *
      * @param subscriberID
      * @return
      */
@@ -382,17 +410,17 @@ public class cUserDBA {
                 "notification." + cSQLDBHelper.KEY_ID + ", notification." + cSQLDBHelper.KEY_ENTITY_FK_ID + ", " +
                 "notification." + cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + ", notification." + cSQLDBHelper.KEY_SERVER_ID + ", " +
                 "notification." + cSQLDBHelper.KEY_OWNER_ID + ", notification." + cSQLDBHelper.KEY_ORG_ID + ", " +
-                "notification." + cSQLDBHelper.KEY_GROUP_BITS +", notification." + cSQLDBHelper.KEY_PERMS_BITS + ", " +
-                "notification." + cSQLDBHelper.KEY_STATUS_BITS +", notification." + cSQLDBHelper.KEY_NAME + ", " +
-                "notification." + cSQLDBHelper.KEY_DESCRIPTION +", notification." + cSQLDBHelper.KEY_CREATED_DATE + ", " +
-                "notification." + cSQLDBHelper.KEY_MODIFIED_DATE +", notification." + cSQLDBHelper.KEY_SYNCED_DATE +
+                "notification." + cSQLDBHelper.KEY_GROUP_BITS + ", notification." + cSQLDBHelper.KEY_PERMS_BITS + ", " +
+                "notification." + cSQLDBHelper.KEY_STATUS_BITS + ", notification." + cSQLDBHelper.KEY_NAME + ", " +
+                "notification." + cSQLDBHelper.KEY_DESCRIPTION + ", notification." + cSQLDBHelper.KEY_CREATED_DATE + ", " +
+                "notification." + cSQLDBHelper.KEY_MODIFIED_DATE + ", notification." + cSQLDBHelper.KEY_SYNCED_DATE +
                 " FROM " +
                 cSQLDBHelper.TABLE_tblUSER + " user, " +
                 cSQLDBHelper.TABLE_tblNOTIFICATION + " notification, " +
                 cSQLDBHelper.TABLE_tblSUBSCRIBER + " subscriber " +
-                " WHERE user."+cSQLDBHelper.KEY_ID + " = subscriber."+cSQLDBHelper.KEY_USER_FK_ID +
-                " AND notification."+cSQLDBHelper.KEY_ID + " = subscriber."+cSQLDBHelper.KEY_NOTIFICATION_FK_ID +
-                " AND user."+cSQLDBHelper.KEY_ID +" = ?";
+                " WHERE user." + cSQLDBHelper.KEY_ID + " = subscriber." + cSQLDBHelper.KEY_SUBSCRIBER_FK_ID +
+                " AND notification." + cSQLDBHelper.KEY_ID + " = subscriber." + cSQLDBHelper.KEY_NOTIFICATION_FK_ID +
+                " AND user." + cSQLDBHelper.KEY_ID + " = ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(subscriberID)});
 
@@ -425,7 +453,7 @@ public class cUserDBA {
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
-            Log.d(TAG, "Error while reading "+e.getMessage());
+            Log.d(TAG, "Error while reading " + e.getMessage());
         } finally {
             if (cursor != null && !cursor.isClosed()) {
                 cursor.close();
@@ -440,6 +468,7 @@ public class cUserDBA {
 
     /**
      * Read and filter notifications/messages by publisher ID
+     *
      * @param publisherID
      * @return
      */
@@ -454,17 +483,17 @@ public class cUserDBA {
                 "notification." + cSQLDBHelper.KEY_ID + ", notification." + cSQLDBHelper.KEY_ENTITY_FK_ID + ", " +
                 "notification." + cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + ", notification." + cSQLDBHelper.KEY_SERVER_ID + ", " +
                 "notification." + cSQLDBHelper.KEY_OWNER_ID + ", notification." + cSQLDBHelper.KEY_ORG_ID + ", " +
-                "notification." + cSQLDBHelper.KEY_GROUP_BITS +", notification." + cSQLDBHelper.KEY_PERMS_BITS + ", " +
-                "notification." + cSQLDBHelper.KEY_STATUS_BITS +", notification." + cSQLDBHelper.KEY_NAME + ", " +
-                "notification." + cSQLDBHelper.KEY_DESCRIPTION +", notification." + cSQLDBHelper.KEY_CREATED_DATE + ", " +
-                "notification." + cSQLDBHelper.KEY_MODIFIED_DATE +", notification." + cSQLDBHelper.KEY_SYNCED_DATE +
+                "notification." + cSQLDBHelper.KEY_GROUP_BITS + ", notification." + cSQLDBHelper.KEY_PERMS_BITS + ", " +
+                "notification." + cSQLDBHelper.KEY_STATUS_BITS + ", notification." + cSQLDBHelper.KEY_NAME + ", " +
+                "notification." + cSQLDBHelper.KEY_DESCRIPTION + ", notification." + cSQLDBHelper.KEY_CREATED_DATE + ", " +
+                "notification." + cSQLDBHelper.KEY_MODIFIED_DATE + ", notification." + cSQLDBHelper.KEY_SYNCED_DATE +
                 " FROM " +
                 cSQLDBHelper.TABLE_tblUSER + " user, " +
                 cSQLDBHelper.TABLE_tblNOTIFICATION + " notification, " +
-                cSQLDBHelper.TABLE_tblSUBSCRIBER + " subscriber " +
-                " WHERE user."+cSQLDBHelper.KEY_ID + " = subscriber."+cSQLDBHelper.KEY_USER_FK_ID +
-                " AND notification."+cSQLDBHelper.KEY_ID + " = subscriber."+cSQLDBHelper.KEY_NOTIFICATION_FK_ID +
-                " AND user."+cSQLDBHelper.KEY_ID +" = ?";
+                cSQLDBHelper.TABLE_tblPUBLISHER + " publisher " +
+                " WHERE user." + cSQLDBHelper.KEY_ID + " = publisher." + cSQLDBHelper.KEY_PUBLISHER_FK_ID +
+                " AND notification." + cSQLDBHelper.KEY_ID + " = publisher." + cSQLDBHelper.KEY_NOTIFICATION_FK_ID +
+                " AND user." + cSQLDBHelper.KEY_ID + " = ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(publisherID)});
 
@@ -497,7 +526,7 @@ public class cUserDBA {
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
-            Log.d(TAG, "Error while reading "+e.getMessage());
+            Log.d(TAG, "Error while reading " + e.getMessage());
         } finally {
             if (cursor != null && !cursor.isClosed()) {
                 cursor.close();
@@ -585,36 +614,60 @@ public class cUserDBA {
         // construct a selection query
         String selectQuery = "SELECT * FROM " +
                 cSQLDBHelper.TABLE_tblUSER + " WHERE " +
-                cSQLDBHelper.KEY_EMAIL+" = ? "+" AND "+cSQLDBHelper.KEY_PASSWORD+" = ?";
+                cSQLDBHelper.KEY_EMAIL + " = ? " + " AND " + cSQLDBHelper.KEY_PASSWORD + " = ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{email, password});
 
         try {
             if (cursor.moveToFirst()) {
-                do {
-                    user = new cUserModel();
-                    //cOrganizationModel org = new cOrganizationModel();
+                //do {
+                user = new cUserModel();
+                //cOrganizationModel org = new cOrganizationModel();
 
-                    user.setUserID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    user.setOrganizationModel(new cOrganizationModel(organizationDBA.getOrganizationByID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)))));
-                    user.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    user.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    user.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    user.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    user.setPhoto(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PHOTO)));
-                    user.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    user.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SURNAME)));
-                    user.setGender(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_GENDER)));
-                    user.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    user.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_EMAIL)));
-                    user.setWebsite(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_WEBSITE)));
-                    user.setPhone(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PHONE)));
-                    user.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PASSWORD)));
-                    user.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SALT)));
-                    //user.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
+                user.setUserID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                user.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
+                user.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+                user.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                user.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+                user.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                user.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                user.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                user.setPhoto(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PHOTO)));
+                user.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                user.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SURNAME)));
+                user.setGender(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_GENDER)));
+                user.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                user.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_EMAIL)));
+                user.setWebsite(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_WEBSITE)));
+                user.setPhone(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PHONE)));
+                user.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PASSWORD)));
+                user.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SALT)));
+                user.setCreatedDate(
+                        Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                user.setModifiedDate(
+                        Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                user.setSyncedDate(
+                        Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
-                } while (cursor.moveToNext());
+                // populate user own organization
+                user.setOrganizationModel(new cOrganizationModel(organizationDBA.getOrganizationByID(
+                        user.getOrganizationID())));
+
+                // populate user addresses
+                user.setAddressModelSet(getAddressByUserID(user.getUserID()));
+
+                // populate user roles
+
+                Gson gson = new Gson();
+                user.setRoleModelSet(getRolesByUserID(user.getUserID()));
+                //Log.d(TAG," ROLES 0 = "+gson.toJson(getRolesByUserID(user.getUserID())));
+                //Log.d(TAG," ROLES 1 = "+gson.toJson(user.getRoleModelSet()));
+
+                // populate user published notifications
+                user.setPublisherModelSet(getNotificationsByPublisherID(user.getUserID()));
+
+                // populate user subscribed notifications
+                user.setSubscriberModelSet(getNotificationsBySubscriberID(user.getUserID()));
             }
         } catch (Exception e) {
             Log.d(TAG, "Error while trying to get user by email from database");
@@ -749,6 +802,7 @@ public class cUserDBA {
 
     /**
      * gets the path of the photo for the specified report in the database.
+     *
      * @param userID the identifier of the photo for which to get the photo.
      * @return the photo for the user, or null if no photo was found.
      */
@@ -770,7 +824,7 @@ public class cUserDBA {
         if (cursor != null && cursor.moveToFirst()) {
             // Get the path of the picture from the database row pointed by
             // the cursor using the getColumnIndex method of the cursor.
-            int columnIndex  = cursor.getColumnIndex(cSQLDBHelper.KEY_PHOTO);
+            int columnIndex = cursor.getColumnIndex(cSQLDBHelper.KEY_PHOTO);
             photoPath = cursor.getString(columnIndex);
             cursor.close();
         }
@@ -782,14 +836,14 @@ public class cUserDBA {
 
     /* ############################################# UPDATE ACTIONS ############################################# */
 
-    public boolean updateUser(cUserModel userModel){
+    public boolean updateUser(cUserModel userModel) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // create content object for storing data
         ContentValues cv = new ContentValues();
 
-        Date date= new Date();
+        Date date = new Date();
         Timestamp ts = new Timestamp(date.getTime());
 
         // assign values to the table fields
@@ -825,6 +879,7 @@ public class cUserDBA {
 
     /**
      * update the path of the photo for the specified user in the database.
+     *
      * @param photoPath the identifier of the photo for which to get the photo.
      */
     public int updateUserPhotoPath(int userID, String photoPath) {
@@ -849,6 +904,7 @@ public class cUserDBA {
 
     /**
      * Delete all users
+     *
      * @return Boolean
      */
     public boolean deleteUsers() {

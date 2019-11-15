@@ -22,11 +22,11 @@ import com.me.mseotsanyana.mande.BRBAC.BLL.cPermissionDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cPermissionHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cStatusDomain;
-import com.me.mseotsanyana.mande.Interface.iEntityTVHInterface;
-import com.me.mseotsanyana.mande.Interface.iTreeAdapterCallback;
+import com.me.mseotsanyana.mande.INTERFACE.iEntityTVHInterface;
+import com.me.mseotsanyana.mande.INTERFACE.iTreeAdapterCallback;
 import com.me.mseotsanyana.mande.R;
-import com.me.mseotsanyana.mande.Util.cFontManager;
-import com.me.mseotsanyana.mande.Util.cPermParam;
+import com.me.mseotsanyana.mande.UTILITY.cFontManager;
+import com.me.mseotsanyana.mande.UTILITY.cPermParam;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,13 +34,13 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-import static com.me.mseotsanyana.mande.Util.cConstant.COLLAPSE;
-import static com.me.mseotsanyana.mande.Util.cConstant.EXPAND;
-import static com.me.mseotsanyana.mande.Util.cConstant.NUM_OPS;
-import static com.me.mseotsanyana.mande.Util.cConstant.NUM_STS;
-import static com.me.mseotsanyana.mande.Util.cConstant.OWNER;
-import static com.me.mseotsanyana.mande.Util.cConstant.GROUP;
-import static com.me.mseotsanyana.mande.Util.cConstant.OTHER;
+import static com.me.mseotsanyana.mande.UTILITY.cConstant.COLLAPSE;
+import static com.me.mseotsanyana.mande.UTILITY.cConstant.EXPAND;
+import static com.me.mseotsanyana.mande.UTILITY.cConstant.NUM_OPS;
+import static com.me.mseotsanyana.mande.UTILITY.cConstant.NUM_STS;
+import static com.me.mseotsanyana.mande.UTILITY.cConstant.OWNER;
+import static com.me.mseotsanyana.mande.UTILITY.cConstant.GROUP;
+import static com.me.mseotsanyana.mande.UTILITY.cConstant.OTHER;
 
 
 public class cOperationsFragment extends Fragment implements iTreeAdapterCallback {
@@ -870,11 +870,11 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
                                                 int operationID, int statusID) {
         cPermissionDomain permissionDomain = null;
         for (int i = 0; i < permissionDomains.size(); i++) {
-            if ((permissionDomains.get(i).getPrivilegeDomain().getPrivilegeID() == privilegeID) &&
+            /*if ((permissionDomains.get(i).getPrivilegeDomain().getPrivilegeID() == privilegeID) &&
                     (permissionDomains.get(i).getEntityDomain().getEntityID() == entityID) &&
                     (permissionDomains.get(i).getEntityDomain().getTypeID() == typeID) &&
                     (permissionDomains.get(i).getOperationDomain().getOperationID() == operationID) &&
-                    (permissionDomains.get(i).getStatusDomain().getStatusID() == statusID)) {
+                    (permissionDomains.get(i).getStatusDomain().getStatusID() == statusID))*/ {
 
                 permissionDomain = permissionDomains.get(i);
 
@@ -951,10 +951,10 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
                         cPermissionDomain permDomain = new cPermissionDomain();
 
                         /** set the permission domain details **/
-                        permDomain.setPrivilegeDomain(privilegeDomain);
+                        /*permDomain.setPrivilegeDomain(privilegeDomain);
                         permDomain.setEntityDomain(tmpEntityDomain);
                         permDomain.setOperationDomain(operationDomain);
-                        permDomain.setStatusDomain(new cStatusDomain(sts[i][j]));
+                        permDomain.setStatusDomain(new cStatusDomain(sts[i][j]));*/
                         permDomain.setOwnerID(session.loadUserID());
                         permDomain.setOrgID(session.loadOrganizationID());
 
@@ -1074,7 +1074,7 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
             protected Void doInBackground(cPermParam... param) {
                 for (int i = 0; i < param[0].getCreate_perms().size(); i++) {
                     if (param[0].getCreate_perms() != null) {
-                        permissionHandler.addPermission(param[0].getCreate_perms().get(i));
+                        //--permissionHandler.addPermission(param[0].getCreate_perms().get(i));
                     }
                 }
 
@@ -1101,7 +1101,7 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
 
                 if (param[0].getUpdate_perms() != null) {
                     for (int i = 0; i < param[0].getUpdate_perms().size(); i++) {
-                        permissionHandler.updatePermission(param[0].getUpdate_perms().get(i));
+                        //--permissionHandler.updatePermission(param[0].getUpdate_perms().get(i));
                     }
                 }
 
@@ -1127,7 +1127,7 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
             protected Void doInBackground(cPermParam... param) {
                 for (int i = 0; i < param[0].getDelete_perms().size(); i++) {
                     if (param[0].getDelete_perms().get(i) != null) {
-                        permissionHandler.deletePermission(param[0].getDelete_perms().get(i));
+                        //--permissionHandler.deletePermission(param[0].getDelete_perms().get(i));
                     }
                 }
 

@@ -1,44 +1,33 @@
 package com.me.mseotsanyana.mande.PPMER.DAL;
 
-import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.me.mseotsanyana.mande.Util.cPopulateModelsFromExcel;
+import com.me.mseotsanyana.mande.BRBAC.DAL.cAddressDBA;
+import com.me.mseotsanyana.mande.UTILITY.cConstant;
 
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import java.text.SimpleDateFormat;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
+public class cSQLDBHelper extends SQLiteOpenHelper {
+    private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
+    private static String TAG = cAddressDBA.class.getSimpleName();
 
-public class cSQLDBHelper extends SQLiteOpenHelper
-{
-    // logcat tag
-    private static final String TAG = "dbHelper";
 
-    private Context context;
-    private cPopulateModelsFromExcel populateModelsFromExcel;
-    private ProgressDialog progressDialog;
+    //private Context context;
+    //private cSessionModelFromExcel populateModelsFromExcel;
+    //private ProgressDialog progressDialog;
 
-    String[] listOfBRBACTables = {"ADDRESS","ORGANIZATION","VALUE","USER","SESSION","ROLE","MENU",
-            "PRIVILEGE","ENTITY","OPERATION","STATUS","USER_ROLE","SESSION_ROLE","MENU_ROLE",
-            "PERMISSION"};
+    //String[] listOfBRBACTables = {"ADDRESS","ORGANIZATION","VALUE","USER","SESSION","ROLE","MENU",
+    //        "PRIVILEGE","ENTITY","OPERATION","STATUS","USER_ROLE","SESSION_ROLE","MENU_ROLE",
+    //        "PERMISSION"};
 
     // Database Name
     private static final String DATABASE_NAME = "MEDB.db";
     // Database Version
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 11;
 
     //############################ START BRBAC MODULE TABLES ############################
     public static final String TABLE_tblADDRESS      = "tblADDRESS";         /* 1  */
@@ -61,12 +50,12 @@ public class cSQLDBHelper extends SQLiteOpenHelper
     public static final String TABLE_tblPERMISSION   = "tblPERMISSION";      /* 17  */
     public static final String TABLE_tblPERM_STATUS  = "tblPERM_STATUS";     /* 18 */
 
-    public static final String TABLE_tblSETTING          = "tblSETTING";        /* 19 */
-    public static final String TABLE_tblNOTIFICATION     = "tblNOTIFICATION";   /* 20 */
-    public static final String TABLE_tblSUBSCRIBER       = "tblSUBSCRIBER";     /* 21 */
-    public static final String TABLE_tblPUBLISHER        = "tblPUBLISHER";      /* 22 */
-    public static final String TABLE_tblSETNOTIFICATION  = "tblSETNOTIFICATION";/* 23 */
-    public static final String TABLE_tblACTIVITYLOG      = "tblACTIVITYLOG ";   /* 24 */
+    public static final String TABLE_tblSETTING        = "tblSETTING";        /* 19 */
+    public static final String TABLE_tblNOTIFICATION   = "tblNOTIFICATION";   /* 20 */
+    public static final String TABLE_tblSUBSCRIBER     = "tblSUBSCRIBER";     /* 21 */
+    public static final String TABLE_tblPUBLISHER      = "tblPUBLISHER";      /* 22 */
+    public static final String TABLE_tblNOTIFY_SETTING = "tblNOTIFY_SETTING";  /* 23 */
+    public static final String TABLE_tblACTIVITYLOG    = "tblACTIVITYLOG ";   /* 24 */
 
     //############################## END BRBAC MODULE TABLES ################################
 
@@ -291,7 +280,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_STREET + " TEXT, "
             + KEY_CITY + " TEXT, "
             + KEY_PROVINCE + " TEXT, "
@@ -312,7 +301,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_NAME + " TEXT, "
             + KEY_TELEPHONE + " TEXT, "
             + KEY_FAX + " TEXT, "
@@ -339,7 +328,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_PHOTO + " TEXT , "
             + KEY_NAME + " TEXT, "
             + KEY_SURNAME + " TEXT, "
@@ -368,16 +357,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
-            + KEY_PHOTO + " TEXT, "
-            + KEY_NAME + " TEXT, "
-            + KEY_SURNAME + " TEXT, "
-            + KEY_DESCRIPTION + " TEXT, "
-            + KEY_EMAIL + " TEXT, "
-            + KEY_WEBSITE + " TEXT, "
-            + KEY_PHONE + " TEXT, "
-            + KEY_PASSWORD + " TEXT, "
-            + KEY_SALT + " TEXT, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -397,8 +377,9 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_NAME + " TEXT, "
+            + KEY_DESCRIPTION + " TEXT, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -418,7 +399,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_NAME + " TEXT, "
             + KEY_DESCRIPTION + " TEXT, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -434,13 +415,13 @@ public class cSQLDBHelper extends SQLiteOpenHelper
     //-- ----------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblMENU = "CREATE TABLE " + TABLE_tblMENU + "("
             + KEY_ID +" INTEGER NOT NULL, "
-            + KEY_PARENT_FK_ID +" INTEGER NOT NULL DEFAULT 0, "
+            + KEY_PARENT_FK_ID +" INTEGER, "
             + KEY_SERVER_ID +" INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_NAME + " TEXT, "
             + KEY_DESCRIPTION + " TEXT, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -463,7 +444,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_NAME + " TEXT, "
             + KEY_DESCRIPTION + " TEXT, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -485,7 +466,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_NAME + " TEXT, "
             + KEY_DESCRIPTION + " TEXT, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -503,7 +484,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_NAME + " TEXT, "
             + KEY_DESCRIPTION + " TEXT, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -521,7 +502,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_NAME + " TEXT, "
             + KEY_DESCRIPTION + " TEXT, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -540,7 +521,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -563,7 +544,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -581,21 +562,22 @@ public class cSQLDBHelper extends SQLiteOpenHelper
     public static final String CREATE_TABLE_tblUSER_ROLE = "CREATE TABLE " + TABLE_tblUSER_ROLE + "("
             + KEY_USER_FK_ID + " INTEGER NOT NULL, "
             + KEY_ROLE_FK_ID + " INTEGER NOT NULL, "
+            + KEY_ORGANIZATION_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_USER_FK_ID + "," + KEY_ROLE_FK_ID +" ), "
+            + " PRIMARY KEY (" + KEY_USER_FK_ID + "," + KEY_ROLE_FK_ID + "," + KEY_ORGANIZATION_FK_ID +" ), "
             + " FOREIGN KEY (" + KEY_USER_FK_ID + ") "
             + " REFERENCES " + TABLE_tblUSER +" ("+ KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_ROLE_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblROLE +" ("+ KEY_ID + ") "
+            + " FOREIGN KEY (" + KEY_ROLE_FK_ID + "," + KEY_ORGANIZATION_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblROLE +" ("+ KEY_ID +", "+ KEY_ORGANIZATION_FK_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- --------------------------------------------------------------------------------------------------
@@ -609,7 +591,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -627,21 +609,22 @@ public class cSQLDBHelper extends SQLiteOpenHelper
     public static final String CREATE_TABLE_tblMENU_ROLE = "CREATE TABLE " + TABLE_tblMENU_ROLE + "("
             + KEY_MENU_FK_ID + " INTEGER NOT NULL, "
             + KEY_ROLE_FK_ID + " INTEGER NOT NULL, "
+            + KEY_ORGANIZATION_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_MENU_FK_ID + "," + KEY_ROLE_FK_ID +" ), "
+            + " PRIMARY KEY (" + KEY_MENU_FK_ID + "," + KEY_ROLE_FK_ID + "," + KEY_ORGANIZATION_FK_ID + " ), "
             + " FOREIGN KEY (" + KEY_MENU_FK_ID + ") "
             + " REFERENCES " + TABLE_tblMENU+" ("+ KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_ROLE_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblROLE +" ("+ KEY_ID + ") "
+            + " FOREIGN KEY (" + KEY_ROLE_FK_ID + "," + KEY_ORGANIZATION_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblROLE +" ("+ KEY_ID + "," + KEY_ORGANIZATION_FK_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- -------------------------------------------------------------------------------------------
@@ -657,7 +640,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -687,7 +670,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -712,7 +695,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_NAME + " TEXT, "
             + KEY_DESCRIPTION + " TEXT, "
             + KEY_SETTING_VALUE + " BOOLEAN, "
@@ -728,21 +711,25 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_ID +" INTEGER NOT NULL, "
             + KEY_ENTITY_FK_ID +" INTEGER NOT NULL, "
             + KEY_ENTITY_TYPE_FK_ID +" INTEGER NOT NULL, "
+            + KEY_OPERATION_FK_ID +" INTEGER NOT NULL, "
             + KEY_SERVER_ID +" INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_NAME + " TEXT, "
             + KEY_DESCRIPTION + " TEXT, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + "PRIMARY KEY (" + KEY_ID + "),"
-            + "FOREIGN KEY (" + KEY_ENTITY_FK_ID +","+ KEY_ENTITY_TYPE_FK_ID + ") "
-            + "REFERENCES " + TABLE_tblENTITY +"("+ KEY_ENTITY_FK_ID +","+ KEY_ENTITY_TYPE_FK_ID +") "
-            + "ON DELETE CASCADE ON UPDATE CASCADE);";
+            + " PRIMARY KEY (" + KEY_ID + "),"
+            + " FOREIGN KEY (" + KEY_ENTITY_FK_ID +","+ KEY_ENTITY_TYPE_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblENTITY +"("+ KEY_ID +","+ KEY_ENTITY_TYPE_ID +") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_OPERATION_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblOPERATION +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE );";
 
     //-- --------------------------------------------------------------------------------------------
     //-- Table `tblPUBLISHER`
@@ -755,7 +742,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_NAME + " TEXT, "
             + KEY_DESCRIPTION + " TEXT, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -780,7 +767,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_NAME + " TEXT, "
             + KEY_DESCRIPTION + " TEXT, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -797,7 +784,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper
     //-- --------------------------------------------------------------------------------------------------------
     //-- Table `tblSETNOTIFICATION`
     //-- --------------------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblSETNOTIFICATION = "CREATE TABLE " + TABLE_tblSETNOTIFICATION + "("
+    public static final String CREATE_TABLE_tblNOTIFY_SETTING = "CREATE TABLE " + TABLE_tblNOTIFY_SETTING + "("
             + KEY_NOTIFICATION_FK_ID +" INTEGER NOT NULL, "
             + KEY_SETTING_FK_ID +" INTEGER NOT NULL, "
             + KEY_SERVER_ID +" INTEGER DEFAULT NULL, "
@@ -805,7 +792,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 3, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_NAME + " TEXT, "
             + KEY_DESCRIPTION + " TEXT, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -832,8 +819,6 @@ public class cSQLDBHelper extends SQLiteOpenHelper
             + KEY_STATUS_BITS + " INTEGER NOT NULL, "
             + KEY_NAME + " TEXT NOT NULL, "
             + KEY_DESCRIPTION + " TEXT NULL, "
-            + KEY_START_DATE + " DATE NOT NULL, "
-            + KEY_END_DATE + " DATE NOT NULL, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP );";
@@ -2660,39 +2645,24 @@ public class cSQLDBHelper extends SQLiteOpenHelper
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
         //onCreate(db);
-        //if (!db.isReadOnly()) {
-            // enable foreign key constraints
-            //db.execSQL("PRAGMA foreign_keys=ON;");
-        //}
+        if (!db.isReadOnly()) {
+             //enable foreign key constraints
+            db.execSQL("PRAGMA foreign_keys=OFF;");
+        }
     }
 
     public void createTables(SQLiteDatabase db){
-        // user access control tables
-        /*db.execSQL(CREATE_TABLE_ADDRESS);
-        db.execSQL(CREATE_TABLE_ORGANIZATION);
-        db.execSQL(CREATE_TABLE_VALUE);
-        db.execSQL(CREATE_TABLE_USER);
-        db.execSQL(CREATE_TABLE_SESSION);
-        db.execSQL(CREATE_TABLE_ROLE);
-        db.execSQL(CREATE_TABLE_MENU);
-        db.execSQL(CREATE_TABLE_PRIVILEGE);
-        db.execSQL(CREATE_TABLE_ENTITY);
-        db.execSQL(CREATE_TABLE_OPERATION);
-        db.execSQL(CREATE_TABLE_STATUS);
-        db.execSQL(CREATE_TABLE_USER_ROLE);
-        db.execSQL(CREATE_TABLE_SESSION_ROLE);
-        db.execSQL(CREATE_TABLE_MENU_ROLE);
-        db.execSQL(CREATE_TABLE_PERMISSION);*/
 
+        // user access control tables
         String[] create_brbac_tables = new String[]{
                 CREATE_TABLE_tblADDRESS, CREATE_TABLE_tblORGANIZATION, CREATE_TABLE_tblVALUE,
-                CREATE_TABLE_tblUSER, CREATE_TABLE_tblSESSION, CREATE_TABLE_tblROLE, CREATE_TABLE_tblMENU,
-                CREATE_TABLE_tblPRIVILEGE, CREATE_TABLE_tblENTITY, CREATE_TABLE_tblOPERATION,
-                CREATE_TABLE_tblSTATUS, CREATE_TABLE_tblORG_ADDRESS, CREATE_TABLE_tblUSER_ADDRESS,
-                CREATE_TABLE_tblUSER_ROLE, CREATE_TABLE_tblSESSION_ROLE, CREATE_TABLE_tblMENU_ROLE,
-                CREATE_TABLE_tblPERMISSION, CREATE_TABLE_tblPERM_STATUS, CREATE_TABLE_tblSETTING,
-                CREATE_TABLE_tblNOTIFICATION, CREATE_TABLE_tblSUBSCRIBER, CREATE_TABLE_tblPUBLISHER,
-                CREATE_TABLE_tblSETNOTIFICATION, CREATE_TABLE_tblACTIVITYLOG
+                CREATE_TABLE_tblUSER, CREATE_TABLE_tblSESSION, CREATE_TABLE_tblROLE,
+                CREATE_TABLE_tblMENU, CREATE_TABLE_tblPRIVILEGE, CREATE_TABLE_tblENTITY,
+                CREATE_TABLE_tblOPERATION, CREATE_TABLE_tblSTATUS, CREATE_TABLE_tblORG_ADDRESS,
+                CREATE_TABLE_tblUSER_ADDRESS, CREATE_TABLE_tblUSER_ROLE, CREATE_TABLE_tblSESSION_ROLE,
+                CREATE_TABLE_tblMENU_ROLE, CREATE_TABLE_tblPERMISSION, CREATE_TABLE_tblPERM_STATUS,
+                CREATE_TABLE_tblSETTING, CREATE_TABLE_tblNOTIFICATION, CREATE_TABLE_tblSUBSCRIBER,
+                CREATE_TABLE_tblPUBLISHER, CREATE_TABLE_tblNOTIFY_SETTING, CREATE_TABLE_tblACTIVITYLOG
         };
 
         String[] create_planning_tables = new String[]{
@@ -2722,104 +2692,12 @@ public class cSQLDBHelper extends SQLiteOpenHelper
         }finally {
             db.endTransaction();
         }
-
-/*
-        // dimension tables
-        db.execSQL(CREATE_TABLE_DATE);
-        db.execSQL(CREATE_TABLE_UNIT);
-        db.execSQL(CREATE_TABLE_ACTIVITYLOG);
-        db.execSQL(CREATE_TABLE_SCALE);
-        db.execSQL(CREATE_TABLE_CATEGORY);
-        db.execSQL(CREATE_TABLE_RISKMAP);
-        db.execSQL(CREATE_TABLE_RISKLIKELIHOOD);
-        db.execSQL(CREATE_TABLE_RISKIMPACT);
-
-        // relation tables
-        db.execSQL(CREATE_TABLE_OVERALLAIM);
-        db.execSQL(CREATE_TABLE_SPECIFICAIM);
-        db.execSQL(CREATE_TABLE_PROJECT);
-        db.execSQL(CREATE_TABLE_OUTCOME);
-        db.execSQL(CREATE_TABLE_OBJECTIVE);
-        db.execSQL(CREATE_TABLE_OUTPUT);
-        db.execSQL(CREATE_TABLE_ACTIVITY);
-        db.execSQL(CREATE_TABLE_INDICATOR);
-        db.execSQL(CREATE_TABLE_QUALITATIVEINDICATOR);
-        db.execSQL(CREATE_TABLE_QUANTITATIVEINDICATOR);
-        db.execSQL(CREATE_TABLE_HYBRIDINDICATOR);
-        db.execSQL(CREATE_TABLE_QUALITATIVETARGET);
-        db.execSQL(CREATE_TABLE_QUANTITATIVETARGET);
-        db.execSQL(CREATE_TABLE_HYBRIDTARGET);
-        db.execSQL(CREATE_TABLE_MOV);
-        db.execSQL(CREATE_TABLE_RISK);
-        db.execSQL(CREATE_TABLE_RISKCONSEQUENCE);
-        db.execSQL(CREATE_TABLE_RISKMITIGATION);
-        db.execSQL(CREATE_TABLE_RISKMANAGEMENT);
-        db.execSQL(CREATE_TABLE_WORKPLAN);
-        db.execSQL(CREATE_TABLE_RESOURCE);
-        db.execSQL(CREATE_TABLE_ACCOUNTTYPE);
-        db.execSQL(CREATE_TABLE_BUDGET);
-        db.execSQL(CREATE_TABLE_CASHFLOW);
-        db.execSQL(CREATE_TABLE_MONITORING);
-        db.execSQL(CREATE_TABLE_EVALUATION);
-        db.execSQL(CREATE_TABLE_CRITERION);
-        db.execSQL(CREATE_TABLE_QUESTION);
-
-        // junction tables
-
-        db.execSQL(CREATE_TABLE_OVERALLAIM_PROJECT);
-        db.execSQL(CREATE_TABLE_PROJECT_STATUS);
-        db.execSQL(CREATE_TABLE_PROJECT_OUTCOME);
-        db.execSQL(CREATE_TABLE_OUTCOME_OUTPUT);
-        db.execSQL(CREATE_TABLE_OUTPUT_ACTIVITY);
-        db.execSQL(CREATE_TABLE_OVERALLAIM_INDICATOR);
-        db.execSQL(CREATE_TABLE_OUTCOME_INDICATOR);
-        db.execSQL(CREATE_TABLE_OUTPUT_INDICATOR);
-        db.execSQL(CREATE_TABLE_MOV_INDICATOR);
-        db.execSQL(CREATE_TABLE_OVERALLAIM_RISK);
-        db.execSQL(CREATE_TABLE_OUTCOME_RISK);
-        db.execSQL(CREATE_TABLE_OUTPUT_RISK);
-        db.execSQL(CREATE_TABLE_ACTIVITY_RISK);
-        db.execSQL(CREATE_TABLE_OVERALLAIM_CRITERION);
-        db.execSQL(CREATE_TABLE_OUTCOME_CRITERION);
-        db.execSQL(CREATE_TABLE_OUTPUT_CRITERION);
-        db.execSQL(CREATE_TABLE_ACTIVITY_CRITERION);
-        db.execSQL(CREATE_TABLE_QUESTION_CATEGORY);
-        db.execSQL(CREATE_TABLE_INDICATOR_QUESTION);
-        db.execSQL(CREATE_TABLE_OVERALLAIM_CRITERION_QUESTION);
-        db.execSQL(CREATE_TABLE_OUTCOME_CRITERION_QUESTION);
-        db.execSQL(CREATE_TABLE_OUTPUT_CRITERION_QUESTION);
-        db.execSQL(CREATE_TABLE_ACTIVITY_CRITERION_QUESTION);
-        db.execSQL(CREATE_TABLE_EVALUATION_QUESTIONNAIRE);
-        db.execSQL(CREATE_TABLE_MONITORING_QUESTIONNAIRE);
-        db.execSQL(CREATE_TABLE_EVALUATION_DATACOLLECTION);
-        db.execSQL(CREATE_TABLE_MONITORING_DATACOLLECTION);
-*/
     }
 
 
     public void dropTables(SQLiteDatabase db){
-        // on upgrade drop older tables
-
-        /* bitwise role based access control tables
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ADDRESS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ORGANIZATION);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_VALUE);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SESSION);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MENU);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRIVILEGE);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ENTITY);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OPERATION);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_STATUS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER_ROLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SESSION_ROLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MENU_ROLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRIVILEGE_ROLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PERMISSION);*/
 
         /** drop all tables **/
-
         String[] brbac_tables = new String[]{
                 TABLE_tblADDRESS, TABLE_tblORGANIZATION, TABLE_tblVALUE,
                 TABLE_tblUSER, TABLE_tblSESSION, TABLE_tblROLE, TABLE_tblMENU,
@@ -2828,7 +2706,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper
                 TABLE_tblUSER_ROLE, TABLE_tblSESSION_ROLE, TABLE_tblMENU_ROLE,
                 TABLE_tblPERMISSION, TABLE_tblPERM_STATUS, TABLE_tblSETTING,
                 TABLE_tblNOTIFICATION, TABLE_tblSUBSCRIBER, TABLE_tblPUBLISHER,
-                TABLE_tblSETNOTIFICATION, TABLE_tblACTIVITYLOG
+                TABLE_tblNOTIFY_SETTING, TABLE_tblACTIVITYLOG
         };
 
         String[] planning_tables = new String[]{

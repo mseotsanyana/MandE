@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.me.mseotsanyana.mande.PPMER.DAL.cSQLDBHelper;
-import com.me.mseotsanyana.mande.Util.cConstant;
+import com.me.mseotsanyana.mande.UTILITY.cConstant;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,6 +23,7 @@ public class cSettingDBA {
     public cSettingDBA(Context context) {
         dbHelper = new cSQLDBHelper(context);
     }
+
 
     /* ############################################# CREATE ACTIONS ############################################# */
 
@@ -50,7 +51,7 @@ public class cSettingDBA {
                 return false;
             }
         } catch (Exception e) {
-            Log.d(TAG, "Exception in importing: "+e.getMessage());
+            Log.d(TAG, "Exception in reading: "+e.getMessage());
         }
 
         // close the database connection

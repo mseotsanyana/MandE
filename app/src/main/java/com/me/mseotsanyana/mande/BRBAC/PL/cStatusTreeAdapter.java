@@ -32,9 +32,9 @@ import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cStatusDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserHandler;
-import com.me.mseotsanyana.mande.Interface.iTreeAdapterCallback;
+import com.me.mseotsanyana.mande.INTERFACE.iTreeAdapterCallback;
 import com.me.mseotsanyana.mande.R;
-import com.me.mseotsanyana.mande.Util.cFontManager;
+import com.me.mseotsanyana.mande.UTILITY.cFontManager;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cKeyPairBoolData;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cMultiSpinnerSearch;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch;
@@ -48,7 +48,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.me.mseotsanyana.mande.Util.cConstant.NUM_PERMS;
+import static com.me.mseotsanyana.mande.UTILITY.cConstant.NUM_PERMS;
 
 /**
  * Created by mseotsanyana on 2018/01/22.
@@ -306,11 +306,11 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
 */
         for (int i = 0; i < permissionDomains.size(); i++) {
 
-            if ((permissionDomains.get(i).getPrivilegeDomain().getPrivilegeID() == privilegeID) &&
+            /*if ((permissionDomains.get(i).getPrivilegeDomain().getPrivilegeID() == privilegeID) &&
                     (permissionDomains.get(i).getEntityDomain().getEntityID() == entityID) &&
                     (permissionDomains.get(i).getEntityDomain().getTypeID() == typeID) &&
                     (permissionDomains.get(i).getOperationDomain().getOperationID() == operationID) &&
-                    (permissionDomains.get(i).getStatusDomain().getStatusID() == statusID)) {
+                    (permissionDomains.get(i).getStatusDomain().getStatusID() == statusID))*/ {
 
                 /*
                 Log.d(TAG, "PRIVILEGE ID = "+permissionDomains.get(i).getPrivilegeDomain().getPrivilegeID() +
@@ -405,7 +405,7 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
         for (int i = 0; i < orgs.size(); i++) {
             cKeyPairBoolData idNameBool = new cKeyPairBoolData();
             idNameBool.setId(orgs.get(i).getOrganizationID());
-            idNameBool.setName(orgs.get(i).getOrganizationName());
+            idNameBool.setName(orgs.get(i).getName());
             if ((mPermissionDomain != null) &&
                     (mPermissionDomain.getOrgID() == orgs.get(i).getOrganizationID())) {
                 idNameBool.setSelected(true);
@@ -436,7 +436,7 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
         for (int i = 0; i < orgs.size(); i++) {
             cKeyPairBoolData idNameBool = new cKeyPairBoolData();
             idNameBool.setId(orgs.get(i).getOrganizationID());
-            idNameBool.setName(orgs.get(i).getOrganizationName());
+            idNameBool.setName(orgs.get(i).getName());
             if ((mPermissionDomain != null) &&
                     ((mPermissionDomain.getGroupBITS() & orgs.get(i).getOrganizationID()) ==
                             orgs.get(i).getOrganizationID())) {
@@ -569,11 +569,11 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
         appCompatTextViewCancelIcon.setText(context.getResources().getString(R.string.fa_com_attr));
 
         for (int i = 0; i < permissionDomains.size(); i++) {
-            if ((privilegeID == permissionDomains.get(i).getPrivilegeDomain().getPrivilegeID()) &&
+            /*if ((privilegeID == permissionDomains.get(i).getPrivilegeDomain().getPrivilegeID()) &&
                     (entityDomain.getEntityID() == permissionDomains.get(i).getEntityDomain().getEntityID()) &&
                     (entityDomain.getTypeID() == permissionDomains.get(i).getEntityDomain().getTypeID()) &&
                     (operationDomain.getOperationID() == permissionDomains.get(i).getOperationDomain().getOperationID()) &&
-                    (statusDomain.getStatusID() == permissionDomains.get(i).getStatusDomain().getStatusID())) {
+                    (statusDomain.getStatusID() == permissionDomains.get(i).getStatusDomain().getStatusID())) */{
 
                 createdDate = formatter.format(permissionDomains.get(i).getCreatedDate());
                 modifiedDate = formatter.format(permissionDomains.get(i).getModifiedDate());

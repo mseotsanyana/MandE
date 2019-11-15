@@ -5,27 +5,38 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.me.mseotsanyana.mande.BRBAC.DAL.cAddressModel;
+import com.me.mseotsanyana.mande.BRBAC.DAL.cNotificationModel;
+import com.me.mseotsanyana.mande.BRBAC.DAL.cRoleModel;
+import com.me.mseotsanyana.mande.BRBAC.DAL.cSessionModel;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cUserDBA;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cUserModel;
-import com.me.mseotsanyana.mande.Interface.iMEEntityInterface;
+import com.me.mseotsanyana.mande.INTERFACE.iMEEntityInterface;
 import com.me.mseotsanyana.mande.PPMER.BLL.cMapper;
-import com.me.mseotsanyana.mande.Util.cBitwisePermission;
+import com.me.mseotsanyana.mande.UTILITY.cBitwisePermission;
+import com.me.mseotsanyana.mande.UTILITY.cConstant;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by mseotsanyana on 2017/08/28.
  */
 
 public class cUserHandler extends cMapper<cUserModel, cUserDomain> {
-    //final static private int _id = cSessionManager.USER;
+    private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
     private static String TAG = cUserHandler.class.getSimpleName();
+    //final static private int _id = cSessionManager.USER;
 
     private Context context;
     private cSessionManager session;
+    private Gson gson;
 
     private cUserDBA userDBA;
 
@@ -37,6 +48,7 @@ public class cUserHandler extends cMapper<cUserModel, cUserDomain> {
         this.userDBA = new cUserDBA(context);
         this.context = context;
         this.session = session;
+        this.gson = new Gson();
         this.userInterface = userInterface;
 
 
@@ -59,6 +71,8 @@ public class cUserHandler extends cMapper<cUserModel, cUserDomain> {
         this.userDBA = new cUserDBA(context);
         this.context = context;
         this.session = session;
+        this.gson = new Gson();
+
 
         /** 1. ENTITY SECTION **/
 
@@ -79,13 +93,13 @@ public class cUserHandler extends cMapper<cUserModel, cUserDomain> {
     public boolean addUserFromExcel(cUserDomain domain) {
         // map the business domain to the model
         cUserModel model = this.DomainToModel(domain);
-        return userDBA.addUserFromExcel(model);
+        return true;//userDBA.addUserFromExcel(model);
     }
 
     public long createUser(cUserDomain domain) {
         // map the business domain to the model
         cUserModel model = this.DomainToModel(domain);
-        return userDBA.createUser(model);
+        return 1;//userDBA.createUser(model);
     }
 
     public boolean updateUser(cUserDomain domain) {
@@ -98,8 +112,8 @@ public class cUserHandler extends cMapper<cUserModel, cUserDomain> {
         return userDBA.deleteUser(userID);
     }
 
-    public boolean deleteAllUsers() {
-        return userDBA.deleteAllUsers();
+    public boolean deleteUsers() {
+        return userDBA.deleteUsers();
     }
 
     public cUserDomain getUserByID(int userID) {
@@ -112,8 +126,10 @@ public class cUserHandler extends cMapper<cUserModel, cUserDomain> {
     public cUserDomain getUserByEmailPassword(String email, String password) {
         cUserDomain userDomain = null;
         cUserModel userModel = userDBA.getUserByEmailPassword(email, password);
+        //Log.d(TAG + " USER HANDLESR ", gson.toJson(userModel));
         if (userModel != null)
             userDomain = this.ModelToDomain(userModel);
+
         return userDomain;
     }
 
@@ -295,18 +311,119 @@ public class cUserHandler extends cMapper<cUserModel, cUserDomain> {
         return userDomains;
     }
 
+    Set<cAddressModel> toAddressModelSet(Set<cAddressDomain> addressDomainSet){
+        Set<cAddressModel> addressModelSet = new HashSet<>();
+        cAddressHandler addressHandler = new cAddressHandler();
+
+        for (cAddressDomain addressDomain : addressDomainSet) {
+            cAddressModel addressModel = addressHandler.DomainToModel(addressDomain);
+            addressModelSet.add(addressModel);
+        }
+
+        return addressModelSet;
+    }
+
+    Set<cAddressDomain> toAddressDomainSet(Set<cAddressModel> addressModelSet){
+        Set<cAddressDomain> addressDomainSet = new HashSet<>();
+        cAddressHandler addressHandler = new cAddressHandler();
+
+        for (cAddressModel addressModel : addressModelSet) {
+            cAddressDomain addressDomain = addressHandler.ModelToDomain(addressModel);
+            addressDomainSet.add(addressDomain);
+        }
+
+        return addressDomainSet;
+    }
+
+    Set<cSessionModel> toSessionModelSet(Set<cSessionDomain> sessionDomainSet){
+        Set<cSessionModel> sessionModelSet = new HashSet<>();
+        cSessionHandler sessionHandler = new cSessionHandler();
+
+        for (cSessionDomain sessionDomain : sessionDomainSet) {
+            cSessionModel sessionModel = sessionHandler.DomainToModel(sessionDomain);
+            sessionModelSet.add(sessionModel);
+        }
+
+        return sessionModelSet;
+    }
+
+    Set<cSessionDomain> toSessionDomainSet(Set<cSessionModel> roleModelSet){
+        Set<cSessionDomain> sessionDomainSet = new HashSet<>();
+        cSessionHandler sessionHandler = new cSessionHandler();
+
+        for (cSessionModel sessionModel : roleModelSet) {
+            cSessionDomain roleDomain = sessionHandler.ModelToDomain(sessionModel);
+            sessionDomainSet.add(roleDomain);
+        }
+
+        return sessionDomainSet;
+    }
+
+    Set<cRoleModel> toRoleModelSet(Set<cRoleDomain> roleDomainSet){
+        Set<cRoleModel> roleModelSet = new HashSet<>();
+        cRoleHandler roleHandler = new cRoleHandler();
+
+        for (cRoleDomain roleDomain : roleDomainSet) {
+            cRoleModel roleModel = roleHandler.DomainToModel(roleDomain);
+            roleModelSet.add(roleModel);
+        }
+
+        return roleModelSet;
+    }
+
+    Set<cRoleDomain> toRoleDomainSet(Set<cRoleModel> roleModelSet){
+        Set<cRoleDomain> domainSet = new HashSet<>();
+        cRoleHandler roleHandler = new cRoleHandler();
+
+        for (cRoleModel roleModel : roleModelSet) {
+            cRoleDomain roleDomain = roleHandler.ModelToDomain(roleModel);
+            domainSet.add(roleDomain);
+        }
+
+        return domainSet;
+    }
+
+    Set<cNotificationModel> toNotificationModelSet(Set<cNotificationDomain> notificationDomainSet){
+        Set<cNotificationModel> notificationModelSet = new HashSet<>();
+        cNotificationHandler notificationHandler = new cNotificationHandler();
+
+        for (cNotificationDomain notificationDomain : notificationDomainSet) {
+            cNotificationModel notificationModel =
+                    notificationHandler.DomainToModel(notificationDomain);
+            notificationModelSet.add(notificationModel);
+        }
+
+        return notificationModelSet;
+    }
+
+    Set<cNotificationDomain> toNotificationDomainSet(Set<cNotificationModel> notificationModelSet){
+        Set<cNotificationDomain> notificationDomainSet = new HashSet<>();
+        cNotificationHandler notificationHandler = new cNotificationHandler();
+
+        for (cNotificationModel notificationModel : notificationModelSet) {
+            cNotificationDomain notificationDomain =
+                    notificationHandler.ModelToDomain(notificationModel);
+            notificationDomainSet.add(notificationDomain);
+        }
+
+        return notificationDomainSet;
+    }
+
     @Override
     protected cUserModel DomainToModel(cUserDomain domain) {
         cUserModel model = new cUserModel();
+        cOrganizationHandler organizationHandler = new cOrganizationHandler();
 
         model.setUserID(domain.getUserID());
         model.setOrganizationID(domain.getOrganizationID());
-        model.setAddressID(domain.getAddressID());
+        model.setServerID(domain.getServerID());
         model.setOwnerID(domain.getOwnerID());
+        model.setOrgID(domain.getOrgID());
+        model.setUniqueID(domain.getUniqueID());
         model.setGroupBITS(domain.getGroupBITS());
         model.setPermsBITS(domain.getPermsBITS());
         model.setStatusBITS(domain.getStatusBITS());
-        model.setPhotoPath(domain.getPhotoPath());
+        model.setPhoto(domain.getPhoto());
         model.setName(domain.getName());
         model.setSurname(domain.getSurname());
         model.setGender(domain.getGender());
@@ -314,14 +431,38 @@ public class cUserHandler extends cMapper<cUserModel, cUserDomain> {
         model.setEmail(domain.getEmail());
         model.setWebsite(domain.getWebsite());
         model.setPhone(domain.getPhone());
-        model.setUniqueID(domain.getUniqueID());
         model.setPassword(domain.getPassword());
         model.setSalt(domain.getSalt());
-        //model.setOldPassword(domain.getOldPassword());
-        //model.setNewPassword(domain.getNewPassword());
+        model.setOldPassword(domain.getOldPassword());
+        model.setNewPassword(domain.getNewPassword());
         model.setCreatedDate(domain.getCreatedDate());
         model.setModifiedDate(domain.getModifiedDate());
         model.setSyncedDate(domain.getSyncedDate());
+
+        if (domain.getOrganizationDomain() != null) {
+            model.setOrganizationModel(
+                    organizationHandler.DomainToModel(domain.getOrganizationDomain()));
+        }
+
+        if(!domain.getAddressDomainSet().isEmpty()) {
+            model.setAddressModelSet(toAddressModelSet(domain.getAddressDomainSet()));
+        }
+
+        if(!domain.getSessionDomainSet().isEmpty()) {
+            model.setSessionModelSet(toSessionModelSet(domain.getSessionDomainSet()));
+        }
+
+        if(!domain.getRoleDomainSet().isEmpty()) {
+            model.setRoleModelSet(toRoleModelSet(domain.getRoleDomainSet()));
+        }
+
+        if(!domain.getPublisherDomainSet().isEmpty()) {
+            model.setPublisherModelSet(toNotificationModelSet(domain.getPublisherDomainSet()));
+        }
+
+        if(!domain.getSubscriberDomainSet().isEmpty()) {
+            model.setSubscriberModelSet(toNotificationModelSet(domain.getSubscriberDomainSet()));
+        }
 
         return model;
     }
@@ -329,15 +470,18 @@ public class cUserHandler extends cMapper<cUserModel, cUserDomain> {
     @Override
     protected cUserDomain ModelToDomain(cUserModel model) {
         cUserDomain domain = new cUserDomain();
+        cOrganizationHandler organizationHandler = new cOrganizationHandler();
 
         domain.setUserID(model.getUserID());
         domain.setOrganizationID(model.getOrganizationID());
-        domain.setAddressID(model.getAddressID());
+        domain.setServerID(model.getServerID());
         domain.setOwnerID(model.getOwnerID());
+        domain.setOrgID(model.getOrgID());
+        domain.setUniqueID(model.getUniqueID());
         domain.setGroupBITS(model.getGroupBITS());
         domain.setPermsBITS(model.getPermsBITS());
         domain.setStatusBITS(model.getStatusBITS());
-        domain.setPhotoPath(model.getPhotoPath());
+        domain.setPhoto(model.getPhoto());
         domain.setName(model.getName());
         domain.setSurname(model.getSurname());
         domain.setGender(model.getGender());
@@ -345,14 +489,38 @@ public class cUserHandler extends cMapper<cUserModel, cUserDomain> {
         domain.setEmail(model.getEmail());
         domain.setWebsite(model.getWebsite());
         domain.setPhone(model.getPhone());
-        domain.setUniqueID(model.getUniqueID());
         domain.setPassword(model.getPassword());
         domain.setSalt(model.getSalt());
-        //domain.setOldPassword(model.getOldPassword());
-        //domain.setNewPassword(model.getNewPassword());
+        domain.setOldPassword(model.getOldPassword());
+        domain.setNewPassword(model.getNewPassword());
         domain.setCreatedDate(model.getCreatedDate());
         domain.setModifiedDate(model.getModifiedDate());
         domain.setSyncedDate(model.getSyncedDate());
+
+        if(model.getOrganizationModel() != null) {
+            domain.setOrganizationDomain(
+                    organizationHandler.ModelToDomain(model.getOrganizationModel()));
+        }
+
+        if(!model.getAddressModelSet().isEmpty()) {
+            domain.setAddressDomainSet(toAddressDomainSet(model.getAddressModelSet()));
+        }
+
+        if(!model.getRoleModelSet().isEmpty()) {
+            domain.setRoleDomainSet(toRoleDomainSet(model.getRoleModelSet()));
+        }
+
+        if(!model.getSessionModelSet().isEmpty()) {
+            domain.setSessionDomainSet(toSessionDomainSet(model.getSessionModelSet()));
+        }
+
+        if(!model.getPublisherModelSet().isEmpty()) {
+            domain.setPublisherDomainSet(toNotificationDomainSet(model.getPublisherModelSet()));
+        }
+
+        if(!model.getSubscriberModelSet().isEmpty()) {
+            domain.setSubscriberDomainSet(toNotificationDomainSet(model.getSubscriberModelSet()));
+        }
 
         return domain;
     }

@@ -24,7 +24,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.me.mseotsanyana.mande.BRBAC.BLL.cAddressDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cAddressHandler;
@@ -33,10 +32,10 @@ import com.me.mseotsanyana.mande.BRBAC.BLL.cOrganizationHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserHandler;
-import com.me.mseotsanyana.mande.Interface.iMEEntityInterface;
+import com.me.mseotsanyana.mande.INTERFACE.iMEEntityInterface;
 import com.me.mseotsanyana.mande.PPMER.PL.cMainFragment;
 import com.me.mseotsanyana.mande.R;
-import com.me.mseotsanyana.mande.Util.cUtil;
+import com.me.mseotsanyana.mande.UTILITY.cUtil;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cKeyPairBoolData;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cSpinnerListener;
@@ -158,7 +157,7 @@ public class cUserAddFragment extends Fragment {
         for (int i = 0; i < allOrganizations.size(); i++) {
             cKeyPairBoolData idNameBool = new cKeyPairBoolData();
             idNameBool.setId(allOrganizations.get(i).getOrganizationID());
-            idNameBool.setName(allOrganizations.get(i).getOrganizationName());
+            idNameBool.setName(allOrganizations.get(i).getName());
             idNameBool.setSelected(false);
             keyPairBoolDataList.add(idNameBool);
         }
@@ -300,7 +299,7 @@ public class cUserAddFragment extends Fragment {
             // user details
             cUserDomain domain = new cUserDomain();
             domain.setOrganizationID(organizationID);
-            domain.setAddressID((int) addressID);
+            //domain.setAddressID((int) addressID);
             domain.setName(textInputEditTextFirstName.getText().toString());
             domain.setSurname(textInputEditTextLastName.getText().toString());
             int selectedId = radioGroupGender.getCheckedRadioButtonId();
@@ -325,7 +324,7 @@ public class cUserAddFragment extends Fragment {
             if (userBitmap != null) {
                 imageViewPhoto.setImageBitmap(userBitmap);
                 String photoPath = userHandler.updatePhotoFromStorage((int) userID, userBitmap);
-                domain.setPhotoPath(photoPath);
+                domain.setPhoto(photoPath);
             } else {
                 imageViewPhoto.setImageResource(R.drawable.ic_launcher);
             }
@@ -584,7 +583,7 @@ public class cUserAddFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.homeItem:
-                pushFragment(cMainFragment.newInstance());
+                pushFragment(cMainFragment.newInstance(null));
                 break;
             default:
                 break;

@@ -36,6 +36,10 @@ public class cAddressHandler extends cMapper<cAddressModel, cAddressDomain> {
         this.context = context;
     }
 
+    public cAddressHandler() {
+
+    }
+
     public boolean addAddressFromExcel(cAddressDomain domain) {
         // map the business domain to the model
         cAddressModel model = this.DomainToModel(domain);

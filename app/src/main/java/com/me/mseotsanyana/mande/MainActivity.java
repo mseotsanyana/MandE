@@ -15,7 +15,7 @@ import com.me.mseotsanyana.mande.BRBAC.PL.cPermissionFragment;
 import com.me.mseotsanyana.mande.BRBAC.PL.cRoleFragment;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
 import com.me.mseotsanyana.mande.BRBAC.PL.cUserFragment;
-import com.me.mseotsanyana.mande.Util.cUploadBRBACData;
+import com.me.mseotsanyana.mande.UTILITY.cUploadSessionData;
 import com.me.mseotsanyana.mande.PPMER.BLL.cActivityDomain;
 import com.me.mseotsanyana.mande.PPMER.BLL.cActivityHandler;
 import com.me.mseotsanyana.mande.PPMER.BLL.cGoalDomain;
@@ -96,8 +96,8 @@ public class MainActivity extends AppCompatActivity implements
     private cOutputActivityHandler outputActivityHandler;
 
     //private cUploadMEData uploadExcelData;
-    //private cUploadBRBACData uploadMEData;
-    private cUploadBRBACData task;
+    //private cUploadSessionData uploadMEData;
+    private cUploadSessionData task;
 
     private View imageView;
     private int position;
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements
 
     public static String CURRENT_TAG = TAG_HOME;
 
-    String[] listOfTables = {"ORGANIZATION", "VALUE", "OVERALL_AIM", "SPECIFIC_AIM", "PROJECT", "OBJECTIVE", "OUTCOME", "OUTPUT", "ACTIVITY", "PROJECT_OUTCOME", "OUTCOME_OUTPUT", "OUTPUT_ACTIVITY"};
+    //String[] listOfTables = {"ORGANIZATION", "VALUE", "OVERALL_AIM", "SPECIFIC_AIM", "PROJECT", "OBJECTIVE", "OUTCOME", "OUTPUT", "ACTIVITY", "PROJECT_OUTCOME", "OUTCOME_OUTPUT", "OUTPUT_ACTIVITY"};
 
     ArrayList<cOrganizationDomain> organizationDomainList = new ArrayList<cOrganizationDomain>();
     ArrayList<cTreeModel> selectedModel = new ArrayList<cTreeModel>();
@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements
         //initQuickActions();
 
         // uploading
-        //task = new cUploadBRBACData(this);
+        //task = new cUploadSessionData(this);
 
         //task.execute();
 
@@ -216,12 +216,12 @@ public class MainActivity extends AppCompatActivity implements
         if (session.isLoggedIn()) {
             //Intent intent = new Intent(this, cDesktopActivity.class);
             //startActivity(intent);
-            fragment = new cMainFragment().newInstance();
+            fragment = new cMainFragment().newInstance(session);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.fragment_frame, fragment);
             ft.commit();
         } else {
-            fragment = new cLoginFragment().newInstance();
+            fragment = new cLoginFragment().newInstance(session);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.fragment_frame, fragment);
             ft.commit();
@@ -447,7 +447,7 @@ public class MainActivity extends AppCompatActivity implements
                 navItemIndex = 5;
                 CURRENT_TAG = TAG_UPLOADINGS;
 
-                task = new cUploadBRBACData(this, session);
+                task = new cUploadSessionData(this, session);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 //uncomment the below code to Set the message and title from the strings.xml file
@@ -534,7 +534,7 @@ public class MainActivity extends AppCompatActivity implements
                 navItemIndex = 5;
                 CURRENT_TAG = TAG_UPLOADINGS;
 
-                task = new cUploadBRBACData(this);
+                task = new cUploadSessionData(this);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 //uncomment the below code to Set the message and title from the strings.xml file

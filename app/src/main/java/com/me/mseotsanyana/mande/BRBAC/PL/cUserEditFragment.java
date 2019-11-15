@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
@@ -35,10 +34,10 @@ import com.me.mseotsanyana.mande.BRBAC.BLL.cOrganizationHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserHandler;
-import com.me.mseotsanyana.mande.Interface.iMEEntityInterface;
+import com.me.mseotsanyana.mande.INTERFACE.iMEEntityInterface;
 import com.me.mseotsanyana.mande.PPMER.PL.cMainFragment;
 import com.me.mseotsanyana.mande.R;
-import com.me.mseotsanyana.mande.Util.cUtil;
+import com.me.mseotsanyana.mande.UTILITY.cUtil;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cKeyPairBoolData;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cSpinnerListener;
@@ -158,7 +157,7 @@ public class cUserEditFragment extends Fragment {
         for (int i = 0; i < allOrganizations.size(); i++) {
             cKeyPairBoolData idNameBool = new cKeyPairBoolData();
             idNameBool.setId(allOrganizations.get(i).getOrganizationID());
-            idNameBool.setName(allOrganizations.get(i).getOrganizationName());
+            idNameBool.setName(allOrganizations.get(i).getName());
             idNameBool.setSelected(false);
             keyPairBoolDataList.add(idNameBool);
         }
@@ -278,7 +277,7 @@ public class cUserEditFragment extends Fragment {
             textInputEditTextConfirmPassword.setText(userDomain.getPassword());
 
             // initialize user address views
-            addressDomain = addressHandler.getAddressByID(userDomain.getAddressID());
+            //addressDomain = addressHandler.getAddressByID(userDomain.getAddressID());
 
             textInputEditTextStreet.setText(addressDomain.getStreet());
             textInputEditTextCity.setText(addressDomain.getCity());
@@ -337,7 +336,7 @@ public class cUserEditFragment extends Fragment {
 
         // update user details
         userDomain.setOrganizationID(organizationID);
-        userDomain.setAddressID((int) addressID);
+        //userDomain.setAddressID((int) addressID);
         userDomain.setName(textInputEditTextFirstName.getText().toString());
         userDomain.setSurname(textInputEditTextLastName.getText().toString());
         int selectedId = radioGroupGender.getCheckedRadioButtonId();
@@ -355,7 +354,7 @@ public class cUserEditFragment extends Fragment {
         if (userBitmap != null) {
             String photoPath = userHandler.updatePhotoFromStorage(userDomain.getUserID(),
                     userBitmap);
-            userDomain.setPhotoPath(photoPath);
+            userDomain.setPhoto(photoPath);
         }
 
         // update user's details
@@ -612,7 +611,7 @@ public class cUserEditFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.homeItem:
-                pushFragment(cMainFragment.newInstance());
+                pushFragment(cMainFragment.newInstance(null));
                 break;
             default:
                 break;

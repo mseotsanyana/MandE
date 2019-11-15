@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Date;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * Created by mseotsanyana on 2017/08/24.
@@ -12,13 +14,19 @@ import java.util.Date;
 public class cMenuDomain implements Parcelable{
     private int menuID;
     private int parentID;
+    private int serverID;
     private int ownerID;
+    private int orgID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
     private String name;
     private String description;
-    private Date createDate;
+    private Date createdDate;
+    private Date modifiedDate;
+    private Date syncedDate;
+
+    private Set<cMenuDomain> menuDomainSet;
 
     public cMenuDomain(){}
 
@@ -31,7 +39,7 @@ public class cMenuDomain implements Parcelable{
         this.setStatusBITS(in.readInt());
         this.setName(in.readString());
         this.setDescription(in.readString());
-        this.setCreateDate(new Date(in.readLong()));
+        this.setCreatedDate(new Date(in.readLong()));
     }
 
     @Override
@@ -44,25 +52,8 @@ public class cMenuDomain implements Parcelable{
         out.writeInt(this.getStatusBITS());
         out.writeString(this.getName());
         out.writeString(this.getDescription());
-        out.writeLong(this.getCreateDate().getTime());
+        out.writeLong(this.getCreatedDate().getTime());
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<cMenuDomain> CREATOR = new Creator<cMenuDomain>() {
-        @Override
-        public cMenuDomain createFromParcel(Parcel in) {
-            return new cMenuDomain(in);
-        }
-
-        @Override
-        public cMenuDomain[] newArray(int size) {
-            return new cMenuDomain[size];
-        }
-    };
 
     public int getMenuID() {
         return menuID;
@@ -80,12 +71,28 @@ public class cMenuDomain implements Parcelable{
         this.parentID = parentID;
     }
 
+    public int getServerID() {
+        return serverID;
+    }
+
+    public void setServerID(int serverID) {
+        this.serverID = serverID;
+    }
+
     public int getOwnerID() {
         return ownerID;
     }
 
     public void setOwnerID(int ownerID) {
         this.ownerID = ownerID;
+    }
+
+    public int getOrgID() {
+        return orgID;
+    }
+
+    public void setOrgID(int orgID) {
+        this.orgID = orgID;
     }
 
     public int getGroupBITS() {
@@ -128,12 +135,81 @@ public class cMenuDomain implements Parcelable{
         this.description = description;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public Date getSyncedDate() {
+        return syncedDate;
+    }
+
+    public void setSyncedDate(Date syncedDate) {
+        this.syncedDate = syncedDate;
+    }
+
+    public Set<cMenuDomain> getMenuDomainSet() {
+        return menuDomainSet;
+    }
+
+    public void setMenuDomainSet(Set<cMenuDomain> menuDomainSet) {
+        this.menuDomainSet = menuDomainSet;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<cMenuDomain> CREATOR = new Creator<cMenuDomain>() {
+        @Override
+        public cMenuDomain createFromParcel(Parcel in) {
+            return new cMenuDomain(in);
+        }
+
+        @Override
+        public cMenuDomain[] newArray(int size) {
+            return new cMenuDomain[size];
+        }
+    };
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof cMenuDomain)) return false;
+        cMenuDomain that = (cMenuDomain) o;
+        return getMenuID() == that.getMenuID() &&
+                getParentID() == that.getParentID() &&
+                getServerID() == that.getServerID() &&
+                getOwnerID() == that.getOwnerID() &&
+                getOrgID() == that.getOrgID() &&
+                getGroupBITS() == that.getGroupBITS() &&
+                getPermsBITS() == that.getPermsBITS() &&
+                getStatusBITS() == that.getStatusBITS() &&
+                Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getDescription(), that.getDescription()) &&
+                Objects.equals(getCreatedDate(), that.getCreatedDate()) &&
+                Objects.equals(getModifiedDate(), that.getModifiedDate()) &&
+                Objects.equals(getSyncedDate(), that.getSyncedDate()) &&
+                Objects.equals(getMenuDomainSet(), that.getMenuDomainSet());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getMenuID(), getParentID(), getServerID(), getOwnerID(),
+                getOrgID(), getGroupBITS(), getPermsBITS(), getStatusBITS(), getName(),
+                getDescription(), getCreatedDate(), getModifiedDate(), getSyncedDate(),
+                getMenuDomainSet());
+    }
 }

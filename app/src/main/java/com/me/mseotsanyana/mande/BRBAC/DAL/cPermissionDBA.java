@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.me.mseotsanyana.mande.PPMER.DAL.cSQLDBHelper;
-import com.me.mseotsanyana.mande.Util.cConstant;
+import com.me.mseotsanyana.mande.UTILITY.cConstant;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -58,8 +58,17 @@ public class cPermissionDBA {
             if (db.insert(cSQLDBHelper.TABLE_tblPERMISSION, null, cv) < 0) {
                 return false;
             }
+
+            // add permission statuses
+            for(int status: statuses) {
+                if (addPermissionStatus(permissionModel.getPrivilegeID(), permissionModel.getEntityID(),
+                        permissionModel.getEntityTypeID(), permissionModel.getOperationID(), status))
+                    continue;
+                else
+                    return false;
+            }
         } catch (Exception e) {
-            Log.d(TAG,"Exception in importing: "+e.getMessage());
+            Log.d(TAG,"Exception in reading: "+e.getMessage());
         }
 
         // close the database connection
@@ -98,6 +107,25 @@ public class cPermissionDBA {
 
         // close the database connection
         db.close();
+
+        return true;
+    }
+
+    public boolean addPermissionStatus(int privilegeID, int entityID, int entityTypeID,
+                                       int operationID, int statusID) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+
+        cv.put(cSQLDBHelper.KEY_PRIVILEGE_FK_ID, privilegeID);
+        cv.put(cSQLDBHelper.KEY_ENTITY_FK_ID, entityID);
+        cv.put(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID, entityTypeID);
+        cv.put(cSQLDBHelper.KEY_OPERATION_FK_ID, operationID);
+        cv.put(cSQLDBHelper.KEY_STATUS_FK_ID, statusID);
+
+        if (db.insert(cSQLDBHelper.TABLE_tblPERM_STATUS, null, cv) < 0) {
+            return false;
+        }
 
         return true;
     }

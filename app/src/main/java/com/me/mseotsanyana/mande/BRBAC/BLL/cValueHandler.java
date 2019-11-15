@@ -35,9 +35,8 @@ public class cValueHandler extends cMapper<cValueModel, cValueDomain>
     }
 
     // business rules for deleting values
-    public boolean deleteAllValues()
-    {
-        return valueDBA.deleteAllValues();
+    public boolean deleteValues() {
+        return valueDBA.deleteValues();
     }
 
     // business rules for the adapter
@@ -61,8 +60,8 @@ public class cValueHandler extends cMapper<cValueModel, cValueDomain>
         domain.setValueID(model.getValueID());
         domain.setOrganizationID(model.getOrganizationID());
         domain.setOwnerID(model.getOwnerID());
-        domain.setValueName(model.getValueName());
-        domain.setCreateDate(model.getCreateDate());
+        domain.setValueName(model.getName());
+        domain.setCreateDate(model.getCreatedDate());
 
         return domain;
     }
@@ -74,8 +73,8 @@ public class cValueHandler extends cMapper<cValueModel, cValueDomain>
         model.setValueID(domain.getValueID());
         model.setOrganizationID(domain.getOrganizationID());
         model.setOwnerID(domain.getOwnerID());
-        model.setValueName(domain.getValueName());
-        model.setCreateDate(domain.getCreateDate());
+        model.setName(domain.getValueName());
+        model.setCreatedDate(domain.getCreateDate());
 
         return model;
     }

@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class cOrganizationModel implements Serializable {
@@ -220,5 +221,42 @@ public class cOrganizationModel implements Serializable {
 
     public void setAddressModelSet(Set<cAddressModel> addressModelSet) {
         this.addressModelSet = addressModelSet;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof cOrganizationModel)) return false;
+        cOrganizationModel that = (cOrganizationModel) o;
+        return getOrganizationID() == that.getOrganizationID() &&
+                getServerID() == that.getServerID() &&
+                getOwnerID() == that.getOwnerID() &&
+                getOrgID() == that.getOrgID() &&
+                getGroupBITS() == that.getGroupBITS() &&
+                getPermsBITS() == that.getPermsBITS() &&
+                getStatusBITS() == that.getStatusBITS() &&
+                Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getPhone(), that.getPhone()) &&
+                Objects.equals(getFax(), that.getFax()) &&
+                Objects.equals(getVision(), that.getVision()) &&
+                Objects.equals(getMission(), that.getMission()) &&
+                Objects.equals(getEmail(), that.getEmail()) &&
+                Objects.equals(getWebsite(), that.getWebsite()) &&
+                Objects.equals(getCreatedDate(), that.getCreatedDate()) &&
+                Objects.equals(getModifiedDate(), that.getModifiedDate()) &&
+                Objects.equals(getSyncedDate(), that.getSyncedDate()) &&
+                Objects.equals(getUserModelSet(), that.getUserModelSet()) &&
+                Objects.equals(getRoleModelSet(), that.getRoleModelSet()) &&
+                Objects.equals(getValueModelSet(), that.getValueModelSet()) &&
+                Objects.equals(getAddressModelSet(), that.getAddressModelSet());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getOrganizationID(), getServerID(), getOwnerID(), getOrgID(),
+                getGroupBITS(), getPermsBITS(), getStatusBITS(), getName(), getPhone(),
+                getFax(), getVision(), getMission(), getEmail(), getWebsite(),
+                getCreatedDate(), getModifiedDate(), getSyncedDate(), getUserModelSet(),
+                getRoleModelSet(), getValueModelSet(), getAddressModelSet());
     }
 }

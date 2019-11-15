@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.me.mseotsanyana.mande.PPMER.DAL.cSQLDBHelper;
+import com.me.mseotsanyana.mande.UTILITY.cConstant;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,8 +21,8 @@ import static com.me.mseotsanyana.mande.PPMER.DAL.cSQLDBHelper.TABLE_tblVALUE;
  */
 
 public class cValueDBA {
-    private static final SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-    private static final String TAG = "dbHelper";
+    private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
+    private static String TAG = cValueDBA.class.getSimpleName();
 
     // an object of the database helper
     private cSQLDBHelper dbHelper;
@@ -29,6 +30,42 @@ public class cValueDBA {
     public cValueDBA(Context context) {
         dbHelper = new cSQLDBHelper(context);
     }
+
+    /* ############################################# CREATE ACTIONS ############################################# */
+
+    /**
+     * Add organizational value from excel
+     * @param valueModel
+     * @return
+     */
+    public boolean addValueFromExcel(cValueModel valueModel) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // create content object for storing data
+        ContentValues cv = new ContentValues();
+
+        // assign values to the table fields
+        cv.put(cSQLDBHelper.KEY_ID, valueModel.getValueID());
+        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, valueModel.getOrganizationID());
+        cv.put(cSQLDBHelper.KEY_NAME, valueModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, valueModel.getDescription());
+
+        // insert value record
+        try {
+            if (db.insert(TABLE_tblVALUE, null, cv) < 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            Log.d(TAG,"Exception in reading: " + e.getMessage());
+        }
+
+        // close the database connection
+        db.close();
+
+        return true;
+    }
+
 
     public boolean addValue(cValueModel valueModel) {
         // open the connection to the database
@@ -41,8 +78,7 @@ public class cValueDBA {
         cv.put(cSQLDBHelper.KEY_ID, valueModel.getValueID());
         cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, valueModel.getOrganizationID());
         cv.put(cSQLDBHelper.KEY_OWNER_ID, valueModel.getOwnerID());
-        cv.put(cSQLDBHelper.KEY_NAME, valueModel.getValueName());
-        //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(valueModel.getCreateDate()));
+        cv.put(cSQLDBHelper.KEY_NAME, valueModel.getName());
 
         // insert value record
         long result = db.insert(TABLE_tblVALUE, null, cv);
@@ -53,48 +89,7 @@ public class cValueDBA {
         return result > -1;
     }
 
-    public boolean addValueFromExcel(cValueModel valueModel) {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // create content object for storing data
-        ContentValues cv = new ContentValues();
-
-        // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, valueModel.getValueID());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, valueModel.getOrganizationID());
-        cv.put(cSQLDBHelper.KEY_OWNER_ID, valueModel.getOwnerID());
-        cv.put(cSQLDBHelper.KEY_NAME, valueModel.getValueName());
-        //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(valueModel.getCreateDate()));
-
-        // insert value record
-        try {
-            if (db.insert(TABLE_tblVALUE, null, cv) < 0) {
-                return false;
-            }
-        } catch (Exception ex) {
-            Log.d("Exception in importing ", ex.getMessage().toString());
-        }
-
-        // close the database connection
-        db.close();
-
-        return true;
-    }
-
-    public boolean deleteAllValues()
-    {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // delete all records
-        long result = db.delete(TABLE_tblVALUE, null, null);
-
-        // close the database connection
-        db.close();
-
-        return result > -1;
-    }
+    /* ############################################# READ ACTIONS ############################################# */
 
     public List<cValueModel> getListOfValues() {
         List<cValueModel> valueModelList = new ArrayList<>();
@@ -109,7 +104,7 @@ public class cValueDBA {
                     valueModel.setValueID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                     valueModel.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
                     valueModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    valueModel.setValueName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    valueModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
                     //valueModel.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
                     // add model value into the action_list
                     valueModelList.add(valueModel);
@@ -148,7 +143,7 @@ public class cValueDBA {
                     valueModel.setValueID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                     valueModel.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
                     valueModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    valueModel.setValueName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    valueModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
                     //valueModel.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));
                     // add model value into the action_list
                     valueModelList.add(valueModel);
@@ -171,4 +166,25 @@ public class cValueDBA {
 
         return valueModelList;
     }
+
+    /* ############################################# UPDATE ACTIONS ############################################# */
+
+    /* ############################################# DELETE ACTIONS ############################################# */
+
+    public boolean deleteValues()
+    {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(TABLE_tblVALUE, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    /* ############################################# SYNC ACTIONS ############################################# */
+
 }

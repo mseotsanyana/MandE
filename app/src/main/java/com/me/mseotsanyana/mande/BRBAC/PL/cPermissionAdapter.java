@@ -36,17 +36,16 @@ import com.me.mseotsanyana.mande.BRBAC.BLL.cOrganizationDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cOrganizationHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cPermissionDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cPermissionHandler;
-import com.me.mseotsanyana.mande.BRBAC.BLL.cPermissionTreeDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cStatusDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cStatusHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserHandler;
-import com.me.mseotsanyana.mande.Interface.iPermissionInterface;
-import com.me.mseotsanyana.mande.Interface.iEntityTVHInterface;
+import com.me.mseotsanyana.mande.INTERFACE.iPermissionInterface;
+import com.me.mseotsanyana.mande.INTERFACE.iEntityTVHInterface;
 import com.me.mseotsanyana.mande.R;
-import com.me.mseotsanyana.mande.Util.TextDrawable;
-import com.me.mseotsanyana.mande.Util.cFontManager;
+import com.me.mseotsanyana.mande.UTILITY.TextDrawable;
+import com.me.mseotsanyana.mande.UTILITY.cFontManager;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cKeyPairBoolData;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cMultiSpinnerSearch;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch;
@@ -67,10 +66,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import static com.me.mseotsanyana.mande.Util.cConstant.COLLAPSE;
-import static com.me.mseotsanyana.mande.Util.cConstant.EXPAND;
-import static com.me.mseotsanyana.mande.Util.cConstant.FORMAT_DATE;
-import static com.me.mseotsanyana.mande.Util.cConstant.NUM_PERMS;
+import static com.me.mseotsanyana.mande.UTILITY.cConstant.COLLAPSE;
+import static com.me.mseotsanyana.mande.UTILITY.cConstant.EXPAND;
+import static com.me.mseotsanyana.mande.UTILITY.cConstant.FORMAT_DATE;
+import static com.me.mseotsanyana.mande.UTILITY.cConstant.NUM_PERMS;
 
 /**
  * Created by mseotsanyana on 2017/02/27.
@@ -440,8 +439,8 @@ public class cPermissionAdapter extends cTreeAdapter {
                     break;
 
                 case ENTITY:
-                    final cPermissionTreeDomain permTreeDomain = (cPermissionTreeDomain)
-                            treeModel.getModelObject();
+                    //final cPermissionTreeDomain permTreeDomain = (cPermissionTreeDomain)
+                    //        treeModel.getModelObject();
 
                     operationMask = 0;
                     statusMask = 0;
@@ -475,14 +474,16 @@ public class cPermissionAdapter extends cTreeAdapter {
                     }
 
                     /** id of the privilege **/
-                    privilegeDomainID = permTreeDomain.getPrivilegeID();
+                    //privilegeDomainID = permTreeDomain.getPrivilegeID();
 
                     /** entity domain under the privileges **/
-                    entityDomain = permTreeDomain.getEntityDomain();
+                    //entityDomain = permTreeDomain.getEntityDomain();
 
                     /** populate operation, status and permission domains from database **/
-                    for (Map.Entry<cOperationDomain, HashMap<cStatusDomain, cPermissionDomain>> opsEntry :
-                            permTreeDomain.getPermDomainDetails().entrySet()) {
+                    Iterable<? extends Map.Entry<cOperationDomain, HashMap<cStatusDomain, cPermissionDomain>>> l=null;
+                    for (Map.Entry<cOperationDomain, HashMap<cStatusDomain, cPermissionDomain>> opsEntry : l)
+                            //permTreeDomain.getPermDomainDetails().entrySet())
+                    {
 
                         int opID = opsEntry.getKey().getOperationID();
 
@@ -914,7 +915,7 @@ public class cPermissionAdapter extends cTreeAdapter {
             for (int i = 0; i < orgs.size(); i++) {
                 cKeyPairBoolData idNameBool = new cKeyPairBoolData();
                 idNameBool.setId(orgs.get(i).getOrganizationID());
-                idNameBool.setName(orgs.get(i).getOrganizationName());
+                idNameBool.setName(orgs.get(i).getName());
                 if (privilegeDomain.getOrgID() == orgs.get(i).getOrganizationID()) {
                     idNameBool.setSelected(true);
                 } else {
@@ -929,7 +930,7 @@ public class cPermissionAdapter extends cTreeAdapter {
             for (int i = 0; i < orgs.size(); i++) {
                 cKeyPairBoolData idNameBool = new cKeyPairBoolData();
                 idNameBool.setId(orgs.get(i).getOrganizationID());
-                idNameBool.setName(orgs.get(i).getOrganizationName());
+                idNameBool.setName(orgs.get(i).getName());
                 if ((gpBITS & orgs.get(i).getOrganizationID()) == orgs.get(i).getOrganizationID()) {
                     idNameBool.setSelected(true);
                 } else {

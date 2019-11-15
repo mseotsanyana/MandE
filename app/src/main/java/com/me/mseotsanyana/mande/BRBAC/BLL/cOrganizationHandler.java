@@ -11,7 +11,7 @@ import com.me.mseotsanyana.mande.BRBAC.DAL.cValueModel;
 import com.me.mseotsanyana.mande.COM.cEvent;
 import com.me.mseotsanyana.mande.COM.cGlobalBus;
 import com.me.mseotsanyana.mande.PPMER.BLL.cMapper;
-import com.me.mseotsanyana.mande.Util.cBitwisePermission;
+import com.me.mseotsanyana.mande.UTILITY.cBitwisePermission;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.util.ArrayList;
@@ -30,6 +30,8 @@ public class cOrganizationHandler extends cMapper<cOrganizationModel, cOrganizat
     private cValueHandler valueHandler;
 
     private int entityBITS, operationBITS;
+
+    public cOrganizationHandler(){}
 
     public cOrganizationHandler(Context context, cSessionManager session) {
         organizationDBA = new cOrganizationDBA(context);
@@ -69,12 +71,12 @@ public class cOrganizationHandler extends cMapper<cOrganizationModel, cOrganizat
     // business rules for adding a project
     public boolean addOrganizationFromExcel(cOrganizationDomain domain) {
         cOrganizationModel model = this.DomainToModel(domain);
-        return organizationDBA.addOrganizationFromExcel(model);
+        return true;//organizationDBA.addOrganizationFromExcel(model);
     }
 
     // business rules for deleting organization
-    public boolean deleteAllOrganizations() {
-        return organizationDBA.deleteAllOrganizations();
+    public boolean deleteOrganizations() {
+        return organizationDBA.deleteOrganizations();
     }
 
     public ArrayList<cOrganizationDomain> getOrganizationList(int userID, int orgID,
@@ -178,16 +180,22 @@ public class cOrganizationHandler extends cMapper<cOrganizationModel, cOrganizat
         cOrganizationDomain domain = new cOrganizationDomain();
 
         domain.setOrganizationID(model.getOrganizationID());
-        domain.setAddressID(model.getAddressID());
+        domain.setServerID(model.getServerID());
         domain.setOwnerID(model.getOwnerID());
-        domain.setOrganizationName(model.getOrganizationName());
-        domain.setTelephone(model.getTelephone());
+        domain.setOrgID(model.getOrgID());
+        domain.setGroupBITS(model.getGroupBITS());
+        domain.setPermsBITS(model.getPermsBITS());
+        domain.setStatusBITS(model.getStatusBITS());
+        domain.setName(model.getName());
+        domain.setPhone(model.getPhone());
         domain.setFax(model.getFax());
         domain.setVision(model.getVision());
         domain.setMission(model.getMission());
-        domain.setEmailAddress(model.getEmailAddress());
+        domain.setEmail(model.getEmail());
         domain.setWebsite(model.getWebsite());
-        domain.setCreateDate(model.getCreateDate());
+        domain.setCreatedDate(model.getCreatedDate());
+        domain.setModifiedDate(model.getModifiedDate());
+        domain.setSyncedDate(model.getSyncedDate());
 
         return domain;
     }
@@ -197,16 +205,22 @@ public class cOrganizationHandler extends cMapper<cOrganizationModel, cOrganizat
         cOrganizationModel model = new cOrganizationModel();
 
         model.setOrganizationID(domain.getOrganizationID());
-        model.setAddressID(domain.getAddressID());
+        model.setServerID(domain.getServerID());
         model.setOwnerID(domain.getOwnerID());
-        model.setOrganizationName(domain.getOrganizationName());
-        model.setTelephone(domain.getTelephone());
+        model.setOrgID(domain.getOrgID());
+        model.setName(domain.getName());
+        model.setGroupBITS(domain.getGroupBITS());
+        model.setPermsBITS(domain.getPermsBITS());
+        model.setStatusBITS(domain.getStatusBITS());
+        model.setPhone(domain.getPhone());
         model.setFax(domain.getFax());
         model.setVision(domain.getVision());
         model.setMission(domain.getMission());
-        model.setEmailAddress(domain.getEmailAddress());
+        model.setEmail(domain.getEmail());
         model.setWebsite(domain.getWebsite());
-        model.setCreateDate(domain.getCreateDate());
+        model.setCreatedDate(domain.getCreatedDate());
+        model.setModifiedDate(domain.getModifiedDate());
+        model.setSyncedDate(domain.getSyncedDate());
 
         return model;
     }

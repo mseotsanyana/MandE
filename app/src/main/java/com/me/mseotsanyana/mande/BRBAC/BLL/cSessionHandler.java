@@ -24,8 +24,12 @@ public class cSessionHandler extends cMapper<cSessionModel, cSessionDomain> {
         this.context = context;
     }
 
+    public cSessionHandler() {
+
+    }
+
     public boolean deleteAllSessions() {
-        return sessionDBA.deleteAllSessions();
+        return sessionDBA.deleteSessions();
     }
 
     public boolean addSessionFromExcel(cSessionDomain domain) {
@@ -56,7 +60,7 @@ public class cSessionHandler extends cMapper<cSessionModel, cSessionDomain> {
     }
 
     public ArrayList<cSessionDomain> getSessionList() {
-        List<cSessionModel> sessionModel = sessionDBA.getSessionList();
+        List<cSessionModel> sessionModel = null;//sessionDBA.getSessionList();
 
         ArrayList<cSessionDomain> sessionDomain = new ArrayList<>();
         cSessionDomain domain;
@@ -90,7 +94,7 @@ public class cSessionHandler extends cMapper<cSessionModel, cSessionDomain> {
         model.setGroupBITS(domain.getGroupBITS());
         model.setPermsBITS(domain.getPermsBITS());
         model.setStatusBITS(domain.getStatusBITS());
-        model.setName(domain.getName());
+        /*model.setName(domain.getName());
         model.setSurname(domain.getSurname());
         model.setDescription(domain.getDescription());
         model.setEmail(domain.getEmail());
@@ -99,7 +103,7 @@ public class cSessionHandler extends cMapper<cSessionModel, cSessionDomain> {
         model.setSalt(domain.getSalt());
         model.setOldPassword(domain.getOldPassword());
         model.setNewPassword(domain.getNewPassword());
-        model.setCreateDate(domain.getCreateDate());
+        model.setCreateDate(domain.getCreateDate());*/
 
         return model;
     }
@@ -113,7 +117,7 @@ public class cSessionHandler extends cMapper<cSessionModel, cSessionDomain> {
         domain.setGroupBITS(model.getGroupBITS());
         domain.setPermsBITS(model.getPermsBITS());
         domain.setStatusBITS(model.getStatusBITS());
-        domain.setName(model.getName());
+        /*domain.setName(model.getName());
         domain.setSurname(model.getSurname());
         domain.setDescription(model.getDescription());
         domain.setEmail(model.getEmail());
@@ -122,7 +126,7 @@ public class cSessionHandler extends cMapper<cSessionModel, cSessionDomain> {
         domain.setSalt(model.getSalt());
         domain.setOldPassword(model.getOldPassword());
         domain.setNewPassword(model.getNewPassword());
-        domain.setCreateDate(model.getCreateDate());
+        domain.setCreateDate(model.getCreateDate());*/
 
         return domain;
     }

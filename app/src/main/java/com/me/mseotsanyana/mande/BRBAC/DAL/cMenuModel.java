@@ -1,6 +1,8 @@
 package com.me.mseotsanyana.mande.BRBAC.DAL;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -18,12 +20,15 @@ public class cMenuModel {
     private int statusBITS;
     private String name;
     private String description;
-    private int settingValue;
     private Date createdDate;
     private Date modifiedDate;
     private Date syncedDate;
 
     private Set<cMenuModel> menuModelSet;
+
+    public cMenuModel(){
+        menuModelSet = new HashSet<>();
+    }
 
     public int getMenuID() {
         return menuID;
@@ -105,14 +110,6 @@ public class cMenuModel {
         this.description = description;
     }
 
-    public int getSettingValue() {
-        return settingValue;
-    }
-
-    public void setSettingValue(int settingValue) {
-        this.settingValue = settingValue;
-    }
-
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -143,5 +140,34 @@ public class cMenuModel {
 
     public void setMenuModelSet(Set<cMenuModel> menuModelSet) {
         this.menuModelSet = menuModelSet;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof cMenuModel)) return false;
+        cMenuModel menuModel = (cMenuModel) o;
+        return getMenuID() == menuModel.getMenuID() &&
+                getParentID() == menuModel.getParentID() &&
+                getServerID() == menuModel.getServerID() &&
+                getOwnerID() == menuModel.getOwnerID() &&
+                getOrgID() == menuModel.getOrgID() &&
+                getGroupBITS() == menuModel.getGroupBITS() &&
+                getPermsBITS() == menuModel.getPermsBITS() &&
+                getStatusBITS() == menuModel.getStatusBITS() &&
+                Objects.equals(getName(), menuModel.getName()) &&
+                Objects.equals(getDescription(), menuModel.getDescription()) &&
+                Objects.equals(getCreatedDate(), menuModel.getCreatedDate()) &&
+                Objects.equals(getModifiedDate(), menuModel.getModifiedDate()) &&
+                Objects.equals(getSyncedDate(), menuModel.getSyncedDate()) &&
+                Objects.equals(getMenuModelSet(), menuModel.getMenuModelSet());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getMenuID(), getParentID(), getServerID(), getOwnerID(),
+                getOrgID(), getGroupBITS(), getPermsBITS(), getStatusBITS(), getName(),
+                getDescription(), getCreatedDate(), getModifiedDate(), getSyncedDate(),
+                getMenuModelSet());
     }
 }

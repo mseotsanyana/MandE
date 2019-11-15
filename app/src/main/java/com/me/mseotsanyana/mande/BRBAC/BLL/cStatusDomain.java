@@ -11,17 +11,17 @@ import java.util.Date;
 
 public class cStatusDomain implements Parcelable{
     private int statusID;
+    private int serverID;
     private int ownerID;
+    private int orgID;
     private int groupBITS;
     private int permsBITS;
-    private int typeBITS;
     private int statusBITS;
     private String name;
     private String description;
-    private Date createDate;
-
-    private boolean dirty;
-    private boolean state;
+    private Date createdDate;
+    private Date modifiedDate;
+    private Date syncedDate;
 
     public cStatusDomain(){}
 
@@ -30,13 +30,10 @@ public class cStatusDomain implements Parcelable{
         this.ownerID = statusDomain.getOwnerID();
         this.groupBITS = statusDomain.getGroupBITS();
         this.permsBITS = statusDomain.getPermsBITS();
-        this.typeBITS = statusDomain.getTypeBITS();
         this.statusBITS = statusDomain.getStatusBITS();
         this.name = statusDomain.getName();
         this.description = statusDomain.getDescription();
-        this.createDate = statusDomain.getCreateDate();
-        this.dirty = statusDomain.isDirty();
-        this.state = statusDomain.isState();
+        this.createdDate = statusDomain.getCreatedDate();
     }
 
     protected cStatusDomain(Parcel in) {
@@ -44,24 +41,10 @@ public class cStatusDomain implements Parcelable{
         this.setOwnerID(in.readInt());
         this.setGroupBITS(in.readInt());
         this.setPermsBITS(in.readInt());
-        this.setTypeBITS(in.readInt());
         this.setStatusBITS(in.readInt());
         this.setName(in.readString());
         this.setDescription(in.readString());
-        this.setCreateDate(new Date(in.readLong()));
-    }
-
-    @Override
-    public void writeToParcel(Parcel out, int flags) {
-        out.writeInt(this.getStatusID());
-        out.writeInt(this.getOwnerID());
-        out.writeInt(this.getGroupBITS());
-        out.writeInt(this.getPermsBITS());
-        out.writeInt(this.getTypeBITS());
-        out.writeInt(this.getStatusBITS());
-        out.writeString(this.getName());
-        out.writeString(this.getDescription());
-        out.writeLong(this.getCreateDate().getTime());
+        this.setCreatedDate(new Date(in.readLong()));
     }
 
     @Override
@@ -81,6 +64,18 @@ public class cStatusDomain implements Parcelable{
         }
     };
 
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeInt(this.getStatusID());
+        out.writeInt(this.getOwnerID());
+        out.writeInt(this.getGroupBITS());
+        out.writeInt(this.getPermsBITS());
+        out.writeInt(this.getStatusBITS());
+        out.writeString(this.getName());
+        out.writeString(this.getDescription());
+        out.writeLong(this.getCreatedDate().getTime());
+    }
+
     public int getStatusID() {
         return statusID;
     }
@@ -89,12 +84,28 @@ public class cStatusDomain implements Parcelable{
         this.statusID = statusID;
     }
 
+    public int getServerID() {
+        return serverID;
+    }
+
+    public void setServerID(int serverID) {
+        this.serverID = serverID;
+    }
+
     public int getOwnerID() {
         return ownerID;
     }
 
     public void setOwnerID(int ownerID) {
         this.ownerID = ownerID;
+    }
+
+    public int getOrgID() {
+        return orgID;
+    }
+
+    public void setOrgID(int orgID) {
+        this.orgID = orgID;
     }
 
     public int getGroupBITS() {
@@ -111,14 +122,6 @@ public class cStatusDomain implements Parcelable{
 
     public void setPermsBITS(int permsBITS) {
         this.permsBITS = permsBITS;
-    }
-
-    public int getTypeBITS() {
-        return typeBITS;
-    }
-
-    public void setTypeBITS(int typeBITS) {
-        this.typeBITS = typeBITS;
     }
 
     public int getStatusBITS() {
@@ -145,27 +148,27 @@ public class cStatusDomain implements Parcelable{
         this.description = description;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
-    public boolean isDirty() {
-        return dirty;
+    public Date getModifiedDate() {
+        return modifiedDate;
     }
 
-    public void setDirty(boolean dirty) {
-        this.dirty = dirty;
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 
-    public boolean isState() {
-        return state;
+    public Date getSyncedDate() {
+        return syncedDate;
     }
 
-    public void setState(boolean state) {
-        this.state = state;
+    public void setSyncedDate(Date syncedDate) {
+        this.syncedDate = syncedDate;
     }
 }

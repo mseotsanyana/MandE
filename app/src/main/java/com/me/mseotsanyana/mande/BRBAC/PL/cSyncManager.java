@@ -14,8 +14,8 @@ import com.me.mseotsanyana.mande.BRBAC.BLL.cSyncedJobService;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-import static com.me.mseotsanyana.mande.Util.cConstant.URL_ADDRESS;
-import static com.me.mseotsanyana.mande.Util.cConstant.URL_USER;
+import static com.me.mseotsanyana.mande.UTILITY.cConstant.URL_ADDRESS;
+import static com.me.mseotsanyana.mande.UTILITY.cConstant.URL_USER;
 
 /**
  * Created by mseotsanyana on 2018/04/10.

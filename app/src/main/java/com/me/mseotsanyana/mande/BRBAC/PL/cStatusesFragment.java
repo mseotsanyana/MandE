@@ -1,37 +1,20 @@
 package com.me.mseotsanyana.mande.BRBAC.PL;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.me.mseotsanyana.mande.BRBAC.BLL.cPermissionTreeDomain;
-import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cStatusDomain;
-import com.me.mseotsanyana.mande.COM.cEvent;
-import com.me.mseotsanyana.mande.COM.cGlobalBus;
-import com.me.mseotsanyana.mande.COM.cStatusState;
 import com.me.mseotsanyana.mande.R;
-import com.me.mseotsanyana.mande.Util.cFontManager;
-import com.me.mseotsanyana.viewpagerlibrary.cWrappingViewPager;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-
-import static com.me.mseotsanyana.mande.Util.cConstant.NUM_STS;
 
 public class cStatusesFragment extends Fragment {
     private static final String TAG = cStatusesFragment.class.getSimpleName();

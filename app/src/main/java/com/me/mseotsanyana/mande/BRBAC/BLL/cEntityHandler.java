@@ -23,8 +23,8 @@ public class cEntityHandler extends cMapper<cEntityModel, cEntityDomain> {
         this.context = context;
     }
 
-    public boolean deleteAllEntities() {
-        return entityDBA.deleteAllEntities();
+    public boolean deleteEntities() {
+        return entityDBA.deleteEntities();
     }
 
     public boolean addEntityFromExcel(cEntityDomain domain) {
@@ -72,7 +72,7 @@ public class cEntityHandler extends cMapper<cEntityModel, cEntityDomain> {
         cEntityModel model = new cEntityModel();
 
         model.setEntityID(domain.getEntityID());
-        model.setTypeID(domain.getTypeID());
+        model.setEntityTypeID(domain.getTypeID());
         model.setOwnerID(domain.getOwnerID());
         model.setGroupBITS(domain.getGroupBITS());
         model.setPermsBITS(domain.getPermsBITS());
@@ -91,7 +91,7 @@ public class cEntityHandler extends cMapper<cEntityModel, cEntityDomain> {
         cEntityDomain domain = new cEntityDomain();
 
         domain.setEntityID(model.getEntityID());
-        domain.setTypeID(model.getTypeID());
+        domain.setTypeID(model.getEntityTypeID());
         domain.setOwnerID(model.getOwnerID());
         domain.setGroupBITS(model.getGroupBITS());
         domain.setPermsBITS(model.getPermsBITS());

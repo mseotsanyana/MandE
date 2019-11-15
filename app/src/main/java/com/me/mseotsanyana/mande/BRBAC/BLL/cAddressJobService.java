@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.me.mseotsanyana.mande.Util.cConstant.URL_ADDRESS;
+import static com.me.mseotsanyana.mande.UTILITY.cConstant.URL_ADDRESS;
 
 /**
  * Created by mseotsanyana on 2018/04/05.

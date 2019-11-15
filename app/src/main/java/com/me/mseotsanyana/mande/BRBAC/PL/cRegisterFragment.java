@@ -19,9 +19,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
-import com.me.mseotsanyana.mande.Interface.iRequestInterface;
-import com.me.mseotsanyana.mande.Util.cConstant;
-import com.me.mseotsanyana.mande.Util.cUtil;
+import com.me.mseotsanyana.mande.INTERFACE.iRequestInterface;
+import com.me.mseotsanyana.mande.UTILITY.cConstant;
+import com.me.mseotsanyana.mande.UTILITY.cUtil;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cUserModel;
 import com.me.mseotsanyana.mande.PPMER.DAL.cUserRequest;
 import com.me.mseotsanyana.mande.PPMER.DAL.cUserResponse;
@@ -155,7 +155,7 @@ public class cRegisterFragment extends Fragment implements View.OnClickListener{
 
                 switch (item.getItemId()) {
                     case R.id.action_login:
-                        pushFragment(cLoginFragment.newInstance());
+                        pushFragment(cLoginFragment.newInstance(null));
                         return true;
                     case R.id.action_join:
                         pushFragment(cJoinFragment.newInstance());

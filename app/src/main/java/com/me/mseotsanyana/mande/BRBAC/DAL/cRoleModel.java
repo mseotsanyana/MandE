@@ -1,6 +1,8 @@
 package com.me.mseotsanyana.mande.BRBAC.DAL;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -23,10 +25,17 @@ public class cRoleModel {
     private Date syncedDate;
 
     private cOrganizationModel organizationModel;
+    private cPrivilegeModel privilegeModel;
 
     private Set<cUserModel> userModelSet;
+    private Set<cSessionModel> sessionModelSet;
     private Set<cMenuModel> menuModelSet;
-    private Set<cPrivilegeModel> privilegeModelSet;
+
+    public cRoleModel(){
+        menuModelSet = new HashSet<>();
+        menuModelSet = new HashSet<>();
+        sessionModelSet = new HashSet<>();
+    }
 
     public int getRoleID() {
         return roleID;
@@ -140,12 +149,28 @@ public class cRoleModel {
         this.organizationModel = organizationModel;
     }
 
+    public cPrivilegeModel getPrivilegeModel() {
+        return privilegeModel;
+    }
+
+    public void setPrivilegeModel(cPrivilegeModel privilegeModel) {
+        this.privilegeModel = privilegeModel;
+    }
+
     public Set<cUserModel> getUserModelSet() {
         return userModelSet;
     }
 
     public void setUserModelSet(Set<cUserModel> userModelSet) {
         this.userModelSet = userModelSet;
+    }
+
+    public Set<cSessionModel> getSessionModelSet() {
+        return sessionModelSet;
+    }
+
+    public void setSessionModelSet(Set<cSessionModel> sessionModelSet) {
+        this.sessionModelSet = sessionModelSet;
     }
 
     public Set<cMenuModel> getMenuModelSet() {
@@ -156,11 +181,38 @@ public class cRoleModel {
         this.menuModelSet = menuModelSet;
     }
 
-    public Set<cPrivilegeModel> getPrivilegeModelSet() {
-        return privilegeModelSet;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof cRoleModel)) return false;
+        cRoleModel roleModel = (cRoleModel) o;
+        return getRoleID() == roleModel.getRoleID() &&
+                getOrganizationID() == roleModel.getOrganizationID() &&
+                getServerID() == roleModel.getServerID() &&
+                getOwnerID() == roleModel.getOwnerID() &&
+                getOrgID() == roleModel.getOrgID() &&
+                getGroupBITS() == roleModel.getGroupBITS() &&
+                getPermsBITS() == roleModel.getPermsBITS() &&
+                getStatusBITS() == roleModel.getStatusBITS() &&
+                Objects.equals(getName(), roleModel.getName()) &&
+                Objects.equals(getDescription(), roleModel.getDescription()) &&
+                Objects.equals(getCreatedDate(), roleModel.getCreatedDate()) &&
+                Objects.equals(getModifiedDate(), roleModel.getModifiedDate()) &&
+                Objects.equals(getSyncedDate(), roleModel.getSyncedDate()) &&
+                Objects.equals(getOrganizationModel(), roleModel.getOrganizationModel()) &&
+                Objects.equals(getPrivilegeModel(), roleModel.getPrivilegeModel()) &&
+                Objects.equals(getUserModelSet(), roleModel.getUserModelSet()) &&
+                Objects.equals(getSessionModelSet(), roleModel.getSessionModelSet()) &&
+                Objects.equals(getMenuModelSet(), roleModel.getMenuModelSet());
     }
 
-    public void setPrivilegeModelSet(Set<cPrivilegeModel> privilegeModelSet) {
-        this.privilegeModelSet = privilegeModelSet;
+    @Override
+    public int hashCode() {
+        return Objects.hash(getRoleID(), getOrganizationID(), getServerID(),
+                getOwnerID(), getOrgID(), getGroupBITS(), getPermsBITS(),
+                getStatusBITS(), getName(), getDescription(), getCreatedDate(),
+                getModifiedDate(), getSyncedDate(), getOrganizationModel(),
+                getPrivilegeModel(), getUserModelSet(), getSessionModelSet(),
+                getMenuModelSet());
     }
 }

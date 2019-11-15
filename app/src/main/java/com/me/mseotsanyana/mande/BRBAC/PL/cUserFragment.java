@@ -28,13 +28,12 @@ import com.me.mseotsanyana.mande.BRBAC.BLL.cStatusDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cStatusHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserHandler;
-import com.me.mseotsanyana.mande.Interface.iMEEntityInterface;
+import com.me.mseotsanyana.mande.INTERFACE.iMEEntityInterface;
 import com.me.mseotsanyana.mande.PPMER.PL.cMainFragment;
 import com.me.mseotsanyana.mande.R;
-import com.me.mseotsanyana.mande.Util.TextDrawable;
-import com.me.mseotsanyana.mande.Util.cFontManager;
-import com.me.mseotsanyana.mande.Util.cParam;
-import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
+import com.me.mseotsanyana.mande.UTILITY.TextDrawable;
+import com.me.mseotsanyana.mande.UTILITY.cFontManager;
+import com.me.mseotsanyana.mande.UTILITY.cParam;
 
 import java.util.ArrayList;
 
@@ -272,7 +271,7 @@ public class cUserFragment extends Fragment implements iMEEntityInterface {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.homeItem:
-                pushFragment(cMainFragment.newInstance());
+                pushFragment(cMainFragment.newInstance(null));
                 break;
             default:
                 break;

@@ -2,7 +2,6 @@ package com.me.mseotsanyana.mande.BRBAC.PL;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatTextView;
@@ -29,10 +28,10 @@ import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cStatusDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserHandler;
-import com.me.mseotsanyana.mande.Interface.iPermissionInterface;
+import com.me.mseotsanyana.mande.INTERFACE.iPermissionInterface;
 import com.me.mseotsanyana.mande.R;
-import com.me.mseotsanyana.mande.Util.TextDrawable;
-import com.me.mseotsanyana.mande.Util.cFontManager;
+import com.me.mseotsanyana.mande.UTILITY.TextDrawable;
+import com.me.mseotsanyana.mande.UTILITY.cFontManager;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cKeyPairBoolData;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cMultiSpinnerSearch;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch;
@@ -52,8 +51,8 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.me.mseotsanyana.mande.Util.cConstant.FORMAT_DATE;
-import static com.me.mseotsanyana.mande.Util.cConstant.NUM_PERMS;
+import static com.me.mseotsanyana.mande.UTILITY.cConstant.FORMAT_DATE;
+import static com.me.mseotsanyana.mande.UTILITY.cConstant.NUM_PERMS;
 
 /**
  * Created by mseotsanyana on 2017/02/27.
@@ -464,7 +463,7 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                     for (int i = 0; i < orgs.size(); i++) {
                         cKeyPairBoolData idNameBool = new cKeyPairBoolData();
                         idNameBool.setId(orgs.get(i).getOrganizationID());
-                        idNameBool.setName(orgs.get(i).getOrganizationName());
+                        idNameBool.setName(orgs.get(i).getName());
                         if (roleDomain.getOrganizationID() == orgs.get(i).getOrganizationID()) {
                             idNameBool.setSelected(true);
                         } else {
@@ -492,7 +491,7 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                     for (int i = 0; i < orgs.size(); i++) {
                         cKeyPairBoolData idNameBool = new cKeyPairBoolData();
                         idNameBool.setId(orgs.get(i).getOrganizationID());
-                        idNameBool.setName(orgs.get(i).getOrganizationName());
+                        idNameBool.setName(orgs.get(i).getName());
                         if ((session.loadSecondaryRoles(session.loadUserID(), session.loadOrganizationID()) &
                                 orgs.get(i).getOrganizationID()) == orgs.get(i).getOrganizationID()) {
                             idNameBool.setSelected(true);

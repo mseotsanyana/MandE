@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.me.mseotsanyana.mande.PPMER.DAL.cSQLDBHelper;
+import com.me.mseotsanyana.mande.UTILITY.cConstant;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -22,11 +23,11 @@ import java.util.Set;
  */
 
 public class cAddressDBA {
+    private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
+    private static String TAG = cAddressDBA.class.getSimpleName();
+
     // an object of the database helper
     private cSQLDBHelper dbHelper;
-
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private static final String TAG = "dbHelper";
 
     public cAddressDBA(Context context) {
         dbHelper = new cSQLDBHelper(context);
@@ -54,13 +55,13 @@ public class cAddressDBA {
         cv.put(cSQLDBHelper.KEY_POSTAL_CODE, addressModel.getPostalCode());
         cv.put(cSQLDBHelper.KEY_COUNTRY, addressModel.getCountry());
 
-        // insert outcome record
+        // insert address record
         try {
             if (db.insert(cSQLDBHelper.TABLE_tblADDRESS, null, cv) < 0) {
                 return false;
             }
         } catch (Exception e) {
-            Log.d(TAG,"Exception in importing: "+e.getMessage().toString());
+            Log.d(TAG,"Exception in importing: "+e.getMessage());
         }
 
         // close the database connection

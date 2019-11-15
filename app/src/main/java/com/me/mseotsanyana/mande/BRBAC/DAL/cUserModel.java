@@ -2,6 +2,8 @@ package com.me.mseotsanyana.mande.BRBAC.DAL;
 
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class cUserModel {
@@ -10,6 +12,7 @@ public class cUserModel {
     private int serverID;
     private int ownerID;
     private int orgID;
+    private String uniqueID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
@@ -21,7 +24,6 @@ public class cUserModel {
     private String email;
     private String website;
     private String phone;
-    private String uniqueID;
     private String password;
     private String salt;
     private String oldPassword;
@@ -38,7 +40,13 @@ public class cUserModel {
     Set<cNotificationModel> publisherModelSet;
     Set<cNotificationModel> subscriberModelSet;
 
-    public cUserModel(){};
+    public cUserModel(){
+        addressModelSet = new HashSet<>();
+        sessionModelSet = new HashSet<>();
+        roleModelSet = new HashSet<>();
+        publisherModelSet = new HashSet<>();
+        subscriberModelSet = new HashSet<>();
+    };
 
     public cUserModel(cUserModel userModel){
         this.setUserID(userModel.getUserID());
@@ -46,6 +54,7 @@ public class cUserModel {
         this.setServerID(userModel.getServerID());
         this.setOwnerID(userModel.getOwnerID());
         this.setOrgID(userModel.getOrgID());
+        this.setUniqueID(userModel.getUniqueID());
         this.setGroupBITS(userModel.getGroupBITS());
         this.setPermsBITS(userModel.getPermsBITS());
         this.setStatusBITS(userModel.getStatusBITS());
@@ -56,7 +65,8 @@ public class cUserModel {
         this.setEmail(userModel.getEmail());
         this.setWebsite(userModel.getWebsite());
         this.setPhone(userModel.getPhone());
-        this.setUniqueID(userModel.getUniqueID());
+        this.setNewPassword(userModel.getNewPassword());
+        this.setOldPassword(userModel.getOldPassword());
         this.setCreatedDate(userModel.getCreatedDate());
         this.setModifiedDate(userModel.getModifiedDate());
         this.setSyncedDate(userModel.getSyncedDate());
@@ -100,6 +110,14 @@ public class cUserModel {
 
     public void setOrgID(int orgID) {
         this.orgID = orgID;
+    }
+
+    public String getUniqueID() {
+        return uniqueID;
+    }
+
+    public void setUniqueID(String uniqueID) {
+        this.uniqueID = uniqueID;
     }
 
     public int getGroupBITS() {
@@ -188,14 +206,6 @@ public class cUserModel {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getUniqueID() {
-        return uniqueID;
-    }
-
-    public void setUniqueID(String uniqueID) {
-        this.uniqueID = uniqueID;
     }
 
     public String getPassword() {
@@ -300,5 +310,53 @@ public class cUserModel {
 
     public void setSubscriberModelSet(Set<cNotificationModel> subscriberModelSet) {
         this.subscriberModelSet = subscriberModelSet;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof cUserModel)) return false;
+        cUserModel userModel = (cUserModel) o;
+        return getUserID() == userModel.getUserID() &&
+                getOrganizationID() == userModel.getOrganizationID() &&
+                getServerID() == userModel.getServerID() &&
+                getOwnerID() == userModel.getOwnerID() &&
+                getOrgID() == userModel.getOrgID() &&
+                getGroupBITS() == userModel.getGroupBITS() &&
+                getPermsBITS() == userModel.getPermsBITS() &&
+                getStatusBITS() == userModel.getStatusBITS() &&
+                Objects.equals(getUniqueID(), userModel.getUniqueID()) &&
+                Objects.equals(getPhoto(), userModel.getPhoto()) &&
+                Objects.equals(getName(), userModel.getName()) &&
+                Objects.equals(getSurname(), userModel.getSurname()) &&
+                Objects.equals(getGender(), userModel.getGender()) &&
+                Objects.equals(getDescription(), userModel.getDescription()) &&
+                Objects.equals(getEmail(), userModel.getEmail()) &&
+                Objects.equals(getWebsite(), userModel.getWebsite()) &&
+                Objects.equals(getPhone(), userModel.getPhone()) &&
+                Objects.equals(getPassword(), userModel.getPassword()) &&
+                Objects.equals(getSalt(), userModel.getSalt()) &&
+                Objects.equals(getOldPassword(), userModel.getOldPassword()) &&
+                Objects.equals(getNewPassword(), userModel.getNewPassword()) &&
+                Objects.equals(getCreatedDate(), userModel.getCreatedDate()) &&
+                Objects.equals(getModifiedDate(), userModel.getModifiedDate()) &&
+                Objects.equals(getSyncedDate(), userModel.getSyncedDate()) &&
+                Objects.equals(getOrganizationModel(), userModel.getOrganizationModel()) &&
+                Objects.equals(getAddressModelSet(), userModel.getAddressModelSet()) &&
+                Objects.equals(getSessionModelSet(), userModel.getSessionModelSet()) &&
+                Objects.equals(getRoleModelSet(), userModel.getRoleModelSet()) &&
+                Objects.equals(getPublisherModelSet(), userModel.getPublisherModelSet()) &&
+                Objects.equals(getSubscriberModelSet(), userModel.getSubscriberModelSet());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUserID(), getOrganizationID(), getServerID(), getOwnerID(),
+                getOrgID(), getUniqueID(), getGroupBITS(), getPermsBITS(), getStatusBITS(),
+                getPhoto(), getName(), getSurname(), getGender(), getDescription(), getEmail(),
+                getWebsite(), getPhone(), getPassword(), getSalt(), getOldPassword(),
+                getNewPassword(), getCreatedDate(), getModifiedDate(), getSyncedDate(),
+                getOrganizationModel(), getAddressModelSet(), getSessionModelSet(),
+                getRoleModelSet(), getPublisherModelSet(), getSubscriberModelSet());
     }
 }

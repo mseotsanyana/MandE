@@ -1,12 +1,15 @@
 package com.me.mseotsanyana.mande.BRBAC.DAL;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class cNotificationModel {
     private int notificationID;
     private int entityID;
     private int entityTypeID;
+    private int operationID;
     private int serverID;
     private int ownerID;
     private int orgID;
@@ -20,17 +23,23 @@ public class cNotificationModel {
     private Date syncedDate;
 
     private cEntityModel entityModel;
+    private cOperationModel operationModel;
 
-    private Set<cUserModel> publisherModels;
-    private Set<cUserModel> subscriberModels;
-    private Set<cSettingModel> settingModels;
+    private Set<cUserModel> publisherModelSet;
+    private Set<cUserModel> subscriberModelSet;
+    private Set<cSettingModel> settingModelSet;
 
-    public cNotificationModel(){}
+    public cNotificationModel(){
+        publisherModelSet = new HashSet<>();
+        subscriberModelSet = new HashSet<>();
+        settingModelSet = new HashSet<>();
+    }
 
     public cNotificationModel(cNotificationModel notificationModel){
         this.setNotificationID(notificationModel.getNotificationID());
         this.setEntityID(notificationModel.getEntityID());
         this.setEntityTypeID(notificationModel.getEntityTypeID());
+        this.setOperationID(notificationModel.getOperationID());
         this.setServerID(notificationModel.getServerID());
         this.setOwnerID(notificationModel.getOwnerID());
         this.setOrgID(notificationModel.getOrgID());
@@ -66,6 +75,14 @@ public class cNotificationModel {
 
     public void setEntityTypeID(int entityTypeID) {
         this.entityTypeID = entityTypeID;
+    }
+
+    public int getOperationID() {
+        return operationID;
+    }
+
+    public void setOperationID(int operationID) {
+        this.operationID = operationID;
     }
 
     public int getServerID() {
@@ -164,27 +181,71 @@ public class cNotificationModel {
         this.entityModel = entityModel;
     }
 
-    public Set<cUserModel> getPublisherModels() {
-        return publisherModels;
+    public cOperationModel getOperationModel() {
+        return operationModel;
     }
 
-    public void setPublisherModels(Set<cUserModel> publisherModels) {
-        this.publisherModels = publisherModels;
+    public void setOperationModel(cOperationModel operationModel) {
+        this.operationModel = operationModel;
     }
 
-    public Set<cUserModel> getSubscriberModels() {
-        return subscriberModels;
+    public Set<cUserModel> getPublisherModelSet() {
+        return publisherModelSet;
     }
 
-    public void setSubscriberModels(Set<cUserModel> subscriberModels) {
-        this.subscriberModels = subscriberModels;
+    public void setPublisherModelSet(Set<cUserModel> publisherModelSet) {
+        this.publisherModelSet = publisherModelSet;
     }
 
-    public Set<cSettingModel> getSettingModels() {
-        return settingModels;
+    public Set<cUserModel> getSubscriberModelSet() {
+        return subscriberModelSet;
     }
 
-    public void setSettingModels(Set<cSettingModel> settingModels) {
-        this.settingModels = settingModels;
+    public void setSubscriberModelSet(Set<cUserModel> subscriberModelSet) {
+        this.subscriberModelSet = subscriberModelSet;
+    }
+
+    public Set<cSettingModel> getSettingModelSet() {
+        return settingModelSet;
+    }
+
+    public void setSettingModelSet(Set<cSettingModel> settingModelSet) {
+        this.settingModelSet = settingModelSet;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof cNotificationModel)) return false;
+        cNotificationModel that = (cNotificationModel) o;
+        return getNotificationID() == that.getNotificationID() &&
+                getEntityID() == that.getEntityID() &&
+                getEntityTypeID() == that.getEntityTypeID() &&
+                getOperationID() == that.getOperationID() &&
+                getServerID() == that.getServerID() &&
+                getOwnerID() == that.getOwnerID() &&
+                getOrgID() == that.getOrgID() &&
+                getGroupBITS() == that.getGroupBITS() &&
+                getPermsBITS() == that.getPermsBITS() &&
+                getStatusBITS() == that.getStatusBITS() &&
+                Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getDescription(), that.getDescription()) &&
+                Objects.equals(getCreatedDate(), that.getCreatedDate()) &&
+                Objects.equals(getModifiedDate(), that.getModifiedDate()) &&
+                Objects.equals(getSyncedDate(), that.getSyncedDate()) &&
+                Objects.equals(getEntityModel(), that.getEntityModel()) &&
+                Objects.equals(getOperationModel(), that.getOperationModel()) &&
+                Objects.equals(getPublisherModelSet(), that.getPublisherModelSet()) &&
+                Objects.equals(getSubscriberModelSet(), that.getSubscriberModelSet()) &&
+                Objects.equals(getSettingModelSet(), that.getSettingModelSet());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getNotificationID(), getEntityID(), getEntityTypeID(),
+                getOperationID(), getServerID(), getOwnerID(), getOrgID(), getGroupBITS(),
+                getPermsBITS(), getStatusBITS(), getName(), getDescription(), getCreatedDate(),
+                getModifiedDate(), getSyncedDate(), getEntityModel(), getOperationModel(),
+                getPublisherModelSet(), getSubscriberModelSet(), getSettingModelSet());
     }
 }

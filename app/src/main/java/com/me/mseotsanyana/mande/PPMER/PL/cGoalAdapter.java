@@ -62,7 +62,7 @@ public class cGoalAdapter extends cTreeAdapter {
                     cOrganizationTreeViewHolder AVH = ((cOrganizationTreeViewHolder)viewHolder);
 
                     AVH.setPaddingLeft(40 * node.getLevel());
-                    AVH.textViewOrganization.setText(organizationDomain.getOrganizationName());
+                    AVH.textViewOrganization.setText(organizationDomain.getName());
                     AVH.textViewCountOrganization.setText("the organization has "+node.numberOfChildren()+" goal(s):");
 
 

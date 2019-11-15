@@ -3,30 +3,43 @@ package com.me.mseotsanyana.mande.BRBAC.BLL;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 public class cOrganizationDomain implements Parcelable {
     private int organizationID;
-    private int addressID;
+    private int serverID;
     private int ownerID;
-    private String organizationName;
-    private String physicalAddress;
-    private String telephone;
+    private int orgID;
+    private int groupBITS;
+    private int permsBITS;
+    private int statusBITS;
+    private String name;
+    private String phone;
     private String fax;
     private String vision;
     private String mission;
-    private String emailAddress;
+    private String email;
     private String website;
-    private Date createDate;
+    private Date createdDate;
+    private Date modifiedDate;
+    private Date syncedDate;
+
+    Set<cUserDomain> userDomainSet;
+    Set<cRoleDomain> roleDomainSet;
+    Set<cValueDomain> valueDomainSet;
+    Set<cAddressDomain> addressDomainSet;
 
     public cOrganizationDomain() {
         super();
     }
 
     public cOrganizationDomain(String orginization) {
-        this.setOrganizationName(orginization);
+        this.setName(orginization);
     }
 
     /**
@@ -37,16 +50,22 @@ public class cOrganizationDomain implements Parcelable {
     private cOrganizationDomain(Parcel in) {
         super();
         this.setOrganizationID(in.readInt());
+        this.setServerID(in.readInt());
         this.setOwnerID(in.readInt());
-        this.setOrganizationName(in.readString());
-        this.setPhysicalAddress(in.readString());
-        this.setTelephone(in.readString());
+        this.setOrgID(in.readInt());
+        this.setGroupBITS(in.readInt());
+        this.setPermsBITS(in.readInt());
+        this.setStatusBITS(in.readInt());
+        this.setName(in.readString());
+        this.setPhone(in.readString());
         this.setFax(in.readString());
         this.setVision(in.readString());
         this.setMission(in.readString());
-        this.setEmailAddress(in.readString());
+        this.setEmail(in.readString());
         this.setWebsite(in.readString());
-        this.setCreateDate(new Date(in.readLong()));
+        this.setCreatedDate(new Timestamp(in.readLong()));
+        this.setModifiedDate(new Timestamp(in.readLong()));
+        this.setSyncedDate(new Timestamp(in.readLong()));
     }
 
     public static final Creator<cOrganizationDomain> CREATOR = new Creator<cOrganizationDomain>() {
@@ -69,16 +88,22 @@ public class cOrganizationDomain implements Parcelable {
     @Override
     public void writeToParcel(Parcel out, int i) {
         out.writeInt(this.getOrganizationID());
+        out.writeInt(this.getServerID());
         out.writeInt(this.getOwnerID());
-        out.writeString(this.getOrganizationName());
-        out.writeString(this.getPhysicalAddress());
-        out.writeString(this.getTelephone());
+        out.writeInt(this.getOrgID());
+        out.writeInt(this.getGroupBITS());
+        out.writeInt(this.getPermsBITS());
+        out.writeInt(this.getStatusBITS());
+        out.writeString(this.getName());
+        out.writeString(this.getPhone());
         out.writeString(this.getFax());
         out.writeString(this.getVision());
         out.writeString(this.getMission());
-        out.writeString(this.getEmailAddress());
+        out.writeString(this.getEmail());
         out.writeString(this.getWebsite());
-        out.writeLong(this.getCreateDate().getTime());
+        out.writeLong(this.getCreatedDate().getTime());
+        out.writeLong(this.getModifiedDate().getTime());
+        out.writeLong(this.getSyncedDate().getTime());
     }
 
     public int getOrganizationID() {
@@ -89,12 +114,12 @@ public class cOrganizationDomain implements Parcelable {
         this.organizationID = organizationID;
     }
 
-    public int getAddressID() {
-        return addressID;
+    public int getServerID() {
+        return serverID;
     }
 
-    public void setAddressID(int addressID) {
-        this.addressID = addressID;
+    public void setServerID(int serverID) {
+        this.serverID = serverID;
     }
 
     public int getOwnerID() {
@@ -105,28 +130,52 @@ public class cOrganizationDomain implements Parcelable {
         this.ownerID = ownerID;
     }
 
-    public String getOrganizationName() {
-        return organizationName;
+    public int getOrgID() {
+        return orgID;
     }
 
-    public void setOrganizationName(String organizationName) {
-        this.organizationName = organizationName;
+    public void setOrgID(int orgID) {
+        this.orgID = orgID;
     }
 
-    public String getPhysicalAddress() {
-        return physicalAddress;
+    public int getGroupBITS() {
+        return groupBITS;
     }
 
-    public void setPhysicalAddress(String physicalAddress) {
-        this.physicalAddress = physicalAddress;
+    public void setGroupBITS(int groupBITS) {
+        this.groupBITS = groupBITS;
     }
 
-    public String getTelephone() {
-        return telephone;
+    public int getPermsBITS() {
+        return permsBITS;
     }
 
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
+    public void setPermsBITS(int permsBITS) {
+        this.permsBITS = permsBITS;
+    }
+
+    public int getStatusBITS() {
+        return statusBITS;
+    }
+
+    public void setStatusBITS(int statusBITS) {
+        this.statusBITS = statusBITS;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getFax() {
@@ -153,12 +202,12 @@ public class cOrganizationDomain implements Parcelable {
         this.mission = mission;
     }
 
-    public String getEmailAddress() {
-        return emailAddress;
+    public String getEmail() {
+        return email;
     }
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getWebsite() {
@@ -169,12 +218,97 @@ public class cOrganizationDomain implements Parcelable {
         this.website = website;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public Date getSyncedDate() {
+        return syncedDate;
+    }
+
+    public void setSyncedDate(Date syncedDate) {
+        this.syncedDate = syncedDate;
+    }
+
+    public Set<cUserDomain> getUserDomainSet() {
+        return userDomainSet;
+    }
+
+    public void setUserDomainSet(Set<cUserDomain> userDomainSet) {
+        this.userDomainSet = userDomainSet;
+    }
+
+    public Set<cRoleDomain> getRoleDomainSet() {
+        return roleDomainSet;
+    }
+
+    public void setRoleDomainSet(Set<cRoleDomain> roleDomainSet) {
+        this.roleDomainSet = roleDomainSet;
+    }
+
+    public Set<cValueDomain> getValueDomainSet() {
+        return valueDomainSet;
+    }
+
+    public void setValueDomainSet(Set<cValueDomain> valueDomainSet) {
+        this.valueDomainSet = valueDomainSet;
+    }
+
+    public Set<cAddressDomain> getAddressDomainSet() {
+        return addressDomainSet;
+    }
+
+    public void setAddressDomainSet(Set<cAddressDomain> addressDomainSet) {
+        this.addressDomainSet = addressDomainSet;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof cOrganizationDomain)) return false;
+        cOrganizationDomain that = (cOrganizationDomain) o;
+        return getOrganizationID() == that.getOrganizationID() &&
+                getServerID() == that.getServerID() &&
+                getOwnerID() == that.getOwnerID() &&
+                getOrgID() == that.getOrgID() &&
+                getGroupBITS() == that.getGroupBITS() &&
+                getPermsBITS() == that.getPermsBITS() &&
+                getStatusBITS() == that.getStatusBITS() &&
+                Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getPhone(), that.getPhone()) &&
+                Objects.equals(getFax(), that.getFax()) &&
+                Objects.equals(getVision(), that.getVision()) &&
+                Objects.equals(getMission(), that.getMission()) &&
+                Objects.equals(getEmail(), that.getEmail()) &&
+                Objects.equals(getWebsite(), that.getWebsite()) &&
+                Objects.equals(getCreatedDate(), that.getCreatedDate()) &&
+                Objects.equals(getModifiedDate(), that.getModifiedDate()) &&
+                Objects.equals(getSyncedDate(), that.getSyncedDate()) &&
+                Objects.equals(getUserDomainSet(), that.getUserDomainSet()) &&
+                Objects.equals(getRoleDomainSet(), that.getRoleDomainSet()) &&
+                Objects.equals(getValueDomainSet(), that.getValueDomainSet()) &&
+                Objects.equals(getAddressDomainSet(), that.getAddressDomainSet());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getOrganizationID(), getServerID(), getOwnerID(), getOrgID(),
+                getGroupBITS(), getPermsBITS(), getStatusBITS(), getName(), getPhone(),
+                getFax(), getVision(), getMission(), getEmail(), getWebsite(),
+                getCreatedDate(), getModifiedDate(), getSyncedDate(),
+                getUserDomainSet(), getRoleDomainSet(), getValueDomainSet(),
+                getAddressDomainSet());
+    }
 }

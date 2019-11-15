@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout;
-import com.me.mseotsanyana.mande.Util.cOrganizationRecord;
+import com.me.mseotsanyana.mande.UTILITY.cOrganizationRecord;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cOrganizationDomain;
 import com.me.mseotsanyana.mande.R;
 
@@ -82,13 +82,13 @@ public class cOrganizationAdapter extends RecyclerView.Adapter<cOrganizationAdap
         itemDetail = new cOrganizationRecord();
         itemDetail.identifier = 0;
         itemDetail.itemTitle = "Address";
-        itemDetail.itemValue = organizationDomain.getPhysicalAddress();
+        //itemDetail.itemValue = organizationDomain.getPhysicalAddress();
         detailList.add(itemDetail);
 
         itemDetail = new cOrganizationRecord();
         itemDetail.identifier = 1;
         itemDetail.itemTitle = "Contact";
-        itemDetail.itemValue = organizationDomain.getTelephone();
+        itemDetail.itemValue = organizationDomain.getPhone();
         detailList.add(itemDetail);
 
         itemDetail = new cOrganizationRecord();
@@ -100,7 +100,7 @@ public class cOrganizationAdapter extends RecyclerView.Adapter<cOrganizationAdap
         itemDetail = new cOrganizationRecord();
         itemDetail.identifier = 3;
         itemDetail.itemTitle = "Email";
-        itemDetail.itemValue = organizationDomain.getEmailAddress();
+        itemDetail.itemValue = organizationDomain.getEmail();
         detailList.add(itemDetail);
 
         itemDetail = new cOrganizationRecord();
@@ -146,7 +146,7 @@ public class cOrganizationAdapter extends RecyclerView.Adapter<cOrganizationAdap
         List<cOrganizationRecord> detailList = organizationDetailList(ci);
         List<cOrganizationRecord> moreList   = organizationMoreList(ci);
 
-        organizationViewHolder.txtOrganization.setText(ci.getOrganizationName());
+        organizationViewHolder.txtOrganization.setText(ci.getName());
 
         // first level
         organizationViewHolder.detailRecyclerView.setHasFixedSize(true);

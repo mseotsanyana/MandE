@@ -7,12 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.me.mseotsanyana.mande.PPMER.DAL.cSQLDBHelper;
-import com.me.mseotsanyana.mande.Util.cConstant;
+import com.me.mseotsanyana.mande.UTILITY.cConstant;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by mseotsanyana on 2017/08/24.
@@ -31,7 +30,7 @@ public class cEntityDBA {
 
     /* ############################################# CREATE ACTIONS ############################################# */
 
-    public boolean addEntityFromExcel(cEntityModel objectModel) {
+    public boolean addEntityFromExcel(cEntityModel entityModel) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -39,18 +38,18 @@ public class cEntityDBA {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, objectModel.getEntityID());
-        cv.put(cSQLDBHelper.KEY_ENTITY_TYPE_ID, objectModel.getEntityTypeID());
-        cv.put(cSQLDBHelper.KEY_NAME, objectModel.getName());
-        cv.put(cSQLDBHelper.KEY_DESCRIPTION, objectModel.getDescription());
+        cv.put(cSQLDBHelper.KEY_ID, entityModel.getEntityID());
+        cv.put(cSQLDBHelper.KEY_ENTITY_TYPE_ID, entityModel.getEntityTypeID());
+        cv.put(cSQLDBHelper.KEY_NAME, entityModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, entityModel.getDescription());
 
         // insert outcome record
         try {
             if (db.insert(cSQLDBHelper.TABLE_tblENTITY, null, cv) < 0) {
                 return false;
             }
-        } catch (Exception ex) {
-            Log.d(TAG,"Exception in adding: "+ex.getMessage());
+        } catch (Exception e) {
+            Log.d(TAG,"Exception in adding: "+e.getMessage());
         }
 
         // close the database connection

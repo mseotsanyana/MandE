@@ -2,6 +2,7 @@ package com.me.mseotsanyana.mande.BRBAC.DAL;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 public class cSettingModel implements Serializable {
     private int settingID;
@@ -138,5 +139,33 @@ public class cSettingModel implements Serializable {
 
     public void setSyncedDate(Date syncedDate) {
         this.syncedDate = syncedDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof cSettingModel)) return false;
+        cSettingModel that = (cSettingModel) o;
+        return getSettingID() == that.getSettingID() &&
+                getServerID() == that.getServerID() &&
+                getOwnerID() == that.getOwnerID() &&
+                getOrgID() == that.getOrgID() &&
+                getGroupBITS() == that.getGroupBITS() &&
+                getPermsBITS() == that.getPermsBITS() &&
+                getStatusBITS() == that.getStatusBITS() &&
+                getSettingValue() == that.getSettingValue() &&
+                Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getDescription(), that.getDescription()) &&
+                Objects.equals(getCreatedDate(), that.getCreatedDate()) &&
+                Objects.equals(getModifiedDate(), that.getModifiedDate()) &&
+                Objects.equals(getSyncedDate(), that.getSyncedDate());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getSettingID(), getServerID(), getOwnerID(), getOrgID(),
+                getGroupBITS(), getPermsBITS(), getStatusBITS(), getName(),
+                getDescription(), getSettingValue(), getCreatedDate(),
+                getModifiedDate(), getSyncedDate());
     }
 }

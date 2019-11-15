@@ -7,12 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.me.mseotsanyana.mande.PPMER.DAL.cSQLDBHelper;
-import com.me.mseotsanyana.mande.Util.cConstant;
+import com.me.mseotsanyana.mande.UTILITY.cConstant;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by mseotsanyana on 2016/10/23.
@@ -42,8 +41,6 @@ public class cSessionDBA {
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ID, sessionModel.getSessionID());
         cv.put(cSQLDBHelper.KEY_USER_FK_ID, sessionModel.getUserID());
-        cv.put(cSQLDBHelper.KEY_NAME, sessionModel.getName());
-        cv.put(cSQLDBHelper.KEY_DESCRIPTION, sessionModel.getDescription());
 
         // insert outcome record
         try {
@@ -73,8 +70,6 @@ public class cSessionDBA {
         cv.put(cSQLDBHelper.KEY_GROUP_BITS, sessionModel.getGroupBITS());
         cv.put(cSQLDBHelper.KEY_PERMS_BITS, sessionModel.getPermsBITS());
         cv.put(cSQLDBHelper.KEY_STATUS_BITS, sessionModel.getStatusBITS());
-        cv.put(cSQLDBHelper.KEY_NAME, sessionModel.getName());
-        cv.put(cSQLDBHelper.KEY_DESCRIPTION, sessionModel.getDescription());
 
         // insert outcome record
         try {
@@ -100,7 +95,7 @@ public class cSessionDBA {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String selectQuery = "SELECT * FROM "+ cSQLDBHelper.TABLE_tblROLE +
+        String selectQuery = "SELECT * FROM "+ cSQLDBHelper.TABLE_tblSESSION +
                 " WHERE ((("+cSQLDBHelper.KEY_GROUP_BITS +" & ?) != 0) " +
                 " OR (("+cSQLDBHelper.KEY_OWNER_ID+" = ?) " +
                 " AND (("+cSQLDBHelper.KEY_PERMS_BITS+" & ?) != 0)) " +
@@ -123,8 +118,6 @@ public class cSessionDBA {
                     session.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
                     session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
                     session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    session.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    session.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
                     session.setCreatedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
                     session.setModifiedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
                     session.setSyncedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
@@ -174,8 +167,6 @@ public class cSessionDBA {
                     session.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
                     session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
                     session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    session.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    session.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
 
                 } while (cursor.moveToNext());
             }
@@ -215,8 +206,6 @@ public class cSessionDBA {
                     session.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
                     session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
                     session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    session.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    session.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
 
                 } while (cursor.moveToNext());
             }
@@ -326,8 +315,6 @@ public class cSessionDBA {
                     session.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
                     session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
                     session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    session.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    session.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
 
                 } while (cursor.moveToNext());
             }

@@ -14,9 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
-import com.me.mseotsanyana.mande.PPMER.DAL.cSQLDBHelper;
-import com.me.mseotsanyana.mande.Util.cUploadBRBACData;
-import com.me.mseotsanyana.mande.Util.cUtil;
+import com.me.mseotsanyana.mande.UTILITY.cUploadSessionData;
+import com.me.mseotsanyana.mande.UTILITY.cUtil;
 import com.me.mseotsanyana.mande.R;
 
 public class cSettingsFragment extends Fragment {
@@ -54,7 +53,7 @@ public class cSettingsFragment extends Fragment {
         appCompatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new cUploadBRBACData(getContext(), session).execute();            }
+                new cUploadSessionData(getContext(), session).execute();            }
         });
 
         bottomNavigationView = (BottomNavigationView) view.findViewById(R.id.bottom_navigation);
@@ -73,7 +72,7 @@ public class cSettingsFragment extends Fragment {
 
                 switch (item.getItemId()) {
                     case R.id.action_login:
-                        pushFragment(cLoginFragment.newInstance());
+                        pushFragment(cLoginFragment.newInstance(null));
                         return true;
                     case R.id.action_create:
                         pushFragment(cRegisterFragment.newInstance());

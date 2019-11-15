@@ -18,12 +18,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
-import com.me.mseotsanyana.mande.Util.cInputValidation;
-import com.me.mseotsanyana.mande.Util.cUtil;
+import com.me.mseotsanyana.mande.UTILITY.cInputValidation;
+import com.me.mseotsanyana.mande.UTILITY.cUtil;
 import com.me.mseotsanyana.mande.PPMER.PL.cMainFragment;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserHandler;
 import com.me.mseotsanyana.mande.R;
+
+import java.io.Serializable;
 
 public class cLoginFragment extends Fragment {
     private cSessionManager session;
@@ -53,8 +55,9 @@ public class cLoginFragment extends Fragment {
         inputValidation = new cInputValidation(getContext());
     }
 
-    public static cLoginFragment newInstance() {
+    public static cLoginFragment newInstance(cSessionManager session) {
         Bundle bundle = new Bundle();
+        bundle.putSerializable("SESSION", session);
         cLoginFragment fragment = new cLoginFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -65,7 +68,8 @@ public class cLoginFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             // keeps global user information
-            session  = new cSessionManager(getContext());
+            session = (cSessionManager) getArguments().getSerializable("SESSION");
+            //session  = new cSessionManager(getContext());
         }
     }
 
@@ -157,7 +161,7 @@ public class cLoginFragment extends Fragment {
             //Toast.makeText(getActivity(), "MEMBERSHIPS = "+sessionManager.getMemberships(), Toast.LENGTH_SHORT).show();
             //Toast.makeText(getActivity(), "ROLES = "+sessionManager.getLoggedInUserRoles().get(0).getName(), Toast.LENGTH_SHORT).show();
 
-            pushFragment(cMainFragment.newInstance());
+            pushFragment(cMainFragment.newInstance(session));
 
         } else {
             // Snack Bar to show success message that record is wrong

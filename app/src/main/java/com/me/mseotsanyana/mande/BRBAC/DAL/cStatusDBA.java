@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.me.mseotsanyana.mande.PPMER.DAL.cSQLDBHelper;
+import com.me.mseotsanyana.mande.UTILITY.cConstant;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,28 +19,17 @@ import java.util.Locale;
  */
 
 public class cStatusDBA {
+    private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
+    private static String TAG = cStatusDBA.class.getSimpleName();
+
     // an object of the database helper
     private cSQLDBHelper dbHelper;
-
-    private static final SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-    private static final String TAG = "dbHelper";
 
     public cStatusDBA(Context context) {
         dbHelper = new cSQLDBHelper(context);
     }
 
-    public boolean deleteAllStatuses() {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_tblSTATUS, null, null);
-
-        // close the database connection
-        db.close();
-
-        return result > -1;
-    }
+    /* ############################################# CREATE ACTIONS ############################################# */
 
     public boolean addStatusFromExcel(cStatusModel statusModel) {
         // open the connection to the database
@@ -52,15 +42,14 @@ public class cStatusDBA {
         cv.put(cSQLDBHelper.KEY_ID, statusModel.getStatusID());
         cv.put(cSQLDBHelper.KEY_NAME, statusModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, statusModel.getDescription());
-        //cv.put(cSQLDBHelper.KEY_DATE, formatter.format(statusModel.getCreateDate()));
 
         // insert outcome record
         try {
             if (db.insert(cSQLDBHelper.TABLE_tblSTATUS, null, cv) < 0) {
                 return false;
             }
-        } catch (Exception ex) {
-            Log.d("Exception in importing ", ex.getMessage().toString());
+        } catch (Exception e) {
+            Log.d(TAG,"Exception in reading: "+e.getMessage());
         }
 
         // close the database connection
@@ -100,6 +89,8 @@ public class cStatusDBA {
 
         return true;
     }
+
+    /* ############################################# READ ACTIONS ############################################# */
 
     public cStatusModel getStatusByID(int statusID) {
         // open the connection to the database
@@ -141,7 +132,6 @@ public class cStatusDBA {
         return status;
     }
 
-
     public List<cStatusModel> getStatusList() {
 
         List<cStatusModel> statusModelList = new ArrayList<>();
@@ -180,4 +170,24 @@ public class cStatusDBA {
 
         return statusModelList;
     }
+
+    /* ############################################# UPDATE ACTIONS ############################################# */
+
+    /* ############################################# DELETE ACTIONS ############################################# */
+
+    public boolean deleteStatuses() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblSTATUS, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    /* ############################################# SYNC ACTIONS ############################################# */
+
 }

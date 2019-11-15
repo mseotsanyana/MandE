@@ -69,7 +69,7 @@ public class cPermissionHandler extends cMapper<cPermissionModel, cPermissionDom
     public boolean addPrivilegeFromExcel(cPermissionDomain domain) {
         // map the business domain to the model
         cPermissionModel model = this.DomainToModel(domain);
-        return permissionDBA.addPermissionFromExcel(model);
+        return true;//permissionDBA.addPermissionFromExcel(model);
     }
 
     public boolean addPrivilege(cPermissionDomain domain) {
@@ -87,7 +87,7 @@ public class cPermissionHandler extends cMapper<cPermissionModel, cPermissionDom
 
 
     public ArrayList<cPermissionDomain> getPrivilegesByIDs(int organizationID, int privilegeID){
-        List<cPermissionModel> privilegeModels = permissionDBA.getPermissionsByIDs(organizationID, privilegeID);
+        List<cPermissionModel> privilegeModels = null;//permissionDBA.getPermissionsByIDs(organizationID, privilegeID);
 
         ArrayList<cPermissionDomain> privilegeDomains = new ArrayList<>();
         cPermissionDomain domain;

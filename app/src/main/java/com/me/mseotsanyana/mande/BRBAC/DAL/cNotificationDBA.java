@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.me.mseotsanyana.mande.PPMER.DAL.cSQLDBHelper;
-import com.me.mseotsanyana.mande.Util.cConstant;
+import com.me.mseotsanyana.mande.UTILITY.cConstant;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -52,20 +52,94 @@ public class cNotificationDBA {
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ID, notificationModel.getNotificationID());
+        cv.put(cSQLDBHelper.KEY_ENTITY_FK_ID, notificationModel.getEntityID());
+        cv.put(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID, notificationModel.getEntityTypeID());
+        cv.put(cSQLDBHelper.KEY_OPERATION_FK_ID, notificationModel.getOperationID());
         cv.put(cSQLDBHelper.KEY_NAME, notificationModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, notificationModel.getDescription());
 
         // insert a record
         try {
-            if (db.insert(cSQLDBHelper.TABLE_tblSETTING, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblNOTIFICATION, null, cv) < 0) {
                 return false;
             }
+
+            // add notification publishers
+            for(int publisher: publishers) {
+                if (addPublisher(publisher, notificationModel.getNotificationID()))
+                    continue;
+                else
+                    return false;
+            }
+
+            // add notification subscribers
+            for(int subscriber: subscribers) {
+                if (addSubscriber(subscriber, notificationModel.getNotificationID()))
+                    continue;
+                else
+                    return false;
+            }
+
+            // add notification settings
+            for(int setting: settings) {
+                if (addNotificationSetting(notificationModel.getNotificationID(), setting))
+                    continue;
+                else
+                    return false;
+            }
+
         } catch (Exception e) {
             Log.d(TAG, "Exception in importing: "+e.getMessage());
         }
 
         // close the database connection
         db.close();
+
+        return true;
+    }
+
+    public boolean addPublisher(int publisherID, int notificationID) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+
+        cv.put(cSQLDBHelper.KEY_PUBLISHER_FK_ID, publisherID);
+        cv.put(cSQLDBHelper.KEY_NOTIFICATION_FK_ID, notificationID);
+
+        if (db.insert(cSQLDBHelper.TABLE_tblPUBLISHER, null, cv) < 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean addSubscriber(int subscriberID, int notificationID) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+
+        cv.put(cSQLDBHelper.KEY_SUBSCRIBER_FK_ID, subscriberID);
+        cv.put(cSQLDBHelper.KEY_NOTIFICATION_FK_ID, notificationID);
+
+        if (db.insert(cSQLDBHelper.TABLE_tblSUBSCRIBER, null, cv) < 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean addNotificationSetting(int notificationID, int settingID) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+
+        cv.put(cSQLDBHelper.KEY_NOTIFICATION_FK_ID, notificationID);
+        cv.put(cSQLDBHelper.KEY_SETTING_FK_ID, settingID);
+
+
+        if (db.insert(cSQLDBHelper.TABLE_tblNOTIFY_SETTING, null, cv) < 0) {
+            return false;
+        }
 
         return true;
     }
@@ -131,15 +205,15 @@ public class cNotificationDBA {
                             notificationModel.getEntityTypeID()));
 
                     // populate subscribers
-                    notificationModel.setSubscriberModels(
+                    notificationModel.setSubscriberModelSet(
                             getSubscribersByNotificationID(notificationModel.getNotificationID()));
 
                     // populate publishers
-                    notificationModel.setPublisherModels(
+                    notificationModel.setPublisherModelSet(
                             getPublishersByNotificationID(notificationModel.getNotificationID()));
 
                     // populate settings
-                    notificationModel.setSettingModels(
+                    notificationModel.setSettingModelSet(
                             getSettingsByNotificationID(notificationModel.getNotificationID()));
 
 
@@ -315,7 +389,7 @@ public class cNotificationDBA {
                 " FROM " +
                 cSQLDBHelper.TABLE_tblNOTIFICATION + " notification, " +
                 cSQLDBHelper.TABLE_tblSETTING + " setting, " +
-                cSQLDBHelper.TABLE_tblSETNOTIFICATION + " setting_notification " +
+                cSQLDBHelper.TABLE_tblNOTIFY_SETTING + " setting_notification " +
                 " WHERE notification."+cSQLDBHelper.KEY_ID + " = setting_notification."+cSQLDBHelper.KEY_NOTIFICATION_FK_ID +
                 " AND setting."+cSQLDBHelper.KEY_ID + " = setting_notification."+cSQLDBHelper.KEY_SETTING_FK_ID +
                 " AND notification."+cSQLDBHelper.KEY_ID +" = ?";

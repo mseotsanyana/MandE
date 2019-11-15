@@ -23,8 +23,8 @@ public class cStatusHandler extends cMapper<cStatusModel, cStatusDomain> {
         this.context = context;
     }
 
-    public boolean deleteAllStatuses() {
-        return statusDBA.deleteAllStatuses();
+    public boolean deleteStatuses() {
+        return statusDBA.deleteStatuses();
     }
 
     public boolean addStatusFromExcel(cStatusDomain domain) {
@@ -70,7 +70,9 @@ public class cStatusHandler extends cMapper<cStatusModel, cStatusDomain> {
         model.setStatusBITS(domain.getStatusBITS());
         model.setName(domain.getName());
         model.setDescription(domain.getDescription());
-        model.setCreateDate(domain.getCreateDate());
+        model.setCreatedDate(domain.getCreatedDate());
+        model.setModifiedDate(domain.getModifiedDate());
+        model.setSyncedDate(domain.getSyncedDate());
 
         return model;
     }
@@ -86,7 +88,9 @@ public class cStatusHandler extends cMapper<cStatusModel, cStatusDomain> {
         domain.setStatusBITS(model.getStatusBITS());
         domain.setName(model.getName());
         domain.setDescription(model.getDescription());
-        domain.setCreateDate(model.getCreateDate());
+        domain.setCreatedDate(model.getCreatedDate());
+        domain.setModifiedDate(model.getModifiedDate());
+        domain.setSyncedDate(model.getSyncedDate());
 
         return domain;
     }
