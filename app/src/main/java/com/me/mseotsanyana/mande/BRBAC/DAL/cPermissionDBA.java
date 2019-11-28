@@ -123,7 +123,7 @@ public class cPermissionDBA {
         cv.put(cSQLDBHelper.KEY_OPERATION_FK_ID, operationID);
         cv.put(cSQLDBHelper.KEY_STATUS_FK_ID, statusID);
 
-        if (db.insert(cSQLDBHelper.TABLE_tblPERM_STATUS, null, cv) < 0) {
+        if (db.insert(cSQLDBHelper.TABLE_tblPRIV_STATUS, null, cv) < 0) {
             return false;
         }
 
@@ -239,7 +239,7 @@ public class cPermissionDBA {
                 " FROM " +
                 cSQLDBHelper.TABLE_tblPERMISSION + " perm, " +
                 cSQLDBHelper.TABLE_tblSTATUS + " status, " +
-                cSQLDBHelper.TABLE_tblPERM_STATUS + " perm_status " +
+                cSQLDBHelper.TABLE_tblPRIV_STATUS + " perm_status " +
                 " WHERE perm."+cSQLDBHelper.KEY_PRIVILEGE_FK_ID + " = perm_status."+cSQLDBHelper.KEY_PRIVILEGE_FK_ID +
                 " AND perm."+cSQLDBHelper.KEY_ENTITY_FK_ID + " = perm_status."+cSQLDBHelper.KEY_ENTITY_FK_ID +
                 " AND perm."+cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID + " = perm_status."+cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID +

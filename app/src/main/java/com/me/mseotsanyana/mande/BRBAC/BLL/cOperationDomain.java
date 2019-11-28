@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Created by mseotsanyana on 2017/08/24.
@@ -17,7 +18,7 @@ public class cOperationDomain implements Parcelable {
     private int statusBITS;
     private String name;
     private String description;
-    private Date createDate;
+    private Date createdDate;
     private Date modifiedDate;
     private Date syncedDate;
 
@@ -36,9 +37,9 @@ public class cOperationDomain implements Parcelable {
         this.statusBITS = operationDomain.getStatusBITS();
         this.name = operationDomain.getName();
         this.description = operationDomain.getDescription();
-        this.createDate = operationDomain.getCreateDate();
-        this.modifiedDate = operationDomain.getCreateDate();
-        this.syncedDate = operationDomain.getCreateDate();
+        this.createdDate = operationDomain.getCreatedDate();
+        this.modifiedDate = operationDomain.getModifiedDate();
+        this.syncedDate = operationDomain.getSyncedDate();
 
         this.dirty = operationDomain.isDirty();
         this.state = operationDomain.isState();
@@ -52,7 +53,7 @@ public class cOperationDomain implements Parcelable {
         this.setStatusBITS(in.readInt());
         this.setName(in.readString());
         this.setDescription(in.readString());
-        this.setCreateDate(new Date(in.readLong()));
+        this.setCreatedDate(new Date(in.readLong()));
         this.setModifiedDate(new Date(in.readLong()));
         this.setSyncedDate(new Date(in.readLong()));
 
@@ -69,7 +70,7 @@ public class cOperationDomain implements Parcelable {
         out.writeInt(this.getStatusBITS());
         out.writeString(this.getName());
         out.writeString(this.getDescription());
-        out.writeLong(this.getCreateDate().getTime());
+        out.writeLong(this.getCreatedDate().getTime());
         out.writeLong(this.getModifiedDate().getTime());
         out.writeLong(this.getSyncedDate().getTime());
     }
@@ -147,12 +148,12 @@ public class cOperationDomain implements Parcelable {
         this.description = description;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
     public boolean isDirty() {
@@ -185,6 +186,33 @@ public class cOperationDomain implements Parcelable {
 
     public void setSyncedDate(Date syncedDate) {
         this.syncedDate = syncedDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof cOperationDomain)) return false;
+        cOperationDomain that = (cOperationDomain) o;
+        return getOperationID() == that.getOperationID() &&
+                getOwnerID() == that.getOwnerID() &&
+                getGroupBITS() == that.getGroupBITS() &&
+                getPermsBITS() == that.getPermsBITS() &&
+                getStatusBITS() == that.getStatusBITS() &&
+                isDirty() == that.isDirty() &&
+                isState() == that.isState() &&
+                Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getDescription(), that.getDescription()) &&
+                Objects.equals(getCreatedDate(), that.getCreatedDate()) &&
+                Objects.equals(getModifiedDate(), that.getModifiedDate()) &&
+                Objects.equals(getSyncedDate(), that.getSyncedDate());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getOperationID(), getOwnerID(), getGroupBITS(),
+                getPermsBITS(), getStatusBITS(), getName(), getDescription(),
+                getCreatedDate(), getModifiedDate(), getSyncedDate(),
+                isDirty(), isState());
     }
 }
 

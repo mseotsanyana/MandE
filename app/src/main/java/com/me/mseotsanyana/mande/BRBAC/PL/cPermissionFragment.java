@@ -177,11 +177,9 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
 
         // populate role user tree from database
         readPrivileges(session.loadUserID(), /* loggedIn user id */
-                session.loadOrganizationID(),
-                session.loadPrimaryRole(session.loadUserID(),
-                        session.loadOrganizationID()),      /* primary group bit */
-                session.loadSecondaryRoles(session.loadUserID(),
-                        session.loadOrganizationID()));
+                session.loadOrgID(),
+                session.loadPrimaryRole(),   /* primary group bit */
+                session.loadSecondaryRoles());
 
         // initialise the floating action button (FAB)
         onCreatePrivilege(view);
@@ -254,9 +252,9 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
                     public void onClick(DialogInterface dialog, int id) {
                         // add the privilege in the database
                         privilege.setOwnerID(session.loadUserID());
-                        privilege.setOrgID(session.loadOrganizationID());
+                        privilege.setOrgID(session.loadOrgID());
                         privilege.setGroupBITS(
-                                session.loadPrimaryRole(session.loadUserID(), session.loadOrganizationID()));
+                                session.loadPrimaryRole());
                         privilege.setName(editTextPrivilegeName.getText().toString());
                         privilege.setDescription(editTextPrivilegeDescription.getText().toString());
                         privilege.setPermsBITS(session.OWNER);
@@ -336,12 +334,10 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
             privilege = (cPermissionDomain) objects[1];
 
             final ArrayList<cRoleDomain> roles = roleHandler.getRoleList(
-                    session.loadUserID(),                  /* loggedIn user */
-                    session.loadOrganizationID(),          /* loggedIn own org. */
-                    session.loadPrimaryRole(session.loadUserID(),
-                            session.loadOrganizationID()), /* primary group bit */
-                    session.loadSecondaryRoles(session.loadUserID(),
-                            session.loadOrganizationID()));  /* secondary group bits */
+                    session.loadUserID(),          /* loggedIn user */
+                    session.loadOrgID(),           /* loggedIn own org. */
+                    session.loadPrimaryRole(),     /* primary group bit */
+                    session.loadSecondaryRoles()); /* secondary group bits */
 
             return roles;
         }
@@ -715,15 +711,14 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
                     for (int j = 0; j < selectedEntities.size(); j++) {
                         cPermissionDomain permissionDomain = new cPermissionDomain();
 
-                        permissionDomain.setOrganizationID(session.loadOrganizationID());
+                        permissionDomain.setOrganizationID(session.loadOrgID());
                         //-permissionDomain.setPrivilegeDomain(privilegeDomain);
                         //-permissionDomain.setEntityDomain(selectedEntities.get(j));
                         //-permissionDomain.setOperationDomain(operationDomain);
                         //-permissionDomain.setStatusDomain(statusDomain);
                         permissionDomain.setOwnerID(session.loadUserID());
-                        permissionDomain.setOrgID(session.loadOrganizationID());
-                        permissionDomain.setGroupBITS(session.loadPrimaryRole(
-                                session.loadUserID(), session.loadOrganizationID()));
+                        permissionDomain.setOrgID(session.loadOrgID());
+                        permissionDomain.setGroupBITS(session.loadPrimaryRole());
                         permissionDomain.setPermsBITS(session.READ);
                         permissionDomain.setStatusBITS(session.ACTIVATED);
 
@@ -1091,7 +1086,7 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.homeItem:
-                pushFragment(cMainFragment.newInstance(null));
+                pushFragment(cMainFragment.newInstance(session));
                 break;
             default:
                 break;

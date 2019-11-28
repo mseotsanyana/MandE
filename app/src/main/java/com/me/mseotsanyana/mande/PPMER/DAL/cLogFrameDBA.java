@@ -6,24 +6,29 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.me.mseotsanyana.mande.UTILITY.cConstant;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public class cLogFrameDBA {
-
-    private static final SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy",Locale.US);
+    private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
+    private static String TAG = cLogFrameDBA.class.getSimpleName();
 
     // an object of the database helper
     private cSQLDBHelper dbHelper;
-    private static final String TAG = "dbHelper";
 
     public cLogFrameDBA(Context context) {
         dbHelper = new cSQLDBHelper(context);
     }
+
+    /* ######################################## CREATE ACTIONS ########################################*/
 
     /**
      * this function adds the logframe (i.e., project) details
@@ -45,11 +50,11 @@ public class cLogFrameDBA {
         cv.put(cSQLDBHelper.KEY_STATUS_BITS, logFrameModel.getStatusBITS());
         cv.put(cSQLDBHelper.KEY_NAME, logFrameModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, logFrameModel.getDescription());
-        cv.put(cSQLDBHelper.KEY_START_DATE, formatter.format(logFrameModel.getStartDate()));
-        cv.put(cSQLDBHelper.KEY_END_DATE, formatter.format(logFrameModel.getEndDate()));
-        cv.put(cSQLDBHelper.KEY_CREATED_DATE, formatter.format(logFrameModel.getCreatedDate()));
-        cv.put(cSQLDBHelper.KEY_MODIFIED_DATE, formatter.format(logFrameModel.getModifiedDate()));
-        cv.put(cSQLDBHelper.KEY_SYNCED_DATE, formatter.format(logFrameModel.getSyncedDate()));
+        cv.put(cSQLDBHelper.KEY_START_DATE, sdf.format(logFrameModel.getStartDate()));
+        cv.put(cSQLDBHelper.KEY_END_DATE, sdf.format(logFrameModel.getEndDate()));
+        cv.put(cSQLDBHelper.KEY_CREATED_DATE, sdf.format(logFrameModel.getCreatedDate()));
+        cv.put(cSQLDBHelper.KEY_MODIFIED_DATE, sdf.format(logFrameModel.getModifiedDate()));
+        cv.put(cSQLDBHelper.KEY_SYNCED_DATE, sdf.format(logFrameModel.getSyncedDate()));
 
         // insert project details
         try {
@@ -57,7 +62,7 @@ public class cLogFrameDBA {
                 return false;
             }
         } catch (Exception e) {
-            Log.d(TAG, "Exception in importing "+e.getMessage().toString());
+            Log.d(TAG, "Exception in importing " + e.getMessage());
         }
 
         // close the database connection
@@ -66,63 +71,26 @@ public class cLogFrameDBA {
         return true;
     }
 
-    /*
-     * the function delate a specific logframe
-     */
-    public boolean deleteLogFrame(cLogFrameModel logFrameModel) {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+    /* ########################################## READ ACTIONS ##########################################*/
 
-        // delete a record of a specific ID
-        try {
-            if(db.delete(cSQLDBHelper.TABLE_tblLOGFRAME, cSQLDBHelper.KEY_ID + " = ?",
-                    new String[]{String.valueOf(logFrameModel.getID())}) < 0){
-                return false;
-            }
-        }catch (Exception e){
-            Log.d(TAG, "Exception in deleting "+e.getMessage().toString());
-        }
+    public Set<cLogFrameModel> getLogFrameModels(int userID, int primaryRole,
+                                                 int secondaryRoles, int operationBITS, int statusBITS) {
 
-        // close the database connection
-        db.close();
+        Set<cLogFrameModel> logFrameModelSet = new HashSet<>();
 
-        return true;
-    }
-
-    /*
-     * the function delete all logFrames
-     */
-    public boolean deleteLogFrames() {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // delete all records
-        try {
-            if(db.delete(cSQLDBHelper.TABLE_tblLOGFRAME, null, null) < 0){
-                return false;
-            }
-        }catch (Exception e){
-            Log.d(TAG, "Exception in deleting all logframes "+e.getMessage().toString());
-        }
-
-        // close the database connection
-        db.close();
-
-        return true;
-    }
-
-
-    /*
-     * the function fetches all logFrames
-    */
-    public ArrayList<cLogFrameModel> getLogFrameModels() {
-        // list of logFrames
-        ArrayList<cLogFrameModel> logFrameModels = new ArrayList<>();
-
-        // open the connection to the database
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM "+ cSQLDBHelper.TABLE_tblLOGFRAME, null);
+        String selectQuery = "SELECT * FROM " + cSQLDBHelper.TABLE_tblPRIVILEGE +
+                " WHERE (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
+                " OR ((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & ?) != 0)) " +
+                " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & ?) != 0)))";
+
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{
+                String.valueOf(primaryRole),
+                String.valueOf(userID), String.valueOf(operationBITS),
+                String.valueOf(secondaryRoles), String.valueOf(operationBITS)});
 
         try {
             if (cursor.moveToFirst()) {
@@ -138,11 +106,97 @@ public class cLogFrameDBA {
                     logFrameModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
                     logFrameModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
                     logFrameModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    logFrameModel.setStartDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    logFrameModel.setEndDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    logFrameModel.setCreatedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    logFrameModel.setModifiedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    logFrameModel.setSyncedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+                    logFrameModel.setStartDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+                    logFrameModel.setEndDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+                    logFrameModel.setCreatedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    logFrameModel.setModifiedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+
+                    /* populate child log-frames */
+                    logFrameModel.setLogFrameTrees(null);
+
+                    /* populate impact component */
+                    logFrameModel.setImpactModels(null);
+
+                    /* populate outcome component */
+                    logFrameModel.setOutcomeModels(null);
+
+                    /* populate output component */
+                    logFrameModel.setOutputModels(null);
+
+                    /* populate activity component */
+                    logFrameModel.setActivityModels(null);
+
+                    /* populate input component */
+                    logFrameModel.setInputModels(null);
+
+                    /** auxiliary components **/
+
+                    /* populate question component */
+                    logFrameModel.setQuestionModels(null);
+
+                    /* populate indicator component */
+                    logFrameModel.setIndicatorModels(null);
+
+                    /* populate RAID component */
+                    logFrameModel.setRaidModels(null);
+
+                    /* */
+                    logFrameModelSet.add(logFrameModel);
+
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Error in reading " + e.getMessage());
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+
+        // close the database connection
+        db.close();
+
+        return logFrameModelSet;
+    }
+
+    /*
+     * the function fetches all logFrames
+     */
+    public ArrayList<cLogFrameModel> getLogFrameModels() {
+        // list of logFrames
+        ArrayList<cLogFrameModel> logFrameModels = new ArrayList<>();
+
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + cSQLDBHelper.TABLE_tblLOGFRAME, null);
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    cLogFrameModel logFrameModel = new cLogFrameModel();
+
+                    logFrameModel.setID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    logFrameModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+                    logFrameModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    logFrameModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+                    logFrameModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    logFrameModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    logFrameModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    logFrameModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    logFrameModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    logFrameModel.setStartDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+                    logFrameModel.setEndDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+                    logFrameModel.setCreatedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    logFrameModel.setModifiedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
 
                     logFrameModels.add(logFrameModel);
 
@@ -193,11 +247,14 @@ public class cLogFrameDBA {
                     logFrameModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
                     logFrameModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
                     logFrameModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    logFrameModel.setStartDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    logFrameModel.setEndDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    logFrameModel.setCreatedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    logFrameModel.setModifiedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    logFrameModel.setSyncedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+                    logFrameModel.setStartDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+                    logFrameModel.setEndDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+                    logFrameModel.setCreatedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    logFrameModel.setModifiedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
 
                     logFrameModels.add(logFrameModel);
 
@@ -226,9 +283,9 @@ public class cLogFrameDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         // construct a selection query
-        String selectQuery = "SELECT * FROM "+
-                cSQLDBHelper.TABLE_tblIMPACT + " impact "+
-                " WHERE impact."+cSQLDBHelper.KEY_ID + " = ?";
+        String selectQuery = "SELECT * FROM " +
+                cSQLDBHelper.TABLE_tblIMPACT + " impact " +
+                " WHERE impact." + cSQLDBHelper.KEY_ID + " = ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(logFrameID)});
 
@@ -246,11 +303,14 @@ public class cLogFrameDBA {
                     impactModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
                     impactModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
                     impactModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    impactModel.setStartDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    impactModel.setEndDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    impactModel.setCreatedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    impactModel.setModifiedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    impactModel.setSyncedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+                    impactModel.setStartDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+                    impactModel.setEndDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+                    impactModel.setCreatedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    impactModel.setModifiedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
 
                     impactModels.add(impactModel);
 
@@ -279,9 +339,9 @@ public class cLogFrameDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         // construct a selection query
-        String selectQuery = "SELECT * FROM "+
-                cSQLDBHelper.TABLE_tblOUTCOME + " outcome "+
-                " WHERE outcome."+cSQLDBHelper.KEY_ID + " = ?";
+        String selectQuery = "SELECT * FROM " +
+                cSQLDBHelper.TABLE_tblOUTCOME + " outcome " +
+                " WHERE outcome." + cSQLDBHelper.KEY_ID + " = ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(logFrameID)});
 
@@ -299,11 +359,15 @@ public class cLogFrameDBA {
                     outcomeModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
                     outcomeModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
                     outcomeModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    outcomeModel.setStartDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    outcomeModel.setEndDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    outcomeModel.setCreatedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    outcomeModel.setModifiedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    outcomeModel.setSyncedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+
+                    outcomeModel.setStartDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+                    outcomeModel.setEndDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+                    outcomeModel.setCreatedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    outcomeModel.setModifiedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
 
                     outcomeModels.add(outcomeModel);
 
@@ -332,9 +396,9 @@ public class cLogFrameDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         // construct a selection query
-        String selectQuery = "SELECT * FROM "+
-                cSQLDBHelper.TABLE_tblOUTPUT + " output "+
-                " WHERE output."+cSQLDBHelper.KEY_ID + " = ?";
+        String selectQuery = "SELECT * FROM " +
+                cSQLDBHelper.TABLE_tblOUTPUT + " output " +
+                " WHERE output." + cSQLDBHelper.KEY_ID + " = ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(logFrameID)});
 
@@ -352,11 +416,14 @@ public class cLogFrameDBA {
                     outputModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
                     outputModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
                     outputModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    outputModel.setStartDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    outputModel.setEndDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    outputModel.setCreatedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    outputModel.setModifiedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    outputModel.setSyncedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+                    outputModel.setStartDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+                    outputModel.setEndDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+                    outputModel.setCreatedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    outputModel.setModifiedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
 
                     outputModels.add(outputModel);
 
@@ -385,9 +452,9 @@ public class cLogFrameDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         // construct a selection query
-        String selectQuery = "SELECT * FROM "+
-                cSQLDBHelper.TABLE_tblACTIVITY + " activity "+
-                " WHERE activity."+cSQLDBHelper.KEY_ID + " = ?";
+        String selectQuery = "SELECT * FROM " +
+                cSQLDBHelper.TABLE_tblACTIVITY + " activity " +
+                " WHERE activity." + cSQLDBHelper.KEY_ID + " = ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(logFrameID)});
 
@@ -405,11 +472,16 @@ public class cLogFrameDBA {
                     activityModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
                     activityModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
                     activityModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    activityModel.setStartDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    activityModel.setEndDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    activityModel.setCreatedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    activityModel.setModifiedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    activityModel.setSyncedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+                    activityModel.setStartDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+                    activityModel.setEndDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+                    activityModel.setCreatedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    activityModel.setModifiedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    activityModel.setSyncedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     activityModels.add(activityModel);
 
@@ -438,9 +510,9 @@ public class cLogFrameDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         // construct a selection query
-        String selectQuery = "SELECT * FROM "+
-                cSQLDBHelper.TABLE_tblINPUT + " input "+
-                " WHERE input."+cSQLDBHelper.KEY_ID + " = ?";
+        String selectQuery = "SELECT * FROM " +
+                cSQLDBHelper.TABLE_tblINPUT + " input " +
+                " WHERE input." + cSQLDBHelper.KEY_ID + " = ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(logFrameID)});
 
@@ -458,11 +530,16 @@ public class cLogFrameDBA {
                     inputModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
                     inputModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
                     inputModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    inputModel.setStartDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    inputModel.setEndDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    inputModel.setCreatedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    inputModel.setModifiedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    inputModel.setSyncedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+                    inputModel.setStartDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+                    inputModel.setEndDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+                    inputModel.setCreatedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    inputModel.setModifiedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    inputModel.setSyncedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     inputModels.add(inputModel);
 
@@ -491,9 +568,9 @@ public class cLogFrameDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         // construct a selection query
-        String selectQuery = "SELECT * FROM "+
-                cSQLDBHelper.TABLE_tblQUESTION + " question "+
-                " WHERE question."+cSQLDBHelper.KEY_ID + " = ?";
+        String selectQuery = "SELECT * FROM " +
+                cSQLDBHelper.TABLE_tblQUESTION + " question " +
+                " WHERE question." + cSQLDBHelper.KEY_ID + " = ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(logFrameID)});
 
@@ -511,11 +588,16 @@ public class cLogFrameDBA {
                     questionModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
                     questionModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
                     questionModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    questionModel.setStartDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    questionModel.setEndDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    questionModel.setCreatedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    questionModel.setModifiedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    questionModel.setSyncedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+                    questionModel.setStartDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+                    questionModel.setEndDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+                    questionModel.setCreatedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    questionModel.setModifiedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    questionModel.setSyncedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     questionModels.add(questionModel);
 
@@ -544,9 +626,9 @@ public class cLogFrameDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         // construct a selection query
-        String selectQuery = "SELECT * FROM "+
-                cSQLDBHelper.TABLE_tblINPUT + " indicator "+
-                " WHERE indicator."+cSQLDBHelper.KEY_ID + " = ?";
+        String selectQuery = "SELECT * FROM " +
+                cSQLDBHelper.TABLE_tblINPUT + " indicator " +
+                " WHERE indicator." + cSQLDBHelper.KEY_ID + " = ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(logFrameID)});
 
@@ -564,11 +646,16 @@ public class cLogFrameDBA {
                     indicatorModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
                     indicatorModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
                     indicatorModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    indicatorModel.setStartDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    indicatorModel.setEndDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    indicatorModel.setCreatedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    indicatorModel.setModifiedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    indicatorModel.setSyncedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+                    indicatorModel.setStartDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+                    indicatorModel.setEndDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+                    indicatorModel.setCreatedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    indicatorModel.setModifiedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    indicatorModel.setSyncedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     indicatorModels.add(indicatorModel);
 
@@ -597,9 +684,9 @@ public class cLogFrameDBA {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         // construct a selection query
-        String selectQuery = "SELECT * FROM "+
-                cSQLDBHelper.TABLE_tblRAID + " raid "+
-                " WHERE raid."+cSQLDBHelper.KEY_ID + " = ?";
+        String selectQuery = "SELECT * FROM " +
+                cSQLDBHelper.TABLE_tblRAID + " raid " +
+                " WHERE raid." + cSQLDBHelper.KEY_ID + " = ?";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(logFrameID)});
 
@@ -617,11 +704,16 @@ public class cLogFrameDBA {
                     raidModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
                     raidModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
                     raidModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    raidModel.setStartDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    raidModel.setEndDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    raidModel.setCreatedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    raidModel.setModifiedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    raidModel.setSyncedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+                    raidModel.setStartDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+                    raidModel.setEndDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+                    raidModel.setCreatedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    raidModel.setModifiedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    raidModel.setSyncedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     raidModels.add(raidModel);
 
@@ -640,6 +732,58 @@ public class cLogFrameDBA {
 
         return raidModels;
     }
+
+    /* ######################################## UPDATE ACTIONS ########################################*/
+
+    /* ######################################## DELETE ACTIONS ########################################*/
+
+    /*
+     * the function delate a specific logframe
+     */
+    public boolean deleteLogFrame(cLogFrameModel logFrameModel) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete a record of a specific ID
+        try {
+            if (db.delete(cSQLDBHelper.TABLE_tblLOGFRAME, cSQLDBHelper.KEY_ID + " = ?",
+                    new String[]{String.valueOf(logFrameModel.getID())}) < 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in deleting " + e.getMessage().toString());
+        }
+
+        // close the database connection
+        db.close();
+
+        return true;
+    }
+
+    /*
+     * the function delete all logFrames
+     */
+    public boolean deleteLogFrames() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        try {
+            if (db.delete(cSQLDBHelper.TABLE_tblLOGFRAME, null, null) < 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in deleting all logframes " + e.getMessage().toString());
+        }
+
+        // close the database connection
+        db.close();
+
+        return true;
+    }
+
+    /* ######################################## SYNC ACTIONS ########################################*/
+
 }
 
 /*

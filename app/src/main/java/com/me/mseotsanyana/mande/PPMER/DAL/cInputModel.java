@@ -2,9 +2,11 @@ package com.me.mseotsanyana.mande.PPMER.DAL;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class cInputModel {
-	private int ID;
+	private int inputID;
 	private int serverID;
 	private int ownerID;
 	private int orgID;
@@ -23,47 +25,24 @@ public class cInputModel {
     private cLogFrameModel logFrameModel;
     private cActivityModel activityModel;
 
-    /* many to many */
+    /* one to one */
 	private cHumanSetModel humanSetModel;
 	private cMaterialModel materialModel;
 	private cBudgetModel budgetModel;
-    private ArrayList<cQuestionModel> questionModels;
 
-	public cInputModel(){}
+	/* many to many*/
+    private Set<cQuestionModel> questionModelSet;
 
-	public cInputModel(int ID, int serverID, int ownerID, int orgID,
-					   int groupBITS, int permsBITS, int statusBITS,
-					   String name, String description, Date createdDate,
-					   Date modifiedDate, Date syncedDate, cLogFrameModel logFrameModel,
-					   cActivityModel activityModel, cHumanSetModel humanSetModel,
-					   cMaterialModel materialModel, cBudgetModel budgetModel,
-					   ArrayList<cQuestionModel> questionModels) {
-		this.ID = ID;
-		this.serverID = serverID;
-		this.ownerID = ownerID;
-		this.orgID = orgID;
-		this.groupBITS = groupBITS;
-		this.permsBITS = permsBITS;
-		this.statusBITS = statusBITS;
-		this.name = name;
-		this.description = description;
-		this.createdDate = createdDate;
-		this.modifiedDate = modifiedDate;
-		this.syncedDate = syncedDate;
-		this.logFrameModel = logFrameModel;
-		this.activityModel = activityModel;
-		this.humanSetModel = humanSetModel;
-		this.materialModel = materialModel;
-		this.budgetModel = budgetModel;
-		this.questionModels = questionModels;
+	public cInputModel(){
+		questionModelSet = new HashSet<>();
 	}
 
-	public int getID() {
-		return ID;
+	public int getInputID() {
+		return inputID;
 	}
 
-	public void setID(int ID) {
-		this.ID = ID;
+	public void setInputID(int inputID) {
+		this.inputID = inputID;
 	}
 
 	public int getServerID() {
@@ -210,12 +189,12 @@ public class cInputModel {
 		this.budgetModel = budgetModel;
 	}
 
-	public ArrayList<cQuestionModel> getQuestionModels() {
-		return questionModels;
+	public Set<cQuestionModel> getQuestionModelSet() {
+		return questionModelSet;
 	}
 
-	public void setQuestionModels(ArrayList<cQuestionModel> questionModels) {
-		this.questionModels = questionModels;
+	public void setQuestionModelSet(Set<cQuestionModel> questionModelSet) {
+		this.questionModelSet = questionModelSet;
 	}
 }
 

@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -22,8 +23,13 @@ public class cPrivilegeDomain implements Parcelable {
     private Date modifiedDate;
     private Date syncedDate;
 
-    private HashMap<cEntityDomain,Set<cOperationDomain>> permDomainMap = new HashMap<>();
+    private HashMap<cEntityDomain, Set<cOperationDomain>> permDomainMap;
     private Set<cStatusDomain> statusDomainSet;
+
+    public cPrivilegeDomain() {
+        permDomainMap = new HashMap<>();
+        statusDomainSet = new HashSet<>();
+    }
 
     protected cPrivilegeDomain(Parcel in) {
         this.setPrivilegeID(in.readInt());
@@ -38,10 +44,6 @@ public class cPrivilegeDomain implements Parcelable {
         this.setCreatedDate(new Date(in.readLong()));
         this.setModifiedDate(new Date(in.readLong()));
         this.setSyncedDate(new Date(in.readLong()));
-    }
-
-    public cPrivilegeDomain() {
-
     }
 
     @Override

@@ -152,11 +152,9 @@ public class cRoleFragment extends Fragment implements iPermissionInterface {
 
         // populate role user tree from database
         getRoleUserTree(session.loadUserID(),          /* loggedin user id */
-                session.loadOrganizationID(),          /* loggedin's organization ID */
-                session.loadPrimaryRole(session.loadUserID(),
-                        session.loadOrganizationID()), /* primary role bit */
-                session.loadSecondaryRoles(session.loadUserID(),
-                        session.loadOrganizationID())  /* secondary role bits */
+                session.loadOrgID(),          /* loggedin's organization ID */
+                session.loadPrimaryRole(), /* primary role bit */
+                session.loadSecondaryRoles()  /* secondary role bits */
         );
 
         // initialise the floating action button (FAB)
@@ -181,12 +179,10 @@ public class cRoleFragment extends Fragment implements iPermissionInterface {
                 // get all organizations from database
                 final ArrayList<cOrganizationDomain> orgs =
                         organizationHandler.getOrganizationList(
-                                session.loadUserID(),                  /* loggedIn user id  */
-                                session.loadOrganizationID(),          /* loggedIn own org. */
-                                session.loadPrimaryRole(session.loadUserID(),
-                                        session.loadOrganizationID()), /* primary group bit */
-                                session.loadSecondaryRoles(session.loadUserID(),
-                                        session.loadOrganizationID())  /* secondary group bits */
+                                session.loadUserID(),        /* loggedIn user id  */
+                                session.loadOrgID(),         /* loggedIn own org. */
+                                session.loadPrimaryRole(),   /* primary group bit */
+                                session.loadSecondaryRoles() /* secondary group bits */
                         );
 
                 // create a pair list of organization ids and names
@@ -418,7 +414,7 @@ public class cRoleFragment extends Fragment implements iPermissionInterface {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.homeItem:
-                pushFragment(cMainFragment.newInstance(null));
+                pushFragment(cMainFragment.newInstance(session));
                 break;
             default:
                 break;

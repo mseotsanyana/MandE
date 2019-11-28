@@ -23,6 +23,10 @@ public class cEntityHandler extends cMapper<cEntityModel, cEntityDomain> {
         this.context = context;
     }
 
+    public cEntityHandler() {
+
+    }
+
     public boolean deleteEntities() {
         return entityDBA.deleteEntities();
     }

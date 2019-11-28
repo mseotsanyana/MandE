@@ -37,15 +37,14 @@ public class cRoleHandler extends cMapper<cRoleModel, cRoleDomain> {
         /** 1. ENTITY SECTION **/
 
         // entity bits of all entities that are accessible
-        entityBITS = session.loadEntityBITS(session.loadUserID(),
-                session.loadOrganizationID(), cSessionManager.types[0]);
+        //entityBITS = session.loadEntityBITS(session.loadUserID(),
+        //        session.loadOrganizationID(), cSessionManager.types[0]);
 
         /** 2. OPERATION SECTION **/
 
         // operations associated to ENTITY entity
-        operationBITS = session.loadOperationBITS(session.loadUserID(),
-                session.loadOrganizationID(), cSessionManager.PRIVILEGE,
-                cSessionManager.types[0]);
+        //operationBITS = session.loadOperationBITS(cSessionManager.ENTITY,
+        //        cSessionManager.types[0]);
     }
 
     /* ################################### CREATE ACTIONS ################################### */
@@ -81,10 +80,11 @@ public class cRoleHandler extends cMapper<cRoleModel, cRoleDomain> {
         return roleDomainSet;
     }
 
-    public Set<cMenuModel> getMenuModelsByRoleID(int roleID) {
-        Set<cMenuModel> roleModelSet = roleDBA.getMenusByRoleID(roleID);
+    public Set<cMenuModel> getMenuModelsByRoleID(int roleID, int organizationID) {
+        Set<cMenuModel> roleModelSet = roleDBA.getMenusByRoleID(roleID, organizationID);
         return roleModelSet;
     }
+
 
     public ArrayList<cRoleDomain> getRoleList(int userID, int orgID,
                                               int primaryRole, int secondaryRoles) {
@@ -170,7 +170,10 @@ public class cRoleHandler extends cMapper<cRoleModel, cRoleDomain> {
         model.setModifiedDate(domain.getModifiedDate());
         model.setSyncedDate(domain.getSyncedDate());
 
-        model.setOrganizationModel(organizationHandler.DomainToModel(domain.getOrganizationDomain()));
+        if(domain.getOrganizationDomain() != null){
+            model.setOrganizationModel(
+                    organizationHandler.DomainToModel(domain.getOrganizationDomain()));
+        }
 
         if(!domain.getMenuDomainSet().isEmpty())
             model.setMenuModelSet(convertToModelSet(domain.getMenuDomainSet()));
@@ -197,7 +200,10 @@ public class cRoleHandler extends cMapper<cRoleModel, cRoleDomain> {
         domain.setModifiedDate(model.getModifiedDate());
         domain.setSyncedDate(model.getSyncedDate());
 
-        domain.setOrganizationDomain(organizationHandler.ModelToDomain(model.getOrganizationModel()));
+        if(model.getOrganizationModel() != null){
+            domain.setOrganizationDomain(
+                    organizationHandler.ModelToDomain(model.getOrganizationModel()));
+        }
 
         if(!model.getMenuModelSet().isEmpty())
             domain.setMenuDomainSet(convertToDomainSet(model.getMenuModelSet()));

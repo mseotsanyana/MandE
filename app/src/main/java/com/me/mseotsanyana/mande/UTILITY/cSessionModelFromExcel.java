@@ -1,7 +1,6 @@
 package com.me.mseotsanyana.mande.UTILITY;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cAddressDBA;
@@ -16,14 +15,11 @@ import com.me.mseotsanyana.mande.BRBAC.DAL.cOperationDBA;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cOperationModel;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cOrganizationDBA;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cOrganizationModel;
-import com.me.mseotsanyana.mande.BRBAC.DAL.cPermissionDBA;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cPermissionModel;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cPrivilegeDBA;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cPrivilegeModel;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cRoleDBA;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cRoleModel;
-import com.me.mseotsanyana.mande.BRBAC.DAL.cSessionDBA;
-import com.me.mseotsanyana.mande.BRBAC.DAL.cSessionModel;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cSettingDBA;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cSettingModel;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cStatusDBA;
@@ -72,7 +68,7 @@ public class cSessionModelFromExcel {
     private cEntityDBA entityDBA;
     private cOperationDBA operationDBA;
     private cStatusDBA statusDBA;
-    private cPermissionDBA permissionDBA;
+    //private cPermissionDBA permissionDBA;
     private cSettingDBA settingDBA;
     private cNotificationDBA notificationDBA;
 
@@ -92,7 +88,7 @@ public class cSessionModelFromExcel {
         entityDBA       = new cEntityDBA(context);
         operationDBA    = new cOperationDBA(context);
         statusDBA       = new cStatusDBA(context);
-        permissionDBA   = new cPermissionDBA(context);
+        //permissionDBA   = new cPermissionDBA(context);
         settingDBA      = new cSettingDBA(context);
         notificationDBA = new cNotificationDBA(context);
 
@@ -226,8 +222,9 @@ public class cSessionModelFromExcel {
 
         roleModel.setRoleID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         roleModel.setOrganizationID((int)cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-        roleModel.setName(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-        roleModel.setDescription(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+        roleModel.setPrivilegeID((int)cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+        roleModel.setName(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+        roleModel.setDescription(cRow.getCell(4, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
         ArrayList<Integer> users = new ArrayList<>();
         ArrayList<Integer> menus = new ArrayList<>();
@@ -275,21 +272,6 @@ public class cSessionModelFromExcel {
         roleDBA.addRoleFromExcel(roleModel, users, menus);
     }
 
-    public void addPrivilegeFromExcel(Row cRow) {
-        privilegeModel = new cPrivilegeModel();
-
-        privilegeModel.setPrivilegeID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-        privilegeModel.setRoleID((int)cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-        privilegeModel.setOrganizationID((int)cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-        privilegeModel.setName(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-        privilegeModel.setDescription(cRow.getCell(4, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-
-        //Log.d(TAG, "=========================================================");
-        //Log.d(TAG, gson.toJson(privilegeModel));
-
-        privilegeDBA.addPrivilegeFromExcel(privilegeModel);
-    }
-
     public void addEntityFromExcel(Row cRow) {
         entityModel = new cEntityModel();
 
@@ -330,6 +312,68 @@ public class cSessionModelFromExcel {
         statusDBA.addStatusFromExcel(statusModel);
     }
 
+    public void addPrivilegeFromExcel(Row cRow, Sheet priv_permissions, Sheet priv_statuses) {
+        privilegeModel = new cPrivilegeModel();
+
+        privilegeModel.setPrivilegeID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+        privilegeModel.setName(cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+        privilegeModel.setDescription(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+
+        ArrayList<Integer> statuses = new ArrayList<>();
+
+        ArrayList<Integer> entities    = new ArrayList<>();
+        ArrayList<Integer> entityTypes = new ArrayList<>();
+        ArrayList<Integer> operations  = new ArrayList<>();
+
+        int privilegeID, entityID, entityTypeID, operationID, statusID;
+
+        // construct list of permissions
+        for (Iterator<Row> rit = priv_permissions.iterator(); rit.hasNext(); ) {
+            Row cPrivPermissionsRow = rit.next();
+
+            //just skip the row if row number is 0
+            if (cPrivPermissionsRow.getRowNum() == 0) {
+                continue;
+            }
+
+            privilegeID = (int)cPrivPermissionsRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+
+            if (privilegeModel.getPrivilegeID() == privilegeID){
+                entityID = (int)cPrivPermissionsRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                entityTypeID = (int)cPrivPermissionsRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                operationID = (int)cPrivPermissionsRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+
+                /* add permissions */
+                entities.add(entityID);
+                entityTypes.add(entityTypeID);
+                operations.add(operationID);
+            }
+        }
+
+        // construct list of privilege statuses
+        for (Iterator<Row> rit = priv_statuses.iterator(); rit.hasNext(); ) {
+            Row cPrivStatusesRow = rit.next();
+
+            //just skip the row if row number is 0
+            if (cPrivStatusesRow.getRowNum() == 0) {
+                continue;
+            }
+
+            privilegeID = (int)cPrivStatusesRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+
+            if (privilegeModel.getPrivilegeID() == privilegeID){
+                statusID = (int)cPrivStatusesRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                statuses.add(statusID);
+            }
+        }
+
+        //Log.d(TAG, "=========================================================");
+        //Log.d(TAG, gson.toJson(privilegeModel));
+
+        privilegeDBA.addPrivilegeFromExcel(privilegeModel, entities, entityTypes, operations, statuses);
+    }
+
+/*
     public void addPermissionFromExcel(Row cRow, Sheet perm_statuses) {
         permissionModel = new cPermissionModel();
 
@@ -370,7 +414,7 @@ public class cSessionModelFromExcel {
 
         permissionDBA.addPermissionFromExcel(permissionModel, statuses);
     }
-
+*/
     public void addSettingsFromExcel(Row cRow){
         settingModel = new cSettingModel();
 

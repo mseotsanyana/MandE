@@ -37,15 +37,14 @@ public class cNotificationHandler extends cMapper<cNotificationModel, cNotificat
         /** 1. ENTITY SECTION **/
 
         // entity bits of all entities that are accessible
-        entityBITS = session.loadEntityBITS(session.loadUserID(),
-                session.loadOrganizationID(), cSessionManager.types[0]);
+        //entityBITS = session.loadEntityBITS(session.loadUserID(),
+        //        session.loadOrganizationID(), cSessionManager.types[0]);
 
         /** 2. OPERATION SECTION **/
 
         // operations associated to ENTITY entity
-        operationBITS = session.loadOperationBITS(session.loadUserID(),
-                session.loadOrganizationID(), cSessionManager.PRIVILEGE,
-                cSessionManager.types[0]);
+        //operationBITS = session.loadOperationBITS(cSessionManager.,
+        //        cSessionManager.types[0]);
     }
 
     /* ################################### CREATE ACTIONS ################################### */

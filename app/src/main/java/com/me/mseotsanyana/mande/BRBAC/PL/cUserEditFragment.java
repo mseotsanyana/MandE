@@ -611,7 +611,7 @@ public class cUserEditFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.homeItem:
-                pushFragment(cMainFragment.newInstance(null));
+                pushFragment(cMainFragment.newInstance(session));
                 break;
             default:
                 break;

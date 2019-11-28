@@ -12,7 +12,6 @@ import com.me.mseotsanyana.mande.BRBAC.BLL.cEntityHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cMenuHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cOperationHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cOrganizationHandler;
-import com.me.mseotsanyana.mande.BRBAC.BLL.cPermissionHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cPrivilegeHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cRoleHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionHandler;
@@ -37,7 +36,7 @@ import java.util.Iterator;
 public class cUploadSessionData extends AsyncTask<String, Integer, String> {
 
     String[] sessionTables = {"tblADDRESS","tblORGANIZATION","tblVALUE","tblUSER","tblMENU","tblROLE",
-            "tblPRIVILEGE","tblENTITY","tblOPERATION","tblSTATUS","tblPERMISSION","tblSETTINGS","tblNOTIFICATION"};
+            "tblPRIVILEGE","tblENTITY","tblOPERATION","tblSTATUS","tblSETTINGS","tblNOTIFICATION"};
 
     /*,
             "tblPRIVILEGE","tblENTITY","tblOPERATION","tblSTATUS","tblORG_ADDRESS","tblUSER_ADDRESS",
@@ -266,6 +265,10 @@ public class cUploadSessionData extends AsyncTask<String, Integer, String> {
 
                     case 6:
                         //privilegeHandler.deletePrivileges();
+
+                        Sheet priv_permissions = workbook.getSheet("tblPERMISSION");
+                        Sheet priv_statuses = workbook.getSheet("tblPRIV_STATUS");
+
                         for (Iterator<Row> rit = sheet.iterator(); rit.hasNext(); ) {
                             Row cRow = rit.next();
 
@@ -275,7 +278,7 @@ public class cUploadSessionData extends AsyncTask<String, Integer, String> {
                             }
 
                             // add the row into the database
-                            sessionModelFromExcel.addPrivilegeFromExcel(cRow);
+                            sessionModelFromExcel.addPrivilegeFromExcel(cRow, priv_permissions, priv_statuses);
 
                             // publish the progress after adding a record
                             currentRows++;
@@ -339,7 +342,7 @@ public class cUploadSessionData extends AsyncTask<String, Integer, String> {
                             publishProgress(currentRows * 100 / allRows);
                         }
                         break;
-
+/*
                     case 10:
                         //permissionHandler.deleteAllPermissions();
                         Sheet perm_statuses = workbook.getSheet("tblPERM_STATUS");
@@ -360,8 +363,8 @@ public class cUploadSessionData extends AsyncTask<String, Integer, String> {
                             publishProgress(currentRows * 100 / allRows);
                         }
                         break;
-
-                    case 11:
+*/
+                    case 10:
                         //statusHandler.deleteAllStatuses();
                         for (Iterator<Row> rit = sheet.iterator(); rit.hasNext(); ) {
                             Row cRow = rit.next();
@@ -380,7 +383,7 @@ public class cUploadSessionData extends AsyncTask<String, Integer, String> {
                         }
                         break;
 
-                    case 12:
+                    case 11:
                         //statusHandler.deleteAllStatuses();
                         Sheet notify_publishers = workbook.getSheet("tblPUBLISHER");
                         Sheet notify_subscribers = workbook.getSheet("tblSUBSCRIBER");

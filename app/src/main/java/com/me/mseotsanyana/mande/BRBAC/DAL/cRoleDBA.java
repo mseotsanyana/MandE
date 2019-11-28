@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cMenuDomain;
 import com.me.mseotsanyana.mande.PPMER.DAL.cSQLDBHelper;
 import com.me.mseotsanyana.mande.UTILITY.cConstant;
@@ -56,6 +57,7 @@ public class cRoleDBA {
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ID, roleModel.getRoleID());
         cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, roleModel.getOrganizationID());
+        cv.put(cSQLDBHelper.KEY_PRIVILEGE_FK_ID, roleModel.getPrivilegeID());
         cv.put(cSQLDBHelper.KEY_NAME, roleModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, roleModel.getDescription());
 
@@ -217,7 +219,9 @@ public class cRoleDBA {
                     role.setUserModelSet(getUsersByRoleID(role.getRoleID()));
 
                     // populate menu items for a specific role
-                    role.setMenuModelSet(getMenusByRoleID(role.getRoleID()));
+                    Gson gson = new Gson();
+                    //Log.d(TAG, role.getRoleID()+"-"+gson.toJson(getMenusByRoleID(role.getRoleID(), role.getOrganizationID())));
+                    role.setMenuModelSet(getMenusByRoleID(role.getRoleID(), role.getOrganizationID()));
 
                     // populate permissions for a specific role
                     //role.setPrivilegeModelSet(getPrivilegesByRoleID(role.getRoleID()));
@@ -301,7 +305,7 @@ public class cRoleDBA {
                     role.setUserModelSet(getUsersByRoleID(role.getRoleID()));
 
                     // populate menu items for a specific role
-                    role.setMenuModelSet(getMenusByRoleID(role.getRoleID()));
+                    role.setMenuModelSet(getMenusByRoleID(role.getRoleID(), role.getOrganizationID()));
 
                     // populate permissions for a specific role
                     //role.setPrivilegeModelSet(getPrivilegesByRoleID(role.getRoleID()));
@@ -408,7 +412,7 @@ public class cRoleDBA {
      * @param roleID
      * @return Set
      */
-    public Set<cMenuModel> getMenusByRoleID(int roleID) {
+    public Set<cMenuModel> getMenusByRoleID(int roleID, int organizationID) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -420,19 +424,20 @@ public class cRoleDBA {
                 "menu." +cSQLDBHelper.KEY_OWNER_ID + ", menu." +cSQLDBHelper.KEY_ORG_ID +", "+
                 "menu."+cSQLDBHelper.KEY_GROUP_BITS + ", menu." +cSQLDBHelper.KEY_PERMS_BITS +", "+
                 "menu."+cSQLDBHelper.KEY_STATUS_BITS + ", menu." +cSQLDBHelper.KEY_NAME+", "+
-                "menu."+cSQLDBHelper.KEY_DESCRIPTION +", role."+cSQLDBHelper.KEY_ID +", "+
+                "menu."+cSQLDBHelper.KEY_DESCRIPTION +", "+
                 "menu."+cSQLDBHelper.KEY_CREATED_DATE +", "+
                 "menu."+cSQLDBHelper.KEY_MODIFIED_DATE +", "+
                 "menu."+cSQLDBHelper.KEY_SYNCED_DATE +
                 " FROM " +
-                cSQLDBHelper.TABLE_tblROLE+ " role, " +
-                cSQLDBHelper.TABLE_tblMENU+ " menu, " +
+                cSQLDBHelper.TABLE_tblROLE + " role, " +
+                cSQLDBHelper.TABLE_tblMENU + " menu, " +
                 cSQLDBHelper.TABLE_tblMENU_ROLE + " menu_role " +
                 " WHERE role."+cSQLDBHelper.KEY_ID + " = menu_role."+cSQLDBHelper.KEY_ROLE_FK_ID +
+                " AND role."+cSQLDBHelper.KEY_ORGANIZATION_FK_ID + " = menu_role."+cSQLDBHelper.KEY_ORGANIZATION_FK_ID +
                 " AND menu."+cSQLDBHelper.KEY_ID + " = menu_role."+cSQLDBHelper.KEY_MENU_FK_ID +
-                " AND role."+cSQLDBHelper.KEY_ID +" = ?";
+                " AND role."+cSQLDBHelper.KEY_ID +" = ? AND role."+cSQLDBHelper.KEY_ORGANIZATION_FK_ID +" = ?";
 
-        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(roleID)});
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(roleID), String.valueOf(organizationID)});
 
         try {
             if (cursor.moveToFirst()) {

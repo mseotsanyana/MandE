@@ -12,6 +12,7 @@ import java.util.Set;
 public class cRoleModel {
     private int roleID;
     private int organizationID;
+    private int privilegeID;
     private int serverID;
     private int ownerID;
     private int orgID;
@@ -32,9 +33,9 @@ public class cRoleModel {
     private Set<cMenuModel> menuModelSet;
 
     public cRoleModel(){
-        menuModelSet = new HashSet<>();
-        menuModelSet = new HashSet<>();
+        userModelSet    = new HashSet<>();
         sessionModelSet = new HashSet<>();
+        menuModelSet    = new HashSet<>();
     }
 
     public int getRoleID() {
@@ -51,6 +52,14 @@ public class cRoleModel {
 
     public void setOrganizationID(int organizationID) {
         this.organizationID = organizationID;
+    }
+
+    public int getPrivilegeID() {
+        return privilegeID;
+    }
+
+    public void setPrivilegeID(int privilegeID) {
+        this.privilegeID = privilegeID;
     }
 
     public int getServerID() {

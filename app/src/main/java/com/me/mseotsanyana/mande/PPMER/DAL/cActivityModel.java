@@ -3,9 +3,12 @@ package com.me.mseotsanyana.mande.PPMER.DAL;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
-public class cActivityModel implements Serializable {
-    private int ID;
+public class cActivityModel {
+    private int activityID;
     private int serverID;
     private int ownerID;
     private int orgID;
@@ -22,208 +25,39 @@ public class cActivityModel implements Serializable {
 
     private cLogFrameModel logFrameModel;
     private cOutputModel outputModel;
-    private ArrayList<cActivityModel> activityModels;
+    private Set<cActivityModel> activityModelSet;
 
     /* many to many */
-    private ArrayList<cPrecedingActivityModel> precedingActivityModels;
-    private ArrayList<cInputModel> inputModels;
-    private ArrayList<cRaidModel> raidModels;
-    private ArrayList<cQuestionModel> activityQuestionModels;
-    private ArrayList<cActivityOutputModel> activityOutputModels;
+    private Set<cPrecedingActivityModel> precedingActivityModelSet;
+    private Set<cInputModel> inputModelSet;
+    private Set<cRaidModel> raidModelSet;
+    private Set<cQuestionModel> questionModelSet;
+
+    private Set<cOutputModel> outputModelSet;
 
     /* many to many related to AWPB */
-    private ArrayList<cTaskModel> taskModels;
-    private ArrayList<cActivityAssignmentModel> activityAssignmentModels;
-    private ArrayList<cExpenditureModel> expenditureModels;
+    private Set<cTaskModel> taskModelSet;
+    private Set<cActivityAssignmentModel> activityAssignmentModelSet;
+    private Set<cExpenditureModel> expenditureModelSet;
 
-    public class cActivityOutputModel {
-        private int activityID;
-        private int outputID;
-        private int parentID;
-        private int childID;
-        private int serverID;
-        private int ownerID;
-        private int orgID;
-        private int groupBITS;
-        private int permsBITS;
-        private int statusBITS;
-        private Date createdDate;
-        private Date modifiedDate;
-        private Date syncedDate;
-
-        public cActivityOutputModel() {
-        }
-
-        public cActivityOutputModel(int activityID, int outputID, int parentID, int childID,
-                                    int serverID, int ownerID, int orgID, int groupBITS, int permsBITS,
-                                    int statusBITS, Date createdDate, Date modifiedDate, Date syncedDate) {
-            this.activityID = activityID;
-            this.outputID = outputID;
-            this.parentID = parentID;
-            this.childID = childID;
-            this.serverID = serverID;
-            this.ownerID = ownerID;
-            this.orgID = orgID;
-            this.groupBITS = groupBITS;
-            this.permsBITS = permsBITS;
-            this.statusBITS = statusBITS;
-            this.createdDate = createdDate;
-            this.modifiedDate = modifiedDate;
-            this.syncedDate = syncedDate;
-        }
-
-        public int getActivityID() {
-            return activityID;
-        }
-
-        public void setActivityID(int activityID) {
-            this.activityID = activityID;
-        }
-
-        public int getOutputID() {
-            return outputID;
-        }
-
-        public void setOutputID(int outputID) {
-            this.outputID = outputID;
-        }
-
-        public int getParentID() {
-            return parentID;
-        }
-
-        public void setParentID(int parentID) {
-            this.parentID = parentID;
-        }
-
-        public int getChildID() {
-            return childID;
-        }
-
-        public void setChildID(int childID) {
-            this.childID = childID;
-        }
-
-        public int getServerID() {
-            return serverID;
-        }
-
-        public void setServerID(int serverID) {
-            this.serverID = serverID;
-        }
-
-        public int getOwnerID() {
-            return ownerID;
-        }
-
-        public void setOwnerID(int ownerID) {
-            this.ownerID = ownerID;
-        }
-
-        public int getOrgID() {
-            return orgID;
-        }
-
-        public void setOrgID(int orgID) {
-            this.orgID = orgID;
-        }
-
-        public int getGroupBITS() {
-            return groupBITS;
-        }
-
-        public void setGroupBITS(int groupBITS) {
-            this.groupBITS = groupBITS;
-        }
-
-        public int getPermsBITS() {
-            return permsBITS;
-        }
-
-        public void setPermsBITS(int permsBITS) {
-            this.permsBITS = permsBITS;
-        }
-
-        public int getStatusBITS() {
-            return statusBITS;
-        }
-
-        public void setStatusBITS(int statusBITS) {
-            this.statusBITS = statusBITS;
-        }
-
-        public Date getCreatedDate() {
-            return createdDate;
-        }
-
-        public void setCreatedDate(Date createdDate) {
-            this.createdDate = createdDate;
-        }
-
-        public Date getModifiedDate() {
-            return modifiedDate;
-        }
-
-        public void setModifiedDate(Date modifiedDate) {
-            this.modifiedDate = modifiedDate;
-        }
-
-        public Date getSyncedDate() {
-            return syncedDate;
-        }
-
-        public void setSyncedDate(Date syncedDate) {
-            this.syncedDate = syncedDate;
-        }
+    public cActivityModel(){
+        activityModelSet = new HashSet<>();
+        precedingActivityModelSet = new HashSet<>();
+        inputModelSet = new HashSet<>();
+        raidModelSet = new HashSet<>();
+        questionModelSet = new HashSet<>();
+        outputModelSet = new HashSet<>();
+        taskModelSet = new HashSet<>();
+        activityAssignmentModelSet = new HashSet<>();
+        expenditureModelSet = new HashSet<>();
     }
 
-    public cActivityModel() {}
-
-    public cActivityModel(int ID, int serverID, int ownerID, int orgID,
-                          int groupBITS, int permsBITS, int statusBITS,
-                          String name, String description, Date startDate, Date endDate,
-                          Date createdDate, Date modifiedDate, Date syncedDate,
-                          cLogFrameModel logFrameModel, cOutputModel outputModel,
-                          ArrayList<cActivityModel> activityModels,
-                          ArrayList<cPrecedingActivityModel> precedingActivityModels,
-                          ArrayList<cInputModel> inputModels, ArrayList<cRaidModel> raidModels,
-                          ArrayList<cQuestionModel> activityQuestionModels,
-                          ArrayList<cActivityOutputModel> activityOutputModels, ArrayList<cTaskModel> taskModels,
-                          ArrayList<cActivityAssignmentModel> activityAssignmentModels,
-                          ArrayList<cExpenditureModel> expenditureModels) {
-        this.ID = ID;
-        this.serverID = serverID;
-        this.ownerID = ownerID;
-        this.orgID = orgID;
-        this.groupBITS = groupBITS;
-        this.permsBITS = permsBITS;
-        this.statusBITS = statusBITS;
-        this.name = name;
-        this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.createdDate = createdDate;
-        this.modifiedDate = modifiedDate;
-        this.syncedDate = syncedDate;
-        this.logFrameModel = logFrameModel;
-        this.outputModel = outputModel;
-        this.activityModels = activityModels;
-        this.precedingActivityModels = precedingActivityModels;
-        this.inputModels = inputModels;
-        this.raidModels = raidModels;
-        this.activityQuestionModels = activityQuestionModels;
-        this.activityOutputModels = activityOutputModels;
-        this.taskModels = taskModels;
-        this.activityAssignmentModels = activityAssignmentModels;
-        this.expenditureModels = expenditureModels;
+    public int getActivityID() {
+        return activityID;
     }
 
-    public int getID() {
-        return ID;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setActivityID(int activityID) {
+        this.activityID = activityID;
     }
 
     public int getServerID() {
@@ -346,76 +180,76 @@ public class cActivityModel implements Serializable {
         this.outputModel = outputModel;
     }
 
-    public ArrayList<cActivityModel> getActivityModels() {
-        return activityModels;
+    public Set<cActivityModel> getActivityModelSet() {
+        return activityModelSet;
     }
 
-    public void setActivityModels(ArrayList<cActivityModel> activityModels) {
-        this.activityModels = activityModels;
+    public void setActivityModelSet(Set<cActivityModel> activityModelSet) {
+        this.activityModelSet = activityModelSet;
     }
 
-    public ArrayList<cPrecedingActivityModel> getPrecedingActivityModels() {
-        return precedingActivityModels;
+    public Set<cPrecedingActivityModel> getPrecedingActivityModelSet() {
+        return precedingActivityModelSet;
     }
 
-    public void setPrecedingActivityModels(ArrayList<cPrecedingActivityModel> precedingActivityModels) {
-        this.precedingActivityModels = precedingActivityModels;
+    public void setPrecedingActivityModelSet(Set<cPrecedingActivityModel> precedingActivityModelSet) {
+        this.precedingActivityModelSet = precedingActivityModelSet;
     }
 
-    public ArrayList<cInputModel> getInputModels() {
-        return inputModels;
+    public Set<cInputModel> getInputModelSet() {
+        return inputModelSet;
     }
 
-    public void setInputModels(ArrayList<cInputModel> inputModels) {
-        this.inputModels = inputModels;
+    public void setInputModelSet(Set<cInputModel> inputModelSet) {
+        this.inputModelSet = inputModelSet;
     }
 
-    public ArrayList<cRaidModel> getRaidModels() {
-        return raidModels;
+    public Set<cRaidModel> getRaidModelSet() {
+        return raidModelSet;
     }
 
-    public void setRaidModels(ArrayList<cRaidModel> raidModels) {
-        this.raidModels = raidModels;
+    public void setRaidModelSet(Set<cRaidModel> raidModelSet) {
+        this.raidModelSet = raidModelSet;
     }
 
-    public ArrayList<cQuestionModel> getActivityQuestionModels() {
-        return activityQuestionModels;
+    public Set<cQuestionModel> getQuestionModelSet() {
+        return questionModelSet;
     }
 
-    public void setActivityQuestionModels(ArrayList<cQuestionModel> activityQuestionModels) {
-        this.activityQuestionModels = activityQuestionModels;
+    public void setQuestionModelSet(Set<cQuestionModel> questionModelSet) {
+        this.questionModelSet = questionModelSet;
     }
 
-    public ArrayList<cActivityOutputModel> getActivityOutputModels() {
-        return activityOutputModels;
+    public Set<cOutputModel> getOutputModelSet() {
+        return outputModelSet;
     }
 
-    public void setActivityOutputModels(ArrayList<cActivityOutputModel> activityOutputModels) {
-        this.activityOutputModels = activityOutputModels;
+    public void setOutputModelSet(Set<cOutputModel> outputModelSet) {
+        this.outputModelSet = outputModelSet;
     }
 
-    public ArrayList<cTaskModel> getTaskModels() {
-        return taskModels;
+    public Set<cTaskModel> getTaskModelSet() {
+        return taskModelSet;
     }
 
-    public void setTaskModels(ArrayList<cTaskModel> taskModels) {
-        this.taskModels = taskModels;
+    public void setTaskModelSet(Set<cTaskModel> taskModelSet) {
+        this.taskModelSet = taskModelSet;
     }
 
-    public ArrayList<cActivityAssignmentModel> getActivityAssignmentModels() {
-        return activityAssignmentModels;
+    public Set<cActivityAssignmentModel> getActivityAssignmentModelSet() {
+        return activityAssignmentModelSet;
     }
 
-    public void setActivityAssignmentModels(ArrayList<cActivityAssignmentModel> activityAssignmentModels) {
-        this.activityAssignmentModels = activityAssignmentModels;
+    public void setActivityAssignmentModelSet(Set<cActivityAssignmentModel> activityAssignmentModelSet) {
+        this.activityAssignmentModelSet = activityAssignmentModelSet;
     }
 
-    public ArrayList<cExpenditureModel> getExpenditureModels() {
-        return expenditureModels;
+    public Set<cExpenditureModel> getExpenditureModelSet() {
+        return expenditureModelSet;
     }
 
-    public void setExpenditureModels(ArrayList<cExpenditureModel> expenditureModels) {
-        this.expenditureModels = expenditureModels;
+    public void setExpenditureModelSet(Set<cExpenditureModel> expenditureModelSet) {
+        this.expenditureModelSet = expenditureModelSet;
     }
 }
 

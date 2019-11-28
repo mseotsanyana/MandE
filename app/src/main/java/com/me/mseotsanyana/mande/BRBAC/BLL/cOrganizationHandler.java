@@ -42,14 +42,13 @@ public class cOrganizationHandler extends cMapper<cOrganizationModel, cOrganizat
         /** 1. ENTITY SECTION **/
 
         // entity bits of all entities that are accessible
-        entityBITS = session.loadEntityBITS(session.loadUserID(),
-                session.loadOrganizationID(), cSessionManager.types[0]);
+        //entityBITS = session.loadEntityBITS(session.loadUserID(),
+        //        session.loadOrganizationID(), cSessionManager.types[0]);
 
         /** 2. OPERATION SECTION **/
 
         // operations associated to ENTITY entity
-        operationBITS = session.loadOperationBITS(session.loadUserID(),
-                session.loadOrganizationID(), cSessionManager.ORGANIZATION,
+        operationBITS = session.loadOperationBITS(cSessionManager.ORGANIZATION,
                 cSessionManager.types[0]);
     }
 
@@ -82,8 +81,7 @@ public class cOrganizationHandler extends cMapper<cOrganizationModel, cOrganizat
     public ArrayList<cOrganizationDomain> getOrganizationList(int userID, int orgID,
                                               int primaryRole, int secondaryRoles) {
         // statuses of read operation associated with ORGANIZATION entity
-        int statusBITS = session.loadStatusBITS(userID, orgID,
-                cSessionManager.ORGANIZATION, cSessionManager.types[0], cSessionManager.READ);
+        int statusBITS = session.loadStatusBITS(cSessionManager.ORGANIZATION, cSessionManager.types[0]);
 
         ArrayList<cOrganizationDomain> organizationDomains = new ArrayList<>();
 

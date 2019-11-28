@@ -72,7 +72,7 @@ public class cSettingsFragment extends Fragment {
 
                 switch (item.getItemId()) {
                     case R.id.action_login:
-                        pushFragment(cLoginFragment.newInstance(null));
+                        pushFragment(cLoginFragment.newInstance(session));
                         return true;
                     case R.id.action_create:
                         pushFragment(cRegisterFragment.newInstance());

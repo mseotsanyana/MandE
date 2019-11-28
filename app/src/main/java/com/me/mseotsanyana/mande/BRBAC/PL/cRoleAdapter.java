@@ -406,23 +406,19 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
 
                     // get all users from database
                     final ArrayList<cUserDomain> users = userHandler.getUserList(
-                            session.loadUserID(),                  /* loggedIn user id  */
-                            session.loadOrganizationID(),          /* loggedIn own org. */
-                            session.loadPrimaryRole(session.loadUserID(),
-                                    session.loadOrganizationID()), /* primary group bit */
-                            session.loadSecondaryRoles(session.loadUserID(),
-                                    session.loadOrganizationID())  /* secondary group bits */
+                            session.loadUserID(),        /* loggedIn user id  */
+                            session.loadOrgID(),         /* loggedIn own org. */
+                            session.loadPrimaryRole(),   /* primary group bit */
+                            session.loadSecondaryRoles() /* secondary group bits */
                     );
 
                     // get all organizations from database
                     final ArrayList<cOrganizationDomain> orgs =
                             organizationHandler.getOrganizationList(
-                                    session.loadUserID(),                  /* loggedIn user id  */
-                                    session.loadOrganizationID(),          /* loggedIn own org. */
-                                    session.loadPrimaryRole(session.loadUserID(),
-                                            session.loadOrganizationID()), /* primary group bit */
-                                    session.loadSecondaryRoles(session.loadUserID(),
-                                            session.loadOrganizationID())  /* secondary group bits */
+                                    session.loadUserID(),        /* loggedIn user id  */
+                                    session.loadOrgID(),         /* loggedIn own org. */
+                                    session.loadPrimaryRole(),   /* primary group bit */
+                                    session.loadSecondaryRoles() /* secondary group bits */
                             );
 
                     /* get the detailed of the loggedin user */
@@ -492,7 +488,7 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                         cKeyPairBoolData idNameBool = new cKeyPairBoolData();
                         idNameBool.setId(orgs.get(i).getOrganizationID());
                         idNameBool.setName(orgs.get(i).getName());
-                        if ((session.loadSecondaryRoles(session.loadUserID(), session.loadOrganizationID()) &
+                        if ((session.loadSecondaryRoles() &
                                 orgs.get(i).getOrganizationID()) == orgs.get(i).getOrganizationID()) {
                             idNameBool.setSelected(true);
                         } else {

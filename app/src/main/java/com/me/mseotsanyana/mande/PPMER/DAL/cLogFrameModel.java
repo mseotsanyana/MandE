@@ -2,13 +2,13 @@ package com.me.mseotsanyana.mande.PPMER.DAL;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Set;
 
-public class cLogFrameModel
-{
-    public int ID;
+public class cLogFrameModel {
+    public int logFrameID;
     private int serverID;
-    private int ownerID;
     private int orgID;
+    private int ownerID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
@@ -20,29 +20,29 @@ public class cLogFrameModel
     private Date modifiedDate;
     private Date syncedDate;
 
-    private ArrayList<cLogFrameModel> logFrameTrees;
+    private Set<cLogFrameModel> logFrameTrees;
 
-    private ArrayList<cImpactModel> impactModels;
-    private ArrayList<cOutcomeModel> outcomeModels;
-    private ArrayList<cOutputModel> outputModels;
-    private ArrayList<cActivityModel> activityModels;
-    private ArrayList<cInputModel> inputModels;
-    private ArrayList<cQuestionModel> questionModels;
-    private ArrayList<cIndicatorModel> indicatorModels;
-    private ArrayList<cRaidModel> raidModels;
+    private Set<cImpactModel> impactModels;
+    private Set<cOutcomeModel> outcomeModels;
+    private Set<cOutputModel> outputModels;
+    private Set<cActivityModel> activityModels;
+    private Set<cInputModel> inputModels;
+    private Set<cQuestionModel> questionModels;
+    private Set<cIndicatorModel> indicatorModels;
+    private Set<cRaidModel> raidModels;
 
 
     public cLogFrameModel(){}
 
-    public cLogFrameModel(int ID, int serverID, int ownerID, int orgID,
+    public cLogFrameModel(int logFrameID, int serverID, int ownerID, int orgID,
                           int groupBITS, int permsBITS, int statusBITS,
                           String name, String description, Date startDate,
                           Date endDate, Date createdDate, Date modifiedDate, Date syncedDate,
-                          ArrayList<cImpactModel> impactModels, ArrayList<cOutcomeModel> outcomeModels,
-                          ArrayList<cOutputModel> outputModels, ArrayList<cActivityModel> activityModels,
-                          ArrayList<cInputModel> inputModels, ArrayList<cQuestionModel> questionModels,
-                          ArrayList<cIndicatorModel> indicatorModels, ArrayList<cRaidModel> raidModels) {
-        this.ID = ID;
+                          Set<cImpactModel> impactModels, Set<cOutcomeModel> outcomeModels,
+                          Set<cOutputModel> outputModels, Set<cActivityModel> activityModels,
+                          Set<cInputModel> inputModels, Set<cQuestionModel> questionModels,
+                          Set<cIndicatorModel> indicatorModels, Set<cRaidModel> raidModels) {
+        this.logFrameID = logFrameID;
         this.serverID = serverID;
         this.ownerID = ownerID;
         this.orgID = orgID;
@@ -66,12 +66,12 @@ public class cLogFrameModel
         this.raidModels = raidModels;
     }
 
-    public int getID() {
-        return ID;
+    public int getLogFrameID() {
+        return logFrameID;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setLogFrameID(int logFrameID) {
+        this.logFrameID = logFrameID;
     }
 
     public int getServerID() {
@@ -178,67 +178,79 @@ public class cLogFrameModel
         this.syncedDate = syncedDate;
     }
 
-    public ArrayList<cImpactModel> getImpactModels() {
+
+    public Set<cLogFrameModel> getLogFrameTrees() {
+        return logFrameTrees;
+    }
+
+    public void setLogFrameTrees(Set<cLogFrameModel> logFrameTrees) {
+        this.logFrameTrees = logFrameTrees;
+    }
+
+    public Set<cImpactModel> getImpactModels() {
         return impactModels;
     }
 
-    public void setImpactModels(ArrayList<cImpactModel> impactModels) {
+    public void setImpactModels(Set<cImpactModel> impactModels) {
         this.impactModels = impactModels;
     }
 
-    public ArrayList<cOutcomeModel> getOutcomeModels() {
+    public Set<cOutcomeModel> getOutcomeModels() {
         return outcomeModels;
     }
 
-    public void setOutcomeModels(ArrayList<cOutcomeModel> outcomeModels) {
+    public void setOutcomeModels(Set<cOutcomeModel> outcomeModels) {
         this.outcomeModels = outcomeModels;
     }
 
-    public ArrayList<cOutputModel> getOutputModels() {
+    public Set<cOutputModel> getOutputModels() {
         return outputModels;
     }
 
-    public void setOutputModels(ArrayList<cOutputModel> outputModels) {
+    public void setOutputModels(Set<cOutputModel> outputModels) {
         this.outputModels = outputModels;
     }
 
-    public ArrayList<cActivityModel> getActivityModels() {
+    public Set<cActivityModel> getActivityModels() {
         return activityModels;
     }
 
-    public void setActivityModels(ArrayList<cActivityModel> activityModels) {
+    public void setActivityModels(Set<cActivityModel> activityModels) {
         this.activityModels = activityModels;
     }
 
-    public ArrayList<cInputModel> getInputModels() {
+    public Set<cInputModel> getInputModels() {
         return inputModels;
     }
 
-    public void setInputModels(ArrayList<cInputModel> inputModels) {
+    public void setInputModels(Set<cInputModel> inputModels) {
         this.inputModels = inputModels;
     }
 
-    public ArrayList<cQuestionModel> getQuestionModels() {
+    public Set<cQuestionModel> getQuestionModels() {
         return questionModels;
     }
 
-    public void setQuestionModels(ArrayList<cQuestionModel> questionModels) {
+    public void setQuestionModels(Set<cQuestionModel> questionModels) {
         this.questionModels = questionModels;
     }
 
-    public ArrayList<cIndicatorModel> getIndicatorModels() {
+    public Set<cIndicatorModel> getIndicatorModels() {
         return indicatorModels;
     }
 
-    public void setIndicatorModels(ArrayList<cIndicatorModel> indicatorModels) {
+    public void setIndicatorModels(Set<cIndicatorModel> indicatorModels) {
         this.indicatorModels = indicatorModels;
     }
 
-    public ArrayList<cRaidModel> getRaidModels() {
+    public Set<cRaidModel> getRaidModels() {
         return raidModels;
     }
 
-    public void setRaidModels(ArrayList<cRaidModel> raidModels) {
+    public void setRaidModels(Set<cRaidModel> raidModels) {
         this.raidModels = raidModels;
     }
+
+
+
 }

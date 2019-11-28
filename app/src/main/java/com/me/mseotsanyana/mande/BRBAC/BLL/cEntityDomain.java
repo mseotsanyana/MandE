@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Created by mseotsanyana on 2017/08/24.
@@ -172,5 +173,32 @@ public class cEntityDomain implements Parcelable{
 
     public void setSyncedDate(Date syncedDate) {
         this.syncedDate = syncedDate;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof cEntityDomain)) return false;
+        cEntityDomain that = (cEntityDomain) o;
+        return getEntityID() == that.getEntityID() &&
+                getTypeID() == that.getTypeID() &&
+                getOwnerID() == that.getOwnerID() &&
+                getGroupBITS() == that.getGroupBITS() &&
+                getPermsBITS() == that.getPermsBITS() &&
+                getStatusBITS() == that.getStatusBITS() &&
+                Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getDescription(), that.getDescription()) &&
+                Objects.equals(getCreatedDate(), that.getCreatedDate()) &&
+                Objects.equals(getModifiedDate(), that.getModifiedDate()) &&
+                Objects.equals(getSyncedDate(), that.getSyncedDate());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getEntityID(), getTypeID(), getOwnerID(),
+                getGroupBITS(), getPermsBITS(), getStatusBITS(),
+                getName(), getDescription(),
+                getCreatedDate(), getModifiedDate(), getSyncedDate());
     }
 }

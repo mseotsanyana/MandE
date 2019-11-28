@@ -1,6 +1,7 @@
 package com.me.mseotsanyana.mande.BRBAC.DAL;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -20,8 +21,6 @@ public class cOperationModel {
     private Date createdDate;
     private Date modifiedDate;
     private Date syncedDate;
-
-    private Set<cStatusModel> statusModelSet;
 
     public cOperationModel(){}
 
@@ -136,11 +135,30 @@ public class cOperationModel {
         this.syncedDate = syncedDate;
     }
 
-    public Set<cStatusModel> getStatusModelSet() {
-        return statusModelSet;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof cOperationModel)) return false;
+        cOperationModel that = (cOperationModel) o;
+        return getOperationID() == that.getOperationID() &&
+                getServerID() == that.getServerID() &&
+                getOwnerID() == that.getOwnerID() &&
+                getOrgID() == that.getOrgID() &&
+                getGroupBITS() == that.getGroupBITS() &&
+                getPermsBITS() == that.getPermsBITS() &&
+                getStatusBITS() == that.getStatusBITS() &&
+                Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getDescription(), that.getDescription()) &&
+                Objects.equals(getCreatedDate(), that.getCreatedDate()) &&
+                Objects.equals(getModifiedDate(), that.getModifiedDate()) &&
+                Objects.equals(getSyncedDate(), that.getSyncedDate());
     }
 
-    public void setStatusModelSet(Set<cStatusModel> statusModelSet) {
-        this.statusModelSet = statusModelSet;
+    @Override
+    public int hashCode() {
+        return Objects.hash(getOperationID(), getServerID(), getOwnerID(),
+                getOrgID(), getGroupBITS(), getPermsBITS(), getStatusBITS(),
+                getName(), getDescription(), getCreatedDate(), getModifiedDate(),
+                getSyncedDate());
     }
 }

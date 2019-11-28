@@ -23,6 +23,10 @@ public class cStatusHandler extends cMapper<cStatusModel, cStatusDomain> {
         this.context = context;
     }
 
+    public cStatusHandler() {
+
+    }
+
     public boolean deleteStatuses() {
         return statusDBA.deleteStatuses();
     }

@@ -523,27 +523,27 @@ public class cPermissionAdapter extends cTreeAdapter {
                                 for (int j = 0; j < NUM_STS; j++) {
                                     /** create statuses in the database **/
                                     if ((opID == session.permissions[i]) && (stsID == session.statuses[j])) {
-                                        createStatuses[i][j].setState(true);
+                                        //createStatuses[i][j].setState(true);
                                     }
 
                                     /** read statuses in the database **/
                                     if ((opID == session.permissions[i + 3]) && (stsID == session.statuses[j])) {
-                                        readStatuses[i][j].setState(true);
+                                        //readStatuses[i][j].setState(true);
                                     }
 
                                     /** update statuses in the database **/
                                     if ((opID == session.permissions[i + 6]) && (stsID == session.statuses[j])) {
-                                        updateStatuses[i][j].setState(true);
+                                        //updateStatuses[i][j].setState(true);
                                     }
 
                                     /** delete statuses in the database **/
                                     if ((opID == session.permissions[i + 9]) && (stsID == session.statuses[j])) {
-                                        deleteStatuses[i][j].setState(true);
+                                        //deleteStatuses[i][j].setState(true);
                                     }
 
                                     /** sync statuses in the database **/
                                     if ((opID == session.permissions[i + 12]) && (stsID == session.statuses[j])) {
-                                        syncStatuses[i][j].setState(true);
+                                        //syncStatuses[i][j].setState(true);
                                     }
                                 }
                             }
@@ -878,22 +878,18 @@ public class cPermissionAdapter extends cTreeAdapter {
 
             // get all users from database
             final ArrayList<cUserDomain> users = userHandler.getUserList(
-                    session.loadUserID(),                  /* loggedIn user id  */
-                    session.loadOrganizationID(),          /* loggedIn own org. */
-                    session.loadPrimaryRole(session.loadUserID(),
-                            session.loadOrganizationID()), /* primary group bit */
-                    session.loadSecondaryRoles(session.loadUserID(),
-                            session.loadOrganizationID())  /* secondary group bits */
+                    session.loadUserID(),        /* loggedIn user id  */
+                    session.loadOrgID(),         /* loggedIn own org. */
+                    session.loadPrimaryRole(),   /* primary group bit */
+                    session.loadSecondaryRoles() /* secondary group bits */
             );
 
             final ArrayList<cOrganizationDomain> orgs =
                     organizationHandler.getOrganizationList(
-                            session.loadUserID(),                  /* loggedIn user id  */
-                            session.loadOrganizationID(),          /* loggedIn own org. */
-                            session.loadPrimaryRole(session.loadUserID(),
-                                    session.loadOrganizationID()), /* primary group bit */
-                            session.loadSecondaryRoles(session.loadUserID(),
-                                    session.loadOrganizationID())  /* secondary group bits */
+                            session.loadUserID(),        /* loggedIn user id  */
+                            session.loadOrgID(),         /* loggedIn own org. */
+                            session.loadPrimaryRole(),   /* primary group bit */
+                            session.loadSecondaryRoles() /* secondary group bits */
                     );
 
             // create a pair list of user ids and names

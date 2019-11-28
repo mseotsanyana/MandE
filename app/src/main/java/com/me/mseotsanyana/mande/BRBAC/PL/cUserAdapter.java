@@ -354,23 +354,19 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
 
         // get all users from database
         final ArrayList<cUserDomain> users = userHandler.getUserList(
-                session.loadUserID(),                  /* loggedIn user id  */
-                session.loadOrganizationID(),          /* loggedIn own org. */
-                session.loadPrimaryRole(session.loadUserID(),
-                        session.loadOrganizationID()), /* primary group bit */
-                session.loadSecondaryRoles(session.loadUserID(),
-                        session.loadOrganizationID())  /* secondary group bits */
+                session.loadUserID(),        /* loggedIn user id  */
+                session.loadOrgID(),         /* loggedIn own org. */
+                session.loadPrimaryRole(),   /* primary group bit */
+                session.loadSecondaryRoles() /* secondary group bits */
         );
 
         // get all organizations from database
         final ArrayList<cOrganizationDomain> orgs =
                 organizationHandler.getOrganizationList(
-                        session.loadUserID(),                  /* loggedIn user id  */
-                        session.loadOrganizationID(),          /* loggedIn own org. */
-                        session.loadPrimaryRole(session.loadUserID(),
-                                session.loadOrganizationID()), /* primary group bit */
-                        session.loadSecondaryRoles(session.loadUserID(),
-                                session.loadOrganizationID())  /* secondary group bits */
+                        session.loadUserID(),        /* loggedIn user id  */
+                        session.loadOrgID(),         /* loggedIn own org. */
+                        session.loadPrimaryRole(),   /* primary group bit */
+                        session.loadSecondaryRoles() /* secondary group bits */
                 );
 
         // create a pair list of user ids and names
@@ -648,23 +644,19 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
     public void onShowCommonAttributes(View view, final cStatusDomain statusDomain) {
         // get all users from database
         final ArrayList<cUserDomain> users = userHandler.getUserList(
-                session.loadUserID(),                  /* loggedIn user id  */
-                session.loadOrganizationID(),          /* loggedIn own org. */
-                session.loadPrimaryRole(session.loadUserID(),
-                        session.loadOrganizationID()), /* primary group bit */
-                session.loadSecondaryRoles(session.loadUserID(),
-                        session.loadOrganizationID())  /* secondary group bits */
+                session.loadUserID(),        /* loggedIn user id  */
+                session.loadOrgID(),         /* loggedIn own org. */
+                session.loadPrimaryRole(),   /* primary group bit */
+                session.loadSecondaryRoles() /* secondary group bits */
         );
 
         // get all organizations from database
         final ArrayList<cOrganizationDomain> orgs =
                 organizationHandler.getOrganizationList(
-                        session.loadUserID(),                  /* loggedIn user id  */
-                        session.loadOrganizationID(),          /* loggedIn own org. */
-                        session.loadPrimaryRole(session.loadUserID(),
-                                session.loadOrganizationID()), /* primary group bit */
-                        session.loadSecondaryRoles(session.loadUserID(),
-                                session.loadOrganizationID())  /* secondary group bits */
+                        session.loadUserID(),        /* loggedIn user id  */
+                        session.loadOrgID(),         /* loggedIn own org. */
+                        session.loadPrimaryRole(),   /* primary group bit */
+                        session.loadSecondaryRoles() /* secondary group bits */
                 );
 
         /* get a deep copy of permission domain to modify

@@ -3,6 +3,7 @@ package com.me.mseotsanyana.mande.PPMER.PL;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.me.mseotsanyana.mande.BRBAC.BLL.cRoleHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
 import com.me.mseotsanyana.mande.UTILITY.cConstant;
 import com.me.mseotsanyana.mande.UTILITY.cDashboardFilter;
@@ -67,10 +69,14 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 
 /**
@@ -80,7 +86,7 @@ public class cMainFragment extends Fragment {
     private static String TAG = cMainFragment.class.getSimpleName();
     private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
 
-    private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
+    // private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
 
     // navigation drawer declarations
     private Toolbar toolbar;
@@ -111,15 +117,16 @@ public class cMainFragment extends Fragment {
     //private static final String urlProfileImg = "https://lh3.googleusercontent.com/eCtE_G34M9ygdkmOpYvCag1vBARCmZwnVS6rS5t4JLzJ6QgQSBquM0nuTsCpLhYbKljoyS-txg";
 
     // contains all selected organisations
-    private ArrayList<cOrganizationDomain>  selectedOrganizations = new ArrayList<cOrganizationDomain>();
+    private ArrayList<cOrganizationDomain> selectedOrganizations = new ArrayList<cOrganizationDomain>();
 
     private ArrayList<cTreeModel> selectedModel = new ArrayList<>();
 
-    /** start declaration of filtering objects **/
+    /**
+     * start declaration of filtering objects
+     **/
     private View filterLayout;
 
-    //private cUserRoleHandler userRoleHandler;
-    //private cMenuRoleHandler menuRoleHandler;
+    private cRoleHandler roleHandler;
     private cMenuHandler menuHandler;
 
     private cOrganizationHandler organizationHandler;
@@ -165,7 +172,9 @@ public class cMainFragment extends Fragment {
     private ArrayList<cOutcomeOutputDomain> outcomeOutputTree;
     private ArrayList<cOutputActivityDomain> outputActivityTree;
 
-    /** end declaration of filtering objects **/
+    /**
+     * end declaration of filtering objects
+     **/
 
     // index to identify current nav menu item
     //private int navItemIndex = 0;
@@ -181,13 +190,15 @@ public class cMainFragment extends Fragment {
 
     private cSessionManager session;
 
+    Gson gson = new Gson();
+
     public cMainFragment() {
     }
 
     public static cMainFragment newInstance(cSessionManager session) {
         Bundle bundle = new Bundle();
 
-        bundle.putSerializable("SESSION", session);
+        bundle.putParcelable("SESSION", session);
         cMainFragment fragment = new cMainFragment();
         fragment.setArguments(bundle);
 
@@ -199,12 +210,10 @@ public class cMainFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        //session = new cSessionManager(getActivity());
-
-
+        //session = new cSessionManager(getActivity().getApplicationContext());
 
         //userRoleHandler = null;new cUserRoleHandler(getActivity(), session);
-        //menuRoleHandler = new cMenuRoleHandler(getActivity(), session);
+        roleHandler = new cRoleHandler(getActivity(), session);
         menuHandler = new cMenuHandler(getActivity(), session);
 
         activity = ((AppCompatActivity) getActivity());
@@ -220,14 +229,13 @@ public class cMainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_fragmant, container, false);
 
-        session = (cSessionManager) getArguments().getSerializable("SESSION");
+        session = (cSessionManager) getArguments().getParcelable("SESSION");
 
         // create navigation drawer menu
         navigationDrawer(view);
 
         // create dashboard menu
         dashboardView(view);
-
 
         return view;
     }
@@ -238,8 +246,7 @@ public class cMainFragment extends Fragment {
      * view lookups and attaching view listeners.
      */
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState)
-    {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         // initialise a handler and get organization data from the database
         organizationHandler = new cOrganizationHandler(getActivity(), session);
         //  initialise a handler and get goal data from the database
@@ -265,7 +272,7 @@ public class cMainFragment extends Fragment {
         outputActivityHandler = new cOutputActivityHandler(getActivity());
     }
 
-    private void navigationDrawer(View view){
+    private void navigationDrawer(View view) {
         // populate navigation view with relevant to the logged in user from database
         populateNavigationDrawer(view);
         // initialise the toolbar and the drawer layout for animating the menu
@@ -279,7 +286,7 @@ public class cMainFragment extends Fragment {
 
     }
 
-    private void populateNavigationDrawer(View view){
+    private void populateNavigationDrawer(View view) {
         // instantiating the expandable action_list view under the DrawerLayout
         expandableListView = (ExpandableListView) view.findViewById(R.id.navList);
 
@@ -288,42 +295,40 @@ public class cMainFragment extends Fragment {
         View headerView = inflater.inflate(R.layout.dashboard_drawer_nav_header, null, false);
 
         // instantiate header view objects
-        ImageView userIcon   = (ImageView)headerView.findViewById(R.id.userIcon);
-        TextView currentDate = (TextView)headerView.findViewById(R.id.currentDate);
-        TextView website     = (TextView)headerView.findViewById(R.id.website);
+        ImageView userIcon = (ImageView) headerView.findViewById(R.id.userIcon);
+        TextView currentDate = (TextView) headerView.findViewById(R.id.currentDate);
+        TextView website = (TextView) headerView.findViewById(R.id.website);
 
         // set header view objects
         //userIcon.setImageResource(...);
         currentDate.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
         //website.setText(sessionManager.getCurrentUser().getName()+" "+sessionManager.getCurrentUser().getSurname());
 
-
         expandableListView.addHeaderView(headerView);
 
-        Set<cRoleDomain> roleDomains = null;//session.getUserRoleSet();
-        Gson gson = new Gson();
-        //Log.d(TAG, gson.toJson(session.getUserRoleSet()));
-        //List<cRoleDomain> merged_list = new ArrayList<>();
-        //Toast.makeText(getActivity(), "roleDomains = "+roleDomains.get(0).getName(), Toast.LENGTH_SHORT).show();
-        List<cMenuDomain> menuDomains;
-        for (int i = 0; i < roleDomains.size(); i++){
-            //Toast.makeText(getActivity(), "roleDomains = "+roleDomains.get(i).getName(), Toast.LENGTH_SHORT).show();
-            menuDomains = null;//menuRoleHandler.getMenusByRoleID(roleDomains.get(i).getRoleID());
-            for (int j = 0; j < menuDomains.size(); j++){
+        Set<cRoleDomain> roleDomains = session.getRoleDomainSet();
+        Log.d(TAG, "ROLE DOMAIN: " + gson.toJson(roleDomains));
+        SortedSet<cMenuDomain> menuDomainSet = new TreeSet<>(Comparator.comparing(cMenuDomain::getMenuID));
+
+        for (cRoleDomain roleDomain : roleDomains) {
+            menuDomainSet.addAll(roleDomain.getMenuDomainSet());
+        }
+
+        for (cMenuDomain menuDomain : menuDomainSet) {
+            if (menuDomain.getParentID() == 0) { //FIXME: the parent ID should default to zero in a database!
                 List<String> subMenu = new ArrayList<String>();
-                //Toast.makeText(getActivity(), "menuDomains = "+menuDomains.get(j).getName(), Toast.LENGTH_SHORT).show();
+                SortedSet<cMenuDomain> subMenuDomainSet = new TreeSet<>(Comparator.comparing(cMenuDomain::getMenuID));
+                subMenuDomainSet.addAll(menuDomain.getMenuDomainSet());
 
-                List<cMenuDomain> subMenuDomains = menuHandler.getSubMenuByID(menuDomains.get(j).getMenuID());
-
-                for (int k = 0; k < subMenuDomains.size(); k++){
-                    //Toast.makeText(getActivity(), "subMenuDomains = "+subMenuDomains.get(k).getName(), Toast.LENGTH_SHORT).show();
-                    subMenu.add(subMenuDomains.get(k).getName());
+                for (cMenuDomain subMenuDomain : subMenuDomainSet) {
+                    subMenu.add(subMenuDomain.getName());
                 }
-                //Toast.makeText(getActivity(), "== END ==", Toast.LENGTH_SHORT).show();
 
-                expandableListDetail.put(menuDomains.get(j).getName(), subMenu);
+                expandableListDetail.put(menuDomain.getName(), subMenu);
             }
         }
+
+        Log.d(TAG, "FINAL MENU: " + gson.toJson(expandableListDetail));
 
         expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
         expandableListAdapter = new cExpandableListAdapter(getActivity(), expandableListTitle, expandableListDetail);
@@ -405,15 +410,15 @@ public class cMainFragment extends Fragment {
                 boolean retVal = true;
                 int position = 0;
 
-                switch(groupPosition) {
+                switch (groupPosition) {
                     case 0: // Admin
                         retVal = false;
                         break;
                     case 1: // Profile
-                        Toast.makeText(getActivity(), "Profile Fragment" , Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Profile Fragment", Toast.LENGTH_SHORT).show();
                         break;
                     case 2: // Notification
-                        Toast.makeText(getActivity(), "Notification Fragment" , Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Notification Fragment", Toast.LENGTH_SHORT).show();
                         break;
                     case 3: // Settings
                         Intent intent = new Intent(activity, cSettingsActivity.class);
@@ -421,17 +426,17 @@ public class cMainFragment extends Fragment {
                         break;
                     case 4: // Uploading
                         retVal = false;
-                        Toast.makeText(getActivity(), "Uploading Fragment" , Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Uploading Fragment", Toast.LENGTH_SHORT).show();
                         break;
                     case 5: // Downloading
                         retVal = false;
-                        Toast.makeText(getActivity(), "Downloading Fragment" , Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Downloading Fragment", Toast.LENGTH_SHORT).show();
                         break;
                     case 6: // Logout
                         session.logoutUser();
                         session.deleteSettings();
                         session.commitSettings();
-                        Toast.makeText(getActivity(), "Logout" , Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Logout", Toast.LENGTH_SHORT).show();
                         break;
 
                     default:
@@ -453,9 +458,9 @@ public class cMainFragment extends Fragment {
                         .get(childPosition).toString();
                 activity.getSupportActionBar().setTitle(selectedItem);
 
-                switch (groupPosition){
+                switch (groupPosition) {
                     case 0: // Admin
-                        switch(childPosition) {
+                        switch (childPosition) {
                             case 0: // Users
                                 ((OnGridViewItemSelectedListener) getActivity()).getChildMenuPosition(childPosition);
                                 break;
@@ -474,12 +479,12 @@ public class cMainFragment extends Fragment {
                         }
                         break;
                     case 4:
-                        switch(childPosition) {
+                        switch (childPosition) {
                             case 0:
-                                Toast.makeText(getActivity(), "RBAC Upload Fragment" , Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "RBAC Upload Fragment", Toast.LENGTH_SHORT).show();
                                 break;
                             case 1:
-                                Toast.makeText(getActivity(), "ME Upload Fragment" , Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "ME Upload Fragment", Toast.LENGTH_SHORT).show();
                                 break;
                             default:
                                 break;
@@ -487,12 +492,12 @@ public class cMainFragment extends Fragment {
                         break;
 
                     case 5:
-                        switch(childPosition) {
+                        switch (childPosition) {
                             case 0:
-                                Toast.makeText(getActivity(), "RBAC Download Fragment" , Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "RBAC Download Fragment", Toast.LENGTH_SHORT).show();
                                 break;
                             case 1:
-                                Toast.makeText(getActivity(), "ME Download Fragment" , Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "ME Download Fragment", Toast.LENGTH_SHORT).show();
                                 break;
                             default:
                                 break;
@@ -540,7 +545,7 @@ public class cMainFragment extends Fragment {
     }
 
     // dashboard view
-    private void dashboardView(View view){
+    private void dashboardView(View view) {
         final String[] tableDescription = {
                 "Organization",
                 "Triangle",
@@ -592,7 +597,7 @@ public class cMainFragment extends Fragment {
         // create adapter for gridview
         cGridAdapter adapter = new cGridAdapter(getActivity(), tableDescription, imageId);
 
-        gridView = (GridView)view.findViewById(R.id.grid);
+        gridView = (GridView) view.findViewById(R.id.grid);
         gridView.setAdapter(adapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -603,7 +608,7 @@ public class cMainFragment extends Fragment {
                 switch (position) {
                     case 0:
                         // get all organization from database
-                        final ArrayList<cOrganizationDomain>  allOrganizations = organizationHandler.getOrganizationList();
+                        final ArrayList<cOrganizationDomain> allOrganizations = organizationHandler.getOrganizationList();
                         // create a spinner for filtering purposes spinner
                         filterLayout = inflater.inflate(R.layout.organization_filter, null);
 
@@ -629,12 +634,11 @@ public class cMainFragment extends Fragment {
                             @Override
                             public void onItemsSelected(List<cKeyPairBoolData> items) {
                                 for (int i = 0; i < items.size(); i++) {
-                                    if (items.get(i).isSelected()){
+                                    if (items.get(i).isSelected()) {
                                         if (!selectedOrganizations.contains(allOrganizations.get(i))) {
                                             selectedOrganizations.add(allOrganizations.get(i));
                                         }
-                                    }
-                                    else if (!items.get(i).isSelected()){
+                                    } else if (!items.get(i).isSelected()) {
                                         if (selectedOrganizations.contains(allOrganizations.get(i))) {
                                             selectedOrganizations.remove(i);
                                         }
@@ -647,7 +651,7 @@ public class cMainFragment extends Fragment {
                         ((OnGridViewItemSelectedListener) getActivity()).getSelectedOrganizationList(selectedOrganizations);
 
                         // populate selected organizations
-                        filterDialog(R.style.AnimateLeftRight,"Organizations Filter", filterLayout, position);
+                        filterDialog(R.style.AnimateLeftRight, "Organizations Filter", filterLayout, position);
                         break;
 
                     case 1:
@@ -657,7 +661,7 @@ public class cMainFragment extends Fragment {
                         final ArrayList<cObjectiveDomain> objectiveDomains = objectiveHandler.getObjectiveList();
 
                         // get all organization from database
-                        final ArrayList<cOrganizationDomain>  organizationDomains = organizationHandler.getOrganizationList();
+                        final ArrayList<cOrganizationDomain> organizationDomains = organizationHandler.getOrganizationList();
 
                         // create a spinner for filtering purposes spinner
                         filterLayout = inflater.inflate(R.layout.ces_filter, null);
@@ -688,7 +692,7 @@ public class cMainFragment extends Fragment {
                             }
                         });
 
-                        filterDialog(R.style.AnimateLeftRight,"CES Triagle Filter", filterLayout, position);
+                        filterDialog(R.style.AnimateLeftRight, "CES Triagle Filter", filterLayout, position);
 
                         break;
 
@@ -738,9 +742,8 @@ public class cMainFragment extends Fragment {
                                                 organizationTreeSpinner.updateSpinnerText(keyPairBoolOrganizationTree);
                                             }
                                         }
-                                    }
-                                    else {
-                                        for (int j = 0; j < keyPairBoolGoalTree.size(); j++){
+                                    } else {
+                                        for (int j = 0; j < keyPairBoolGoalTree.size(); j++) {
                                             if (items.get(i).getId() == keyPairBoolGoalTree.get(j).getRefId()) {
                                                 // update the goals linked to the organization
                                                 keyPairBoolGoalTree.get(j).setSelected(false);
@@ -762,8 +765,8 @@ public class cMainFragment extends Fragment {
                             @Override
                             public void onItemsSelected(List<cKeyPairBoolData> items) {
                                 for (int i = 0; i < items.size(); i++) {
-                                    if (items.get(i).isSelected()){
-                                        for (int j = 0; j < keyPairBoolOrganizationTree.size(); j++){
+                                    if (items.get(i).isSelected()) {
+                                        for (int j = 0; j < keyPairBoolOrganizationTree.size(); j++) {
                                             if (items.get(i).getRefId() == keyPairBoolOrganizationTree.get(j).getId()) {
                                                 // update the goals linked to the organization
                                                 keyPairBoolOrganizationTree.get(j).setSelected(true);
@@ -773,10 +776,8 @@ public class cMainFragment extends Fragment {
                                                 goalTreeSpinner.updateSpinnerText(keyPairBoolGoalTree);
                                             }
                                         }
-                                    }
-
-                                    else {
-                                        for (int j = 0; j < keyPairBoolOrganizationTree.size(); j++){
+                                    } else {
+                                        for (int j = 0; j < keyPairBoolOrganizationTree.size(); j++) {
                                             if (items.get(i).getRefId() == keyPairBoolOrganizationTree.get(j).getId()) {
                                                 // update the goals linked to the organization
                                                 keyPairBoolOrganizationTree.get(j).setSelected(false);
@@ -794,7 +795,7 @@ public class cMainFragment extends Fragment {
                         });
 
                         // show a filter dialog box
-                        filterDialog(R.style.AnimateLeftRight,"Goals Filter", filterLayout, position);
+                        filterDialog(R.style.AnimateLeftRight, "Goals Filter", filterLayout, position);
                         break;
 
                     case 3:
@@ -816,12 +817,12 @@ public class cMainFragment extends Fragment {
                         keyPairBoolProjectTree = cDashboardFilter.getKeyPairBoolProjectTree(projectTree);
 
                         // 5. called when click on goal spinner
-                       goalTreeSpinner.setItems(keyPairBoolGoalTree, -1, new cSpinnerListener() {
+                        goalTreeSpinner.setItems(keyPairBoolGoalTree, -1, new cSpinnerListener() {
                             @Override
                             public void onItemsSelected(List<cKeyPairBoolData> items) {
                                 for (int i = 0; i < items.size(); i++) {
-                                    if (items.get(i).isSelected()){
-                                        for (int j = 0; j < keyPairBoolProjectTree.size(); j++){
+                                    if (items.get(i).isSelected()) {
+                                        for (int j = 0; j < keyPairBoolProjectTree.size(); j++) {
                                             if (items.get(i).getId() == keyPairBoolProjectTree.get(j).getRefId()) {
                                                 // update the goals linked to the organization
                                                 keyPairBoolGoalTree.get(i).setSelected(true);
@@ -832,10 +833,8 @@ public class cMainFragment extends Fragment {
 
                                             }
                                         }
-                                    }
-
-                                    else {
-                                        for (int j = 0; j < keyPairBoolProjectTree.size(); j++){
+                                    } else {
+                                        for (int j = 0; j < keyPairBoolProjectTree.size(); j++) {
                                             if (items.get(i).getId() == keyPairBoolProjectTree.get(j).getRefId()) {
                                                 // update the goals linked to the organization
                                                 keyPairBoolGoalTree.get(i).setSelected(false);
@@ -868,9 +867,8 @@ public class cMainFragment extends Fragment {
                                                 projectTreeSpinner.updateSpinnerText(keyPairBoolProjectTree);
                                             }
                                         }
-                                    }
-                                    else {
-                                        for (int j = 0; j < keyPairBoolGoalTree.size(); j++){
+                                    } else {
+                                        for (int j = 0; j < keyPairBoolGoalTree.size(); j++) {
                                             if (items.get(i).getRefId() == keyPairBoolGoalTree.get(j).getId()) {
                                                 // update the goals linked to the organization
                                                 //keyPairBoolGoalTree.get(j).setSelected(false);
@@ -888,7 +886,7 @@ public class cMainFragment extends Fragment {
                         });
 
                         // 7.
-                        filterDialog(R.style.AnimateLeftRight,"Projects Filter", filterLayout, position);
+                        filterDialog(R.style.AnimateLeftRight, "Projects Filter", filterLayout, position);
                         break;
 
                     case 4:
@@ -915,19 +913,17 @@ public class cMainFragment extends Fragment {
                         projectTreeSpinner.setItems(keyPairBoolProjectTree, -1, new cSpinnerListener() {
                             @Override
                             public void onItemsSelected(List<cKeyPairBoolData> items) {
-                                for (int i = 0; i < keyPairBoolOutcomeTree.size(); i++){
+                                for (int i = 0; i < keyPairBoolOutcomeTree.size(); i++) {
                                     keyPairBoolOutcomeTree.get(i).setSelected(false);
                                 }
 
                                 for (int i = 0; i < items.size(); i++) {
-                                    if (items.get(i).isSelected()){
+                                    if (items.get(i).isSelected()) {
                                         // update the corresponding outcomes
-                                        selectedKeyPairBoolProjectOutcome((int)items.get(i).getId());
+                                        selectedKeyPairBoolProjectOutcome((int) items.get(i).getId());
                                         // update the selected project
                                         keyPairBoolProjectTree.get(i).setSelected(true);
-                                    }
-
-                                    else {
+                                    } else {
                                         // update the selected project
                                         keyPairBoolProjectTree.get(i).setSelected(false);
                                     }
@@ -944,19 +940,18 @@ public class cMainFragment extends Fragment {
                         outcomeTreeSpinner.setItems(keyPairBoolOutcomeTree, -1, new cSpinnerListener() {
                             @Override
                             public void onItemsSelected(List<cKeyPairBoolData> items) {
-                                for (int i = 0; i < keyPairBoolProjectTree.size(); i++){
+                                for (int i = 0; i < keyPairBoolProjectTree.size(); i++) {
                                     keyPairBoolProjectTree.get(i).setSelected(false);
                                 }
 
                                 for (int i = 0; i < items.size(); i++) {
                                     if (items.get(i).isSelected()) {
                                         // update the corresponding projects
-                                        selectedKeyPairBoolOutcomeProject((int)items.get(i).getId());
+                                        selectedKeyPairBoolOutcomeProject((int) items.get(i).getId());
                                         // update the selected outcome
                                         keyPairBoolOutcomeTree.get(i).setSelected(true);
 
-                                    }
-                                    else {
+                                    } else {
                                         // update the selected projects
                                         keyPairBoolOutcomeTree.get(i).setSelected(false);
 
@@ -971,7 +966,7 @@ public class cMainFragment extends Fragment {
                         });
 
                         // 7.
-                        filterDialog(R.style.AnimateLeftRight,"Outcome Filter", filterLayout, position);
+                        filterDialog(R.style.AnimateLeftRight, "Outcome Filter", filterLayout, position);
                         break;
 
                     case 5:
@@ -998,19 +993,17 @@ public class cMainFragment extends Fragment {
                         outcomeTreeSpinner.setItems(keyPairBoolOutcomeTree, -1, new cSpinnerListener() {
                             @Override
                             public void onItemsSelected(List<cKeyPairBoolData> items) {
-                                for (int i = 0; i < keyPairBoolOutputTree.size(); i++){
+                                for (int i = 0; i < keyPairBoolOutputTree.size(); i++) {
                                     keyPairBoolOutputTree.get(i).setSelected(false);
                                 }
 
                                 for (int i = 0; i < items.size(); i++) {
-                                    if (items.get(i).isSelected()){
+                                    if (items.get(i).isSelected()) {
                                         // update the corresponding outcomes
-                                        selectedKeyPairBoolOutcomeOutput((int)items.get(i).getId());
+                                        selectedKeyPairBoolOutcomeOutput((int) items.get(i).getId());
                                         // update the selected outcome
                                         keyPairBoolOutcomeTree.get(i).setSelected(true);
-                                    }
-
-                                    else {
+                                    } else {
                                         // update the selected outcome
                                         keyPairBoolOutcomeTree.get(i).setSelected(false);
                                     }
@@ -1027,19 +1020,18 @@ public class cMainFragment extends Fragment {
                         outputTreeSpinner.setItems(keyPairBoolOutputTree, -1, new cSpinnerListener() {
                             @Override
                             public void onItemsSelected(List<cKeyPairBoolData> items) {
-                                for (int i = 0; i < keyPairBoolOutcomeTree.size(); i++){
+                                for (int i = 0; i < keyPairBoolOutcomeTree.size(); i++) {
                                     keyPairBoolOutcomeTree.get(i).setSelected(false);
                                 }
 
                                 for (int i = 0; i < items.size(); i++) {
                                     if (items.get(i).isSelected()) {
                                         // update the corresponding outcome
-                                        selectedKeyPairBoolOutputOutcome((int)items.get(i).getId());
+                                        selectedKeyPairBoolOutputOutcome((int) items.get(i).getId());
                                         // update the selected outcome
                                         keyPairBoolOutputTree.get(i).setSelected(true);
 
-                                    }
-                                    else {
+                                    } else {
                                         // update the selected outcomes
                                         keyPairBoolOutputTree.get(i).setSelected(false);
 
@@ -1054,7 +1046,7 @@ public class cMainFragment extends Fragment {
                         });
 
                         // 7.
-                        filterDialog(R.style.AnimateLeftRight,"Output Filter", filterLayout, position);
+                        filterDialog(R.style.AnimateLeftRight, "Output Filter", filterLayout, position);
 
                         break;
                     case 6:
@@ -1074,26 +1066,24 @@ public class cMainFragment extends Fragment {
                         //outputActivityTree = outputActivityHandler.getOutputActivityList();
 
                         // 4. populate (ids, names and bools) record with data for merging popurses
-                        keyPairBoolOutputTree   = cDashboardFilter.getKeyPairBoolOutputTree(outputTree);
+                        keyPairBoolOutputTree = cDashboardFilter.getKeyPairBoolOutputTree(outputTree);
                         keyPairBoolActivityTree = cDashboardFilter.getKeyPairBoolActivityTree(activityTree);
 
                         // 5. called when click on output spinner
                         outputTreeSpinner.setItems(keyPairBoolOutputTree, -1, new cSpinnerListener() {
                             @Override
                             public void onItemsSelected(List<cKeyPairBoolData> items) {
-                                for (int i = 0; i < keyPairBoolActivityTree.size(); i++){
+                                for (int i = 0; i < keyPairBoolActivityTree.size(); i++) {
                                     keyPairBoolActivityTree.get(i).setSelected(false);
                                 }
 
                                 for (int i = 0; i < items.size(); i++) {
-                                    if (items.get(i).isSelected()){
+                                    if (items.get(i).isSelected()) {
                                         // update the corresponding outcomes
-                                        selectedKeyPairBoolOutputActivity((int)items.get(i).getId());
+                                        selectedKeyPairBoolOutputActivity((int) items.get(i).getId());
                                         // update the selected outcome
                                         keyPairBoolOutputTree.get(i).setSelected(true);
-                                    }
-
-                                    else {
+                                    } else {
                                         // update the selected outcome
                                         keyPairBoolOutputTree.get(i).setSelected(false);
                                     }
@@ -1110,19 +1100,18 @@ public class cMainFragment extends Fragment {
                         activityTreeSpinner.setItems(keyPairBoolActivityTree, -1, new cSpinnerListener() {
                             @Override
                             public void onItemsSelected(List<cKeyPairBoolData> items) {
-                                for (int i = 0; i < keyPairBoolOutputTree.size(); i++){
+                                for (int i = 0; i < keyPairBoolOutputTree.size(); i++) {
                                     keyPairBoolOutputTree.get(i).setSelected(false);
                                 }
 
                                 for (int i = 0; i < items.size(); i++) {
                                     if (items.get(i).isSelected()) {
                                         // update the corresponding outcome
-                                        selectedKeyPairBoolActivityOutput((int)items.get(i).getId());
+                                        selectedKeyPairBoolActivityOutput((int) items.get(i).getId());
                                         // update the selected outcome
                                         keyPairBoolActivityTree.get(i).setSelected(true);
 
-                                    }
-                                    else {
+                                    } else {
                                         // update the selected outcomes
                                         keyPairBoolActivityTree.get(i).setSelected(false);
 
@@ -1137,7 +1126,7 @@ public class cMainFragment extends Fragment {
                         });
 
                         // 7.
-                        filterDialog(R.style.AnimateLeftRight,"Activity Filter", filterLayout, position);
+                        filterDialog(R.style.AnimateLeftRight, "Activity Filter", filterLayout, position);
 
                         break;
                     case 7:
@@ -1205,10 +1194,10 @@ public class cMainFragment extends Fragment {
     }
 
     // create a tree model for organization -> goal
-    void updateOrganizationGoalTree(List<cKeyPairBoolData> organizationTree, List<cKeyPairBoolData> goalTree){
+    void updateOrganizationGoalTree(List<cKeyPairBoolData> organizationTree, List<cKeyPairBoolData> goalTree) {
         ArrayList<cTreeModel> treeModelList = new ArrayList<>();
         int parentID = 0;
-        int childID  = 0;
+        int childID = 0;
         for (int i = 0; i < organizationTree.size(); i++) {
             if (organizationTree.get(i).isSelected()) {
                 treeModelList.add(new cTreeModel(parentID, -1, 0, organizationTree.get(i).getObject()));
@@ -1233,25 +1222,25 @@ public class cMainFragment extends Fragment {
     void updateCESTree(List<cKeyPairBoolData> selectedOrganizations,
                        ArrayList<cGoalDomain> goalDomains,
                        ArrayList<cSpecificAimDomain> specificAimDomains,
-                       ArrayList<cObjectiveDomain> objectiveDomains){
+                       ArrayList<cObjectiveDomain> objectiveDomains) {
         ArrayList<cTreeModel> treeModelList = new ArrayList<>();
-        int overallAimID  = 0;
+        int overallAimID = 0;
         int specificAimID = 0;
 
         int indexID = 0;
 
         for (int i = 0; i < selectedOrganizations.size(); i++) {
             if (selectedOrganizations.get(i).isSelected()) {
-                for (int j = 0; j < goalDomains.size(); j++){
+                for (int j = 0; j < goalDomains.size(); j++) {
                     if (selectedOrganizations.get(i).getId() == goalDomains.get(j).getOrganizationID()) {
                         treeModelList.add(new cTreeModel(indexID, -1, 0, goalDomains.get(j)));
                         overallAimID = indexID;
-                        indexID      = indexID + 1;
+                        indexID = indexID + 1;
                         for (int k = 0; k < specificAimDomains.size(); k++) {
                             if (goalDomains.get(j).getGoalID() == specificAimDomains.get(k).getOverallAimID()) {
                                 treeModelList.add(new cTreeModel(indexID, overallAimID, 1, specificAimDomains.get(k)));
                                 specificAimID = indexID;
-                                indexID       = indexID + 1;
+                                indexID = indexID + 1;
 
                                 for (int l = 0; l < objectiveDomains.size(); l++) {
                                     if (specificAimDomains.get(k).getProjectID() == objectiveDomains.get(l).getProjectID()) {
@@ -1272,10 +1261,10 @@ public class cMainFragment extends Fragment {
     }
 
     // create a tree model for goal -> project
-    void updateGoalProjectTree(List<cKeyPairBoolData> goalTree, List<cKeyPairBoolData> projectTree){
+    void updateGoalProjectTree(List<cKeyPairBoolData> goalTree, List<cKeyPairBoolData> projectTree) {
         ArrayList<cTreeModel> treeModelList = new ArrayList<>();
         int parentID = 0;
-        int childID  = 0;
+        int childID = 0;
         for (int i = 0; i < goalTree.size(); i++) {
             if (goalTree.get(i).isSelected()) {
                 treeModelList.add(new cTreeModel(parentID, -1, 0, goalTree.get(i).getObject()));
@@ -1298,17 +1287,17 @@ public class cMainFragment extends Fragment {
     }
 
     // create a tree model for project -> outcome
-    void updateProjectOutcomeTree(List<cKeyPairBoolData> projectTree, List<cKeyPairBoolData> outcomeTree){
+    void updateProjectOutcomeTree(List<cKeyPairBoolData> projectTree, List<cKeyPairBoolData> outcomeTree) {
         ArrayList<cTreeModel> treeModelList = new ArrayList<>();
         int parentID = 0;
-        int childID  = 0;
+        int childID = 0;
         for (int i = 0; i < projectTree.size(); i++) {
             if (projectTree.get(i).isSelected()) {
                 treeModelList.add(new cTreeModel(parentID, -1, 0, projectTree.get(i).getObject()));
-                for (int j = 0; j < projectOutcomeTree.size(); j++){
-                    if (projectTree.get(i).getId() == projectOutcomeTree.get(j).getProjectID()){
-                        for (int k = 0; k < outcomeTree.size(); k++){
-                            if ((outcomeTree.get(k).getId() == projectOutcomeTree.get(j).getOutcomeID()) && (outcomeTree.get(k).isSelected())){
+                for (int j = 0; j < projectOutcomeTree.size(); j++) {
+                    if (projectTree.get(i).getId() == projectOutcomeTree.get(j).getProjectID()) {
+                        for (int k = 0; k < outcomeTree.size(); k++) {
+                            if ((outcomeTree.get(k).getId() == projectOutcomeTree.get(j).getOutcomeID()) && (outcomeTree.get(k).isSelected())) {
                                 childID = childID + 1;
                                 treeModelList.add(new cTreeModel(childID, parentID, 1, outcomeTree.get(k).getObject()));
                             }
@@ -1316,7 +1305,7 @@ public class cMainFragment extends Fragment {
                     }
                 }
                 parentID = childID + 1;
-                childID  = parentID;
+                childID = parentID;
             }
         }
         // update the goal tree model (used for all tree updates)
@@ -1324,17 +1313,17 @@ public class cMainFragment extends Fragment {
     }
 
     // create a tree model for outcome -> output
-    void updateOutcomeOutputTree(List<cKeyPairBoolData> outcomeTree, List<cKeyPairBoolData> outputTree){
+    void updateOutcomeOutputTree(List<cKeyPairBoolData> outcomeTree, List<cKeyPairBoolData> outputTree) {
         ArrayList<cTreeModel> treeModelList = new ArrayList<>();
         int parentID = 0;
-        int childID  = 0;
+        int childID = 0;
         for (int i = 0; i < outcomeTree.size(); i++) {
             if (outcomeTree.get(i).isSelected()) {
                 treeModelList.add(new cTreeModel(parentID, -1, 0, outcomeTree.get(i).getObject()));
-                for (int j = 0; j < outcomeOutputTree.size(); j++){
-                    if (outcomeTree.get(i).getId() == outcomeOutputTree.get(j).getOutcomeID()){
-                        for (int k = 0; k < outputTree.size(); k++){
-                            if ((outputTree.get(k).getId() == outcomeOutputTree.get(j).getOutputID()) && (outputTree.get(k).isSelected())){
+                for (int j = 0; j < outcomeOutputTree.size(); j++) {
+                    if (outcomeTree.get(i).getId() == outcomeOutputTree.get(j).getOutcomeID()) {
+                        for (int k = 0; k < outputTree.size(); k++) {
+                            if ((outputTree.get(k).getId() == outcomeOutputTree.get(j).getOutputID()) && (outputTree.get(k).isSelected())) {
                                 childID = childID + 1;
                                 treeModelList.add(new cTreeModel(childID, parentID, 1, outputTree.get(k).getObject()));
                             }
@@ -1342,7 +1331,7 @@ public class cMainFragment extends Fragment {
                     }
                 }
                 parentID = childID + 1;
-                childID  = parentID;
+                childID = parentID;
             }
         }
         // update the goal tree model (used for all tree updates)
@@ -1350,17 +1339,17 @@ public class cMainFragment extends Fragment {
     }
 
     // create a tree model for outcome -> output
-    void updateOutputActivityTree(List<cKeyPairBoolData> outputTree, List<cKeyPairBoolData> activityTree){
+    void updateOutputActivityTree(List<cKeyPairBoolData> outputTree, List<cKeyPairBoolData> activityTree) {
         ArrayList<cTreeModel> treeModelList = new ArrayList<>();
         int parentID = 0;
-        int childID  = 0;
+        int childID = 0;
         for (int i = 0; i < outputTree.size(); i++) {
             if (outputTree.get(i).isSelected()) {
                 treeModelList.add(new cTreeModel(parentID, -1, 0, outputTree.get(i).getObject()));
-                for (int j = 0; j < outputActivityTree.size(); j++){
-                    if (outputTree.get(i).getId() == outputActivityTree.get(j).getOutputID()){
-                        for (int k = 0; k < activityTree.size(); k++){
-                            if ((activityTree.get(k).getId() == outputActivityTree.get(j).getActivityID()) && (activityTree.get(k).isSelected())){
+                for (int j = 0; j < outputActivityTree.size(); j++) {
+                    if (outputTree.get(i).getId() == outputActivityTree.get(j).getOutputID()) {
+                        for (int k = 0; k < activityTree.size(); k++) {
+                            if ((activityTree.get(k).getId() == outputActivityTree.get(j).getActivityID()) && (activityTree.get(k).isSelected())) {
                                 childID = childID + 1;
                                 treeModelList.add(new cTreeModel(childID, parentID, 1, activityTree.get(k).getObject()));
                             }
@@ -1368,7 +1357,7 @@ public class cMainFragment extends Fragment {
                     }
                 }
                 parentID = childID + 1;
-                childID  = parentID;
+                childID = parentID;
             }
         }
         // update the goal tree model (used for all tree updates)
@@ -1376,12 +1365,12 @@ public class cMainFragment extends Fragment {
     }
 
     // using the selected outcomes to select corresponding projects
-    void selectedKeyPairBoolOutcomeProject(int outcomeID){
-        for (int i = 0; i < projectOutcomeTree.size(); i++){
-            if (projectOutcomeTree.get(i).getOutcomeID() == outcomeID){
-                for (int j = 0; j < keyPairBoolProjectTree.size(); j++){
+    void selectedKeyPairBoolOutcomeProject(int outcomeID) {
+        for (int i = 0; i < projectOutcomeTree.size(); i++) {
+            if (projectOutcomeTree.get(i).getOutcomeID() == outcomeID) {
+                for (int j = 0; j < keyPairBoolProjectTree.size(); j++) {
                     if (keyPairBoolProjectTree.get(j).getId() ==
-                            projectOutcomeTree.get(i).getProjectID()){
+                            projectOutcomeTree.get(i).getProjectID()) {
                         keyPairBoolProjectTree.get(j).setSelected(true);
                     }
                 }
@@ -1390,12 +1379,12 @@ public class cMainFragment extends Fragment {
     }
 
     // using the selected projects to select corresponding outcomes
-    void selectedKeyPairBoolProjectOutcome(int projectID){
-        for (int i = 0; i < projectOutcomeTree.size(); i++){
-            if (projectOutcomeTree.get(i).getProjectID() == projectID){
-                for (int j = 0; j < keyPairBoolOutcomeTree.size(); j++){
+    void selectedKeyPairBoolProjectOutcome(int projectID) {
+        for (int i = 0; i < projectOutcomeTree.size(); i++) {
+            if (projectOutcomeTree.get(i).getProjectID() == projectID) {
+                for (int j = 0; j < keyPairBoolOutcomeTree.size(); j++) {
                     if (keyPairBoolOutcomeTree.get(j).getId() ==
-                            projectOutcomeTree.get(i).getOutcomeID()){
+                            projectOutcomeTree.get(i).getOutcomeID()) {
                         keyPairBoolOutcomeTree.get(j).setSelected(true);
                     }
                 }
@@ -1404,12 +1393,12 @@ public class cMainFragment extends Fragment {
     }
 
     // using the selected outcomes to select corresponding outputs
-    void selectedKeyPairBoolOutcomeOutput(int outcomeID){
-        for (int i = 0; i < outcomeOutputTree.size(); i++){
-            if (outcomeOutputTree.get(i).getOutcomeID() == outcomeID){
-                for (int j = 0; j < keyPairBoolOutputTree.size(); j++){
+    void selectedKeyPairBoolOutcomeOutput(int outcomeID) {
+        for (int i = 0; i < outcomeOutputTree.size(); i++) {
+            if (outcomeOutputTree.get(i).getOutcomeID() == outcomeID) {
+                for (int j = 0; j < keyPairBoolOutputTree.size(); j++) {
                     if (keyPairBoolOutputTree.get(j).getId() ==
-                            outcomeOutputTree.get(i).getOutputID()){
+                            outcomeOutputTree.get(i).getOutputID()) {
                         keyPairBoolOutputTree.get(j).setSelected(true);
                     }
                 }
@@ -1418,12 +1407,12 @@ public class cMainFragment extends Fragment {
     }
 
     // using the selected outputs to select corresponding outcomes
-    void selectedKeyPairBoolOutputOutcome(int outputID){
-        for (int i = 0; i < outcomeOutputTree.size(); i++){
-            if (outcomeOutputTree.get(i).getOutputID() == outputID){
-                for (int j = 0; j < keyPairBoolOutcomeTree.size(); j++){
+    void selectedKeyPairBoolOutputOutcome(int outputID) {
+        for (int i = 0; i < outcomeOutputTree.size(); i++) {
+            if (outcomeOutputTree.get(i).getOutputID() == outputID) {
+                for (int j = 0; j < keyPairBoolOutcomeTree.size(); j++) {
                     if (keyPairBoolOutcomeTree.get(j).getId() ==
-                            outcomeOutputTree.get(i).getOutcomeID()){
+                            outcomeOutputTree.get(i).getOutcomeID()) {
                         keyPairBoolOutcomeTree.get(j).setSelected(true);
                     }
                 }
@@ -1432,12 +1421,12 @@ public class cMainFragment extends Fragment {
     }
 
     // using the selected outputs to select corresponding activity
-    void selectedKeyPairBoolOutputActivity(int outputID){
-        for (int i = 0; i < outputActivityTree.size(); i++){
-            if (outputActivityTree.get(i).getOutputID() == outputID){
-                for (int j = 0; j < keyPairBoolActivityTree.size(); j++){
+    void selectedKeyPairBoolOutputActivity(int outputID) {
+        for (int i = 0; i < outputActivityTree.size(); i++) {
+            if (outputActivityTree.get(i).getOutputID() == outputID) {
+                for (int j = 0; j < keyPairBoolActivityTree.size(); j++) {
                     if (keyPairBoolActivityTree.get(j).getId() ==
-                            outputActivityTree.get(i).getActivityID()){
+                            outputActivityTree.get(i).getActivityID()) {
                         keyPairBoolActivityTree.get(j).setSelected(true);
                     }
                 }
@@ -1446,12 +1435,12 @@ public class cMainFragment extends Fragment {
     }
 
     // using the selected activity to select corresponding output
-    void selectedKeyPairBoolActivityOutput(int activityID){
-        for (int i = 0; i < outputActivityTree.size(); i++){
-            if (outputActivityTree.get(i).getActivityID() == activityID){
-                for (int j = 0; j < keyPairBoolOutputTree.size(); j++){
+    void selectedKeyPairBoolActivityOutput(int activityID) {
+        for (int i = 0; i < outputActivityTree.size(); i++) {
+            if (outputActivityTree.get(i).getActivityID() == activityID) {
+                for (int j = 0; j < keyPairBoolOutputTree.size(); j++) {
                     if (keyPairBoolOutputTree.get(j).getId() ==
-                            outputActivityTree.get(i).getOutputID()){
+                            outputActivityTree.get(i).getOutputID()) {
                         keyPairBoolOutputTree.get(j).setSelected(true);
                     }
                 }
@@ -1460,7 +1449,7 @@ public class cMainFragment extends Fragment {
     }
 
 
-    private void filterDialog(int animationSource, String title, View filterLayout, final int position){
+    private void filterDialog(int animationSource, String title, View filterLayout, final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(title);
         builder.setView(filterLayout);
@@ -1468,13 +1457,13 @@ public class cMainFragment extends Fragment {
                 "Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        try{
+                        try {
                             // update a relavent adapter (getSelectedTreeModel used for all trees)
                             ((OnGridViewItemSelectedListener) getActivity()).getSelectedTreeModel(getSelectedModel());
 
                             // select a relavent fragment through a position
                             ((OnGridViewItemSelectedListener) getActivity()).getGridPosition(position);
-                        }catch (ClassCastException cce){
+                        } catch (ClassCastException cce) {
 
                         }
                     }
@@ -1500,11 +1489,15 @@ public class cMainFragment extends Fragment {
         return this.selectedModel;
     }
 
-    public interface OnGridViewItemSelectedListener{
+    public interface OnGridViewItemSelectedListener {
         void getGridPosition(int position);
+
         void getSelectedOrganizationList(ArrayList<cOrganizationDomain> selectedOrganizations);
+
         void getSelectedTreeModel(ArrayList<cTreeModel> selectedGoalTree);
+
         void getGroupMenuPosition(int parentPosition);
+
         void getChildMenuPosition(int childPosition);
     }
 }

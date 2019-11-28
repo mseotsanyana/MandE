@@ -3,9 +3,13 @@ package com.me.mseotsanyana.mande.PPMER.DAL;
 import java.lang.String;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class cImpactModel {
-	private int ID;
+	private int impactID;
+	private int parentID;
+	private int logframeID;
 	private int serverID;
     private int ownerID;
     private int orgID;
@@ -22,82 +26,42 @@ public class cImpactModel {
 
     /* foreign key */
     private cLogFrameModel logFrameModel;
-    private ArrayList<cImpactModel> impactModels;
+    private Set<cImpactModel> impactModelSet;
 
     /* many to many */
-    private ArrayList<cOutcomeModel> outcomeModels;
-    private ArrayList<cRaidModel> raidModels;
-    //private ArrayList<cOutcomeImpactModel> outcomeImpactModels;
-    private ArrayList<cImpactQuestionModel> impactQuestionModels;
+    private Set<cOutcomeModel> outcomeModelSet;
+    private Set<cQuestionModel> questionModelSet;
+    private Set<cRaidModel> raidModelSet;
 
-    private class cOutcomeImpactModel{
-        private cOutcomeModel outcomeModel;
-        private cImpactModel impactModel;
-        private cLogFrameModel parentModel;
-        private cLogFrameModel childModel;
-
-        public cOutcomeImpactModel(cOutcomeModel outcomeModel, cImpactModel impactModel,
-                                   cLogFrameModel parentModel, cLogFrameModel childModel) {
-            this.outcomeModel = outcomeModel;
-            this.impactModel = impactModel;
-            this.parentModel = parentModel;
-            this.childModel = childModel;
-        }
+    public cImpactModel(){
+        impactModelSet = new HashSet<>();
+        outcomeModelSet = new HashSet<>();
+        questionModelSet = new HashSet<>();
+        raidModelSet = new HashSet<>();
     }
 
-    private class cImpactQuestionModel{
-        private cImpactModel impactModel;
-        private cQuestionModel questionModel;
-        private cCriteriaModel criteriaModel;
-
-        public cImpactQuestionModel(cImpactModel impactModel, cQuestionModel questionModel,
-                                    cCriteriaModel criteriaModel) {
-            this.impactModel = impactModel;
-            this.questionModel = questionModel;
-            this.criteriaModel = criteriaModel;
-        }
+    public int getImpactID() {
+        return impactID;
     }
 
-    public cImpactModel(){}
-
-    public cImpactModel(int ID, int serverID, int ownerID, int orgID,
-                        int groupBITS, int permsBITS, int statusBITS,
-                        String name, String description, Date startDate,
-                        Date endDate, Date createdDate, Date modifiedDate,
-                        Date syncedDate, cLogFrameModel logFrameModel,
-                        ArrayList<cOutcomeModel> outcomeModels,
-                        ArrayList<cImpactModel> impactModels,
-                        ArrayList<cOutcomeImpactModel> outcomeImpactModels,
-                        ArrayList<cImpactQuestionModel> impactQuestionModels,
-                        ArrayList<cRaidModel> raidModels) {
-        this.ID = ID;
-        this.serverID = serverID;
-        this.ownerID = ownerID;
-        this.orgID = orgID;
-        this.groupBITS = groupBITS;
-        this.permsBITS = permsBITS;
-        this.statusBITS = statusBITS;
-        this.name = name;
-        this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.createdDate = createdDate;
-        this.modifiedDate = modifiedDate;
-        this.syncedDate = syncedDate;
-        this.logFrameModel = logFrameModel;
-        this.outcomeModels = outcomeModels;
-        this.impactModels = impactModels;
-        //this.outcomeImpactModels = outcomeImpactModels;
-        this.impactQuestionModels = impactQuestionModels;
-        this.raidModels = raidModels;
+    public void setImpactID(int impactID) {
+        this.impactID = impactID;
     }
 
-    public int getID() {
-        return ID;
+    public int getParentID() {
+        return parentID;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setParentID(int parentID) {
+        this.parentID = parentID;
+    }
+
+    public int getLogframeID() {
+        return logframeID;
+    }
+
+    public void setLogframeID(int logframeID) {
+        this.logframeID = logframeID;
     }
 
     public int getServerID() {
@@ -212,43 +176,35 @@ public class cImpactModel {
         this.logFrameModel = logFrameModel;
     }
 
-    public ArrayList<cOutcomeModel> getOutcomeModels() {
-        return outcomeModels;
+    public Set<cImpactModel> getImpactModelSet() {
+        return impactModelSet;
     }
 
-    public void setOutcomeModels(ArrayList<cOutcomeModel> outcomeModels) {
-        this.outcomeModels = outcomeModels;
+    public void setImpactModelSet(Set<cImpactModel> impactModelSet) {
+        this.impactModelSet = impactModelSet;
     }
 
-    public ArrayList<cImpactModel> getImpactModels() {
-        return impactModels;
+    public Set<cOutcomeModel> getOutcomeModelSet() {
+        return outcomeModelSet;
     }
 
-    public void setImpactModels(ArrayList<cImpactModel> impactModels) {
-        this.impactModels = impactModels;
-    }
-/*
-    public ArrayList<cOutcomeImpactModel> getOutcomeImpactModels() {
-        return outcomeImpactModels;
+    public void setOutcomeModelSet(Set<cOutcomeModel> outcomeModelSet) {
+        this.outcomeModelSet = outcomeModelSet;
     }
 
-    public void setOutcomeImpactModels(ArrayList<cOutcomeImpactModel> outcomeImpactModels) {
-        this.outcomeImpactModels = outcomeImpactModels;
-    }
-*/
-    public ArrayList<cImpactQuestionModel> getImpactQuestionModels() {
-        return impactQuestionModels;
+    public Set<cQuestionModel> getQuestionModelSet() {
+        return questionModelSet;
     }
 
-    public void setImpactQuestionModels(ArrayList<cImpactQuestionModel> impactQuestionModels) {
-        this.impactQuestionModels = impactQuestionModels;
+    public void setQuestionModelSet(Set<cQuestionModel> questionModelSet) {
+        this.questionModelSet = questionModelSet;
     }
 
-    public ArrayList<cRaidModel> getRaidModels() {
-        return raidModels;
+    public Set<cRaidModel> getRaidModelSet() {
+        return raidModelSet;
     }
 
-    public void setRaidModels(ArrayList<cRaidModel> raidModels) {
-        this.raidModels = raidModels;
+    public void setRaidModelSet(Set<cRaidModel> raidModelSet) {
+        this.raidModelSet = raidModelSet;
     }
 }

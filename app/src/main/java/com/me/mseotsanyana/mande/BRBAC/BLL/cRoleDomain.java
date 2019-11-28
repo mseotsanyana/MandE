@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -34,7 +35,11 @@ public class cRoleDomain implements Parcelable{
     private Set<cSessionDomain> sessionDomainSet;
     private Set<cMenuDomain> menuDomainSet;
 
-    public cRoleDomain(){}
+    public cRoleDomain(){
+        userDomainSet    = new HashSet<>();
+        sessionDomainSet = new HashSet<>();
+        menuDomainSet    = new HashSet<>();
+    }
 
     protected cRoleDomain(Parcel in) {
         this.setRoleID(in.readInt());

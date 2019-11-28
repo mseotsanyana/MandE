@@ -127,58 +127,12 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        /*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent modifySettings=new Intent(MainActivity.this,cSettingsActivity.class);
-                startActivity(modifySettings);
-            }
-        });*/
-
-
         // keeps global user information
         session = new cSessionManager(getApplicationContext());
-
-        //uploadDemoData = new cSetDomainsFromExcel();
-        //uploadExcelData = new cUploadMEData(this);
 
         // initialise the dashboard fragment
         initFragment();
 
-        // register broadcast receiver and services
-        //scheduleJobServices = new cSyncManager(getApplicationContext());
-/*        Map<String, String> map = new HashMap<>();
-        map.put("userID","7");
-        map.put("group","0");
-        map.put("other","4");
-        map.put("perms","4");
-        map.put("status","0");
-
-        String stringMap = new Gson().toJson(map);  // returns {"hei":"sann"}
-
-        PersistableBundle params = new PersistableBundle();
-        params.putString("jsonParam",stringMap);
-        scheduleJobServices.startAddressJobService(0, params);
-*/
-        //url = volleyHandler.generateUrl(url, params);
-        //scheduleJobServices.startServices();
-        //scheduleJobServices.stopServices();
-
-        // initialise quick actions
-        //initQuickActions();
-
-        // uploading
-        //task = new cUploadSessionData(this);
-
-        //task.execute();
-
-        //setupBottomNavigation();
     }
 
     @Override
@@ -208,14 +162,12 @@ public class MainActivity extends AppCompatActivity implements
 
     // initialise the login and profile fragments
     private void initFragment() {
-        /*session.logoutUser();
-        session.deleteSettings();
-        session.commitSettings();*/
+        //session.logoutUser();
+        //session.deleteSettings();
+        //session.commitSettings();
 
         Fragment fragment;
         if (session.isLoggedIn()) {
-            //Intent intent = new Intent(this, cDesktopActivity.class);
-            //startActivity(intent);
             fragment = new cMainFragment().newInstance(session);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.fragment_frame, fragment);
@@ -227,30 +179,6 @@ public class MainActivity extends AppCompatActivity implements
             ft.commit();
         }
     }
-
-    // initialise the services to automatically sync client with servers
-    /*private void initUserSynchronization(){
-        Intent alarm = new Intent(getApplicationContext(), cBroadcastReceiver.class);
-        alarm.setAction("com.me.mseotsanyana.mande.cUserJobService");
-        alarm.setAction("com.me.mseotsanyana.mande.cAddressJobService");
-
-        boolean alarmRunning = (PendingIntent.getBroadcast(getApplicationContext(),
-                0,
-                alarm,
-                PendingIntent.FLAG_NO_CREATE) != null);
-        Toast.makeText(this, "Alarm has started 1 !!!", Toast.LENGTH_SHORT).show();
-
-        if(alarmRunning == false) {
-            Toast.makeText(this, "Alarm has started 2 !!!", Toast.LENGTH_SHORT).show();
-            pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, alarm, 0);
-            alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), 60000, pendingIntent);
-        }else {
-            if (pendingIntent != null) {
-                alarmManager.cancel(pendingIntent);
-            }
-        }
-    }*/
 
     // initialise the quick actions
     private void initQuickActions() {
@@ -591,3 +519,82 @@ public class MainActivity extends AppCompatActivity implements
         super.onBackPressed();
     }
 }
+
+
+// initialise the services to automatically sync client with servers
+    /*private void initUserSynchronization(){
+        Intent alarm = new Intent(getApplicationContext(), cBroadcastReceiver.class);
+        alarm.setAction("com.me.mseotsanyana.mande.cUserJobService");
+        alarm.setAction("com.me.mseotsanyana.mande.cAddressJobService");
+
+        boolean alarmRunning = (PendingIntent.getBroadcast(getApplicationContext(),
+                0,
+                alarm,
+                PendingIntent.FLAG_NO_CREATE) != null);
+        Toast.makeText(this, "Alarm has started 1 !!!", Toast.LENGTH_SHORT).show();
+
+        if(alarmRunning == false) {
+            Toast.makeText(this, "Alarm has started 2 !!!", Toast.LENGTH_SHORT).show();
+            pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, alarm, 0);
+            alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), 60000, pendingIntent);
+        }else {
+            if (pendingIntent != null) {
+                alarmManager.cancel(pendingIntent);
+            }
+        }
+    }*/
+//----------------------------------------------------------------------------------------------------
+
+
+
+//Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//setSupportActionBar(toolbar);
+//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        /*
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent modifySettings=new Intent(MainActivity.this,cSettingsActivity.class);
+                startActivity(modifySettings);
+            }
+        });*/
+
+
+
+
+//uploadDemoData = new cSetDomainsFromExcel();
+//uploadExcelData = new cUploadMEData(this);
+
+
+
+// register broadcast receiver and services
+//scheduleJobServices = new cSyncManager(getApplicationContext());
+/*        Map<String, String> map = new HashMap<>();
+        map.put("userID","7");
+        map.put("group","0");
+        map.put("other","4");
+        map.put("perms","4");
+        map.put("status","0");
+
+        String stringMap = new Gson().toJson(map);  // returns {"hei":"sann"}
+
+        PersistableBundle params = new PersistableBundle();
+        params.putString("jsonParam",stringMap);
+        scheduleJobServices.startAddressJobService(0, params);
+*/
+//url = volleyHandler.generateUrl(url, params);
+//scheduleJobServices.startServices();
+//scheduleJobServices.stopServices();
+
+// initialise quick actions
+//initQuickActions();
+
+// uploading
+//task = new cUploadSessionData(this);
+
+//task.execute();
+
+//setupBottomNavigation();

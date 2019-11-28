@@ -130,12 +130,10 @@ public class cUserFragment extends Fragment implements iMEEntityInterface {
         recyclerView.setLayoutManager(llm);
 
         // populate user action_list from database
-        getUserList(session.loadUserID(),              /* loggedIn user id */
-                session.loadOrganizationID(),
-                session.loadPrimaryRole(session.loadUserID(),
-                        session.loadOrganizationID()), /* primary group bit */
-                session.loadSecondaryRoles(session.loadUserID(),
-                        session.loadOrganizationID())  /* secondary group bits */
+        getUserList(session.loadUserID(),    /* loggedIn user id */
+                session.loadOrgID(),
+                session.loadPrimaryRole(),   /* primary group bit */
+                session.loadSecondaryRoles() /* secondary group bits */
         );
 
         // initialise the floating action button (FAB)
@@ -271,7 +269,7 @@ public class cUserFragment extends Fragment implements iMEEntityInterface {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.homeItem:
-                pushFragment(cMainFragment.newInstance(null));
+                pushFragment(cMainFragment.newInstance(session));
                 break;
             default:
                 break;

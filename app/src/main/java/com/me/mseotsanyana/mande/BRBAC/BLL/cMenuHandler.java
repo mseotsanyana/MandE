@@ -33,15 +33,14 @@ public class cMenuHandler extends cMapper<cMenuModel, cMenuDomain> {
         /** 1. ENTITY SECTION **/
 
         // entity bits of all entities that are accessible
-        entityBITS = session.loadEntityBITS(session.loadUserID(),
-                session.loadOrganizationID(), cSessionManager.types[0]);
+        //entityBITS = session.loadEntityBITS(session.loadUserID(),
+        //        session.loadOrganizationID(), cSessionManager.types[0]);
 
         /** 2. OPERATION SECTION **/
 
         // operations associated to ENTITY entity
-        operationBITS = session.loadOperationBITS(session.loadUserID(),
-                session.loadOrganizationID(), cSessionManager.PRIVILEGE,
-                cSessionManager.types[0]);
+        //operationBITS = session.loadOperationBITS(cSessionManager.MENU,
+        //        cSessionManager.types[0]);
     }
 
     /* ################################### CREATE ACTIONS ################################### */
@@ -115,7 +114,7 @@ public class cMenuHandler extends cMapper<cMenuModel, cMenuDomain> {
     Set<cMenuModel> convertToModelSet(Set<cMenuDomain> menuDomainSet){
 
         Set<cMenuModel> modelSet = new HashSet<>();
-        cMenuHandler menuHandler = new cMenuHandler();
+        //cMenuHandler menuHandler = new cMenuHandler();
 
         for (cMenuDomain menuDomain : menuDomainSet) {
             cMenuModel menuModel = this.DomainToModel(menuDomain);
@@ -127,7 +126,7 @@ public class cMenuHandler extends cMapper<cMenuModel, cMenuDomain> {
 
     Set<cMenuDomain> convertToDomainSet(Set<cMenuModel> menuModelSet){
         Set<cMenuDomain> domainSet = new HashSet<>();
-        cMenuHandler menuHandler = new cMenuHandler();
+        //cMenuHandler menuHandler = new cMenuHandler();
 
         for (cMenuModel menuModel : menuModelSet) {
             cMenuDomain menuDomain = this.ModelToDomain(menuModel);

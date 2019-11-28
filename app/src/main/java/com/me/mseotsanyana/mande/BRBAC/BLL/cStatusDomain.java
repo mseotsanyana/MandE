@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Created by mseotsanyana on 2017/08/24.
@@ -22,6 +23,25 @@ public class cStatusDomain implements Parcelable{
     private Date createdDate;
     private Date modifiedDate;
     private Date syncedDate;
+
+    private boolean dirty;
+    private boolean state;
+
+    public boolean isDirty() {
+        return dirty;
+    }
+
+    public void setDirty(boolean dirty) {
+        this.dirty = dirty;
+    }
+
+    public boolean isState() {
+        return state;
+    }
+
+    public void setState(boolean state) {
+        this.state = state;
+    }
 
     public cStatusDomain(){}
 
@@ -170,5 +190,34 @@ public class cStatusDomain implements Parcelable{
 
     public void setSyncedDate(Date syncedDate) {
         this.syncedDate = syncedDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof cStatusDomain)) return false;
+        cStatusDomain that = (cStatusDomain) o;
+        return getStatusID() == that.getStatusID() &&
+                getServerID() == that.getServerID() &&
+                getOwnerID() == that.getOwnerID() &&
+                getOrgID() == that.getOrgID() &&
+                getGroupBITS() == that.getGroupBITS() &&
+                getPermsBITS() == that.getPermsBITS() &&
+                getStatusBITS() == that.getStatusBITS() &&
+                isDirty() == that.isDirty() &&
+                isState() == that.isState() &&
+                Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getDescription(), that.getDescription()) &&
+                Objects.equals(getCreatedDate(), that.getCreatedDate()) &&
+                Objects.equals(getModifiedDate(), that.getModifiedDate()) &&
+                Objects.equals(getSyncedDate(), that.getSyncedDate());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getStatusID(), getServerID(), getOwnerID(),
+                getOrgID(), getGroupBITS(), getPermsBITS(), getStatusBITS(),
+                getName(), getDescription(), getCreatedDate(), getModifiedDate(),
+                getSyncedDate(), isDirty(), isState());
     }
 }

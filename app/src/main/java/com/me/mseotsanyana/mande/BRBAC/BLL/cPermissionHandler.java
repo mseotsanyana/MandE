@@ -37,14 +37,13 @@ public class cPermissionHandler extends cMapper<cPermissionModel, cPermissionDom
         /** 1. ENTITY SECTION **/
 
         // entity bits of all entities that are accessible
-        entityBITS = session.loadEntityBITS(session.loadUserID(),
-                session.loadOrganizationID(), cSessionManager.types[0]);
+        //entityBITS = session.loadEntityBITS(session.loadUserID(),
+        //        session.loadOrganizationID(), cSessionManager.types[0]);
 
         /** 2. OPERATION SECTION **/
 
         // operations associated to ENTITY entity
-        operationBITS = session.loadOperationBITS(session.loadUserID(),
-                session.loadOrganizationID(), cSessionManager.PRIVILEGE,
+        operationBITS = session.loadOperationBITS(cSessionManager.PRIVILEGE,
                 cSessionManager.types[0]);
     }
 
@@ -104,9 +103,8 @@ public class cPermissionHandler extends cMapper<cPermissionModel, cPermissionDom
     public ArrayList<cPermissionDomain> getPrivilegeList(int userID, int orgID,
                                                          int primaryRole, int secondaryRoles) {
         // statuses of operations associated with ENTITY entity
-        int privilegeOpsStatusBITS = session.loadStatusBITS(session.loadUserID(),
-                session.loadOrganizationID(), cSessionManager.PRIVILEGE,
-                cSessionManager.types[0], cSessionManager.READ);
+        int privilegeOpsStatusBITS = session.loadStatusBITS(cSessionManager.PRIVILEGE,
+                cSessionManager.types[0]);
 
         List<cPermissionModel> privilegeModel = permissionDBA.getPermissionList(
                 userID, orgID, primaryRole, secondaryRoles, operationBITS, privilegeOpsStatusBITS);

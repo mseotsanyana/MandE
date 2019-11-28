@@ -57,7 +57,7 @@ public class cLoginFragment extends Fragment {
 
     public static cLoginFragment newInstance(cSessionManager session) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable("SESSION", session);
+        bundle.putParcelable("SESSION", session);
         cLoginFragment fragment = new cLoginFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -66,11 +66,11 @@ public class cLoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
+        //if (getArguments() != null) {
             // keeps global user information
-            session = (cSessionManager) getArguments().getSerializable("SESSION");
-            //session  = new cSessionManager(getContext());
-        }
+            session = (cSessionManager) getArguments().getParcelable("SESSION");
+            //session = new cSessionManager(getActivity());
+        //}
     }
 
     @Override

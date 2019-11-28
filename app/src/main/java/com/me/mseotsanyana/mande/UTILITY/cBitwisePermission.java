@@ -95,8 +95,13 @@ public class cBitwisePermission {
     };
 
     public static final int[] types = {
-            BRBAC,      /* 0 = 1 */
-            PPMER       /* 1 = 2 */
+            BRBAC, /* 0 = 1 */
+            PPMER  /* 1 = 2 */
+    };
+
+    public static final int[] entity_types = {
+            1,  /* 0 = BRBAC (1) */
+            2   /* 1 = PPMER (2) */
     };
 
     /* global operations (i.e., type 1) */

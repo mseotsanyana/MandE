@@ -326,16 +326,16 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
                     /** update all the status checkboxes **/
                     for (int i = 0; i < statusDomains[0].length; i++) {
                         /** owner statuses **/
-                        statusOwnerDomains.get(i).setState(statusDomains[OWNER][i].isState());
-                        statusOwnerDomains.get(i).setDirty(statusDomains[OWNER][i].isDirty());
+                        //-statusOwnerDomains.get(i).setState(statusDomains[OWNER][i].isState());
+                        //-statusOwnerDomains.get(i).setDirty(statusDomains[OWNER][i].isDirty());
 
                         /** group statuses **/
-                        statusGroupDomains.get(i).setState(statusDomains[GROUP][i].isState());
-                        statusGroupDomains.get(i).setDirty(statusDomains[GROUP][i].isDirty());
+                        //-statusGroupDomains.get(i).setState(statusDomains[GROUP][i].isState());
+                        //-statusGroupDomains.get(i).setDirty(statusDomains[GROUP][i].isDirty());
 
                         /** other statuses **/
-                        statusOtherDomains.get(i).setState(statusDomains[OTHER][i].isState());
-                        statusOtherDomains.get(i).setDirty(statusDomains[OTHER][i].isDirty());
+                        //-statusOtherDomains.get(i).setState(statusDomains[OTHER][i].isState());
+                        //-statusOtherDomains.get(i).setDirty(statusDomains[OTHER][i].isDirty());
                     }
 
                 } else {
@@ -363,25 +363,25 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
                     /** unchecking all operations implies removing all statuses **/
                     for (int i = 0; i < statusDomains[0].length; i++) {
                         /** owner statuses **/
-                        if (statusDomains[OWNER][i].isState())
+                        /*if (statusDomains[OWNER][i].isState())
                             statusOwnerDomains.get(i).setDirty(true);
                         else
                             statusOwnerDomains.get(i).setDirty(false);
-                        statusOwnerDomains.get(i).setState(false);
+                        statusOwnerDomains.get(i).setState(false);*/
 
                         /** group statuses **/
-                        if (statusDomains[GROUP][i].isState())
+                        /*if (statusDomains[GROUP][i].isState())
                             statusGroupDomains.get(i).setDirty(true);
                         else
                             statusGroupDomains.get(i).setDirty(false);
-                        statusGroupDomains.get(i).setState(false);
+                        statusGroupDomains.get(i).setState(false);*/
 
                         /** other statuses **/
-                        if (statusDomains[OTHER][i].isState())
+                        /*if (statusDomains[OTHER][i].isState())
                             statusOtherDomains.get(i).setDirty(true);
                         else
                             statusOtherDomains.get(i).setDirty(false);
-                        statusOtherDomains.get(i).setState(false);
+                        statusOtherDomains.get(i).setState(false);*/
                     }
                 }
 
@@ -412,8 +412,8 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
 
                     /** set the owner statuses to the database default values **/
                     for (int i = 0; i < statusDomains[OWNER].length; i++) {
-                        statusOwnerDomains.get(i).setState(statusDomains[OWNER][i].isState());
-                        statusOwnerDomains.get(i).setDirty(statusDomains[OWNER][i].isDirty());
+                        //statusOwnerDomains.get(i).setState(statusDomains[OWNER][i].isState());
+                        //statusOwnerDomains.get(i).setDirty(statusDomains[OWNER][i].isDirty());
                     }
 
                 } else {
@@ -426,13 +426,13 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
                     /** disable the owner statuses due to owner operation being disabled **/
                     appCompatCheckBoxAllOwnerStatuses.setChecked(false);
 
-                    for (int i = 0; i < statusDomains[OWNER].length; i++) {
+                    /*for (int i = 0; i < statusDomains[OWNER].length; i++) {
                         if (statusDomains[OWNER][i].isState())
                             statusOwnerDomains.get(i).setDirty(true);
                         else
                             statusOwnerDomains.get(i).setDirty(false);
                         statusOwnerDomains.get(i).setState(false);
-                    }
+                    }*/
                 }
 
                 /** refresh a owner status adapter **/
@@ -464,8 +464,8 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
 
                     /** set the owner statuses to the database default values **/
                     for (int i = 0; i < statusDomains[GROUP].length; i++) {
-                        statusGroupDomains.get(i).setState(statusDomains[GROUP][i].isState());
-                        statusGroupDomains.get(i).setDirty(statusDomains[GROUP][i].isDirty());
+                        //statusGroupDomains.get(i).setState(statusDomains[GROUP][i].isState());
+                        //statusGroupDomains.get(i).setDirty(statusDomains[GROUP][i].isDirty());
                     }
                 } else {
                     if (operationDomains[GROUP].isState()) {
@@ -477,11 +477,11 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
                     appCompatCheckBoxAllGroupStatuses.setChecked(false);
 
                     for (int i = 0; i < statusDomains[GROUP].length; i++) {
-                        if (statusDomains[GROUP][i].isState())
+                        /*if (statusDomains[GROUP][i].isState())
                             statusGroupDomains.get(i).setDirty(true);
                         else
                             statusGroupDomains.get(i).setDirty(false);
-                        statusGroupDomains.get(i).setState(false);
+                        statusGroupDomains.get(i).setState(false);*/
                     }
                 }
 
@@ -514,8 +514,8 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
 
                     /** set the owner statuses to the database default values **/
                     for (int i = 0; i < statusDomains[OTHER].length; i++) {
-                        statusOtherDomains.get(i).setState(statusDomains[OTHER][i].isState());
-                        statusOtherDomains.get(i).setDirty(statusDomains[OTHER][i].isDirty());
+                        //statusOtherDomains.get(i).setState(statusDomains[OTHER][i].isState());
+                        //statusOtherDomains.get(i).setDirty(statusDomains[OTHER][i].isDirty());
                     }
                 } else {
                     if (operationDomains[OTHER].isState()) {
@@ -527,11 +527,11 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
                     appCompatCheckBoxAllOtherStatuses.setChecked(false);
 
                     for (int i = 0; i < statusDomains[OTHER].length; i++) {
-                        if (statusDomains[OTHER][i].isState())
+                        /*if (statusDomains[OTHER][i].isState())
                             statusOtherDomains.get(i).setDirty(true);
                         else
                             statusOtherDomains.get(i).setDirty(false);
-                        statusOtherDomains.get(i).setState(false);
+                        statusOtherDomains.get(i).setState(false);*/
                     }
                 }
 
@@ -558,11 +558,11 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
             public void onClick(View v) {
                 if (appCompatCheckBoxAllOwnerStatuses.isChecked()) {
                     for (int i = 0; i < statusDomains[OWNER].length; i++) {
-                        if (!statusDomains[OWNER][i].isState())
+                        /*if (!statusDomains[OWNER][i].isState())
                             statusOwnerDomains.get(i).setDirty(true);
                         else
                             statusOwnerDomains.get(i).setDirty(false);
-                        statusOwnerDomains.get(i).setState(true);
+                        statusOwnerDomains.get(i).setState(true);*/
                     }
 
                     if (!operationDomains[OWNER].isState())
@@ -572,11 +572,11 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
                     ownerOperationDomain.setState(true);
                 } else {
                     for (int i = 0; i < statusDomains[OWNER].length; i++) {
-                        if (statusDomains[OWNER][i].isState())
+                        /*if (statusDomains[OWNER][i].isState())
                             statusOwnerDomains.get(i).setDirty(true);
                         else
                             statusOwnerDomains.get(i).setDirty(false);
-                        statusOwnerDomains.get(i).setState(statusDomains[OWNER][i].isState());
+                        statusOwnerDomains.get(i).setState(statusDomains[OWNER][i].isState());*/
                     }
 
                     if (operationDomains[OWNER].isState())
@@ -615,11 +615,11 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
             public void onClick(View v) {
                 if (appCompatCheckBoxAllGroupStatuses.isChecked()) {
                     for (int i = 0; i < statusDomains[GROUP].length; i++) {
-                        if (!statusDomains[GROUP][i].isState())
+                        /*if (!statusDomains[GROUP][i].isState())
                             statusGroupDomains.get(i).setDirty(true);
                         else
                             statusGroupDomains.get(i).setDirty(false);
-                        statusGroupDomains.get(i).setState(true);
+                        statusGroupDomains.get(i).setState(true);*/
                     }
 
                     if (!operationDomains[GROUP].isState())
@@ -629,11 +629,11 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
                     groupOperationDomain.setState(true);
                 } else {
                     for (int i = 0; i < statusDomains[GROUP].length; i++) {
-                        if (statusDomains[GROUP][i].isState())
+                        /*if (statusDomains[GROUP][i].isState())
                             statusGroupDomains.get(i).setDirty(true);
                         else
                             statusGroupDomains.get(i).setDirty(false);
-                        statusGroupDomains.get(i).setState(statusDomains[GROUP][i].isState());
+                        statusGroupDomains.get(i).setState(statusDomains[GROUP][i].isState());*/
                     }
 
                     if (operationDomains[GROUP].isState())
@@ -673,11 +673,11 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
             public void onClick(View v) {
                 if (appCompatCheckBoxAllOtherStatuses.isChecked()) {
                     for (int i = 0; i < statusDomains[OTHER].length; i++) {
-                        if (!statusDomains[OTHER][i].isState())
+                        /*if (!statusDomains[OTHER][i].isState())
                             statusOtherDomains.get(i).setDirty(true);
                         else
                             statusOtherDomains.get(i).setDirty(false);
-                        statusOtherDomains.get(i).setState(true);
+                        statusOtherDomains.get(i).setState(true);*/
                     }
 
                     if (!operationDomains[OTHER].isState())
@@ -687,11 +687,11 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
                     otherOperationDomain.setState(true);
                 } else {
                     for (int i = 0; i < statusDomains[OTHER].length; i++) {
-                        if (statusDomains[OTHER][i].isState())
+                        /*if (statusDomains[OTHER][i].isState())
                             statusOtherDomains.get(i).setDirty(true);
                         else
                             statusOtherDomains.get(i).setDirty(false);
-                        statusOtherDomains.get(i).setState(statusDomains[OTHER][i].isState());
+                        statusOtherDomains.get(i).setState(statusDomains[OTHER][i].isState());*/
                     }
 
                     if (operationDomains[OTHER].isState())
@@ -832,9 +832,9 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
      **/
     public boolean isAllStatusOwnerChecked() {
         for (int i = 0; i < statusOwnerDomains.size(); i++) {
-            if (!statusOwnerDomains.get(i).isState()) {
+            /*if (!statusOwnerDomains.get(i).isState()) {
                 return false;
-            }
+            }*/
         }
         return true;
     }
@@ -844,9 +844,9 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
      **/
     public boolean isAllStatusGroupChecked() {
         for (int i = 0; i < statusGroupDomains.size(); i++) {
-            if (!statusGroupDomains.get(i).isState()) {
+            /*if (!statusGroupDomains.get(i).isState()) {
                 return false;
-            }
+            }*/
         }
         return true;
     }
@@ -856,9 +856,9 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
      **/
     public boolean isAllStatusOtherChecked() {
         for (int i = 0; i < statusOtherDomains.size(); i++) {
-            if (!statusOtherDomains.get(i).isState()) {
+            /*if (!statusOtherDomains.get(i).isState()) {
                 return false;
-            }
+            }*/
         }
         return true;
     }
@@ -942,8 +942,8 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
                     /** if the state of operation or/and status are true and they are not in the
                      permission's table ==> CREATE (or ADD) **/
                     if ((((operationMask & ops[i].getOperationID()) != ops[i].getOperationID()) &&
-                            ops[i].isState() && ops[i].isDirty()) ||
-                            (sts[i][j].isState() && sts[i][j].isDirty())) {
+                            ops[i].isState() && ops[i].isDirty()) /*||
+                            (sts[i][j].isState() && sts[i][j].isDirty())*/) {
 
                         /** keep current permission domain **/
                         //private cPermissionDomain permissionDomain;
@@ -956,7 +956,7 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
                         permDomain.setOperationDomain(operationDomain);
                         permDomain.setStatusDomain(new cStatusDomain(sts[i][j]));*/
                         permDomain.setOwnerID(session.loadUserID());
-                        permDomain.setOrgID(session.loadOrganizationID());
+                        permDomain.setOrgID(session.loadOrgID());
 
                     /*Log.d(TAG, "CREATE => privilegeID = " +
                             permDomain.getPrivilegeDomain().getPrivilegeID() + ", entityID = " +
@@ -973,8 +973,8 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
 
                     // if the state is false and the operation is in the
                     // permission's table ==> DELETE => (((operationMask & opID) == opID) && !opState && isDirty)
-                    if (((operationMask & ops[i].getOperationID()) == ops[i].getOperationID()) &&
-                            !sts[i][j].isState() && sts[i][j].isDirty()) {
+                    if (((operationMask & ops[i].getOperationID()) == ops[i].getOperationID())/* &&
+                            !sts[i][j].isState() && sts[i][j].isDirty()*/) {
                     /*Log.d(TAG, "DELETE => privilegeID = " +
                             privilegeID + ", entityID = " +
                             entityDomain.getEntityID() + ", typeID = " +

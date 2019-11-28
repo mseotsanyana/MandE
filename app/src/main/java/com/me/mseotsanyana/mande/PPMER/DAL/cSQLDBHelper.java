@@ -27,7 +27,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     // Database Name
     private static final String DATABASE_NAME = "MEDB.db";
     // Database Version
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 16 ;
 
     //############################ START BRBAC MODULE TABLES ############################
     public static final String TABLE_tblADDRESS      = "tblADDRESS";         /* 1  */
@@ -48,13 +48,13 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     public static final String TABLE_tblSESSION_ROLE = "tblSESSION_ROLE";    /* 15 */
     public static final String TABLE_tblMENU_ROLE    = "tblMENU_ROLE";       /* 16 */
     public static final String TABLE_tblPERMISSION   = "tblPERMISSION";      /* 17  */
-    public static final String TABLE_tblPERM_STATUS  = "tblPERM_STATUS";     /* 18 */
+    public static final String TABLE_tblPRIV_STATUS  = "tblPRIV_STATUS";     /* 18 */
 
     public static final String TABLE_tblSETTING        = "tblSETTING";        /* 19 */
     public static final String TABLE_tblNOTIFICATION   = "tblNOTIFICATION";   /* 20 */
     public static final String TABLE_tblSUBSCRIBER     = "tblSUBSCRIBER";     /* 21 */
     public static final String TABLE_tblPUBLISHER      = "tblPUBLISHER";      /* 22 */
-    public static final String TABLE_tblNOTIFY_SETTING = "tblNOTIFY_SETTING";  /* 23 */
+    public static final String TABLE_tblNOTIFY_SETTING = "tblNOTIFY_SETTING"; /* 23 */
     public static final String TABLE_tblACTIVITYLOG    = "tblACTIVITYLOG ";   /* 24 */
 
     //############################## END BRBAC MODULE TABLES ################################
@@ -66,32 +66,34 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     public static final String TABLE_tblOUTCOME           = "tblOUTCOME";           /* 4  */
     public static final String TABLE_tblOUTPUT            = "tblOUTPUT";            /* 5  */
     public static final String TABLE_tblACTIVITY          = "tblACTIVITY";          /* 6  */
-    public static final String TABLE_tblPRECEDINGACTIVITY = "tblPRECEDINGACTIVITY"; /* 7  */
-    public static final String TABLE_tblINPUT             = "tblINPUT";             /* 8  */
+    public static final String TABLE_tblINPUT             = "tblINPUT";             /* 7  */
+    public static final String TABLE_tblQUESTION          = "tblQUESTION";          /* 8 */
+    public static final String TABLE_tblQUESTION_GROUPING = "tblQUESTION_GROUPING"; /* 9 */
+    public static final String TABLE_tblQUESTION_TYPE     = "tblQUESTION_TYPE";     /* 10 */
+    public static final String TABLE_tblCHOICESET         = "tblCHOICESET";         /* 11 */
+    public static final String TABLE_tblCRITERIA          = "tblCRITERIA";          /* 12 */
+    public static final String TABLE_tblRAID              = "tblRAID";              /* 13 */
+    public static final String TABLE_tblOUTCOME_IMPACT    = "tblOUTCOME_IMPACT";    /* 14 */
+    public static final String TABLE_tblOUTPUT_OUTCOME    = "tblOUTPUT_OUTCOME";    /* 15 */
+    public static final String TABLE_tblACTIVITY_OUTPUT   = "tblACTIVITY_OUTPUT";   /* 16 */
+    public static final String TABLE_tblPRECEDINGACTIVITY = "tblPRECEDINGACTIVITY"; /* 17  */
+    public static final String TABLE_tblIMPACT_QUESTION   = "tblIMPACT_QUESTION";   /* 18 */
+    public static final String TABLE_tblOUTCOME_QUESTION  = "tblOUTCOME_QUESTION";  /* 19 */
+    public static final String TABLE_tblOUTPUT_QUESTION   = "tblOUTPUT_QUESTION";   /* 20 */
+    public static final String TABLE_tblACTIVITY_QUESTION = "tblACTIVITY_QUESTION"; /* 21 */
+    public static final String TABLE_tblINPUT_QUESTION    = "tblINPUT_QUESTION";    /* 22 */
+    public static final String TABLE_tblIMPACT_RAID       = "tblIMPACT_RAID";       /* 23 */
+    public static final String TABLE_tblOUTCOME_RAID      = "tblOUTCOME_RAID";      /* 24 */
+    public static final String TABLE_tblOUTPUT_RAID       = "tblOUTPUT_RAID";       /* 25 */
+    public static final String TABLE_tblACTIVITY_RAID     = "tblACTIVITY_RAID";     /* 26 */
+    //############################# END PLANNING MODULE TABLES ##############################
+
+    //########################### START PLANNING MODULE TABLES ##############################
     public static final String TABLE_tblHUMANSET          = "tblHUMANSET";          /* 9  */
     public static final String TABLE_tblMATERIAL          = "tblMATERIAL";          /* 10 */
     public static final String TABLE_tblBUDGET            = "tblBUDGET";            /* 11 */
-    public static final String TABLE_tblOUTCOME_IMPACT    = "tblOUTCOME_IMPACT";    /* 12 */
-    public static final String TABLE_tblOUTPUT_OUTCOME    = "tblOUTPUT_OUTCOME";    /* 13 */
-    public static final String TABLE_tblACTIVITY_OUTPUT   = "tblACTIVITY_OUTPUT";   /* 14 */
-    public static final String TABLE_tblCRITERIA          = "tblCRITERIA";          /* 15 */
-    public static final String TABLE_tblQUESTION_GROUPING = "tblQUESTION_GROUPING"; /* 16 */
-    public static final String TABLE_tblQUESTION_TYPE     = "tblQUESTION_TYPE";     /* 17 */
-    public static final String TABLE_tblCHOICESET         = "tblCHOICESET";         /* 18 */
-    public static final String TABLE_tblQUESTION          = "tblQUESTION";          /* 19 */
-    public static final String TABLE_tblIMPACT_QUESTION   = "tblIMPACT_QUESTION";   /* 20 */
-    public static final String TABLE_tblOUTCOME_QUESTION  = "tblOUTCOME_QUESTION";  /* 21 */
-    public static final String TABLE_tblOUTPUT_QUESTION   = "tblOUTPUT_QUESTION";   /* 22 */
-    public static final String TABLE_tblACTIVITY_QUESTION = "tblACTIVITY_QUESTION"; /* 23 */
-    public static final String TABLE_tblINPUT_QUESTION    = "tblINPUT_QUESTION";    /* 24 */
-    public static final String TABLE_tblRAID              = "tblRAID";              /* 25 */
-    public static final String TABLE_tblIMPACT_RAID       = "tblIMPACT_RAID";       /* 26 */
-    public static final String TABLE_tblOUTCOME_RAID      = "tblOUTCOME_RAID";      /* 27 */
-    public static final String TABLE_tblOUTPUT_RAID       = "tblOUTPUT_RAID";       /* 28 */
-    public static final String TABLE_tblACTIVITY_RAID     = "tblACTIVITY_RAID";     /* 29 */
     public static final String TABLE_tblACCOUNT           = "tblACCOUNT";           /* 30 */
     //############################# END PLANNING MODULE TABLES ##############################
-
 
     /** Bitwise Role Based Access Control (BRBAC) tables
     public static final String TABLE_ADDRESS            = "ADDRESS";          1
@@ -251,7 +253,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     public static final String KEY_SESSION_FK_ID            = "_id_session_fk";
     public static final String KEY_MENU_FK_ID               = "_id_menu_fk";
     public static final String KEY_PRIVILEGE_FK_ID          = "_id_privilege_fk";
-    public static final String KEY_PERMISSION_FK_ID         = "_id_permission_fk";
+    //public static final String KEY_PERMISSION_FK_ID         = "_id_permission_fk";
     public static final String KEY_ENTITY_FK_ID             = "_id_entity_fk";
     public static final String KEY_ENTITY_TYPE_FK_ID        = "_id_entity_type_fk";
     public static final String KEY_OPERATION_FK_ID          = "_id_operation_fk";
@@ -394,6 +396,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     public static final String CREATE_TABLE_tblROLE = "CREATE TABLE " + TABLE_tblROLE + "("
             + KEY_ID +" INTEGER NOT NULL, "
             + KEY_ORGANIZATION_FK_ID + " INTEGER NOT NULL, "
+            + KEY_PRIVILEGE_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID +" INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
@@ -407,7 +410,10 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + "PRIMARY KEY (" + KEY_ID + ", "+ KEY_ORGANIZATION_FK_ID +"),"
             + "FOREIGN KEY (" + KEY_ORGANIZATION_FK_ID + ") "
-            + "REFERENCES " + TABLE_tblORGANIZATION +"("+ KEY_ID +") "
+            + "REFERENCES " + TABLE_tblORGANIZATION +" ("+ KEY_ID + ") "
+            + "ON DELETE CASCADE ON UPDATE CASCADE, "
+            + "FOREIGN KEY (" + KEY_PRIVILEGE_FK_ID + ") "
+            + "REFERENCES " + TABLE_tblPRIVILEGE +"("+ KEY_ID +") "
             + "ON DELETE CASCADE ON UPDATE CASCADE);";
 
     //-- ----------------------------------------------------------------------------------
@@ -437,8 +443,6 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     //-- --------------------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblPRIVILEGE = "CREATE TABLE " + TABLE_tblPRIVILEGE + "("
             + KEY_ID +" INTEGER NOT NULL, "
-            + KEY_ROLE_FK_ID +" INTEGER DEFAULT NULL, "
-            + KEY_ORGANIZATION_FK_ID +" INTEGER DEFAULT NULL, "
             + KEY_SERVER_ID +" INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
@@ -450,10 +454,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + "PRIMARY KEY (" + KEY_ID + "),"
-            + "FOREIGN KEY (" + KEY_ROLE_FK_ID  +","+ KEY_ORGANIZATION_FK_ID + ") "
-            + "REFERENCES " + TABLE_tblROLE +"("+ KEY_ROLE_FK_ID  +","+ KEY_ORGANIZATION_FK_ID +") "
-            + "ON DELETE CASCADE ON UPDATE CASCADE);";
+            + "PRIMARY KEY (" + KEY_ID + "));";
 
     //-- --------------------------------------------------------------------------------------
     //-- Table `tblENTITY`
@@ -657,13 +658,10 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- ------------------------------------------------------------------------------------------------
-    //-- Table `tblPERM_STATUS`
+    //-- Table `tblPRIVILEGE_STATUS`
     //-- ------------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblPERM_STATUS = "CREATE TABLE " + TABLE_tblPERM_STATUS + "("
+    public static final String CREATE_TABLE_tblPRIV_STATUS = "CREATE TABLE " + TABLE_tblPRIV_STATUS + "("
             + KEY_PRIVILEGE_FK_ID +" INTEGER NOT NULL, "
-            + KEY_ENTITY_FK_ID +" INTEGER NOT NULL, "
-            + KEY_ENTITY_TYPE_FK_ID +" INTEGER NOT NULL, "
-            + KEY_OPERATION_FK_ID +" INTEGER NOT NULL, "
             + KEY_STATUS_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
@@ -674,12 +672,9 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_PRIVILEGE_FK_ID + ", " + KEY_ENTITY_FK_ID +", " +
-            KEY_ENTITY_TYPE_FK_ID + "," + KEY_OPERATION_FK_ID +", " + KEY_STATUS_FK_ID +" ), "
-            + " FOREIGN KEY ("  + KEY_PRIVILEGE_FK_ID + ", " + KEY_ENTITY_FK_ID +", " +
-            KEY_ENTITY_TYPE_FK_ID + "," + KEY_OPERATION_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblPERMISSION +" (" + KEY_PRIVILEGE_FK_ID + ", " +
-            KEY_ENTITY_FK_ID +", " + KEY_ENTITY_TYPE_FK_ID + "," + KEY_OPERATION_FK_ID + ") "
+            + " PRIMARY KEY (" + KEY_PRIVILEGE_FK_ID +", " + KEY_STATUS_FK_ID +" ), "
+            + " FOREIGN KEY ("  + KEY_PRIVILEGE_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblPRIVILEGE +" (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
             + " FOREIGN KEY (" + KEY_STATUS_FK_ID + ") "
             + " REFERENCES " + TABLE_tblSTATUS +" ("+ KEY_ID + ") "
@@ -829,7 +824,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     //###################################### START PLANNING MODULE ######################################
 
     //-- ----------------------------------------------------------------------------------------
-    //-- Table `tblLOGFRAME`
+    //-- Table `tblLOGFRAME` (1)
     //-- ----------------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblLOGFRAME = "CREATE TABLE "+ TABLE_tblLOGFRAME + "("
             + KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -848,7 +843,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP );";
 
     //-- -------------------------------------------------------------------------------------------------
-    //-- Table `tblLOGFRAMETREE`
+    //-- Table `tblLOGFRAMETREE` (2)
     //-- -------------------------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblLOGFRAMETREE = "CREATE TABLE "+ TABLE_tblLOGFRAMETREE + "("
             + KEY_PARENT_FK_ID +" INTEGER NOT NULL, "
@@ -875,7 +870,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + " ON DELETE CASCADE ON UPDATE CASCADE);";
 
     //-- -------------------------------------------------------------------------------------
-    //-- Table `tblIMPACT`
+    //-- Table `tblIMPACT` (3)
     //-- -------------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblIMPACT = "CREATE TABLE "+ TABLE_tblIMPACT + "("
             + KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -902,7 +897,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + " ON DELETE CASCADE ON UPDATE CASCADE);";
 
     //-- ---------------------------------------------------------------------------------------
-    //-- Table `tblOUTCOME`
+    //-- Table `tblOUTCOME` (4)
     //-- ---------------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblOUTCOME = "CREATE TABLE "+ TABLE_tblOUTCOME + "("
             + KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -933,7 +928,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + " ON DELETE CASCADE ON UPDATE CASCADE);";
 
     //-- -------------------------------------------------------------------------------------
-    //-- Table `tblOUTPUT`
+    //-- Table `tblOUTPUT` (5)
     //-- -------------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblOUTPUT = "CREATE TABLE "+ TABLE_tblOUTPUT + "("
             + KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -964,7 +959,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + " ON DELETE CASCADE ON UPDATE CASCADE);";
 
     //-- -----------------------------------------------------------------------------------------
-    //-- Table `tblACTIVITY`
+    //-- Table `tblACTIVITY` (6)
     //-- -----------------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblACTIVITY = "CREATE TABLE "+ TABLE_tblACTIVITY + "("
             + KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -994,31 +989,8 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + " REFERENCES " + TABLE_tblLOGFRAME +" ("+ KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE);";
 
-    //-- -----------------------------------------------------------------------------------------------------------
-    //-- Table `tblPRECEDINGACTIVITY`
-    //-- -----------------------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblPRECEDINGACTIVITY = "CREATE TABLE "+ TABLE_tblPRECEDINGACTIVITY + "("
-            + KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + KEY_ACTIVITY_FK_ID +" INTEGER NOT NULL, "
-            + KEY_PRECEDING_ACTIVITY_FK_ID +" INTEGER NOT NULL, "
-            + KEY_SERVER_ID +" INTEGER NOT NULL, "
-            + KEY_OWNER_ID +" INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " FOREIGN KEY (" + KEY_ACTIVITY_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblACTIVITY +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_PRECEDING_ACTIVITY_FK_ID + ")"
-            + " REFERENCES " + TABLE_tblACTIVITY +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE);";
-
     //-- -----------------------------------------------------------------------------------
-    //-- Table `tblINPUT`
+    //-- Table `tblINPUT` (7)
     //-- -----------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblINPUT = "CREATE TABLE "+ TABLE_tblINPUT + "("
             + KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -1042,6 +1014,473 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + " REFERENCES " + TABLE_tblLOGFRAME +" ("+ KEY_ID + ")"
             + " ON DELETE CASCADE ON UPDATE CASCADE);";
 
+    //-- -----------------------------------------------------------------------------------------
+    //-- Table `tblQUESTION` (8)
+    //-- -----------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblQUESTION = "CREATE TABLE "+ TABLE_tblQUESTION + "("
+            + KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + KEY_LOGFRAME_FK_ID +" INTEGER NOT NULL, "
+            + KEY_QUESTION_GROUPING_FK_ID +" INTEGER NOT NULL, "
+            + KEY_QUESTION_TYPE_FK_ID +" INTEGER NOT NULL, "
+            + KEY_CHOICESET_FK_ID +" INTEGER NOT NULL, "
+            + KEY_SERVER_ID +" INTEGER NOT NULL, "
+            + KEY_OWNER_ID +" INTEGER NOT NULL, "
+            + KEY_ORG_ID + " INTEGER NOT NULL, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_NAME + " TEXT NOT NULL, "
+            + KEY_DESCRIPTION + " TEXT NULL, "
+            + KEY_START_DATE + " DATE NOT NULL, "
+            + KEY_END_DATE + "DATE NOT NULL, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + " FOREIGN KEY (" + KEY_QUESTION_GROUPING_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblQUESTION_GROUPING +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_QUESTION_TYPE_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblQUESTION_TYPE +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_CHOICESET_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblCHOICESET +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_LOGFRAME_FK_ID + ")"
+            + " REFERENCES " + TABLE_tblLOGFRAME +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE);";
+
+    //-- -----------------------------------------------------------------------------------------------------------
+    //-- Table `tblQUESTION_GROUPING` (9)
+    //-- -----------------------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblQUESTION_GROUPING = "CREATE TABLE "+ TABLE_tblQUESTION_GROUPING + "("
+            + KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + KEY_SERVER_ID +" INTEGER NOT NULL, "
+            + KEY_OWNER_ID +" INTEGER NOT NULL, "
+            + KEY_ORG_ID + " INTEGER NOT NULL, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_NAME + " TEXT NOT NULL, "
+            + KEY_DESCRIPTION + " TEXT NULL, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP); ";
+
+    //-- ---------------------------------------------------------------------------------------------------
+    //-- Table `tblQUESTION_TYPE` (10)
+    //-- ---------------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblQUESTION_TYPE = "CREATE TABLE "+ TABLE_tblQUESTION_TYPE + "("
+            + KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + KEY_SERVER_ID +" INTEGER NOT NULL, "
+            + KEY_OWNER_ID +" INTEGER NOT NULL, "
+            + KEY_ORG_ID + " INTEGER NOT NULL, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_NAME + " TEXT NOT NULL, "
+            + KEY_DESCRIPTION + " TEXT NULL, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP); ";
+
+    //-- -------------------------------------------------------------------------------------------
+    //-- Table `tblCHOICESET` (11)
+    //-- -------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblCHOICESET = "CREATE TABLE "+ TABLE_tblCHOICESET + "("
+            + KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + KEY_SERVER_ID +" INTEGER NOT NULL, "
+            + KEY_OWNER_ID +" INTEGER NOT NULL, "
+            + KEY_ORG_ID + " INTEGER NOT NULL, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_NAME + " TEXT NOT NULL, "
+            + KEY_DESCRIPTION + " TEXT NULL, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP); ";
+
+    //-- -----------------------------------------------------------------------------------------
+    //-- Table `tblCRITERIA` (12)
+    //-- -----------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblCRITERIA = "CREATE TABLE "+ TABLE_tblCRITERIA + "("
+            + KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + KEY_SERVER_ID +" INTEGER NOT NULL, "
+            + KEY_OWNER_ID +" INTEGER NOT NULL, "
+            + KEY_ORG_ID + " INTEGER NOT NULL, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_NAME + " TEXT NOT NULL, "
+            + KEY_DESCRIPTION + " TEXT NULL, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP); ";
+
+    //-- ---------------------------------------------------------------------------------
+    //-- Table `tblRAID` (13)
+    //-- ---------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblRAID = "CREATE TABLE "+ TABLE_tblRAID + "("
+            + KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + KEY_LOGFRAME_FK_ID +" INTEGER NOT NULL, "
+            + KEY_SERVER_ID +" INTEGER NOT NULL, "
+            + KEY_OWNER_ID +" INTEGER NOT NULL, "
+            + KEY_ORG_ID + " INTEGER NOT NULL, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_NAME + " TEXT NOT NULL, "
+            + KEY_DESCRIPTION + " TEXT NULL, "
+            + KEY_START_DATE + " DATE NOT NULL, "
+            + KEY_END_DATE + "DATE NOT NULL, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + " FOREIGN KEY (" + KEY_LOGFRAME_FK_ID + ")"
+            + " REFERENCES " + TABLE_tblLOGFRAME +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE);";
+
+    //-- -----------------------------------------------------------------------------------------------------
+    //-- Table `tblOUTCOME_IMPACT` (14)
+    //-- -----------------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblOUTCOME_IMPACT = "CREATE TABLE "+ TABLE_tblOUTCOME_IMPACT + "("
+            + KEY_OUTCOME_FK_ID +" INTEGER NOT NULL, "
+            + KEY_IMPACT_FK_ID +" INTEGER NOT NULL, "
+            + KEY_PARENT_FK_ID +" INTEGER NOT NULL, "
+            + KEY_CHILD_FK_ID +" INTEGER NOT NULL, "
+            + KEY_SERVER_ID +" INTEGER NOT NULL, "
+            + KEY_OWNER_ID +" INTEGER NOT NULL, "
+            + KEY_ORG_ID + " INTEGER NOT NULL, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + " PRIMARY KEY (" + KEY_OUTCOME_FK_ID + "," + KEY_IMPACT_FK_ID + ","
+            + KEY_PARENT_FK_ID + "," + KEY_CHILD_FK_ID +" ), "
+            + " FOREIGN KEY (" + KEY_OUTCOME_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblOUTCOME +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_IMPACT_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblIMPACT +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_PARENT_FK_ID +","+ KEY_CHILD_FK_ID + ")"
+            + " REFERENCES " + TABLE_tblLOGFRAMETREE +" (" + KEY_PARENT_FK_ID +","+ KEY_CHILD_FK_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE);";
+
+    //-- -----------------------------------------------------------------------------------------------------
+    //-- Table `tblOUTPUT_OUTCOME` (15)
+    //-- -----------------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblOUTPUT_OUTCOME = "CREATE TABLE "+ TABLE_tblOUTPUT_OUTCOME + "("
+            + KEY_OUTPUT_FK_ID +" INTEGER NOT NULL, "
+            + KEY_OUTCOME_FK_ID +" INTEGER NOT NULL, "
+            + KEY_PARENT_FK_ID +" INTEGER NOT NULL, "
+            + KEY_CHILD_FK_ID +" INTEGER NOT NULL, "
+            + KEY_SERVER_ID +" INTEGER NOT NULL, "
+            + KEY_OWNER_ID +" INTEGER NOT NULL, "
+            + KEY_ORG_ID + " INTEGER NOT NULL, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + " PRIMARY KEY (" + KEY_OUTPUT_FK_ID + "," + KEY_OUTCOME_FK_ID + ","
+            + KEY_PARENT_FK_ID + "," + KEY_CHILD_FK_ID +" ), "
+            + " FOREIGN KEY (" + KEY_OUTPUT_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblOUTPUT +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_OUTCOME_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblOUTCOME +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_PARENT_FK_ID +","+ KEY_CHILD_FK_ID + ")"
+            + " REFERENCES " + TABLE_tblLOGFRAMETREE +" (" + KEY_PARENT_FK_ID +","+ KEY_CHILD_FK_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE);";
+
+    //-- -------------------------------------------------------------------------------------------------------
+    //-- Table `tblACTIVITY_OUTPUT` (16)
+    //-- -------------------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblACTIVITY_OUTPUT = "CREATE TABLE "+ TABLE_tblACTIVITY_OUTPUT + "("
+            + KEY_ACTIVITY_FK_ID +" INTEGER NOT NULL, "
+            + KEY_OUTPUT_FK_ID +" INTEGER NOT NULL, "
+            + KEY_PARENT_FK_ID +" INTEGER NOT NULL, "
+            + KEY_CHILD_FK_ID +" INTEGER NOT NULL, "
+            + KEY_SERVER_ID +" INTEGER NOT NULL, "
+            + KEY_OWNER_ID +" INTEGER NOT NULL, "
+            + KEY_ORG_ID + " INTEGER NOT NULL, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + " PRIMARY KEY (" + KEY_ACTIVITY_FK_ID + "," + KEY_OUTPUT_FK_ID + ","
+            + KEY_PARENT_FK_ID + "," + KEY_CHILD_FK_ID +" ), "
+            + " FOREIGN KEY (" + KEY_ACTIVITY_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblACTIVITY +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_OUTPUT_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblOUTPUT +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_PARENT_FK_ID +","+ KEY_CHILD_FK_ID + ")"
+            + " REFERENCES " + TABLE_tblLOGFRAMETREE +" (" + KEY_PARENT_FK_ID +","+ KEY_CHILD_FK_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE); ";
+
+    //-- -----------------------------------------------------------------------------------------------------------
+    //-- Table `tblPRECEDINGACTIVITY` (17)
+    //-- -----------------------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblPRECEDINGACTIVITY = "CREATE TABLE "+ TABLE_tblPRECEDINGACTIVITY + "("
+            + KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + KEY_ACTIVITY_FK_ID +" INTEGER NOT NULL, "
+            + KEY_PRECEDING_ACTIVITY_FK_ID +" INTEGER NOT NULL, "
+            + KEY_SERVER_ID +" INTEGER NOT NULL, "
+            + KEY_OWNER_ID +" INTEGER NOT NULL, "
+            + KEY_ORG_ID + " INTEGER NOT NULL, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + " FOREIGN KEY (" + KEY_ACTIVITY_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblACTIVITY +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_PRECEDING_ACTIVITY_FK_ID + ")"
+            + " REFERENCES " + TABLE_tblACTIVITY +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE);";
+
+    //-- -------------------------------------------------------------------------------------------------------
+    //-- Table `tblIMPACT_QUESTION` (18)
+    //-- -------------------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblIMPACT_QUESTION = "CREATE TABLE "+ TABLE_tblIMPACT_QUESTION + "("
+            + KEY_IMPACT_FK_ID +" INTEGER NOT NULL, "
+            + KEY_QUESTION_FK_ID +" INTEGER NOT NULL, "
+            + KEY_CRITERIA_FK_ID +" INTEGER NOT NULL, "
+            + KEY_SERVER_ID +" INTEGER NOT NULL, "
+            + KEY_OWNER_ID +" INTEGER NOT NULL, "
+            + KEY_ORG_ID + " INTEGER NOT NULL, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + " PRIMARY KEY (" + KEY_IMPACT_FK_ID + "," + KEY_QUESTION_FK_ID + "," + KEY_CRITERIA_FK_ID +" ), "
+            + " FOREIGN KEY (" + KEY_IMPACT_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblIMPACT +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_QUESTION_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblQUESTION +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_CRITERIA_FK_ID +")"
+            + " REFERENCES " + TABLE_tblCRITERIA +" (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE);";
+
+    //-- ---------------------------------------------------------------------------------------------------------
+    //-- Table `tblOUTCOME_QUESTION` (19)
+    //-- ---------------------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblOUTCOME_QUESTION = "CREATE TABLE "+ TABLE_tblOUTCOME_QUESTION + "("
+            + KEY_OUTCOME_FK_ID +" INTEGER NOT NULL, "
+            + KEY_QUESTION_FK_ID +" INTEGER NOT NULL, "
+            + KEY_CRITERIA_FK_ID +" INTEGER NOT NULL, "
+            + KEY_SERVER_ID +" INTEGER NOT NULL, "
+            + KEY_OWNER_ID +" INTEGER NOT NULL, "
+            + KEY_ORG_ID + " INTEGER NOT NULL, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + " PRIMARY KEY (" + KEY_OUTCOME_FK_ID + "," + KEY_QUESTION_FK_ID + "," + KEY_CRITERIA_FK_ID +" ), "
+            + " FOREIGN KEY (" + KEY_OUTCOME_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblOUTCOME +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_QUESTION_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblQUESTION +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_CRITERIA_FK_ID +")"
+            + " REFERENCES " + TABLE_tblCRITERIA +" (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE);";
+
+    //-- -------------------------------------------------------------------------------------------------------
+    //-- Table `tblOUTPUT_QUESTION` (20)
+    //-- -------------------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblOUTPUT_QUESTION = "CREATE TABLE "+ TABLE_tblOUTPUT_QUESTION + "("
+            + KEY_OUTPUT_FK_ID +" INTEGER NOT NULL, "
+            + KEY_QUESTION_FK_ID +" INTEGER NOT NULL, "
+            + KEY_CRITERIA_FK_ID +" INTEGER NOT NULL, "
+            + KEY_SERVER_ID +" INTEGER NOT NULL, "
+            + KEY_OWNER_ID +" INTEGER NOT NULL, "
+            + KEY_ORG_ID + " INTEGER NOT NULL, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + " PRIMARY KEY (" + KEY_OUTPUT_FK_ID + "," + KEY_QUESTION_FK_ID + "," + KEY_CRITERIA_FK_ID +" ), "
+            + " FOREIGN KEY (" + KEY_OUTPUT_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblOUTPUT +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_QUESTION_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblQUESTION +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_CRITERIA_FK_ID +")"
+            + " REFERENCES " + TABLE_tblCRITERIA +" (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE);";
+
+    //-- -----------------------------------------------------------------------------------------------------------
+    //-- Table `tblACTIVITY_QUESTION` (21)
+    //-- -----------------------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblACTIVITY_QUESTION = "CREATE TABLE "+ TABLE_tblACTIVITY_QUESTION + "("
+            + KEY_ACTIVITY_FK_ID +" INTEGER NOT NULL, "
+            + KEY_QUESTION_FK_ID +" INTEGER NOT NULL, "
+            + KEY_CRITERIA_FK_ID +" INTEGER NOT NULL, "
+            + KEY_SERVER_ID +" INTEGER NOT NULL, "
+            + KEY_OWNER_ID +" INTEGER NOT NULL, "
+            + KEY_ORG_ID + " INTEGER NOT NULL, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + " PRIMARY KEY (" + KEY_ACTIVITY_FK_ID + "," + KEY_QUESTION_FK_ID + "," + KEY_CRITERIA_FK_ID +" ), "
+            + " FOREIGN KEY (" + KEY_ACTIVITY_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblACTIVITY +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_QUESTION_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblQUESTION +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_CRITERIA_FK_ID +")"
+            + " REFERENCES " + TABLE_tblCRITERIA +" (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE);";
+
+    //-- -----------------------------------------------------------------------------------------------------
+    //-- Table `tblINPUT_QUESTION` (22)
+    //-- -----------------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblINPUT_QUESTION = "CREATE TABLE "+ TABLE_tblINPUT_QUESTION + "("
+            + KEY_INPUT_FK_ID +" INTEGER NOT NULL, "
+            + KEY_QUESTION_FK_ID +" INTEGER NOT NULL, "
+            + KEY_CRITERIA_FK_ID +" INTEGER NOT NULL, "
+            + KEY_SERVER_ID +" INTEGER NOT NULL, "
+            + KEY_OWNER_ID +" INTEGER NOT NULL, "
+            + KEY_ORG_ID + " INTEGER NOT NULL, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + " PRIMARY KEY (" + KEY_INPUT_FK_ID + "," + KEY_QUESTION_FK_ID + "," + KEY_CRITERIA_FK_ID +" ), "
+            + " FOREIGN KEY (" + KEY_INPUT_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblINPUT +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_QUESTION_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblQUESTION +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_CRITERIA_FK_ID +")"
+            + " REFERENCES " + TABLE_tblCRITERIA +" (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE);";
+
+    //-- -----------------------------------------------------------------------------------------------
+    //-- Table `tblIMPACT_RAID` (23)
+    //-- -----------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblIMPACT_RAID = "CREATE TABLE "+ TABLE_tblIMPACT_RAID + "("
+            + KEY_IMPACT_FK_ID +" INTEGER NOT NULL, "
+            + KEY_RAID_FK_ID +" INTEGER NOT NULL, "
+            + KEY_SERVER_ID +" INTEGER NOT NULL, "
+            + KEY_OWNER_ID +" INTEGER NOT NULL, "
+            + KEY_ORG_ID + " INTEGER NOT NULL, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + " PRIMARY KEY (" + KEY_IMPACT_FK_ID + "," + KEY_RAID_FK_ID +" ), "
+            + " FOREIGN KEY (" + KEY_IMPACT_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblIMPACT +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_RAID_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblRAID +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE); ";
+
+    //-- -------------------------------------------------------------------------------------------------
+    //-- Table `tblOUTCOME_RAID` (24)
+    //-- -------------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblOUTCOME_RAID = "CREATE TABLE "+ TABLE_tblOUTCOME_RAID + "("
+            + KEY_OUTCOME_FK_ID +" INTEGER NOT NULL, "
+            + KEY_RAID_FK_ID +" INTEGER NOT NULL, "
+            + KEY_SERVER_ID +" INTEGER NOT NULL, "
+            + KEY_OWNER_ID +" INTEGER NOT NULL, "
+            + KEY_ORG_ID + " INTEGER NOT NULL, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + " PRIMARY KEY (" + KEY_OUTCOME_FK_ID + "," + KEY_RAID_FK_ID +" ), "
+            + " FOREIGN KEY (" + KEY_OUTCOME_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblOUTCOME +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_RAID_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblRAID +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE); ";
+
+    //-- -----------------------------------------------------------------------------------------------
+    //-- Table `tblOUTPUT_RAID` (25)
+    //-- -----------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblOUTPUT_RAID = "CREATE TABLE "+ TABLE_tblOUTPUT_RAID + "("
+            + KEY_OUTPUT_FK_ID +" INTEGER NOT NULL, "
+            + KEY_RAID_FK_ID +" INTEGER NOT NULL, "
+            + KEY_SERVER_ID +" INTEGER NOT NULL, "
+            + KEY_OWNER_ID +" INTEGER NOT NULL, "
+            + KEY_ORG_ID + " INTEGER NOT NULL, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + " PRIMARY KEY (" + KEY_OUTPUT_FK_ID + "," + KEY_RAID_FK_ID +" ), "
+            + " FOREIGN KEY (" + KEY_OUTPUT_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblOUTPUT +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_RAID_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblRAID +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE); ";
+
+    //-- ---------------------------------------------------------------------------------------------------
+    //-- Table `tblACTIVITY_RAID` (26)
+    //-- ---------------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblACTIVITY_RAID = "CREATE TABLE "+ TABLE_tblACTIVITY_RAID + "("
+            + KEY_ACTIVITY_FK_ID +" INTEGER NOT NULL, "
+            + KEY_RAID_FK_ID +" INTEGER NOT NULL, "
+            + KEY_SERVER_ID +" INTEGER NOT NULL, "
+            + KEY_OWNER_ID +" INTEGER NOT NULL, "
+            + KEY_ORG_ID + " INTEGER NOT NULL, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + " PRIMARY KEY (" + KEY_ACTIVITY_FK_ID + "," + KEY_RAID_FK_ID +" ), "
+            + " FOREIGN KEY (" + KEY_ACTIVITY_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblACTIVITY+" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_RAID_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblRAID +" ("+ KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE); ";
+
+
+    //######################################## END PLANNING MODULE ########################################
+
+    //######################################## START TASK MODULE ########################################
 
     //-- ---------------------------------------------------------------------------------------------------
     //-- Table `tblHUMANSET`
@@ -1104,451 +1543,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + " REFERENCES " + TABLE_tblACCOUNT +" ("+ KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
-
-    //-- -----------------------------------------------------------------------------------------------------
-    //-- Table `tblOUTCOME_IMPACT`
-    //-- -----------------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblOUTCOME_IMPACT = "CREATE TABLE "+ TABLE_tblOUTCOME_IMPACT + "("
-            + KEY_OUTCOME_FK_ID +" INTEGER NOT NULL, "
-            + KEY_IMPACT_FK_ID +" INTEGER NOT NULL, "
-            + KEY_PARENT_FK_ID +" INTEGER NOT NULL, "
-            + KEY_CHILD_FK_ID +" INTEGER NOT NULL, "
-            + KEY_SERVER_ID +" INTEGER NOT NULL, "
-            + KEY_OWNER_ID +" INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_OUTCOME_FK_ID + "," + KEY_IMPACT_FK_ID + ","
-            + KEY_PARENT_FK_ID + "," + KEY_CHILD_FK_ID +" ), "
-            + " FOREIGN KEY (" + KEY_OUTCOME_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblOUTCOME +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_IMPACT_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblIMPACT +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_PARENT_FK_ID +","+ KEY_CHILD_FK_ID + ")"
-            + " REFERENCES " + TABLE_tblLOGFRAMETREE +" (" + KEY_PARENT_FK_ID +","+ KEY_CHILD_FK_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE);";
-
-    //-- -----------------------------------------------------------------------------------------------------
-    //-- Table `tblOUTPUT_OUTCOME`
-    //-- -----------------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblOUTPUT_OUTCOME = "CREATE TABLE "+ TABLE_tblOUTPUT_OUTCOME + "("
-            + KEY_OUTPUT_FK_ID +" INTEGER NOT NULL, "
-            + KEY_OUTCOME_FK_ID +" INTEGER NOT NULL, "
-            + KEY_PARENT_FK_ID +" INTEGER NOT NULL, "
-            + KEY_CHILD_FK_ID +" INTEGER NOT NULL, "
-            + KEY_SERVER_ID +" INTEGER NOT NULL, "
-            + KEY_OWNER_ID +" INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_OUTPUT_FK_ID + "," + KEY_OUTCOME_FK_ID + ","
-            + KEY_PARENT_FK_ID + "," + KEY_CHILD_FK_ID +" ), "
-            + " FOREIGN KEY (" + KEY_OUTPUT_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblOUTPUT +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_OUTCOME_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblOUTCOME +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_PARENT_FK_ID +","+ KEY_CHILD_FK_ID + ")"
-            + " REFERENCES " + TABLE_tblLOGFRAMETREE +" (" + KEY_PARENT_FK_ID +","+ KEY_CHILD_FK_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE);";
-
-    //-- -------------------------------------------------------------------------------------------------------
-    //-- Table `tblACTIVITY_OUTPUT`
-    //-- -------------------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblACTIVITY_OUTPUT = "CREATE TABLE "+ TABLE_tblACTIVITY_OUTPUT + "("
-            + KEY_ACTIVITY_FK_ID +" INTEGER NOT NULL, "
-            + KEY_OUTPUT_FK_ID +" INTEGER NOT NULL, "
-            + KEY_PARENT_FK_ID +" INTEGER NOT NULL, "
-            + KEY_CHILD_FK_ID +" INTEGER NOT NULL, "
-            + KEY_SERVER_ID +" INTEGER NOT NULL, "
-            + KEY_OWNER_ID +" INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_ACTIVITY_FK_ID + "," + KEY_OUTPUT_FK_ID + ","
-            + KEY_PARENT_FK_ID + "," + KEY_CHILD_FK_ID +" ), "
-            + " FOREIGN KEY (" + KEY_ACTIVITY_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblACTIVITY +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_OUTPUT_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblOUTPUT +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_PARENT_FK_ID +","+ KEY_CHILD_FK_ID + ")"
-            + " REFERENCES " + TABLE_tblLOGFRAMETREE +" (" + KEY_PARENT_FK_ID +","+ KEY_CHILD_FK_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE); ";
-
-    //-- -----------------------------------------------------------------------------------------
-    //-- Table `tblCRITERIA`
-    //-- -----------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblCRITERIA = "CREATE TABLE "+ TABLE_tblCRITERIA + "("
-            + KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + KEY_SERVER_ID +" INTEGER NOT NULL, "
-            + KEY_OWNER_ID +" INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
-            + KEY_NAME + " TEXT NOT NULL, "
-            + KEY_DESCRIPTION + " TEXT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP); ";
-
-    //-- -----------------------------------------------------------------------------------------------------------
-    //-- Table `tblQUESTION_GROUPING`
-    //-- -----------------------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblQUESTION_GROUPING = "CREATE TABLE "+ TABLE_tblQUESTION_GROUPING + "("
-            + KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + KEY_SERVER_ID +" INTEGER NOT NULL, "
-            + KEY_OWNER_ID +" INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
-            + KEY_NAME + " TEXT NOT NULL, "
-            + KEY_DESCRIPTION + " TEXT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP); ";
-
-    //-- ---------------------------------------------------------------------------------------------------
-    //-- Table `tblQUESTION_TYPE`
-    //-- ---------------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblQUESTION_TYPE = "CREATE TABLE "+ TABLE_tblQUESTION_TYPE + "("
-            + KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + KEY_SERVER_ID +" INTEGER NOT NULL, "
-            + KEY_OWNER_ID +" INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
-            + KEY_NAME + " TEXT NOT NULL, "
-            + KEY_DESCRIPTION + " TEXT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP); ";
-
-    //-- -------------------------------------------------------------------------------------------
-    //-- Table `tblCHOICESET`
-    //-- -------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblCHOICESET = "CREATE TABLE "+ TABLE_tblCHOICESET + "("
-            + KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + KEY_SERVER_ID +" INTEGER NOT NULL, "
-            + KEY_OWNER_ID +" INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
-            + KEY_NAME + " TEXT NOT NULL, "
-            + KEY_DESCRIPTION + " TEXT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP); ";
-
-    //-- -----------------------------------------------------------------------------------------
-    //-- Table `tblQUESTION`
-    //-- -----------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblQUESTION = "CREATE TABLE "+ TABLE_tblQUESTION + "("
-            + KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + KEY_LOGFRAME_FK_ID +" INTEGER NOT NULL, "
-            + KEY_QUESTION_GROUPING_FK_ID +" INTEGER NOT NULL, "
-            + KEY_QUESTION_TYPE_FK_ID +" INTEGER NOT NULL, "
-            + KEY_CHOICESET_FK_ID +" INTEGER NOT NULL, "
-            + KEY_SERVER_ID +" INTEGER NOT NULL, "
-            + KEY_OWNER_ID +" INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
-            + KEY_NAME + " TEXT NOT NULL, "
-            + KEY_DESCRIPTION + " TEXT NULL, "
-            + KEY_START_DATE + " DATE NOT NULL, "
-            + KEY_END_DATE + "DATE NOT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " FOREIGN KEY (" + KEY_QUESTION_GROUPING_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblQUESTION_GROUPING +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_QUESTION_TYPE_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblQUESTION_TYPE +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_CHOICESET_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblCHOICESET +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_LOGFRAME_FK_ID + ")"
-            + " REFERENCES " + TABLE_tblLOGFRAME +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE);";
-
-    //-- -------------------------------------------------------------------------------------------------------
-    //-- Table `tblIMPACT_QUESTION`
-    //-- -------------------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblIMPACT_QUESTION = "CREATE TABLE "+ TABLE_tblIMPACT_QUESTION + "("
-            + KEY_IMPACT_FK_ID +" INTEGER NOT NULL, "
-            + KEY_QUESTION_FK_ID +" INTEGER NOT NULL, "
-            + KEY_CRITERIA_FK_ID +" INTEGER NOT NULL, "
-            + KEY_SERVER_ID +" INTEGER NOT NULL, "
-            + KEY_OWNER_ID +" INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_IMPACT_FK_ID + "," + KEY_QUESTION_FK_ID + "," + KEY_CRITERIA_FK_ID +" ), "
-            + " FOREIGN KEY (" + KEY_IMPACT_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblIMPACT +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_QUESTION_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblQUESTION +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_CRITERIA_FK_ID +")"
-            + " REFERENCES " + TABLE_tblCRITERIA +" (" + KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE);";
-
-    //-- ---------------------------------------------------------------------------------------------------------
-    //-- Table `tblOUTCOME_QUESTION`
-    //-- ---------------------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblOUTCOME_QUESTION = "CREATE TABLE "+ TABLE_tblOUTCOME_QUESTION + "("
-            + KEY_OUTCOME_FK_ID +" INTEGER NOT NULL, "
-            + KEY_QUESTION_FK_ID +" INTEGER NOT NULL, "
-            + KEY_CRITERIA_FK_ID +" INTEGER NOT NULL, "
-            + KEY_SERVER_ID +" INTEGER NOT NULL, "
-            + KEY_OWNER_ID +" INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_OUTCOME_FK_ID + "," + KEY_QUESTION_FK_ID + "," + KEY_CRITERIA_FK_ID +" ), "
-            + " FOREIGN KEY (" + KEY_OUTCOME_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblOUTCOME +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_QUESTION_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblQUESTION +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_CRITERIA_FK_ID +")"
-            + " REFERENCES " + TABLE_tblCRITERIA +" (" + KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE);";
-
-    //-- -------------------------------------------------------------------------------------------------------
-    //-- Table `tblOUTPUT_QUESTION`
-    //-- -------------------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblOUTPUT_QUESTION = "CREATE TABLE "+ TABLE_tblOUTPUT_QUESTION + "("
-            + KEY_OUTPUT_FK_ID +" INTEGER NOT NULL, "
-            + KEY_QUESTION_FK_ID +" INTEGER NOT NULL, "
-            + KEY_CRITERIA_FK_ID +" INTEGER NOT NULL, "
-            + KEY_SERVER_ID +" INTEGER NOT NULL, "
-            + KEY_OWNER_ID +" INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_OUTPUT_FK_ID + "," + KEY_QUESTION_FK_ID + "," + KEY_CRITERIA_FK_ID +" ), "
-            + " FOREIGN KEY (" + KEY_OUTPUT_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblOUTPUT +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_QUESTION_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblQUESTION +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_CRITERIA_FK_ID +")"
-            + " REFERENCES " + TABLE_tblCRITERIA +" (" + KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE);";
-
-    //-- -----------------------------------------------------------------------------------------------------------
-    //-- Table `tblACTIVITY_QUESTION`
-    //-- -----------------------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblACTIVITY_QUESTION = "CREATE TABLE "+ TABLE_tblACTIVITY_QUESTION + "("
-            + KEY_ACTIVITY_FK_ID +" INTEGER NOT NULL, "
-            + KEY_QUESTION_FK_ID +" INTEGER NOT NULL, "
-            + KEY_CRITERIA_FK_ID +" INTEGER NOT NULL, "
-            + KEY_SERVER_ID +" INTEGER NOT NULL, "
-            + KEY_OWNER_ID +" INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_ACTIVITY_FK_ID + "," + KEY_QUESTION_FK_ID + "," + KEY_CRITERIA_FK_ID +" ), "
-            + " FOREIGN KEY (" + KEY_ACTIVITY_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblACTIVITY +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_QUESTION_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblQUESTION +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_CRITERIA_FK_ID +")"
-            + " REFERENCES " + TABLE_tblCRITERIA +" (" + KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE);";
-
-    //-- -----------------------------------------------------------------------------------------------------
-    //-- Table `tblINPUT_QUESTION`
-    //-- -----------------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblINPUT_QUESTION = "CREATE TABLE "+ TABLE_tblINPUT_QUESTION + "("
-            + KEY_INPUT_FK_ID +" INTEGER NOT NULL, "
-            + KEY_QUESTION_FK_ID +" INTEGER NOT NULL, "
-            + KEY_CRITERIA_FK_ID +" INTEGER NOT NULL, "
-            + KEY_SERVER_ID +" INTEGER NOT NULL, "
-            + KEY_OWNER_ID +" INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_INPUT_FK_ID + "," + KEY_QUESTION_FK_ID + "," + KEY_CRITERIA_FK_ID +" ), "
-            + " FOREIGN KEY (" + KEY_INPUT_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblINPUT +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_QUESTION_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblQUESTION +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_CRITERIA_FK_ID +")"
-            + " REFERENCES " + TABLE_tblCRITERIA +" (" + KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE);";
-
-    //-- ---------------------------------------------------------------------------------
-    //-- Table `tblRAID`
-    //-- ---------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblRAID = "CREATE TABLE "+ TABLE_tblRAID + "("
-            + KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + KEY_LOGFRAME_FK_ID +" INTEGER NOT NULL, "
-            + KEY_SERVER_ID +" INTEGER NOT NULL, "
-            + KEY_OWNER_ID +" INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
-            + KEY_NAME + " TEXT NOT NULL, "
-            + KEY_DESCRIPTION + " TEXT NULL, "
-            + KEY_START_DATE + " DATE NOT NULL, "
-            + KEY_END_DATE + "DATE NOT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " FOREIGN KEY (" + KEY_LOGFRAME_FK_ID + ")"
-            + " REFERENCES " + TABLE_tblLOGFRAME +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE);";
-
-    //-- -----------------------------------------------------------------------------------------------
-    //-- Table `tblIMPACT_RAID`
-    //-- -----------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblIMPACT_RAID = "CREATE TABLE "+ TABLE_tblIMPACT_RAID + "("
-            + KEY_IMPACT_FK_ID +" INTEGER NOT NULL, "
-            + KEY_RAID_FK_ID +" INTEGER NOT NULL, "
-            + KEY_SERVER_ID +" INTEGER NOT NULL, "
-            + KEY_OWNER_ID +" INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_IMPACT_FK_ID + "," + KEY_RAID_FK_ID +" ), "
-            + " FOREIGN KEY (" + KEY_IMPACT_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblIMPACT +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_RAID_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblRAID +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE); ";
-
-    //-- -------------------------------------------------------------------------------------------------
-    //-- Table `tblOUTCOME_RAID`
-    //-- -------------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblOUTCOME_RAID = "CREATE TABLE "+ TABLE_tblOUTCOME_RAID + "("
-            + KEY_OUTCOME_FK_ID +" INTEGER NOT NULL, "
-            + KEY_RAID_FK_ID +" INTEGER NOT NULL, "
-            + KEY_SERVER_ID +" INTEGER NOT NULL, "
-            + KEY_OWNER_ID +" INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_OUTCOME_FK_ID + "," + KEY_RAID_FK_ID +" ), "
-            + " FOREIGN KEY (" + KEY_OUTCOME_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblOUTCOME +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_RAID_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblRAID +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE); ";
-
-    //-- -----------------------------------------------------------------------------------------------
-    //-- Table `tblOUTPUT_RAID`
-    //-- -----------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblOUTPUT_RAID = "CREATE TABLE "+ TABLE_tblOUTPUT_RAID + "("
-            + KEY_OUTPUT_FK_ID +" INTEGER NOT NULL, "
-            + KEY_RAID_FK_ID +" INTEGER NOT NULL, "
-            + KEY_SERVER_ID +" INTEGER NOT NULL, "
-            + KEY_OWNER_ID +" INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_OUTPUT_FK_ID + "," + KEY_RAID_FK_ID +" ), "
-            + " FOREIGN KEY (" + KEY_OUTPUT_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblOUTPUT +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_RAID_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblRAID +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE); ";
-
-    //-- ---------------------------------------------------------------------------------------------------
-    //-- Table `tblACTIVITY_RAID`
-    //-- ---------------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblACTIVITY_RAID = "CREATE TABLE "+ TABLE_tblACTIVITY_RAID + "("
-            + KEY_ACTIVITY_FK_ID +" INTEGER NOT NULL, "
-            + KEY_RAID_FK_ID +" INTEGER NOT NULL, "
-            + KEY_SERVER_ID +" INTEGER NOT NULL, "
-            + KEY_OWNER_ID +" INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_ACTIVITY_FK_ID + "," + KEY_RAID_FK_ID +" ), "
-            + " FOREIGN KEY (" + KEY_ACTIVITY_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblACTIVITY+" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_RAID_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblRAID +" ("+ KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE); ";
-
-
-    //######################################## END PLANNING MODULE ########################################
-
-
+    //######################################## END TASK MODULE ########################################
 
     // TYPE table - column names
     public static final String KEY_TYPE_ID          = "_id";
@@ -2660,7 +2655,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
                 CREATE_TABLE_tblMENU, CREATE_TABLE_tblPRIVILEGE, CREATE_TABLE_tblENTITY,
                 CREATE_TABLE_tblOPERATION, CREATE_TABLE_tblSTATUS, CREATE_TABLE_tblORG_ADDRESS,
                 CREATE_TABLE_tblUSER_ADDRESS, CREATE_TABLE_tblUSER_ROLE, CREATE_TABLE_tblSESSION_ROLE,
-                CREATE_TABLE_tblMENU_ROLE, CREATE_TABLE_tblPERMISSION, CREATE_TABLE_tblPERM_STATUS,
+                CREATE_TABLE_tblMENU_ROLE, CREATE_TABLE_tblPERMISSION, CREATE_TABLE_tblPRIV_STATUS,
                 CREATE_TABLE_tblSETTING, CREATE_TABLE_tblNOTIFICATION, CREATE_TABLE_tblSUBSCRIBER,
                 CREATE_TABLE_tblPUBLISHER, CREATE_TABLE_tblNOTIFY_SETTING, CREATE_TABLE_tblACTIVITYLOG
         };
@@ -2668,12 +2663,12 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
         String[] create_planning_tables = new String[]{
                 CREATE_TABLE_tblLOGFRAME, CREATE_TABLE_tblLOGFRAMETREE, CREATE_TABLE_tblIMPACT,
                 CREATE_TABLE_tblOUTCOME, CREATE_TABLE_tblOUTPUT, CREATE_TABLE_tblACTIVITY,
-                CREATE_TABLE_tblPRECEDINGACTIVITY, CREATE_TABLE_tblINPUT, CREATE_TABLE_tblOUTCOME_IMPACT,
-                CREATE_TABLE_tblOUTPUT_OUTCOME, CREATE_TABLE_tblACTIVITY_OUTPUT, CREATE_TABLE_tblCRITERIA,
-                CREATE_TABLE_tblQUESTION_GROUPING, CREATE_TABLE_tblQUESTION_TYPE, CREATE_TABLE_tblCHOICESET,
-                CREATE_TABLE_tblQUESTION, CREATE_TABLE_tblIMPACT_QUESTION, CREATE_TABLE_tblOUTCOME_QUESTION,
-                CREATE_TABLE_tblOUTPUT_QUESTION, CREATE_TABLE_tblACTIVITY_QUESTION, CREATE_TABLE_tblINPUT_QUESTION,
-                CREATE_TABLE_tblRAID, CREATE_TABLE_tblIMPACT_RAID, CREATE_TABLE_tblOUTCOME_RAID,
+                CREATE_TABLE_tblINPUT, CREATE_TABLE_tblQUESTION_GROUPING, CREATE_TABLE_tblQUESTION_TYPE,
+                CREATE_TABLE_tblCHOICESET, CREATE_TABLE_tblQUESTION, CREATE_TABLE_tblCRITERIA,
+                CREATE_TABLE_tblRAID, CREATE_TABLE_tblOUTCOME_IMPACT, CREATE_TABLE_tblOUTPUT_OUTCOME,
+                CREATE_TABLE_tblACTIVITY_OUTPUT, CREATE_TABLE_tblPRECEDINGACTIVITY, CREATE_TABLE_tblIMPACT_QUESTION,
+                CREATE_TABLE_tblOUTCOME_QUESTION, CREATE_TABLE_tblOUTPUT_QUESTION, CREATE_TABLE_tblACTIVITY_QUESTION,
+                CREATE_TABLE_tblINPUT_QUESTION, CREATE_TABLE_tblIMPACT_RAID, CREATE_TABLE_tblOUTCOME_RAID,
                 CREATE_TABLE_tblOUTPUT_RAID, CREATE_TABLE_tblACTIVITY_RAID
         };
 
@@ -2694,7 +2689,6 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
         }
     }
 
-
     public void dropTables(SQLiteDatabase db){
 
         /** drop all tables **/
@@ -2704,7 +2698,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
                 TABLE_tblPRIVILEGE, TABLE_tblENTITY, TABLE_tblOPERATION,
                 TABLE_tblSTATUS, TABLE_tblORG_ADDRESS, TABLE_tblUSER_ADDRESS,
                 TABLE_tblUSER_ROLE, TABLE_tblSESSION_ROLE, TABLE_tblMENU_ROLE,
-                TABLE_tblPERMISSION, TABLE_tblPERM_STATUS, TABLE_tblSETTING,
+                TABLE_tblPERMISSION, TABLE_tblPRIV_STATUS, TABLE_tblSETTING,
                 TABLE_tblNOTIFICATION, TABLE_tblSUBSCRIBER, TABLE_tblPUBLISHER,
                 TABLE_tblNOTIFY_SETTING, TABLE_tblACTIVITYLOG
         };
@@ -2712,12 +2706,12 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
         String[] planning_tables = new String[]{
                 TABLE_tblLOGFRAME, TABLE_tblLOGFRAMETREE, TABLE_tblIMPACT,
                 TABLE_tblOUTCOME, TABLE_tblOUTPUT, TABLE_tblACTIVITY,
-                TABLE_tblPRECEDINGACTIVITY, TABLE_tblINPUT, TABLE_tblOUTCOME_IMPACT,
-                TABLE_tblOUTPUT_OUTCOME, TABLE_tblACTIVITY_OUTPUT, TABLE_tblCRITERIA,
-                TABLE_tblQUESTION_GROUPING, TABLE_tblQUESTION_TYPE, TABLE_tblCHOICESET,
-                TABLE_tblQUESTION, TABLE_tblIMPACT_QUESTION, TABLE_tblOUTCOME_QUESTION,
-                TABLE_tblOUTPUT_QUESTION, TABLE_tblACTIVITY_QUESTION, TABLE_tblINPUT_QUESTION,
-                TABLE_tblRAID, TABLE_tblIMPACT_RAID, TABLE_tblOUTCOME_RAID,
+                TABLE_tblINPUT, TABLE_tblQUESTION, TABLE_tblQUESTION_GROUPING,
+                TABLE_tblQUESTION_TYPE, TABLE_tblCHOICESET, TABLE_tblCRITERIA,
+                TABLE_tblRAID, TABLE_tblOUTCOME_IMPACT, TABLE_tblOUTPUT_OUTCOME,
+                TABLE_tblACTIVITY_OUTPUT, TABLE_tblPRECEDINGACTIVITY, TABLE_tblIMPACT_QUESTION,
+                TABLE_tblOUTCOME_QUESTION, TABLE_tblOUTPUT_QUESTION, TABLE_tblACTIVITY_QUESTION,
+                TABLE_tblINPUT_QUESTION, TABLE_tblIMPACT_RAID, TABLE_tblOUTCOME_RAID,
                 TABLE_tblOUTPUT_RAID, TABLE_tblACTIVITY_RAID
         };
 
@@ -2735,84 +2729,5 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
         }finally {
             db.endTransaction();
         }
-
-/*
-        // dimension tables
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_DATE);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_UNIT);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACTIVITYLOG);
-
-        // operation tables
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TYPE);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RISKMAP);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RISKLIKELIHOOD);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RISKIMPACT);
-
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SCALE);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OVERALLAIM);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SPECIFICAIM);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROJECT);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OUTCOME);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OBJECTIVE);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OUTPUT);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACTIVITY);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_INDICATOR);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_QUANTITATIVEINDICATOR);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_QUALITATIVEINDICATOR);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_HYBRIDINDICATOR);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_QUANTITATIVETARGET);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_QUALITATIVETARGET);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_HYBRIDTARGET);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MOV);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RISK);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RISKCONSEQUENCE);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RISKMITIGATION);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RISKMANAGEMENT);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_WORKPLAN);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RESOURCE);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACCOUNTTYPE);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUDGET);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CASHFLOW);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MONITORING);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVALUATION);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CRITERION);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_QUESTION);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORY);
-
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OVERALLAIM_PROJECT);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROJECT_STATUS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROJECT_OUTCOME);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OUTCOME_OUTPUT);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OUTPUT_ACTIVITY);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OVERALLAIM_INDICATOR);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OUTCOME_INDICATOR);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OUTPUT_INDICATOR);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MOV_INDICATOR);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OVERALLAIM_RISK);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OUTCOME_RISK);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OUTPUT_RISK);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACTIVITY_RISK);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OVERALLAIM_CRITERION);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OUTCOME_CRITERION);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OUTPUT_CRITERION);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACTIVITY_CRITERION);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_QUESTION_CATEGORY);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_INDICATOR_QUESTION);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OVERALLAIM_CRITERION_QUESTION);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OUTCOME_CRITERION_QUESTION);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OUTPUT_CRITERION_QUESTION);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACTIVITY_CRITERION_QUESTION);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MONITORING_QUESTIONNAIRE);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVALUATION_QUESTIONNAIRE);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MONITORING_DATACOLLECTION);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVALUATION_DATACOLLECTION);
- */
     }
 }
-
-
-/*
-
-
-
-    */

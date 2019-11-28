@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -28,7 +29,9 @@ public class cMenuDomain implements Parcelable{
 
     private Set<cMenuDomain> menuDomainSet;
 
-    public cMenuDomain(){}
+    public cMenuDomain(){
+        menuDomainSet = new HashSet<>();
+    }
 
     protected cMenuDomain(Parcel in) {
         this.setMenuID(in.readInt());

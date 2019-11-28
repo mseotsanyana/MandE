@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -26,8 +27,13 @@ public class cPrivilegeModel {
     private Date modifiedDate;
     private Date syncedDate;
 
-    private HashMap<cEntityModel,Set<cOperationModel>> permModelMap = new HashMap<>();
+    private HashMap<cEntityModel,Set<cOperationModel>> permModelMap;
     private Set<cStatusModel> statusModelSet;
+
+    public cPrivilegeModel() {
+        permModelMap = new HashMap<>();
+        statusModelSet = new HashSet<>();
+    }
 
     public int getPrivilegeID() {
         return privilegeID;

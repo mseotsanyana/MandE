@@ -23,6 +23,10 @@ public class cOperationHandler extends cMapper<cOperationModel, cOperationDomain
         this.context = context;
     }
 
+    public cOperationHandler() {
+
+    }
+
     public boolean deleteOperations() {
         return operationDBA.deleteOperations();
     }
@@ -70,7 +74,9 @@ public class cOperationHandler extends cMapper<cOperationModel, cOperationDomain
         model.setStatusBITS(domain.getStatusBITS());
         model.setName(domain.getName());
         model.setDescription(domain.getDescription());
-        model.setCreatedDate(domain.getCreateDate());
+        model.setCreatedDate(domain.getCreatedDate());
+        model.setModifiedDate(domain.getModifiedDate());
+        model.setSyncedDate(domain.getSyncedDate());
 
         return model;
     }
@@ -86,7 +92,9 @@ public class cOperationHandler extends cMapper<cOperationModel, cOperationDomain
         domain.setStatusBITS(model.getStatusBITS());
         domain.setName(model.getName());
         domain.setDescription(model.getDescription());
-        domain.setCreateDate(model.getCreatedDate());
+        domain.setCreatedDate(model.getCreatedDate());
+        domain.setModifiedDate(model.getModifiedDate());
+        domain.setSyncedDate(model.getSyncedDate());
 
         return domain;
     }

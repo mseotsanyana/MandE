@@ -6,7 +6,11 @@ package com.me.mseotsanyana.mande.BRBAC.BLL;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Point;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
+import android.util.Pair;
 
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cRoleModel;
@@ -18,54 +22,93 @@ import com.me.mseotsanyana.mande.UTILITY.cConstant;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-public class cSessionManager extends cBitwisePermission implements Serializable {
+public class cSessionManager extends cBitwisePermission implements Parcelable {
     private static String TAG = cSessionManager.class.getSimpleName();
 
     private SharedPreferences settings;
     private SharedPreferences.Editor editor;
-    private Gson gson;
 
-    private cUserDomain userDomain;
-
-    private Set<Integer> userOrganizationIDSet;
-    //private Set<cRoleDomain> userRoleSet;
-    private Set<cRoleDomain> roleDomainSet;
-    private Set<cMenuDomain> menuDomainSet;
-    private Set<cPrivilegeDomain> privilegeDomainSet;
-    private Set<cPermissionDomain> permissionDomainSet;
-    private Set<cNotificationDomain> notificationDomainSet;
-
+    private cUserHandler userHandler;
     private cRoleHandler roleHandler;
     private cMenuHandler menuHandler;
     private cPrivilegeHandler privilegeHandler;
-    private cPermissionHandler permissionHandler;
     private cNotificationHandler notificationHandler;
 
+    private cUserDomain userDomain;
+    private Set<cRoleDomain> roleDomainSet;
+    private Set<cMenuDomain> menuDomainSet;
+    private Set<cPrivilegeDomain> privilegeDomainSet;
+    private Set<cNotificationDomain> notificationDomainSet;
 
-    private ArrayList<cPermissionDomain> rolePrivileges;
+    private int userID, orgID, primaryRoleBIT, secondaryRoleBITS,
+            entityBITS, operationBITS, statusBITS;
 
-    private List<cEntityBITS> entitiesBITS;
-    private List<cOperationBITS> operationsBITS;
-    private List<cStatusBITS> statusesBITS;
+    private HashMap<cEntityDomain, Pair<Integer, Integer>> privilegeDomainBITS;
 
-
-    private int ownerID, orgID, primaryRoleBIT, secondaryRoleBITS;
+    private Gson gson;
 
     public cSessionManager(Context context) {
         settings = context.getSharedPreferences(cConstant.KEY_USER_PREFS, Context.MODE_PRIVATE);
-        editor   = settings.edit();
-        gson     = new Gson();
+        editor = settings.edit();
+        gson = new Gson();
 
-        roleHandler         = new cRoleHandler(context, this);
-        menuHandler         = new cMenuHandler(context, this);
-        privilegeHandler    = new cPrivilegeHandler(context, this);
-        permissionHandler   = new cPermissionHandler(context, this);
+        //roleDomainSet = new HashSet<>();
+        menuDomainSet = new HashSet<>();
+        privilegeDomainSet = new HashSet<>();
+        notificationDomainSet  = new HashSet<>();
+
+        userHandler = new cUserHandler(context, this);
+        roleHandler = new cRoleHandler(context, this);
+        menuHandler = new cMenuHandler(context, this);
+        privilegeHandler = new cPrivilegeHandler(context, this);
         notificationHandler = new cNotificationHandler(context, this);
     }
+
+    protected cSessionManager(Parcel in) {
+        userDomain = in.readParcelable(cUserDomain.class.getClassLoader());
+        userID = in.readInt();
+        orgID = in.readInt();
+        primaryRoleBIT = in.readInt();
+        secondaryRoleBITS = in.readInt();
+        entityBITS = in.readInt();
+        operationBITS = in.readInt();
+        statusBITS = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(userDomain, flags);
+        dest.writeInt(userID);
+        dest.writeInt(orgID);
+        dest.writeInt(primaryRoleBIT);
+        dest.writeInt(secondaryRoleBITS);
+        dest.writeInt(entityBITS);
+        dest.writeInt(operationBITS);
+        dest.writeInt(statusBITS);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<cSessionManager> CREATOR = new Creator<cSessionManager>() {
+        @Override
+        public cSessionManager createFromParcel(Parcel in) {
+            return new cSessionManager(in);
+        }
+
+        @Override
+        public cSessionManager[] newArray(int size) {
+            return new cSessionManager[size];
+        }
+    };
 
     /**
      * This method sets the session object for the current logged in user.
@@ -76,119 +119,74 @@ public class cSessionManager extends cBitwisePermission implements Serializable 
         if (userDomain != null) {
             try {
 
-                /* ### preliminary information for the loggedIn user ### */
+                /* ########## PRELIMINARY INFORMATION FOR THE LOGGEDIN USER ########## */
 
-                /* 1. user domain of the loggedIn user */
+                /* 1. set a USER domain of the loggedIn user */
                 setUserDomain(userDomain);
-                Log.d(TAG," USER PROFILE: "+ gson.toJson(userDomain));
+                Log.d(TAG, " USER PROFILE: " + gson.toJson(userDomain));
 
-                /* compute the login details for the user */
-                ownerID           = userDomain.getUserID();
-                orgID             = userDomain.getOrgID();
-                primaryRoleBIT    = getPrimaryRoleBIT(userDomain.getRoleDomainSet());
-                secondaryRoleBITS = getSecondaryRoleBITS(userDomain.getRoleDomainSet());
-                Log.d(TAG," USER ORGANIZATION ID SET:"+
-                        " OWNER ID = "+ ownerID +
-                        "; OWNER ORG. ID = "+ orgID +
-                        "; PRIMARY ROLE BIT = "+ primaryRoleBIT +
-                        "; SECONDARY ROLE BITS = "+ secondaryRoleBITS);
+                /* 2. set a user ID for the loggedIn user */
+                setUserID(userDomain.getUserID());
 
+                /* 3. set a user organization ID for the loggedIn user */
+                setOrgID(userDomain.getOrgID());
 
-                /* 1.1 list of organization IDs for the loggedIn user */
-                //setUserOrganizationIDSet(userDomain.getRoleDomainSet());
-                //Log.d(TAG," USER ORGANIZATION IDs : "+ gson.toJson(getUserOrganizationIDSet()));
+                /* 4. set primary role/group BIT of the loggedIn user */
+                setPrimaryRoleBIT(computePrimaryRoleBIT(userDomain.getRoleDomainSet()));
 
-                /* 2. read the user role or group domains */
-                roleDomainSet = roleHandler.getRoleDomainSet(
-                        ownerID, orgID, primaryRoleBIT, secondaryRoleBITS);
-                Log.d(TAG," ROLE SET: "+ gson.toJson(roleDomainSet));
+                /* 5. set secondary role/group BITS of the loggedIn user */
+                setSecondaryRoleBITS(computeSecondaryRoleBITS(userDomain.getRoleDomainSet()));
 
-                /* 3. read the user menu item domains */
-                menuDomainSet = menuHandler.getMenuDomainSet(
-                        ownerID, orgID, primaryRoleBIT, secondaryRoleBITS);
-                Log.d(TAG," MENU SET: "+ gson.toJson(menuDomainSet));
+                Log.d(TAG, " USER ORGANIZATION ID SET:" +
+                        " OWNER ID = " + getUserID() +
+                        "; OWNER ORG. ID = " + getOrgID() +
+                        "; PRIMARY ROLE BIT = " + getPrimaryRoleBIT() +
+                        "; SECONDARY ROLE BITS = " + getSecondaryRoleBITS());
 
-                /* 3. read the user menu item domains */
-                privilegeDomainSet = privilegeHandler.getPrivilegeDomainSet(
-                        ownerID, orgID, primaryRoleBIT, secondaryRoleBITS);
-                Log.d(TAG," PRIVILEGE SET: "+ gson.toJson(privilegeDomainSet));
+                /* 6. set role/group domain SET of the loggedIn user */
+                setRoleDomainSet(roleHandler.getRoleDomainSet(
+                        getUserID(), getOrgID(), getPrimaryRoleBIT(), getSecondaryRoleBITS()));
 
-                /* 3. list of roles for the loggedIn user */
-                //setUserRoleSet(userDomain.getRoleDomainSet());
-                //Log.d(TAG, " USER ROLE or GROUP SET: "+ gson.toJson(userDomain.getRoleDomainSet()));
+                Log.d(TAG, " ROLE SET: " + gson.toJson(roleDomainSet));
 
-                /* 4. role domains of the loggedIn user */
-                //setUserDomain(userDomain);
-                //Log.d(TAG," USER: "+ gson.toJson(userDomain));
+                /* 7. set menu domain SET for the loggedIn user */
+                setMenuDomainSet(menuHandler.getMenuDomainSet(
+                        getUserID(), getOrgID(), getPrimaryRoleBIT(), getSecondaryRoleBITS()));
 
-                /* 4. list of privileges for the loggedIn user */
-                //--setRolePrivileges(getMergedPrivileges(getUserRoles()));
-                //--Log.d(TAG + " ROLE PRIVILEGES ", gson.toJson(getRolePrivileges()));
+                Log.d(TAG, " MENU SET: " + gson.toJson(menuDomainSet));
+
+                /* 8. set privilege domain SET for the loggedIn user */
+                setPrivilegeDomainSet(privilegeHandler.getPrivilegeDomainSet(
+                        userID, orgID, primaryRoleBIT, secondaryRoleBITS));
+
+                /* 9. set privilege domain BITS for the loggedIn user */
+                setPrivilegeDomainBITS(computePrivilegeDomainBITS(getPrivilegeDomainSet()));
 
 
-                /* ### SETTING OF PREFERENCES FOR THE LOGGED-IN USER ### */
+                /* ########## SETTING OF PREFERENCES FOR THE LOGGED-IN USER ########## */
 
                 /* 1. user profile details */
-                //--saveUserProfile(getUserDomain());
+                saveUserProfile(getUserDomain());
 
                 /* 2. user own identification */
-                //--saveUserID(userID);
+                saveUserID(userID);
 
                 /* 3. user own organization */
-                //--saveOrganizationID(getUserDomain().getOrganizationID());
+                saveOrgID(orgID);
 
-                /* ### setting of preferences for the loggedIn user by organizations ### */
-                //--int primaryRole = 0, secondaryRoles = 0;
-                //--ArrayList<Integer> roleIDs;
-                //--ArrayList<Integer> orgs = userRoleHandler.getOrganizationIDsByUserID(userID);
-                /*for (int i = 0; i < orgs.size(); i++){
-                    roleIDs = userRoleHandler.getRoleIDsByOrganizationID(orgs.get(i));
-                    if (roleIDs.remove(new Integer(1))){
-                        primaryRole = 1;
-                    }
+                /* 4. user primary role - the organization he/she belongs to */
+                savePrimaryRole(primaryRoleBIT);
 
-                    for (int j = 0; j < roleIDs.size(); j++) {
-                        secondaryRoles |= roleIDs.get(j);
-                    }
+                /* 5. user secondary roles - other organization he/she belongs to through roles */
+                saveSecondaryRoles(secondaryRoleBITS);
 
-
-                    Log.d(TAG," ORG = "+ orgs.get(i)+", " +
-                            "PRIMARY ROLE = "+ primaryRole+", " +
-                            "SECONDARY ROLES = "+ secondaryRoles);
-
-
-                    /* 1. user own organizations
-                    saveOrganizationIDS(orgs.get(i));
-
-                    /* 2. user primary role - the organization he/she belongs to
-                    savePrimaryRole(userID, orgs.get(i), primaryRole);
-
-                    /* 3. user secondary roles - other organization he/she belongs to
-                     *    through roles
-                    saveSecondaryRoles(userID, orgs.get(i), computeSecondaryRoles(getUserDomain()));
-
-                    /* 4. entity bits of entities the loggedIn user has access to, grouped by
-                     *    entity types
-                    setEntitiesBITS(permissionHandler.getEntitiesBIT(getRolePrivileges()));
-                    saveEntityBITS(userID, orgs.get(i), getEntitiesBITS());
-
-                    /* 5. operation bits by entityID and entity_typeID
-                    setOperationsBITS(permissionHandler.getOperationsBIT(getRolePrivileges()));
-                    saveOperationBITS(userID, orgs.get(i), getOperationsBITS());
-
-                    /* 5. status bits by entityID, typeID and operationID
-                    setStatusesBITS(permissionHandler.getStatusesBIT(getRolePrivileges()));
-                    saveStatusBITS(userID, orgs.get(i), getStatusesBITS());
-
-                    // reset
-                    primaryRole = 0;
-                    secondaryRoles = 0;
-                }*/
+                /* 6. user privileges - these are entity bits with their operation and status bits */
+                savePrivilegeDomainBITS(privilegeDomainBITS);
 
                 // once the user session has been set, the login is then set and settings saved.
-                //--loginUser();
+                //loginUser();
                 //deleteSettings();
-                //--commitSettings();
+                //commitSettings();
 
                 return true;
 
@@ -202,7 +200,87 @@ public class cSessionManager extends cBitwisePermission implements Serializable 
         }
     }
 
-    //************* UTILITY FUNCTIONS FOR SHARED PREFERENCE SETTINGS *************
+    /* ########## UTILITY FUNCTIONS FOR SHARED PREFERENCE SETTINGS ########## */
+
+    /**
+     * This returns the primary role/group of the loggedIn user
+     *
+     * @param roleDomainSet
+     * @return
+     */
+    public int computePrimaryRoleBIT(Set<cRoleDomain> roleDomainSet) {
+        int pRoleBIT = 0;
+        for (cRoleDomain domain : roleDomainSet) {
+            if (getUserDomain().getOrganizationID() == domain.getOrganizationID()) {
+                pRoleBIT = domain.getRoleID();
+                break;
+            }
+        }
+        return pRoleBIT;
+    }
+
+    /**
+     * This return the secondary role/group of the loggedIn user
+     *
+     * @param roleDomainSet
+     * @return
+     */
+    public int computeSecondaryRoleBITS(Set<cRoleDomain> roleDomainSet) {
+        int sRoleBITS = 0;
+        for (cRoleDomain domain : roleDomainSet) {
+            if (getUserDomain().getOrganizationID() != domain.getOrganizationID()) {
+                sRoleBITS |= domain.getRoleID();
+            }
+        }
+        return sRoleBITS;
+    }
+
+    /**
+     * This returns the privileges of the loggedIn user
+     *
+     * @param privilegeDomainSet
+     * @return
+     */
+    public HashMap<cEntityDomain, Pair<Integer, Integer>>
+    computePrivilegeDomainBITS(Set<cPrivilegeDomain> privilegeDomainSet) {
+
+        HashMap<cEntityDomain, Pair<Integer, Integer>> privilegeMapBITS = new HashMap();
+        for (int i = 0; i < entity_types.length; i++) {
+            for (cPrivilegeDomain privilegeDomain : privilegeDomainSet) {
+
+                setEntityBITS(0);
+                cEntityDomain entityDomain = null;
+                for (Map.Entry<cEntityDomain, Set<cOperationDomain>>
+                        entityEntry : privilegeDomain.getPermDomainMap().entrySet()) {
+
+                    entityDomain = entityEntry.getKey();
+                    Set<cOperationDomain> operationDomainSet = entityEntry.getValue();
+                    if (entity_types[i] == entityDomain.getTypeID()) {
+                        setEntityBITS(getEntityBITS() | entityDomain.getEntityID());
+
+                        setOperationBITS(0);
+                        for (cOperationDomain operationDomain : operationDomainSet) {
+                            setOperationBITS(getOperationBITS() | operationDomain.getOperationID());
+                        }
+                    }
+
+                    setStatusBITS(0);
+                    for (cStatusDomain statusDomain : privilegeDomain.getStatusDomainSet()) {
+                        setStatusBITS(getStatusBITS() | statusDomain.getStatusID());
+                    }
+
+                    if (getEntityBITS() != 0 && entityDomain != null) {
+                        privilegeMapBITS.put(entityDomain,
+                                new Pair<Integer, Integer>(getOperationBITS(), getStatusBITS()));
+                    }
+                }
+            }
+        }
+
+        return privilegeMapBITS;
+    }
+
+    /* ########## SET and GET FUNCTIONS FOR SHARED PREFERENCE SETTINGS ########## */
 
     /**
      * This returns the user object of the loggedIn user
@@ -223,169 +301,103 @@ public class cSessionManager extends cBitwisePermission implements Serializable 
     }
 
 
-    public int getPrimaryRoleBIT(Set<cRoleDomain> roleDomainSet){
-        int pRoleBIT = 0;
-        for(cRoleDomain domain: roleDomainSet) {
-            if (getUserDomain().getOrganizationID() == domain.getOrganizationID()){
-                pRoleBIT = domain.getRoleID();
-                break;
-            }
-        }
-        return pRoleBIT;
+    public int getUserID() {
+        return userID;
     }
 
-    public int getSecondaryRoleBITS(Set<cRoleDomain> roleDomainSet){
-        int sRoleBITS = 0;
-        for(cRoleDomain domain: roleDomainSet) {
-            if (getUserDomain().getOrganizationID() != domain.getOrganizationID()){
-                sRoleBITS |= domain.getRoleID();
-            }
-        }
-        return sRoleBITS;
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
-    /**
-     * This returns the user roles of the loggedIn user.
-     *
-     * @return userRoles
-     */
-    public Set<Integer> getUserOrganizationIDSet() {
-        return this.userOrganizationIDSet;
+    public int getOrgID() {
+        return orgID;
     }
 
-    /**
-     * This returns the user roles of the loggedIn user.
-     *
-     * @return userRoles
-     */
-    /*public Set<cRoleDomain> getUserRoleSet() {
-        return this.userRoleSet;
-    }*/
-
-    /**
-     * This sets the roles of the loggedIn user
-     *
-     * @param roleDomainSet
-     */
-    public void setUserOrganizationIDSet(Set<cRoleDomain> roleDomainSet) {
-        userOrganizationIDSet = new HashSet<Integer>();
-        for(cRoleDomain domain: roleDomainSet) {
-            //Log.d(TAG,"ROLE DOMAIN = "+gson.toJson(domain));
-            this.userOrganizationIDSet.add(domain.getOrganizationID());
-        }
+    public void setOrgID(int orgID) {
+        this.orgID = orgID;
     }
 
-    /**
-     * This sets the roles of the loggedIn user
-     *
-     * @param userRoleSet
-     */
-    /*public void setUserRoleSet(Set<cRoleDomain> userRoleSet) {
-        this.userRoleSet = userRoleSet;
-    }*/
-
-    /**
-     * This returns the user privileges of the loggedIn user.
-     *
-     * @return rolePrivileges
-     */
-    public ArrayList<cPermissionDomain> getRolePrivileges() {
-        return rolePrivileges;
+    public int getPrimaryRoleBIT() {
+        return primaryRoleBIT;
     }
 
-    /**
-     * This sets the privileges of the loggedIn user
-     *
-     * @param rolePrivileges
-     */
-    public void setRolePrivileges(ArrayList<cPermissionDomain> rolePrivileges) {
-        this.rolePrivileges = rolePrivileges;
+    public void setPrimaryRoleBIT(int primaryRoleBIT) {
+        this.primaryRoleBIT = primaryRoleBIT;
     }
 
-    public List<cEntityBITS> getEntitiesBITS() {
-        return entitiesBITS;
+    public int getSecondaryRoleBITS() {
+        return secondaryRoleBITS;
     }
 
-    public void setEntitiesBITS(List<cEntityBITS> entitiesBITS) {
-        this.entitiesBITS = entitiesBITS;
+    public void setSecondaryRoleBITS(int secondaryRoleBITS) {
+        this.secondaryRoleBITS = secondaryRoleBITS;
     }
 
-    public List<cOperationBITS> getOperationsBITS() {
-        return operationsBITS;
+    public Set<cMenuDomain> getMenuDomainSet() {
+        return menuDomainSet;
     }
 
-    public void setOperationsBITS(List<cOperationBITS> operationsBITS) {
-        this.operationsBITS = operationsBITS;
+    public void setMenuDomainSet(Set<cMenuDomain> menuDomainSet) {
+        this.menuDomainSet = menuDomainSet;
     }
 
-    public List<cStatusBITS> getStatusesBITS() {
-        return statusesBITS;
+    public Set<cRoleDomain> getRoleDomainSet() {
+        return roleDomainSet;
     }
 
-    public void setStatusesBITS(List<cStatusBITS> statusesBITS) {
-        this.statusesBITS = statusesBITS;
+    public void setRoleDomainSet(Set<cRoleDomain> roleDomainSet) {
+        this.roleDomainSet = roleDomainSet;
     }
 
-    /**
-     * This reads from the shared preferences and builds a cUserDomain object and returns it.
-     * If no user is logged in it returns null.
-     *
-     * @return userDomain
-     */
-    public cUserDomain loadCurrentUser() {
-        String currentUser = settings.getString(cConstant.KEY_USER_PROFILE, null);
-        cUserDomain userDomain = null;
-        try {
-            Gson gson = new Gson();
-            userDomain = gson.fromJson(currentUser, cUserDomain.class);
-        } catch (Exception e) {
-            Log.e(TAG + " getCurrentUser ", e.getMessage());
-        }
-        return userDomain;
+    public int getEntityBITS() {
+        return entityBITS;
     }
 
-    /**
-     * This takes a list of user roles as a parameter and returns the merged
-     * privileges.
-     *
-     * @param userRoles
-     * @return mergedPrivileges
-     */
-    public ArrayList<cPermissionDomain> getMergedPrivileges(ArrayList<cRoleDomain> userRoles) {
-        ArrayList<cPermissionDomain> mergedPrivileges = new ArrayList<cPermissionDomain>();
-
-        for (int i = 0; i < userRoles.size(); i++) {
-            ArrayList<cPermissionDomain> privileges = null;//privilegeHandler.getPrivilegesByIDs(
-                    //userRoles.get(i).getOrganizationID(), userRoles.get(i).getRoleID());
-            mergedPrivileges.addAll(privileges);
-        }
-        return mergedPrivileges;
+    public void setEntityBITS(int entityBITS) {
+        this.entityBITS = entityBITS;
     }
 
-    /**
-     * This takes user domain as parameter to compute and return secondary
-     * roles of the loggedIn user.
-     *
-     * @param userDomain
-     * @return secondaryRoles
-     */
-    public int computeSecondaryRoles(cUserDomain userDomain){
-        int secondaryRoles = 0;
-        /*
-        ArrayList<cRoleDomain> roleDomains = userRoleHandler.getRolesByUserID(
-                userDomain.getUserID());
-
-        for (int i = 0; i < roleDomains.size(); i++) {
-            secondaryRoles |= roleDomains.get(i).getOrganizationID();
-        }
-
-        // remove primary role from secondary
-        secondaryRoles &= ~userDomain.getOrganizationID();
-        */
-        return secondaryRoles;
+    public int getOperationBITS() {
+        return operationBITS;
     }
 
-    //************* FUNCTIONS FOR MANIPULATING CURRENT SETTINGS *************
+    public void setOperationBITS(int operationBITS) {
+        this.operationBITS = operationBITS;
+    }
+
+    public int getStatusBITS() {
+        return statusBITS;
+    }
+
+    public void setStatusBITS(int statusBITS) {
+        this.statusBITS = statusBITS;
+    }
+
+    public HashMap<cEntityDomain, Pair<Integer, Integer>> getPrivilegeDomainBITS() {
+        return privilegeDomainBITS;
+    }
+
+    public void setPrivilegeDomainBITS(HashMap<cEntityDomain, Pair<Integer, Integer>> privilegeDomainBITS) {
+        this.privilegeDomainBITS = privilegeDomainBITS;
+    }
+
+    public Set<cPrivilegeDomain> getPrivilegeDomainSet() {
+        return privilegeDomainSet;
+    }
+
+    public void setPrivilegeDomainSet(Set<cPrivilegeDomain> privilegeDomainSet) {
+        this.privilegeDomainSet = privilegeDomainSet;
+    }
+
+    public Set<cNotificationDomain> getNotificationDomainSet() {
+        return notificationDomainSet;
+    }
+
+    public void setNotificationDomainSet(Set<cNotificationDomain> notificationDomainSet) {
+        this.notificationDomainSet = notificationDomainSet;
+    }
+
+    /* ########## FUNCTIONS FOR SAVING AND LOADING CURRENT SETTINGS /* ########## */
 
     /**
      * This sets the user domain json string of the loggedIn user and saves it.
@@ -430,7 +442,7 @@ public class cSessionManager extends cBitwisePermission implements Serializable 
      *
      * @param organizationID
      */
-    public void saveOrganizationID(int organizationID) {
+    public void saveOrgID(int organizationID) {
         editor.putInt(cConstant.KEY_ORGANIZATION_ID, organizationID);
     }
 
@@ -440,49 +452,17 @@ public class cSessionManager extends cBitwisePermission implements Serializable 
      *
      * @return organizationID
      */
-    public int loadOrganizationID() {
+    public int loadOrgID() {
         return settings.getInt(cConstant.KEY_ORGANIZATION_ID, -1);
-    }
-
-    /**
-     * This sets organization ID (which is used as owner organization ID)
-     * for records and saves it.
-     *
-     * @param organizationID
-     */
-    public void saveOrganizationIDS(int organizationID) {
-        StringBuilder key = new StringBuilder(cConstant.KEY_ORGANIZATIONS_ID);
-        key.append("-");
-        key.append(organizationID);
-        editor.putInt(String.valueOf(key), organizationID);
-    }
-
-    /**
-     * This returns organization IDs of the loggedIn user. If no organization,
-     * it returns -1.
-     *
-     * @return organizationID
-     */
-    public int loadOrganizationIDS(int organizationID) {
-        StringBuilder key = new StringBuilder(cConstant.KEY_ORGANIZATIONS_ID);
-        key.append("-");
-        key.append(organizationID);
-        return settings.getInt(String.valueOf(key), -1);
     }
 
     /**
      * This sets primary role of the loggedIn user and saves it.
      *
-     * @param userID
-     * @param orgID
      * @param primaryRole
      */
-    public void savePrimaryRole(int userID, int orgID, int primaryRole) {
+    public void savePrimaryRole(int primaryRole) {
         StringBuilder key = new StringBuilder(cConstant.KEY_PRIMARY_ROLE_BIT);
-        key.append("-");
-        key.append(userID);
-        key.append("-");
-        key.append(orgID);
         editor.putInt(String.valueOf(key), primaryRole);
     }
 
@@ -490,32 +470,20 @@ public class cSessionManager extends cBitwisePermission implements Serializable 
      * This returns a primary role of the loggedIn user. If no primary role,
      * it returns -1.
      *
-     * @param userID
-     * @param orgID
      * @return
      */
-    public int loadPrimaryRole(int userID, int orgID) {
+    public int loadPrimaryRole() {
         StringBuilder key = new StringBuilder(cConstant.KEY_PRIMARY_ROLE_BIT);
-        key.append("-");
-        key.append(userID);
-        key.append("-");
-        key.append(orgID);
         return settings.getInt(String.valueOf(key), -1);
     }
 
     /**
      * This sets secondary roles of the loggedIn user and saves it.
      *
-     * @param userID
-     * @param orgID
      * @param secondaryRoles
      */
-    public void saveSecondaryRoles(int userID, int orgID, int secondaryRoles) {
+    public void saveSecondaryRoles(int secondaryRoles) {
         StringBuilder key = new StringBuilder(cConstant.KEY_SECONDARY_ROLE_BITS);
-        key.append("-");
-        key.append(userID);
-        key.append("-");
-        key.append(orgID);
         editor.putInt(String.valueOf(key), secondaryRoles);
     }
 
@@ -523,101 +491,56 @@ public class cSessionManager extends cBitwisePermission implements Serializable 
      * This returns a secondary roles of the loggedIn user. If no secondary roles,
      * it returns -1.
      *
-     * @param userID
-     * @param orgID
      * @return
      */
-    public int loadSecondaryRoles(int userID, int orgID) {
+    public int loadSecondaryRoles() {
         StringBuilder key = new StringBuilder(cConstant.KEY_SECONDARY_ROLE_BITS);
-        key.append("-");
-        key.append(userID);
-        key.append("-");
-        key.append(orgID);
         return settings.getInt(String.valueOf(key), -1);
     }
 
     /**
-     * This takes a list of entityBITS grouped by typeID and saves them. This contains
-     * list of entities the loggedIn user has access to.
+     * This saves operation BITS and status BITS that belong to a specified entity with
+     * the specified entityID and entityTypeID
      *
-     * @param userID
-     * @param orgID
-     * @param entityBITS
+     * @param privilegeMapBITS
      */
-    public void saveEntityBITS(int userID, int orgID, List<cEntityBITS> entityBITS) {
-        for (cEntityBITS entityBIT : entityBITS) {
-            StringBuilder key = new StringBuilder(cConstant.KEY_ENTITY_TYPE_BITS);
-            key.append("-");
-            key.append(userID);
-            key.append("-");
-            key.append(orgID);
-            key.append("-");
-            key.append(entityBIT.getTypeID());
-            editor.putInt(String.valueOf(key), entityBIT.getEntityBITS());
+    public void savePrivilegeDomainBITS(HashMap<cEntityDomain, Pair<Integer, Integer>> privilegeMapBITS) {
+        for (Map.Entry<cEntityDomain, Pair<Integer, Integer>> opEntry : privilegeMapBITS.entrySet()) {
+            cEntityDomain entityDomain = opEntry.getKey();
+            Pair pair = opEntry.getValue();
+
+            /*build and save entity operation preferences */
+            StringBuilder operationKey = new StringBuilder(cConstant.KEY_ENTITY_OPERATION_BITS);
+            operationKey.append("-");
+            operationKey.append(entityDomain.getEntityID());
+            operationKey.append("-");
+            operationKey.append(entityDomain.getTypeID());
+            editor.putInt(String.valueOf(operationKey), (Integer) pair.first);
+
+            /* build and save operation status preferences*/
+            StringBuilder statusKey = new StringBuilder(cConstant.KEY_OPERATION_STATUS_BITS);
+            statusKey.append("-");
+            statusKey.append(entityDomain.getEntityID());
+            statusKey.append("-");
+            statusKey.append(entityDomain.getTypeID());
+            editor.putInt(String.valueOf(statusKey), (Integer) pair.second);
+
+            Log.d(TAG, " PRIVILEGE BITS: " +
+                    entityDomain.getEntityID() + "-" +
+                    entityDomain.getTypeID() + " = (" + pair.first + ", " + pair.second + ")");
         }
     }
 
     /**
-     * This takes userID, orgID and typeID of the entity and returns the
-     * bits which represents the entities the user has access to.
-     * If no userID, orgID and typeID, returns 0.
+     * This returns operation BITS that belong to an entity with the specified
+     * entityID and entityTypeID
      *
-     * @param userID
-     * @param orgID
-     * @param typeID
-     * @return entity bits
-     */
-    public int loadEntityBITS(int userID, int orgID, int typeID) {
-        StringBuilder key = new StringBuilder(cConstant.KEY_ENTITY_TYPE_BITS);
-        key.append("-");
-        key.append(userID);
-        key.append("-");
-        key.append(orgID);
-        key.append("-");
-        key.append(typeID);
-        return settings.getInt(String.valueOf(key), 0);
-    }
-
-    /**
-     * This takes a list of operationBITS grouped by userID, orgID, entityID, and
-     * typeID and saves them. This contains list of operations the loggedIn user
-     * has access to on entities.
-     *
-     * @param userID
-     * @param orgID
-     * @param operationBITS
-     */
-    public void saveOperationBITS(int userID, int orgID, List<cOperationBITS> operationBITS) {
-        for (cOperationBITS operationBIT : operationBITS) {
-            StringBuilder key = new StringBuilder(cConstant.KEY_ENTITY_OPERATION_BITS);
-            key.append("-");
-            key.append(userID);
-            key.append("-");
-            key.append(orgID);
-            key.append("-");
-            key.append(operationBIT.getEntityID());
-            key.append("-");
-            key.append(operationBIT.getTypeID());
-            editor.putInt(String.valueOf(key), operationBIT.getOperationBITS());
-        }
-    }
-
-    /**
-     * This takes userID, orgID, entityID and typeID and returns the bits.
-     * If no entityID and typeID, returns 0.
-     *
-     * @param userID
-     * @param orgID
      * @param entityID
      * @param typeID
-     * @return operation bits
+     * @return
      */
-    public int loadOperationBITS(int userID, int orgID, int entityID, int typeID) {
+    public int loadOperationBITS(int entityID, int typeID) {
         StringBuilder key = new StringBuilder(cConstant.KEY_ENTITY_OPERATION_BITS);
-        key.append("-");
-        key.append(userID);
-        key.append("-");
-        key.append(orgID);
         key.append("-");
         key.append(entityID);
         key.append("-");
@@ -626,73 +549,30 @@ public class cSessionManager extends cBitwisePermission implements Serializable 
     }
 
     /**
-     * This takes a list of statusBITS grouped by userID, orgID, entityID, typeID,
-     * operationID and saves them. This contains list of statuses the loggedIn user
-     * has access to on operations.
+     * This returns status BITS that apply to operations that belong to an entity
+     * with the specified entityID and entityTypeID
      *
-     * @param userID
-     * @param orgID
-     * @param statusBITS
-     */
-    public void saveStatusBITS(int userID, int orgID, List<cStatusBITS> statusBITS) {
-        for (cStatusBITS statusBIT : statusBITS) {
-            StringBuilder key = new StringBuilder(cConstant.KEY_OPERATION_STATUS_BITS);
-            key.append("-");
-            key.append(userID);
-            key.append("-");
-            key.append(orgID);
-            key.append("-");
-            key.append(statusBIT.getEntityID());
-            key.append("-");
-            key.append(statusBIT.getTypeID());
-            key.append("-");
-            key.append(statusBIT.getOperationID());
-            editor.putInt(String.valueOf(key), statusBIT.getStatusBITS());
-        }
-    }
-
-    /**
-     * This takes userID, orgID, entityID, typeID and operationID and returns the bits.
-     * If no entityID. typeID and operationID, returns 0.
-     *
-     * @param userID
-     * @param orgID
      * @param entityID
      * @param typeID
-     * @param compositeOpID
-     * @return status bits
+     * @return
      */
+    public int loadStatusBITS(int entityID, int typeID) {
+        StringBuilder key = new StringBuilder(cConstant.KEY_OPERATION_STATUS_BITS);
+        key.append("-");
+        key.append(entityID);
+        key.append("-");
+        key.append(typeID);
 
-    public int loadStatusBITS(int userID, int orgID, int entityID, int typeID, int compositeOpID) {
-        int opBITS = 0;
-        for(int i = 0; i < permissions.length; i++){
-            // get the specific operation
-            int opBIT = permissions[i] & compositeOpID;
-            // get the prefix of the key
-            StringBuilder key = new StringBuilder(cConstant.KEY_OPERATION_STATUS_BITS);
-            key.append("-");
-            key.append(userID);
-            key.append("-");
-            key.append(orgID);
-            key.append("-");
-            key.append(entityID);
-            key.append("-");
-            key.append(typeID);
-            key.append("-");
-            key.append(opBIT);
-            opBITS |= settings.getInt(String.valueOf(key), 0);
-        }
-        return opBITS;
+        return settings.getInt(String.valueOf(key), 0);
     }
 
-
-    //************* FUNCTIONS FOR CRUD AND LOG IN/OUT OPERATIONS *************
+    /* ########## FUNCTIONS FOR CRUD AND LOG IN/OUT OPERATIONS ########## */
 
     /**
      * This saves the settings of the loggedIn user. Should be called
      * after every preference setting function.
      */
-    public void commitSettings(){
+    public void commitSettings() {
         editor.commit();
     }
 
@@ -701,7 +581,7 @@ public class cSessionManager extends cBitwisePermission implements Serializable 
      *
      * @param key
      */
-    public void removeSetting(String key){
+    public void removeSetting(String key) {
         editor.remove(key);
     }
 
@@ -712,7 +592,7 @@ public class cSessionManager extends cBitwisePermission implements Serializable 
      * @param key
      * @param value
      */
-    public void updateIntSetting(String key, int value){
+    public void updateIntSetting(String key, int value) {
         editor.putInt(key, value);
 
     }
@@ -724,7 +604,7 @@ public class cSessionManager extends cBitwisePermission implements Serializable 
      * @param key
      * @param value
      */
-    public void updateStringSetting(String key, String value){
+    public void updateStringSetting(String key, String value) {
         editor.putString(key, value);
     }
 
@@ -735,14 +615,14 @@ public class cSessionManager extends cBitwisePermission implements Serializable 
      * @param key
      * @param value
      */
-    public void updateBooleanSetting(String key, Boolean value){
+    public void updateBooleanSetting(String key, Boolean value) {
         editor.putBoolean(key, value);
     }
 
     /**
      * This deletes all the saved settings of the loggedIn user.
      */
-    public void deleteSettings(){
+    public void deleteSettings() {
         editor.clear();
     }
 
