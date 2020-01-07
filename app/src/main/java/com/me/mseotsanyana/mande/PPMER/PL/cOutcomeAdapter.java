@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.me.mseotsanyana.mande.PPMER.BLL.cProjectDomain;
-import com.me.mseotsanyana.mande.PPMER.BLL.cOutcomeDomain;
+import com.me.mseotsanyana.mande.PPMER.BLL.domain.cOutcomeDomain;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 import com.me.mseotsanyana.treeadapterlibrary.cNode;

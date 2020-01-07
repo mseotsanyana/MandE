@@ -4,7 +4,7 @@ import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.util.Log;
 
-import com.me.mseotsanyana.mande.COM.cVolleyHandler;
+import com.me.mseotsanyana.mande.UTILITY.COM.cVolleyHandler;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;

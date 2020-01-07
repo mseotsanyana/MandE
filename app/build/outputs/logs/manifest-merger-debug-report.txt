@@ -135,10 +135,10 @@ ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\mai
 		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:78:13-69
 	android:name
 		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:77:13-57
-receiver#com.me.mseotsanyana.mande.COM.cBroadcastReceiver
+receiver#com.me.mseotsanyana.mande.UTILITY.COM.cBroadcastReceiver
 ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:80:9-84:20
 	android:name
-		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:80:19-57
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:80:19-65
 intent-filter#action:name:android.intent.action.BOOT_COMPLETED
 ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:81:13-83:29
 action#android.intent.action.BOOT_COMPLETED

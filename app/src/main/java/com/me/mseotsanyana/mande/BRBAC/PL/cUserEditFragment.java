@@ -34,7 +34,7 @@ import com.me.mseotsanyana.mande.BRBAC.BLL.cOrganizationHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserHandler;
-import com.me.mseotsanyana.mande.INTERFACE.iMEEntityInterface;
+import com.me.mseotsanyana.mande.UTILITY.INTERFACE.iMEEntityInterface;
 import com.me.mseotsanyana.mande.PPMER.PL.cMainFragment;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTILITY.cUtil;

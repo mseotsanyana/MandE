@@ -18,14 +18,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
+import com.me.mseotsanyana.mande.BRBAC.PL.ui.fragments.cSettingsFragment;
 import com.me.mseotsanyana.mande.UTILITY.cInputValidation;
 import com.me.mseotsanyana.mande.UTILITY.cUtil;
 import com.me.mseotsanyana.mande.PPMER.PL.cMainFragment;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserHandler;
 import com.me.mseotsanyana.mande.R;
-
-import java.io.Serializable;
 
 public class cLoginFragment extends Fragment {
     private cSessionManager session;

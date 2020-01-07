@@ -1,7 +1,8 @@
 package com.me.mseotsanyana.mande.PPMER.DAL;
 
+import com.me.mseotsanyana.mande.PPMER.DAL.model.cActivityModel;
+
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class cPrecedingActivityModel implements Serializable{

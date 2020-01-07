@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.me.mseotsanyana.mande.PPMER.BLL.cOutputDomain;
-import com.me.mseotsanyana.mande.PPMER.BLL.cOutputHandler;
+import com.me.mseotsanyana.mande.PPMER.BLL.domain.cOutputDomain;
+import com.me.mseotsanyana.mande.PPMER.BLL.interactors.cOutputInteractor;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
@@ -22,7 +22,7 @@ import java.util.ArrayList;
  */
 
 public class cOutputFragment extends Fragment {
-    private cOutputHandler outputHandler;
+    private cOutputInteractor outputHandler;
     private cOutputDomain outputDomain;
 
     private RecyclerView recyclerView;
@@ -61,7 +61,7 @@ public class cOutputFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // getting a action_list with all projects in a database
-        outputHandler = new cOutputHandler(getActivity());
+        outputHandler = new cOutputInteractor(getActivity());
 
         ArrayList<cTreeModel> outputTreeData = getArguments().getParcelableArrayList("OUTPUTTREE");
 

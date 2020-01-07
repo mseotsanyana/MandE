@@ -1,27 +1,23 @@
 package com.me.mseotsanyana.mande.PPMER.BLL;
 
 import android.content.Context;
-import android.database.Cursor;
 
-import com.me.mseotsanyana.mande.PPMER.DAL.cLogFrameDBA;
-import com.me.mseotsanyana.mande.PPMER.DAL.cLogFrameModel;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.me.mseotsanyana.mande.PPMER.DAL.impl.cLogFrameRepositoryImpl;
+import com.me.mseotsanyana.mande.PPMER.DAL.model.cLogFrameModel;
 
 
 public class cProjectHandler extends cMapper<cLogFrameModel, cProjectDomain>
 {
-    private cLogFrameDBA projectDBA;
+    private cLogFrameRepositoryImpl projectDBA;
     private Context context;
 
     public cProjectHandler(Context context) {
-        projectDBA = new cLogFrameDBA(context);
+        projectDBA = new cLogFrameRepositoryImpl(context);
         this.context = context;
     }
 
     //public cProjectHandler() {
-        //projectDb = new cLogFrameDBA();
+        //projectDb = new cLogFrameRepositoryImpl();
     //}
 /***
     // business rules for adding a project

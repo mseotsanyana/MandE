@@ -5,7 +5,7 @@ import android.content.Context;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cOperationDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cPermissionDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionDomain;
-import com.me.mseotsanyana.mande.PPMER.BLL.cActivityDomain;
+import com.me.mseotsanyana.mande.PPMER.BLL.domain.cActivityDomain;
 import com.me.mseotsanyana.mande.PPMER.BLL.cDateDomain;
 import com.me.mseotsanyana.mande.PPMER.BLL.cDateHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cMenuDomain;
@@ -13,12 +13,12 @@ import com.me.mseotsanyana.mande.BRBAC.BLL.cMenuRoleDomain;
 import com.me.mseotsanyana.mande.PPMER.BLL.cGoalDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cRoleDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cEntityDomain;
-import com.me.mseotsanyana.mande.PPMER.BLL.cObjectiveDomain;
+import com.me.mseotsanyana.mande.PPMER.BLL.domain.cImpactDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cOrganizationDomain;
-import com.me.mseotsanyana.mande.PPMER.BLL.cOutcomeDomain;
+import com.me.mseotsanyana.mande.PPMER.BLL.domain.cOutcomeDomain;
 import com.me.mseotsanyana.mande.PPMER.BLL.cOutcomeOutputDomain;
 import com.me.mseotsanyana.mande.PPMER.BLL.cOutputActivityDomain;
-import com.me.mseotsanyana.mande.PPMER.BLL.cOutputDomain;
+import com.me.mseotsanyana.mande.PPMER.BLL.domain.cOutputDomain;
 import com.me.mseotsanyana.mande.PPMER.BLL.cProjectDomain;
 import com.me.mseotsanyana.mande.PPMER.BLL.cProjectOutcomeDomain;
 import com.me.mseotsanyana.mande.PPMER.BLL.cSpecificAimDomain;
@@ -55,7 +55,7 @@ public class cSetDomainsFromExcel {
     private cValueDomain valueDomain;
     private cGoalDomain goalDomain;
     private cSpecificAimDomain specificAimDomain;
-    private cObjectiveDomain objectiveDomain;
+    private cImpactDomain objectiveDomain;
     private cProjectDomain projectDomain;
     private cOutcomeDomain outcomeDomain;
     private cOutputDomain outputDomain;
@@ -360,8 +360,8 @@ public class cSetDomainsFromExcel {
     }
 
     // store the excel row into the output domain object
-    public cObjectiveDomain getObjectiveFromExcel(Row cRow){
-        objectiveDomain = new cObjectiveDomain();
+    public cImpactDomain getObjectiveFromExcel(Row cRow){
+        objectiveDomain = new cImpactDomain();
 
         objectiveDomain.setObjectiveID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         objectiveDomain.setProjectID((int)cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());

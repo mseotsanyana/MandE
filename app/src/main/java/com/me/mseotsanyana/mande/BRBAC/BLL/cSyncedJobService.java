@@ -10,7 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.me.mseotsanyana.mande.BRBAC.PL.cSyncManager;
-import com.me.mseotsanyana.mande.COM.cVolleyHandler;
+import com.me.mseotsanyana.mande.UTILITY.COM.cVolleyHandler;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.me.mseotsanyana.mande.PPMER.BLL.cActivityDomain;
-import com.me.mseotsanyana.mande.PPMER.BLL.cActivityHandler;
+import com.me.mseotsanyana.mande.PPMER.BLL.domain.cActivityDomain;
+import com.me.mseotsanyana.mande.PPMER.BLL.interactors.cActivityInterator;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
@@ -22,7 +22,7 @@ import java.util.ArrayList;
  */
 
 public class cActivityFragment extends Fragment {
-    private cActivityHandler activityHandler;
+    private cActivityInterator activityHandler;
     private cActivityDomain activityDomain;
 
     private RecyclerView recyclerView;
@@ -61,7 +61,7 @@ public class cActivityFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // getting a action_list with all activities in a database
-        activityHandler = new cActivityHandler(getActivity());
+        activityHandler = new cActivityInterator(getActivity());
 
         ArrayList<cTreeModel> activityTreeData = getArguments().getParcelableArrayList("ACTIVITYTREE");
 

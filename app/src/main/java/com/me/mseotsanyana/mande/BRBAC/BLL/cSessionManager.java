@@ -6,25 +6,17 @@ package com.me.mseotsanyana.mande.BRBAC.BLL;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Point;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 import android.util.Pair;
 
 import com.google.gson.Gson;
-import com.me.mseotsanyana.mande.BRBAC.DAL.cRoleModel;
-import com.me.mseotsanyana.mande.COM.cEntityBITS;
-import com.me.mseotsanyana.mande.COM.cOperationBITS;
-import com.me.mseotsanyana.mande.COM.cStatusBITS;
 import com.me.mseotsanyana.mande.UTILITY.cBitwisePermission;
 import com.me.mseotsanyana.mande.UTILITY.cConstant;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 

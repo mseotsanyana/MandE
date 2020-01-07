@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.me.mseotsanyana.mande.PPMER.BLL.cOutcomeDomain;
-import com.me.mseotsanyana.mande.PPMER.BLL.cOutcomeHandler;
+import com.me.mseotsanyana.mande.PPMER.BLL.domain.cOutcomeDomain;
+import com.me.mseotsanyana.mande.PPMER.BLL.interactors.cOutcomeInterator;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class cOutcomeFragment extends Fragment {
 
-    private cOutcomeHandler outcomeHandler;
+    private cOutcomeInterator outcomeHandler;
     private cOutcomeDomain outcomeDomain;
 
     private RecyclerView recyclerView;
@@ -62,7 +62,7 @@ public class cOutcomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // getting a action_list with all projects in a database
-        outcomeHandler = new cOutcomeHandler(getActivity());
+        outcomeHandler = new cOutcomeInterator(getActivity());
 
         ArrayList<cTreeModel> outcomeTreeData = getArguments().getParcelableArrayList("OUTCOMETREE");
 

@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.me.mseotsanyana.mande.PPMER.DAL.cSQLDBHelper;
+import com.me.mseotsanyana.mande.STORAGE.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.UTILITY.cConstant;
 
 import java.sql.Timestamp;
@@ -138,7 +138,6 @@ public class cMenuDBA {
                             Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
                     menu.setSyncedDate(
                             Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
-
 
                     // populate menu for a specific parent menu
                     menu.setMenuModelSet(getSubsetMenuByID(menu.getMenuID()));

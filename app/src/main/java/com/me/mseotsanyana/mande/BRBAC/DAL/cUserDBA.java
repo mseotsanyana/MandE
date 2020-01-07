@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.me.mseotsanyana.mande.PPMER.DAL.cSQLDBHelper;
+import com.me.mseotsanyana.mande.STORAGE.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.UTILITY.cConstant;
 
 import java.sql.Timestamp;

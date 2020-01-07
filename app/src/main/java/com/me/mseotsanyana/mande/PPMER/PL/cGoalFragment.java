@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.me.mseotsanyana.mande.PPMER.BLL.cGoalHandler;
+import com.me.mseotsanyana.mande.PPMER.BLL.interactors.cImpactInterator;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cOrganizationHandler;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
@@ -28,7 +28,7 @@ public class cGoalFragment extends Fragment {
     private ArrayList<cTreeModel> goalTree;
     private ArrayList<cTreeModel> goalTreeData;
     private cOrganizationHandler organizationHandler;
-    private cGoalHandler goalHandler;
+    private cImpactInterator goalHandler;
 
     int level = 0;
 
@@ -63,7 +63,7 @@ public class cGoalFragment extends Fragment {
         super.onCreate(savedInstanceState);
         // getting a action_list with all projects in a database
         //organizationHandler = new cOrganizationHandler(getActivity());
-        //goalHandler = new cGoalHandler(getActivity());
+        //goalHandler = new cImpactInterator(getActivity());
 
         //organizationTree = organizationHandler.getOrganizationTree();
         //goalTree = goalHandler.getGoalTree();

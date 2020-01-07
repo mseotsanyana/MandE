@@ -29,13 +29,31 @@
             android:layout_height="wrap_content" />
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/appCompatButtonUploadRBAC"
+            android:id="@+id/appCompatButtonUploadBRBAC"
             android:layout_marginTop="40dp"
-            android:text="Upload RBAC Data"
+            android:text="Upload BRBAC Dataset"
             android:background="@color/colorPrimary"
             android:textColor="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/appCompatButtonUploadPM"
+            android:layout_marginTop="40dp"
+            android:text="Upload LogFrame Dataset"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Base.Widget.AppCompat.ProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:indeterminate="true"
+            android:visibility="invisible" />
 <!--
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_logout"

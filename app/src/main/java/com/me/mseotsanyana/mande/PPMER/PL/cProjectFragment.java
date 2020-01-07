@@ -14,8 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.me.mseotsanyana.mande.COM.cEvent;
-import com.me.mseotsanyana.mande.COM.cGlobalBus;
+import com.me.mseotsanyana.mande.UTILITY.COM.cEvent;
+import com.me.mseotsanyana.mande.UTILITY.COM.cGlobalBus;
 import com.me.mseotsanyana.mande.PPMER.BLL.cProjectDomain;
 import com.me.mseotsanyana.mande.PPMER.BLL.cProjectHandler;
 import com.me.mseotsanyana.mande.R;

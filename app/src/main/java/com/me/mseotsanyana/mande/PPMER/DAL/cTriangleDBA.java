@@ -2,9 +2,10 @@ package com.me.mseotsanyana.mande.PPMER.DAL;
 
 import android.content.Context;
 
+import com.me.mseotsanyana.mande.PPMER.DAL.impl.cImpactImpl;
+import com.me.mseotsanyana.mande.STORAGE.database.cSQLDBHelper;
+
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -18,14 +19,14 @@ public class cTriangleDBA {
     private cSQLDBHelper dbHelper;
     private static final String TAG = "dbHelper";
 
-    private cImpactDBA goalDBA;
+    private cImpactImpl goalDBA;
     private cSpecificAimDBA specificAimDBA;
     private cObjectiveDBA objectiveDBA;
 
     public cTriangleDBA(Context context) {
         dbHelper = new cSQLDBHelper(context);
 
-        goalDBA = new cImpactDBA(context);
+        goalDBA = new cImpactImpl(context);
         specificAimDBA = new cSpecificAimDBA(context);
         objectiveDBA = new cObjectiveDBA(context);
     }

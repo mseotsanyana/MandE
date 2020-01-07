@@ -1,14 +1,10 @@
 package com.me.mseotsanyana.mande.PPMER.DAL;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+
+import com.me.mseotsanyana.mande.STORAGE.database.cSQLDBHelper;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 public class cRiskRegisterDBA {

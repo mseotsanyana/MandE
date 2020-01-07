@@ -32,7 +32,7 @@ import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cStatusDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserHandler;
-import com.me.mseotsanyana.mande.INTERFACE.iTreeAdapterCallback;
+import com.me.mseotsanyana.mande.UTILITY.INTERFACE.iTreeAdapterCallback;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTILITY.cFontManager;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cKeyPairBoolData;

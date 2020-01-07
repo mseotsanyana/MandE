@@ -22,15 +22,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
-import com.me.mseotsanyana.mande.INTERFACE.iRequestInterface;
+import com.me.mseotsanyana.mande.BRBAC.PL.ui.fragments.cSettingsFragment;
+import com.me.mseotsanyana.mande.UTILITY.INTERFACE.iRequestInterface;
 import com.me.mseotsanyana.mande.UTILITY.cConstant;
 import com.me.mseotsanyana.mande.UTILITY.cUtil;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cUserModel;
 import com.me.mseotsanyana.mande.PPMER.DAL.cUserRequest;
 import com.me.mseotsanyana.mande.PPMER.DAL.cUserResponse;
 import com.me.mseotsanyana.mande.R;
-
-import java.io.Serializable;
 
 import retrofit2.Call;
 import retrofit2.Callback;

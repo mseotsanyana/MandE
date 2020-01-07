@@ -1,5 +1,7 @@
 package com.me.mseotsanyana.mande.PPMER.DAL;
 
+import com.me.mseotsanyana.mande.PPMER.DAL.model.cImpactModel;
+
 /**
  * Created by mseotsanyana on 2017/07/03.
  */

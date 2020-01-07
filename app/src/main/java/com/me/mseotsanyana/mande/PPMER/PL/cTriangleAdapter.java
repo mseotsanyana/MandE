@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.me.mseotsanyana.mande.PPMER.BLL.cGoalDomain;
-import com.me.mseotsanyana.mande.PPMER.BLL.cObjectiveDomain;
+import com.me.mseotsanyana.mande.PPMER.BLL.domain.cImpactDomain;
 import com.me.mseotsanyana.mande.PPMER.BLL.cSpecificAimDomain;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
@@ -126,7 +126,7 @@ public class cTriangleAdapter extends cTreeAdapter {
                     break;
 
                 case OBJECTIVE:
-                    cObjectiveDomain objectiveDomain = (cObjectiveDomain)obj.getModelObject();
+                    cImpactDomain objectiveDomain = (cImpactDomain)obj.getModelObject();
                     cObjectiveTreeViewHolder OVH = ((cObjectiveTreeViewHolder)viewHolder);
 
                     OVH.setPaddingLeft(40 * node.getLevel());

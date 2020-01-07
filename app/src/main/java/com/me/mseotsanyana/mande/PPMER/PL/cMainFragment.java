@@ -3,7 +3,6 @@ package com.me.mseotsanyana.mande.PPMER.PL;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -29,26 +28,25 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cRoleHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
+import com.me.mseotsanyana.mande.PPMER.BLL.domain.cImpactDomain;
+import com.me.mseotsanyana.mande.PPMER.BLL.interactors.cOutcomeInterator;
+import com.me.mseotsanyana.mande.PPMER.BLL.interactors.cOutputInteractor;
 import com.me.mseotsanyana.mande.UTILITY.cConstant;
 import com.me.mseotsanyana.mande.UTILITY.cDashboardFilter;
-import com.me.mseotsanyana.mande.PPMER.BLL.cActivityDomain;
-import com.me.mseotsanyana.mande.PPMER.BLL.cActivityHandler;
+import com.me.mseotsanyana.mande.PPMER.BLL.domain.cActivityDomain;
+import com.me.mseotsanyana.mande.PPMER.BLL.interactors.cActivityInterator;
 import com.me.mseotsanyana.mande.PPMER.BLL.cGoalDomain;
-import com.me.mseotsanyana.mande.PPMER.BLL.cGoalHandler;
+import com.me.mseotsanyana.mande.PPMER.BLL.interactors.cImpactInterator;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cMenuDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cMenuHandler;
-import com.me.mseotsanyana.mande.PPMER.BLL.cObjectiveDomain;
-import com.me.mseotsanyana.mande.PPMER.BLL.cObjectiveHandler;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cOrganizationDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cOrganizationHandler;
-import com.me.mseotsanyana.mande.PPMER.BLL.cOutcomeDomain;
-import com.me.mseotsanyana.mande.PPMER.BLL.cOutcomeHandler;
+import com.me.mseotsanyana.mande.PPMER.BLL.domain.cOutcomeDomain;
 import com.me.mseotsanyana.mande.PPMER.BLL.cOutcomeOutputDomain;
 import com.me.mseotsanyana.mande.PPMER.BLL.cOutcomeOutputHandler;
 import com.me.mseotsanyana.mande.PPMER.BLL.cOutputActivityDomain;
 import com.me.mseotsanyana.mande.PPMER.BLL.cOutputActivityHandler;
-import com.me.mseotsanyana.mande.PPMER.BLL.cOutputDomain;
-import com.me.mseotsanyana.mande.PPMER.BLL.cOutputHandler;
+import com.me.mseotsanyana.mande.PPMER.BLL.domain.cOutputDomain;
 import com.me.mseotsanyana.mande.PPMER.BLL.cProjectDomain;
 import com.me.mseotsanyana.mande.PPMER.BLL.cProjectHandler;
 import com.me.mseotsanyana.mande.PPMER.BLL.cProjectOutcomeDomain;
@@ -65,13 +63,11 @@ import com.me.mseotsanyana.multiselectspinnerlibrary.cMultiSpinnerSearch;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cSpinnerListener;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
@@ -130,13 +126,13 @@ public class cMainFragment extends Fragment {
     private cMenuHandler menuHandler;
 
     private cOrganizationHandler organizationHandler;
-    private cGoalHandler goalHandler;
+    private cImpactInterator goalHandler;
     private cProjectHandler projectHandler;
-    private cOutcomeHandler outcomeHandler;
-    private cOutputHandler outputHandler;
-    private cActivityHandler activityHandler;
+    private cOutcomeInterator outcomeHandler;
+    private cOutputInteractor outputHandler;
+    private cActivityInterator activityHandler;
     private cSpecificAimHandler specificAimHandler;
-    private cObjectiveHandler objectiveHandler;
+    //private cObjectiveInteractor objectiveHandler;
     private cProjectOutcomeHandler projectOutcomeHandler;
     private cOutcomeOutputHandler outcomeOutputHandler;
     private cOutputActivityHandler outputActivityHandler;
@@ -250,19 +246,19 @@ public class cMainFragment extends Fragment {
         // initialise a handler and get organization data from the database
         organizationHandler = new cOrganizationHandler(getActivity(), session);
         //  initialise a handler and get goal data from the database
-        goalHandler = new cGoalHandler(getActivity());
+        goalHandler = new cImpactInterator(getActivity());
         //  initialise a handler and get goal data from the database
         projectHandler = new cProjectHandler(getActivity());
         //  initialise a handler and get outcome data from the database
-        outcomeHandler = new cOutcomeHandler(getActivity());
+        outcomeHandler = new cOutcomeInterator(getActivity());
         //  initialise a handler and get output data from the database
-        outputHandler = new cOutputHandler(getActivity());
+        outputHandler = new cOutputInteractor(getActivity());
         //  initialise a handler and get activity data from the database
-        activityHandler = new cActivityHandler(getActivity());
+        activityHandler = new cActivityInterator(getActivity());
         //  initialise a handler and get specific aim data from the database
         specificAimHandler = new cSpecificAimHandler(getActivity());
         //  initialise a handler and get objective data from the database
-        objectiveHandler = new cObjectiveHandler(getActivity());
+        //objectiveHandler = new cObjectiveInteractor(getActivity());
 
         //  initialise a handler and get project outcome data from the database
         projectOutcomeHandler = new cProjectOutcomeHandler(getActivity());
@@ -658,7 +654,7 @@ public class cMainFragment extends Fragment {
                         // get all CES from database
                         //final ArrayList<cGoalDomain> goalDomains = goalHandler.getGoalList();
                         final ArrayList<cSpecificAimDomain> specificAimDomains = specificAimHandler.getSpecificAimList();
-                        final ArrayList<cObjectiveDomain> objectiveDomains = objectiveHandler.getObjectiveList();
+                        //final ArrayList<cImpactDomain> objectiveDomains = objectiveHandler.getObjectiveList();
 
                         // get all organization from database
                         final ArrayList<cOrganizationDomain> organizationDomains = organizationHandler.getOrganizationList();
@@ -1222,7 +1218,7 @@ public class cMainFragment extends Fragment {
     void updateCESTree(List<cKeyPairBoolData> selectedOrganizations,
                        ArrayList<cGoalDomain> goalDomains,
                        ArrayList<cSpecificAimDomain> specificAimDomains,
-                       ArrayList<cObjectiveDomain> objectiveDomains) {
+                       ArrayList<cImpactDomain> objectiveDomains) {
         ArrayList<cTreeModel> treeModelList = new ArrayList<>();
         int overallAimID = 0;
         int specificAimID = 0;

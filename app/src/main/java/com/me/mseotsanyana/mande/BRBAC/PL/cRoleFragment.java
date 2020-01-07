@@ -30,7 +30,7 @@ import com.me.mseotsanyana.mande.BRBAC.BLL.cRoleDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cStatusDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cStatusHandler;
-import com.me.mseotsanyana.mande.INTERFACE.iPermissionInterface;
+import com.me.mseotsanyana.mande.UTILITY.INTERFACE.iPermissionInterface;
 import com.me.mseotsanyana.mande.PPMER.PL.cMainFragment;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTILITY.TextDrawable;

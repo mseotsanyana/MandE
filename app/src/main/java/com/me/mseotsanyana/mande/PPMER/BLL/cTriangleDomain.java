@@ -3,6 +3,8 @@ package com.me.mseotsanyana.mande.PPMER.BLL;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.me.mseotsanyana.mande.PPMER.BLL.domain.cImpactDomain;
+
 /**
  * Created by mseotsanyana on 2017/07/03.
  */
@@ -10,12 +12,12 @@ import android.os.Parcelable;
 public class cTriangleDomain implements Parcelable {
     private cGoalDomain goalDomain;
     private cSpecificAimDomain specificAimDomain;
-    private cObjectiveDomain objectiveDomain;
+    private cImpactDomain objectiveDomain;
 
     protected cTriangleDomain(Parcel in) {
         this.setGoalDomain((cGoalDomain) in.readParcelable(cGoalDomain.class.getClassLoader()));
         this.setSpecificAimDomain((cSpecificAimDomain) in.readParcelable(cSpecificAimDomain.class.getClassLoader()));
-        this.setObjectiveDomain((cObjectiveDomain) in.readParcelable(cObjectiveDomain.class.getClassLoader()));
+        this.setObjectiveDomain((cImpactDomain) in.readParcelable(cImpactDomain.class.getClassLoader()));
     }
 
     /**
@@ -77,11 +79,11 @@ public class cTriangleDomain implements Parcelable {
         this.specificAimDomain = specificAimDomain;
     }
 
-    public cObjectiveDomain getObjectiveDomain() {
+    public cImpactDomain getObjectiveDomain() {
         return objectiveDomain;
     }
 
-    public void setObjectiveDomain(cObjectiveDomain objectiveDomain) {
+    public void setObjectiveDomain(cImpactDomain objectiveDomain) {
         this.objectiveDomain = objectiveDomain;
     }
 }

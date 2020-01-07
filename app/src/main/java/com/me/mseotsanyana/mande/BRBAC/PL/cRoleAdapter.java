@@ -28,7 +28,7 @@ import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cStatusDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserHandler;
-import com.me.mseotsanyana.mande.INTERFACE.iPermissionInterface;
+import com.me.mseotsanyana.mande.UTILITY.INTERFACE.iPermissionInterface;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTILITY.TextDrawable;
 import com.me.mseotsanyana.mande.UTILITY.cFontManager;

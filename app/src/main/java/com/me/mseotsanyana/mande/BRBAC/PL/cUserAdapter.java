@@ -32,7 +32,7 @@ import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cStatusDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cUserHandler;
-import com.me.mseotsanyana.mande.INTERFACE.iMEEntityInterface;
+import com.me.mseotsanyana.mande.UTILITY.INTERFACE.iMEEntityInterface;
 import com.me.mseotsanyana.mande.UTILITY.TextDrawable;
 import com.me.mseotsanyana.mande.UTILITY.cFontManager;
 import com.me.mseotsanyana.mande.R;

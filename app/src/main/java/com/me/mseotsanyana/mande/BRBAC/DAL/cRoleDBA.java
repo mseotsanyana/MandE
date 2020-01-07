@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cMenuDomain;
-import com.me.mseotsanyana.mande.PPMER.DAL.cSQLDBHelper;
+import com.me.mseotsanyana.mande.STORAGE.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.UTILITY.cConstant;
 
 import java.sql.Timestamp;

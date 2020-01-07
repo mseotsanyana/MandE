@@ -1,14 +1,12 @@
 package com.me.mseotsanyana.mande.PPMER.DAL;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+
+import com.me.mseotsanyana.mande.PPMER.DAL.impl.cOutcomeImpl;
+import com.me.mseotsanyana.mande.PPMER.DAL.impl.cOutputImpl;
+import com.me.mseotsanyana.mande.STORAGE.database.cSQLDBHelper;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -19,16 +17,16 @@ public class cOutcomeOutputDBA {
     // an object of the database helper
     private cSQLDBHelper dbHelper;
 
-    private cOutcomeDBA outcomeDBA;
-    private cOutputDBA outputDBA;
+    private cOutcomeImpl outcomeDBA;
+    private cOutputImpl outputDBA;
 
     private static final SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
     private static final String TAG = "dbHelper";
 
     public cOutcomeOutputDBA(Context context) {
         dbHelper = new cSQLDBHelper(context);
-        outcomeDBA = new cOutcomeDBA(context);
-        outputDBA = new cOutputDBA(context);
+        outcomeDBA = new cOutcomeImpl(context);
+        outputDBA = new cOutputImpl(context);
     }
 /*
     public boolean addOutcomeOutput(cOutcomeOutputModel outcomeOutputModel){
