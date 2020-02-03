@@ -1,6 +1,5 @@
 package com.me.mseotsanyana.mande.PPMER.DAL.model;
 
-import com.me.mseotsanyana.mande.PPMER.DAL.cEQuestionModel;
 import com.me.mseotsanyana.mande.PPMER.DAL.cMQuestionModel;
 
 import java.util.Date;
@@ -30,7 +29,7 @@ public class cQuestionModel {
     private cQuestionTypeModel questionTypeModel;
 
     /*one to one relation */
-    private cEQuestionModel eQuestionModel;
+    private cQuestionnaireModel eQuestionModel;
     private cMQuestionModel mQuestionModel;
 
     public cQuestionModel(){}
@@ -195,11 +194,11 @@ public class cQuestionModel {
         this.questionTypeModel = questionTypeModel;
     }
 
-    public cEQuestionModel geteQuestionModel() {
+    public cQuestionnaireModel geteQuestionModel() {
         return eQuestionModel;
     }
 
-    public void seteQuestionModel(cEQuestionModel eQuestionModel) {
+    public void seteQuestionModel(cQuestionnaireModel eQuestionModel) {
         this.eQuestionModel = eQuestionModel;
     }
 

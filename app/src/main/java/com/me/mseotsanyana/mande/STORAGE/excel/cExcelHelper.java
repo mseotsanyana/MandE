@@ -36,8 +36,10 @@ public class cExcelHelper {
     public static final String SHEET_tblIMPACT             = "tblIMPACT";                   /* 3  */
     public static final String SHEET_tblOUTCOME            = "tblOUTCOME";                  /* 4  */
     public static final String SHEET_tblOUTPUT             = "tblOUTPUT";                   /* 5  */
+    public static final String SHEET_tblACTIVITYPLANNING   = "tblACTIVITYPLANNING";         /* 6  */
     public static final String SHEET_tblACTIVITY           = "tblACTIVITY";                 /* 6  */
     public static final String SHEET_tblINPUT              = "tblINPUT";                    /* 7  */
+
     public static final String SHEET_tblQUESTION_GROUPING  = "tblQUESTIONGROUPING";        /* 8  */
     public static final String SHEET_tblQUESTION_TYPE      = "tblQUESTIONTYPE";            /* 9  */
     public static final String SHEET_tblPRIMITIVE_TYPE     = "tblPRIMITIVETYPE";           /* 10 */
@@ -62,7 +64,22 @@ public class cExcelHelper {
     public static final String SHEET_tblOUTPUT_RAID        = "tblOUTPUT_RAID";              /* 29 */
     public static final String SHEET_tblACTIVITY_RAID      = "tblACTIVITY_RAID";            /* 30 */
 
-    public static final String SHEET_tblEVALUATION_QUESTION  = "tblEVALUATION_QUESTION";    /* 1  */
+    //public static final String SHEET_tblEVALUATION_QUESTION    = "tblEVALUATION_QUESTION";   /* 1  */
+    public static final String SHEET_tblEVALUATION_TYPE        = "tblEVALUATION_TYPE";       /* 1  */
+    public static final String SHEET_tblQUESTIONNAIRE          = "tblQUESTIONNAIRE";         /* 2  */
+    public static final String SHEET_tblQUESTION_QUESTIONNAIRE = "tblQUESTION_QUESTIONNAIRE";/* 3  */
+    public static final String SHEET_tblCONDITIONAL_ORDER      = "tblCONDITIONAL_ORDER";     /* 4  */
+    public static final String SHEET_tblQUESTIONNAIRE_USER     = "tblQUESTIONNAIRE_USER";    /* 5  */
+    public static final String SHEET_tblQUESTION_INDICATOR     = "tblQUESTION_INDICATOR";    /* 6  */
+    public static final String SHEET_tblERESPONSE              = "tblERESPONSE";             /* 7  */
+    public static final String SHEET_tblNUMERICRESPONSE        = "tblNUMERICRESPONSE";       /* 8  */
+    public static final String SHEET_tblMATRIXRESPONSE         = "tblMATRIXRESPONSE";        /* 9  */
+    public static final String SHEET_tblDATERESPONSE           = "tblDATERESPONSE";          /* 10 */
+    public static final String SHEET_tblTEXTRESPONSE           = "tblTEXTRESPONSE";          /* 11 */
+    public static final String SHEET_tblARRAYRESPONSE          = "tblARRAYRESPONSE";         /* 12 */
+
+
+
     public static final String SHEET_tblMONITORING_QUESTION  = "tblMONITORING_QUESTION";    /* 2  */
 
 

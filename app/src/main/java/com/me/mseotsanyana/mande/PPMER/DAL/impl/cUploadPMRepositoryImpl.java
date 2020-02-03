@@ -78,9 +78,12 @@ public class cUploadPMRepositoryImpl implements iUploadPMRepository {
 
             cCriteriaModel criteriaModel = new cCriteriaModel();
 
-            criteriaModel.setCriteriaID((int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            criteriaModel.setName(cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            criteriaModel.setDescription(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            criteriaModel.setCriteriaID((int)
+                    cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            criteriaModel.setName(
+                    cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            criteriaModel.setDescription(
+                    cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
             if (!addQuestionCriteria(criteriaModel)) {
                 return false;
@@ -509,7 +512,7 @@ public class cUploadPMRepositoryImpl implements iUploadPMRepository {
             questionModel.setName(cRow.getCell(4, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
             questionModel.setDescription(cRow.getCell(5, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
-            /* get evaluation question type */
+            /* get evaluation question type
             Sheet evaluationSheet = workbook.getSheet(cExcelHelper.SHEET_tblEVALUATION_QUESTION);
             int questionID, evaluationID = -1;
 
@@ -526,9 +529,9 @@ public class cUploadPMRepositoryImpl implements iUploadPMRepository {
                     evaluationID = questionModel.getQuestionID();
                     break;
                 }
-            }
+            }*/
 
-            /* get monitoring question type */
+            /* get monitoring question type
             Sheet monitoringSheet = workbook.getSheet(cExcelHelper.SHEET_tblMONITORING_QUESTION);
             int monitoringID = -1;
 
@@ -549,7 +552,7 @@ public class cUploadPMRepositoryImpl implements iUploadPMRepository {
 
             if (!addQuestionFromExcel(questionModel, evaluationID, monitoringID)) {
                 return false;
-            }
+            }*/
         }
 
         return true;
@@ -586,7 +589,7 @@ public class cUploadPMRepositoryImpl implements iUploadPMRepository {
                 return false;
             }
 
-            /* insert primitive type in the database */
+            /* insert primitive type in the database
             if (evaluationID > -1) {
                 ContentValues cvEvaluation = new ContentValues();
                 cvEvaluation.put(cSQLDBHelper.KEY_QUESTION_FK_ID, evaluationID);
@@ -595,9 +598,9 @@ public class cUploadPMRepositoryImpl implements iUploadPMRepository {
                         cvEvaluation) < 0) {
                     return false;
                 }
-            }
+            }*/
 
-            /* insert primitive type in the database */
+            /* insert primitive type in the database
             if (monitoringID > -1) {
                 ContentValues cvMonitoring = new ContentValues();
                 cvMonitoring.put(cSQLDBHelper.KEY_QUESTION_FK_ID, monitoringID);
@@ -606,7 +609,7 @@ public class cUploadPMRepositoryImpl implements iUploadPMRepository {
                         cvMonitoring) < 0) {
                     return false;
                 }
-            }
+            }*/
 
         } catch (Exception e) {
             Log.d(TAG, "Exception in importing QUESTION from Excel: " + e.getMessage());
