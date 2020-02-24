@@ -1,6 +1,6 @@
 package com.me.mseotsanyana.mande.PPMER.DAL.model;
 
-import com.me.mseotsanyana.mande.PPMER.DAL.cMQuestionModel;
+import com.me.mseotsanyana.mande.UTILITY.DAL.cMQuestionModel;
 
 import java.util.Date;
 

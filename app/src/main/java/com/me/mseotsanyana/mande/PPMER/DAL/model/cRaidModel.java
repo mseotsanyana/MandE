@@ -1,13 +1,8 @@
 package com.me.mseotsanyana.mande.PPMER.DAL.model;
 
-import com.me.mseotsanyana.mande.PPMER.DAL.cAssumptionModel;
-import com.me.mseotsanyana.mande.PPMER.DAL.cDependencyModel;
-import com.me.mseotsanyana.mande.PPMER.DAL.cRiskIssueModel;
-import com.me.mseotsanyana.mande.PPMER.DAL.model.cActivityModel;
-import com.me.mseotsanyana.mande.PPMER.DAL.model.cImpactModel;
-import com.me.mseotsanyana.mande.PPMER.DAL.model.cLogFrameModel;
-import com.me.mseotsanyana.mande.PPMER.DAL.model.cOutcomeModel;
-import com.me.mseotsanyana.mande.PPMER.DAL.model.cOutputModel;
+import com.me.mseotsanyana.mande.UTILITY.DAL.cAssumptionModel;
+import com.me.mseotsanyana.mande.UTILITY.DAL.cDependencyModel;
+import com.me.mseotsanyana.mande.UTILITY.DAL.cRiskIssueModel;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -1,7 +1,7 @@
 package com.me.mseotsanyana.mande.UTILITY.INTERFACE;
 
-import com.me.mseotsanyana.mande.PPMER.DAL.cUserRequest;
-import com.me.mseotsanyana.mande.PPMER.DAL.cUserResponse;
+import com.me.mseotsanyana.mande.UTILITY.DAL.cUserRequest;
+import com.me.mseotsanyana.mande.UTILITY.DAL.cUserResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

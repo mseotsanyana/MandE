@@ -2,10 +2,9 @@ package com.me.mseotsanyana.mande.BRBAC.BLL;
 
 import android.content.Context;
 
-import com.me.mseotsanyana.mande.BRBAC.BLL.cValueDomain;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cValueDBA;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cValueModel;
-import com.me.mseotsanyana.mande.PPMER.BLL.cMapper;
+import com.me.mseotsanyana.mande.UTILITY.BLL.cMapper;
 
 import java.util.ArrayList;
 import java.util.List;

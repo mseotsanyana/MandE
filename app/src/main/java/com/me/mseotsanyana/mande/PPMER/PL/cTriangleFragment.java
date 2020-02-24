@@ -15,8 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.me.mseotsanyana.mande.PPMER.BLL.cTriangleDomain;
-import com.me.mseotsanyana.mande.PPMER.BLL.cTriangleHandler;
+import com.me.mseotsanyana.mande.UTILITY.BLL.cTriangleDomain;
+import com.me.mseotsanyana.mande.UTILITY.BLL.cTriangleHandler;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.quickactionlibrary.cCustomActionItemText;
 import com.me.mseotsanyana.quickactionlibrary.cCustomQuickAction;

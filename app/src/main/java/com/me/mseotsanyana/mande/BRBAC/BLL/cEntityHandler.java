@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.me.mseotsanyana.mande.BRBAC.DAL.cEntityDBA;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cEntityModel;
-import com.me.mseotsanyana.mande.PPMER.BLL.cMapper;
+import com.me.mseotsanyana.mande.UTILITY.BLL.cMapper;
 
 import java.util.ArrayList;
 import java.util.List;

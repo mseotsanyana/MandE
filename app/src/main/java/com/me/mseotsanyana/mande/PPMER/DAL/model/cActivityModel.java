@@ -2,35 +2,34 @@ package com.me.mseotsanyana.mande.PPMER.DAL.model;
 
 import android.util.Pair;
 
-import com.me.mseotsanyana.mande.PPMER.DAL.cActivityAssignmentModel;
-import com.me.mseotsanyana.mande.PPMER.DAL.cExpenditureModel;
-import com.me.mseotsanyana.mande.PPMER.DAL.cPrecedingActivityModel;
-import com.me.mseotsanyana.mande.PPMER.DAL.cTaskModel;
+import com.me.mseotsanyana.mande.UTILITY.DAL.cActivityAssignmentModel;
+import com.me.mseotsanyana.mande.UTILITY.DAL.cExpenditureModel;
+import com.me.mseotsanyana.mande.UTILITY.DAL.cPrecedingActivityModel;
+import com.me.mseotsanyana.mande.UTILITY.DAL.cTaskModel;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class cActivityModel {
+public class cActivityModel extends cActivityPlanningModel{
     private int activityID;
     private int parentID;
-    private int logFrameID;
+    //private int logFrameID;
     private int outputID;
-    private int serverID;
-    private int ownerID;
-    private int orgID;
-    private int groupBITS;
-    private int permsBITS;
-    private int statusBITS;
-    private String name;
-    private String description;
-    private Date startDate;
-    private Date endDate;
-    private Date createdDate;
-    private Date modifiedDate;
-    private Date syncedDate;
+    //private int serverID;
+    //private int ownerID;
+    //private int orgID;
+    //private int groupBITS;
+    //private int permsBITS;
+    //private int statusBITS;
+    //private String name;
+    //private String description;
+    //private Date startDate;
+    //private Date endDate;
+    //private Date createdDate;
+    //private Date modifiedDate;
+    //private Date syncedDate;
 
     /*** incoming mappings ***/
     private cLogFrameModel logFrameModel;
@@ -82,7 +81,7 @@ public class cActivityModel {
     public void setParentID(int parentID) {
         this.parentID = parentID;
     }
-
+/*
     public int getLogFrameID() {
         return logFrameID;
     }
@@ -90,7 +89,7 @@ public class cActivityModel {
     public void setLogFrameID(int logFrameID) {
         this.logFrameID = logFrameID;
     }
-
+*/
     public int getOutputID() {
         return outputID;
     }
@@ -98,7 +97,7 @@ public class cActivityModel {
     public void setOutputID(int outputID) {
         this.outputID = outputID;
     }
-
+/*
     public int getServerID() {
         return serverID;
     }
@@ -202,7 +201,7 @@ public class cActivityModel {
     public void setSyncedDate(Date syncedDate) {
         this.syncedDate = syncedDate;
     }
-
+*/
     public cLogFrameModel getLogFrameModel() {
         return logFrameModel;
     }

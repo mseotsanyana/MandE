@@ -27,8 +27,8 @@ import com.me.mseotsanyana.mande.UTILITY.INTERFACE.iRequestInterface;
 import com.me.mseotsanyana.mande.UTILITY.cConstant;
 import com.me.mseotsanyana.mande.UTILITY.cUtil;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cUserModel;
-import com.me.mseotsanyana.mande.PPMER.DAL.cUserRequest;
-import com.me.mseotsanyana.mande.PPMER.DAL.cUserResponse;
+import com.me.mseotsanyana.mande.UTILITY.DAL.cUserRequest;
+import com.me.mseotsanyana.mande.UTILITY.DAL.cUserResponse;
 import com.me.mseotsanyana.mande.R;
 
 import retrofit2.Call;

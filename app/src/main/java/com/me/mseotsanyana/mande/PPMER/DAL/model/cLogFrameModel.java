@@ -1,13 +1,14 @@
 package com.me.mseotsanyana.mande.PPMER.DAL.model;
 
-import com.me.mseotsanyana.mande.PPMER.DAL.cIndicatorModel;
+import com.me.mseotsanyana.mande.BRBAC.DAL.cOrganizationModel;
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 public class cLogFrameModel {
-    public int logFrameID;
+    private int logFrameID;
+    private int organizationID;
     private int serverID;
     private int orgID;
     private int ownerID;
@@ -22,6 +23,8 @@ public class cLogFrameModel {
     private Date modifiedDate;
     private Date syncedDate;
 
+    private cOrganizationModel organizationModel;
+
     private Set<cLogFrameModel> logFrameModelSet;
 
     private Set<cImpactModel> impactModelSet;
@@ -35,6 +38,8 @@ public class cLogFrameModel {
 
 
     public cLogFrameModel(){
+        organizationModel = new cOrganizationModel();
+
         logFrameModelSet = new HashSet<>();
         impactModelSet = new HashSet<>();
         outcomeModelSet = new HashSet<>();
@@ -53,6 +58,14 @@ public class cLogFrameModel {
 
     public void setLogFrameID(int logFrameID) {
         this.logFrameID = logFrameID;
+    }
+
+    public int getOrganizationID() {
+        return organizationID;
+    }
+
+    public void setOrganizationID(int organizationID) {
+        this.organizationID = organizationID;
     }
 
     public int getServerID() {
@@ -157,6 +170,15 @@ public class cLogFrameModel {
 
     public void setSyncedDate(Date syncedDate) {
         this.syncedDate = syncedDate;
+    }
+
+
+    public cOrganizationModel getOrganizationModel() {
+        return organizationModel;
+    }
+
+    public void setOrganizationModel(cOrganizationModel organizationModel) {
+        this.organizationModel = organizationModel;
     }
 
     public Set<cLogFrameModel> getLogFrameModelSet() {

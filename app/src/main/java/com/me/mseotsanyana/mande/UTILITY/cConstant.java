@@ -16,6 +16,16 @@ public class cConstant {
     public static final int EXPAND   = 0;
     public static final int COLLAPSE = 1;
 
+
+    /* frequency constant identification */
+    public static final int CONS_DAILY_ID        = 1;
+    public static final int CONS_WEEKLY_ID       = 2;
+    public static final int CONS_FORT_NIGHTLY_ID = 3;
+    public static final int CONS_MONTHLY_ID      = 4;
+    public static final int CONS_QUARTERLY_ID    = 5;
+    public static final int CONS_ANNUALLY_ID     = 6;
+
+
     public static final SimpleDateFormat FORMAT_DATE = new SimpleDateFormat(
             "dd MMMM, yyyy hh:mm:ss a", Locale.US);
 

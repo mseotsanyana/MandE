@@ -3,7 +3,7 @@ package com.me.mseotsanyana.mande.PPMER.BLL.repository;
 import com.me.mseotsanyana.mande.PPMER.BLL.domain.cLogFrameDomain;
 import com.me.mseotsanyana.mande.PPMER.DAL.model.cActivityModel;
 import com.me.mseotsanyana.mande.PPMER.DAL.model.cImpactModel;
-import com.me.mseotsanyana.mande.PPMER.DAL.cIndicatorModel;
+import com.me.mseotsanyana.mande.PPMER.DAL.model.cIndicatorModel;
 import com.me.mseotsanyana.mande.PPMER.DAL.model.cInputModel;
 import com.me.mseotsanyana.mande.PPMER.DAL.model.cLogFrameModel;
 import com.me.mseotsanyana.mande.PPMER.DAL.model.cOutcomeModel;

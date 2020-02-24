@@ -7,7 +7,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cPermissionDBA;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cPermissionModel;
-import com.me.mseotsanyana.mande.PPMER.BLL.cMapper;
+import com.me.mseotsanyana.mande.UTILITY.BLL.cMapper;
 
 import java.util.ArrayList;
 import java.util.List;

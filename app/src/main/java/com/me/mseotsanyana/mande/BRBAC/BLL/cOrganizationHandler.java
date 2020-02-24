@@ -10,7 +10,7 @@ import com.me.mseotsanyana.mande.BRBAC.DAL.cValueDBA;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cValueModel;
 import com.me.mseotsanyana.mande.UTILITY.COM.cEvent;
 import com.me.mseotsanyana.mande.UTILITY.COM.cGlobalBus;
-import com.me.mseotsanyana.mande.PPMER.BLL.cMapper;
+import com.me.mseotsanyana.mande.UTILITY.BLL.cMapper;
 import com.me.mseotsanyana.mande.UTILITY.cBitwisePermission;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 

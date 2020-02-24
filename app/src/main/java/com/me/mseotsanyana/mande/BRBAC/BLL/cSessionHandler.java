@@ -4,9 +4,7 @@ import android.content.Context;
 
 import com.me.mseotsanyana.mande.BRBAC.DAL.cSessionDBA;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cSessionModel;
-import com.me.mseotsanyana.mande.BRBAC.DAL.cUserDBA;
-import com.me.mseotsanyana.mande.BRBAC.DAL.cUserModel;
-import com.me.mseotsanyana.mande.PPMER.BLL.cMapper;
+import com.me.mseotsanyana.mande.UTILITY.BLL.cMapper;
 
 import java.util.ArrayList;
 import java.util.List;

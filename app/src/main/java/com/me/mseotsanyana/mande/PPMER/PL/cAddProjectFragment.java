@@ -13,10 +13,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.me.mseotsanyana.mande.PPMER.BLL.cProjectDomain;
-import com.me.mseotsanyana.mande.PPMER.BLL.cProjectHandler;
+import com.me.mseotsanyana.mande.UTILITY.BLL.cProjectDomain;
+import com.me.mseotsanyana.mande.UTILITY.BLL.cProjectHandler;
 import com.me.mseotsanyana.mande.R;
 
 import java.text.ParseException;

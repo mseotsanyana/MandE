@@ -2,8 +2,8 @@ package com.me.mseotsanyana.mande.PPMER.BLL.interactors;
 
 import android.content.Context;
 
-import com.me.mseotsanyana.mande.PPMER.BLL.cGoalDomain;
-import com.me.mseotsanyana.mande.PPMER.BLL.cMapper;
+import com.me.mseotsanyana.mande.UTILITY.BLL.cGoalDomain;
+import com.me.mseotsanyana.mande.UTILITY.BLL.cMapper;
 import com.me.mseotsanyana.mande.PPMER.DAL.impl.cImpactImpl;
 import com.me.mseotsanyana.mande.PPMER.DAL.model.cImpactModel;
 

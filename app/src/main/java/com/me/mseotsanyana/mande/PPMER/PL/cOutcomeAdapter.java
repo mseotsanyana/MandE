@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.me.mseotsanyana.mande.PPMER.BLL.cProjectDomain;
+import com.me.mseotsanyana.mande.UTILITY.BLL.cProjectDomain;
 import com.me.mseotsanyana.mande.PPMER.BLL.domain.cOutcomeDomain;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;

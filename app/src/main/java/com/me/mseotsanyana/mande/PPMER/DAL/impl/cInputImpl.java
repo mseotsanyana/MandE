@@ -6,9 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.me.mseotsanyana.mande.PPMER.DAL.cBudgetModel;
-import com.me.mseotsanyana.mande.PPMER.DAL.cHumanSetModel;
-import com.me.mseotsanyana.mande.PPMER.DAL.cMaterialModel;
+import com.me.mseotsanyana.mande.UTILITY.DAL.cBudgetModel;
+import com.me.mseotsanyana.mande.UTILITY.DAL.cHumanSetModel;
+import com.me.mseotsanyana.mande.UTILITY.DAL.cMaterialModel;
 import com.me.mseotsanyana.mande.PPMER.DAL.model.cInputModel;
 import com.me.mseotsanyana.mande.STORAGE.database.cSQLDBHelper;
 
@@ -45,8 +45,8 @@ public class cInputImpl {
         cv.put(cSQLDBHelper.KEY_GROUP_BITS, inputModel.getGroupBITS());
         cv.put(cSQLDBHelper.KEY_PERMS_BITS, inputModel.getPermsBITS());
         cv.put(cSQLDBHelper.KEY_STATUS_BITS, inputModel.getStatusBITS());
-        cv.put(cSQLDBHelper.KEY_NAME, inputModel.getName());
-        cv.put(cSQLDBHelper.KEY_DESCRIPTION, inputModel.getDescription());
+        //cv.put(cSQLDBHelper.KEY_NAME, inputModel.getName());
+        //cv.put(cSQLDBHelper.KEY_DESCRIPTION, inputModel.getDescription());
         cv.put(cSQLDBHelper.KEY_START_DATE, formatter.format(inputModel.getStartDate()));
         cv.put(cSQLDBHelper.KEY_END_DATE, formatter.format(inputModel.getEndDate()));
         cv.put(cSQLDBHelper.KEY_CREATED_DATE, formatter.format(inputModel.getCreatedDate()));
@@ -143,8 +143,8 @@ public class cInputImpl {
         cv.put(cSQLDBHelper.KEY_GROUP_BITS, inputModel.getGroupBITS());
         cv.put(cSQLDBHelper.KEY_PERMS_BITS, inputModel.getPermsBITS());
         cv.put(cSQLDBHelper.KEY_STATUS_BITS, inputModel.getStatusBITS());
-        cv.put(cSQLDBHelper.KEY_NAME, inputModel.getName());
-        cv.put(cSQLDBHelper.KEY_DESCRIPTION, inputModel.getDescription());
+        //cv.put(cSQLDBHelper.KEY_NAME, inputModel.getName());
+        //cv.put(cSQLDBHelper.KEY_DESCRIPTION, inputModel.getDescription());
         cv.put(cSQLDBHelper.KEY_START_DATE, formatter.format(inputModel.getStartDate()));
         cv.put(cSQLDBHelper.KEY_END_DATE, formatter.format(inputModel.getEndDate()));
         cv.put(cSQLDBHelper.KEY_CREATED_DATE, formatter.format(inputModel.getCreatedDate()));
@@ -280,8 +280,8 @@ public class cInputImpl {
                     inputModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
                     inputModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
                     inputModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    inputModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    inputModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    //inputModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    //inputModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
                     inputModel.setStartDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
                     inputModel.setEndDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
                     inputModel.setCreatedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));

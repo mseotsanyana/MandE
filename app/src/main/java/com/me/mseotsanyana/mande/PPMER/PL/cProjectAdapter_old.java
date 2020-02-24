@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.util.SparseBooleanArray;
 
 import com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout;
-import com.me.mseotsanyana.mande.PPMER.BLL.cProjectDomain;
+import com.me.mseotsanyana.mande.UTILITY.BLL.cProjectDomain;
 import com.me.mseotsanyana.mande.R;
 
 import java.text.SimpleDateFormat;

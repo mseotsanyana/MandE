@@ -1499,8 +1499,13 @@ id appCompactButtonUpdate
 id appCompatButtonCancel
 id appCompatButtonComSave
 id appCompatButtonSave
+id appCompatButtonUploadAWPB
 id appCompatButtonUploadBRBAC
-id appCompatButtonUploadPM
+id appCompatButtonUploadEvaluation
+id appCompatButtonUploadGlobal
+id appCompatButtonUploadLogFrame
+id appCompatButtonUploadMonitoring
+id appCompatButtonUploadRAID
 id appCompatCheckBoxAllGroupStatuses
 id appCompatCheckBoxAllOperations
 id appCompatCheckBoxAllOtherStatuses

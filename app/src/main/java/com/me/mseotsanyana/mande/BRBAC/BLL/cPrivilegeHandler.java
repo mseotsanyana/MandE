@@ -1,15 +1,13 @@
 package com.me.mseotsanyana.mande.BRBAC.BLL;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cEntityModel;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cOperationModel;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cPrivilegeDBA;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cPrivilegeModel;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cStatusModel;
-import com.me.mseotsanyana.mande.PPMER.BLL.cMapper;
+import com.me.mseotsanyana.mande.UTILITY.BLL.cMapper;
 
 import java.util.HashMap;
 import java.util.HashSet;

@@ -11,7 +11,7 @@ import com.me.mseotsanyana.mande.BRBAC.BLL.cSessionManager;
 import com.me.mseotsanyana.mande.PPMER.BLL.domain.cLogFrameDomain;
 import com.me.mseotsanyana.mande.PPMER.DAL.model.cActivityModel;
 import com.me.mseotsanyana.mande.PPMER.DAL.model.cImpactModel;
-import com.me.mseotsanyana.mande.PPMER.DAL.cIndicatorModel;
+import com.me.mseotsanyana.mande.PPMER.DAL.model.cIndicatorModel;
 import com.me.mseotsanyana.mande.PPMER.DAL.model.cInputModel;
 import com.me.mseotsanyana.mande.PPMER.DAL.model.cLogFrameModel;
 import com.me.mseotsanyana.mande.PPMER.DAL.model.cOutcomeModel;
@@ -66,7 +66,7 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
 
     public boolean addLogFrameFromExcel() {
 
-        Workbook workbook = excelHelper.getWorkbook();
+        Workbook workbook = excelHelper.getWorkbookLOGFRAME();
         Sheet logFrameSheet = workbook.getSheet(cExcelHelper.SHEET_tblLOGFRAME);
         if (logFrameSheet == null) {
             return false;
@@ -845,7 +845,7 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
                     cInputModel inputModel = new cInputModel();
 
                     inputModel.setInputID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    inputModel.setActivityID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ACTIVITY_FK_ID)));
+                    inputModel.setActivityPlanningID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID)));
                     inputModel.setLogFrameID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
                     inputModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
                     inputModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
@@ -853,8 +853,8 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
                     inputModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
                     inputModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
                     inputModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    inputModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    inputModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    //inputModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    //inputModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
                     inputModel.setStartDate(
                             Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
                     inputModel.setEndDate(
@@ -1249,8 +1249,8 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
                     inputModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
                     inputModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
                     inputModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    inputModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    inputModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    //inputModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    //inputModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
                     inputModel.setStartDate(
                             Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
                     inputModel.setEndDate(
@@ -1358,7 +1358,7 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
                 do {
                     cIndicatorModel indicatorModel = new cIndicatorModel();
 
-                    indicatorModel.setID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    indicatorModel.setIndicatorID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                     indicatorModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
                     indicatorModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
                     indicatorModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));

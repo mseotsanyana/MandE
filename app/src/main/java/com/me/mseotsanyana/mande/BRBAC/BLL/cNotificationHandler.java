@@ -5,9 +5,7 @@ import android.content.Context;
 
 import com.me.mseotsanyana.mande.BRBAC.DAL.cMenuModel;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cNotificationModel;
-import com.me.mseotsanyana.mande.BRBAC.DAL.cRoleDBA;
-import com.me.mseotsanyana.mande.BRBAC.DAL.cRoleModel;
-import com.me.mseotsanyana.mande.PPMER.BLL.cMapper;
+import com.me.mseotsanyana.mande.UTILITY.BLL.cMapper;
 
 import java.util.ArrayList;
 import java.util.HashSet;

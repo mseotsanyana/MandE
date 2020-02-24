@@ -6,7 +6,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cAddressDBA;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cAddressModel;
-import com.me.mseotsanyana.mande.PPMER.BLL.cMapper;
+import com.me.mseotsanyana.mande.UTILITY.BLL.cMapper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,7 +14,6 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**

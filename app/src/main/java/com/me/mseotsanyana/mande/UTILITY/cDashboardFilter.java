@@ -1,11 +1,11 @@
 package com.me.mseotsanyana.mande.UTILITY;
 
 import com.me.mseotsanyana.mande.PPMER.BLL.domain.cActivityDomain;
-import com.me.mseotsanyana.mande.PPMER.BLL.cGoalDomain;
+import com.me.mseotsanyana.mande.UTILITY.BLL.cGoalDomain;
 import com.me.mseotsanyana.mande.BRBAC.BLL.cOrganizationDomain;
 import com.me.mseotsanyana.mande.PPMER.BLL.domain.cOutcomeDomain;
 import com.me.mseotsanyana.mande.PPMER.BLL.domain.cOutputDomain;
-import com.me.mseotsanyana.mande.PPMER.BLL.cProjectDomain;
+import com.me.mseotsanyana.mande.UTILITY.BLL.cProjectDomain;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cKeyPairBoolData;
 
 import java.util.ArrayList;

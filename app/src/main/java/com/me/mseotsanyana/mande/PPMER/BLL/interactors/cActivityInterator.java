@@ -2,7 +2,7 @@ package com.me.mseotsanyana.mande.PPMER.BLL.interactors;
 
 import android.content.Context;
 
-import com.me.mseotsanyana.mande.PPMER.BLL.cMapper;
+import com.me.mseotsanyana.mande.UTILITY.BLL.cMapper;
 import com.me.mseotsanyana.mande.PPMER.BLL.domain.cActivityDomain;
 import com.me.mseotsanyana.mande.PPMER.DAL.impl.cActivityImpl;
 import com.me.mseotsanyana.mande.PPMER.DAL.model.cActivityModel;

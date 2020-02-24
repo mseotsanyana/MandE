@@ -13,7 +13,7 @@ import com.me.mseotsanyana.mande.BRBAC.DAL.cSessionModel;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cUserDBA;
 import com.me.mseotsanyana.mande.BRBAC.DAL.cUserModel;
 import com.me.mseotsanyana.mande.UTILITY.INTERFACE.iMEEntityInterface;
-import com.me.mseotsanyana.mande.PPMER.BLL.cMapper;
+import com.me.mseotsanyana.mande.UTILITY.BLL.cMapper;
 import com.me.mseotsanyana.mande.UTILITY.cBitwisePermission;
 import com.me.mseotsanyana.mande.UTILITY.cConstant;
 

@@ -1,8 +1,8 @@
 package com.me.mseotsanyana.mande.PPMER.DAL.model;
 
-import com.me.mseotsanyana.mande.PPMER.DAL.cBudgetModel;
-import com.me.mseotsanyana.mande.PPMER.DAL.cHumanSetModel;
-import com.me.mseotsanyana.mande.PPMER.DAL.cMaterialModel;
+import com.me.mseotsanyana.mande.UTILITY.DAL.cBudgetModel;
+import com.me.mseotsanyana.mande.UTILITY.DAL.cHumanSetModel;
+import com.me.mseotsanyana.mande.UTILITY.DAL.cMaterialModel;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -10,16 +10,17 @@ import java.util.Set;
 
 public class cInputModel {
 	private int inputID;
+	private int activityPlanningID;
 	private int logFrameID;
-	private int activityID;
+	private int resourceID;
 	private int serverID;
 	private int ownerID;
 	private int orgID;
 	private int groupBITS;
 	private int permsBITS;
 	private int statusBITS;
-	private String name;
-	private String description;
+	//private String name;
+	//private String description;
 	private Date startDate;
 	private Date endDate;
 	private Date createdDate;
@@ -50,6 +51,14 @@ public class cInputModel {
 		this.inputID = inputID;
 	}
 
+	public int getActivityPlanningID() {
+		return activityPlanningID;
+	}
+
+	public void setActivityPlanningID(int activityPlanningID) {
+		this.activityPlanningID = activityPlanningID;
+	}
+
 	public int getLogFrameID() {
 		return logFrameID;
 	}
@@ -58,12 +67,12 @@ public class cInputModel {
 		this.logFrameID = logFrameID;
 	}
 
-	public int getActivityID() {
-		return activityID;
+	public int getResourceID() {
+		return resourceID;
 	}
 
-	public void setActivityID(int activityID) {
-		this.activityID = activityID;
+	public void setResourceID(int resourceID) {
+		this.resourceID = resourceID;
 	}
 
 	public int getServerID() {
@@ -112,22 +121,6 @@ public class cInputModel {
 
 	public void setStatusBITS(int statusBITS) {
 		this.statusBITS = statusBITS;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public Date getStartDate() {

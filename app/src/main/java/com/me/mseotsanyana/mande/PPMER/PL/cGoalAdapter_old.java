@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.me.mseotsanyana.mande.PPMER.BLL.cGoalDomain;
+import com.me.mseotsanyana.mande.UTILITY.BLL.cGoalDomain;
 import com.me.mseotsanyana.mande.R;
 
 import java.util.ArrayList;

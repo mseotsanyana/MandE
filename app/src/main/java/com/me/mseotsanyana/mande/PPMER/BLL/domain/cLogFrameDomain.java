@@ -1,6 +1,6 @@
 package com.me.mseotsanyana.mande.PPMER.BLL.domain;
 
-import com.me.mseotsanyana.mande.PPMER.BLL.cIndicatorDomain;
+import com.me.mseotsanyana.mande.UTILITY.BLL.cIndicatorDomain;
 
 import java.util.Date;
 import java.util.HashSet;
