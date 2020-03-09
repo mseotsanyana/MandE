@@ -38,9 +38,9 @@ public class cUploadAWPBPresenterImpl extends cAbstractPresenter implements iUpl
     }
 
     @Override
-    public void onUploadAWPBCompleted() {
+    public void onUploadAWPBCompleted(String msg) {
         if(this.view != null) {
-            this.view.onUploadCompleted();
+            this.view.onUploadCompleted(msg);
             this.view.hideProgress();
         }
     }

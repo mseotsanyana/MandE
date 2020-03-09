@@ -102,7 +102,7 @@ public class cUploadLogFrameInteractorImpl extends cAbstractInteractor
         mainThread.post(new Runnable() {
             @Override
             public void run() {
-                callback.onUploadLogFrameCompleted();
+                callback.onUploadLogFrameCompleted("LogFrame Modules Added Successfully!");
             }
         });
     }

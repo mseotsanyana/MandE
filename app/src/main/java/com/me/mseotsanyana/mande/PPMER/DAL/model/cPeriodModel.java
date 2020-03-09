@@ -2,8 +2,9 @@ package com.me.mseotsanyana.mande.PPMER.DAL.model;
 
 import java.util.Date;
 
-public class cCriteriaModel {
-    private int criteriaID;
+public class cPeriodModel{
+    private int periodID;
+    private int fiscalYearID;
     private int serverID;
     private int ownerID;
     private int orgID;
@@ -16,34 +17,20 @@ public class cCriteriaModel {
     private Date modifiedDate;
     private Date syncedDate;
 
-    public cCriteriaModel(int criteriaID, int serverID, int ownerID, int orgID,
-                          int groupBITS, int permsBITS, int statusBITS,
-                          String name, String description, Date createdDate,
-                          Date modifiedDate, Date syncedDate) {
-        this.criteriaID = criteriaID;
-        this.serverID = serverID;
-        this.ownerID = ownerID;
-        this.orgID = orgID;
-        this.groupBITS = groupBITS;
-        this.permsBITS = permsBITS;
-        this.statusBITS = statusBITS;
-        this.name = name;
-        this.description = description;
-        this.createdDate = createdDate;
-        this.modifiedDate = modifiedDate;
-        this.syncedDate = syncedDate;
+    public int getPeriodID() {
+        return periodID;
     }
 
-    public cCriteriaModel() {
-
+    public void setPeriodID(int periodID) {
+        this.periodID = periodID;
     }
 
-    public int getCriteriaID() {
-        return criteriaID;
+    public int getFiscalYearID() {
+        return fiscalYearID;
     }
 
-    public void setCriteriaID(int criteriaID) {
-        this.criteriaID = criteriaID;
+    public void setFiscalYearID(int fiscalYearID) {
+        this.fiscalYearID = fiscalYearID;
     }
 
     public int getServerID() {
@@ -134,3 +121,4 @@ public class cCriteriaModel {
         this.syncedDate = syncedDate;
     }
 }
+

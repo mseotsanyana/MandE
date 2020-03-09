@@ -38,9 +38,9 @@ public class cUploadRAIDPresenterImpl extends cAbstractPresenter implements iUpl
     }
 
     @Override
-    public void onUploadRAIDCompleted() {
+    public void onUploadRAIDCompleted(String msg) {
         if(this.view != null) {
-            this.view.onUploadCompleted();
+            this.view.onUploadCompleted(msg);
             this.view.hideProgress();
         }
     }

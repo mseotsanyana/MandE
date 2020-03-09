@@ -38,9 +38,9 @@ public class cUploadEvaluationPresenterImpl extends cAbstractPresenter implement
     }
 
     @Override
-    public void onUploadEvaluationCompleted() {
+    public void onUploadEvaluationCompleted(String msg) {
         if(this.view != null) {
-            this.view.onUploadCompleted();
+            this.view.onUploadCompleted(msg);
             this.view.hideProgress();
         }
     }

@@ -59,7 +59,7 @@ public class cUploadMonitoringInteractorImpl extends cAbstractInteractor
         mainThread.post(new Runnable() {
             @Override
             public void run() {
-                callback.onUploadMonitoringCompleted();
+                callback.onUploadMonitoringCompleted("Monitoring Modules Added Successfully!");
             }
         });
     }

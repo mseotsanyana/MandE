@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.me.mseotsanyana.mande.PPMER.DAL.model.cRiskModel;
 import com.me.mseotsanyana.mande.STORAGE.database.cSQLDBHelper;
 
 import java.text.SimpleDateFormat;
@@ -38,7 +39,7 @@ public class cRiskDBA {
         return result > -1;
     }
 
-    public boolean addRisk(cRiskModel movModel) {
+    public boolean addRisk(cRiskModel riskModel) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -46,11 +47,11 @@ public class cRiskDBA {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_RISK_ID, movModel.getRiskID());
-        cv.put(cSQLDBHelper.KEY_RISK_OWNER_ID, movModel.getOwnerID());
-        cv.put(cSQLDBHelper.KEY_RISK_NAME, movModel.getRiskName());
-        cv.put(cSQLDBHelper.KEY_RISK_DESCRIPTION, movModel.getRiskDescription());
-        cv.put(cSQLDBHelper.KEY_RISK_DATE, formatter.format(movModel.getCreateDate()));
+        cv.put(cSQLDBHelper.KEY_RISK_ID, riskModel.getRaidID());
+        cv.put(cSQLDBHelper.KEY_RISK_OWNER_ID, riskModel.getOwnerID());
+        cv.put(cSQLDBHelper.KEY_RISK_NAME, riskModel.getName());
+        cv.put(cSQLDBHelper.KEY_RISK_DESCRIPTION, riskModel.getDescription());
+        //cv.put(cSQLDBHelper.KEY_RISK_DATE, formatter.format(riskModel.getCreateDate()));
 
         // insert outcome record
         try {
@@ -82,11 +83,11 @@ public class cRiskDBA {
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    risk.setRiskID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_RISK_ID)));
+                    risk.setRaidID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_RISK_ID)));
                     risk.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_RISK_OWNER_ID)));
-                    risk.setRiskName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_RISK_NAME)));
-                    risk.setRiskDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_RISK_DESCRIPTION)));
-                    risk.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_RISK_DATE))));
+                    risk.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_RISK_NAME)));
+                    risk.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_RISK_DESCRIPTION)));
+                    //risk.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_RISK_DATE))));
 
                 } while (cursor.moveToNext());
             }
@@ -117,11 +118,11 @@ public class cRiskDBA {
                 do {
                     cRiskModel risk = new cRiskModel();
 
-                    risk.setRiskID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_RISK_ID)));
+                    risk.setRaidID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_RISK_ID)));
                     risk.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_RISK_OWNER_ID)));
-                    risk.setRiskName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_RISK_NAME)));
-                    risk.setRiskDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_RISK_DESCRIPTION)));
-                    risk.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_RISK_DATE))));
+                    risk.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_RISK_NAME)));
+                    risk.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_RISK_DESCRIPTION)));
+                    //risk.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_RISK_DATE))));
 
                     movModelList.add(risk);
 

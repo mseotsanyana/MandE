@@ -16,8 +16,6 @@ public class cUploadRAIDInteractorImpl extends cAbstractInteractor
                                      Callback callback) {
         super(threadExecutor, mainThread);
 
-
-
         if (uploadRAIDRepository == null || callback == null) {
             throw new IllegalArgumentException("Arguments can not be null!");
         }
@@ -28,15 +26,38 @@ public class cUploadRAIDInteractorImpl extends cAbstractInteractor
 
     @Override
     public void run() {
-        /* create a new CRITERIA object and insert it in the database */
-        //uploadLMRepository.deleteCriteria();
-        //uploadLMRepository.addCriteriaFromExcel();
+        /* delete RAID functions */
+        uploadRAIDRepository.deleteRegisters();
+        uploadRAIDRepository.deleteRiskLikelihoods();
+        uploadRAIDRepository.deleteRiskLikelihoodSets();
+        uploadRAIDRepository.deleteRiskImpacts();
+        uploadRAIDRepository.deleteRiskImpactSets();
+        uploadRAIDRepository.deleteRiskCriteria();
+        uploadRAIDRepository.deleteRiskCriteriaSets();
+        uploadRAIDRepository.deleteRisks();
+        uploadRAIDRepository.deleteRiskConsequences();
+        uploadRAIDRepository.deleteRiskRootCauses();
+        /*uploadRAIDRepository.deleteRiskAnalysis();*/
+        uploadRAIDRepository.deleteRiskActionTypes();
+        uploadRAIDRepository.deleteRiskActions();
+        uploadRAIDRepository.deleteRiskCurrentControls();
+        uploadRAIDRepository.deleteRiskAdditionalControls();
+
+        /* add RAID functions */
+        uploadRAIDRepository.addRegisterFromExcel();
+        uploadRAIDRepository.addRiskLikelihoodFromExcel();
+        uploadRAIDRepository.addRiskImpactFromExcel();
+        uploadRAIDRepository.addRiskCriteriaFromExcel();
+        uploadRAIDRepository.addRiskFromExcel();
+        /*uploadRAIDRepository.addRiskAnalysisFromExcel();*/
+        uploadRAIDRepository.addRiskActionTypeFromExcel();
+        uploadRAIDRepository.addRiskActionFromExcel();
 
         /* notify on the main thread that we have inserted this item */
         mainThread.post(new Runnable() {
             @Override
             public void run() {
-                callback.onUploadRAIDCompleted();
+                callback.onUploadRAIDCompleted("RAID Modules Added Successfully!");
             }
         });
     }

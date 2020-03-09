@@ -4,6 +4,6 @@ import com.me.mseotsanyana.mande.PPMER.BLL.interactors.base.iInteractor;
 
 public interface iUploadGlobalInteractor extends iInteractor {
     interface Callback{
-        void onUploadGlobalCompleted();
+        void onUploadGlobalCompleted(String s);
     }
 }

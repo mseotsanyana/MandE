@@ -6,7 +6,7 @@ import com.me.mseotsanyana.mande.PPMER.PL.ui.iBaseView;
 public interface iUploadMonitoringPresenter extends iPresenter {
     interface View extends iBaseView {
 
-        void onUploadCompleted();
+        void onUploadCompleted(String msg);
     }
 
     void uploadMonitoringFromExcel();

@@ -2,14 +2,10 @@ package com.me.mseotsanyana.mande.PPMER.PL.presenters.Impl;
 
 import com.me.mseotsanyana.mande.PPMER.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.PPMER.BLL.executor.iMainThread;
-import com.me.mseotsanyana.mande.PPMER.BLL.interactors.Impl.cUploadLogFrameInteractorImpl;
 import com.me.mseotsanyana.mande.PPMER.BLL.interactors.Impl.cUploadMonitoringInteractorImpl;
-import com.me.mseotsanyana.mande.PPMER.BLL.interactors.iUploadLogFrameInteractor;
 import com.me.mseotsanyana.mande.PPMER.BLL.interactors.iUploadMonitoringInteractor;
-import com.me.mseotsanyana.mande.PPMER.BLL.repository.iUploadLogFrameRepository;
 import com.me.mseotsanyana.mande.PPMER.BLL.repository.iUploadMonitoringRepository;
 import com.me.mseotsanyana.mande.PPMER.PL.presenters.base.cAbstractPresenter;
-import com.me.mseotsanyana.mande.PPMER.PL.presenters.iUploadLogFramePresenter;
 import com.me.mseotsanyana.mande.PPMER.PL.presenters.iUploadMonitoringPresenter;
 
 public class cUploadMonitoringPresenterImpl extends cAbstractPresenter implements iUploadMonitoringPresenter,
@@ -42,9 +38,9 @@ public class cUploadMonitoringPresenterImpl extends cAbstractPresenter implement
     }
 
     @Override
-    public void onUploadMonitoringCompleted() {
+    public void onUploadMonitoringCompleted(String msg) {
         if(this.view != null) {
-            this.view.onUploadCompleted();
+            this.view.onUploadCompleted(msg);
             this.view.hideProgress();
         }
     }

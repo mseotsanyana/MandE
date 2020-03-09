@@ -38,9 +38,9 @@ public class cUploadLogFramePresenterImpl extends cAbstractPresenter implements 
     }
 
     @Override
-    public void onUploadLogFrameCompleted() {
+    public void onUploadLogFrameCompleted(String msg) {
         if(this.view != null) {
-            this.view.onUploadCompleted();
+            this.view.onUploadCompleted(msg);
             this.view.hideProgress();
         }
     }

@@ -17,11 +17,13 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     // Database Name
     private static final String DATABASE_NAME = "MEDB.db";
     // Database Version
-    private static final int DATABASE_VERSION = 63;
+    private static final int DATABASE_VERSION = 89;
 
     /*################################ START GLOBAL MODULE TABLES ################################*/
 
     public static final String TABLE_tblFREQUENCY          = "tblFREQUENCY";       /* 1 */
+    public static final String TABLE_tblPERIOD             = "tblPERIOD";          /* 2 */
+    public static final String TABLE_tblFISCALYEAR         = "tblFISCALYEAR";      /* 3 */
 
     /*############################### START GLOBAL MODULE TABLES #################################*/
 
@@ -53,7 +55,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     public static final String TABLE_tblSUBSCRIBER         = "tblSUBSCRIBER";        /* 24 */
     public static final String TABLE_tblPUBLISHER          = "tblPUBLISHER";         /* 25 */
     public static final String TABLE_tblNOTIFY_SETTING     = "tblNOTIFY_SETTING";    /* 26 */
-    public static final String TABLE_tblACTIVITYLOG        = "tblACTIVITYLOG ";      /* 27 */
+    public static final String TABLE_tblACTIVITYLOG        = "tblACTIVITYLOG";       /* 27 */
 
     /*################################ END BRBAC MODULE TABLES ###################################*/
 
@@ -69,7 +71,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     public static final String TABLE_tblINPUT              = "tblINPUT";             /* 8  */
     public static final String TABLE_tblRESOURCETYPE       = "tblRESOURCETYPE";      /* 9  */
     public static final String TABLE_tblRESOURCE           = "tblRESOURCE";          /* 10  */
-    public static final String TABLE_tblCRITERIA           = "tblCRITERIA";          /* 11 */
+    public static final String TABLE_tblEVALUATIONCRITERIA = "tblEVALUATIONCRITERIA";/* 11 */
     public static final String TABLE_tblQUESTIONGROUPING   = "tblQUESTIONGROUPING";  /* 12 */
     public static final String TABLE_tblPRIMITIVETYPE      = "tblPRIMITIVETYPE";     /* 13 */
     public static final String TABLE_tblQUESTIONTYPE       = "tblQUESTIONTYPE";      /* 14 */
@@ -96,51 +98,51 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
 
     /*################################ START AWPB MODULE TABLES ##################################*/
 
-    public static final String TABLE_tblHUMAN              = "tblHUMAN";           /* 1 */
-    public static final String TABLE_tblMATERIAL           = "tblMATERIAL";        /* 2 */
-    public static final String TABLE_tblINCOME             = "tblINCOME";          /* 3 */
-    public static final String TABLE_tblEXPENSE            = "tblEXPENSE";         /* 4 */
-    public static final String TABLE_tblHUMANSET           = "tblHUMANSET";        /* 5 */
-    public static final String TABLE_tblFUND               = "tblFUND";            /* 6 */
-    public static final String TABLE_tblMILESTONE          = "'tblMILESTONE'";       /* 7 */
-    public static final String TABLE_tblTASK               = "tblTASK";            /* 8 */
-    public static final String TABLE_tblACTIVITYTASK       = "tblACTIVITYTASK";    /* 9 */
-    public static final String TABLE_tblPRECEDINGTASK      = "tblPRECEDINGTASK";   /* 10 */
-    public static final String TABLE_tblTASKASSIGNMENT     = "tblTASKASSIGNMENT";  /* 11 */
-    public static final String TABLE_tblUSERCOMMENT        = "tblUSERCOMMENT";     /* 12 */
-    public static final String TABLE_tblTIMESHEET          = "tblTIMESHEET";       /* 13 */
-    public static final String TABLE_tblTRANSACTION        = "tblTRANSACTION";     /* 14 */
-    public static final String TABLE_tblGENERALLEDGER      = "tblGENERALLEDGER";   /* 15 */
-    public static final String TABLE_tblEXTENSION          = "tblEXTENSION";       /* 16 */
-    public static final String TABLE_tblEXT_DOC_TYPE       = "tblEXT_DOC_TYPE";    /* 17 */
-    public static final String TABLE_tblDOCUMENT           = "tblDOCUMENT";        /* 18 */
+    public static final String TABLE_tblHUMAN             = "tblHUMAN";            /* 1  */
+    public static final String TABLE_tblMATERIAL          = "tblMATERIAL";         /* 2  */
+    public static final String TABLE_tblINCOME            = "tblINCOME";           /* 3  */
+    public static final String TABLE_tblEXPENSE           = "tblEXPENSE";          /* 4  */
+    public static final String TABLE_tblHUMANSET          = "tblHUMANSET";         /* 5  */
+    public static final String TABLE_tblFUND              = "tblFUND";             /* 6  */
+    public static final String TABLE_tblMILESTONE         = "'tblMILESTONE'";      /* 7  */
+    public static final String TABLE_tblTASK              = "tblTASK";             /* 8  */
+    public static final String TABLE_tblACTIVITYTASK      = "tblACTIVITYTASK";     /* 9  */
+    public static final String TABLE_tblPRECEDINGTASK     = "tblPRECEDINGTASK";    /* 10 */
+    public static final String TABLE_tblTASK_MILESTONE    = "tblTASK_MILESTONE";   /* 11 */
+    public static final String TABLE_tblTASKASSIGNMENT    = "tblTASKASSIGNMENT";   /* 12 */
+    public static final String TABLE_tblUSERCOMMENT       = "tblUSERCOMMENT";      /* 13 */
+    public static final String TABLE_tblTIMESHEET         = "tblTIMESHEET";        /* 14 */
+    public static final String TABLE_tblINVOICE           = "tblINVOICE";          /* 15 */
+    public static final String TABLE_tblINVOICE_TIMESHEET = "tblINVOICE_TIMESHEET";/* 16 */
+    public static final String TABLE_tblEXTENSION         = "tblEXTENSION";        /* 17 */
+    public static final String TABLE_tblEXT_DOC_TYPE      = "tblEXT_DOC_TYPE";     /* 18 */
+    public static final String TABLE_tblDOCUMENT          = "tblDOCUMENT";         /* 19 */
+    public static final String TABLE_tblTRANSACTION       = "tblTRANSACTION";      /* 20 */
+    public static final String TABLE_tblINTERNAL          = "tblINTERNAL";         /* 21 */
+    public static final String TABLE_tblEXTERNAL          = "tblEXTERNAL";         /* 22 */
+    public static final String TABLE_tblJOURNAL           = "tblJOURNAL";          /* 23 */
 
     /*################################# END AWPB MODULE TABLES ###################################*/
 
-
     /*################################ START RAID MODULE TABLES ##################################*/
 
-    public static final String TABLE_tblREGISTER           = "tblREGISTER";        /* 1 */
-    public static final String TABLE_tblLIKELIHOOD         = "tblLIKELIHOOD";      /* 2 */
-    public static final String TABLE_tblLIKELIHOODSET      = "tblLIKELIHOODSET";   /* 3 */
-    public static final String TABLE_tblRISKIMPACT         = "tblRISKIMPACT";      /* 4 */
-    public static final String TABLE_tblRISKIMPACTSET      = "tblRISKIMPACTSET";   /* 5 */
-    public static final String TABLE_tblRISKCRITERIA       = "tblRISKCRITERIA";    /* 6 */
-    public static final String TABLE_tblRISKCRITERIASET    = "tblRISKCRITERIASET"; /* 7 */
-    public static final String TABLE_tblRISKISSUE          = "tblRISKISSUE";       /* 8 */
-    public static final String TABLE_tblRISK               = "tblRISK";            /* 9 */
-    public static final String TABLE_tblISSUE              = "tblISSUE";           /* 10 */
-    public static final String TABLE_tblCONSEQUENCE        = "tblCONSEQUENCE";     /* 11 */
-    public static final String TABLE_tblCURRENTCONTROL     = "tblCURRENTCONTROL";  /* 12 */
-    public static final String TABLE_tblRISKMILESTONE      = "tblRISKMILESTONE";   /* 13 */
-    public static final String TABLE_tblRISKANALYSIS       = "tblRISKANALYSIS";    /* 14 */
-    public static final String TABLE_tblMITIGATIONPLAN     = "tblMITIGATIONPLAN";  /* 15 */
-    public static final String TABLE_tblCONTINGENCYPLAN    = "tblCONTINGENCYPLAN"; /* 16 */
-    public static final String TABLE_tblPREVENTATIVEPLAN   = "tblPREVENTATIVEPLAN";/* 17 */
-    public static final String TABLE_tblMITIGATIONACTION   = "tblMITIGATIONACTION";/* 18 */
-
-    public static final String TABLE_tblASSUMPTION         = "tblASSUMPTION";      /* 20 */
-    public static final String TABLE_tblDEPENDECY          = "tblDEPENDECY ";      /* 21 */
+    public static final String TABLE_tblRISKREGISTER      = "tblRISKREGISTER";     /* 1  */
+    public static final String TABLE_tblRISKLIKELIHOOD    = "tblRISKLIKELIHOOD";   /* 2  */
+    public static final String TABLE_tblRISKLIKELIHOODSET = "tblRISKLIKELIHOODSET";/* 3  */
+    public static final String TABLE_tblRISKIMPACT        = "tblRISKIMPACT";       /* 4  */
+    public static final String TABLE_tblRISKIMPACTSET     = "tblRISKIMPACTSET";    /* 5  */
+    public static final String TABLE_tblRISKCRITERIA      = "tblRISKCRITERIA";     /* 6  */
+    public static final String TABLE_tblRISKCRITERIASET   = "tblRISKCRITERIASET";  /* 7  */
+    public static final String TABLE_tblRISK              = "tblRISK";             /* 8  */
+    public static final String TABLE_tblRISKROOTCAUSE     = "tblRISKROOTCAUSE";    /* 9  */
+    public static final String TABLE_tblRISKCONSEQUENCE   = "tblRISKCONSEQUENCE";  /* 10 */
+    public static final String TABLE_tblCURRENTCONTROL    = "tblCURRENTCONTROL";   /* 11 */
+    public static final String TABLE_tblADDITIONALCONTROL = "tblADDITIONALCONTROL";/* 12 */
+    public static final String TABLE_tblRISKMILESTONE     = "tblRISKMILESTONE";    /* 13 */
+    public static final String TABLE_tblRISKANALYSIS      = "tblRISKANALYSIS";     /* 14 */
+    public static final String TABLE_tblRISKPLAN          = "tblRISKPLAN";         /* 15 */
+    public static final String TABLE_tblRISKACTIONTYPE    = "tblRISKACTIONTYPE";   /* 16 */
+    public static final String TABLE_tblRISKACTION        = "tblRISKACTION";       /* 17 */
 
     /*################################# END RAID MODULE TABLES ###################################*/
 
@@ -180,16 +182,15 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     public static final String TABLE_tblDATACOLLECTOR        = "tblDATACOLLECTOR";        /* 8 */
     public static final String TABLE_tblINDICATOR            = "tblINDICATOR";            /* 9 */
     public static final String TABLE_tblINDICATORMILESTONE   = "tblINDICATORMILESTONE";   /* 10*/
-    public static final String TABLE_tblINDICATOR_MOV        = "tblINDICATOR_MOV ";       /* 11 */
-    public static final String TABLE_tblINDICATOR_METHOD     = "tblINDICATOR_METHOD";     /* 12 */
-    public static final String TABLE_tblQUALITATIVECHOICE    = "tblQUALITATIVECHOICE";    /* 13 */
-    public static final String TABLE_tblQUALITATIVECHOICESET = "tblQUALITATIVECHOICESET"; /* 14 */
-    public static final String TABLE_tblMRESPONSE            = "tblMRESPONSE";            /* 15 */
-    public static final String TABLE_tblQUALITATIVERESPONSE  = "tblQUALITATIVERESPONSE";  /* 16 */
-    public static final String TABLE_tblQUANTITATIVERESPONSE = "tblQUANTITATIVERESPONSE"; /* 17 */
+    public static final String TABLE_tblINDICATOR_MOV        = "tblINDICATOR_MOV";        /* 11*/
+    public static final String TABLE_tblINDICATOR_METHOD     = "tblINDICATOR_METHOD";     /* 12*/
+    public static final String TABLE_tblQUALITATIVECHOICE    = "tblQUALITATIVECHOICE";    /* 13*/
+    public static final String TABLE_tblQUALITATIVECHOICESET = "tblQUALITATIVECHOICESET"; /* 14*/
+    public static final String TABLE_tblMRESPONSE            = "tblMRESPONSE";            /* 15*/
+    public static final String TABLE_tblQUALITATIVERESPONSE  = "tblQUALITATIVERESPONSE";  /* 16*/
+    public static final String TABLE_tblQUANTITATIVERESPONSE = "tblQUANTITATIVERESPONSE"; /* 17*/
 
     /*############################## END MONITORING MODULE TABLES ################################*/
-
 
     /*###################################### START OF KEYS #######################################*/
 
@@ -229,10 +230,20 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
 
     public static final String KEY_QUESTION = "question";
     public static final String KEY_TARGET_VALUE = "target_value";
+    public static final String KEY_QUANTITY = "quantity";
+    public static final String KEY_EXPENSE = "expense";
+    public static final String KEY_FUND = "fund";
+    public static final String KEY_HOURS = "hours";
+    public static final String KEY_RATE = "rate";
+    public static final String KEY_USER_COMMENT = "comment";
+    public static final String KEY_START_TIME = "start_time";
+    public static final String KEY_END_TIME = "end_time";
+    public static final String KEY_ENTRY_TYPE = "entry_type";
+    public static final String KEY_AMOUNT = "amount";
 
     public static final String KEY_MILESTONE_FK_ID = "_id_milestone_fk";
     public static final String KEY_USER_FK_ID = "_id_user_fk";
-    public static final String KEY_HUMANSET_FK_ID = "_id_humanset_fk";
+    //public static final String KEY_HUMANSET_FK_ID = "_id_humanset_fk";
     public static final String KEY_SUBSCRIBER_FK_ID = "_id_subscriber_fk";
     public static final String KEY_PUBLISHER_FK_ID = "_id_publisher_fk";
     public static final String KEY_PARENT_FK_ID = "_id_parent_fk";
@@ -258,8 +269,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     public static final String KEY_ROW_OPTION_FK_ID = "_id_row_option_fk";
     public static final String KEY_COL_OPTION_FK_ID = "_id_col_option_fk";
     public static final String KEY_MATRIX_CHOICE_FK_ID = "_id_matrix_choice_fk";
-    //public static final String KEY_MATRIX_CHOICESET_FK_ID = "_id_matrix_choiceset_fk";
-    public static final String KEY_CRITERIA_FK_ID = "_id_criteria_fk";
+    public static final String KEY_EVALUATION_CRITERIA_FK_ID = "_id_evaluation_criteria_fk";
     public static final String KEY_RAID_FK_ID = "_id_raid_fk";
     public static final String KEY_RESOURCE_FK_ID = "_id_resource_fk";
     public static final String KEY_ADDRESS_FK_ID = "_id_address_fk";
@@ -289,13 +299,13 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
 
     public static final String KEY_MRESPONSE_FK_ID = "_id_mresponse_fk";
 
-    public static final String KEY_NUMERIC_RESPONSE = "_id_numeric_response_fk";
-    public static final String KEY_TEXT_RESPONSE = "_id_text_response_fk";
-    public static final String KEY_DATE_RESPONSE = "_id_date_response_fk";
-    public static final String KEY_ARRAY_RESPONSE = "_id_array_response_fk";
-    public static final String KEY_MATRIX_RESPONSE = "_id_matrix_response_fk";
-    public static final String KEY_ROW_RESPONSE = "_id_row_response_fk";
-    public static final String KEY_COL_RESPONSE = "_id_col_response_fk";
+    public static final String KEY_NUMERIC_RESPONSE_FK_ID = "_id_numeric_response_fk";
+    public static final String KEY_TEXT_RESPONSE_FK_ID = "_id_text_response_fk";
+    public static final String KEY_DATE_RESPONSE_FK_ID = "_id_date_response_fk";
+    public static final String KEY_ARRAY_RESPONSE_FK_ID = "_id_array_response_fk";
+    public static final String KEY_MATRIX_RESPONSE_FK_ID = "_id_matrix_response_fk";
+    public static final String KEY_ROW_RESPONSE_FK_ID = "_id_row_response_fk";
+    public static final String KEY_COL_RESPONSE_FK_ID = "_id_col_response_fk";
 
     public static final String KEY_HUMAN_FK_ID = "_id_human_fk";
     public static final String KEY_INCOME_FK_ID = "_id_income_fk";
@@ -312,21 +322,30 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     public static final String KEY_QUESTIONNAIRE_USER_FK_ID = "_id_questionnaire_user_fk";
     public static final String KEY_RESPONSE_FK_ID = "_id_response_fk";
     public static final String KEY_FREQUENCY_FK_ID = "_id_frequency_fk";
-    public static final String KEY_REGISTER_FK_ID = "_id_register_fk";
-    public static final String KEY_LIKELIHOOD_FK_ID = "_id_likelihood_fk";
-    public static final String KEY_RISKIMPACT_FK_ID = "_id_risk_impact_fk";
-    public static final String KEY_RISKCRITERIA_FK_ID = "_id_risk_criteria_fk";
-    public static final String KEY_RISKISSUE_FK_ID = "_id_risk_issue_fk";
+    public static final String KEY_RISK_REGISTER_FK_ID = "_id_risk_register_fk";
+    public static final String KEY_RISK_LIKELIHOOD_FK_ID = "_id_risk_likelihood_fk";
+    public static final String KEY_RISK_IMPACT_FK_ID = "_id_risk_impact_fk";
+    public static final String KEY_RISK_CRITERIA_FK_ID = "_id_risk_criteria_fk";
     public static final String KEY_RISK_FK_ID = "_id_risk_fk";
-    public static final String KEY_CONTINGENCYPLAN_FK_ID = "_id_contingency_plan_fk";
-    public static final String KEY_PREVENTATIVEPLAN_FK_ID = "_id_preventative_plan_fk";
-    public static final String KEY_MITIGATIONPLAN_FK_ID = "_id_mitigation_plan_fk";
-    public static final String KEY_RISKMILESTONE_FK_ID = "_id_mitigation_action_fk";
+    public static final String KEY_RISK_PLAN_FK_ID = "_id_risk_plan_fk";
+    public static final String KEY_RISK_ACTION_TYPE_FK_ID = "_id_risk_action_type_fk";
     public static final String KEY_RISK_INDEX = "_id_risk_index_fk";
+    public static final String KEY_RISK_MILESTONE_FK_ID = "_id_risk_milestone_fk";
+    public static final String KEY_RISKLIKELIHOOD_VALUE = "value";
+    public static final String KEY_RISKIMPACT_VALUE = "value";
+    public static final String KEY_RISKMAP_LOWER = "lower_limit";
+    public static final String KEY_RISKMAP_UPPER = "upper_limit";
+    public static final String KEY_RISK_ACTION_FK_ID = "_id_risk_action_fk";
+    public static final String KEY_RISK_ANALYSIS_FK_ID = "_id_risk_analysis_fk";
 
     public static final String KEY_USER_ID = "_id_todelete";
     public static final String KEY_ORGANIZATION_ID = "_id_todelete";
     public static final String KEY_STATUS_ID = "_id_todelete";
+
+    public static final String KEY_FISCAL_YEAR_FK_ID = "_id_fiscal_year_fk";
+    public static final String KEY_INVOICE_FK_ID = "_id_invoice_fk";
+    public static final String KEY_PERIOD_FK_ID = "_id_period_fk";
+    public static final String KEY_TIMESHEET_FK_ID = "_id_timesheet_fk";
 
     /*######################################### END OF KEYS ######################################*/
 
@@ -346,6 +365,41 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_NAME + " TEXT NOT NULL, "
             + KEY_DESCRIPTION + " TEXT NULL, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP); ";
+
+    public static final String CREATE_TABLE_tblPERIOD = "CREATE TABLE " + TABLE_tblPERIOD + "("
+            + KEY_ID + " INTEGER NOT NULL, "
+            + KEY_FISCAL_YEAR_FK_ID + " INTEGER, "
+            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
+            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
+            + KEY_NAME + " TEXT NOT NULL, "
+            + KEY_DESCRIPTION + " TEXT NULL, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + "PRIMARY KEY (" + KEY_ID + "), "
+            + "FOREIGN KEY (" + KEY_FISCAL_YEAR_FK_ID + ") "
+            + "REFERENCES " + TABLE_tblFISCALYEAR + "(" + KEY_ID + ") "
+            + "ON DELETE CASCADE ON UPDATE CASCADE);";
+
+    public static final String CREATE_TABLE_tblFISCALYEAR = "CREATE TABLE " + TABLE_tblFISCALYEAR + "("
+            + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
+            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
+            + KEY_NAME + " TEXT NOT NULL, "
+            + KEY_DESCRIPTION + " TEXT NULL, "
+            + KEY_START_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_END_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP); ";
@@ -1241,7 +1295,8 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     //-- -------------------------------------------------------------------------------------------
     //-- Table `tblCRITERIA` (11)
     //-- -------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblCRITERIA = "CREATE TABLE " + TABLE_tblCRITERIA + "("
+    public static final String CREATE_TABLE_tblEVALUATIONCRITERIA = "CREATE TABLE " +
+            TABLE_tblEVALUATIONCRITERIA+ "("
             + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
@@ -1553,7 +1608,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             TABLE_tblIMPACT_QUESTION + "("
             + KEY_IMPACT_FK_ID + " INTEGER NOT NULL, "
             + KEY_QUESTION_FK_ID + " INTEGER NOT NULL, "
-            + KEY_CRITERIA_FK_ID + " INTEGER NOT NULL, "
+            + KEY_EVALUATION_CRITERIA_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
@@ -1564,15 +1619,15 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + " PRIMARY KEY (" + KEY_IMPACT_FK_ID + "," + KEY_QUESTION_FK_ID + ","
-            + KEY_CRITERIA_FK_ID + " ), "
+            + KEY_EVALUATION_CRITERIA_FK_ID + " ), "
             + " FOREIGN KEY (" + KEY_IMPACT_FK_ID + ") "
             + " REFERENCES " + TABLE_tblIMPACT + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
             + " FOREIGN KEY (" + KEY_QUESTION_FK_ID + ") "
             + " REFERENCES " + TABLE_tblQUESTION + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_CRITERIA_FK_ID + ")"
-            + " REFERENCES " + TABLE_tblCRITERIA + " (" + KEY_ID + ") "
+            + " FOREIGN KEY (" + KEY_EVALUATION_CRITERIA_FK_ID + ")"
+            + " REFERENCES " + TABLE_tblEVALUATIONCRITERIA + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE);";
 
     //-- -------------------------------------------------------------------------------------------
@@ -1582,7 +1637,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             TABLE_tblOUTCOME_QUESTION + "("
             + KEY_OUTCOME_FK_ID + " INTEGER NOT NULL, "
             + KEY_QUESTION_FK_ID + " INTEGER NOT NULL, "
-            + KEY_CRITERIA_FK_ID + " INTEGER NOT NULL, "
+            + KEY_EVALUATION_CRITERIA_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
@@ -1593,15 +1648,15 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + " PRIMARY KEY (" + KEY_OUTCOME_FK_ID + "," + KEY_QUESTION_FK_ID + ","
-            + KEY_CRITERIA_FK_ID + " ), "
+            + KEY_EVALUATION_CRITERIA_FK_ID + " ), "
             + " FOREIGN KEY (" + KEY_OUTCOME_FK_ID + ") "
             + " REFERENCES " + TABLE_tblOUTCOME + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
             + " FOREIGN KEY (" + KEY_QUESTION_FK_ID + ") "
             + " REFERENCES " + TABLE_tblQUESTION + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_CRITERIA_FK_ID + ")"
-            + " REFERENCES " + TABLE_tblCRITERIA + " (" + KEY_ID + ") "
+            + " FOREIGN KEY (" + KEY_EVALUATION_CRITERIA_FK_ID + ")"
+            + " REFERENCES " + TABLE_tblEVALUATIONCRITERIA + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE);";
 
     //-- -------------------------------------------------------------------------------------------
@@ -1611,7 +1666,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             TABLE_tblOUTPUT_QUESTION + "("
             + KEY_OUTPUT_FK_ID + " INTEGER NOT NULL, "
             + KEY_QUESTION_FK_ID + " INTEGER NOT NULL, "
-            + KEY_CRITERIA_FK_ID + " INTEGER NOT NULL, "
+            + KEY_EVALUATION_CRITERIA_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
@@ -1622,15 +1677,15 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + " PRIMARY KEY (" + KEY_OUTPUT_FK_ID + "," + KEY_QUESTION_FK_ID + ","
-            + KEY_CRITERIA_FK_ID + " ), "
+            + KEY_EVALUATION_CRITERIA_FK_ID + " ), "
             + " FOREIGN KEY (" + KEY_OUTPUT_FK_ID + ") "
             + " REFERENCES " + TABLE_tblOUTPUT + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
             + " FOREIGN KEY (" + KEY_QUESTION_FK_ID + ") "
             + " REFERENCES " + TABLE_tblQUESTION + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_CRITERIA_FK_ID + ")"
-            + " REFERENCES " + TABLE_tblCRITERIA + " (" + KEY_ID + ") "
+            + " FOREIGN KEY (" + KEY_EVALUATION_CRITERIA_FK_ID + ")"
+            + " REFERENCES " + TABLE_tblEVALUATIONCRITERIA + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE);";
 
     //-- -------------------------------------------------------------------------------------------
@@ -1640,7 +1695,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             TABLE_tblACTIVITY_QUESTION + "("
             + KEY_ACTIVITY_FK_ID + " INTEGER NOT NULL, "
             + KEY_QUESTION_FK_ID + " INTEGER NOT NULL, "
-            + KEY_CRITERIA_FK_ID + " INTEGER NOT NULL, "
+            + KEY_EVALUATION_CRITERIA_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
@@ -1651,15 +1706,15 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + " PRIMARY KEY (" + KEY_ACTIVITY_FK_ID + "," + KEY_QUESTION_FK_ID + ","
-            + KEY_CRITERIA_FK_ID + " ), "
+            + KEY_EVALUATION_CRITERIA_FK_ID + " ), "
             + " FOREIGN KEY (" + KEY_ACTIVITY_FK_ID + ") "
             + " REFERENCES " + TABLE_tblACTIVITY + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
             + " FOREIGN KEY (" + KEY_QUESTION_FK_ID + ") "
             + " REFERENCES " + TABLE_tblQUESTION + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_CRITERIA_FK_ID + ")"
-            + " REFERENCES " + TABLE_tblCRITERIA + " (" + KEY_ID + ") "
+            + " FOREIGN KEY (" + KEY_EVALUATION_CRITERIA_FK_ID + ")"
+            + " REFERENCES " + TABLE_tblEVALUATIONCRITERIA + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE);";
 
     //-- -------------------------------------------------------------------------------------------
@@ -1669,7 +1724,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             TABLE_tblINPUT_QUESTION + "("
             + KEY_INPUT_FK_ID + " INTEGER NOT NULL, "
             + KEY_QUESTION_FK_ID + " INTEGER NOT NULL, "
-            + KEY_CRITERIA_FK_ID + " INTEGER NOT NULL, "
+            + KEY_EVALUATION_CRITERIA_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
@@ -1680,15 +1735,15 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + " PRIMARY KEY (" + KEY_INPUT_FK_ID + "," + KEY_QUESTION_FK_ID + ","
-            + KEY_CRITERIA_FK_ID + " ), "
+            + KEY_EVALUATION_CRITERIA_FK_ID + " ), "
             + " FOREIGN KEY (" + KEY_INPUT_FK_ID + ") "
             + " REFERENCES " + TABLE_tblINPUT + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
             + " FOREIGN KEY (" + KEY_QUESTION_FK_ID + ") "
             + " REFERENCES " + TABLE_tblQUESTION + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_CRITERIA_FK_ID + ")"
-            + " REFERENCES " + TABLE_tblCRITERIA + " (" + KEY_ID + ") "
+            + " FOREIGN KEY (" + KEY_EVALUATION_CRITERIA_FK_ID + ")"
+            + " REFERENCES " + TABLE_tblEVALUATIONCRITERIA + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE);";
 
     //-- -------------------------------------------------------------------------------------------
@@ -1798,12 +1853,13 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     //-- -------------------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblHUMAN = "CREATE TABLE " + TABLE_tblHUMAN + "("
             + KEY_INPUT_FK_ID + " INTEGER NOT NULL, "
-            + KEY_SERVER_ID + " INTEGER NOT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
+            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
+            + KEY_QUANTITY + " INTEGER, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -1817,12 +1873,13 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     //-- -------------------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblMATERIAL = "CREATE TABLE " + TABLE_tblMATERIAL + "("
             + KEY_INPUT_FK_ID + " INTEGER NOT NULL, "
-            + KEY_SERVER_ID + " INTEGER NOT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
+            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
+            + KEY_QUANTITY + " INTEGER, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -1836,12 +1893,12 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     //-- -------------------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblINCOME = "CREATE TABLE " + TABLE_tblINCOME + "("
             + KEY_INPUT_FK_ID + " INTEGER NOT NULL, "
-            + KEY_SERVER_ID + " INTEGER NOT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
+            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -1855,12 +1912,13 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     //-- -------------------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblEXPENSE = "CREATE TABLE " + TABLE_tblEXPENSE + "("
             + KEY_INPUT_FK_ID + " INTEGER NOT NULL, "
-            + KEY_SERVER_ID + " INTEGER NOT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
+            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
+            + KEY_EXPENSE + " DOUBLE, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -1874,8 +1932,8 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     //-- -------------------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblHUMANSET = "CREATE TABLE " +
             TABLE_tblHUMANSET + "("
-            + KEY_ID+ " INTEGER NOT NULL, "
-            + KEY_HUMAN_FK_ID+ " INTEGER NOT NULL, "
+            + KEY_ID + " INTEGER NOT NULL, "
+            + KEY_INPUT_FK_ID + " INTEGER NOT NULL, "
             + KEY_USER_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
@@ -1887,7 +1945,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + " PRIMARY KEY (" + KEY_ID + " ), "
-            + " FOREIGN KEY (" + KEY_HUMAN_FK_ID + ") "
+            + " FOREIGN KEY (" + KEY_INPUT_FK_ID + ") "
             + " REFERENCES " + TABLE_tblHUMAN + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
             + " FOREIGN KEY (" + KEY_USER_FK_ID + ") "
@@ -1900,7 +1958,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     public static final String CREATE_TABLE_tblFUND = "CREATE TABLE " +
             TABLE_tblFUND + "("
             + KEY_ID + " INTEGER NOT NULL, "
-            + KEY_INCOME_FK_ID + " INTEGER NOT NULL, "
+            + KEY_INPUT_FK_ID + " INTEGER NOT NULL, "
             + KEY_FUNDER_FK_ID + " INTEGER NOT NULL, "
             + KEY_BENEFICIARY_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
@@ -1909,11 +1967,12 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
             + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
+            + KEY_FUND + " DOUBLE, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + " PRIMARY KEY (" + KEY_ID + " ), "
-            + " FOREIGN KEY (" + KEY_INCOME_FK_ID + ") "
+            + " FOREIGN KEY (" + KEY_INPUT_FK_ID + ") "
             + " REFERENCES " + TABLE_tblINCOME + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
             + " FOREIGN KEY (" + KEY_FUNDER_FK_ID + ") "
@@ -1965,8 +2024,8 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     //-- -------------------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblACTIVITYTASK = "CREATE TABLE " +
             TABLE_tblACTIVITYTASK + "("
-            + KEY_TASK_FK_ID+ " INTEGER NOT NULL, "
-            + KEY_INDICATOR_MILESTONE_FK_ID + " INTEGER NOT NULL, "
+            + KEY_TASK_FK_ID + " INTEGER NOT NULL, "
+            + KEY_ACTIVITY_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
@@ -1980,16 +2039,15 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + " FOREIGN KEY (" + KEY_TASK_FK_ID + ") "
             + " REFERENCES " + TABLE_tblTASK + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_INDICATOR_MILESTONE_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblINDICATORMILESTONE + " (" + KEY_ID + ") "
+            + " FOREIGN KEY (" + KEY_ACTIVITY_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblACTIVITY + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- -------------------------------------------------------------------------------------------
-    //-- Table `tblTASKASSIGNMENT` (10)
+    //-- Table `tblPRECEDINGTASK` (10)
     //-- -------------------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblPRECEDINGTASK = "CREATE TABLE " +
             TABLE_tblPRECEDINGTASK + "("
-            + KEY_ID+ " INTEGER NOT NULL, "
             + KEY_TASK_FK_ID+ " INTEGER NOT NULL, "
             + KEY_PRECEDING_TASK_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
@@ -2001,7 +2059,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_ID + " ), "
+            + " PRIMARY KEY (" + KEY_TASK_FK_ID + "," + KEY_PRECEDING_TASK_FK_ID + " ), "
             + " FOREIGN KEY (" + KEY_TASK_FK_ID + ") "
             + " REFERENCES " + TABLE_tblPRECEDINGTASK + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
@@ -2010,18 +2068,44 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- -------------------------------------------------------------------------------------------
-    //-- Table `tblTASKASSIGNMENT` (11)
+    //-- Table `tblTASK_MILESTONE` (11)
+    //-- -------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblTASK_MILESTONE = "CREATE TABLE " +
+            TABLE_tblTASK_MILESTONE + "("
+            + KEY_TASK_FK_ID + " INTEGER NOT NULL, "
+            + KEY_MILESTONE_FK_ID + " INTEGER NOT NULL, "
+            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
+            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + " PRIMARY KEY (" + KEY_TASK_FK_ID + "," + KEY_MILESTONE_FK_ID + " ), "
+            + " FOREIGN KEY (" + KEY_TASK_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblTASK + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_MILESTONE_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblMILESTONE + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE); ";
+
+    //-- -------------------------------------------------------------------------------------------
+    //-- Table `tblTASKASSIGNMENT` (12)
     //-- -------------------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblTASKASSIGNMENT = "CREATE TABLE " +
             TABLE_tblTASKASSIGNMENT + "("
-            + KEY_ID+ " INTEGER NOT NULL, "
-            + KEY_TASK_FK_ID+ " INTEGER NOT NULL, "
+            + KEY_ID + " INTEGER NOT NULL, "
             + KEY_STAFF_FK_ID + " INTEGER NOT NULL, "
+            + KEY_TASK_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
+            + KEY_HOURS + " INTEGER, "
+            + KEY_RATE + " INTEGER, "
             + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -2035,19 +2119,20 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- -------------------------------------------------------------------------------------------
-    //-- Table `tblUSERCOMMENT` (12)
+    //-- Table `tblUSERCOMMENT` (13)
     //-- -------------------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblUSERCOMMENT = "CREATE TABLE " +
             TABLE_tblUSERCOMMENT + "("
-            + KEY_ID+ " INTEGER NOT NULL, "
-            + KEY_TASK_FK_ID+ " INTEGER NOT NULL, "
+            + KEY_ID + " INTEGER NOT NULL, "
             + KEY_STAFF_FK_ID + " INTEGER NOT NULL, "
+            + KEY_TASK_FK_ID+ " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
             + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
+            + KEY_USER_COMMENT + " TEXT, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -2060,19 +2145,21 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- -------------------------------------------------------------------------------------------
-    //-- Table `tblTIMESHEET` (13)
+    //-- Table `tblTIMESHEET` (14)
     //-- -------------------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblTIMESHEET = "CREATE TABLE " +
             TABLE_tblTIMESHEET + "("
-            + KEY_ID+ " INTEGER NOT NULL, "
-            + KEY_TASK_FK_ID+ " INTEGER NOT NULL, "
+            + KEY_ID + " INTEGER NOT NULL, "
             + KEY_STAFF_FK_ID + " INTEGER NOT NULL, "
+            + KEY_TASK_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
             + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
+            + KEY_START_TIME + " DATE, "
+            + KEY_END_TIME + " DATE, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -2085,7 +2172,48 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- -------------------------------------------------------------------------------------------
-    //-- Table `tblEXTENSION` (14)
+    //-- Table `tblINVOICE` (15)
+    //-- -------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblINVOICE = "CREATE TABLE " + TABLE_tblINVOICE + "("
+            + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
+            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
+            + KEY_NAME + " TEXT NOT NULL, "
+            + KEY_DESCRIPTION + " TEXT NULL, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP " + ");";
+
+    //-- -------------------------------------------------------------------------------------------
+    //-- Table `tblINVOICE_TIMESHEET` (16)
+    //-- -------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblINVOICE_TIMESHEET = "CREATE TABLE " +
+            TABLE_tblINVOICE_TIMESHEET + "("
+            + KEY_INVOICE_FK_ID + " INTEGER NOT NULL, "
+            + KEY_TIMESHEET_FK_ID + " INTEGER NOT NULL, "
+            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
+            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + " PRIMARY KEY (" + KEY_INVOICE_FK_ID + "," + KEY_TIMESHEET_FK_ID + " ), "
+            + " FOREIGN KEY (" + KEY_INVOICE_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblINVOICE + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_TIMESHEET_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblTIMESHEET + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE); ";
+
+    //-- -------------------------------------------------------------------------------------------
+    //-- Table `tblEXTENSION` (17)
     //-- -------------------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblEXTENSION = "CREATE TABLE " +
             TABLE_tblEXTENSION + "("
@@ -2103,18 +2231,18 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP " + ");";
 
     //-- -------------------------------------------------------------------------------------------
-    //-- Table `tblEXT_DOC_TYPE` (15)
+    //-- Table `tblEXT_DOC_TYPE` (18)
     //-- -------------------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblEXT_DOC_TYPE = "CREATE TABLE " +
             TABLE_tblEXT_DOC_TYPE + "("
             + KEY_ID + " INTEGER NOT NULL, "
             + KEY_EXTENSION_FK_ID + " INTEGER NOT NULL, "
-            + KEY_SERVER_ID + " INTEGER NOT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
+            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -2124,18 +2252,20 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- -------------------------------------------------------------------------------------------
-    //-- Table `tblDOCUMENT` (16)
+    //-- Table `tblDOCUMENT` (19)
     //-- -------------------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblDOCUMENT = "CREATE TABLE " +
             TABLE_tblDOCUMENT + "("
             + KEY_ID + " INTEGER NOT NULL, "
             + KEY_EXT_DOC_TYPE_FK_ID + " INTEGER NOT NULL, "
-            + KEY_SERVER_ID + " INTEGER NOT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
+            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
+            + KEY_NAME + " TEXT NOT NULL, "
+            + KEY_DESCRIPTION + " TEXT NULL, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -2145,32 +2275,86 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- -------------------------------------------------------------------------------------------
-    //-- Table `tblTRANSACTION` (17)
+    //-- Table `tblTRANSACTION` (20)
     //-- -------------------------------------------------------------------------------------------
     public static final String CREATE_TABLE_tblTRANSACTION = "CREATE TABLE " +
             TABLE_tblTRANSACTION + "("
             + KEY_ID + " INTEGER NOT NULL, "
             + KEY_DOCUMENT_FK_ID + " INTEGER NOT NULL, "
-            + KEY_SERVER_ID + " INTEGER NOT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_INVOICE_FK_ID + " INTEGER, "
+            + KEY_PERIOD_FK_ID + " INTEGER NOT NULL, "
+            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
+            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
+            + KEY_NAME + " TEXT NOT NULL, "
+            + KEY_DESCRIPTION + " TEXT NULL, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + " PRIMARY KEY (" + KEY_ID + " ), "
             + " FOREIGN KEY (" + KEY_DOCUMENT_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblTRANSACTION  + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_INVOICE_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblINVOICE + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_PERIOD_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblPERIOD + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE); ";
+
+    //-- -------------------------------------------------------------------------------------------
+    //-- Table `tblINTERNAL` (21)
+    //-- -------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblINTERNAL = "CREATE TABLE " +
+            TABLE_tblINTERNAL + "("
+            + KEY_TRANSACTION_FK_ID + " INTEGER NOT NULL, "
+            + KEY_INVOICE_FK_ID + " INTEGER NOT NULL, "
+            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
+            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + " PRIMARY KEY (" + KEY_TRANSACTION_FK_ID + " ), "
+            + " FOREIGN KEY (" + KEY_TRANSACTION_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblTRANSACTION + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_INVOICE_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblINVOICE + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE); ";
+
+    //-- -------------------------------------------------------------------------------------------
+    //-- Table `tblEXTERNAL` (22)
+    //-- -------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblEXTERNAL = "CREATE TABLE " +
+            TABLE_tblEXTERNAL + "("
+            + KEY_TRANSACTION_FK_ID + " INTEGER NOT NULL, "
+            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
+            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + " PRIMARY KEY (" + KEY_TRANSACTION_FK_ID + " ), "
+            + " FOREIGN KEY (" + KEY_TRANSACTION_FK_ID + ") "
             + " REFERENCES " + TABLE_tblTRANSACTION + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- -------------------------------------------------------------------------------------------
-    //-- Table `tblGENERALLEDGER` (18)
+    //-- Table `tblJOURNAL` (23)
     //-- -------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblGENERALLEDGER = "CREATE TABLE " +
-            TABLE_tblGENERALLEDGER + "("
-            + KEY_ID+ " INTEGER NOT NULL, "
+    public static final String CREATE_TABLE_tblJOURNAL = "CREATE TABLE " +
+            TABLE_tblJOURNAL + "("
+            + KEY_ID + " INTEGER NOT NULL, "
             + KEY_INPUT_FK_ID+ " INTEGER NOT NULL, "
             + KEY_TRANSACTION_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
@@ -2179,6 +2363,8 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
             + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
+            + KEY_ENTRY_TYPE + " INTEGER, "
+            + KEY_AMOUNT + " DOUBLE, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -2196,9 +2382,9 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     /*###################################### START RAID MODULE ###################################*/
 
     //-- -------------------------------------------------------------------------------------------
-    //-- Table `tblREGISTER` (1)
+    //-- Table `tblRISKREGISTER` (1)
     //-- -------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblREGISTER = "CREATE TABLE " + TABLE_tblREGISTER + "("
+    public static final String CREATE_TABLE_tblRISKREGISTER = "CREATE TABLE " + TABLE_tblRISKREGISTER + "("
             + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
@@ -2213,10 +2399,10 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP " + ");";
 
     //-- -------------------------------------------------------------------------------------------
-    //-- Table `tblLIKELIHOOD` (2)
+    //-- Table `tblRISKLIKELIHOOD` (2)
     //-- -------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblLIKELIHOOD = "CREATE TABLE " +
-            TABLE_tblLIKELIHOOD + "("
+    public static final String CREATE_TABLE_tblRISKLIKELIHOOD = "CREATE TABLE " +
+            TABLE_tblRISKLIKELIHOOD + "("
             + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
@@ -2226,6 +2412,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_NAME + " TEXT NOT NULL, "
             + KEY_DESCRIPTION + " TEXT NULL, "
+            + KEY_RISKLIKELIHOOD_VALUE + " INTEGER, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP " + ");";
@@ -2233,11 +2420,11 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     //-- -------------------------------------------------------------------------------------------
     //-- Table `tblLIKELIHOODSET` (3)
     //-- -------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblLIKELIHOODSET = "CREATE TABLE " +
-            TABLE_tblLIKELIHOODSET + "("
+    public static final String CREATE_TABLE_tblRISKLIKELIHOODSET = "CREATE TABLE " +
+            TABLE_tblRISKLIKELIHOODSET + "("
             + KEY_ID+ " INTEGER NOT NULL, "
-            + KEY_REGISTER_FK_ID + " INTEGER NOT NULL, "
-            + KEY_LIKELIHOOD_FK_ID + " INTEGER NOT NULL, "
+            + KEY_RISK_REGISTER_FK_ID + " INTEGER NOT NULL, "
+            + KEY_RISK_LIKELIHOOD_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
@@ -2248,11 +2435,11 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + " PRIMARY KEY (" + KEY_ID + " ), "
-            + " FOREIGN KEY (" + KEY_REGISTER_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblREGISTER + " (" + KEY_ID + ") "
+            + " FOREIGN KEY (" + KEY_RISK_REGISTER_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblRISKREGISTER + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_LIKELIHOOD_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblLIKELIHOOD + " (" + KEY_ID + ") "
+            + " FOREIGN KEY (" + KEY_RISK_LIKELIHOOD_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblRISKLIKELIHOOD + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- -------------------------------------------------------------------------------------------
@@ -2269,6 +2456,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_NAME + " TEXT NOT NULL, "
             + KEY_DESCRIPTION + " TEXT NULL, "
+            + KEY_RISKIMPACT_VALUE + " INTEGER, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP " + ");";
@@ -2279,8 +2467,8 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     public static final String CREATE_TABLE_tblRISKIMPACTSET = "CREATE TABLE " +
             TABLE_tblRISKIMPACTSET + "("
             + KEY_ID+ " INTEGER NOT NULL, "
-            + KEY_REGISTER_FK_ID + " INTEGER NOT NULL, "
-            + KEY_RISKIMPACT_FK_ID + " INTEGER NOT NULL, "
+            + KEY_RISK_REGISTER_FK_ID + " INTEGER NOT NULL, "
+            + KEY_RISK_IMPACT_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
@@ -2291,10 +2479,10 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + " PRIMARY KEY (" + KEY_ID + " ), "
-            + " FOREIGN KEY (" + KEY_REGISTER_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblREGISTER + " (" + KEY_ID + ") "
+            + " FOREIGN KEY (" + KEY_RISK_REGISTER_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblRISKREGISTER + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_RISKIMPACT_FK_ID + ") "
+            + " FOREIGN KEY (" + KEY_RISK_IMPACT_FK_ID + ") "
             + " REFERENCES " + TABLE_tblRISKIMPACT + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
@@ -2312,6 +2500,8 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_NAME + " TEXT NOT NULL, "
             + KEY_DESCRIPTION + " TEXT NULL, "
+            + KEY_RISKMAP_LOWER + " INTEGER, "
+            + KEY_RISKMAP_UPPER + " INTEGER, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP " + ");";
@@ -2322,8 +2512,8 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     public static final String CREATE_TABLE_tblRISKCRITERIASET = "CREATE TABLE " +
             TABLE_tblRISKCRITERIASET + "("
             + KEY_ID+ " INTEGER NOT NULL, "
-            + KEY_REGISTER_FK_ID + " INTEGER NOT NULL, "
-            + KEY_RISKCRITERIA_FK_ID + " INTEGER NOT NULL, "
+            + KEY_RISK_REGISTER_FK_ID + " INTEGER NOT NULL, "
+            + KEY_RISK_CRITERIA_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
@@ -2334,29 +2524,32 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + " PRIMARY KEY (" + KEY_ID + " ), "
-            + " FOREIGN KEY (" + KEY_REGISTER_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblREGISTER + " (" + KEY_ID + ") "
+            + " FOREIGN KEY (" + KEY_RISK_REGISTER_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblRISKREGISTER + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_RISKCRITERIA_FK_ID + ") "
+            + " FOREIGN KEY (" + KEY_RISK_CRITERIA_FK_ID + ") "
             + " REFERENCES " + TABLE_tblRISKCRITERIA + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- -------------------------------------------------------------------------------------------
-    //-- Table `tblRISKISSUE` (8)
+    //-- Table `tblRISK` (8)
     //-- -------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblRISKISSUE = "CREATE TABLE " +
-            TABLE_tblRISKISSUE + "("
+    public static final String CREATE_TABLE_tblRISK = "CREATE TABLE " +
+            TABLE_tblRISK + "("
             + KEY_RAID_FK_ID + " INTEGER NOT NULL, "
-            + KEY_REGISTER_FK_ID + " INTEGER NOT NULL, "
+            + KEY_RISK_REGISTER_FK_ID + " INTEGER NOT NULL, "
+            + KEY_STAFF_FK_ID + " INTEGER NOT NULL, "
             + KEY_FREQUENCY_FK_ID + " INTEGER NOT NULL, "
+            + KEY_RISK_LIKELIHOOD_FK_ID + " INTEGER NOT NULL, "
+            + KEY_RISK_IMPACT_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_NAME + " TEXT NOT NULL, "
-            + KEY_DESCRIPTION + " TEXT NULL, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
             + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
+            + KEY_NAME + " TEXT NOT NULL, "
+            + KEY_DESCRIPTION + " TEXT NULL, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -2364,97 +2557,114 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + " FOREIGN KEY (" + KEY_RAID_FK_ID + ") "
             + " REFERENCES " + TABLE_tblRAID + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_REGISTER_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblREGISTER + " (" + KEY_ID + ") "
+            + " FOREIGN KEY (" + KEY_RISK_REGISTER_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblRISKREGISTER + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_STAFF_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblHUMANSET + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
             + " FOREIGN KEY (" + KEY_FREQUENCY_FK_ID + ") "
             + " REFERENCES " + TABLE_tblFREQUENCY + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_RISK_LIKELIHOOD_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblRISKLIKELIHOOD + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_RISK_IMPACT_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblRISKIMPACT + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- -------------------------------------------------------------------------------------------
-    //-- Table `tblRISK` (9)
+    //-- Table `tblRISKROOTCAUSE` (9)
     //-- -------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblRISK = "CREATE TABLE " +
-            TABLE_tblRISK + "("
-            + KEY_RISKISSUE_FK_ID + " INTEGER NOT NULL, "
-            + KEY_SERVER_ID + " INTEGER NOT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_RISKISSUE_FK_ID + " ), "
-            + " FOREIGN KEY (" + KEY_RISKISSUE_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblRISKISSUE + " (" + KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE); ";
-
-    //-- -------------------------------------------------------------------------------------------
-    //-- Table `tblISSUE` (10)
-    //-- -------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblISSUE = "CREATE TABLE " +
-            TABLE_tblISSUE + "("
-            + KEY_RISKISSUE_FK_ID + " INTEGER NOT NULL, "
-            + KEY_SERVER_ID + " INTEGER NOT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_RISKISSUE_FK_ID + " ), "
-            + " FOREIGN KEY (" + KEY_RISKISSUE_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblRISKISSUE + " (" + KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE); ";
-
-    //-- -------------------------------------------------------------------------------------------
-    //-- Table `tblCONSEQUENCE` (11)
-    //-- -------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblCONSEQUENCE = "CREATE TABLE " +
-            TABLE_tblCONSEQUENCE + "("
+    public static final String CREATE_TABLE_tblRISKROOTCAUSE = "CREATE TABLE " +
+            TABLE_tblRISKROOTCAUSE + "("
             + KEY_ID + " INTEGER NOT NULL, "
             + KEY_RISK_FK_ID + " INTEGER NOT NULL, "
-            + KEY_SERVER_ID + " INTEGER NOT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
+            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
+            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_NAME + " TEXT NOT NULL, "
             + KEY_DESCRIPTION + " TEXT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + " PRIMARY KEY (" + KEY_ID + " ), "
             + " FOREIGN KEY (" + KEY_RISK_FK_ID + ") "
             + " REFERENCES " + TABLE_tblRISK + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE); ";
+
+    //-- -------------------------------------------------------------------------------------------
+    //-- Table `tblRISKCONSEQUENCE` (10)
+    //-- -------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblRISKCONSEQUENCE = "CREATE TABLE " +
+            TABLE_tblRISKCONSEQUENCE + "("
+            + KEY_ID + " INTEGER NOT NULL, "
+            + KEY_RISK_FK_ID + " INTEGER NOT NULL, "
+            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
+            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
+            + KEY_NAME + " TEXT NOT NULL, "
+            + KEY_DESCRIPTION + " TEXT NULL, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + " PRIMARY KEY (" + KEY_ID + " ), "
+            + " FOREIGN KEY (" + KEY_RISK_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblRISK + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE); ";
+
+    //-- -------------------------------------------------------------------------------------------
+    //-- Table `tblCURRENTCONTROL` (11)
+    //-- -------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblCURRENTCONTROL = "CREATE TABLE " +
+            TABLE_tblCURRENTCONTROL + "("
+            + KEY_RISK_ACTION_FK_ID + " INTEGER NOT NULL, "
+            + KEY_RISK_ANALYSIS_FK_ID + " INTEGER NOT NULL, "
+            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
+            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + " PRIMARY KEY (" + KEY_RISK_ACTION_FK_ID + " ), "
+            + " FOREIGN KEY (" + KEY_RISK_ACTION_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblRISKACTION + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_RISK_ANALYSIS_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblRISKANALYSIS + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- -------------------------------------------------------------------------------------------
     //-- Table `tblCURRENTCONTROL` (12)
     //-- -------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblCURRENTCONTROL = "CREATE TABLE " +
-            TABLE_tblCURRENTCONTROL + "("
-            + KEY_ID + " INTEGER NOT NULL, "
-            + KEY_RISK_FK_ID + " INTEGER NOT NULL, "
-            + KEY_SERVER_ID + " INTEGER NOT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_NAME + " TEXT NOT NULL, "
-            + KEY_DESCRIPTION + " TEXT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+    public static final String CREATE_TABLE_tblADDITIONALCONTROL = "CREATE TABLE " +
+            TABLE_tblADDITIONALCONTROL + "("
+            + KEY_RISK_ACTION_FK_ID + " INTEGER NOT NULL, "
+            + KEY_RISK_ANALYSIS_FK_ID + " INTEGER NOT NULL, "
+            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
+            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_ID + " ), "
-            + " FOREIGN KEY (" + KEY_RISK_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblRISK + " (" + KEY_ID + ") "
+            + " PRIMARY KEY (" + KEY_RISK_ACTION_FK_ID + " ), "
+            + " FOREIGN KEY (" + KEY_RISK_ACTION_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblRISKACTION + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_RISK_ANALYSIS_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblRISKANALYSIS + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- -------------------------------------------------------------------------------------------
@@ -2464,14 +2674,14 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             TABLE_tblRISKMILESTONE + "("
             + KEY_MILESTONE_FK_ID + " INTEGER NOT NULL, "
             + KEY_RISK_FK_ID + " INTEGER NOT NULL, "
-            + KEY_SERVER_ID + " INTEGER NOT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
+            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
+            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_NAME + " TEXT NOT NULL, "
             + KEY_DESCRIPTION + " TEXT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -2489,46 +2699,42 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     public static final String CREATE_TABLE_tblRISKANALYSIS = "CREATE TABLE " +
             TABLE_tblRISKANALYSIS + "("
             + KEY_ID + " INTEGER NOT NULL, "
-            + KEY_MILESTONE_FK_ID + " INTEGER NOT NULL, "
-            + KEY_LIKELIHOOD_FK_ID + " INTEGER NOT NULL, "
-            + KEY_RISKIMPACT_FK_ID + " INTEGER NOT NULL, "
-            + KEY_MITIGATIONPLAN_FK_ID + " INTEGER NOT NULL, "
+            + KEY_RISK_MILESTONE_FK_ID + " INTEGER NOT NULL, "
+            + KEY_RISK_LIKELIHOOD_FK_ID + " INTEGER NOT NULL, "
+            + KEY_RISK_IMPACT_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_RISK_INDEX + " INTEGER, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
             + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
+            + KEY_RISK_INDEX + " INTEGER, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + " PRIMARY KEY (" + KEY_ID + " ), "
-            + " FOREIGN KEY (" + KEY_MILESTONE_FK_ID + ") "
+            + " FOREIGN KEY (" + KEY_RISK_MILESTONE_FK_ID + ") "
             + " REFERENCES " + TABLE_tblMILESTONE + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_LIKELIHOOD_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblLIKELIHOOD + " (" + KEY_ID + ") "
+            + " FOREIGN KEY (" + KEY_RISK_LIKELIHOOD_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblRISKLIKELIHOOD + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_RISKIMPACT_FK_ID + ") "
+            + " FOREIGN KEY (" + KEY_RISK_IMPACT_FK_ID + ") "
             + " REFERENCES " + TABLE_tblRISKIMPACT + " (" + KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_MITIGATIONPLAN_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblMITIGATIONPLAN + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- -------------------------------------------------------------------------------------------
-    //-- Table `tblMITIGATIONPLAN` (15)
+    //-- Table `tblRISKPLAN` (15)
     //-- -------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblMITIGATIONPLAN = "CREATE TABLE " +
-            TABLE_tblMITIGATIONPLAN + "("
+    public static final String CREATE_TABLE_tblRISKPLAN = "CREATE TABLE " +
+            TABLE_tblRISKPLAN + "("
             + KEY_ACTIVITYPLANNING_FK_ID + " INTEGER NOT NULL, "
-            + KEY_SERVER_ID + " INTEGER NOT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
+            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
+            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -2538,59 +2744,34 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- -------------------------------------------------------------------------------------------
-    //-- Table `tblCONTINGENCYPLAN` (16)
+    //-- Table `tblRISKACTIONTYPE` (16)
     //-- -------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblCONTINGENCYPLAN = "CREATE TABLE " +
-            TABLE_tblCONTINGENCYPLAN + "("
-            + KEY_CONTINGENCYPLAN_FK_ID + " INTEGER NOT NULL, "
-            + KEY_SERVER_ID + " INTEGER NOT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_CONTINGENCYPLAN_FK_ID + " ), "
-            + " FOREIGN KEY (" + KEY_CONTINGENCYPLAN_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblMITIGATIONPLAN + " (" + KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE); ";
-
-    //-- -------------------------------------------------------------------------------------------
-    //-- Table `tblPREVENTATIVEPLAN` (17)
-    //-- -------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblPREVENTATIVEPLAN = "CREATE TABLE " +
-            TABLE_tblPREVENTATIVEPLAN + "("
-            + KEY_PREVENTATIVEPLAN_FK_ID + " INTEGER NOT NULL, "
-            + KEY_SERVER_ID + " INTEGER NOT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL, "
-            + KEY_ORG_ID + " INTEGER NOT NULL, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + " PRIMARY KEY (" + KEY_PREVENTATIVEPLAN_FK_ID + " ), "
-            + " FOREIGN KEY (" + KEY_PREVENTATIVEPLAN_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblMITIGATIONPLAN + " (" + KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE); ";
-
-
-    //-- -------------------------------------------------------------------------------------------
-    //-- Table `tblMITIGATIONACTION` (18)
-    //-- -------------------------------------------------------------------------------------------
-    public static final String CREATE_TABLE_tblMITIGATIONACTION = "CREATE TABLE " +
-            TABLE_tblMITIGATIONACTION + "("
-            + KEY_TASK_FK_ID + " INTEGER NOT NULL, "
-            + KEY_MITIGATIONPLAN_FK_ID + " INTEGER NOT NULL, "
-            + KEY_RISKMILESTONE_FK_ID + " INTEGER NOT NULL, "
+    public static final String CREATE_TABLE_tblRISKACTIONTYPE = "CREATE TABLE " +
+            TABLE_tblRISKACTIONTYPE + "("
+            + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
+            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_NAME + " TEXT NOT NULL, "
             + KEY_DESCRIPTION + " TEXT NULL, "
+            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP " + ");";
+
+    //-- -------------------------------------------------------------------------------------------
+    //-- Table `tblRISKACTION` (17)
+    //-- -------------------------------------------------------------------------------------------
+    public static final String CREATE_TABLE_tblRISKACTION = "CREATE TABLE " +
+            TABLE_tblRISKACTION + "("
+            + KEY_TASK_FK_ID + " INTEGER NOT NULL, "
+            + KEY_RISK_PLAN_FK_ID + " INTEGER NOT NULL, "
+            + KEY_RISK_ACTION_TYPE_FK_ID + " INTEGER NOT NULL, "
+            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
+            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
+            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
             + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
@@ -2601,11 +2782,11 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + " FOREIGN KEY (" + KEY_TASK_FK_ID + ") "
             + " REFERENCES " + TABLE_tblTASK + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_MITIGATIONPLAN_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblMITIGATIONPLAN + " (" + KEY_ID + ") "
+            + " FOREIGN KEY (" + KEY_RISK_PLAN_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblRISKPLAN + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_RISKMILESTONE_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblRISKMILESTONE + " (" + KEY_ID + ") "
+            + " FOREIGN KEY (" + KEY_RISK_ACTION_TYPE_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblRISKACTIONTYPE + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     /*####################################### END RAID MODULE ####################################*/
@@ -2916,7 +3097,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
             + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
-            + KEY_NUMERIC_RESPONSE + " INTEGER NOT NULL, "
+            + KEY_NUMERIC_RESPONSE_FK_ID + " INTEGER NOT NULL, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -2938,7 +3119,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
             + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
-            + KEY_TEXT_RESPONSE + " TEXT NOT NULL, "
+            + KEY_TEXT_RESPONSE_FK_ID + " TEXT NOT NULL, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -2960,7 +3141,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
             + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
-            + KEY_DATE_RESPONSE + " DATE NOT NULL, "
+            + KEY_DATE_RESPONSE_FK_ID + " DATE NOT NULL, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -2982,7 +3163,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
             + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
-            + KEY_ARRAY_RESPONSE + " INTEGER NOT NULL, "
+            + KEY_ARRAY_RESPONSE_FK_ID + " INTEGER NOT NULL, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -3004,9 +3185,9 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
             + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
-            + KEY_MATRIX_RESPONSE + " INTEGER NOT NULL, "
-            + KEY_ROW_RESPONSE + " INTEGER NOT NULL, "
-            + KEY_COL_RESPONSE + " INTEGER NOT NULL, "
+            + KEY_MATRIX_RESPONSE_FK_ID + " INTEGER NOT NULL, "
+            + KEY_ROW_RESPONSE_FK_ID + " INTEGER NOT NULL, "
+            + KEY_COL_RESPONSE_FK_ID + " INTEGER NOT NULL, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -3429,6 +3610,19 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
         /** drop all tables **/
         dropTables(db);
 
+        db.execSQL("DROP TABLE IF EXISTS " + "tblISSUE");
+        db.execSQL("DROP TABLE IF EXISTS " + "tblRISKISSUE");
+        db.execSQL("DROP TABLE IF EXISTS " + "tblLIKELIHOOD");
+        db.execSQL("DROP TABLE IF EXISTS " + "tblCONTINGENCYPLAN");
+        db.execSQL("DROP TABLE IF EXISTS " + "tblMITIGATIONPLAN");
+        db.execSQL("DROP TABLE IF EXISTS " + "tblMITIGATIONACTION");
+        db.execSQL("DROP TABLE IF EXISTS " + "tblPREVENTATIVEPLAN");
+        db.execSQL("DROP TABLE IF EXISTS " + "tblCONSEQUENCE");
+        db.execSQL("DROP TABLE IF EXISTS " + "tblREGISTER");
+        db.execSQL("DROP TABLE IF EXISTS " + "tblGENERALLEDGER");
+        db.execSQL("DROP TABLE IF EXISTS " + "tblCRITERIA");
+        db.execSQL("DROP TABLE IF EXISTS " + "tblROOTCAUSE");
+
         /** create all tables **/
         createTables(db);
     }
@@ -3453,7 +3647,8 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
 
         // 1. global tables
         String[] create_global_tables = new String[]{
-                CREATE_TABLE_tblFREQUENCY
+                CREATE_TABLE_tblFREQUENCY, CREATE_TABLE_tblPERIOD,
+                CREATE_TABLE_tblFISCALYEAR
         };
 
         // 2. user access control tables
@@ -3481,7 +3676,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
                 CREATE_TABLE_tblOUTPUT, CREATE_TABLE_tblACTIVITYPLANNING,
                 CREATE_TABLE_tblACTIVITY, CREATE_TABLE_tblINPUT,
                 CREATE_TABLE_tblRESOURCETYPE, CREATE_TABLE_tblRESOURCE,
-                CREATE_TABLE_tblCRITERIA, CREATE_TABLE_tblQUESTIONGROUPING,
+                CREATE_TABLE_tblEVALUATIONCRITERIA, CREATE_TABLE_tblQUESTIONGROUPING,
                 CREATE_TABLE_tblPRIMITIVETYPE, CREATE_TABLE_tblQUESTIONTYPE,
                 CREATE_TABLE_tblARRAYTYPE, CREATE_TABLE_tblMATRIXTYPE,
                 CREATE_TABLE_tblQUESTION, CREATE_TABLE_tblRAID,
@@ -3496,28 +3691,31 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
 
         /* 4. annual work plan and budget (awpb) tables */
         String[] create_awpb_tables = new String[]{
-                CREATE_TABLE_tblHUMAN, CREATE_TABLE_tblHUMANSET,
-                CREATE_TABLE_tblMATERIAL, CREATE_TABLE_tblEXPENSE,
-                CREATE_TABLE_tblINCOME, CREATE_TABLE_tblTASK,
-                CREATE_TABLE_tblTRANSACTION, CREATE_TABLE_tblMILESTONE,
-                CREATE_TABLE_tblUSERCOMMENT, CREATE_TABLE_tblACTIVITYTASK,
-                CREATE_TABLE_tblPRECEDINGTASK, CREATE_TABLE_tblTASKASSIGNMENT,
-                CREATE_TABLE_tblTIMESHEET, CREATE_TABLE_tblEXTENSION,
-                CREATE_TABLE_tblEXT_DOC_TYPE, CREATE_TABLE_tblDOCUMENT,
-                CREATE_TABLE_tblGENERALLEDGER, CREATE_TABLE_tblFUND
+                CREATE_TABLE_tblHUMAN, CREATE_TABLE_tblMATERIAL,
+                CREATE_TABLE_tblINCOME, CREATE_TABLE_tblEXPENSE,
+                CREATE_TABLE_tblHUMANSET, CREATE_TABLE_tblFUND,
+                CREATE_TABLE_tblTASK, CREATE_TABLE_tblACTIVITYTASK,
+                CREATE_TABLE_tblPRECEDINGTASK, CREATE_TABLE_tblTASK_MILESTONE,
+                 CREATE_TABLE_tblMILESTONE, CREATE_TABLE_tblTASKASSIGNMENT,
+                CREATE_TABLE_tblUSERCOMMENT, CREATE_TABLE_tblTIMESHEET,
+                CREATE_TABLE_tblINVOICE, CREATE_TABLE_tblINVOICE_TIMESHEET,
+                CREATE_TABLE_tblEXTENSION, CREATE_TABLE_tblEXT_DOC_TYPE,
+                CREATE_TABLE_tblDOCUMENT, CREATE_TABLE_tblTRANSACTION,
+                CREATE_TABLE_tblINTERNAL, CREATE_TABLE_tblEXTERNAL,
+                CREATE_TABLE_tblJOURNAL
         };
 
         /* 5. risk, assumption, issue and dependency (raid) tables */
         String[] create_raid_tables = new String[]{
-                CREATE_TABLE_tblREGISTER, CREATE_TABLE_tblLIKELIHOOD,
-                CREATE_TABLE_tblLIKELIHOODSET, CREATE_TABLE_tblRISKIMPACT,
+                CREATE_TABLE_tblRISKREGISTER, CREATE_TABLE_tblRISKLIKELIHOOD,
+                CREATE_TABLE_tblRISKLIKELIHOODSET, CREATE_TABLE_tblRISKIMPACT,
                 CREATE_TABLE_tblRISKIMPACTSET, CREATE_TABLE_tblRISKCRITERIA,
-                CREATE_TABLE_tblRISKCRITERIASET, CREATE_TABLE_tblRISKISSUE,
-                CREATE_TABLE_tblRISK, CREATE_TABLE_tblISSUE,
-                CREATE_TABLE_tblCONSEQUENCE, CREATE_TABLE_tblCURRENTCONTROL,
+                CREATE_TABLE_tblRISKCRITERIASET, CREATE_TABLE_tblRISK,
+                CREATE_TABLE_tblRISKROOTCAUSE, CREATE_TABLE_tblRISKCONSEQUENCE,
+                CREATE_TABLE_tblCURRENTCONTROL, CREATE_TABLE_tblADDITIONALCONTROL,
                 CREATE_TABLE_tblRISKMILESTONE, CREATE_TABLE_tblRISKANALYSIS,
-                CREATE_TABLE_tblMITIGATIONPLAN, CREATE_TABLE_tblCONTINGENCYPLAN,
-                CREATE_TABLE_tblPREVENTATIVEPLAN, CREATE_TABLE_tblMITIGATIONACTION
+                CREATE_TABLE_tblRISKPLAN, CREATE_TABLE_tblRISKACTIONTYPE,
+                CREATE_TABLE_tblRISKACTION
         };
 
         /* 6. evaluation tables */
@@ -3582,7 +3780,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
 
         /** drop global tables **/
         String[] global_tables = new String[]{
-                TABLE_tblFREQUENCY
+                TABLE_tblFREQUENCY, TABLE_tblPERIOD, TABLE_tblFISCALYEAR
         };
 
         /** drop bitwise role based access control tables **/
@@ -3603,7 +3801,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
                 TABLE_tblLOGFRAME, TABLE_tblLOGFRAMETREE, TABLE_tblIMPACT,
                 TABLE_tblOUTCOME, TABLE_tblOUTPUT, TABLE_tblACTIVITYPLANNING,
                 TABLE_tblACTIVITY, TABLE_tblINPUT, TABLE_tblRESOURCETYPE,
-                TABLE_tblRESOURCE, TABLE_tblCRITERIA, TABLE_tblQUESTIONGROUPING,
+                TABLE_tblRESOURCE, TABLE_tblEVALUATIONCRITERIA, TABLE_tblQUESTIONGROUPING,
                 TABLE_tblPRIMITIVETYPE, TABLE_tblQUESTIONTYPE, TABLE_tblARRAYTYPE,
                 TABLE_tblMATRIXTYPE, TABLE_tblQUESTION, TABLE_tblRAID,
                 TABLE_tblOUTCOME_IMPACT, TABLE_tblOUTPUT_OUTCOME, TABLE_tblACTIVITY_OUTPUT,
@@ -3615,22 +3813,23 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
 
         /** drop awpb tables **/
         String[] awpb_tables = new String[]{
-                TABLE_tblHUMAN, TABLE_tblHUMANSET, TABLE_tblMATERIAL,
-                TABLE_tblEXPENSE, TABLE_tblINCOME, TABLE_tblTASK,
-                TABLE_tblTRANSACTION, TABLE_tblMILESTONE, TABLE_tblUSERCOMMENT,
-                TABLE_tblACTIVITYTASK, TABLE_tblPRECEDINGTASK, TABLE_tblTASKASSIGNMENT,
-                TABLE_tblTIMESHEET, TABLE_tblEXTENSION, TABLE_tblEXT_DOC_TYPE,
-                TABLE_tblDOCUMENT, TABLE_tblGENERALLEDGER, TABLE_tblFUND
+                TABLE_tblHUMAN, TABLE_tblMATERIAL, TABLE_tblINCOME, TABLE_tblEXPENSE,
+                TABLE_tblHUMANSET, TABLE_tblFUND, TABLE_tblTASK, TABLE_tblACTIVITYTASK,
+                TABLE_tblPRECEDINGTASK, TABLE_tblTASK_MILESTONE, TABLE_tblMILESTONE,
+                TABLE_tblTASKASSIGNMENT, TABLE_tblUSERCOMMENT, TABLE_tblTIMESHEET,
+                TABLE_tblINVOICE, TABLE_tblINVOICE_TIMESHEET, TABLE_tblEXTENSION,
+                TABLE_tblEXT_DOC_TYPE, TABLE_tblDOCUMENT, TABLE_tblTRANSACTION,
+                TABLE_tblINTERNAL, TABLE_tblEXTERNAL, TABLE_tblJOURNAL
         };
 
         /** drop raid tables **/
         String[] raid_tables = new String[]{
-                TABLE_tblREGISTER, TABLE_tblLIKELIHOOD, TABLE_tblLIKELIHOODSET,
+                TABLE_tblRISKREGISTER, TABLE_tblRISKLIKELIHOOD, TABLE_tblRISKLIKELIHOODSET,
                 TABLE_tblRISKIMPACT, TABLE_tblRISKIMPACTSET, TABLE_tblRISKCRITERIA,
-                TABLE_tblRISKCRITERIASET, TABLE_tblRISKISSUE, TABLE_tblRISK,
-                TABLE_tblISSUE, TABLE_tblCONSEQUENCE, TABLE_tblCURRENTCONTROL,
-                TABLE_tblRISKMILESTONE, TABLE_tblRISKANALYSIS, TABLE_tblMITIGATIONPLAN,
-                TABLE_tblCONTINGENCYPLAN, TABLE_tblPREVENTATIVEPLAN, TABLE_tblMITIGATIONACTION
+                TABLE_tblRISKCRITERIASET, TABLE_tblRISK, TABLE_tblRISKROOTCAUSE,
+                TABLE_tblRISKCONSEQUENCE, TABLE_tblCURRENTCONTROL, TABLE_tblADDITIONALCONTROL,
+                TABLE_tblRISKMILESTONE, TABLE_tblRISKANALYSIS, TABLE_tblRISKPLAN,
+                TABLE_tblRISKACTIONTYPE, TABLE_tblRISKACTION
         };
 
         /** drop evaluation tables **/
@@ -4214,8 +4413,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     public static final String KEY_RISKMAP_OWNER_ID = "_id_owner";
     public static final String KEY_RISKMAP_NAME = "name";
     public static final String KEY_RISKMAP_DESCRIPTION = "description";
-    public static final String KEY_RISKMAP_LOWER = "lower_limit";
-    public static final String KEY_RISKMAP_UPPER = "upper_limit";
+
     public static final String KEY_RISKMAP_DATE = "date";
 
     // RISKMAP table - create statement
@@ -4235,7 +4433,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     public static final String KEY_RISKLIKELIHOOD_OWNER_ID = "_id_owner";
     public static final String KEY_RISKLIKELIHOOD_NAME = "name";
     public static final String KEY_RISKLIKELIHOOD_DESCRIPTION = "description";
-    public static final String KEY_RISKLIKELIHOOD_VALUE = "value";
+
     public static final String KEY_RISKLIKELIHOOD_DATE = "date";
 
     // RISKLIKELIHOOD table - create statement
@@ -4253,7 +4451,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     public static final String KEY_RISKIMPACT_OWNER_ID = "_id_owner";
     public static final String KEY_RISKIMPACT_NAME = "name";
     public static final String KEY_RISKIMPACT_DESCRIPTION = "description";
-    public static final String KEY_RISKIMPACT_VALUE = "value";
+
     public static final String KEY_RISKIMPACT_DATE = "date";
 
     // RISKLIKELIHOOD table - create statement

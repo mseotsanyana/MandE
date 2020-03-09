@@ -1136,7 +1136,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_RESPONSE_FK_ID, eresponseID);
-        cv.put(cSQLDBHelper.KEY_NUMERIC_RESPONSE, numericResponse);
+        cv.put(cSQLDBHelper.KEY_NUMERIC_RESPONSE_FK_ID, numericResponse);
 
         // insert evaluation type details
         try {
@@ -1162,7 +1162,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_RESPONSE_FK_ID, eresponseID);
-        cv.put(cSQLDBHelper.KEY_TEXT_RESPONSE, testResponse);
+        cv.put(cSQLDBHelper.KEY_TEXT_RESPONSE_FK_ID, testResponse);
 
         // insert evaluation type details
         try {
@@ -1188,7 +1188,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_RESPONSE_FK_ID, eresponseID);
-        cv.put(cSQLDBHelper.KEY_DATE_RESPONSE, String.valueOf(dateResponse));
+        cv.put(cSQLDBHelper.KEY_DATE_RESPONSE_FK_ID, String.valueOf(dateResponse));
 
         // insert evaluation type details
         try {
@@ -1214,7 +1214,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_RESPONSE_FK_ID, eresponseID);
-        cv.put(cSQLDBHelper.KEY_ARRAY_RESPONSE, arrayResponse);
+        cv.put(cSQLDBHelper.KEY_ARRAY_RESPONSE_FK_ID, arrayResponse);
 
         // insert evaluation type details
         try {
@@ -1240,9 +1240,9 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_RESPONSE_FK_ID, eresponseID);
-        cv.put(cSQLDBHelper.KEY_MATRIX_RESPONSE, matrixResponse);
-        cv.put(cSQLDBHelper.KEY_ROW_RESPONSE, rowResponse);
-        cv.put(cSQLDBHelper.KEY_COL_RESPONSE, colResponse);
+        cv.put(cSQLDBHelper.KEY_MATRIX_RESPONSE_FK_ID, matrixResponse);
+        cv.put(cSQLDBHelper.KEY_ROW_RESPONSE_FK_ID, rowResponse);
+        cv.put(cSQLDBHelper.KEY_COL_RESPONSE_FK_ID, colResponse);
 
 
         // insert evaluation type details

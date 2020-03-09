@@ -28,15 +28,35 @@ public class cUploadAWPBInteractorImpl extends cAbstractInteractor
 
     @Override
     public void run() {
-        /* create a new CRITERIA object and insert it in the database */
-        //uploadLMRepository.deleteCriteria();
-        //uploadLMRepository.addCriteriaFromExcel();
+        /* delete AWPB tables */
+        uploadAWPBRepository.deleteTasks();
+        uploadAWPBRepository.deleteActivityTasks();
+        uploadAWPBRepository.deletePrecedingTasks();
+        uploadAWPBRepository.deleteTaskMilestones();
+        uploadAWPBRepository.deleteTaskAssignments();
+        uploadAWPBRepository.deleteTimesheets();
+        uploadAWPBRepository.deleteUserComments();
+        uploadAWPBRepository.deleteUserComments();
+        uploadAWPBRepository.deleteDocuments();
+        uploadAWPBRepository.deleteInvoices();
+        uploadAWPBRepository.deleteInvoiceTimesheet();
+        uploadAWPBRepository.deleteInternals();
+        uploadAWPBRepository.deleteExternals();
+        uploadAWPBRepository.deleteTransactions();
+        uploadAWPBRepository.deleteJournals();
+
+        /* create AWPB tables */
+        uploadAWPBRepository.addTaskFromExcel();
+        uploadAWPBRepository.addDocumentFromExcel();
+        uploadAWPBRepository.addInvoiceFromExcel();
+        uploadAWPBRepository.addTransactionFromExcel();
+        uploadAWPBRepository.addJournalFromExcel();
 
         /* notify on the main thread that we have inserted this item */
         mainThread.post(new Runnable() {
             @Override
             public void run() {
-                callback.onUploadAWPBCompleted();
+                callback.onUploadAWPBCompleted("AWPB Modules Added Successfully!");
             }
         });
     }

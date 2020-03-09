@@ -56,6 +56,15 @@
             android:layout_height="wrap_content" />
 
         <android.support.v7.widget.AppCompatButton
+            android:id="@+id/appCompatButtonUploadAWPB"
+            android:layout_marginTop="20dp"
+            android:text="Upload AWP\&amp;B Dataset"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/appCompatButtonUploadEvaluation"
             android:layout_marginTop="20dp"
             android:text="Upload Evaluation Dataset"
@@ -82,14 +91,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/appCompatButtonUploadAWPB"
-            android:layout_marginTop="20dp"
-            android:text="Upload AWP\&amp;B Dataset"
-            android:background="@color/colorPrimary"
-            android:textColor="@android:color/white"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+
 
         <ProgressBar
             android:id="@+id/progressBar"

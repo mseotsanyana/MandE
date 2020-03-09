@@ -5,6 +5,7 @@
       <w>activitylog</w>
       <w>activityplanning</w>
       <w>activitytask</w>
+      <w>additionalcontrol</w>
       <w>arraychoice</w>
       <w>arraychoiceset</w>
       <w>arrayresponse</w>
@@ -20,7 +21,9 @@
       <w>dateresponse</w>
       <w>dependecy</w>
       <w>eresponse</w>
+      <w>evaluationcriteria</w>
       <w>evaluationtype</w>
+      <w>fiscalyear</w>
       <w>funder</w>
       <w>generalledger</w>
       <w>humanset</w>
@@ -51,18 +54,29 @@
       <w>questiongrouping</w>
       <w>questiontype</w>
       <w>resourcetype</w>
+      <w>riskaction</w>
+      <w>riskactiontype</w>
       <w>riskanalysis</w>
       <w>riskcalculation</w>
+      <w>riskconsequence</w>
       <w>riskcriteria</w>
       <w>riskcriteriaset</w>
       <w>riskimpact</w>
       <w>riskimpactset</w>
       <w>riskissue</w>
+      <w>risklikelihood</w>
+      <w>risklikelihoodset</w>
+      <w>riskmap</w>
       <w>riskmilestone</w>
+      <w>riskplan</w>
+      <w>riskregister</w>
+      <w>riskrootcause</w>
+      <w>rootcause</w>
       <w>rowoption</w>
       <w>taskassignment</w>
       <w>textresponse</w>
       <w>timesheet</w>
+      <w>timesheets</w>
       <w>usercomment</w>
       <w>workplan</w>
     </words>

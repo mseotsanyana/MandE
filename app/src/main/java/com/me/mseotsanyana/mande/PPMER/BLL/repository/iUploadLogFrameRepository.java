@@ -1,6 +1,22 @@
 package com.me.mseotsanyana.mande.PPMER.BLL.repository;
 
 public interface iUploadLogFrameRepository {
+    /*boolean deleteCriteria();
+    boolean deleteQuestionGrouping();
+    boolean deleteQuestionType();
+    boolean deleteQuestion();
+    boolean deleteLogFrame();
+    boolean deleteRaid();
+    boolean deleteImpact();
+    boolean deleteOutcome();
+    boolean deleteOutput();
+    boolean deleteActivityPlanning();
+    boolean deleteActivity();
+    boolean deleteResourceType();
+    boolean deleteResource();
+    boolean deleteInput();*/
+
+
     /* add (create) functions */
     boolean addCriteriaFromExcel();
     boolean addQuestionGroupingFromExcel();

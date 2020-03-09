@@ -9,7 +9,7 @@ import android.util.Pair;
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.PPMER.BLL.repository.iUploadLogFrameRepository;
 import com.me.mseotsanyana.mande.PPMER.DAL.model.cActivityPlanningModel;
-import com.me.mseotsanyana.mande.PPMER.DAL.model.cCriteriaModel;
+import com.me.mseotsanyana.mande.PPMER.DAL.model.cEvaluationCriteriaModel;
 import com.me.mseotsanyana.mande.PPMER.DAL.model.cQuestionGroupingModel;
 import com.me.mseotsanyana.mande.PPMER.DAL.model.cQuestionModel;
 import com.me.mseotsanyana.mande.PPMER.DAL.model.cQuestionTypeModel;
@@ -199,7 +199,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
                 continue;
             }
 
-            cCriteriaModel criteriaModel = new cCriteriaModel();
+            cEvaluationCriteriaModel criteriaModel = new cEvaluationCriteriaModel();
 
             criteriaModel.setCriteriaID((int)
                     cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
@@ -222,7 +222,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
      * @param criteriaModel
      * @return
      */
-    public boolean addQuestionCriteria(cCriteriaModel criteriaModel) {
+    public boolean addQuestionCriteria(cEvaluationCriteriaModel criteriaModel) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -236,7 +236,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
         // insert project details
         try {
-            if (db.insert(cSQLDBHelper.TABLE_tblCRITERIA, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblEVALUATIONCRITERIA, null, cv) < 0) {
                 return false;
             }
         } catch (Exception e) {
@@ -873,7 +873,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
         cv.put(cSQLDBHelper.KEY_IMPACT_FK_ID, impactID);
         cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, questionID);
-        cv.put(cSQLDBHelper.KEY_CRITERIA_FK_ID, criteriaID);
+        cv.put(cSQLDBHelper.KEY_EVALUATION_CRITERIA_FK_ID, criteriaID);
 
         if (db.insert(cSQLDBHelper.TABLE_tblIMPACT_QUESTION, null, cv) < 0) {
             return false;
@@ -1140,7 +1140,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
         cv.put(cSQLDBHelper.KEY_OUTCOME_FK_ID, outcomeID);
         cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, questionID);
-        cv.put(cSQLDBHelper.KEY_CRITERIA_FK_ID, criteriaID);
+        cv.put(cSQLDBHelper.KEY_EVALUATION_CRITERIA_FK_ID, criteriaID);
 
         if (db.insert(cSQLDBHelper.TABLE_tblOUTCOME_QUESTION, null, cv) < 0) {
             return false;
@@ -1403,7 +1403,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
         cv.put(cSQLDBHelper.KEY_OUTPUT_FK_ID, outputID);
         cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, questionID);
-        cv.put(cSQLDBHelper.KEY_CRITERIA_FK_ID, criteriaID);
+        cv.put(cSQLDBHelper.KEY_EVALUATION_CRITERIA_FK_ID, criteriaID);
 
         if (db.insert(cSQLDBHelper.TABLE_tblOUTPUT_QUESTION, null, cv) < 0) {
             return false;
@@ -1886,7 +1886,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
         cv.put(cSQLDBHelper.KEY_ACTIVITY_FK_ID, activityID);
         cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, questionID);
-        cv.put(cSQLDBHelper.KEY_CRITERIA_FK_ID, criteriaID);
+        cv.put(cSQLDBHelper.KEY_EVALUATION_CRITERIA_FK_ID, criteriaID);
 
         if (db.insert(cSQLDBHelper.TABLE_tblACTIVITY_QUESTION, null, cv) < 0) {
             return false;
@@ -2090,8 +2090,10 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
      */
     @Override
     public boolean addInputFromExcel() {
-        Workbook workbook = excelHelper.getWorkbookLOGFRAME();
-        Sheet inputSheet = workbook.getSheet(cExcelHelper.SHEET_tblINPUT);
+        Workbook logFrameWorkbook = excelHelper.getWorkbookLOGFRAME();
+        Workbook awpbWorkbook = excelHelper.getWorkbookAWPB();
+
+        Sheet inputSheet = logFrameWorkbook.getSheet(cExcelHelper.SHEET_tblINPUT);
 
         if (inputSheet == null) {
             return false;
@@ -2117,7 +2119,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             Set<Pair<Integer, Integer>> qcSet = new HashSet<>();
             int inputID, questionID, criteriaID;
 
-            Sheet iqcSheet = workbook.getSheet(cExcelHelper.SHEET_tblINPUT_QUESTION);
+            Sheet iqcSheet = logFrameWorkbook.getSheet(cExcelHelper.SHEET_tblINPUT_QUESTION);
             for (Iterator<Row> ritIQC = iqcSheet.iterator(); ritIQC.hasNext(); ) {
                 Row rowIQC = ritIQC.next();
 
@@ -2135,7 +2137,149 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             }
             iqcMap.put(inputModel.getInputID(), qcSet);
 
-            if (!addInputFromExcel(inputModel, iqcMap)) {
+
+            /* human input */
+            int humanID = -1,  humanQuantity = 0;
+            /* human set input */
+            Map<Integer, Set<Pair<Integer, Integer>>> hiuMap = new HashMap<>();
+            Set<Pair<Integer, Integer>> huSet = new HashSet<>();
+
+            /* material input */
+            int materialID = -1, materialQuantity = 0;
+
+            /* expense inputs */
+            int expenseID = -1; double expense = 0.0;
+
+            /* income inputs */
+            int incomeID = -1, fundID = -1, funderID = -1, beneficiaryID = -1; double fund = 0.0;
+
+            Sheet humanSheet = awpbWorkbook.getSheet(cExcelHelper.SHEET_tblHUMAN);
+            for (Iterator<Row> ritHuman = humanSheet.iterator(); ritHuman.hasNext(); ) {
+                Row rowHuman = ritHuman.next();
+
+                //just skip the row if row number is 0
+                if (rowHuman.getRowNum() == 0) {
+                    continue;
+                }
+
+                humanID = (int) rowHuman.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                if (inputModel.getInputID() == humanID) {
+                    humanQuantity = (int) rowHuman.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+
+                    /* human set input */
+                    int humanSetInputID = -1, humanSetID = -1, userID = -1;
+
+                    Sheet humanSetSheet = awpbWorkbook.getSheet(cExcelHelper.SHEET_tblHUMANSET);
+                    for (Iterator<Row> ritHumanSet = humanSetSheet.iterator(); ritHumanSet.hasNext(); ) {
+                        Row rowHumanSet = ritHumanSet.next();
+
+                        //just skip the row if row number is 0
+                        if (rowHumanSet.getRowNum() == 0) {
+                            continue;
+                        }
+
+                        humanSetInputID = (int) rowHumanSet.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                        if (inputModel.getInputID() == humanSetInputID) {
+                            humanSetID = (int) rowHumanSet.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                            userID = (int) rowHumanSet.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                            huSet.add(new Pair<>(humanSetID, userID));
+                        }
+                    }
+
+                    break;
+                }else {
+                    humanID = -1;
+                }
+            }
+
+            hiuMap.put(inputModel.getInputID(), huSet);
+
+            /* material input */
+            Sheet materialSheet = awpbWorkbook.getSheet(cExcelHelper.SHEET_tblMATERIAL);
+            for (Iterator<Row> ritMaterial = materialSheet.iterator(); ritMaterial.hasNext(); ) {
+                Row rowMaterial = ritMaterial.next();
+
+                //just skip the row if row number is 0
+                if (rowMaterial.getRowNum() == 0) {
+                    continue;
+                }
+
+                materialID = (int) rowMaterial.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                if (inputModel.getInputID() == materialID) {
+                    materialQuantity = (int) rowMaterial.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    break;
+                }else {
+                    materialID = -1;
+                }
+            }
+
+            /* income input */
+            Sheet incomeSheet = awpbWorkbook.getSheet(cExcelHelper.SHEET_tblINCOME);
+            for (Iterator<Row> ritIncome = incomeSheet.iterator(); ritIncome.hasNext(); ) {
+                Row rowIncome = ritIncome.next();
+
+                //just skip the row if row number is 0
+                if (rowIncome.getRowNum() == 0) {
+                    continue;
+                }
+
+                incomeID = (int) rowIncome.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                if (inputModel.getInputID() == incomeID) {
+
+                    /* fund input */
+                    //Set<Pair<Integer, Integer>> huSet = new HashSet<>();
+                    int humanSetInputID = -1, humanSetID, userID;
+
+                    Sheet fundSheet = awpbWorkbook.getSheet(cExcelHelper.SHEET_tblFUND);
+                    for (Iterator<Row> ritFund = fundSheet.iterator(); ritFund.hasNext(); ) {
+                        Row rowFund = ritFund.next();
+
+                        //just skip the row if row number is 0
+                        if (rowFund.getRowNum() == 0) {
+                            continue;
+                        }
+
+                        int fundInputID = (int) rowFund.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                        if (inputModel.getInputID() == fundInputID) {
+                            fundID = (int) rowFund.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                            funderID = (int) rowFund.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                            beneficiaryID = (int) rowFund.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                            fund = (double) rowFund.getCell(4, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                            break;
+                        }
+                    }
+
+                    break;
+                }else {
+                    incomeID = -1;
+                }
+            }
+
+            /* expense input */
+            Sheet expenseSheet = awpbWorkbook.getSheet(cExcelHelper.SHEET_tblEXPENSE);
+            for (Iterator<Row> ritExpense = expenseSheet.iterator(); ritExpense.hasNext(); ) {
+                Row rowExpense = ritExpense.next();
+
+                //just skip the row if row number is 0
+                if (rowExpense.getRowNum() == 0) {
+                    continue;
+                }
+
+                expenseID = (int) rowExpense.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                if (inputModel.getInputID() == expenseID) {
+                    expense = (int) rowExpense.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    break;
+                }else {
+                    expenseID = -1;
+                }
+            }
+
+            if (!addInput(inputModel,
+                    iqcMap,
+                    humanID, humanQuantity, hiuMap,
+                    materialID, materialQuantity,
+                    incomeID, fundID, funderID, beneficiaryID, fund,
+                    expenseID, expense)) {
                 return false;
             }
         }
@@ -2149,8 +2293,12 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
      * @param iqcMap
      * @return
      */
-    public boolean addInputFromExcel(cInputModel inputModel,
-                                     Map<Integer, Set<Pair<Integer, Integer>>> iqcMap) {
+    public boolean addInput(cInputModel inputModel,
+                            Map<Integer, Set<Pair<Integer, Integer>>> iqcMap,
+                            int humanID, int humanQuantity, Map<Integer, Set<Pair<Integer, Integer>>> hiuMap,
+                            int materialID, int materialQuantity,
+                            int incomeID, int fundID, int funderID, int beneficiaryID, double fund,
+                            int expenseID, double expense) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -2185,6 +2333,34 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
                 }
             }
 
+            if (humanID != -1) {
+                if (addHumanInput(inputModel.getInputID(), humanQuantity, hiuMap))
+                    return true;
+                else
+                    return false;
+            }
+
+            if (materialID != -1) {
+                if (addMaterialInput(inputModel.getInputID(), materialQuantity))
+                    return true;
+                else
+                    return false;
+            }
+
+            if (incomeID != -1) {
+                if (addIncomeInput(fundID, inputModel.getInputID(), funderID, beneficiaryID, fund))
+                    return true;
+                else
+                    return false;
+            }
+
+            if (expenseID != -1) {
+                if (addExpenseInput(inputModel.getInputID(), expense))
+                    return true;
+                else
+                    return false;
+            }
+
         } catch (Exception e) {
             Log.d(TAG, "Exception in importing INPUT from Excel: " + e.getMessage());
         }
@@ -2209,11 +2385,192 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
         cv.put(cSQLDBHelper.KEY_INPUT_FK_ID, inputID);
         cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, questionID);
-        cv.put(cSQLDBHelper.KEY_CRITERIA_FK_ID, criteriaID);
+        cv.put(cSQLDBHelper.KEY_EVALUATION_CRITERIA_FK_ID, criteriaID);
 
         if (db.insert(cSQLDBHelper.TABLE_tblINPUT_QUESTION, null, cv) < 0) {
             return false;
         }
+
+        return true;
+    }
+
+    public boolean addHumanInput(int inputID, int humanQuantity, Map<Integer, Set<Pair<Integer, Integer>>> hiuMap) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // create content object for storing data
+        ContentValues cv = new ContentValues();
+
+        // assign values to the table fields
+        cv.put(cSQLDBHelper.KEY_INPUT_FK_ID, inputID);
+        cv.put(cSQLDBHelper.KEY_QUANTITY, humanQuantity);
+
+        // insert evaluation type details
+        try {
+            if (db.insert(cSQLDBHelper.TABLE_tblHUMAN, null, cv) < 0) {
+                return false;
+            }
+
+            // add activity, question and criteria tuple
+            for (Map.Entry<Integer, Set<Pair<Integer, Integer>>> hiuEntry : hiuMap.entrySet()) {
+                int hsInputID = hiuEntry.getKey();
+                for (Pair<Integer, Integer> huPair : hiuEntry.getValue()) {
+                    int humanSetID = huPair.first;
+                    int userID = huPair.second;
+
+                    if (addHumanSet(humanSetID, hsInputID, userID))
+                        continue;
+                    else
+                        return false;
+                }
+            }
+
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in importing HUMAN INPUT from Excel: " + e.getMessage());
+        }
+
+        // close the database connection
+        db.close();
+
+        return true;
+    }
+
+    public boolean addHumanSet(int humanSetID, int hsInputID, int userID) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // create content object for storing data
+        ContentValues cv = new ContentValues();
+
+        // assign values to the table fields
+        cv.put(cSQLDBHelper.KEY_ID, humanSetID);
+        cv.put(cSQLDBHelper.KEY_INPUT_FK_ID, hsInputID);
+        cv.put(cSQLDBHelper.KEY_USER_FK_ID, userID);
+
+        // insert evaluation type details
+        try {
+            if (db.insert(cSQLDBHelper.TABLE_tblHUMANSET, null, cv) < 0) {
+                return false;
+            }
+
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in importing HUMAN SET from Excel: " + e.getMessage());
+        }
+
+        // close the database connection
+        db.close();
+
+        return true;
+    }
+
+    public boolean addMaterialInput(int inputID, int materialQuantity) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // create content object for storing data
+        ContentValues cv = new ContentValues();
+
+        // assign values to the table fields
+        cv.put(cSQLDBHelper.KEY_INPUT_FK_ID, inputID);
+        cv.put(cSQLDBHelper.KEY_QUANTITY, materialQuantity);
+
+        // insert evaluation type details
+        try {
+            if (db.insert(cSQLDBHelper.TABLE_tblMATERIAL, null, cv) < 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in importing MATERIAL INPUT from Excel: " + e.getMessage());
+        }
+
+        // close the database connection
+        db.close();
+
+        return true;
+    }
+
+    public boolean addIncomeInput(int fundID, int inputID, int funderID, int beneficiaryID, double fund) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // create content object for storing data
+        ContentValues cv = new ContentValues();
+
+        // assign values to the table fields
+        cv.put(cSQLDBHelper.KEY_INPUT_FK_ID, inputID);
+
+        // insert evaluation type details
+        try {
+            if (db.insert(cSQLDBHelper.TABLE_tblINCOME, null, cv) < 0) {
+                return false;
+            }
+
+            if (addFund(fundID, inputID, funderID, beneficiaryID, fund))
+                return true;
+            else
+                return false;
+
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in importing INCOME INPUT from Excel: " + e.getMessage());
+        }
+
+        // close the database connection
+        db.close();
+
+        return true;
+    }
+
+    public boolean addFund(int fundID, int inputID, int funderID, int beneficiaryID, double fund) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // create content object for storing data
+        ContentValues cv = new ContentValues();
+
+        // assign values to the table fields
+        cv.put(cSQLDBHelper.KEY_ID, fundID);
+        cv.put(cSQLDBHelper.KEY_INPUT_FK_ID, inputID);
+        cv.put(cSQLDBHelper.KEY_FUNDER_FK_ID, funderID);
+        cv.put(cSQLDBHelper.KEY_BENEFICIARY_FK_ID, beneficiaryID);
+        cv.put(cSQLDBHelper.KEY_FUND, fund);
+
+        // insert evaluation type details
+        try {
+            if (db.insert(cSQLDBHelper.TABLE_tblFUND, null, cv) < 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in importing FUND from Excel: " + e.getMessage());
+        }
+
+        // close the database connection
+        db.close();
+
+        return true;
+    }
+
+    public boolean addExpenseInput(int inputID, double amount) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // create content object for storing data
+        ContentValues cv = new ContentValues();
+
+        // assign values to the table fields
+        cv.put(cSQLDBHelper.KEY_INPUT_FK_ID, inputID);
+        cv.put(cSQLDBHelper.KEY_EXPENSE, amount);
+
+        // insert evaluation type details
+        try {
+            if (db.insert(cSQLDBHelper.TABLE_tblEXPENSE, null, cv) < 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in importing EXPENSE INPUT from Excel: " + e.getMessage());
+        }
+
+        // close the database connection
+        db.close();
 
         return true;
     }

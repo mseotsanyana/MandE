@@ -5,7 +5,6 @@ import android.util.Pair;
 import com.me.mseotsanyana.mande.UTILITY.DAL.cActivityAssignmentModel;
 import com.me.mseotsanyana.mande.UTILITY.DAL.cExpenditureModel;
 import com.me.mseotsanyana.mande.UTILITY.DAL.cPrecedingActivityModel;
-import com.me.mseotsanyana.mande.UTILITY.DAL.cTaskModel;
 
 import java.util.HashMap;
 import java.util.HashSet;

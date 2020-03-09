@@ -265,7 +265,7 @@ public class cSettingsFragment extends Fragment implements
     }
 
     @Override
-    public void onUploadCompleted() {
-        Log.d(TAG, "Modules Added Successfully!");
+    public void onUploadCompleted(String msg) {
+        Log.d(TAG, msg);
     }
 }

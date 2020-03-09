@@ -111,7 +111,8 @@ public class cSessionModelFromExcel {
     }
 
     // add an organization record from excel to database
-    public void addOrganizationFromExcel(Row cRow, Sheet org_addresses){
+    public void addOrganizationFromExcel(Row cRow, Sheet org_addresses,
+                                         Sheet org_beneficiaries, Sheet org_funders,Sheet org_agencies){
         organizationModel = new cOrganizationModel();
 
         organizationModel.setOrganizationID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
@@ -124,7 +125,11 @@ public class cSessionModelFromExcel {
         organizationModel.setWebsite(cRow.getCell(7, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
         ArrayList<Integer> addresses = new ArrayList<>();
-        int organizationID, addressID;
+        ArrayList<Integer> beneficiaries = new ArrayList<>();
+        ArrayList<Integer> funders = new ArrayList<>();
+        ArrayList<Integer> agencies = new ArrayList<>();
+
+        int organizationID, addressID, beneficiaryID, funderID, agencyID;
         for (Iterator<Row> rit = org_addresses.iterator(); rit.hasNext(); ) {
             Row cOrgAddressRow = rit.next();
 
@@ -140,11 +145,52 @@ public class cSessionModelFromExcel {
             }
         }
 
+        for (Iterator<Row> rit = org_beneficiaries.iterator(); rit.hasNext(); ) {
+            Row cOrgBeneficiaryRow = rit.next();
+
+            //just skip the row if row number is 0
+            if (cOrgBeneficiaryRow.getRowNum() == 0) {
+                continue;
+            }
+
+            beneficiaryID = (int)cOrgBeneficiaryRow.getCell (0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+            if (organizationModel.getOrganizationID() == beneficiaryID){
+                beneficiaries.add(beneficiaryID);
+            }
+        }
+
+        for (Iterator<Row> rit = org_funders.iterator(); rit.hasNext(); ) {
+            Row cOrgFunderRow = rit.next();
+
+            //just skip the row if row number is 0
+            if (cOrgFunderRow.getRowNum() == 0) {
+                continue;
+            }
+
+            funderID = (int)cOrgFunderRow.getCell (0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+            if (organizationModel.getOrganizationID() == funderID){
+                funders.add(funderID);
+            }
+        }
+
+        for (Iterator<Row> rit = org_agencies.iterator(); rit.hasNext(); ) {
+            Row cOrgAgencyRow = rit.next();
+
+            //just skip the row if row number is 0
+            if (cOrgAgencyRow.getRowNum() == 0) {
+                continue;
+            }
+
+            agencyID = (int)cOrgAgencyRow.getCell (0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+            if (organizationModel.getOrganizationID() == agencyID){
+                agencies.add(agencyID);
+            }
+        }
         //Log.d(TAG, "=========================================================");
         //Log.d(TAG, gson.toJson(organizationModel));
         //Log.d(TAG, gson.toJson(addresses));
 
-        organizationDBA.addOrganizationFromExcel(organizationModel, addresses);
+        organizationDBA.addOrganizationFromExcel(organizationModel, addresses, beneficiaries, funders, agencies);
     }
 
     // add an organizational value record from excel to database

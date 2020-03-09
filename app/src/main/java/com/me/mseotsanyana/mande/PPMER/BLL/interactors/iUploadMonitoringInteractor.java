@@ -4,6 +4,6 @@ import com.me.mseotsanyana.mande.PPMER.BLL.interactors.base.iInteractor;
 
 public interface iUploadMonitoringInteractor extends iInteractor {
     interface Callback{
-        void onUploadMonitoringCompleted();
+        void onUploadMonitoringCompleted(String s);
     }
 }

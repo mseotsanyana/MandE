@@ -165,6 +165,9 @@ public class cUploadSessionData extends AsyncTask<String, Integer, String> {
                     case 1:
                         //organizationHandler.deleteOrganizations();
                         Sheet org_address = workbook.getSheet("tblORG_ADDRESS");
+                        Sheet org_beneficiary = workbook.getSheet("tblBENEFICIARY");
+                        Sheet org_funder = workbook.getSheet("tblFUNDER");
+                        Sheet org_ia = workbook.getSheet("tblIMPLEMENTINGAGENCY");
 
                         for (Iterator<Row> rit = sheet.iterator(); rit.hasNext(); ) {
                             Row cRow = rit.next();
@@ -175,7 +178,8 @@ public class cUploadSessionData extends AsyncTask<String, Integer, String> {
                             }
 
                             // add the row into the database
-                            sessionModelFromExcel.addOrganizationFromExcel(cRow, org_address);
+                            sessionModelFromExcel.addOrganizationFromExcel(cRow, org_address,
+                                    org_beneficiary, org_funder, org_ia);
 
                             // publish the progress after adding a record
                             currentRows++;

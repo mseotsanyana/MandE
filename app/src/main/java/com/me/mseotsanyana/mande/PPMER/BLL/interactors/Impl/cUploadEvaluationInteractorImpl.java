@@ -58,7 +58,7 @@ public class cUploadEvaluationInteractorImpl extends cAbstractInteractor
         mainThread.post(new Runnable() {
             @Override
             public void run() {
-                callback.onUploadEvaluationCompleted();
+                callback.onUploadEvaluationCompleted("Evaluation Modules Added Successfully!");
             }
         });
     }

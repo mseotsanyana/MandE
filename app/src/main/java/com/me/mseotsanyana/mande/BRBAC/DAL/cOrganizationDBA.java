@@ -39,7 +39,9 @@ public class cOrganizationDBA {
      * @param organizationModel
      * @return Boolean
      */
-    public boolean addOrganizationFromExcel(cOrganizationModel organizationModel, ArrayList<Integer> addresses) {
+    public boolean addOrganizationFromExcel(cOrganizationModel organizationModel, ArrayList<Integer> addresses,
+                                            ArrayList<Integer> beneficiaries, ArrayList<Integer> funders,
+                                            ArrayList<Integer> agencies) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -65,6 +67,30 @@ public class cOrganizationDBA {
             // add organization addresses
             for(int address: addresses){
                 if (addOrganizationAddress(organizationModel.getOrganizationID(), address))
+                    continue;
+                else
+                    return false;
+            }
+
+            // add beneficiary
+            for(int beneficiary: beneficiaries){
+                if (addBeneficiary(beneficiary))
+                    continue;
+                else
+                    return false;
+            }
+
+            // add funders
+            for(int funder: funders){
+                if (addFunder(funder))
+                    continue;
+                else
+                    return false;
+            }
+
+            // add organization addresses
+            for(int agency: agencies){
+                if (addAgency(agency))
                     continue;
                 else
                     return false;
@@ -130,6 +156,45 @@ public class cOrganizationDBA {
         cv.put(cSQLDBHelper.KEY_ADDRESS_FK_ID, addressID);
 
         if (db.insert(cSQLDBHelper.TABLE_tblORG_ADDRESS, null, cv) < 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean addBeneficiary(int organizationID) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, organizationID);
+
+        if (db.insert(cSQLDBHelper.TABLE_tblBENEFICIARY, null, cv) < 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean addFunder(int organizationID) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, organizationID);
+
+        if (db.insert(cSQLDBHelper.TABLE_tblFUNDER, null, cv) < 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean addAgency(int organizationID) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, organizationID);
+
+        if (db.insert(cSQLDBHelper.TABLE_tblIMPLEMENTINGAGENCY, null, cv) < 0) {
             return false;
         }
 

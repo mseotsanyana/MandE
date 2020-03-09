@@ -30,13 +30,17 @@ public class cUploadGlobalInteractorImpl extends cAbstractInteractor
     public void run() {
         /* create a new objects and insert it in the database */
         uploadGlobalRepository.deleteFrequencies();
+        uploadGlobalRepository.deletePeriods();
+        uploadGlobalRepository.deleteFiscalYears();
+
         uploadGlobalRepository.addFrequencyFromExcel();
+        uploadGlobalRepository.addFiscalYearFromExcel();
 
         /* notify on the main thread that we have inserted this item */
         mainThread.post(new Runnable() {
             @Override
             public void run() {
-                callback.onUploadGlobalCompleted();
+                callback.onUploadGlobalCompleted("Global Modules Added Successfully!");
             }
         });
     }

@@ -36,6 +36,8 @@ public class cExcelHelper {
     /*############################### START GLOBAL MODULE TABLES #################################*/
 
     public static final String SHEET_tblFREQUENCY          = "tblFREQUENCY";                 /* 1 */
+    public static final String SHEET_tblPERIOD             = "tblPERIOD";                    /* 2 */
+    public static final String SHEET_tblFISCALYEAR         = "tblFISCALYEAR";                /* 3 */
 
 
     /*############################## START LOGFRAME MODULE TABLES ################################*/
@@ -111,7 +113,49 @@ public class cExcelHelper {
 
     /*################################ START AWPB MODULE TABLES ##################################*/
 
-    public static final String SHEET_tblMILESTONE              = "tblMILESTONE";             /* 6 */
+    public static final String SHEET_tblHUMAN                  = "tblHUMAN";                 /* 1 */
+    public static final String SHEET_tblHUMANSET               = "tblHUMANSET";              /* 2 */
+    public static final String SHEET_tblMATERIAL               = "tblMATERIAL";              /* 3 */
+    public static final String SHEET_tblEXPENSE                = "tblEXPENSE";               /* 4 */
+    public static final String SHEET_tblINCOME                 = "tblINCOME";                /* 5 */
+    public static final String SHEET_tblFUND                   = "tblFUND";                  /* 6 */
+    public static final String SHEET_tblTASK                   = "tblTASK";                  /* 7 */
+    public static final String SHEET_tblPRECEDINGTASK          = "tblPRECEDINGTASK";         /* 8 */
+    public static final String SHEET_tblTASK_MILESTONE         = "tblTASK_MILESTONE";        /* 9 */
+    public static final String SHEET_tblACTIVITYTASK           = "tblACTIVITYTASK";          /* 10*/
+    public static final String SHEET_tblTASKASSIGNMENT         = "tblTASKASSIGNMENT";        /* 11*/
+    public static final String SHEET_tblUSERCOMMENT            = "tblUSERCOMMENT";           /* 12*/
+    public static final String SHEET_tblTIMESHEET              = "tblTIMESHEET";             /* 13*/
+    public static final String SHEET_tblINVOICE                = "tblINVOICE";               /* 14*/
+    public static final String SHEET_tblINVOICE_TIMESHEET      = "tblINVOICE_TIMESHEET";     /* 15*/
+    public static final String SHEET_tblDOCUMENT               = "tblDOCUMENT";              /* 16*/
+    public static final String SHEET_tblTRANSACTION            = "tblTRANSACTION";           /* 17*/
+    public static final String SHEET_tblINTERNAL               = "tblINTERNAL";              /* 18*/
+    public static final String SHEET_tblEXTERNAL               = "tblEXTERNAL";              /* 19*/
+    public static final String SHEET_tblJOURNAL                = "tblJOURNAL";               /* 20*/
+
+
+    /*################################ START RAID MODULE TABLES ##################################*/
+
+    public static final String SHEET_tblRISKREGISTER           = "tblRISKREGISTER";         /* 1  */
+    public static final String SHEET_tblRISKLIKELIHOOD         = "tblRISKLIKELIHOOD";       /* 2  */
+    public static final String SHEET_tblRISKLIKELIHOODSET      = "tblRISKLIKELIHOODSET";    /* 3  */
+    public static final String SHEET_tblRISKIMPACT             = "tblRISKIMPACT";           /* 4  */
+    public static final String SHEET_tblRISKIMPACTSET          = "tblRISKIMPACTSET";        /* 5  */
+    public static final String SHEET_tblRISKCRITERIA           = "tblRISKCRITERIA";         /* 6  */
+    public static final String SHEET_tblRISKCRITERIASET        = "tblRISKCRITERIASET";      /* 7  */
+    public static final String SHEET_tblRISK                   = "tblRISK";                 /* 8  */
+    public static final String SHEET_tblRISKROOTCAUSE          = "tblRISKROOTCAUSE";        /* 9  */
+    public static final String SHEET_tblRISKCONSEQUENCE        = "tblRISKCONSEQUENCE";      /* 10 */
+    public static final String SHEET_tblCURRENTCONTROL         = "tblCURRENTCONTROL";       /* 11 */
+    public static final String SHEET_tblADDITIONALCONTROL      = "tblADDITIONALCONTROL";    /* 12 */
+    public static final String SHEET_tblRISKMILESTONE          = "tblRISKMILESTONE";        /* 13 */
+    public static final String SHEET_tblRISKANALYSIS           = "tblRISKANALYSIS";         /* 14 */
+    public static final String SHEET_tblRISKPLAN               = "tblRISKPLAN";             /* 15 */
+    public static final String SHEET_tblRISKACTIONTYPE         = "tblRISKACTIONTYPE";       /* 16 */
+    public static final String SHEET_tblRISKACTION             = "tblRISKACTION";           /* 17 */
+
+    /*################################# END RAID MODULE TABLES ###################################*/
 
     public cExcelHelper(Context context){
         try {
