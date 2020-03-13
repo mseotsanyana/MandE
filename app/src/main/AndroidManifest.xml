@@ -67,17 +67,17 @@
         </activity>
 
         <service
-            android:name=".BRBAC.BLL.cSyncedJobService"
+            android:name=".BLL.interactors.session.cSyncedJobService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <service
-            android:name=".BRBAC.BLL.cUserJobService"
+            android:name=".BLL.interactors.session.cUserJobService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
-            android:name=".BRBAC.BLL.cAddressJobService"
+            android:name=".BLL.interactors.session.cAddressJobService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
-        <receiver android:name=".UTILITY.COM.cBroadcastReceiver">
+        <receiver android:name=".UTIL.COM.cBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

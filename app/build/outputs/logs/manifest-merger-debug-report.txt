@@ -117,28 +117,28 @@ ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\mai
 		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:65:13-50
 	android:name
 		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:64:13-46
-service#com.me.mseotsanyana.mande.BRBAC.BLL.cSyncedJobService
+service#com.me.mseotsanyana.mande.BLL.interactors.session.cSyncedJobService
 ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:69:9-71:72
 	android:permission
 		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:71:13-69
 	android:name
-		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:70:13-56
-service#com.me.mseotsanyana.mande.BRBAC.BLL.cUserJobService
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:70:13-70
+service#com.me.mseotsanyana.mande.BLL.interactors.session.cUserJobService
 ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:73:9-75:72
 	android:permission
 		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:75:13-69
 	android:name
-		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:74:13-54
-service#com.me.mseotsanyana.mande.BRBAC.BLL.cAddressJobService
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:74:13-68
+service#com.me.mseotsanyana.mande.BLL.interactors.session.cAddressJobService
 ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:76:9-78:72
 	android:permission
 		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:78:13-69
 	android:name
-		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:77:13-57
-receiver#com.me.mseotsanyana.mande.UTILITY.COM.cBroadcastReceiver
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:77:13-71
+receiver#com.me.mseotsanyana.mande.UTIL.COM.cBroadcastReceiver
 ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:80:9-84:20
 	android:name
-		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:80:19-65
+		ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:80:19-62
 intent-filter#action:name:android.intent.action.BOOT_COMPLETED
 ADDED from C:\Users\motlatsi.seotsanyana\AndroidStudioProjects\MandE\app\src\main\AndroidManifest.xml:81:13-83:29
 action#android.intent.action.BOOT_COMPLETED

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.me.mseotsanyana.mande.BRBAC.PL.cLoginFragment_content_holder">
+    tools:context=".PL.cLoginFragment_content_holder">
     <!--android:background="@color/colorPrimary"-->
 
     <include layout="@layout/home_bottom_navigation" />

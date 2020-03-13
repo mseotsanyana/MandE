@@ -24,7 +24,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.me.mseotsanyana.mande.BRBAC.PL.cSyncManager;
+import com.me.mseotsanyana.mande.DAL.storage.managers.cSyncManager;
 
 import java.util.List;
 

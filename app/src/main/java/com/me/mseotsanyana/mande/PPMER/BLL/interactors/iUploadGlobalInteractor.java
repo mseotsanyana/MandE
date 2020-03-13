@@ -1,9 +1,0 @@
-package com.me.mseotsanyana.mande.PPMER.BLL.interactors;
-
-import com.me.mseotsanyana.mande.PPMER.BLL.interactors.base.iInteractor;
-
-public interface iUploadGlobalInteractor extends iInteractor {
-    interface Callback{
-        void onUploadGlobalCompleted(String s);
-    }
-}

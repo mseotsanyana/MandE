@@ -3,7 +3,7 @@ package com.me.mseotsanyana.mande;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.me.mseotsanyana.mande.PPMER.BLL.executor.iMainThread;
+import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 
 public class cMainThreadImpl implements iMainThread {
     private static iMainThread mainThread;

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PPMER.PL.cDesktopActivity"
+    tools:context=".PL.ui.activities.cDesktopActivity"
     tools:openDrawer="start">
 
     <!-- the toolbar layout -->
