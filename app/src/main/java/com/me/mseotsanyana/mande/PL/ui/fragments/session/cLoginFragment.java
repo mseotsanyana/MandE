@@ -1,32 +1,38 @@
 package com.me.mseotsanyana.mande.PL.ui.fragments.session;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.AppCompatButton;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.support.v4.app.Fragment;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.me.mseotsanyana.mande.DAL.storage.managers.cSessionManager;
-import com.me.mseotsanyana.mande.UTIL.cInputValidation;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
+import com.me.mseotsanyana.mande.DAL.model.session.cUserModel;
+//import com.me.mseotsanyana.mande.DAL.storage.managers.cSessionManager;
+import com.me.mseotsanyana.mande.DAL.ìmpl.session.cRoleRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.session.cSessionManagerImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.session.cUserRepositoryImpl;
+import com.me.mseotsanyana.mande.PL.presenters.session.Impl.cUserLoginPresenterImpl;
+import com.me.mseotsanyana.mande.PL.presenters.session.iUserLoginPresenter;
+import com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cLogFrameFragment;
 import com.me.mseotsanyana.mande.UTIL.cUtil;
-import com.me.mseotsanyana.mande.PL.ui.fragments.cMainFragment;
-import com.me.mseotsanyana.mande.BLL.domain.session.cUserDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cUserHandler;
 import com.me.mseotsanyana.mande.R;
+import com.me.mseotsanyana.mande.cMainThreadImpl;
 
-public class cLoginFragment extends Fragment {
-    private cSessionManager session;
+public class cLoginFragment extends Fragment implements iUserLoginPresenter.View{
+    //private cSessionManager session;
 
 //    private OnFragmentInteractionListener mListener;
     private AppCompatButton loginButton;
@@ -35,6 +41,10 @@ public class cLoginFragment extends Fragment {
     private TextView forgotPasswordTextView;
     private ProgressBar progressBar;
     private BottomNavigationView bottomNavigationView;
+
+    private iUserLoginPresenter userLoginPresenter;
+
+
 /*
     private TextInputLayout textInputLayoutEmail;
     private TextInputLayout textInputLayoutPassword;
@@ -44,31 +54,40 @@ public class cLoginFragment extends Fragment {
 
     private AppCompatButton appCompatButtonLogin;
 */
-    private cInputValidation inputValidation;
 
-    private cUserHandler userHandler;
+//    private cUserHandler userHandler;
+
+
 
     // Required empty public constructor
     public cLoginFragment() {
-        inputValidation = new cInputValidation(getContext());
+        //inputValidation = new cInputValidation(getContext());
     }
 
-    public static cLoginFragment newInstance(cSessionManager session) {
+    /*public static cLoginFragment newInstance(cSessionManager session) {
         Bundle bundle = new Bundle();
         bundle.putParcelable("SESSION", session);
         cLoginFragment fragment = new cLoginFragment();
         fragment.setArguments(bundle);
         return fragment;
-    }
+    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //if (getArguments() != null) {
             // keeps global user information
-            session = (cSessionManager) getArguments().getParcelable("SESSION");
+       //     session = (cSessionManager) getArguments().getParcelable("SESSION");
             //session = new cSessionManager(getActivity());
         //}
+
+        userLoginPresenter = new cUserLoginPresenterImpl(
+                cThreadExecutorImpl.getInstance(),
+                cMainThreadImpl.getInstance(),
+                this,
+                new cSessionManagerImpl(getContext()),
+                new cUserRepositoryImpl(getContext()),
+                new cRoleRepositoryImpl(getContext()));
     }
 
     @Override
@@ -77,7 +96,7 @@ public class cLoginFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.home_login_fragment,container,false);
 
-        userHandler = new cUserHandler(getActivity(), session);
+        //userHandler = new cUserHandler(getActivity(), session);
 
         initViews(view);
         setupBottomNavigation();
@@ -91,7 +110,6 @@ public class cLoginFragment extends Fragment {
     }
 
     private void initViews(View view){
-
         loginButton               = (AppCompatButton)view.findViewById(R.id.loginButton);
         forgotPasswordTextView    = (TextView)view.findViewById(R.id.forgotPasswordTextView);
         emailTextInputLayout      = (TextInputLayout)view.findViewById(R.id.emailTextInputLayout);
@@ -113,9 +131,8 @@ public class cLoginFragment extends Fragment {
                 String password = passwordTextInputEditText.getText().toString();
 
                 if(!email.isEmpty() && !password.isEmpty()) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    localLogin();
 
+                    userLoginPresenter.userLogin(email, password);
                 } else {
                     Snackbar.make(getView(), "Fields are empty !", Snackbar.LENGTH_LONG).show();
                 }
@@ -132,43 +149,6 @@ public class cLoginFragment extends Fragment {
     }
 
     /**
-     * This method is to validate the input text fields and verify login credentials from SQLite
-     */
-    private void localLogin() {
-        if (!inputValidation.isInputEditTextFilled(emailTextInputEditText, emailTextInputLayout, getString(R.string.error_message_email))) {
-            return;
-        }
-        if (!inputValidation.isInputEditTextEmail(emailTextInputEditText, emailTextInputLayout, getString(R.string.error_message_email))) {
-            return;
-        }
-        if (!inputValidation.isInputEditTextFilled(passwordTextInputEditText, passwordTextInputLayout, getString(R.string.error_message_email))) {
-            return;
-        }
-
-        // check whether the user is in the database
-        cUserDomain userDomain = userHandler.getUserByEmailPassword(emailTextInputEditText.getText().toString().trim(),
-                passwordTextInputEditText.getText().toString().trim());
-
-        //boolean isUser = userHandler.checkUser(emailTextInputEditText.getText().toString().trim());
-
-        if (userDomain != null) {
-
-            emptyInputEditText();
-
-            session.setUserSession(getActivity(), userDomain);
-            //Toast.makeText(getActivity(), "MEMBERSHIPS = "+sessionManager.getMemberships(), Toast.LENGTH_SHORT).show();
-            //Toast.makeText(getActivity(), "ROLES = "+sessionManager.getLoggedInUserRoles().get(0).getName(), Toast.LENGTH_SHORT).show();
-
-            pushFragment(cMainFragment.newInstance(session));
-
-        } else {
-            // Snack Bar to show success message that record is wrong
-            Snackbar.make(getView(), getString(R.string.error_valid_email_password), Snackbar.LENGTH_LONG).show();
-        }
-    }
-
-
-    /**
      * This method is to empty all input edit text
      */
     private void emptyInputEditText() {
@@ -177,7 +157,8 @@ public class cLoginFragment extends Fragment {
     }
 
     private void setupBottomNavigation() {
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
@@ -210,5 +191,65 @@ public class cLoginFragment extends Fragment {
             ft.replace(R.id.fragment_frame, fragment);
             ft.commit();
         }
+    }
+
+    @Override
+    public void onUserLoginSucceeded(cUserModel userModel) {
+        // get the session data
+        //FIXME: load the MainFragment (MainMenuFragment) with set of menu items
+        /* this populates the navigation menu and list of logframes with Boom menu */
+        pushFragment(cLogFrameFragment.newInstance(userModel));
+    }
+
+    @Override
+    public void onUserLoginFailed(String msg) {
+
+    }
+
+    @Override
+    public void showProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showError(String message) {
+
+    }
+
+    /* getters and setters */
+
+    @Override
+    public TextInputLayout getEmailTextInputLayout() {
+        return emailTextInputLayout;
+    }
+
+    @Override
+    public TextInputLayout getPasswordTextInputLayout() {
+        return passwordTextInputLayout;
+    }
+
+    @Override
+    public TextInputEditText getEmailTextInputEditText() {
+        return emailTextInputEditText;
+    }
+
+    @Override
+    public TextInputEditText getPasswordTextInputEditText() {
+        return passwordTextInputEditText;
+    }
+
+    @Override
+    public TextView getForgotPasswordTextView() {
+        return forgotPasswordTextView;
+    }
+
+    @Override
+    public String getResourceString(int resourceID) {
+        return getString(resourceID);
     }
 }

@@ -16,6 +16,7 @@
     <string name="fa_chevron_right">&#xf054;</string>
     <string name="fa_chevron_down">&#xf078;</string>
 
+
     <!-- icons for bottom navigation menu -->
     <string name="fa_login">&#xf090;</string>
     <string name="fa_envelope">&#xf0e0;</string>
@@ -36,6 +37,7 @@
     <string name="fa_ellipsis_v">&#xf142;</string>
     <string name="fa_exclamation_triangle">&#xf071;</string>
     <string name="fa_filter">&#xf0b0;</string>
+    <string name="fa_calendar">&#xf073;</string>
 
     <!-- CRUDS Operations -->
     <string name="fa_join">&#xf0c0;</string>
@@ -137,6 +139,13 @@
     <string name="click_me">Click me</string>
 
     <string name="contentdesc4pic2">Content</string>
+
+
+    <!-- Attributes for BMB Menu -->
+    <string name="text_inside_circle_button_text_normal">Text Inside Circle Button(Normal)</string>
+    <string name="text_outside_circle_button_text_normal">Text Outside Circle Button(Normal)</string>
+    <string name="text_ham_button_text_normal">Ham Button Text(Normal)</string>
+    <string name="text_ham_button_sub_text_normal">Ham Button Sub Text(Normal)</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

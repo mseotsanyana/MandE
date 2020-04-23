@@ -2,11 +2,12 @@ package com.me.mseotsanyana.mande.PL.ui.fragments.monitor;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.me.mseotsanyana.mande.R;
 
@@ -14,7 +15,7 @@ import com.me.mseotsanyana.mande.R;
  * Created by mseotsanyana on 2016/12/13.
  */
 
-public class cIndicatorFragment extends Fragment{
+public class cIndicatorFragment extends Fragment {
     /*
 * this event fires 1st, before creation of fragment or any views
 * the onAttach method is called when the Fragment instance is

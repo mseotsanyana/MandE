@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:openDrawer="start">
+
+    <!-- housing the toolbar and gridview -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <!-- the toolbar layout -->
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                android:background="@color/title_background"
+                android:elevation="1dp"
+                android:minHeight="65dp"
+                android:textColor="@color/title_text" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!--include layout="@layout/me_toolbar_layout" /-->
+
+        <!-- logframe list layout -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/logframeRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical" />
+    </LinearLayout>
+
+    <!-- housing the drawer header and navigation menu
+         the header is inflated and added to the drawer
+         (i.e. ExpandableListView) at runtime -->
+    <ExpandableListView
+        android:id="@+id/navList"
+        android:layout_width="@dimen/nav_drawer_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="left|start"
+        android:background="@drawable/dashboard_drawer_background"
+        android:divider="@color/group_divider_color"
+        android:dividerHeight="@dimen/divider_height"
+        android:groupIndicator="@null" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- the FAB layout -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/logframeFab"
+            style="@style/FabStyle"
+            android:layout_gravity="bottom|end" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>

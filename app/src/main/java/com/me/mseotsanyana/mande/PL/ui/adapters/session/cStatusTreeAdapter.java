@@ -4,10 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.Typeface;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatCheckBox;
-import android.support.v7.widget.AppCompatTextView;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -26,12 +27,11 @@ import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.domain.session.cEntityDomain;
 import com.me.mseotsanyana.mande.BLL.domain.session.cOperationDomain;
 import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cOrganizationHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cOrganizationHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cPermissionDomain;
-import com.me.mseotsanyana.mande.DAL.storage.managers.cSessionManager;
 import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
 import com.me.mseotsanyana.mande.BLL.domain.session.cUserDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cUserHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserHandler;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iTreeAdapterCallback;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.cFontManager;
@@ -93,13 +93,13 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
 
     private PopupWindow popWindow;
 
-    private cSessionManager session;
+    //private cSessionManager session;
 
     private iTreeAdapterCallback callback;
 
     final Gson gson = new Gson();
 
-    public cStatusTreeAdapter(Context context, cSessionManager session,
+    public cStatusTreeAdapter(Context context,
                               int privilegeID, cEntityDomain entityDomain,
                               cOperationDomain operationDomain,
                               ArrayList<cStatusDomain> listStatus,
@@ -110,7 +110,7 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
                               AppCompatCheckBox appCompatCheckBoxAllStatuses,
                               iTreeAdapterCallback callback) {
         this.context = context;
-        this.session = session;
+        //this.session = session;
 
         this.listStatus = listStatus;
         this.filteredStatus = listStatus;
@@ -124,8 +124,8 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
         this.origOperationDomain = origOperationDomain;
         this.origStatusDomains = origStatusDomains;
 
-        this.userHandler = new cUserHandler(context, session);
-        this.organizationHandler = new cOrganizationHandler(context, session);
+        this.userHandler = null;//new cUserHandler(context, session);
+        this.organizationHandler = null;//new cOrganizationHandler(context, session);
 
         this.appCompatCheckBoxOperation = appCompatCheckBoxOperation;
         this.appCompatCheckBoxAllStatuses = appCompatCheckBoxAllStatuses;
@@ -332,21 +332,21 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
     // call this method when required to show popup
     public void onShowCommonAttributes(View view, final cStatusDomain statusDomain) {
         // get all users from database
-        final ArrayList<cUserDomain> users = userHandler.getUserList(
-                session.loadUserID(),        /* loggedIn user id  */
-                session.loadOrgID(),         /* loggedIn own org. */
-                session.loadPrimaryRole(),   /* primary group bit */
-                session.loadSecondaryRoles() /* secondary group bits */
-        );
+        final ArrayList<cUserDomain> users = null;/*userHandler.getUserList(
+                session.loadUserID(),        /* loggedIn user id
+                session.loadOrgID(),         /* loggedIn own org.
+                session.loadPrimaryRole(),   /* primary group bit
+                session.loadSecondaryRoles() /* secondary group bits
+        );*/
 
         // get all organizations from database
-        final ArrayList<cOrganizationDomain> orgs =
+        final ArrayList<cOrganizationDomain> orgs = null;/*
                 organizationHandler.getOrganizationList(
-                        session.loadUserID(),        /* loggedIn user id  */
-                        session.loadOrgID(),         /* loggedIn own org. */
-                        session.loadPrimaryRole(),   /* primary group bit */
-                        session.loadSecondaryRoles() /* secondary group bits */
-                );
+                        session.loadUserID(),        /* loggedIn user id
+                        session.loadOrgID(),         /* loggedIn own org.
+                        session.loadPrimaryRole(),   /* primary group bit
+                        session.loadSecondaryRoles() /* secondary group bits
+                );*/
 
         // get a deep copy of permission domain to modify
         final cPermissionDomain mPermissionDomain = getPermissionDomain(permissionDomains,
@@ -473,14 +473,14 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
         if (permissionDomains.size() > 0) {
             int opBITS = permissionDomains.get(0).getPermsBITS();
             //keyPairBoolPerms[0].setId();keyPairBoolPerms[0].setName();
-            for (int i = 0; i < session.permissions.length; i++) {
+           /* for (int i = 0; i < session.permissions.length; i++) {
                 //Log.d(TAG, " "+(opBITS & session.permissions[i]));
                 cKeyPairBoolData idNameBool = new cKeyPairBoolData();
                 idNameBool.setId(session.permissions[i]);
                 idNameBool.setName(session.perm_names[i]);
                 idNameBool.setSelected((opBITS & session.permissions[i]) == session.permissions[i]);
                 keyPairBoolPerms[i] = idNameBool;
-            }
+            }*/
         }
         // -1 is no by default selection, 0 to length will select corresponding values
         cTableSpinner tableSpinner =

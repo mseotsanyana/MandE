@@ -1,9 +1,10 @@
 package com.me.mseotsanyana.mande.PL.ui.adapters.logframe;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.me.mseotsanyana.mande.UTIL.BLL.cGoalDomain;
 import com.me.mseotsanyana.mande.R;

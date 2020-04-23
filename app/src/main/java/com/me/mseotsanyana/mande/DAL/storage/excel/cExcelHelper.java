@@ -34,23 +34,34 @@ public class cExcelHelper {
 
     /*############################### START SESSION MODULE TABLES ################################*/
 
-    public static final String SHEET_tblADDRESS            = "tblADDRESS";                   /* 1 */
-    public static final String SHEET_tblORGANIZATION       = "tblORGANIZATION";              /* 2 */
-    public static final String SHEET_tblORG_ADDRESS        = "tblORG_ADDRESS";               /* 3 */
-    public static final String SHEET_tblBENEFICIARY        = "tblBENEFICIARY";               /* 4 */
-    public static final String SHEET_tblFUNDER             = "tblFUNDER";                    /* 5 */
-    public static final String SHEET_tblIMPLEMENTINGAGENCY = "tblIMPLEMENTINGAGENCY";        /* 6 */
-    public static final String SHEET_tblUSER               = "tblUSER";                      /* 7 */
-    public static final String SHEET_tblSESSION            = "tblSESSION";                   /* 8 */
-    public static final String SHEET_tblVALUE              = "tblVALUE";                     /* 9 */
-    public static final String SHEET_tblPRIVILEGE          = "tblPRIVILEGE";                 /* 10*/
-    public static final String SHEET_tblROLE               = "tblROLE";                      /* 11*/
-    public static final String SHEET_tblMENU               = "tblMENU";                      /* 12*/
-    public static final String SHEET_tblENTITY             = "tblENTITY";                    /* 13*/
-    public static final String SHEET_tblOPERATION          = "tblOPERATION";                 /* 14*/
-    public static final String SHEET_tblSTATUS             = "tblSTATUS";                    /* 15*/
-    public static final String SHEET_tblSETTING            = "tblSETTING";                   /* 16*/
-    public static final String SHEET_tblNOTIFICATION       = "tblNOTIFICATION";              /* 17*/
+    public static final String SHEET_tblADDRESS            = "tblADDRESS";           /* 1  */
+    public static final String SHEET_tblORGANIZATION       = "tblORGANIZATION";      /* 2  */
+    public static final String SHEET_tblFUNDER             = "tblFUNDER";            /* 3  */
+    public static final String SHEET_tblBENEFICIARY        = "tblBENEFICIARY";       /* 4  */
+    public static final String SHEET_tblIMPLEMENTINGAGENCY = "tblIMPLEMENTINGAGENCY";/* 5  */
+    public static final String SHEET_tblVALUE              = "tblVALUE";             /* 6  */
+    public static final String SHEET_tblUSER               = "tblUSER";              /* 7  */
+    public static final String SHEET_tblSESSION            = "tblSESSION";           /* 8  */
+    public static final String SHEET_tblROLE               = "tblROLE";              /* 9  */
+    public static final String SHEET_tblMENU               = "tblMENU";              /* 10 */
+    public static final String SHEET_tblENTITY             = "tblENTITY";            /* 12 */
+    public static final String SHEET_tblOPERATION          = "tblOPERATION";         /* 13 */
+    public static final String SHEET_tblSTATUS             = "tblSTATUS";            /* 14 */
+    public static final String SHEET_tblSTATUSSET          = "tblSTATUSSET";         /* 11 */
+    public static final String SHEET_tblORG_ADDRESS        = "tblORG_ADDRESS";       /* 15 */
+    public static final String SHEET_tblUSER_ADDRESS       = "tblUSER_ADDRESS";      /* 16 */
+    public static final String SHEET_tblUSER_ROLE          = "tblUSER_ROLE";         /* 17 */
+    public static final String SHEET_tblSESSION_ROLE       = "tblSESSION_ROLE";      /* 18 */
+    public static final String SHEET_tblMENU_ROLE          = "tblMENU_ROLE";         /* 19 */
+    public static final String SHEET_tblPRIVILEGE          = "tblPRIVILEGE";         /* 20 */
+    public static final String SHEET_tblPERMISSION         = "tblPERMISSION";        /* 20 */
+    public static final String SHEET_tblSTATUSSET_STATUS   = "tblSTATUSSET_STATUS";  /* 21 */
+    public static final String SHEET_tblSETTING            = "tblSETTING";           /* 22 */
+    public static final String SHEET_tblNOTIFICATION       = "tblNOTIFICATION";      /* 23 */
+    public static final String SHEET_tblSUBSCRIBER         = "tblSUBSCRIBER";        /* 24 */
+    public static final String SHEET_tblPUBLISHER          = "tblPUBLISHER";         /* 25 */
+    public static final String SHEET_tblNOTIFY_SETTING     = "tblNOTIFY_SETTING";    /* 26 */
+    public static final String SHEET_tblACTIVITYLOG        = "tblACTIVITYLOG";       /* 27 */
 
     /*################################ END SESSION MODULE TABLES #################################*/
 

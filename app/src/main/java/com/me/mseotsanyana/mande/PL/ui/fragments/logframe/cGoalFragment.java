@@ -1,17 +1,18 @@
 package com.me.mseotsanyana.mande.PL.ui.fragments.logframe;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.me.mseotsanyana.mande.BLL.interactors.logframe.Impl.cImpactInterator;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cOrganizationHandler;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.me.mseotsanyana.mande.BLL.interactors.logframe.impact.Impl.cImpactInterator;
+import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cOrganizationHandler;
 import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cGoalAdapter;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;

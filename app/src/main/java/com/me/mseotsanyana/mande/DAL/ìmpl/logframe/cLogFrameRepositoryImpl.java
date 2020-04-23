@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.me.mseotsanyana.mande.DAL.storage.managers.cSessionManager;
 import com.me.mseotsanyana.mande.BLL.domain.logframe.cLogFrameDomain;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cActivityModel;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cImpactModel;
@@ -19,9 +18,9 @@ import com.me.mseotsanyana.mande.DAL.model.logframe.cOutputModel;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cQuestionModel;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cRaidModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
-import com.me.mseotsanyana.mande.DAL.storage.mapper.cMapper;
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iLogFrameRepository;
 import com.me.mseotsanyana.mande.DAL.storage.excel.cExcelHelper;
+import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
 
 import org.apache.poi.ss.usermodel.Row;
@@ -35,8 +34,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDomain>
-        implements iLogFrameRepository {
+public class cLogFrameRepositoryImpl implements iLogFrameRepository {
     private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
     private static String TAG = cLogFrameRepositoryImpl.class.getSimpleName();
 
@@ -48,18 +46,6 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
     public cLogFrameRepositoryImpl(Context context) {
         dbHelper = new cSQLDBHelper(context);
         excelHelper = new cExcelHelper(context);
-    }
-
-    /* ######################################## MAPPER ACTIONS ########################################*/
-
-    @Override
-    protected cLogFrameModel DomainToModel(cLogFrameDomain cLogFrameDomain) {
-        return null;
-    }
-
-    @Override
-    protected cLogFrameDomain ModelToDomain(cLogFrameModel logFrameModel) {
-        return null;
     }
 
     /* ######################################## CREATE ACTIONS ########################################*/
@@ -82,7 +68,7 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
 
             cLogFrameModel logFrameModel = new cLogFrameModel();
 
-            logFrameModel.setLogFrameID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            logFrameModel.setLogFrameID((int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             logFrameModel.setName(cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
             logFrameModel.setDescription(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
@@ -98,16 +84,16 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
                     continue;
                 }
 
-                parentID = (int)rowLogFrameTree.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (logFrameModel.getLogFrameID() == parentID){
-                    childID = (int)rowLogFrameTree.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                parentID = (int) rowLogFrameTree.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                if (logFrameModel.getLogFrameID() == parentID) {
+                    childID = (int) rowLogFrameTree.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     subLogFrameDomainSet.add(childID);
                 }
             }
 
             //Gson gson = new Gson();
             //Log.d(TAG, gson.toJson(logFrameModel)+" -> "+gson.toJson(subLogFrameDomainSet));
-            if(!addLogFrameFromExcel(logFrameModel, subLogFrameDomainSet)){
+            if (!addLogFrameFromExcel(logFrameModel, subLogFrameDomainSet)) {
                 return false;
             }
         }
@@ -162,7 +148,7 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
         cv.put(cSQLDBHelper.KEY_CHILD_FK_ID, childID);
 
         Gson gson = new Gson();
-        Log.d(TAG, gson.toJson(parentID)+" -> "+gson.toJson(childID));
+        Log.d(TAG, gson.toJson(parentID) + " -> " + gson.toJson(childID));
         if (db.insert(cSQLDBHelper.TABLE_tblLOGFRAMETREE, null, cv) < 0) {
             return false;
         }
@@ -211,89 +197,117 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
         return true;
     }
 
-    /* ########################################## READ ACTIONS ##########################################*/
+    /*####################################### READ ACTIONS #######################################*/
 
-    public Set<cLogFrameModel> getLogFrameModelSet(int logFrameID, int userID, int orgID, int primaryRole,
-                                                   int secondaryRoles, int operationBITS, int statusBITS) {
+    public Set<cLogFrameModel> getLogFrameModelSet(int userID, int primaryRoleBITS,
+                                                   int secondaryRoleBITS, int statusBITS) {
 
         Set<cLogFrameModel> logFrameModelSet = new HashSet<>();
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String selectQuery = "SELECT * FROM " + cSQLDBHelper.TABLE_tblLOGFRAME +
-                " WHERE ((" + cSQLDBHelper.KEY_ID + " = ?) AND " +
+        String selectQuery =    " SELECT DISTINCT " +
+                "logframe." + cSQLDBHelper.KEY_ID + ", " +
+                "logframe." + cSQLDBHelper.KEY_ORGANIZATION_FK_ID + ", " +
+                "logframe." + cSQLDBHelper.KEY_SERVER_ID + ", " +
+                "logframe." + cSQLDBHelper.KEY_OWNER_ID + ", " +
+                "logframe." + cSQLDBHelper.KEY_ORG_ID + ", " +
+                "logframe." + cSQLDBHelper.KEY_GROUP_BITS + ", " +
+                "logframe." + cSQLDBHelper.KEY_PERMS_BITS + ", " +
+                "logframe." + cSQLDBHelper.KEY_STATUS_BITS + ", " +
+                "logframe." + cSQLDBHelper.KEY_NAME + ", " +
+                "logframe." + cSQLDBHelper.KEY_DESCRIPTION + ", " +
+                "logframe." + cSQLDBHelper.KEY_START_DATE + ", " +
+                "logframe." + cSQLDBHelper.KEY_END_DATE + ", " +
+                "logframe." + cSQLDBHelper.KEY_CREATED_DATE + ", " +
+                "logframe." + cSQLDBHelper.KEY_MODIFIED_DATE + ", " +
+                "logframe." + cSQLDBHelper.KEY_SYNCED_DATE +
+                " FROM " + cSQLDBHelper.TABLE_tblLOGFRAME + " logframe, " +
+                cSQLDBHelper.TABLE_tblLOGFRAMETREE + " logframe_tree " +
+                " WHERE ((logframe." + cSQLDBHelper.KEY_ID + " = logframe_tree." +
+                cSQLDBHelper.KEY_PARENT_FK_ID +") AND " +
                 /* read access permissions */
-                /* organization creator is always allowed to do everything (i.e., where: userID = orgID)*/
-                " ((" + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
+                /* organization creator is always allowed to do everything (i.e., where: userID = orgID) */
+                " ((logframe." + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
                 /* owner permission */
-                " OR ((((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.OWNER_READ + " & ? ) != 0)) " +
+                " OR ((((logframe." + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
+                " AND ((logframe." + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OWNER_READ + ") != 0))" +
                 /* group (owner/primary organization) permission */
-                " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.GROUP_READ + " & ? ) != 0)) " +
+                " OR (((logframe." + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
+                " AND ((logframe." + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.GROUP_READ + ") != 0))" +
                 /* other (secondary organizations) permission */
-                " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.OTHER_READ + " & ? ) != 0)))" +
+                " OR (((logframe." + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
+                " AND ((logframe." + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OTHER_READ + ") != 0)))" +
                 /* owner, group and other permissions allowed when the statuses hold */
-                " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0))))";
-
+                " AND ((logframe." + cSQLDBHelper.KEY_STATUS_BITS + " = 0) " +
+                " OR ((logframe." + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0)))))";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{
-                String.valueOf(logFrameID),
-                String.valueOf(orgID),
-                String.valueOf(userID), String.valueOf(operationBITS),
-                String.valueOf(primaryRole), String.valueOf(operationBITS),
-                String.valueOf(secondaryRoles), String.valueOf(operationBITS),
-                String.valueOf(statusBITS)});
+                String.valueOf(userID),           /* access due to organization creator */
+                String.valueOf(userID),           /* access due to record owner */
+                String.valueOf(primaryRoleBITS),  /* access due to membership in primary role */
+                String.valueOf(secondaryRoleBITS),/* access due to membership in secondary role */
+                String.valueOf(statusBITS)});     /* access due to assigned statuses */
 
         try {
             if (cursor.moveToFirst()) {
                 do {
                     cLogFrameModel logFrameModel = new cLogFrameModel();
 
-                    logFrameModel.setLogFrameID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    logFrameModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    logFrameModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    logFrameModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    logFrameModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    logFrameModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    logFrameModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    logFrameModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    logFrameModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    logFrameModel.setStartDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    logFrameModel.setEndDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    logFrameModel.setCreatedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    logFrameModel.setModifiedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    logFrameModel.setSyncedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+                    logFrameModel.setLogFrameID(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    logFrameModel.setServerID(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+                    logFrameModel.setOwnerID(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    logFrameModel.setOrgID(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+                    logFrameModel.setGroupBITS(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    logFrameModel.setPermsBITS(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    logFrameModel.setStatusBITS(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    logFrameModel.setName(
+                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    logFrameModel.setDescription(
+                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    logFrameModel.setStartDate(Timestamp.valueOf(
+                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+                    logFrameModel.setEndDate(Timestamp.valueOf(
+                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+                    logFrameModel.setCreatedDate(Timestamp.valueOf(
+                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    logFrameModel.setModifiedDate(Timestamp.valueOf(
+                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    logFrameModel.setSyncedDate(Timestamp.valueOf(
+                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+
+                    int logFrameID = logFrameModel.getLogFrameID();
 
                     /* populate child log-frames */
-                    logFrameModel.setLogFrameModelSet(getLogFrameModelSetByID(logFrameModel.getLogFrameID(), userID,
-                            orgID, primaryRole, secondaryRoles, operationBITS, statusBITS));
+                    logFrameModel.setLogFrameModelSet(getLogFrameModelSetByID(logFrameID, userID,
+                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
 
                     /* populate impact component */
-                    logFrameModel.setImpactModelSet(getImpactModelSetByID(logFrameModel.getLogFrameID(), userID,
-                            orgID, primaryRole, secondaryRoles, operationBITS, statusBITS));
+                    logFrameModel.setImpactModelSet(getImpactModelSetByID(logFrameID, userID,
+                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
 
                     /* populate outcome component */
-                    logFrameModel.setOutcomeModelSet(getOutcomeModelSetByID(logFrameModel.getLogFrameID(), userID,
-                            orgID, primaryRole, secondaryRoles, operationBITS, statusBITS));
+                    logFrameModel.setOutcomeModelSet(getOutcomeModelSetByID(logFrameID, userID,
+                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
 
                     /* populate output component */
-                    logFrameModel.setOutputModelSet(getOutputModelSetByID(logFrameModel.getLogFrameID(), userID,
-                            orgID, primaryRole, secondaryRoles, operationBITS, statusBITS));
+                    logFrameModel.setOutputModelSet(getOutputModelSetByID(logFrameID, userID,
+                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
 
                     /* populate activity component */
-                    logFrameModel.setActivityModelSet(getActivityModelSetByID(logFrameModel.getLogFrameID(), userID,
-                            orgID, primaryRole, secondaryRoles, operationBITS, statusBITS));
+                    //logFrameModel.setActivityModelSet(getActivityModelSetByID(logFrameID, userID,
+                    //        primaryRoleBITS, secondaryRoleBITS, statusBITS));
 
                     /* populate input component */
-                    logFrameModel.setInputModelSet(getInputModelSetByID(logFrameModel.getLogFrameID(), userID,
-                            orgID, primaryRole, secondaryRoles, operationBITS, statusBITS));
+                    logFrameModel.setInputModelSet(getInputModelSetByID(logFrameID, userID,
+                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
 
                     /** auxiliary components **/
 
@@ -330,15 +344,13 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
      *
      * @param logFrameID
      * @param userID
-     * @param orgID
      * @param primaryRole
      * @param secondaryRoles
-     * @param operationBITS
      * @param statusBITS
      * @return
      */
-    public Set<cLogFrameModel> getLogFrameModelSetByID(int logFrameID, int userID, int orgID, int primaryRole,
-                                                       int secondaryRoles, int operationBITS, int statusBITS) {
+    public Set<cLogFrameModel> getLogFrameModelSetByID(int logFrameID, int userID, int primaryRole,
+                                                       int secondaryRoles, int statusBITS) {
 
         Set<cLogFrameModel> logFrameModelSet = new HashSet<>();
 
@@ -347,6 +359,7 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
         String selectQuery =
                 " SELECT " +
                         "logframe." + cSQLDBHelper.KEY_ID + ", " +
+                        "logframe." + cSQLDBHelper.KEY_ORGANIZATION_FK_ID + ", " +
                         "logframe_tree." + cSQLDBHelper.KEY_PARENT_FK_ID + ", " +
                         "logframe_tree." + cSQLDBHelper.KEY_CHILD_FK_ID + ", " +
                         "logframe." + cSQLDBHelper.KEY_SERVER_ID + ", " +
@@ -357,34 +370,39 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
                         "logframe." + cSQLDBHelper.KEY_STATUS_BITS + ", " +
                         "logframe." + cSQLDBHelper.KEY_NAME + ", " +
                         "logframe." + cSQLDBHelper.KEY_DESCRIPTION + ", " +
+                        "logframe." + cSQLDBHelper.KEY_START_DATE + ", " +
+                        "logframe." + cSQLDBHelper.KEY_END_DATE + ", " +
                         "logframe." + cSQLDBHelper.KEY_CREATED_DATE + ", " +
                         "logframe." + cSQLDBHelper.KEY_MODIFIED_DATE + ", " +
                         "logframe." + cSQLDBHelper.KEY_SYNCED_DATE +
                         " FROM " + cSQLDBHelper.TABLE_tblLOGFRAME + " logframe, " +
                         cSQLDBHelper.TABLE_tblLOGFRAMETREE + " logframe_tree " +
-                        " WHERE ((logframe." + cSQLDBHelper.KEY_ID + " = logframe_tree." + cSQLDBHelper.KEY_CHILD_FK_ID +
+                        " WHERE ((logframe." + cSQLDBHelper.KEY_ID + " = logframe_tree." +
+                        cSQLDBHelper.KEY_CHILD_FK_ID +
                         " AND logframe_tree." + cSQLDBHelper.KEY_PARENT_FK_ID + " = ?) AND " +
                         /* read access permissions */
-                        /* organization creator is always allowed to do everything (i.e., where: userID = orgID)*/
-                        " ((" + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
+                        /* organization creator is always allowed to do everything (i.e., where:
+                           userID = orgID)*/
+                        " ((logframe." +cSQLDBHelper.KEY_ORG_ID + " = ?) " +
                         /* owner permission */
-                        " OR ((((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
-                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.OWNER_READ + " & ? ) != 0)) " +
+                        " OR ((((logframe." +cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
+                        " AND ((logframe." + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OWNER_READ + ") != 0))" +
                         /* group (owner/primary organization) permission */
-                        " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.GROUP_READ + " & ? ) != 0)) " +
+                        " OR (((logframe." + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
+                        " AND ((logframe." + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.GROUP_READ + ") != 0))" +
                         /* other (secondary organizations) permission */
-                        " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.OTHER_READ + " & ? ) != 0)))" +
+                        " OR (((logframe." + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
+                        " AND ((logframe." + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OTHER_READ + ") != 0)))" +
                         /* owner, group and other permissions allowed when the statuses hold */
-                        " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0))))";
+                        " AND ((logframe." + cSQLDBHelper.KEY_STATUS_BITS + " = 0) " +
+                        " OR ((logframe." + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0)))))";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{
                 String.valueOf(logFrameID),
-                String.valueOf(orgID),
-                String.valueOf(userID), String.valueOf(operationBITS),
-                String.valueOf(primaryRole), String.valueOf(operationBITS),
-                String.valueOf(secondaryRoles), String.valueOf(operationBITS),
+                String.valueOf(userID),
+                String.valueOf(userID),
+                String.valueOf(primaryRole),
+                String.valueOf(secondaryRoles),
                 String.valueOf(statusBITS)});
 
         try {
@@ -392,25 +410,36 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
                 do {
                     cLogFrameModel logFrameModel = new cLogFrameModel();
 
-                    logFrameModel.setLogFrameID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    logFrameModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    logFrameModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    logFrameModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    logFrameModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    logFrameModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    logFrameModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    logFrameModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    logFrameModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    logFrameModel.setStartDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    logFrameModel.setEndDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    logFrameModel.setCreatedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    logFrameModel.setModifiedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    logFrameModel.setSyncedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+                    logFrameModel.setLogFrameID(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    logFrameModel.setOrganizationID(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
+                    logFrameModel.setServerID(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+                    logFrameModel.setOwnerID(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    logFrameModel.setOrgID(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+                    logFrameModel.setGroupBITS(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    logFrameModel.setPermsBITS(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    logFrameModel.setStatusBITS(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    logFrameModel.setName(
+                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    logFrameModel.setDescription(
+                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    logFrameModel.setStartDate(Timestamp.valueOf(
+                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+                    logFrameModel.setEndDate(Timestamp.valueOf(
+                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+                    logFrameModel.setCreatedDate(Timestamp.valueOf(
+                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    logFrameModel.setModifiedDate(Timestamp.valueOf(
+                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    logFrameModel.setSyncedDate(Timestamp.valueOf(
+                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     logFrameModelSet.add(logFrameModel);
 
@@ -434,15 +463,13 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
      *
      * @param logFrameID
      * @param userID
-     * @param orgID
      * @param primaryRole
      * @param secondaryRoles
-     * @param operationBITS
      * @param statusBITS
      * @return
      */
-    public Set<cImpactModel> getImpactModelSetByID(int logFrameID, int userID, int orgID, int primaryRole,
-                                                   int secondaryRoles, int operationBITS, int statusBITS) {
+    public Set<cImpactModel> getImpactModelSetByID(int logFrameID, int userID, int primaryRole,
+                                                   int secondaryRoles, int statusBITS) {
 
         Set<cImpactModel> impactModelSet = new HashSet<>();
 
@@ -451,28 +478,29 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
         String selectQuery =
                 " SELECT * " +
                         " FROM " + cSQLDBHelper.TABLE_tblIMPACT +
-                        " WHERE ((" + cSQLDBHelper.KEY_LOGFRAME_FK_ID + " = ?) " +
+                        " WHERE ((" + cSQLDBHelper.KEY_LOGFRAME_FK_ID + " = ?) AND " +
                         /* read access permissions */
                         /* organization creator is always allowed to do everything (i.e., where: userID = orgID)*/
-                        " AND ((" + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
+                        " ((" + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
                         /* owner permission */
                         " OR ((((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
-                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.OWNER_READ + " & ? ) != 0)) " +
+                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OWNER_READ + ") != 0))" +
                         /* group (owner/primary organization) permission */
                         " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.GROUP_READ + " & ? ) != 0)) " +
+                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.GROUP_READ + ") != 0))" +
                         /* other (secondary organizations) permission */
                         " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.OTHER_READ + " & ? ) != 0)))" +
+                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OTHER_READ + ") != 0)))" +
                         /* owner, group and other permissions allowed when the statuses hold */
-                        " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0))))";
+                        " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " = 0) " +
+                        " OR ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0)))))";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{
                 String.valueOf(logFrameID),
-                String.valueOf(orgID),
-                String.valueOf(userID), String.valueOf(operationBITS),
-                String.valueOf(primaryRole), String.valueOf(operationBITS),
-                String.valueOf(secondaryRoles), String.valueOf(operationBITS),
+                String.valueOf(userID),
+                String.valueOf(userID),
+                String.valueOf(primaryRole),
+                String.valueOf(secondaryRoles),
                 String.valueOf(statusBITS)});
 
         try {
@@ -524,15 +552,13 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
      *
      * @param logFrameID
      * @param userID
-     * @param orgID
      * @param primaryRole
      * @param secondaryRoles
-     * @param operationBITS
      * @param statusBITS
      * @return
      */
-    public Set<cOutcomeModel> getOutcomeModelSetByID(int logFrameID, int userID, int orgID, int primaryRole,
-                                                     int secondaryRoles, int operationBITS, int statusBITS) {
+    public Set<cOutcomeModel> getOutcomeModelSetByID(int logFrameID, int userID, int primaryRole,
+                                                     int secondaryRoles, int statusBITS) {
 
         Set<cOutcomeModel> outcomeModelSet = new HashSet<>();
 
@@ -541,28 +567,30 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
         String selectQuery =
                 " SELECT * " +
                         " FROM " + cSQLDBHelper.TABLE_tblOUTCOME +
-                        " WHERE ((" + cSQLDBHelper.KEY_LOGFRAME_FK_ID + " = ?) " +
+                        " WHERE ((" + cSQLDBHelper.KEY_LOGFRAME_FK_ID + " = ?) AND " +
                         /* read access permissions */
-                        /* organization creator is always allowed to do everything (i.e., where: userID = orgID)*/
-                        " AND ((" + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
+                        /* organization creator is always allowed to do everything (i.e., where:
+                           userID = orgID)*/
+                        " ((" + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
                         /* owner permission */
                         " OR ((((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
-                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.OWNER_READ + " & ? ) != 0)) " +
+                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OWNER_READ + ") != 0))" +
                         /* group (owner/primary organization) permission */
                         " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.GROUP_READ + " & ? ) != 0)) " +
+                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.GROUP_READ + ") != 0))" +
                         /* other (secondary organizations) permission */
                         " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.OTHER_READ + " & ? ) != 0)))" +
+                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OTHER_READ + ") != 0)))" +
                         /* owner, group and other permissions allowed when the statuses hold */
-                        " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0))))";
+                        " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " = 0) " +
+                        " OR ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0)))))";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{
                 String.valueOf(logFrameID),
-                String.valueOf(orgID),
-                String.valueOf(userID), String.valueOf(operationBITS),
-                String.valueOf(primaryRole), String.valueOf(operationBITS),
-                String.valueOf(secondaryRoles), String.valueOf(operationBITS),
+                String.valueOf(userID),
+                String.valueOf(userID),
+                String.valueOf(primaryRole),
+                String.valueOf(secondaryRoles),
                 String.valueOf(statusBITS)});
 
         try {
@@ -615,15 +643,13 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
      *
      * @param logFrameID
      * @param userID
-     * @param orgID
      * @param primaryRole
      * @param secondaryRoles
-     * @param operationBITS
      * @param statusBITS
      * @return
      */
-    public Set<cOutputModel> getOutputModelSetByID(int logFrameID, int userID, int orgID, int primaryRole,
-                                                   int secondaryRoles, int operationBITS, int statusBITS) {
+    public Set<cOutputModel> getOutputModelSetByID(int logFrameID, int userID, int primaryRole,
+                                                   int secondaryRoles, int statusBITS) {
 
         Set<cOutputModel> outputModelSet = new HashSet<>();
 
@@ -632,28 +658,29 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
         String selectQuery =
                 " SELECT * " +
                         " FROM " + cSQLDBHelper.TABLE_tblOUTPUT +
-                        " WHERE ((" + cSQLDBHelper.KEY_LOGFRAME_FK_ID + " = ?) " +
+                        " WHERE ((" + cSQLDBHelper.KEY_LOGFRAME_FK_ID + " = ?) AND  " +
                         /* read access permissions */
                         /* organization creator is always allowed to do everything (i.e., where: userID = orgID)*/
-                        " AND ((" + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
+                        " ((" + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
                         /* owner permission */
                         " OR ((((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
-                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.OWNER_READ + " & ? ) != 0)) " +
+                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OWNER_READ + ") != 0))" +
                         /* group (owner/primary organization) permission */
                         " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.GROUP_READ + " & ? ) != 0)) " +
+                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.GROUP_READ + ") != 0))" +
                         /* other (secondary organizations) permission */
                         " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.OTHER_READ + " & ? ) != 0)))" +
+                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OTHER_READ + ") != 0)))" +
                         /* owner, group and other permissions allowed when the statuses hold */
-                        " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0))))";
+                        " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " = 0) " +
+                        " OR ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0)))))";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{
                 String.valueOf(logFrameID),
-                String.valueOf(orgID),
-                String.valueOf(userID), String.valueOf(operationBITS),
-                String.valueOf(primaryRole), String.valueOf(operationBITS),
-                String.valueOf(secondaryRoles), String.valueOf(operationBITS),
+                String.valueOf(userID),
+                String.valueOf(userID),
+                String.valueOf(primaryRole),
+                String.valueOf(secondaryRoles),
                 String.valueOf(statusBITS)});
 
         try {
@@ -706,15 +733,13 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
      *
      * @param logFrameID
      * @param userID
-     * @param orgID
      * @param primaryRole
      * @param secondaryRoles
-     * @param operationBITS
      * @param statusBITS
      * @return
      */
-    public Set<cActivityModel> getActivityModelSetByID(int logFrameID, int userID, int orgID, int primaryRole,
-                                                       int secondaryRoles, int operationBITS, int statusBITS) {
+    public Set<cActivityModel> getActivityModelSetByID(int logFrameID, int userID, int primaryRole,
+                                                       int secondaryRoles, int statusBITS) {
 
         Set<cActivityModel> activityModelSet = new HashSet<>();
 
@@ -723,28 +748,29 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
         String selectQuery =
                 " SELECT * " +
                         " FROM " + cSQLDBHelper.TABLE_tblACTIVITY +
-                        " WHERE ((" + cSQLDBHelper.KEY_LOGFRAME_FK_ID + " = ?) " +
+                        " WHERE (" +//+ cSQLDBHelper.KEY_LOGFRAME_FK_ID + " = ?) AND " +
                         /* read access permissions */
                         /* organization creator is always allowed to do everything (i.e., where: userID = orgID)*/
-                        " AND ((" + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
+                        " ((" + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
                         /* owner permission */
                         " OR ((((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
-                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.OWNER_READ + " & ? ) != 0)) " +
+                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OWNER_READ + ") != 0))" +
                         /* group (owner/primary organization) permission */
                         " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.GROUP_READ + " & ? ) != 0)) " +
+                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.GROUP_READ + ") != 0))" +
                         /* other (secondary organizations) permission */
                         " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.OTHER_READ + " & ? ) != 0)))" +
+                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OTHER_READ + ") != 0)))" +
                         /* owner, group and other permissions allowed when the statuses hold */
-                        " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0))))";
+                        " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " = 0) " +
+                        " OR ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0)))))";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{
-                String.valueOf(logFrameID),
-                String.valueOf(orgID),
-                String.valueOf(userID), String.valueOf(operationBITS),
-                String.valueOf(primaryRole), String.valueOf(operationBITS),
-                String.valueOf(secondaryRoles), String.valueOf(operationBITS),
+                //String.valueOf(logFrameID),
+                String.valueOf(userID),
+                String.valueOf(userID),
+                String.valueOf(primaryRole),
+                String.valueOf(secondaryRoles),
                 String.valueOf(statusBITS)});
 
         try {
@@ -754,7 +780,7 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
 
                     activityModel.setActivityID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                     activityModel.setParentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
-                    activityModel.setLogFrameID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
+                    //activityModel.setLogFrameID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
                     activityModel.setOutputID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OUTPUT_FK_ID)));
                     activityModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
                     activityModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
@@ -798,15 +824,13 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
      *
      * @param logFrameID
      * @param userID
-     * @param orgID
      * @param primaryRole
      * @param secondaryRoles
-     * @param operationBITS
      * @param statusBITS
      * @return
      */
-    public Set<cInputModel> getInputModelSetByID(int logFrameID, int userID, int orgID, int primaryRole,
-                                                 int secondaryRoles, int operationBITS, int statusBITS) {
+    public Set<cInputModel> getInputModelSetByID(int logFrameID, int userID, int primaryRole,
+                                                 int secondaryRoles, int statusBITS) {
 
         Set<cInputModel> inputModelSet = new HashSet<>();
 
@@ -815,28 +839,29 @@ public class cLogFrameRepositoryImpl extends cMapper<cLogFrameModel, cLogFrameDo
         String selectQuery =
                 " SELECT * " +
                         " FROM " + cSQLDBHelper.TABLE_tblINPUT +
-                        " WHERE ((" + cSQLDBHelper.KEY_LOGFRAME_FK_ID + " = ?) " +
+                        " WHERE ((" + cSQLDBHelper.KEY_LOGFRAME_FK_ID + " = ?) AND " +
                         /* read access permissions */
                         /* organization creator is always allowed to do everything (i.e., where: userID = orgID)*/
-                        " AND ((" + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
+                        " ((" + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
                         /* owner permission */
                         " OR ((((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
-                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.OWNER_READ + " & ? ) != 0)) " +
+                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OWNER_READ + ") != 0))" +
                         /* group (owner/primary organization) permission */
                         " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.GROUP_READ + " & ? ) != 0)) " +
+                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.GROUP_READ + ") != 0))" +
                         /* other (secondary organizations) permission */
                         " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.OTHER_READ + " & ? ) != 0)))" +
+                        " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OTHER_READ + ") != 0)))" +
                         /* owner, group and other permissions allowed when the statuses hold */
-                        " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0))))";
+                        " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " = 0) " +
+                        " OR ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0)))))";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{
                 String.valueOf(logFrameID),
-                String.valueOf(orgID),
-                String.valueOf(userID), String.valueOf(operationBITS),
-                String.valueOf(primaryRole), String.valueOf(operationBITS),
-                String.valueOf(secondaryRoles), String.valueOf(operationBITS),
+                String.valueOf(userID),
+                String.valueOf(userID),
+                String.valueOf(primaryRole),
+                String.valueOf(secondaryRoles),
                 String.valueOf(statusBITS)});
 
         try {

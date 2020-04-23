@@ -19,12 +19,12 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.preference.SwitchPreference;
-import android.support.v7.app.ActionBar;
+import androidx.appcompat.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.me.mseotsanyana.mande.DAL.storage.managers.cSyncManager;
+import com.me.mseotsanyana.mande.DAL.storage.synchronization.cSyncManager;
 
 import java.util.List;
 

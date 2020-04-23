@@ -1,12 +1,15 @@
 package com.me.mseotsanyana.mande.DAL.model.session;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class cUserModel {
+public class cUserModel implements Parcelable {
     private int userID;
     private int organizationID;
     private int serverID;
@@ -70,6 +73,30 @@ public class cUserModel {
         this.setCreatedDate(userModel.getCreatedDate());
         this.setModifiedDate(userModel.getModifiedDate());
         this.setSyncedDate(userModel.getSyncedDate());
+    }
+
+    protected cUserModel(Parcel in) {
+        userID = in.readInt();
+        organizationID = in.readInt();
+        serverID = in.readInt();
+        ownerID = in.readInt();
+        orgID = in.readInt();
+        uniqueID = in.readString();
+        groupBITS = in.readInt();
+        permsBITS = in.readInt();
+        statusBITS = in.readInt();
+        photo = in.readString();
+        name = in.readString();
+        surname = in.readString();
+        gender = in.readString();
+        description = in.readString();
+        email = in.readString();
+        website = in.readString();
+        phone = in.readString();
+        password = in.readString();
+        salt = in.readString();
+        oldPassword = in.readString();
+        newPassword = in.readString();
     }
 
     public int getUserID() {
@@ -358,5 +385,48 @@ public class cUserModel {
                 getNewPassword(), getCreatedDate(), getModifiedDate(), getSyncedDate(),
                 getOrganizationModel(), getAddressModelSet(), getSessionModelSet(),
                 getRoleModelSet(), getPublisherModelSet(), getSubscriberModelSet());
+    }
+
+    public static final Creator<cUserModel> CREATOR = new Creator<cUserModel>() {
+        @Override
+        public cUserModel createFromParcel(Parcel in) {
+            return new cUserModel(in);
+        }
+
+        @Override
+        public cUserModel[] newArray(int size) {
+            return new cUserModel[size];
+        }
+    };
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(userID);
+        dest.writeInt(organizationID);
+        dest.writeInt(serverID);
+        dest.writeInt(ownerID);
+        dest.writeInt(orgID);
+        dest.writeString(uniqueID);
+        dest.writeInt(groupBITS);
+        dest.writeInt(permsBITS);
+        dest.writeInt(statusBITS);
+        dest.writeString(photo);
+        dest.writeString(name);
+        dest.writeString(surname);
+        dest.writeString(gender);
+        dest.writeString(description);
+        dest.writeString(email);
+        dest.writeString(website);
+        dest.writeString(phone);
+        dest.writeString(password);
+        dest.writeString(salt);
+        dest.writeString(oldPassword);
+        dest.writeString(newPassword);
     }
 }

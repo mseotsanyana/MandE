@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<androidx.appcompat.widget.CardView
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
 
@@ -27,7 +27,7 @@
             android:textStyle="bold" />
 
         <!-- action_listlist layout for organization values except values-->
-        <android.support.v7.widget.RecyclerView
+        <androidx.appcompat.widget.RecyclerView
             android:id="@+id/organization_values_recyclerview_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,4 +41,4 @@
             android:background="@color/colorRed"
             android:gravity="center" />
     </RelativeLayout>
-</android.support.v7.widget.CardView>
+</androidx.appcompat.widget.CardView>

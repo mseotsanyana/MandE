@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 -->
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/appCompatButtonUploadGlobal"
             android:layout_marginTop="20dp"
             android:text="Upload Global Dataset"
@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/appCompatButtonUploadBRBAC"
             android:layout_marginTop="20dp"
             android:text="Upload BRBAC Dataset"
@@ -46,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/appCompatButtonUploadLogFrame"
             android:layout_marginTop="20dp"
             android:text="Upload LogFrame Dataset"
@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/appCompatButtonUploadAWPB"
             android:layout_marginTop="20dp"
             android:text="Upload AWP\&amp;B Dataset"
@@ -64,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/appCompatButtonUploadEvaluation"
             android:layout_marginTop="20dp"
             android:text="Upload Evaluation Dataset"
@@ -73,7 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/appCompatButtonUploadMonitoring"
             android:layout_marginTop="20dp"
             android:text="Upload Monitoring Dataset"
@@ -82,7 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/appCompatButtonUploadRAID"
             android:layout_marginTop="20dp"
             android:text="Upload RAID Dataset"

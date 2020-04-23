@@ -1,18 +1,15 @@
 package com.me.mseotsanyana.mande.PL.ui.fragments.session;
 
 import android.app.AlertDialog;
-//import android.app.Fragment;
-//import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.AppCompatButton;
-import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +18,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.me.mseotsanyana.mande.DAL.storage.managers.cSessionManager;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iRequestInterface;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
 import com.me.mseotsanyana.mande.UTIL.cUtil;
@@ -37,7 +35,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class cJoinFragment extends Fragment implements View.OnClickListener {
 
-    private cSessionManager session;
+    //private cSessionManager session;
     private BottomNavigationView bottomNavigationView;
 
     public cJoinFragment(){}
@@ -149,7 +147,7 @@ public class cJoinFragment extends Fragment implements View.OnClickListener {
 
     private void logout() {
         SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean(cConstant.KEY_IS_LOGGEDIN,false);
+        //editor.putBoolean(cConstant.KEY_IS_LOGGEDIN,false);
         //editor.putString(cConstant.KEY_EMAIL,"");
         //editor.putString(cConstant.KEY_NAME,"");
         //editor.putString(cConstant.UNIQUE_ID,"");
@@ -205,7 +203,7 @@ public class cJoinFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onFailure(Call<cUserResponse> call, Throwable t) {
 
-                Log.d(cConstant.KEY_TAG,"failed");
+                //Log.d(cConstant.KEY_TAG,"failed");
                 progress.setVisibility(View.GONE);
                 tv_message.setVisibility(View.VISIBLE);
                 tv_message.setText(t.getLocalizedMessage());
@@ -223,7 +221,7 @@ public class cJoinFragment extends Fragment implements View.OnClickListener {
 
                 switch (item.getItemId()) {
                     case R.id.action_login:
-                        pushFragment(cLoginFragment.newInstance(session));
+                        pushFragment(new cLoginFragment());//;.newInstance(session));
                         return true;
                     case R.id.action_create:
                         pushFragment(cRegisterFragment.newInstance());

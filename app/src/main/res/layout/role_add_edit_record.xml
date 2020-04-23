@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="2"
@@ -30,7 +30,7 @@
             app:hintText="Select Organization" />
     </LinearLayout>
 
-    <android.support.v7.widget.AppCompatEditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/editTextRoleName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,9 +41,9 @@
         android:singleLine="true" >
 
         <requestFocus />
-    </android.support.v7.widget.AppCompatEditText>
+    </androidx.appcompat.widget.AppCompatEditText>
 
-    <android.support.v7.widget.AppCompatEditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/editTextRoleDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

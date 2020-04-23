@@ -1,20 +1,15 @@
 package com.me.mseotsanyana.mande.PL.ui.activities;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
-import com.me.mseotsanyana.mande.PL.ui.fragments.cMainFragment;
+import com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cLogFrameFragment;
 import com.me.mseotsanyana.mande.R;
-import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
-import java.util.ArrayList;
-
-public class cDesktopActivity extends AppCompatActivity implements
-        cMainFragment.OnGridViewItemSelectedListener {
+public class cDesktopActivity extends AppCompatActivity {
     Fragment fragment;
     public Toolbar toolbar;
 
@@ -28,7 +23,7 @@ public class cDesktopActivity extends AppCompatActivity implements
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setHomeButtonEnabled(true);
 
-        fragment = new cMainFragment();
+        fragment = new cLogFrameFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_frame,fragment);
         ft.commit();
@@ -49,28 +44,4 @@ public class cDesktopActivity extends AppCompatActivity implements
         super.onStop();
     }
 
-    @Override
-    public void getGridPosition(int position) {
-
-    }
-
-    @Override
-    public void getSelectedOrganizationList(ArrayList<cOrganizationDomain> selectedOrganizations) {
-
-    }
-
-    @Override
-    public void getSelectedTreeModel(ArrayList<cTreeModel> selectedGoalTree) {
-
-    }
-
-    @Override
-    public void getGroupMenuPosition(int parentPosition) {
-
-    }
-
-    @Override
-    public void getChildMenuPosition(int childPosition) {
-
-    }
 }

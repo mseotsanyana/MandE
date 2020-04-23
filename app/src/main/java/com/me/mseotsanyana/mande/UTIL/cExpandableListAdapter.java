@@ -13,25 +13,25 @@ import android.widget.TextView;
 
 import com.me.mseotsanyana.mande.R;
 
-
 public class cExpandableListAdapter extends BaseExpandableListAdapter {
-
     private Context context;
-    private List<String> expandableListTitle;
-    private Map<String, List<String>> expandableListDetail;
     private LayoutInflater layoutInflater;
 
+    private List<String> expandableListTitle;
+    private Map<String, List<String>> expandableMenuItems;
+
     public cExpandableListAdapter(Context context, List<String> expandableListTitle,
-                                       Map<String, List<String>> expandableListDetail) {
+                                  Map<String, List<String>> expandableMenuItems) {
         this.context = context;
         this.expandableListTitle = expandableListTitle;
-        this.expandableListDetail = expandableListDetail;
+        this.expandableMenuItems = expandableMenuItems;
+
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public Object getChild(int listPosition, int expandedListPosition) {
-        return expandableListDetail.get(expandableListTitle.get(listPosition))
+        return expandableMenuItems.get(expandableListTitle.get(listPosition))
                 .get(expandedListPosition);
     }
 
@@ -55,7 +55,7 @@ public class cExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int listPosition) {
-        return expandableListDetail.get(expandableListTitle.get(listPosition))
+        return expandableMenuItems.get(expandableListTitle.get(listPosition))
                 .size();
     }
 
@@ -138,5 +138,21 @@ public class cExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int listPosition, int expandedListPosition) {
         return true;
+    }
+
+    public List<String> getExpandableListTitle() {
+        return expandableListTitle;
+    }
+
+    public void setExpandableListTitle(List<String> expandableListTitle) {
+        this.expandableListTitle = expandableListTitle;
+    }
+
+    public Map<String, List<String>> getExpandableMenuItems() {
+        return expandableMenuItems;
+    }
+
+    public void setExpandableMenuItems(Map<String, List<String>> expandableMenuItems) {
+        this.expandableMenuItems = expandableMenuItems;
     }
 }

@@ -2,8 +2,9 @@ package com.me.mseotsanyana.mande.PL.ui.adapters.session;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.v7.widget.AppCompatCheckBox;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,6 @@ import android.widget.PopupWindow;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.me.mseotsanyana.mande.DAL.storage.managers.cSessionManager;
 import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.cFontManager;
@@ -38,7 +38,7 @@ public class cStatusAdapter extends RecyclerView.Adapter<cStatusAdapter.cStatusV
 
     private PopupWindow popWindow;
 
-    private cSessionManager sessionManager;
+    //private cSessionManager sessionManager;
 
     public cStatusAdapter(Context context, ArrayList<cStatusDomain> listStatus,
                           int permissionStatus, AppCompatCheckBox appCompatCheckBoxAll) {
@@ -48,7 +48,7 @@ public class cStatusAdapter extends RecyclerView.Adapter<cStatusAdapter.cStatusV
         //this.permissionStatus = permissionStatus;// the variable to UPDATE
         this.appCompatCheckBoxAll = appCompatCheckBoxAll;
 
-        sessionManager = new cSessionManager(context);
+        //sessionManager = new cSessionManager(context);
     }
 
     @Override

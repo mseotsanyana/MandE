@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         app:hintText="Select Role" />
 
-    <android.support.v7.widget.AppCompatEditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/editTextPrivilegeName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,9 +25,9 @@
         android:singleLine="true" >
 
         <requestFocus />
-    </android.support.v7.widget.AppCompatEditText>
+    </androidx.appcompat.widget.AppCompatEditText>
 
-    <android.support.v7.widget.AppCompatEditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/editTextPrivilegeDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

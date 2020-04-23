@@ -1,14 +1,15 @@
 package com.me.mseotsanyana.mande.PL.ui.fragments.logframe;
 
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -145,13 +146,13 @@ public class cProjectFragment extends Fragment implements cAddProjectFragment.On
             @Override
             public void onClick(View v) {
                 FragmentManager fragmentManager = getFragmentManager();
-                addProjectFragment.setStyle(DialogFragment.STYLE_NORMAL,R.style.CustomDialog);
-                addProjectFragment.setCancelable(false);
+                //addProjectFragment.setStyle(DialogFragment.STYLE_NORMAL,R.style.CustomDialog);
+                //addProjectFragment.setCancelable(false);
                 //addProjectFragment.show(fragmentManager,"fragment_add_project");
                 //Snackbar.make(getView(), "FAB Clicked", Snackbar.LENGTH_SHORT).show();
 
-                addProjectFragment.setTargetFragment(cProjectFragment.this, 0);
-                addProjectFragment.show(fragmentManager,"fragment_add_project");
+                //addProjectFragment.setTargetFragment(cProjectFragment.this, 0);
+                //addProjectFragment.show(fragmentManager,"fragment_add_project");
             }
         });
     }
@@ -223,10 +224,10 @@ public class cProjectFragment extends Fragment implements cAddProjectFragment.On
                 if (projectDomain != null) {
 
                     FragmentManager fragmentManager = getFragmentManager();
-                    editProjectFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
-                    editProjectFragment.setCancelable(false);
-                    editProjectFragment.setTargetFragment(cProjectFragment.this, 0);
-                    editProjectFragment.show(fragmentManager, "fragment_add_project");
+                    //editProjectFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
+                    //editProjectFragment.setCancelable(false);
+                    //editProjectFragment.setTargetFragment(cProjectFragment.this, 0);
+                    //editProjectFragment.show(fragmentManager, "fragment_add_project");
                 }
 
                 break;

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/objective_card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    card_view:cardBackgroundColor="@color/colorAccent"
+    card_view:cardCornerRadius="4dp">
+
+    <com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout
+        android:id="@+id/expandableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp">
+
+            <!-- See child logframe under the parent logframe -->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewExpandLogFrameIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/text_size_medium" />
+
+            <!-- parent logframe name -->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/textViewExpandLogFrameIcon"
+                android:layout_marginLeft="2dp"
+                android:layout_toRightOf="@+id/textViewExpandLogFrameIcon"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold" />
+
+            <!-- parent logframe description -->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewName"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="1dp"
+                android:layout_toRightOf="@+id/textViewExpandLogFrameIcon"
+                android:textSize="@dimen/text_size_small_medium" />
+
+            <!-- common attributes  -->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewDetailIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_below="@id/textViewDescription"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="15dp"
+                android:layout_toRightOf="@+id/textViewExpandLogFrameIcon"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/text_size_very_large"
+                android:textStyle="bold" />
+
+            <!-- number of child logframes under a parent logframe
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/textViewCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="1dp"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_small" />
+                -->
+
+            <!-- bmb menu a logframe -->
+            <com.me.mseotsanyana.bmblibrary.cBoomMenuButton
+                android:id="@+id/bmb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@id/textViewDescription"
+                app:bmb_buttonEnum="textOutsideCircle"
+                app:bmb_piecePlaceEnum="piecePlace_dot_9_1"
+                app:bmb_buttonPlaceEnum="buttonPlace_sc_9_1"
+                app:bmb_inList="true" />
+
+            <!-- synchronise a logframe -->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewSyncIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewDescription"
+                android:layout_toLeftOf="@+id/bmb"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/me_btn_flexible"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold" />
+
+            <!-- delete a logframe -->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewDeleteIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewDescription"
+                android:layout_toLeftOf="@+id/textViewSyncIcon"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/me_btn_flexible"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold" />
+
+            <!-- update a logframe -->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewUpdateIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewDescription"
+                android:layout_toLeftOf="@+id/textViewDeleteIcon"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/me_btn_flexible"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold" />
+
+            <!-- create a logframe -->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewCreateIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewDescription"
+                android:layout_toLeftOf="@+id/textViewUpdateIcon"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/me_btn_flexible"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <!-- hidden layer -->
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="8dp">
+
+            <include layout="@layout/me_common_attributes"/>
+
+        </RelativeLayout>
+
+    </com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout>
+</androidx.cardview.widget.CardView>

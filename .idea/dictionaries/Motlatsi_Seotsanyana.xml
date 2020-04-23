@@ -20,6 +20,7 @@
       <w>datacollector</w>
       <w>dateresponse</w>
       <w>dependecy</w>
+      <w>entitytype</w>
       <w>eresponse</w>
       <w>evaluationcriteria</w>
       <w>evaluationtype</w>
@@ -28,12 +29,14 @@
       <w>funders</w>
       <w>generalledger</w>
       <w>humanset</w>
+      <w>imageid</w>
       <w>implementingagency</w>
       <w>indicatormilestone</w>
       <w>indicatortype</w>
       <w>interactor</w>
       <w>likelihoodset</w>
       <w>logframe</w>
+      <w>logframes</w>
       <w>logframetree</w>
       <w>matrixchoice</w>
       <w>matrixchoiceset</w>
@@ -44,6 +47,8 @@
       <w>mresponse</w>
       <w>mseotsanyana</w>
       <w>numericresponse</w>
+      <w>opbits</w>
+      <w>prbits</w>
       <w>precedingactivity</w>
       <w>precedingtask</w>
       <w>preventativeplan</w>
@@ -74,11 +79,15 @@
       <w>riskrootcause</w>
       <w>rootcause</w>
       <w>rowoption</w>
+      <w>srbits</w>
+      <w>statusset</w>
+      <w>stbits</w>
       <w>taskassignment</w>
       <w>textresponse</w>
       <w>timesheet</w>
       <w>timesheets</w>
       <w>usercomment</w>
+      <w>usermodel</w>
       <w>workplan</w>
     </words>
   </dictionary>

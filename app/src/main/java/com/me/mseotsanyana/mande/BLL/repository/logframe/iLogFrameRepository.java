@@ -20,18 +20,18 @@ public interface iLogFrameRepository {
     boolean addLogFrame(cLogFrameDomain logFrameDomain);
 
     /* the read functions of the LogFrame entity */
-    Set<cLogFrameModel> getLogFrameModelSet(int logFrameID, int userID, int orgID, int primaryRole,
-                                            int secondaryRoles, int operationBITS, int statusBITS);
-    Set<cImpactModel> getImpactModelSetByID(int logFrameID, int userID, int orgID, int primaryRole,
-                                                int secondaryRoles, int operationBITS, int statusBITS);
-    Set<cOutcomeModel> getOutcomeModelSetByID(int logFrameID, int userID, int orgID, int primaryRole,
-                                                int secondaryRoles, int operationBITS, int statusBITS);
-    Set<cOutputModel> getOutputModelSetByID(int logFrameID, int userID, int orgID, int primaryRole,
-                                                int secondaryRoles, int operationBITS, int statusBITS);
-    Set<cActivityModel> getActivityModelSetByID(int logFrameID, int userID, int orgID, int primaryRole,
-                                                int secondaryRoles, int operationBITS, int statusBITS);
-    Set<cInputModel> getInputModelSetByID(int logFrameID, int userID, int orgID, int primaryRole,
-                                                int secondaryRoles, int operationBITS, int statusBITS);
+    Set<cLogFrameModel> getLogFrameModelSet(int userID, int primaryRoleBITS,
+                                            int secondaryRoleBITS, int statusBITS);
+    Set<cImpactModel> getImpactModelSetByID(int logFrameID, int userID, int primaryRole,
+                                                int secondaryRoles, int statusBITS);
+    Set<cOutcomeModel> getOutcomeModelSetByID(int logFrameID, int userID, int primaryRole,
+                                                int secondaryRoles, int statusBITS);
+    Set<cOutputModel> getOutputModelSetByID(int logFrameID, int userID, int primaryRole,
+                                                int secondaryRoles, int statusBITS);
+    Set<cActivityModel> getActivityModelSetByID(int logFrameID, int userID, int primaryRole,
+                                                int secondaryRoles, int statusBITS);
+    Set<cInputModel> getInputModelSetByID(int logFrameID, int userID, int primaryRole,
+                                                int secondaryRoles, int statusBITS);
 
     ArrayList<cLogFrameModel> getLogFrameModels();
     ArrayList<cLogFrameModel> getChildLogFramesByID(int parentID);
@@ -45,7 +45,6 @@ public interface iLogFrameRepository {
     ArrayList<cRaidModel> getRaidsByID(int logFrameID);
     boolean deleteLogFrame(cLogFrameModel logFrameModel);
     boolean deleteLogFrames();
-
 
     /* emit a set of logFrames */
     //Observable<Set<cLogFrameModel>> getLogFrameModelSet();

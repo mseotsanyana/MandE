@@ -6,7 +6,7 @@
     android:layout_marginLeft="3dp"
     android:orientation="horizontal">
 
-    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.appcompat.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
         android:layout_width="match_parent"
@@ -107,5 +107,5 @@
             </TableLayout>
     -->
         </RelativeLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.appcompat.widget.CardView>
 </LinearLayout>

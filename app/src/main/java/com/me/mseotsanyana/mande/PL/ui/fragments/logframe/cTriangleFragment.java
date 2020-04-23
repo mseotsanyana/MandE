@@ -3,10 +3,6 @@ package com.me.mseotsanyana.mande.PL.ui.fragments.logframe;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cTriangleAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cLogFrameAdapter;
 import com.me.mseotsanyana.mande.UTIL.BLL.cTriangleDomain;
 import com.me.mseotsanyana.mande.UTIL.BLL.cTriangleHandler;
 import com.me.mseotsanyana.mande.R;
@@ -35,7 +36,7 @@ public class cTriangleFragment extends Fragment {
     private cTriangleDomain triangleDomain;
 
     private RecyclerView recyclerView;
-    private cTriangleAdapter triangleAdapter;
+    private cLogFrameAdapter triangleAdapter;
 
     private int cardPosition = 0;
     private int level = 0;
@@ -74,7 +75,7 @@ public class cTriangleFragment extends Fragment {
 
         ArrayList<cTreeModel> triangleTreeData = getArguments().getParcelableArrayList("TRIANGLE");
 
-        triangleAdapter = new cTriangleAdapter(getActivity(), triangleTreeData, level);
+        triangleAdapter = new cLogFrameAdapter(getActivity(), null,triangleTreeData, level);
 
     }
 

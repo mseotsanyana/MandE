@@ -3,13 +3,11 @@ package com.me.mseotsanyana.mande.PL.ui.fragments.session;
 //import android.app.Fragment;
 //import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.AppCompatButton;
-import android.util.Log;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +17,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iRequestInterface;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
 import com.me.mseotsanyana.mande.UTIL.cUtil;
@@ -139,7 +139,7 @@ public class cRegisterFragment extends Fragment implements View.OnClickListener{
             public void onFailure(Call<cUserResponse> call, Throwable t) {
 
                 progress.setVisibility(View.INVISIBLE);
-                Log.d(cConstant.KEY_TAG,"failed");
+                //Log.d(cConstant.KEY_TAG,"failed");
                 Snackbar.make(getView(), t.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
 
 
@@ -155,7 +155,7 @@ public class cRegisterFragment extends Fragment implements View.OnClickListener{
 
                 switch (item.getItemId()) {
                     case R.id.action_login:
-                        pushFragment(cLoginFragment.newInstance(null));
+                        pushFragment(new cLoginFragment());//.newInstance(null));
                         return true;
                     case R.id.action_join:
                         pushFragment(cJoinFragment.newInstance());

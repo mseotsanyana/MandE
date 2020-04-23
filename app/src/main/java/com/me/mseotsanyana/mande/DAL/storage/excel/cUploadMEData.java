@@ -6,22 +6,21 @@ import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.me.mseotsanyana.mande.DAL.storage.managers.cSessionManager;
 import com.me.mseotsanyana.mande.BLL.domain.logframe.cActivityDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.logframe.Impl.cActivityInterator;
+import com.me.mseotsanyana.mande.BLL.interactors.logframe.activity.Impl.cActivityInterator;
 import com.me.mseotsanyana.mande.UTIL.BLL.cGoalDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.logframe.Impl.cImpactInterator;
+import com.me.mseotsanyana.mande.BLL.interactors.logframe.impact.Impl.cImpactInterator;
 import com.me.mseotsanyana.mande.BLL.domain.logframe.cImpactDomain;
 import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cOrganizationHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cOrganizationHandler;
 import com.me.mseotsanyana.mande.BLL.domain.logframe.cOutcomeDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.logframe.Impl.cOutcomeInterator;
+import com.me.mseotsanyana.mande.BLL.interactors.logframe.outcome.Impl.cOutcomeInterator;
 import com.me.mseotsanyana.mande.UTIL.BLL.cOutcomeOutputDomain;
 import com.me.mseotsanyana.mande.UTIL.BLL.cOutcomeOutputHandler;
 import com.me.mseotsanyana.mande.UTIL.BLL.cOutputActivityDomain;
 import com.me.mseotsanyana.mande.UTIL.BLL.cOutputActivityHandler;
 import com.me.mseotsanyana.mande.BLL.domain.logframe.cOutputDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.logframe.Impl.cOutputInteractor;
+import com.me.mseotsanyana.mande.BLL.interactors.logframe.output.Impl.cOutputInteractor;
 import com.me.mseotsanyana.mande.UTIL.BLL.cProjectDomain;
 import com.me.mseotsanyana.mande.UTIL.BLL.cProjectHandler;
 import com.me.mseotsanyana.mande.UTIL.BLL.cProjectOutcomeDomain;
@@ -29,7 +28,7 @@ import com.me.mseotsanyana.mande.UTIL.BLL.cProjectOutcomeHandler;
 import com.me.mseotsanyana.mande.UTIL.BLL.cSpecificAimDomain;
 import com.me.mseotsanyana.mande.UTIL.BLL.cSpecificAimHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cValueDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cValueHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.value.Impl.cValueHandler;
 import com.me.mseotsanyana.mande.UTIL.cSetDomainsFromExcel;
 
 import org.apache.poi.ss.usermodel.Sheet;
@@ -45,7 +44,7 @@ import java.util.ArrayList;
 
 public class cUploadMEData {
     private final Context context;
-    private cSessionManager session;
+    //private cSessionManager session;
 
     private cOrganizationDomain organizationDomain;
     private cValueDomain valueDomain;
@@ -78,12 +77,12 @@ public class cUploadMEData {
     private ProgressDialog pd;
     private cSetDomainsFromExcel uploadDemoData;
 
-    public cUploadMEData(Context context, cSessionManager session){
+    public cUploadMEData(Context context){
         // for adding data into database from excel
         this.context = context;
-        this.session = session;
+        //this.session = session;
 
-        organizationHandler = new cOrganizationHandler(context, session);
+        organizationHandler = new cOrganizationHandler(context);
         valueHandler = new cValueHandler(context);
         goalHandler = new cImpactInterator(context);
         specificAimHandler = new cSpecificAimHandler(context);

@@ -3,12 +3,12 @@ package com.me.mseotsanyana.mande.PL.ui.fragments.session;
 //import android.app.Fragment;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.AppCompatButton;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,24 +16,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.me.mseotsanyana.mande.DAL.storage.managers.cSessionManager;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.awpb.cUploadAWPBRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.wpb.cUploadAWPBRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.evaluator.cUploadEvaluationRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.global.cUploadGlobalRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.common.cUploadGlobalRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cUploadLogFrameRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.monitor.cUploadMonitoringRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.raid.cUploadRAIDRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cUploadSessionRepositoryImpl;
-import com.me.mseotsanyana.mande.PL.presenters.awpb.Impl.cUploadAWPBPresenterImpl;
+import com.me.mseotsanyana.mande.PL.presenters.wpb.Impl.cUploadAWPBPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.evaluator.Impl.cUploadEvaluationPresenterImpl;
-import com.me.mseotsanyana.mande.PL.presenters.global.Impl.cUploadGlobalPresenterImpl;
+import com.me.mseotsanyana.mande.PL.presenters.common.Impl.cUploadGlobalPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.Impl.cUploadLogFramePresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.monitor.Impl.cUploadMonitoringPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.raid.Impl.cUploadRAIDPresenterImpl;
-import com.me.mseotsanyana.mande.PL.presenters.awpb.iUploadAWPBPresenter;
+import com.me.mseotsanyana.mande.PL.presenters.wpb.iUploadAWPBPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.evaluator.iUploadEvaluationPresenter;
-import com.me.mseotsanyana.mande.PL.presenters.global.iUploadGlobalPresenter;
+import com.me.mseotsanyana.mande.PL.presenters.common.iUploadGlobalPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iUploadLogFramePresenter;
 import com.me.mseotsanyana.mande.PL.presenters.monitor.iUploadMonitoringPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.raid.iUploadRAIDPresenter;
@@ -51,7 +51,7 @@ public class cSettingsFragment extends Fragment implements
 
     private static String TAG = cSettingsFragment.class.getSimpleName();
 
-    private cSessionManager session;
+    //private cSessionManager session;
 
     private AppCompatButton appCompatButtonGlobal;
     private AppCompatButton appCompatButtonBRBAC;
@@ -226,7 +226,7 @@ public class cSettingsFragment extends Fragment implements
 
                 switch (item.getItemId()) {
                     case R.id.action_login:
-                        pushFragment(cLoginFragment.newInstance(session));
+                        pushFragment(new cLoginFragment());//.newInstance(session));
                         return true;
                     case R.id.action_create:
                         pushFragment(cRegisterFragment.newInstance());

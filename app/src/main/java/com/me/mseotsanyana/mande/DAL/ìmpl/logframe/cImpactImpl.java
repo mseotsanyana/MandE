@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.me.mseotsanyana.mande.DAL.storage.managers.cSessionManager;
 import com.me.mseotsanyana.mande.BLL.domain.logframe.cImpactDomain;
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iImpactRepository;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cQuestionModel;
@@ -15,6 +14,7 @@ import com.me.mseotsanyana.mande.DAL.storage.mapper.cMapper;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cImpactModel;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cOutcomeModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
+import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
 
 import java.lang.String;
@@ -106,13 +106,13 @@ public class cImpactImpl extends cMapper<cImpactModel, cImpactDomain> implements
                 " ((" + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
                 /* owner permission */
                 " OR ((((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.OWNER_READ + " & ? ) != 0)) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OWNER_READ + " & ? ) != 0)) " +
                 /* group (owner/primary organization) permission */
                 " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.GROUP_READ + " & ? ) != 0)) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.GROUP_READ + " & ? ) != 0)) " +
                 /* other (secondary organizations) permission */
                 " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.OTHER_READ + " & ? ) != 0)))" +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OTHER_READ + " & ? ) != 0)))" +
                 /* owner, group and other permissions allowed when the statuses hold */
                 " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0))))";
 
@@ -208,13 +208,13 @@ public class cImpactImpl extends cMapper<cImpactModel, cImpactDomain> implements
                 " ((" + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
                 /* owner permission */
                 " OR ((((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.OWNER_READ + " & ? ) != 0)) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OWNER_READ + " & ? ) != 0)) " +
                 /* group (owner/primary organization) permission */
                 " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.GROUP_READ + " & ? ) != 0)) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.GROUP_READ + " & ? ) != 0)) " +
                 /* other (secondary organizations) permission */
                 " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.OTHER_READ + " & ? ) != 0)))" +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OTHER_READ + " & ? ) != 0)))" +
                 /* owner, group and other permissions allowed when the statuses hold */
                 " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0))))";
 
@@ -295,13 +295,13 @@ public class cImpactImpl extends cMapper<cImpactModel, cImpactDomain> implements
                 " ((" + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
                 /* owner permission */
                 " OR ((((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.OWNER_READ + " & ? ) != 0)) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OWNER_READ + " & ? ) != 0)) " +
                 /* group (owner/primary organization) permission */
                 " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.GROUP_READ + " & ? ) != 0)) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.GROUP_READ + " & ? ) != 0)) " +
                 /* other (secondary organizations) permission */
                 " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.OTHER_READ + " & ? ) != 0)))" +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OTHER_READ + " & ? ) != 0)))" +
                 /* owner, group and other permissions allowed when the statuses hold */
                 " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0))))";
 
@@ -382,13 +382,13 @@ public class cImpactImpl extends cMapper<cImpactModel, cImpactDomain> implements
                 " ((" + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
                 /* owner permission */
                 " OR ((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.OWNER_READ + " & ? ) != 0)) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OWNER_READ + " & ? ) != 0)) " +
                 /* group (owner/primary organization) permission */
                 " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.GROUP_READ + " & ? ) != 0)) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.GROUP_READ + " & ? ) != 0)) " +
                 /* other (secondary organizations) permission */
                 " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.OTHER_READ + " & ? ) != 0))" +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OTHER_READ + " & ? ) != 0))" +
                 /* owner, group and other permissions allowed when the statuses hold */
                 " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0)))";
 
@@ -472,13 +472,13 @@ public class cImpactImpl extends cMapper<cImpactModel, cImpactDomain> implements
                 " ((" + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
                 /* owner permission */
                 " OR ((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.OWNER_READ + " & ? ) != 0)) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OWNER_READ + " & ? ) != 0)) " +
                 /* group (owner/primary organization) permission */
                 " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.GROUP_READ + " & ? ) != 0)) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.GROUP_READ + " & ? ) != 0)) " +
                 /* other (secondary organizations) permission */
                 " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cSessionManager.OTHER_READ + " & ? ) != 0))" +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OTHER_READ + " & ? ) != 0))" +
                 /* owner, group and other permissions allowed when the statuses hold */
                 " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0)))";
 

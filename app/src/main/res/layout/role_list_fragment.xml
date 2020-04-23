@@ -14,7 +14,7 @@
         android:orientation="vertical">
 
         <!-- action_list layout -->
-        <android.support.v7.widget.RecyclerView
+        <androidx.appcompat.widget.RecyclerView
             android:id="@+id/role_card_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

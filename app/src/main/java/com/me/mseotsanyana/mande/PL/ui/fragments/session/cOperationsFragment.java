@@ -3,10 +3,11 @@ package com.me.mseotsanyana.mande.PL.ui.fragments.session;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.AppCompatCheckBox;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +20,7 @@ import com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout;
 import com.me.mseotsanyana.mande.BLL.domain.session.cEntityDomain;
 import com.me.mseotsanyana.mande.BLL.domain.session.cOperationDomain;
 import com.me.mseotsanyana.mande.BLL.domain.session.cPermissionDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cPermissionHandler;
-import com.me.mseotsanyana.mande.DAL.storage.managers.cSessionManager;
+import com.me.mseotsanyana.mande.BLL.interactors.session.permission.Impl.cPermissionHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
 import com.me.mseotsanyana.mande.PL.ui.adapters.session.cStatusTreeAdapter;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iEntityTVHInterface;
@@ -49,7 +49,7 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
     private static final SimpleDateFormat formatter = new SimpleDateFormat(
             "dd MMMM, yyyy hh:mm:ss a", Locale.US);
 
-    private cSessionManager session;
+    //private cSessionManager session;
 
     private cExpandableLayout expandableLayoutOwner;
     private cExpandableLayout expandableLayoutGroup;
@@ -145,9 +145,9 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.session = new cSessionManager(getContext());
+        //this.session = new cSessionManager(getContext());
 
-        this.permissionHandler = new cPermissionHandler(getContext(), session);
+        this.permissionHandler = new cPermissionHandler(getContext());
 
         this.privilegeID = getArguments().getInt("PRIVILEDGEID");
         this.entityDomain = getArguments().getParcelable("ENTITY");
@@ -774,19 +774,19 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
         /** create adapters for owner, group and other statuses **/
         /*********************************************************/
 
-        statusOwnerTreeAdapter = new cStatusTreeAdapter(getContext(), session,
+        statusOwnerTreeAdapter = new cStatusTreeAdapter(getContext(),
                 privilegeID, entityDomain, ownerOperationDomain, statusOwnerDomains,
                 permissionDomains, operationDomains[OWNER], statusDomains[OWNER],
                 appCompatCheckBoxOperationOwner, appCompatCheckBoxAllOwnerStatuses,
                 cOperationsFragment.this);
 
-        statusGroupTreeAdapter = new cStatusTreeAdapter(getContext(), session,
+        statusGroupTreeAdapter = new cStatusTreeAdapter(getContext(),
                 privilegeID, entityDomain, groupOperationDomain, statusGroupDomains,
                 permissionDomains, operationDomains[GROUP], statusDomains[GROUP],
                 appCompatCheckBoxOperationGroup, appCompatCheckBoxAllGroupStatuses,
                 cOperationsFragment.this);
 
-        statusOtherTreeAdapter = new cStatusTreeAdapter(getContext(), session,
+        statusOtherTreeAdapter = new cStatusTreeAdapter(getContext(),
                 privilegeID, entityDomain, otherOperationDomain, statusOtherDomains,
                 permissionDomains, operationDomains[OTHER], statusDomains[OTHER],
                 appCompatCheckBoxOperationOther, appCompatCheckBoxAllOtherStatuses,
@@ -956,8 +956,8 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
                         permDomain.setEntityDomain(tmpEntityDomain);
                         permDomain.setOperationDomain(operationDomain);
                         permDomain.setStatusDomain(new cStatusDomain(sts[i][j]));*/
-                        permDomain.setOwnerID(session.loadUserID());
-                        permDomain.setOrgID(session.loadOrgID());
+                        //permDomain.setOwnerID(session.loadUserID());
+                        //permDomain.setOrgID(session.loadOrgID());
 
                     /*Log.d(TAG, "CREATE => privilegeID = " +
                             permDomain.getPrivilegeDomain().getPrivilegeID() + ", entityID = " +

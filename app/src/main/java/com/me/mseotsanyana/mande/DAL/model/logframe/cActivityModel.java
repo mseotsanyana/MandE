@@ -2,7 +2,7 @@ package com.me.mseotsanyana.mande.DAL.model.logframe;
 
 import android.util.Pair;
 
-import com.me.mseotsanyana.mande.DAL.model.awpb.cTaskModel;
+import com.me.mseotsanyana.mande.DAL.model.wpb.cTaskModel;
 import com.me.mseotsanyana.mande.UTIL.DAL.cActivityAssignmentModel;
 import com.me.mseotsanyana.mande.UTIL.DAL.cExpenditureModel;
 import com.me.mseotsanyana.mande.UTIL.DAL.cPrecedingActivityModel;

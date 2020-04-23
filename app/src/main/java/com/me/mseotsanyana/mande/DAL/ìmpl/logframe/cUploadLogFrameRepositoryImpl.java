@@ -20,7 +20,7 @@ import com.me.mseotsanyana.mande.DAL.model.logframe.cLogFrameModel;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cOutcomeModel;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cOutputModel;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cRaidModel;
-import com.me.mseotsanyana.mande.DAL.model.awpb.cResourceModel;
+import com.me.mseotsanyana.mande.DAL.model.wpb.cResourceModel;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cResourceTypeModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.DAL.storage.excel.cExcelHelper;

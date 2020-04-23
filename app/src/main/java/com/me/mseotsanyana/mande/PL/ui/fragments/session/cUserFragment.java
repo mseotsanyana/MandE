@@ -7,13 +7,14 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Layout;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -23,14 +24,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.me.mseotsanyana.mande.DAL.storage.managers.cSessionManager;
 import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cStatusHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.status.Impl.cStatusHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cUserDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cUserHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserHandler;
 import com.me.mseotsanyana.mande.PL.ui.adapters.session.cUserAdapter;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iMEEntityInterface;
-import com.me.mseotsanyana.mande.PL.ui.fragments.cMainFragment;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.TextDrawable;
 import com.me.mseotsanyana.mande.UTIL.cFontManager;
@@ -48,7 +47,7 @@ public class cUserFragment extends Fragment implements iMEEntityInterface {
     private ArrayList<cUserDomain> listUsers = new ArrayList<>();
     private ArrayList<cStatusDomain> statusDomains = new ArrayList<cStatusDomain>();
 
-    private cSessionManager session;
+    //private cSessionManager session;
 
     //set the fragment as a listener to adapter
     private cUserDomain userDomain;
@@ -91,14 +90,14 @@ public class cUserFragment extends Fragment implements iMEEntityInterface {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        this.session = new cSessionManager(getContext());
+        //this.session = new cSessionManager(getContext());
 
         this.userDomain = new cUserDomain();
 
-        this.userHandler = new cUserHandler(getActivity(), session,  this);
+        this.userHandler = new cUserHandler(getActivity(),  this);
         this.statusHandler = new cStatusHandler(getActivity());
 
-        this.userAdapter = new cUserAdapter(getActivity(), session,
+        this.userAdapter = new cUserAdapter(getActivity(),
                 listUsers, statusDomains, this);
     }
 
@@ -131,11 +130,11 @@ public class cUserFragment extends Fragment implements iMEEntityInterface {
         recyclerView.setLayoutManager(llm);
 
         // populate user action_list from database
-        getUserList(session.loadUserID(),    /* loggedIn user id */
+        /*getUserList(session.loadUserID(),    /* loggedIn user id
                 session.loadOrgID(),
-                session.loadPrimaryRole(),   /* primary group bit */
-                session.loadSecondaryRoles() /* secondary group bits */
-        );
+                session.loadPrimaryRole(),   /* primary group bit
+                session.loadSecondaryRoles() /* secondary group bits
+        );*/
 
         // initialise the floating action button (FAB)
         initFab(view);
@@ -270,7 +269,7 @@ public class cUserFragment extends Fragment implements iMEEntityInterface {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.homeItem:
-                pushFragment(cMainFragment.newInstance(session));
+                //pushFragment(cLogFrameFragment.newInstance(session));
                 break;
             default:
                 break;

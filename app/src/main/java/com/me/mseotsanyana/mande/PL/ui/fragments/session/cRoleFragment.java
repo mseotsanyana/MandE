@@ -6,14 +6,15 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Layout;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -25,14 +26,12 @@ import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cOrganizationHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cOrganizationHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cRoleDomain;
-import com.me.mseotsanyana.mande.DAL.storage.managers.cSessionManager;
 import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cStatusHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.status.Impl.cStatusHandler;
 import com.me.mseotsanyana.mande.PL.ui.adapters.session.cRoleAdapter;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iPermissionInterface;
-import com.me.mseotsanyana.mande.PL.ui.fragments.cMainFragment;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.TextDrawable;
 import com.me.mseotsanyana.mande.UTIL.cFontManager;
@@ -53,7 +52,7 @@ import java.util.List;
 public class cRoleFragment extends Fragment implements iPermissionInterface {
     private static String TAG = cRoleFragment.class.getSimpleName();
 
-    private cSessionManager session;
+    //private cSessionManager session;
 
     private ArrayList<cTreeModel> roleUserTree;
     //private ArrayList<cRoleDomain> roleDomains;
@@ -106,18 +105,18 @@ public class cRoleFragment extends Fragment implements iPermissionInterface {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        session = new cSessionManager(getContext());
+        //session = new cSessionManager(getContext());
 
         roleUserTree  = new ArrayList<>();
         //roleDomains   = new ArrayList<>();
         statusDomains = new ArrayList<>();
 
         // getting a action_list with all projects in a database
-        organizationHandler = new cOrganizationHandler(getActivity(), session);
+        organizationHandler = new cOrganizationHandler(getActivity());
         //userRoleHandler = new cUserRoleHandler(getActivity(), session);
         statusHandler   = new cStatusHandler(getActivity());
 
-        roleUserTreeAdapter = new cRoleAdapter(getActivity(), session,
+        roleUserTreeAdapter = new cRoleAdapter(getActivity(),
                 roleUserTree, statusDomains, level, this);
     }
 
@@ -152,11 +151,11 @@ public class cRoleFragment extends Fragment implements iPermissionInterface {
         recyclerView.setLayoutManager(llm);
 
         // populate role user tree from database
-        getRoleUserTree(session.loadUserID(),          /* loggedin user id */
-                session.loadOrgID(),          /* loggedin's organization ID */
-                session.loadPrimaryRole(), /* primary role bit */
-                session.loadSecondaryRoles()  /* secondary role bits */
-        );
+        /*getRoleUserTree(session.loadUserID(),          /* loggedin user id
+                session.loadOrgID(),          /* loggedin's organization ID
+                session.loadPrimaryRole(), /* primary role bit
+                session.loadSecondaryRoles()  /* secondary role bits
+        );*/
 
         // initialise the floating action button (FAB)
         initFab(view);
@@ -178,13 +177,13 @@ public class cRoleFragment extends Fragment implements iPermissionInterface {
                 final View formElementsView = inflater.inflate(R.layout.role_add_edit_record, null, false);
 
                 // get all organizations from database
-                final ArrayList<cOrganizationDomain> orgs =
+                final ArrayList<cOrganizationDomain> orgs = null;/*
                         organizationHandler.getOrganizationList(
-                                session.loadUserID(),        /* loggedIn user id  */
-                                session.loadOrgID(),         /* loggedIn own org. */
-                                session.loadPrimaryRole(),   /* primary group bit */
-                                session.loadSecondaryRoles() /* secondary group bits */
-                        );
+                                session.loadUserID(),        /* loggedIn user id
+                                session.loadOrgID(),         /* loggedIn own org.
+                                session.loadPrimaryRole(),   /* primary group bit
+                                session.loadSecondaryRoles() /* secondary group bits
+                        );*/
 
                 // create a pair list of organization ids and names
                 final List<cKeyPairBoolData> keyPairBoolOrgs = new ArrayList<>();
@@ -415,7 +414,7 @@ public class cRoleFragment extends Fragment implements iPermissionInterface {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.homeItem:
-                pushFragment(cMainFragment.newInstance(session));
+                //pushFragment(cLogFrameFragment.newInstance(null));
                 break;
             default:
                 break;

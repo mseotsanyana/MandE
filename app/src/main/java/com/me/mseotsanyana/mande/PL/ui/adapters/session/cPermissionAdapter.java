@@ -5,13 +5,13 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatTextView;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+
 import android.text.Layout;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -26,21 +26,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout;
 import com.me.mseotsanyana.mande.BLL.domain.session.cEntityDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cEntityHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.entity.Impl.cEntityHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cOperationDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cOperationHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.operation.Impl.cOperationHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cOrganizationHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cOrganizationHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cPermissionDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cPermissionHandler;
-import com.me.mseotsanyana.mande.DAL.storage.managers.cSessionManager;
+import com.me.mseotsanyana.mande.BLL.interactors.session.permission.Impl.cPermissionHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cStatusHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.status.Impl.cStatusHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cUserDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cUserHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserHandler;
 import com.me.mseotsanyana.mande.PL.ui.fragments.session.cOperationsFragment;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iPermissionInterface;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iEntityTVHInterface;
@@ -104,7 +104,7 @@ public class cPermissionAdapter extends cTreeAdapter {
     private Context context;
     private FragmentManager fragmentManager;
 
-    private cSessionManager session;
+    //private cSessionManager session;
 
     private cUserHandler userHandler;
     private cOrganizationHandler organizationHandler;
@@ -138,7 +138,7 @@ public class cPermissionAdapter extends cTreeAdapter {
 
     final Gson gson = new Gson();
 
-    public cPermissionAdapter(Context context, cSessionManager session,
+    public cPermissionAdapter(Context context,
                               List<cTreeModel> treeModels, int expLevel,
                               ArrayList<cOperationDomain> operationDomains,
                               ArrayList<cStatusDomain> statusDomains,
@@ -150,7 +150,7 @@ public class cPermissionAdapter extends cTreeAdapter {
         this.expLevel = expLevel;
 
         this.context = context;
-        this.session = session;
+        //this.session = session;
 
         this.fragmentManager = fragmentManager;
 
@@ -174,14 +174,14 @@ public class cPermissionAdapter extends cTreeAdapter {
         this.deleteStatuses = new cStatusDomain[NUM_OPS][NUM_STS];
         this.syncStatuses = new cStatusDomain[NUM_OPS][NUM_STS];
 
-        this.userHandler = new cUserHandler(context, session);
-        this.organizationHandler = new cOrganizationHandler(context, session);
-        this.privilegeHandler = new cPermissionHandler(context, session);
+        this.userHandler = new cUserHandler(context);
+        this.organizationHandler = new cOrganizationHandler(context);
+        this.privilegeHandler = new cPermissionHandler(context);
         this.entityHandler = new cEntityHandler(context);
         this.operationHandler = new cOperationHandler(context);
         this.statusHandler = new cStatusHandler(context);
 
-        this.permissionHandler = new cPermissionHandler(context, session);
+        this.permissionHandler = new cPermissionHandler(context);
 
 
         this.keyPairBoolUsers = new ArrayList<>();
@@ -447,9 +447,9 @@ public class cPermissionAdapter extends cTreeAdapter {
                     statusMask = 0;
 
                     for (int i = 0; i < NUM_OPS; i++) {
-                        /** initialise operations **/
+                        /** initialise operations
                         createOperations[i] = new cOperationDomain(
-                                getOperationByID(operationDomains, session.permissions[i]));
+                                getOperationByID(operationDomains,ession.permissions[i]));
                         readOperations[i] = new cOperationDomain(
                                 getOperationByID(operationDomains, session.permissions[i + 3]));
                         updateOperations[i] = new cOperationDomain(
@@ -458,7 +458,7 @@ public class cPermissionAdapter extends cTreeAdapter {
                                 getOperationByID(operationDomains, session.permissions[i + 9]));
                         syncOperations[i] = new cOperationDomain(
                                 getOperationByID(operationDomains, session.permissions[i + 12]));
-
+**/
                         /** initialise statuses **/
                         for (int j = 0; j < NUM_STS; j++) {
                             createStatuses[i][j] = new cStatusDomain(getStatusByID(statusDomains,
@@ -489,26 +489,26 @@ public class cPermissionAdapter extends cTreeAdapter {
                         int opID = opsEntry.getKey().getOperationID();
 
                         for (int i = 0; i < NUM_OPS; i++) {
-                            /** own create operations in the database **/
+                            /** own create operations in the database
                             if (opID == session.permissions[i]) {
                                 createOperations[i].setState(true);
                             }
-                            /** own read operations in the database **/
+                            /** own read operations in the database
                             if (opID == session.permissions[i + 3]) {
                                 readOperations[i].setState(true);
                             }
-                            /** own update operations in the database **/
+                            /** own update operations in the database
                             if (opID == session.permissions[i + 6]) {
                                 updateOperations[i].setState(true);
                             }
-                            /** own delete operations in the database **/
+                            /** own delete operations in the database
                             if (opID == session.permissions[i + 9]) {
                                 deleteOperations[i].setState(true);
                             }
-                            /** own sync operations in the database **/
+                            /** own sync operations in the database
                             if (opID == session.permissions[i + 12]) {
                                 syncOperations[i].setState(true);
-                            }
+                            }*/
                         }
 
                         /** masking the operations for the entity **/
@@ -522,30 +522,30 @@ public class cPermissionAdapter extends cTreeAdapter {
                             /** create operations **/
                             for (int i = 0; i < NUM_OPS; i++) {
                                 for (int j = 0; j < NUM_STS; j++) {
-                                    /** create statuses in the database **/
+                                    /** create statuses in the database
                                     if ((opID == session.permissions[i]) && (stsID == session.statuses[j])) {
                                         //createStatuses[i][j].setState(true);
                                     }
 
-                                    /** read statuses in the database **/
+                                    /** read statuses in the database
                                     if ((opID == session.permissions[i + 3]) && (stsID == session.statuses[j])) {
                                         //readStatuses[i][j].setState(true);
                                     }
 
-                                    /** update statuses in the database **/
+                                    /** update statuses in the database
                                     if ((opID == session.permissions[i + 6]) && (stsID == session.statuses[j])) {
                                         //updateStatuses[i][j].setState(true);
                                     }
 
-                                    /** delete statuses in the database **/
+                                    /** delete statuses in the database
                                     if ((opID == session.permissions[i + 9]) && (stsID == session.statuses[j])) {
                                         //deleteStatuses[i][j].setState(true);
                                     }
 
-                                    /** sync statuses in the database **/
+                                     sync statuses in the database
                                     if ((opID == session.permissions[i + 12]) && (stsID == session.statuses[j])) {
                                         //syncStatuses[i][j].setState(true);
-                                    }
+                                    }*/
                                 }
                             }
 
@@ -878,20 +878,20 @@ public class cPermissionAdapter extends cTreeAdapter {
             privilegeDomain = (cPermissionDomain) treeModel.getModelObject();
 
             // get all users from database
-            final ArrayList<cUserDomain> users = userHandler.getUserList(
-                    session.loadUserID(),        /* loggedIn user id  */
-                    session.loadOrgID(),         /* loggedIn own org. */
-                    session.loadPrimaryRole(),   /* primary group bit */
-                    session.loadSecondaryRoles() /* secondary group bits */
+            final ArrayList<cUserDomain> users = null;/*userHandler.getUserList(
+                    session.loadUserID(),        /* loggedIn user id
+                    session.loadOrgID(),         /* loggedIn own org.
+                    session.loadPrimaryRole(),   /* primary group bit
+                    session.loadSecondaryRoles() /* secondary group bits
             );
-
-            final ArrayList<cOrganizationDomain> orgs =
-                    organizationHandler.getOrganizationList(
-                            session.loadUserID(),        /* loggedIn user id  */
-                            session.loadOrgID(),         /* loggedIn own org. */
-                            session.loadPrimaryRole(),   /* primary group bit */
-                            session.loadSecondaryRoles() /* secondary group bits */
-                    );
+*/
+            final ArrayList<cOrganizationDomain> orgs =null;
+                    /*organizationHandler.getOrganizationList(
+                            session.loadUserID(),        /* loggedIn user id
+                            session.loadOrgID(),         /* loggedIn own org.
+                            session.loadPrimaryRole(),   /* primary group bit
+                            session.loadSecondaryRoles() /* secondary group bits
+                    );*/
 
             // create a pair list of user ids and names
             final List<cKeyPairBoolData> keyPairBoolUsers = new ArrayList<>();
@@ -941,13 +941,13 @@ public class cPermissionAdapter extends cTreeAdapter {
             // create a pair list of permission ids and names
             final cKeyPairBoolData[] keyPairBoolPerms = new cKeyPairBoolData[NUM_PERMS];
             int opBITS = privilegeDomain.getPermsBITS();
-            for (int i = 0; i < session.permissions.length; i++) {
+            /*for (int i = 0; i < session.permissions.length; i++) {
                 cKeyPairBoolData idNameBool = new cKeyPairBoolData();
                 idNameBool.setId(session.permissions[i]);
                 idNameBool.setName(session.perm_names[i]);
                 idNameBool.setSelected((opBITS & session.permissions[i]) == session.permissions[i]);
                 keyPairBoolPerms[i] = idNameBool;
-            }
+            }*/
 
             // create a pair list of statuses ids and names
             final List<cKeyPairBoolData> keyPairBoolStatuses = new ArrayList<>();

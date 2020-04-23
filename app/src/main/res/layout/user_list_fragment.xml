@@ -14,7 +14,7 @@
         android:orientation="vertical">
 
         <!-- user list layout -->
-        <android.support.v7.widget.RecyclerView
+        <androidx.appcompat.widget.RecyclerView
             android:id="@+id/user_list_cardview_id"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

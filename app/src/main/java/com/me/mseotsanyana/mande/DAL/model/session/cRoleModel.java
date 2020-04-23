@@ -12,7 +12,6 @@ import java.util.Set;
 public class cRoleModel {
     private int roleID;
     private int organizationID;
-    private int privilegeID;
     private int serverID;
     private int ownerID;
     private int orgID;
@@ -26,10 +25,10 @@ public class cRoleModel {
     private Date syncedDate;
 
     private cOrganizationModel organizationModel;
-    private cPrivilegeModel privilegeModel;
 
     private Set<cUserModel> userModelSet;
     private Set<cSessionModel> sessionModelSet;
+    private Set<cPermissionModel> permissionModelSet;
     private Set<cMenuModel> menuModelSet;
 
     public cRoleModel(){
@@ -52,14 +51,6 @@ public class cRoleModel {
 
     public void setOrganizationID(int organizationID) {
         this.organizationID = organizationID;
-    }
-
-    public int getPrivilegeID() {
-        return privilegeID;
-    }
-
-    public void setPrivilegeID(int privilegeID) {
-        this.privilegeID = privilegeID;
     }
 
     public int getServerID() {
@@ -158,14 +149,6 @@ public class cRoleModel {
         this.organizationModel = organizationModel;
     }
 
-    public cPrivilegeModel getPrivilegeModel() {
-        return privilegeModel;
-    }
-
-    public void setPrivilegeModel(cPrivilegeModel privilegeModel) {
-        this.privilegeModel = privilegeModel;
-    }
-
     public Set<cUserModel> getUserModelSet() {
         return userModelSet;
     }
@@ -190,6 +173,14 @@ public class cRoleModel {
         this.menuModelSet = menuModelSet;
     }
 
+    public Set<cPermissionModel> getPermissionModelSet() {
+        return permissionModelSet;
+    }
+
+    public void setPermissionModelSet(Set<cPermissionModel> permissionModelSet) {
+        this.permissionModelSet = permissionModelSet;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -209,7 +200,6 @@ public class cRoleModel {
                 Objects.equals(getModifiedDate(), roleModel.getModifiedDate()) &&
                 Objects.equals(getSyncedDate(), roleModel.getSyncedDate()) &&
                 Objects.equals(getOrganizationModel(), roleModel.getOrganizationModel()) &&
-                Objects.equals(getPrivilegeModel(), roleModel.getPrivilegeModel()) &&
                 Objects.equals(getUserModelSet(), roleModel.getUserModelSet()) &&
                 Objects.equals(getSessionModelSet(), roleModel.getSessionModelSet()) &&
                 Objects.equals(getMenuModelSet(), roleModel.getMenuModelSet());
@@ -221,7 +211,6 @@ public class cRoleModel {
                 getOwnerID(), getOrgID(), getGroupBITS(), getPermsBITS(),
                 getStatusBITS(), getName(), getDescription(), getCreatedDate(),
                 getModifiedDate(), getSyncedDate(), getOrganizationModel(),
-                getPrivilegeModel(), getUserModelSet(), getSessionModelSet(),
-                getMenuModelSet());
+                getUserModelSet(), getSessionModelSet(), getMenuModelSet());
     }
 }

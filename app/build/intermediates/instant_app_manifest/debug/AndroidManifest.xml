@@ -7,36 +7,8 @@
 
     <uses-sdk
         android:minSdkVersion="26"
-        android:targetSdkVersion="27" />
+        android:targetSdkVersion="28" />
 
-    <!--
-        package="com.me.mseotsanyana.settings">
-
-    <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".SettingsActivity"></activity>
-    </application>
-
-
-    <uses-sdk android:targetSdkVersion="25"
-        android:minSdkVersion="15"
-        tools:overrideLibrary="com.me.mseotsanyana.quickactionlibrary" />
-    -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -45,6 +17,7 @@
     <!-- android:allowBackup="true" -->
     <application
         android:allowBackup="true"
+        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:debuggable="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -74,13 +47,13 @@
         </activity>
 
         <service
-            android:name="com.me.mseotsanyana.mande.BLL.interactors.session.cSyncedJobService"
+            android:name="com.me.mseotsanyana.mande.DAL.storage.synchronization.cSyncedJobService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
-            android:name="com.me.mseotsanyana.mande.BLL.interactors.session.cUserJobService"
+            android:name="com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserJobService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
-            android:name="com.me.mseotsanyana.mande.BLL.interactors.session.cAddressJobService"
+            android:name="com.me.mseotsanyana.mande.BLL.interactors.session.address.Impl.cAddressJobService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <receiver android:name="com.me.mseotsanyana.mande.UTIL.COM.cBroadcastReceiver" >
@@ -90,4 +63,31 @@
         </receiver>
     </application>
 
-</manifest>
+</manifest><!--
+        package="com.me.mseotsanyana.settings">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".SettingsActivity"></activity>
+    </application>
+
+
+    <uses-sdk android:targetSdkVersion="25"
+        android:minSdkVersion="15"
+        tools:overrideLibrary="com.me.mseotsanyana.quickactionlibrary" />
+-->

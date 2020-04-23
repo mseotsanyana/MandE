@@ -5,15 +5,16 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Layout;
 import android.util.Log;
 import android.util.TypedValue;
@@ -26,19 +27,17 @@ import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.domain.session.cEntityDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cEntityHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.entity.Impl.cEntityHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cOperationDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cOperationHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.operation.Impl.cOperationHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cPermissionDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cPermissionHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.permission.Impl.cPermissionHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cRoleDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cRoleHandler;
-import com.me.mseotsanyana.mande.DAL.storage.managers.cSessionManager;
+import com.me.mseotsanyana.mande.BLL.interactors.session.role.Impl.cRoleHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cStatusHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.status.Impl.cStatusHandler;
 import com.me.mseotsanyana.mande.PL.ui.adapters.session.cPermissionAdapter;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iPermissionInterface;
-import com.me.mseotsanyana.mande.PL.ui.fragments.cMainFragment;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.TextDrawable;
 import com.me.mseotsanyana.mande.UTIL.cFontManager;
@@ -60,7 +59,7 @@ import java.util.List;
 public class cPermissionFragment extends Fragment implements iPermissionInterface {
     private static final String TAG = cPermissionFragment.class.getSimpleName();
 
-    private cSessionManager session;
+    //private cSessionManager session;
 
     private ArrayList<cTreeModel> permissionTree;
     private ArrayList<cStatusDomain> statusDomains;
@@ -120,7 +119,7 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        session = new cSessionManager(getContext());
+        //session = new cSessionManager(getContext());
 
         permissionTree = new ArrayList<cTreeModel>();
         statusDomains = new ArrayList<cStatusDomain>();
@@ -131,16 +130,16 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
 
         // getting a action_list with all projects in a database
 
-        roleHandler = new cRoleHandler(getActivity(), session);
-        privilegeHandler = new cPermissionHandler(getActivity(), session);
-        permissionHandler = new cPermissionHandler(getActivity(), session);
+        roleHandler = new cRoleHandler(getActivity());
+        privilegeHandler = new cPermissionHandler(getActivity());
+        permissionHandler = new cPermissionHandler(getActivity());
         operationHandler = new cOperationHandler(getActivity());
         statusHandler = new cStatusHandler(getActivity());
 
         entityHandler = new cEntityHandler(getActivity());
 
         permissionTreeAdapter = new cPermissionAdapter(
-                getActivity(), session,
+                getActivity(),
                 permissionTree, level,
                 operationDomains, statusDomains,
                 getChildFragmentManager(), this);
@@ -177,10 +176,10 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
         recyclerView.setLayoutManager(llm);
 
         // populate role user tree from database
-        readPrivileges(session.loadUserID(), /* loggedIn user id */
+        /*readPrivileges(session.loadUserID(), /* loggedIn user id
                 session.loadOrgID(),
-                session.loadPrimaryRole(),   /* primary group bit */
-                session.loadSecondaryRoles());
+                session.loadPrimaryRole(),   /* primary group bit
+                session.loadSecondaryRoles());*/
 
         // initialise the floating action button (FAB)
         onCreatePrivilege(view);
@@ -252,7 +251,7 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
                 .setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // add the privilege in the database
-                        privilege.setOwnerID(session.loadUserID());
+                        /*privilege.setOwnerID(session.loadUserID());
                         privilege.setOrgID(session.loadOrgID());
                         privilege.setGroupBITS(
                                 session.loadPrimaryRole());
@@ -263,7 +262,7 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
                         Date timestamp = new Date();
                         privilege.setCreatedDate(timestamp);
                         privilege.setModifiedDate(timestamp);
-                        privilege.setSyncedDate(timestamp);
+                        privilege.setSyncedDate(timestamp);*/
 
                         /** call the create privilege task **/
                         new cCreatePrivilegeTask().execute(privilege);
@@ -334,10 +333,10 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
             singleSpinnerSearchRole = (cSingleSpinnerSearch) objects[0];
             privilege = (cPermissionDomain) objects[1];
 
-            final ArrayList<cRoleDomain> roles = roleHandler.getRoleList(
-                    session.loadUserID(),          /* loggedIn user */
-                    session.loadOrgID(),           /* loggedIn own org. */
-                    session.loadPrimaryRole(),     /* primary group bit */
+            final ArrayList<cRoleDomain> roles = null;/*roleHandler.getRoleList(
+                    session.loadUserID(),          /* loggedIn user
+                    session.loadOrgID(),           /* loggedIn own org.
+                    session.loadPrimaryRole(),     /* primary group bit
                     session.loadSecondaryRoles()); /* secondary group bits */
 
             return roles;
@@ -635,8 +634,8 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
             parentNode = (cNode) objects[0];
 
             entities = entityHandler.getEntityList();
-            operationDomain = operationHandler.getOperationByID(session.OWNER_READ);
-            statusDomain = statusHandler.getStatusByID(session.ACTIVATED);
+            operationDomain = null;//operationHandler.getOperationByID(session.OWNER_READ);
+            statusDomain = null;//statusHandler.getStatusByID(session.ACTIVATED);
 
             return entities;
         }
@@ -712,16 +711,16 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
                     for (int j = 0; j < selectedEntities.size(); j++) {
                         cPermissionDomain permissionDomain = new cPermissionDomain();
 
-                        permissionDomain.setOrganizationID(session.loadOrgID());
+                        //permissionDomain.setOrganizationID(session.loadOrgID());
                         //-permissionDomain.setPrivilegeDomain(privilegeDomain);
                         //-permissionDomain.setEntityDomain(selectedEntities.get(j));
                         //-permissionDomain.setOperationDomain(operationDomain);
                         //-permissionDomain.setStatusDomain(statusDomain);
-                        permissionDomain.setOwnerID(session.loadUserID());
-                        permissionDomain.setOrgID(session.loadOrgID());
-                        permissionDomain.setGroupBITS(session.loadPrimaryRole());
-                        permissionDomain.setPermsBITS(session.READ);
-                        permissionDomain.setStatusBITS(session.ACTIVATED);
+                        //permissionDomain.setOwnerID(session.loadUserID());
+                        //permissionDomain.setOrgID(session.loadOrgID());
+                        //permissionDomain.setGroupBITS(session.loadPrimaryRole());
+                        //permissionDomain.setPermsBITS(session.READ);
+                        //permissionDomain.setStatusBITS(session.ACTIVATED);
 
                         Date timestamp = new Date();
                         permissionDomain.setCreatedDate(timestamp);
@@ -1087,7 +1086,7 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.homeItem:
-                pushFragment(cMainFragment.newInstance(session));
+                //pushFragment(cLogFrameFragment.newInstance(session));
                 break;
             default:
                 break;

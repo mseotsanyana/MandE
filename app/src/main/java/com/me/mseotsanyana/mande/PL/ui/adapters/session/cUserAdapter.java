@@ -5,9 +5,10 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AppCompatTextView;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Layout;
 import android.util.Log;
 import android.util.TypedValue;
@@ -24,14 +25,13 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout;
 import com.me.mseotsanyana.mande.BLL.domain.session.cAddressDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cAddressHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.address.Impl.cAddressHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cOrganizationHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cOrganizationHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cPermissionDomain;
-import com.me.mseotsanyana.mande.DAL.storage.managers.cSessionManager;
 import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
 import com.me.mseotsanyana.mande.BLL.domain.session.cUserDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cUserHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserHandler;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iMEEntityInterface;
 import com.me.mseotsanyana.mande.UTIL.TextDrawable;
 import com.me.mseotsanyana.mande.UTIL.cFontManager;
@@ -68,7 +68,7 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
     private cStatusAdapter statusAdapter;
     private ArrayList<cStatusDomain> statusDomains;
 
-    private cSessionManager session;
+    //private cSessionManager session;
 
     private cAddressHandler addressHandler;
     private cUserHandler userHandler;
@@ -82,16 +82,16 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
 
     Gson gson = new Gson();
 
-    public cUserAdapter(Context context, cSessionManager session, ArrayList<cUserDomain> userDomains,
+    public cUserAdapter(Context context, ArrayList<cUserDomain> userDomains,
                         ArrayList<cStatusDomain> statusDomains, iMEEntityInterface userInterface) {
         this.context        = context;
-        this.session        = session;
+        //this.session        = session;
         this.listUsers      = userDomains;
         this.filteredUsers  = listUsers;
 
         this.addressHandler = new cAddressHandler(context);
-        this.userHandler    = new cUserHandler(context, session);
-        this.organizationHandler = new cOrganizationHandler(context, session);
+        this.userHandler    = new cUserHandler(context);
+        this.organizationHandler = new cOrganizationHandler(context);
 
         // used to mask statuses
         this.statusDomains = statusDomains;
@@ -353,21 +353,21 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
         /* common attributes under a hidden layer */
 
         // get all users from database
-        final ArrayList<cUserDomain> users = userHandler.getUserList(
-                session.loadUserID(),        /* loggedIn user id  */
-                session.loadOrgID(),         /* loggedIn own org. */
-                session.loadPrimaryRole(),   /* primary group bit */
-                session.loadSecondaryRoles() /* secondary group bits */
-        );
+        final ArrayList<cUserDomain> users = null;/*userHandler.getUserList(
+                session.loadUserID(),        /* loggedIn user id
+                session.loadOrgID(),         /* loggedIn own org.
+                session.loadPrimaryRole(),   /* primary group bit
+                session.loadSecondaryRoles() /* secondary group bits
+        );*/
 
         // get all organizations from database
-        final ArrayList<cOrganizationDomain> orgs =
+        final ArrayList<cOrganizationDomain> orgs = null;/*
                 organizationHandler.getOrganizationList(
-                        session.loadUserID(),        /* loggedIn user id  */
-                        session.loadOrgID(),         /* loggedIn own org. */
-                        session.loadPrimaryRole(),   /* primary group bit */
-                        session.loadSecondaryRoles() /* secondary group bits */
-                );
+                        session.loadUserID(),        /* loggedIn user id
+                        session.loadOrgID(),         /* loggedIn own org.
+                        session.loadPrimaryRole(),   /* primary group bit
+                        session.loadSecondaryRoles() /* secondary group bits
+                );*/
 
         // create a pair list of user ids and names
         final List<cKeyPairBoolData> keyPairBoolUsers = new ArrayList<>();
@@ -375,7 +375,7 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
             cKeyPairBoolData idNameBool = new cKeyPairBoolData();
             idNameBool.setId(users.get(i).getUserID());
             idNameBool.setName(users.get(i).getName());
-            if (session.loadUserID() == users.get(i).getUserID()) {
+            if (true/*session.loadUserID() == users.get(i).getUserID()*/) {
                 idNameBool.setSelected(true);
             } else {
                 idNameBool.setSelected(false);
@@ -470,14 +470,14 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
         //if (permissionDomains.size() > 0) {
             int opBITS = userDomain.getPermsBITS();
             //keyPairBoolPerms[0].setId();keyPairBoolPerms[0].setName();
-            for (int i = 0; i < session.permissions.length; i++) {
+            /*for (int i = 0; i < session.permissions.length; i++) {
                 //Log.d(TAG, " "+(opBITS & session.permissions[i]));
                 cKeyPairBoolData idNameBool = new cKeyPairBoolData();
                 idNameBool.setId(session.permissions[i]);
                 idNameBool.setName(session.perm_names[i]);
                 idNameBool.setSelected((opBITS & session.permissions[i]) == session.permissions[i]);
                 keyPairBoolPerms[i] = idNameBool;
-            }
+            }*/
         //}
         // -1 is no by default selection, 0 to length will select corresponding values
         // called when click permissions multi spinner search
@@ -643,21 +643,21 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
     // call this method when required to show popup
     public void onShowCommonAttributes(View view, final cStatusDomain statusDomain) {
         // get all users from database
-        final ArrayList<cUserDomain> users = userHandler.getUserList(
-                session.loadUserID(),        /* loggedIn user id  */
-                session.loadOrgID(),         /* loggedIn own org. */
-                session.loadPrimaryRole(),   /* primary group bit */
-                session.loadSecondaryRoles() /* secondary group bits */
-        );
+        final ArrayList<cUserDomain> users = null;/*userHandler.getUserList(
+                session.loadUserID(),        /* loggedIn user id
+                session.loadOrgID(),         /* loggedIn own org.
+                session.loadPrimaryRole(),   /* primary group bit
+                session.loadSecondaryRoles() /* secondary group bits
+        );*/
 
         // get all organizations from database
-        final ArrayList<cOrganizationDomain> orgs =
+        final ArrayList<cOrganizationDomain> orgs = null; /*
                 organizationHandler.getOrganizationList(
-                        session.loadUserID(),        /* loggedIn user id  */
-                        session.loadOrgID(),         /* loggedIn own org. */
-                        session.loadPrimaryRole(),   /* primary group bit */
-                        session.loadSecondaryRoles() /* secondary group bits */
-                );
+                        session.loadUserID(),        /* loggedIn user id
+                        session.loadOrgID(),         /* loggedIn own org.
+                        session.loadPrimaryRole(),   /* primary group bit
+                        session.loadSecondaryRoles() /* secondary group bits
+                );*/
 
         /* get a deep copy of permission domain to modify
         final cPermissionDomain mPermissionDomain = getPermissionDomain(permissionDomains,

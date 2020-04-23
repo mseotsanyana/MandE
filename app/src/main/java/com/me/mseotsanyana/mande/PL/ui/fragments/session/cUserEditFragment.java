@@ -8,13 +8,13 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.design.widget.TextInputEditText;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,16 +26,15 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-//import com.me.mseotsanyana.mande.PL.ui.fragments.cMainFragment;
+//import com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cLogFrameFragment;
+import com.google.android.material.textfield.TextInputEditText;
 import com.me.mseotsanyana.mande.BLL.domain.session.cAddressDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cAddressHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.address.Impl.cAddressHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cOrganizationHandler;
-import com.me.mseotsanyana.mande.DAL.storage.managers.cSessionManager;
+import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cOrganizationHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cUserDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cUserHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserHandler;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iMEEntityInterface;
-import com.me.mseotsanyana.mande.PL.ui.fragments.cMainFragment;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.cUtil;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cKeyPairBoolData;
@@ -53,7 +52,7 @@ public class cUserEditFragment extends Fragment {
     private static final String TAG = "cUserEditFragment";
     private static final SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
 
-    private cSessionManager session;
+    //private cSessionManager session;
     // toolbar views
     private Toolbar toolBar;
     private Menu toolBarMenu;
@@ -124,7 +123,7 @@ public class cUserEditFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        session = new cSessionManager(getContext());
+        //session = new cSessionManager(getContext());
 
         validator = new cValidator();
 
@@ -132,11 +131,11 @@ public class cUserEditFragment extends Fragment {
 
         userDomain = new cUserDomain();
         addressDomain = new cAddressDomain();
-        userHandler = new cUserHandler(getContext(), session);
+        userHandler = new cUserHandler(getContext());
         addressHandler = new cAddressHandler(getContext());
 
         // initialise a handler and get organization data from the database
-        organizationHandler = new cOrganizationHandler(getContext(), session);
+        organizationHandler = new cOrganizationHandler(getContext());
     }
 
     @Override
@@ -611,7 +610,7 @@ public class cUserEditFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.homeItem:
-                pushFragment(cMainFragment.newInstance(session));
+                //pushFragment(cLogFrameFragment.newInstance(session));
                 break;
             default:
                 break;

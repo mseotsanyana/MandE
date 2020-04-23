@@ -2,7 +2,7 @@ package com.me.mseotsanyana.mande.PL.presenters.monitor.Impl;
 
 import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
-import com.me.mseotsanyana.mande.BLL.interactors.monitor.cUploadMonitoringInteractorImpl;
+import com.me.mseotsanyana.mande.BLL.interactors.monitor.Impl.cUploadMonitoringInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.monitor.iUploadMonitoringInteractor;
 import com.me.mseotsanyana.mande.BLL.repository.monitor.iUploadMonitoringRepository;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;

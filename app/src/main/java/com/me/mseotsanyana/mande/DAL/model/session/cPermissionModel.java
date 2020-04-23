@@ -8,33 +8,33 @@ import java.util.Set;
  */
 
 public class cPermissionModel {
-    private int privilegeID;
+    private int permissionID;
     private int entityID;
     private int entityTypeID;
     private int operationID;
+    private int statusSetID;
     private int serverID;
     private int ownerID;
     private int orgID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
-    private String name;
-    private String description;
     private Date createdDate;
     private Date modifiedDate;
     private Date syncedDate;
 
     cEntityModel entityModel;
     cOperationModel operationModel;
-    Set<cStatusModel> statusModelSet;
+    cStatusSetModel statusSetModel;
 
     public cPermissionModel(){}
 
     public cPermissionModel(cPermissionModel permissionModel){
-        this.setPrivilegeID(permissionModel.getPrivilegeID());
+        this.setPermissionID(permissionModel.getPermissionID());
         this.setEntityID(permissionModel.getEntityID());
         this.setEntityTypeID(permissionModel.getEntityTypeID());
         this.setOperationID(permissionModel.getOperationID());
+        this.setStatusSetID(permissionModel.getStatusSetID());
         this.setServerID(permissionModel.getServerID());
         this.setOwnerID(permissionModel.getOwnerID());
         this.setOrgID(permissionModel.getOrgID());
@@ -46,12 +46,12 @@ public class cPermissionModel {
         this.setSyncedDate(permissionModel.getSyncedDate());
     }
 
-    public int getPrivilegeID() {
-        return privilegeID;
+    public int getPermissionID() {
+        return permissionID;
     }
 
-    public void setPrivilegeID(int privilegeID) {
-        this.privilegeID = privilegeID;
+    public void setPermissionID(int permissionID) {
+        this.permissionID = permissionID;
     }
 
     public int getEntityID() {
@@ -76,6 +76,14 @@ public class cPermissionModel {
 
     public void setOperationID(int operationID) {
         this.operationID = operationID;
+    }
+
+    public int getStatusSetID() {
+        return statusSetID;
+    }
+
+    public void setStatusSetID(int statusSetID) {
+        this.statusSetID = statusSetID;
     }
 
     public int getServerID() {
@@ -127,22 +135,6 @@ public class cPermissionModel {
         this.statusBITS = statusBITS;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -183,11 +175,11 @@ public class cPermissionModel {
         this.operationModel = operationModel;
     }
 
-    public Set<cStatusModel> getStatusModelSet() {
-        return statusModelSet;
+    public cStatusSetModel getStatusSetModel() {
+        return statusSetModel;
     }
 
-    public void setStatusModelSet(Set<cStatusModel> statusModelSet) {
-        this.statusModelSet = statusModelSet;
+    public void setStatusSetModel(cStatusSetModel statusSetModel) {
+        this.statusSetModel = statusSetModel;
     }
 }

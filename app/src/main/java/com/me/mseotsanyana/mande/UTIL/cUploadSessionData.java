@@ -7,18 +7,17 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.me.mseotsanyana.mande.BLL.interactors.session.cAddressHandler;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cEntityHandler;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cMenuHandler;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cOperationHandler;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cOrganizationHandler;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cPrivilegeHandler;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cRoleHandler;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cSessionHandler;
-import com.me.mseotsanyana.mande.DAL.storage.managers.cSessionManager;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cStatusHandler;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cUserHandler;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cValueHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.address.Impl.cAddressHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.entity.Impl.cEntityHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.menu.Impl.cMenuHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.operation.Impl.cOperationHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cOrganizationHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.role.Impl.cRoleHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.session.Impl.cSessionHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.status.Impl.cStatusHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.value.Impl.cValueHandler;
+import com.me.mseotsanyana.mande.MainActivity;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -50,7 +49,7 @@ public class cUploadSessionData extends AsyncTask<String, Integer, String> {
     private cSessionHandler sessionHandler;
     private cRoleHandler roleHandler;
     private cMenuHandler menuHandler;
-    private cPrivilegeHandler privilegeHandler;
+    //private cPrivilegeHandler privilegeHandler;
     private cEntityHandler entityHandler;
     private cOperationHandler operationHandler;
     private cStatusHandler statusHandler;
@@ -72,17 +71,17 @@ public class cUploadSessionData extends AsyncTask<String, Integer, String> {
 
     //private cSessionManager session;
 
-    public cUploadSessionData(Context context, cSessionManager session){
+    public cUploadSessionData(Context context){
         this.context = context;
         //this.session = session;
 
         addressHandler = new cAddressHandler(context);
-        organizationHandler = new cOrganizationHandler(context, session);
+        organizationHandler = new cOrganizationHandler(context);
         valueHandler = new cValueHandler(context);
-        userHandler = new cUserHandler(context, session);
-        menuHandler = new cMenuHandler(context,session);
-        roleHandler = new cRoleHandler(context, session);
-        privilegeHandler = new cPrivilegeHandler(context, session);
+        userHandler = new cUserHandler(context);
+        menuHandler = new cMenuHandler(context);
+        roleHandler = new cRoleHandler(context);
+        //privilegeHandler = new cPrivilegeHandler(context, session);
         entityHandler = new cEntityHandler(context);
         operationHandler = new cOperationHandler(context);
         statusHandler = new cStatusHandler(context);
@@ -97,6 +96,7 @@ public class cUploadSessionData extends AsyncTask<String, Integer, String> {
          */
         sessionModelFromExcel = new cSessionModelFromExcel(context);
     }
+
 
     @Override
     protected void onPreExecute() {
@@ -282,7 +282,7 @@ public class cUploadSessionData extends AsyncTask<String, Integer, String> {
                             }
 
                             // add the row into the database
-                            sessionModelFromExcel.addPrivilegeFromExcel(cRow, priv_permissions, priv_statuses);
+                            //sessionModelFromExcel.addPrivilegeFromExcel(cRow, priv_permissions, priv_statuses);
 
                             // publish the progress after adding a record
                             currentRows++;

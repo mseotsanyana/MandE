@@ -3,9 +3,10 @@ package com.me.mseotsanyana.mande.PL.ui.adapters.session;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AppCompatTextView;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Layout;
 import android.util.Log;
 import android.util.TypedValue;
@@ -21,13 +22,12 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout;
 import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cOrganizationHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cOrganizationHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cRoleDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cRoleHandler;
-import com.me.mseotsanyana.mande.DAL.storage.managers.cSessionManager;
+import com.me.mseotsanyana.mande.BLL.interactors.session.role.Impl.cRoleHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
 import com.me.mseotsanyana.mande.BLL.domain.session.cUserDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.cUserHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserHandler;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iPermissionInterface;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.TextDrawable;
@@ -62,7 +62,7 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
     private static String TAG = cRoleAdapter.class.getSimpleName();
 
     private Context context;
-    private cSessionManager session;
+    //private cSessionManager session;
 
     public static final int ROLE = 0;
     public static final int USER = 1;
@@ -85,14 +85,14 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
 
     Gson gson = new Gson();
 
-    public cRoleAdapter(Context context, cSessionManager session,
+    public cRoleAdapter(Context context,
                         List<cTreeModel> treeModels,
                         ArrayList<cStatusDomain> statusDomains,
                         int expLevel, iPermissionInterface roleInterface) {
         super(context, treeModels, expLevel);
 
         this.context = context;
-        this.session = session;
+        //this.session = session;
 
         //this.listRoles = new ArrayList<>();
         //this.listRoles = roleDomains;
@@ -101,9 +101,9 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
         // used to mask statuses
         this.statusDomains = statusDomains;
 
-        this.userHandler = new cUserHandler(context, session);
-        this.roleHandler = new cRoleHandler(context, session);
-        this.organizationHandler = new cOrganizationHandler(context, session);
+        this.userHandler = null;//new cUserHandler(context, session);
+        this.roleHandler = null;//new cRoleHandler(context, session);
+        this.organizationHandler = null;//new cOrganizationHandler(context, session);
 
         this.roleInterface = roleInterface;
 
@@ -405,21 +405,21 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                     /** common attributes **/
 
                     // get all users from database
-                    final ArrayList<cUserDomain> users = userHandler.getUserList(
-                            session.loadUserID(),        /* loggedIn user id  */
-                            session.loadOrgID(),         /* loggedIn own org. */
-                            session.loadPrimaryRole(),   /* primary group bit */
-                            session.loadSecondaryRoles() /* secondary group bits */
-                    );
+                    final ArrayList<cUserDomain> users = null;/*userHandler.getUserList(
+                            session.loadUserID(),         loggedIn user id
+                            session.loadOrgID(),          loggedIn own org.
+                            session.loadPrimaryRole(),    primary group bit
+                            session.loadSecondaryRoles()  secondary group bits
+                    );*/
 
                     // get all organizations from database
-                    final ArrayList<cOrganizationDomain> orgs =
+                    final ArrayList<cOrganizationDomain> orgs =null;/*
                             organizationHandler.getOrganizationList(
-                                    session.loadUserID(),        /* loggedIn user id  */
-                                    session.loadOrgID(),         /* loggedIn own org. */
-                                    session.loadPrimaryRole(),   /* primary group bit */
-                                    session.loadSecondaryRoles() /* secondary group bits */
-                            );
+                                    session.loadUserID(),        /* loggedIn user id
+                                    session.loadOrgID(),         /* loggedIn own org.
+                                    session.loadPrimaryRole(),   /* primary group bit
+                                    session.loadSecondaryRoles() /* secondary group bits
+                            );*/
 
                     /* get the detailed of the loggedin user */
                     //final cUserDomain loggedInUser = session.loadCurrentUser();
@@ -488,7 +488,7 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                         cKeyPairBoolData idNameBool = new cKeyPairBoolData();
                         idNameBool.setId(orgs.get(i).getOrganizationID());
                         idNameBool.setName(orgs.get(i).getName());
-                        if ((session.loadSecondaryRoles() &
+                        if ((/*(session.loadSecondaryRoles() &*/
                                 orgs.get(i).getOrganizationID()) == orgs.get(i).getOrganizationID()) {
                             idNameBool.setSelected(true);
                         } else {
@@ -525,14 +525,14 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                     //if (permissionDomains.size() > 0) {
                     int opBITS = roleDomain.getPermsBITS();
                     //keyPairBoolPerms[0].setId();keyPairBoolPerms[0].setName();
-                    for (int i = 0; i < session.permissions.length; i++) {
+                    /*for (int i = 0; i < session.permissions.length; i++) {
                         //Log.d(TAG, " "+(opBITS & session.permissions[i]));
                         cKeyPairBoolData idNameBool = new cKeyPairBoolData();
                         idNameBool.setId(session.permissions[i]);
                         idNameBool.setName(session.perm_names[i]);
                         idNameBool.setSelected((opBITS & session.permissions[i]) == session.permissions[i]);
                         keyPairBoolPerms[i] = idNameBool;
-                    }
+                    }*/
                     //}
                     // -1 is no by default selection, 0 to length will select corresponding values
                     // called when click permissions multi spinner search

@@ -3,30 +3,28 @@ package com.me.mseotsanyana.mande.UTIL;
 import android.content.Context;
 
 import com.google.gson.Gson;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cAddressImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.session.cAddressRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.session.cAddressModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cEntityImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.session.cEntityRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.session.cEntityModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cMenuImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.session.cMenuRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.session.cMenuModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cNotificationDBA;
+import com.me.mseotsanyana.mande.DAL.ìmpl.session.cNotificationRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.session.cNotificationModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cOperationImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.session.cOperationRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.session.cOperationModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cOrganizationImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.session.cOrganizationRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.session.cOrganizationModel;
 import com.me.mseotsanyana.mande.DAL.model.session.cPermissionModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cPrivilegeImpl;
-import com.me.mseotsanyana.mande.DAL.model.session.cPrivilegeModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cRoleImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.session.cRoleRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.session.cRoleModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cSettingImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.session.cSettingRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.session.cSettingModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cStatusImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.session.cStatusRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.session.cStatusModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cUserImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.session.cUserRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.session.cUserModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cValueImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.session.cValueRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.session.cValueModel;
 
 import org.apache.poi.ss.usermodel.Row;
@@ -50,7 +48,7 @@ public class cSessionModelFromExcel {
     private cUserModel userModel;
     private cRoleModel roleModel;
     private cMenuModel menuModel;
-    private cPrivilegeModel privilegeModel;
+    //private cPrivilegeModel privilegeModel;
     private cEntityModel entityModel;
     private cOperationModel operationModel;
     private cStatusModel statusModel;
@@ -58,19 +56,19 @@ public class cSessionModelFromExcel {
     private cSettingModel settingModel;
     private cNotificationModel notificationModel;
 
-    private cAddressImpl addressDBA;
-    private cOrganizationImpl organizationDBA;
-    private cValueImpl valueDBA;
-    private cUserImpl userDBA;
-    private cRoleImpl roleDBA;
-    private cMenuImpl menuDBA;
-    private cPrivilegeImpl privilegeDBA;
-    private cEntityImpl entityDBA;
-    private cOperationImpl operationDBA;
-    private cStatusImpl statusDBA;
-    //private cPermissionImpl permissionDBA;
-    private cSettingImpl settingDBA;
-    private cNotificationDBA notificationDBA;
+    private cAddressRepositoryImpl addressDBA;
+    private cOrganizationRepositoryImpl organizationDBA;
+    private cValueRepositoryImpl valueDBA;
+    private cUserRepositoryImpl userDBA;
+    private cRoleRepositoryImpl roleDBA;
+    private cMenuRepositoryImpl menuDBA;
+    //private cPrivilegeRepositoryImpl privilegeDBA;
+    private cEntityRepositoryImpl entityDBA;
+    private cOperationRepositoryImpl operationDBA;
+    private cStatusRepositoryImpl statusDBA;
+    //private cPermissionRepositoryImpl permissionDBA;
+    private cSettingRepositoryImpl settingDBA;
+    private cNotificationRepositoryImpl notificationDBA;
 
     private Context context;
     private Gson gson;
@@ -78,19 +76,19 @@ public class cSessionModelFromExcel {
     public cSessionModelFromExcel(Context context){
         this.context    = context;
 
-        addressDBA      = new cAddressImpl(context);
-        organizationDBA = new cOrganizationImpl(context);
-        valueDBA        = new cValueImpl(context);
-        userDBA         = new cUserImpl(context);
-        roleDBA         = new cRoleImpl(context);
-        menuDBA         = new cMenuImpl(context);
-        privilegeDBA    = new cPrivilegeImpl(context);
-        entityDBA       = new cEntityImpl(context);
-        operationDBA    = new cOperationImpl(context);
-        statusDBA       = new cStatusImpl(context);
-        //permissionDBA   = new cPermissionImpl(context);
-        settingDBA      = new cSettingImpl(context);
-        notificationDBA = new cNotificationDBA(context);
+        addressDBA      = new cAddressRepositoryImpl(context);
+        organizationDBA = new cOrganizationRepositoryImpl(context);
+        valueDBA        = new cValueRepositoryImpl(context);
+        userDBA         = new cUserRepositoryImpl(context);
+        roleDBA         = new cRoleRepositoryImpl(context);
+        menuDBA         = new cMenuRepositoryImpl(context);
+        //privilegeDBA    = new cPrivilegeRepositoryImpl(context);
+        entityDBA       = new cEntityRepositoryImpl(context);
+        operationDBA    = new cOperationRepositoryImpl(context);
+        statusDBA       = new cStatusRepositoryImpl(context);
+        //permissionDBA   = new cPermissionRepositoryImpl(context);
+        settingDBA      = new cSettingRepositoryImpl(context);
+        notificationDBA = new cNotificationRepositoryImpl(context);
 
         gson = new Gson();
     }
@@ -268,9 +266,8 @@ public class cSessionModelFromExcel {
 
         roleModel.setRoleID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         roleModel.setOrganizationID((int)cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-        roleModel.setPrivilegeID((int)cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-        roleModel.setName(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-        roleModel.setDescription(cRow.getCell(4, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+        roleModel.setName(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+        roleModel.setDescription(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
         ArrayList<Integer> users = new ArrayList<>();
         ArrayList<Integer> menus = new ArrayList<>();
@@ -357,7 +354,7 @@ public class cSessionModelFromExcel {
 
         statusDBA.addStatusFromExcel(statusModel);
     }
-
+/*
     public void addPrivilegeFromExcel(Row cRow, Sheet priv_permissions, Sheet priv_statuses) {
         privilegeModel = new cPrivilegeModel();
 
@@ -389,14 +386,14 @@ public class cSessionModelFromExcel {
                 entityTypeID = (int)cPrivPermissionsRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 operationID = (int)cPrivPermissionsRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
 
-                /* add permissions */
+                add permissions
                 entities.add(entityID);
                 entityTypes.add(entityTypeID);
                 operations.add(operationID);
             }
         }
 
-        // construct list of privilege statuses
+        construct list of privilege statuses
         for (Iterator<Row> rit = priv_statuses.iterator(); rit.hasNext(); ) {
             Row cPrivStatusesRow = rit.next();
 
@@ -418,7 +415,7 @@ public class cSessionModelFromExcel {
 
         privilegeDBA.addPrivilegeFromExcel(privilegeModel, entities, entityTypes, operations, statuses);
     }
-
+*/
 /*
     public void addPermissionFromExcel(Row cRow, Sheet perm_statuses) {
         permissionModel = new cPermissionModel();

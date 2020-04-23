@@ -1,10 +1,11 @@
 package com.me.mseotsanyana.mande.PL.ui.fragments.logframe;
 
 import android.app.DatePickerDialog;
-import android.support.v4.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

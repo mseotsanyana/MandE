@@ -9,16 +9,17 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
-import android.support.design.internal.BottomNavigationItemView;
-import android.support.design.internal.BottomNavigationMenuView;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
 import android.text.Layout;
 import android.util.Log;
 import android.util.TypedValue;
 
+
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.me.mseotsanyana.mande.BLL.domain.session.cRoleDomain;
 import com.me.mseotsanyana.mande.R;
 
@@ -68,8 +69,9 @@ public class cUtil {
                 if (item == null)
                     continue;
 
-                item.setShiftingMode(enableItemShiftMode);
-                item.setChecked(item.getItemData().isChecked());
+
+                //--item.setShiftingMode(enableItemShiftMode);
+                //--item.setChecked(item.getItemData().isChecked());
 
             }
 
@@ -91,10 +93,10 @@ public class cUtil {
             for (int i = 0; i < menuView.getChildCount(); i++) {
                 BottomNavigationItemView item = (BottomNavigationItemView) menuView.getChildAt(i);
                 //noinspection RestrictedApi
-                item.setShiftingMode(false);
+                //--item.setShiftingMode(false);
                 // set once again checked value, so view will be updated
                 //noinspection RestrictedApi
-                item.setChecked(item.getItemData().isChecked());
+                //--item.setChecked(item.getItemData().isChecked());
             }
         } catch (NoSuchFieldException e) {
             Log.e("BNVHelper", "Unable to get shift mode field", e);
@@ -137,7 +139,7 @@ public class cUtil {
                 }
 
                 BottomNavigationItemView item = (BottomNavigationItemView) menuView.getChildAt(i);
-                item.setIcon(faIcon);
+                //--item.setIcon(faIcon);
                 //noinspection RestrictedApi
                 ///item.setShiftingMode(false);
                 // set once again checked value, so view will be updated

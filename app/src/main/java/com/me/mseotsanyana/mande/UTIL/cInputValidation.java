@@ -1,15 +1,16 @@
 package com.me.mseotsanyana.mande.UTIL;
 
 import android.content.Context;
-import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+
 
 public class cInputValidation {
-    private Context context;
+    //private Context context;
 
     /**
      * constructor
@@ -17,7 +18,10 @@ public class cInputValidation {
      * @param context
      */
     public cInputValidation(Context context) {
-        this.context = context;
+        //this.context = context;
+    }
+
+    public cInputValidation() {
     }
 
     /**
@@ -28,7 +32,8 @@ public class cInputValidation {
      * @param message
      * @return
      */
-    public boolean isInputEditTextFilled(TextInputEditText textInputEditText, TextInputLayout textInputLayout, String message) {
+    public boolean isInputEditTextFilled(TextInputEditText textInputEditText,
+                                         TextInputLayout textInputLayout, String message) {
         String value = textInputEditText.getText().toString().trim();
         if (value.isEmpty()) {
             textInputLayout.setError(message);
@@ -50,7 +55,8 @@ public class cInputValidation {
      * @param message
      * @return
      */
-    public boolean isInputEditTextEmail(TextInputEditText textInputEditText, TextInputLayout textInputLayout, String message) {
+    public boolean isInputEditTextEmail(TextInputEditText textInputEditText,
+                                        TextInputLayout textInputLayout, String message) {
         String value = textInputEditText.getText().toString().trim();
         if (value.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(value).matches()) {
             textInputLayout.setError(message);
@@ -62,7 +68,9 @@ public class cInputValidation {
         return true;
     }
 
-    public boolean isInputEditTextMatches(TextInputEditText textInputEditText1, TextInputEditText textInputEditText2, TextInputLayout textInputLayout, String message) {
+    public boolean isInputEditTextMatches(TextInputEditText textInputEditText1,
+                                          TextInputEditText textInputEditText2,
+                                          TextInputLayout textInputLayout, String message) {
         String value1 = textInputEditText1.getText().toString().trim();
         String value2 = textInputEditText2.getText().toString().trim();
         if (!value1.contentEquals(value2)) {
@@ -81,7 +89,9 @@ public class cInputValidation {
      * @param view
      */
     private void hideKeyboardFrom(View view) {
-        final InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        final InputMethodManager imm = (InputMethodManager)
+                view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(),
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 }

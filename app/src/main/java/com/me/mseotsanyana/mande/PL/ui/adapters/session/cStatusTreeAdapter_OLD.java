@@ -4,8 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.Typeface;
-import android.support.v7.widget.AppCompatCheckBox;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -20,7 +21,6 @@ import android.widget.PopupWindow;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.me.mseotsanyana.mande.DAL.storage.managers.cSessionManager;
 import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.cFontManager;
@@ -43,14 +43,14 @@ public class cStatusTreeAdapter_OLD extends RecyclerView.Adapter<cStatusTreeAdap
 
     private PopupWindow popWindow;
 
-    private cSessionManager session;
+    //private cSessionManager session;
 
     public cStatusTreeAdapter_OLD(Context context, ArrayList<cStatusDomain> listStatus,
                                   AppCompatCheckBox appCompatCheckBoxAllStatusOwner,
                                   AppCompatCheckBox appCompatCheckBoxAllStatusGroup,
                                   AppCompatCheckBox appCompatCheckBoxAllStatusOther) {
         this.context = context;
-        this.session = new cSessionManager(context);
+        //this.session = new cSessionManager(context);
 
         this.listStatus = listStatus;
         this.filteredStatus = listStatus;

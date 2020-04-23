@@ -28,6 +28,8 @@ public class cConstant {
 
     public static final SimpleDateFormat FORMAT_DATE = new SimpleDateFormat(
             "dd MMMM, yyyy hh:mm:ss a", Locale.US);
+    public static final SimpleDateFormat SHORT_FORMAT_DATE = new SimpleDateFormat(
+            "dd-MM-yyyy", Locale.US);
 
     public static final String BASE_URL = "http://10.0.2.2/";
     public static final String REGISTER_OPERATION = "register";
@@ -38,33 +40,9 @@ public class cConstant {
     public static final String FAILURE = "failure";
     //public static final String IS_LOGGED_IN = "isLoggedIn";
 
-    // constants from cBitwisePermission
+    // constants from cBitwise
     //public static final int NUM_OPERATIONS = 15;
     //public static final int NUM_STATUSES   = 5;
-
-
-
-    // Shared preferences file name
-    public static final String KEY_USER_PREFS      = "USER_PREFS";
-
-    // General global settings
-    public static final String KEY_USER_PROFILE    = "KEY-USER-PROFILE";
-
-    // Global settings for bitwise access control
-    public static final String KEY_USER_ID          = "KEY-USER-ID";
-    public static final String KEY_ORGANIZATION_ID  = "KEY-ORG-ID";
-    public static final String KEY_ORGANIZATIONS_ID = "KEY-ORGS-ID";
-
-    /* prefixes for preference keys */
-    public static final String KEY_PRIMARY_ROLE_BIT      = "KEY-PRB";
-    public static final String KEY_SECONDARY_ROLE_BITS   = "KEY-SRB";
-    public static final String KEY_ENTITY_TYPE_BITS      = "KEY-ETB";
-    public static final String KEY_ENTITY_OPERATION_BITS = "KEY-EOB";
-    public static final String KEY_OPERATION_STATUS_BITS = "KEY-OSB";
-
-    // All shared preferences file name
-    public static final String KEY_IS_LOGGEDIN = "KEY-ISLOGGEDIN";
-    public static final String KEY_TAG         = "KEY-PMER";
 
     // URLs for communicating with the server
     public static final String URL_ADDRESS = BASE_URL+"MEServer/sAddressAPI.php";

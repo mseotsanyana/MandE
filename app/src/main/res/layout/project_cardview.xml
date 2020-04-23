@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <androidx.appcompat.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/project_cardview_id"
@@ -218,7 +218,7 @@
                 </LinearLayout>
 
             </com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout>
-        </android.support.v7.widget.CardView>
+        </androidx.appcompat.widget.CardView>
     </RelativeLayout>
 </LinearLayout>
 <!--

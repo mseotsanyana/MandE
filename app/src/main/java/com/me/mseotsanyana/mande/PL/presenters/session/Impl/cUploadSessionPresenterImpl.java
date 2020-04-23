@@ -2,14 +2,10 @@ package com.me.mseotsanyana.mande.PL.presenters.session.Impl;
 
 import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
-import com.me.mseotsanyana.mande.BLL.interactors.logframe.Impl.cUploadLogFrameInteractorImpl;
-import com.me.mseotsanyana.mande.BLL.interactors.logframe.iUploadLogFrameInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.session.Impl.cUploadSessionInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.session.iUploadSessionInteractor;
-import com.me.mseotsanyana.mande.BLL.repository.logframe.iUploadLogFrameRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iUploadSessionRepository;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
-import com.me.mseotsanyana.mande.PL.presenters.logframe.iUploadLogFramePresenter;
 import com.me.mseotsanyana.mande.PL.presenters.session.iUploadSessionPresenter;
 
 public class cUploadSessionPresenterImpl extends cAbstractPresenter implements iUploadSessionPresenter,
@@ -34,7 +30,7 @@ public class cUploadSessionPresenterImpl extends cAbstractPresenter implements i
                 executor,
                 mainThread,
                 uploadSessionRepository,
-                this);
+                this); /* PresenterImpl passed to InteractorImpl */
 
         view.showProgress();
 
