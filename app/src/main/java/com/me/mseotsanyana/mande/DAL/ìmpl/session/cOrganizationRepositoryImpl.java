@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.me.mseotsanyana.mande.BLL.repository.session.iOrganizationRepository;
 import com.me.mseotsanyana.mande.DAL.model.session.cAddressModel;
 import com.me.mseotsanyana.mande.DAL.model.session.cOrganizationModel;
 import com.me.mseotsanyana.mande.DAL.model.session.cRoleModel;
@@ -26,7 +27,7 @@ import java.util.Set;
  * Created by mseotsanyana on 2017/05/25.
  */
 
-public class cOrganizationRepositoryImpl {
+public class cOrganizationRepositoryImpl implements iOrganizationRepository {
     private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
     private static String TAG = cOrganizationRepositoryImpl.class.getSimpleName();
 
@@ -207,6 +208,54 @@ public class cOrganizationRepositoryImpl {
     }
 
     /* ############################################# READ ACTIONS ############################################# */
+
+    public Set<cOrganizationModel> getOrganizationSet() {
+        Set<cOrganizationModel> organizationModels = new HashSet<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ cSQLDBHelper.TABLE_tblORGANIZATION, null);
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    cOrganizationModel organization = new cOrganizationModel();
+                    // populate organization model object
+                    organization.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    organization.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+                    organization.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    organization.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+                    organization.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    organization.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    organization.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    organization.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    organization.setPhone(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_TELEPHONE)));
+                    organization.setFax(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_FAX)));
+                    organization.setVision(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_VISION)));
+                    organization.setMission(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MISSION)));
+                    organization.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_EMAIL)));
+                    organization.setWebsite(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_WEBSITE)));
+                    organization.setCreatedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    organization.setModifiedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    organization.setSyncedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+
+
+                    // add model organization into the action_list
+                    organizationModels.add(organization);
+
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Error while trying to get organization from database");
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return organizationModels;
+    }
+
 
     public List<cOrganizationModel> getOrganizationList(
             int userID, int primaryRole, int secondaryRoles, int operationBITS, int statusBITS) {

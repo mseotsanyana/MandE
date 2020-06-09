@@ -47,7 +47,4 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
-
-    <include layout="@layout/home_bottom_navigation" />
-    
 </FrameLayout>

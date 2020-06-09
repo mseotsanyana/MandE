@@ -1,5 +1,8 @@
 package com.me.mseotsanyana.mande.DAL.model.session;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
@@ -9,7 +12,7 @@ import java.util.Set;
  * Created by mseotsanyana on 2017/08/24.
  */
 
-public class cRoleModel {
+public class cRoleModel implements Parcelable {
     private int roleID;
     private int organizationID;
     private int serverID;
@@ -213,4 +216,48 @@ public class cRoleModel {
                 getModifiedDate(), getSyncedDate(), getOrganizationModel(),
                 getUserModelSet(), getSessionModelSet(), getMenuModelSet());
     }
+
+    protected cRoleModel(Parcel in) {
+        roleID = in.readInt();
+        organizationID = in.readInt();
+        serverID = in.readInt();
+        ownerID = in.readInt();
+        orgID = in.readInt();
+        groupBITS = in.readInt();
+        permsBITS = in.readInt();
+        statusBITS = in.readInt();
+        name = in.readString();
+        description = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(roleID);
+        dest.writeInt(organizationID);
+        dest.writeInt(serverID);
+        dest.writeInt(ownerID);
+        dest.writeInt(orgID);
+        dest.writeInt(groupBITS);
+        dest.writeInt(permsBITS);
+        dest.writeInt(statusBITS);
+        dest.writeString(name);
+        dest.writeString(description);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<cRoleModel> CREATOR = new Creator<cRoleModel>() {
+        @Override
+        public cRoleModel createFromParcel(Parcel in) {
+            return new cRoleModel(in);
+        }
+
+        @Override
+        public cRoleModel[] newArray(int size) {
+            return new cRoleModel[size];
+        }
+    };
 }

@@ -13,7 +13,7 @@
         <ImageView style="@style/TitleBarSeparator" />
 
         <TextView style="@style/TitleBarText"
-            android:text="@string/project_list_title"/>
+            android:text="@string/impact_list_title"/>
 
         <ImageButton style="@style/TitleBarAction"
             android:contentDescription="@string/description_about"

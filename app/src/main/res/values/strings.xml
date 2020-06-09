@@ -16,7 +16,6 @@
     <string name="fa_chevron_right">&#xf054;</string>
     <string name="fa_chevron_down">&#xf078;</string>
 
-
     <!-- icons for bottom navigation menu -->
     <string name="fa_login">&#xf090;</string>
     <string name="fa_envelope">&#xf0e0;</string>
@@ -55,118 +54,51 @@
     <string name="fa_perms">&#xf085;</string>
     <string name="fa_com_attr">&#xf057;</string>
 
+    <!-- start common attributes -->
+    <!-- operations -->
+    <string name="Create">Create</string>
     <string name="Add">Add</string>
+    <string name="Read">Read</string>
+    <string name="Update">Update</string>
     <string name="Edit">Edit</string>
     <string name="Delete">Delete</string>
+    <string name="Sync">Sync</string>
+
+    <!-- other operations -->
     <string name="Save">Save</string>
     <string name="Change">Change</string>
     <string name="Cancel">Cancel</string>
+    <string name="Reset">Reset</string>
+    <string name="Apply">Apply</string>
+    <string name="Yes">Yes</string>
+    <string name="No">No</string>
 
+    <!-- unix groups -->
+    <string name="Owner">Owner</string>
+    <string name="Group">Group</string>
+    <string name="Other">Other</string>
 
-    <!-- END -->
+    <!-- common dates -->
+    <string name="createdOn">created on:</string>
+    <string name="modifiedOn">modified on:</string>
+    <string name="syncedOn">synced on:</string>
 
-    <string name="hello">Choose one of the features below.</string>
-    <!--
-    <string name="app_name">Dashboard Demo</string>
--->
-    <string name="description_logo">Demo</string>
+    <!-- owners -->
+    <string name="individualOwner">individual owner:</string>
+    <string name="organizationOwner">organization owner:</string>
 
-    <string name="description_about">About</string>
-    <string name="description_home">Home</string>
-    <string name="description_search">Search</string>
+    <!-- start common attributes -->
 
-    <string name="title_about">About</string>
-    <string name="title_home">Home</string>
-    <string name="title_search">Search</string>
-
-    <string name="about_intro">This app is a demo to show you how to do an Android app based on the Dashboard pattern that has been used in apps like Twitter, Google IO, and Evernote.</string>
-    <string name="search_intro">Content for the Search page goes here.</string>
-
-
-    <string name="app_name">iMonitorPerformance</string>
-    <string name="welcome">Welcome to theME</string>
-    <string name="Admin">Admin</string>
-    <string name="Planning">Planning</string>
-    <string name="Monitoring">Monitoring</string>
-    <string name="Evaluation">Evaluation</string>
-    <string name="hint_text">Type here to filter&#8230;</string>
-    <!--
-    <string name="project_list_title">List of Projects</string>
-    -->
-
-    <string name="project_name_hint">Project Name</string>
-    <string name="project_description_hint">Project Description</string>
-    <string name="project_country_hint">Project Country</string>
-    <string name="project_region_hint">Project Region</string>
-    <string name="project_status_hint">Project Status</string>
-    <string name="project_startdate_hint">Project Starting Date</string>
-    <string name="project_closedate_hint">Project Closing Date</string>
-    <string name="project_manager_hint">Project Manager</string>
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="openDrawer">open_drawer</string>
-    <string name="closeDrawer">close_drawer</string>
-
-    <!-- Navigation Drawer menu labels (saved in menu/activity_main_drawer) -->
-    <string name="nav_home">Home</string>
-    <string name="nav_photos">Photos</string>
-    <string name="nav_movies">Movies</string>
-    <string name="nav_notifications">Notifications</string>
-    <string name="nav_settings">Settings</string>
-    <string name="nav_uploadings">Uploadings</string>
-
-    <string name="nav_about_us">About Us</string>
-
-    <!-- Toolbar titles when navigation menu item is selected -->
-    <string-array name="nav_item_fragment_titles">
-        <item>Home</item>
-        <item>Photos</item>
-        <item>Movies</item>
-        <item>Notifications</item>
-        <item>Settings</item>
-        <item>Uploadings</item>
-    </string-array>
-
-    <string name="activity_title_about_us">About Us</string>
-    <string name="activity_title_privacy_policy">Privacy Policy</string>
-    <string name="action_clear_all">Clear All</string>
-    <string name="action_logout">Logout</string>
-    <string name="action_mark_all_read">Mark All as Read</string>
-    <string name="privacy_policy">Privacy Policy</string>
-
-    <string name="item">Item 1</string>
-    <string name="click_me">Click me</string>
-
-    <string name="contentdesc4pic2">Content</string>
-
-
-    <!-- Attributes for BMB Menu -->
-    <string name="text_inside_circle_button_text_normal">Text Inside Circle Button(Normal)</string>
-    <string name="text_outside_circle_button_text_normal">Text Outside Circle Button(Normal)</string>
-    <string name="text_ham_button_text_normal">Ham Button Text(Normal)</string>
-    <string name="text_ham_button_sub_text_normal">Ham Button Sub Text(Normal)</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
-
-    <!-- FIXME -->
-    <string-array name="status">
-        <item>initial</item>
-        <item>active</item>
-        <item>inactive</item>
-        <item>close</item>
-    </string-array>
-
-    <!-- FIXME -->
-    <string-array name="manager">
-        <item>Motlatsi</item>
-        <item>Likeleli</item>
-        <item>Lesedi</item>
-        <item>Thato</item>
-    </string-array>
-
+    <!-- the logframe strings -->
+    <string name="logframe_list_title">Logical Frameworks</string>
+    <string name="logframe_create_title">ADD LOGFRAME</string>
+    <string name="logframe_update_title">UPDATE LOGFRAME</string>
+    <string name="logframe_delete_title">DELETE LOGFRAME</string>
+    <string name="logframe_organization_caption">organization:</string>
+    <string name="logframe_name_caption">name:</string>
+    <string name="logframe_description_caption">discretion:</string>
+    <string name="logframe_startdate_caption">start date: </string>
+    <string name="logframe_enddate_caption">end date: </string>
 
     <!-- the address strings -->
     <string name="address_list_title">Addresses</string>
@@ -253,14 +185,14 @@
     <!-- the organization strings -->
     <string name="organization_list_title">Organizations</string>
 
-    <!-- the project strings -->
-    <string name="project_list_title">Programmes/Projects</string>
+    <!-- the Impact strings -->
+    <string name="impact_list_title">Impacts</string>
 
     <!-- the triangle method strings -->
     <string name="triangle_list_title">CES Triangle</string>
 
-    <!-- the goal strings -->
-    <string name="goal_list_title">Goals</string>
+    <!-- the impact strings -->
+    <string name="input_list_title">Inputs</string>
 
     <!-- the outcome strings -->
     <string name="outcome_list_title">Outcomes</string>
@@ -313,6 +245,110 @@
 
     <!-- the alert strings -->
     <string name="alert_list_title">Alerts</string>
+
+    <!-- Attributes for BMB Menu -->
+    <string name="text_inside_circle_button_text_normal">Text Inside Circle Button(Normal)</string>
+    <string name="text_outside_circle_button_text_normal">Text Outside Circle Button(Normal)</string>
+    <string name="text_ham_button_text_normal">Ham Button Text(Normal)</string>
+    <string name="text_ham_button_sub_text_normal">Ham Button Sub Text(Normal)</string>
+
+    <!-- END -->
+
+    <string name="hello">Choose one of the features below.</string>
+    <!--
+    <string name="app_name">Dashboard Demo</string>
+-->
+    <string name="description_logo">Demo</string>
+
+    <string name="description_about">About</string>
+    <string name="description_home">Home</string>
+    <string name="description_search">Search</string>
+
+    <string name="title_about">About</string>
+    <string name="title_home">Home</string>
+    <string name="title_search">Search</string>
+
+    <string name="about_intro">This app is a demo to show you how to do an Android app based on the Dashboard pattern that has been used in apps like Twitter, Google IO, and Evernote.</string>
+    <string name="search_intro">Content for the Search page goes here.</string>
+
+
+    <string name="app_name">iMonitorPerformance</string>
+    <string name="welcome">Welcome to theME</string>
+    <string name="Admin">Admin</string>
+    <string name="Planning">Planning</string>
+    <string name="Monitoring">Monitoring</string>
+    <string name="Evaluation">Evaluation</string>
+    <string name="hint_text">Type here to filter&#8230;</string>
+    <!--
+    <string name="project_list_title">List of Projects</string>
+    -->
+
+    <string name="project_name_hint">Project Name</string>
+    <string name="project_description_hint">Project Description</string>
+    <string name="project_country_hint">Project Country</string>
+    <string name="project_region_hint">Project Region</string>
+    <string name="project_status_hint">Project Status</string>
+    <string name="project_startdate_hint">Project Starting Date</string>
+    <string name="project_closedate_hint">Project Closing Date</string>
+    <string name="project_manager_hint">Project Manager</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="openDrawer">open_drawer</string>
+    <string name="closeDrawer">close_drawer</string>
+
+    <!-- Navigation Drawer menu labels (saved in menu/activity_main_drawer) -->
+    <string name="nav_home">Home</string>
+    <string name="nav_photos">Photos</string>
+    <string name="nav_movies">Movies</string>
+    <string name="nav_notifications">Notifications</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_uploadings">Uploadings</string>
+
+    <string name="nav_about_us">About Us</string>
+
+    <!-- Toolbar titles when navigation menu item is selected -->
+    <string-array name="nav_item_fragment_titles">
+        <item>Home</item>
+        <item>Photos</item>
+        <item>Movies</item>
+        <item>Notifications</item>
+        <item>Settings</item>
+        <item>Uploadings</item>
+    </string-array>
+
+    <string name="activity_title_about_us">About Us</string>
+    <string name="activity_title_privacy_policy">Privacy Policy</string>
+    <string name="action_clear_all">Clear All</string>
+    <string name="action_logout">Logout</string>
+    <string name="action_mark_all_read">Mark All as Read</string>
+    <string name="privacy_policy">Privacy Policy</string>
+
+    <string name="item">Item 1</string>
+    <string name="click_me">Click me</string>
+
+    <string name="contentdesc4pic2">Content</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- FIXME -->
+    <string-array name="status">
+        <item>initial</item>
+        <item>active</item>
+        <item>inactive</item>
+        <item>close</item>
+    </string-array>
+
+    <!-- FIXME -->
+    <string-array name="manager">
+        <item>Motlatsi</item>
+        <item>Likeleli</item>
+        <item>Lesedi</item>
+        <item>Thato</item>
+    </string-array>
+
 
     <!--
         <string-array name="sports_array">

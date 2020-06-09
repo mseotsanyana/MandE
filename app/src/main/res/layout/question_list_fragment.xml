@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <!-- include a toolbar layout -->
+    <include layout="@layout/me_toolbar_layout" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/me_toolbar"
+        android:orientation="vertical">
+
+        <!-- user list layout
+        <androidx.appcompat.widget.RecyclerView
+            android:id="@+id/impactRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical" />-->
+    </LinearLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- the FAB layout -->
+        <com.me.mseotsanyana.bmblibrary.cDraggableFAB
+            android:id="@+id/impactDraggableFAB"
+            style="@style/FabStyle"
+            android:layout_gravity="bottom|end" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</RelativeLayout>

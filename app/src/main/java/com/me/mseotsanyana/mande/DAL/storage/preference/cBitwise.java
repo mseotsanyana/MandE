@@ -57,6 +57,8 @@ public class cBitwise {
     public static final int DELETE = 8;
     public static final int SYNC   = 16;
 
+    public static final int ALL_PERMS = CREATE | READ | UPDATE | DELETE | SYNC;
+
     public static final int[] entities = {
             ADDRESS,      /* 0 = 1 */
             ORGANIZATION, /* 1 = 1 */
@@ -212,6 +214,20 @@ public class cBitwise {
             DELETED,   /* 2 */
             PENDING,   /* 3 */
             SYNCED     /* 4 */
+    };
+    public static final String[] status_names = {
+            "Activated", /* 0 */
+            "Cancelled", /* 1 */
+            "Deleted",   /* 2 */
+            "Pending",   /* 3 */
+            "Synced"     /* 4 */
+    };
+    public static final String[] status_descriptions = {
+            "Is the record activated?",      /* 0 */
+            "Is the record called?",         /* 1 */
+            "Deleted Is the record deleted?",/* 2 */
+            "Is the record pending?",        /* 3 */
+            "Is the record synced?"          /* 4 */
     };
 
     public static final int ALL       = 31;

@@ -35,7 +35,7 @@ import com.me.mseotsanyana.mande.BLL.interactors.session.permission.Impl.cPermis
 import com.me.mseotsanyana.mande.BLL.domain.session.cRoleDomain;
 import com.me.mseotsanyana.mande.BLL.interactors.session.role.Impl.cRoleHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.status.Impl.cStatusHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.status.Impl.cStatusInteractorImpl;
 import com.me.mseotsanyana.mande.PL.ui.adapters.session.cPermissionAdapter;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iPermissionInterface;
 import com.me.mseotsanyana.mande.R;
@@ -43,7 +43,7 @@ import com.me.mseotsanyana.mande.UTIL.TextDrawable;
 import com.me.mseotsanyana.mande.UTIL.cFontManager;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cKeyPairBoolData;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cMultiSpinnerSearch;
-import com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch;
+import com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch_old;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cSpinnerListener;
 import com.me.mseotsanyana.treeadapterlibrary.cNode;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
@@ -72,7 +72,7 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
     private cPermissionHandler privilegeHandler;
     private cPermissionHandler permissionHandler;
     private cOperationHandler operationHandler;
-    private cStatusHandler statusHandler;
+    private cStatusInteractorImpl statusHandler;
 
     private cEntityHandler entityHandler;
 
@@ -134,7 +134,7 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
         privilegeHandler = new cPermissionHandler(getActivity());
         permissionHandler = new cPermissionHandler(getActivity());
         operationHandler = new cOperationHandler(getActivity());
-        statusHandler = new cStatusHandler(getActivity());
+        statusHandler = null;//new cStatusInteractorImpl(getActivity());
 
         entityHandler = new cEntityHandler(getActivity());
 
@@ -214,8 +214,8 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View formElementsView = inflater.inflate(R.layout.privilege_add_edit_record, null, false);
         // -1 is no by default selection, 0 to length will select corresponding values
-        cSingleSpinnerSearch singleSpinnerSearchRole =
-                (cSingleSpinnerSearch) formElementsView.findViewById(R.id.appCompatSpinnerRole);
+        cSingleSpinnerSearch_old singleSpinnerSearchRole =
+                (cSingleSpinnerSearch_old) formElementsView.findViewById(R.id.appCompatSpinnerRole);
 
         final AppCompatEditText editTextPrivilegeName =
                 (AppCompatEditText) formElementsView.findViewById(R.id.editTextPrivilegeName);
@@ -324,13 +324,13 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
      **/
     class cReadRoles extends AsyncTask<Object, Void, ArrayList<cRoleDomain>> {
 
-        private cSingleSpinnerSearch singleSpinnerSearchRole;
+        private cSingleSpinnerSearch_old singleSpinnerSearchRole;
         private cPermissionDomain privilege;
 
         @Override
         protected ArrayList<cRoleDomain> doInBackground(Object... objects) {
 
-            singleSpinnerSearchRole = (cSingleSpinnerSearch) objects[0];
+            singleSpinnerSearchRole = (cSingleSpinnerSearch_old) objects[0];
             privilege = (cPermissionDomain) objects[1];
 
             final ArrayList<cRoleDomain> roles = null;/*roleHandler.getRoleList(
@@ -416,7 +416,7 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
             operationDomains.addAll(operationHandler.getOperationList());
 
             statusDomains.clear();
-            statusDomains.addAll(statusHandler.getStatusList());
+            //statusDomains.addAll(statusHandler.getStatusList());
 
             return (treeModels != null);
         }
@@ -445,8 +445,8 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View formElementsView = inflater.inflate(R.layout.privilege_add_edit_record, null, false);
         // -1 is no by default selection, 0 to length will select corresponding values
-        cSingleSpinnerSearch singleSpinnerSearchRole =
-                (cSingleSpinnerSearch) formElementsView.findViewById(R.id.appCompatSpinnerRole);
+        cSingleSpinnerSearch_old singleSpinnerSearchRole =
+                (cSingleSpinnerSearch_old) formElementsView.findViewById(R.id.appCompatSpinnerRole);
 
         final AppCompatEditText editTextPrivilegeName =
                 (AppCompatEditText) formElementsView.findViewById(R.id.editTextPrivilegeName);

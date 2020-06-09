@@ -6,6 +6,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,9 +21,10 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
 import com.me.mseotsanyana.mande.DAL.model.session.cUserModel;
-//import com.me.mseotsanyana.mande.DAL.storage.managers.cSessionManager;
+import com.me.mseotsanyana.mande.DAL.ìmpl.session.cOrganizationRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cRoleRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cSessionManagerImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.session.cStatusRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cUserRepositoryImpl;
 import com.me.mseotsanyana.mande.PL.presenters.session.Impl.cUserLoginPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.session.iUserLoginPresenter;
@@ -40,7 +42,6 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
     private TextInputEditText emailTextInputEditText, passwordTextInputEditText;
     private TextView forgotPasswordTextView;
     private ProgressBar progressBar;
-    private BottomNavigationView bottomNavigationView;
 
     private iUserLoginPresenter userLoginPresenter;
 
@@ -64,6 +65,14 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
         //inputValidation = new cInputValidation(getContext());
     }
 
+        public static cLoginFragment newInstance(View view) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("SESSION", (Parcelable) view);
+        cLoginFragment fragment = new cLoginFragment();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     /*public static cLoginFragment newInstance(cSessionManager session) {
         Bundle bundle = new Bundle();
         bundle.putParcelable("SESSION", session);
@@ -85,9 +94,11 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
                 cThreadExecutorImpl.getInstance(),
                 cMainThreadImpl.getInstance(),
                 this,
-                new cSessionManagerImpl(getContext()),
                 new cUserRepositoryImpl(getContext()),
-                new cRoleRepositoryImpl(getContext()));
+                new cOrganizationRepositoryImpl(getContext()),
+                new cRoleRepositoryImpl(getContext()),
+                new cStatusRepositoryImpl(getContext()),
+                new cSessionManagerImpl(getContext()));
     }
 
     @Override
@@ -99,7 +110,7 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
         //userHandler = new cUserHandler(getActivity(), session);
 
         initViews(view);
-        setupBottomNavigation();
+        //setupBottomNavigation();
 
         return view;
     }
@@ -110,19 +121,22 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
     }
 
     private void initViews(View view){
-        loginButton               = (AppCompatButton)view.findViewById(R.id.loginButton);
-        forgotPasswordTextView    = (TextView)view.findViewById(R.id.forgotPasswordTextView);
-        emailTextInputLayout      = (TextInputLayout)view.findViewById(R.id.emailTextInputLayout);
-        emailTextInputEditText    = (TextInputEditText)view.findViewById(R.id.emailTextInputEditText);
-        passwordTextInputLayout   = (TextInputLayout)view.findViewById(R.id.passwordTextInputLayout);
-        passwordTextInputEditText = (TextInputEditText)view.findViewById(R.id.passwordTextInputEditText);
-        progressBar               = (ProgressBar)view.findViewById(R.id.progressBar);
+        loginButton               = view.findViewById(R.id.loginButton);
+        forgotPasswordTextView    = view.findViewById(R.id.forgotPasswordTextView);
+        emailTextInputLayout      = view.findViewById(R.id.emailTextInputLayout);
+        emailTextInputEditText    = view.findViewById(R.id.emailTextInputEditText);
+        passwordTextInputLayout   = view.findViewById(R.id.passwordTextInputLayout);
+        passwordTextInputEditText = view.findViewById(R.id.passwordTextInputEditText);
+        progressBar               = view.findViewById(R.id.progressBar);
 
-        bottomNavigationView      = (BottomNavigationView) view.findViewById(R.id.bottom_navigation);
-        bottomNavigationView.getMenu().getItem(0).setChecked(true);
+        //BottomNavigationView bottomNavigationView = (BottomNavigationView) view.findViewById(
+        //        R.id.bottom_navigation);
+        //bottomNavigationView.setVisibility(View.VISIBLE);
 
-        cUtil.setIcon(getContext(), bottomNavigationView, 0);
-        cUtil.disableShiftMode(bottomNavigationView);
+        //bottomNavigationView.getMenu().getItem(0).setChecked(true);
+
+        //cUtil.setIcon(getContext(), bottomNavigationView, 0);
+        //cUtil.disableShiftMode(bottomNavigationView);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,7 +145,6 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
                 String password = passwordTextInputEditText.getText().toString();
 
                 if(!email.isEmpty() && !password.isEmpty()) {
-
                     userLoginPresenter.userLogin(email, password);
                 } else {
                     Snackbar.make(getView(), "Fields are empty !", Snackbar.LENGTH_LONG).show();
@@ -155,7 +168,7 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
         emailTextInputEditText.setText(null);
         passwordTextInputEditText.setText(null);
     }
-
+/*
     private void setupBottomNavigation() {
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -176,7 +189,7 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
             }
         });
     }
-
+*/
     /**
      * Method to push any fragment into given id.
      *
@@ -198,7 +211,8 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
         // get the session data
         //FIXME: load the MainFragment (MainMenuFragment) with set of menu items
         /* this populates the navigation menu and list of logframes with Boom menu */
-        pushFragment(cLogFrameFragment.newInstance(userModel));
+        pushFragment(new cLogFrameFragment());
+        (getActivity().findViewById(R.id.bottom_navigation)).setVisibility(View.GONE);
     }
 
     @Override

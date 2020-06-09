@@ -9,6 +9,7 @@ import java.util.Set;
 
 public class cLogFrameModel {
     private int logFrameID;
+    private int logFrameParentID;
     private int organizationID;
     private int serverID;
     private int orgID;
@@ -37,7 +38,6 @@ public class cLogFrameModel {
     private Set<cIndicatorModel> indicatorModelSet;
     private Set<cRaidModel> raidModelSet;
 
-
     public cLogFrameModel(){
         organizationModel = new cOrganizationModel();
 
@@ -59,6 +59,14 @@ public class cLogFrameModel {
 
     public void setLogFrameID(int logFrameID) {
         this.logFrameID = logFrameID;
+    }
+
+    public int getLogFrameParentID() {
+        return logFrameParentID;
+    }
+
+    public void setLogFrameParentID(int logFrameParentID) {
+        this.logFrameParentID = logFrameParentID;
     }
 
     public int getOrganizationID() {

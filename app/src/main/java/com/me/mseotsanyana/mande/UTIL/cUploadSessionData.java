@@ -14,10 +14,9 @@ import com.me.mseotsanyana.mande.BLL.interactors.session.operation.Impl.cOperati
 import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cOrganizationHandler;
 import com.me.mseotsanyana.mande.BLL.interactors.session.role.Impl.cRoleHandler;
 import com.me.mseotsanyana.mande.BLL.interactors.session.session.Impl.cSessionHandler;
-import com.me.mseotsanyana.mande.BLL.interactors.session.status.Impl.cStatusHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.status.Impl.cStatusInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserHandler;
 import com.me.mseotsanyana.mande.BLL.interactors.session.value.Impl.cValueHandler;
-import com.me.mseotsanyana.mande.MainActivity;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -52,7 +51,7 @@ public class cUploadSessionData extends AsyncTask<String, Integer, String> {
     //private cPrivilegeHandler privilegeHandler;
     private cEntityHandler entityHandler;
     private cOperationHandler operationHandler;
-    private cStatusHandler statusHandler;
+    private cStatusInteractorImpl statusHandler;
 
     /*
     private cUserRoleHandler userRoleHandler;
@@ -84,7 +83,7 @@ public class cUploadSessionData extends AsyncTask<String, Integer, String> {
         //privilegeHandler = new cPrivilegeHandler(context, session);
         entityHandler = new cEntityHandler(context);
         operationHandler = new cOperationHandler(context);
-        statusHandler = new cStatusHandler(context);
+        statusHandler = null;//new cStatusInteractorImpl(context);
 
         /*
         userRoleHandler = new cUserRoleHandler(context, session);

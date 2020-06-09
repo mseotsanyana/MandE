@@ -1,14 +1,17 @@
 package com.me.mseotsanyana.mande.PL.ui.fragments.logframe;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatEditText;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.text.Layout;
 import android.util.Log;
 import android.util.TypedValue;
@@ -17,13 +20,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.util.Pair;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -34,22 +37,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.picker.MaterialDatePicker;
-import com.google.android.material.picker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cLogFrameModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cUserModel;
+import com.me.mseotsanyana.mande.DAL.model.session.cOrganizationModel;
 import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cLogFrameRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cMenuRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cSessionManagerImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.Impl.cLogFramePresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iLogFramePresenter;
+import com.me.mseotsanyana.mande.PL.ui.adapters.common.cCommonFragmentAdapter;
 import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cLogFrameAdapter;
+import com.me.mseotsanyana.mande.PL.ui.fragments.report.cResourceFragment;
 import com.me.mseotsanyana.mande.PL.ui.fragments.session.cPermissionFragment;
 import com.me.mseotsanyana.mande.PL.ui.fragments.session.cRoleFragment;
 import com.me.mseotsanyana.mande.PL.ui.fragments.session.cUserFragment;
@@ -61,8 +67,12 @@ import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.cFontManager;
 import com.me.mseotsanyana.mande.cMainThreadImpl;
 import com.me.mseotsanyana.mande.cSettingsActivity;
+import com.me.mseotsanyana.multiselectspinnerlibrary.cKeyPairBoolData;
+import com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerListener;
+import com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -70,56 +80,53 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by mseotsanyana on 2016/11/02.
  */
 public class cLogFrameFragment extends Fragment implements iLogFramePresenter.View {
     private static String TAG = cLogFrameFragment.class.getSimpleName();
-    private static SimpleDateFormat sdf = cConstant.SHORT_FORMAT_DATE;
-
-    private Date startDate, endDate;
+    private static SimpleDateFormat tsdf = cConstant.TIMESTAMP_FORMAT_DATE;
+    private static SimpleDateFormat ssdf = cConstant.SHORT_FORMAT_DATE;
 
     // navigation drawer declarations
-    private Toolbar toolbar;
+    private Toolbar toolBar;
+
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
 
-    /* logframe adapters */
-    private cExpandableListAdapter menuExpandableListAdapter;
     private cLogFrameAdapter logFrameRecyclerViewAdapter;
 
     /* logframe views */
     private ExpandableListView menuExpandableListView;
     private RecyclerView logFrameRecyclerView;
+    private LinearLayout includeProgressBar;
 
     /* logframe interface */
     private iLogFramePresenter logFramePresenter;
 
     /* menu data structures */
     private List<String> menuItemTitles;
-    private HashMap<String, List<String>> expandableMenuItems;
+    private HashMap<String, List<String>> expandableMenuItems = null;
 
-    /* logframe data structures */
-    private List<cTreeModel> logFrameTreeModels;
+    private ArrayList<cOrganizationModel> sharedOrganizations;
 
-    //private Set<cMenuModel> menuModelSet;
-    //private Set<cLogFrameModel> logFrameModelSet;
 
-    AppCompatActivity activity;
+    private AppCompatActivity activity;
 
     Gson gson = new Gson();
 
     public cLogFrameFragment() {
     }
 
-    public static cLogFrameFragment newInstance(cUserModel userModel) {
-        Bundle bundle = new Bundle();
+    public static cLogFrameFragment newInstance() {
+        //Bundle bundle = new Bundle();
 
-        bundle.putParcelable("USERMODEL", userModel);
+        //bundle.putParcelable("USER_MODEL", userModel);
 
         cLogFrameFragment fragment = new cLogFrameFragment();
-        fragment.setArguments(bundle);
+        //fragment.setArguments(bundle);
 
         return fragment;
     }
@@ -128,7 +135,6 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
         init();
     }
 
@@ -144,10 +150,18 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         menuItemTitles = new ArrayList<String>();
         expandableMenuItems = new LinkedHashMap<String, List<String>>();
         /* contains a tree of logframes */
-        logFrameTreeModels = new ArrayList<cTreeModel>();
+        /* logframe data structures */
+        List<cTreeModel> logFrameTreeModels = new ArrayList<cTreeModel>();
+        /* shared preference organizations */
+        sharedOrganizations = new ArrayList<>();
+
+        //sessionManager = new cSessionManagerImpl(getContext());
+        //organizations = new ArrayList<>(sessionManager.loadOrganizationOwners());
 
         /* get arguments for successful login */
-        cUserModel userModel = getArguments().getParcelable("USERMODEL");
+        //assert getArguments() != null;
+        //cUserModel userModel = getArguments().getParcelable("USER_MODEL");
+        //assert userModel != null;
 
         logFramePresenter = new cLogFramePresenterImpl(
                 cThreadExecutorImpl.getInstance(),
@@ -155,8 +169,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
                 this,
                 new cSessionManagerImpl(getContext()),
                 new cMenuRepositoryImpl(getContext()),
-                new cLogFrameRepositoryImpl(getContext()),
-                userModel.getUserID());
+                new cLogFrameRepositoryImpl(getContext()));
 
         activity = ((AppCompatActivity) getActivity());
     }
@@ -166,10 +179,9 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
      * hierarchy either dynamically or via XML Layout inflation.
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.logframe_list_fragment, container, false);
-
-        return view;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.logframe_list_fragment, container, false);
     }
 
     /**
@@ -178,22 +190,26 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
      * view lookups and attaching view listeners.
      */
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        // create navigation drawer menu
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        /* create navigation drawer menu */
         navigationDrawer(view);
 
-        // create logframe menu
+        /* create logframe menu */
         logframeView(view);
 
-        logFramePresenter.readAllLogframes();
+        /* draggable floating button */
+        initDraggableFAB(view);
+
+        logFramePresenter.readAllLogFrames();
+        logFramePresenter.readSharedOrganizations();
     }
 
     private void navigationDrawer(View view) {
-        // populate navigation view with relevant to the logged in user from database
+        /* populate navigation view with relevant to the logged in user from database */
         populateNavigationDrawer(view);
-        // initialise the toolbar and the drawer layout for animating the menu
+        /* initialise the toolbar and the drawer layout for animating the menu */
         setupDrawerToggle(view);
-        // setup drawer navigation group and children listeners
+        /* setup drawer navigation group and children listeners */
         setupDrawerNavigationListener();
 
         // put an arrow button
@@ -203,7 +219,9 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
     }
 
     private void logframeView(View view) {
-        logFrameRecyclerView = (RecyclerView) view.findViewById(R.id.logframeRecyclerView);
+        includeProgressBar = (LinearLayout) view.findViewById(R.id.includeProgressBar);
+
+        logFrameRecyclerView = view.findViewById(R.id.logframeRecyclerView);
         logFrameRecyclerView.setHasFixedSize(true);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
@@ -214,38 +232,49 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
 
     private void populateNavigationDrawer(View view) {
         // instantiating the expandable action_list view under the DrawerLayout
-        menuExpandableListView = (ExpandableListView) view.findViewById(R.id.navList);
+        menuExpandableListView = view.findViewById(R.id.navigationList);
 
         // adding the header to the expandable action_list view
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        LayoutInflater inflater = Objects.requireNonNull(getActivity()).getLayoutInflater();
         View headerView = inflater.inflate(R.layout.dashboard_drawer_nav_header,
                 null, false);
 
         // instantiate header view objects
-        ImageView userIcon = (ImageView) headerView.findViewById(R.id.userIcon);
-        TextView currentDate = (TextView) headerView.findViewById(R.id.currentDate);
-        TextView website = (TextView) headerView.findViewById(R.id.website);
+        ImageView userIcon = headerView.findViewById(R.id.userIcon);
+        TextView currentDate = headerView.findViewById(R.id.currentDate);
+        TextView website = headerView.findViewById(R.id.website);
 
         // set header view objects
         //userIcon.setImageResource(...);
-        currentDate.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-        //website.setText(sessionManager.getCurrentUser().getName()+" "+sessionManager.getCurrentUser().getSurname());
+        currentDate.setText(ssdf.format(Calendar.getInstance().getTime()));
+        //website.setText(sessionManager.getCurrentUser().getName()+" "+
+        // sessionManager.getCurrentUser().getSurname());
 
         menuExpandableListView.addHeaderView(headerView);
     }
 
     private void setupDrawerToggle(View view) {
         //for create home button
-        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolBar = (Toolbar) view.findViewById(R.id.toolbar);
+
+        /* start */
+        // initialize the toolbar
+        //toolbar = (Toolbar) view.findViewById(R.id.me_toolbar);
+        toolBar.setTitle(R.string.logframe_list_title);
+        toolBar.setTitleTextColor(Color.WHITE);
+
+        //((AppCompatActivity) getActivity()).setSupportActionBar(toolBar);
+        /* end */
+
         //Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        activity.setSupportActionBar(toolbar);
+        activity.setSupportActionBar(toolBar);
 
         drawerLayout = (DrawerLayout) view.findViewById(R.id.drawer_layout);
 
         drawerToggle = new ActionBarDrawerToggle(
                 getActivity(),            // host activity
                 drawerLayout,             // drawer layout
-                toolbar,                  // custom toolbar
+                toolBar,                  // custom toolbar
                 R.string.drawer_open, // open drawer description
                 R.string.drawer_close // close drawer description
         ) {
@@ -253,13 +282,15 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
             /* Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                getActivity().invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                // creates call to onPrepareOptionsMenu()
+                Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
             }
 
             /* Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                getActivity().invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                // creates call to onPrepareOptionsMenu()
+                Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
             }
         };
 
@@ -277,7 +308,8 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         menuExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
-                activity.getSupportActionBar().setTitle(menuItemTitles.get(groupPosition).toString());
+                Objects.requireNonNull(activity.getSupportActionBar()).setTitle(
+                        menuItemTitles.get(groupPosition));
             }
         });
 
@@ -285,7 +317,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         menuExpandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
             @Override
             public void onGroupCollapse(int groupPosition) {
-                activity.getSupportActionBar().setTitle(R.string.app_name);
+                Objects.requireNonNull(activity.getSupportActionBar()).setTitle(R.string.app_name);
             }
         });
 
@@ -349,11 +381,13 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
 
-                String selectedItem = ((List) (expandableMenuItems.get(menuItemTitles.get(groupPosition))))
+                String selectedItem = ((List) (Objects.requireNonNull(
+                        expandableMenuItems.get(menuItemTitles.get(groupPosition)))))
                         .get(childPosition).toString();
-                activity.getSupportActionBar().setTitle(selectedItem);
+                Objects.requireNonNull(activity.getSupportActionBar()).setTitle(selectedItem);
 
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                FragmentTransaction ft = Objects.requireNonNull(getActivity()).
+                        getSupportFragmentManager().beginTransaction();
 
                 switch (groupPosition) {
                     case 0: // Admin
@@ -419,16 +453,42 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
         //getActivity().getMenuInflater().inflate(R.menu.drawer_menu_main, menu);
         inflater.inflate(R.menu.drawer_menu_main, menu);
+
+        /* start */
+        toolBar.inflateMenu(R.menu.home_toolbar_menu);
+        Menu toolBarMenu = toolBar.getMenu();
+
+        //toolBarMenuItem = toolBarMenu.findItem(R.id.homeItem);
+
+        toolBar.setOnMenuItemClickListener(
+                new Toolbar.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        return onOptionsItemSelected(item);
+                    }
+                });
+
+        SearchManager searchManager = (SearchManager) Objects.requireNonNull(getActivity()).
+                getSystemService(Context.SEARCH_SERVICE);
+
+        SearchView searchView = (SearchView) toolBarMenu.findItem(R.id.searchItem).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+
+        search(searchView);
+
+        /* end */
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -438,6 +498,16 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         //int id = item.getItemId();
+
+        /* start */
+        switch (item.getItemId()) {
+            case R.id.homeItem:
+                //pushFragment(cLogFrameFragment.newInstance(session));
+                break;
+            default:
+                break;
+        }
+        /* end */
 
         // Activate the navigation drawer toggle
         if (drawerToggle.onOptionsItemSelected(item)) {
@@ -450,36 +520,264 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
     /*=============================== REQUEST VIEW IMPLEMENTATION ================================*/
 
     @Override
-    public void onClickCreateLogframe(cLogFrameModel logFrameModel) {
+    public void onClickCreateLogFrame(cLogFrameModel logFrameModel) {
+        createAlertDialog(-1, logFrameModel, true);
+    }
+
+    @Override
+    public void onClickCreateSubLogFrame(long logFrameID, cLogFrameModel logFrameModel) {
+        createAlertDialog(logFrameID, logFrameModel, false);
+    }
+
+    @Override
+    public void onClickUpdateLogFrame(int position, cLogFrameModel logFrameModel) {
+        updateAlertDialog(position, logFrameModel);
+    }
+
+    @Override
+    public void onClickDeleteLogFrame(int position, long logframeID) {
+        int resID = R.string.fa_delete;
+        String title = "Delete Logframe.";
+        String message = "Are you sure you want to delete this logframe ?";
+
+        deleteAlertDialog(resID, title, message, position, logframeID);
+    }
+
+    @Override
+    public void onClickDeleteSubLogFrame(int position, long logframeID) {
 
     }
 
     @Override
-    public void onClickUpdateLogframe(cLogFrameModel logFrameModel, int position) {
-        final MaterialAlertDialogBuilder alertDialogBuilder =
-                new MaterialAlertDialogBuilder(getActivity(), R.style.AlertDialogTheme);
-        // set title
-        //alertDialogBuilder.setTitle("Edit Logframe.");
+    public void onClickSyncLogFrame(cLogFrameModel logFrameModel) {
+        /* change the colour of a sync button */
+        //logFrameRecyclerViewAdapter.onClickLogframeSync(logFrameModel);
+        logFramePresenter.syncLogFrameModel(logFrameModel);
+    }
+
+    @Override
+    public void onClickBoomMenu(int menuIndex) {
+        switch (menuIndex) {
+            case 0: // Impact Fragment
+                pushFragment(new cImpactFragment());
+                break;
+            case 1: // Outcome Fragment
+                pushFragment(new cOutcomeFragment());
+                break;
+            case 2: // Output Fragment
+                pushFragment(new cOutputFragment());
+                break;
+            case 3: // Activity Fragment
+                pushFragment(new cActivityFragment());
+                break;
+            case 4: // Input Fragment
+                pushFragment(new cInputFragment());
+                break;
+            case 5: // Questions Fragment
+                pushFragment(new cQuestionFragment());
+                break;
+            case 6: // Indicators Fragment
+                pushFragment(new cIndicatorFragment());
+                break;
+            case 7: // MoV Fragment
+                pushFragment(new cMoVFragment());
+                break;
+            case 8: // Risk/Assumptions Fragment
+                pushFragment(new cRiskFragment());
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public cCommonFragmentAdapter onGetCommonFragmentAdapter() {
+        return new cCommonFragmentAdapter(Objects.requireNonNull(getFragmentManager()),
+                new cSessionManagerImpl(getContext()));
+
+    }
+
+    private void initDraggableFAB(View view) {
+        view.findViewById(R.id.logframeFAB).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cLogFrameModel logFrameModel = new cLogFrameModel();
+                onClickCreateLogFrame(logFrameModel);
+            }
+        });
+    }
+
+
+    /*=============================== RESPONSE VIEW IMPLEMENTATION ===============================*/
+
+    @Override
+    public void onRetrieveLogFramesCompleted(LinkedHashMap<String, List<String>> expandableMenuItems,
+                                             ArrayList<cTreeModel> logFrameTreeModels) {
+        /* populate navigation menu */
+        menuItemTitles = new ArrayList<String>(expandableMenuItems.keySet());
+        /* logframe adapters */
+        cExpandableListAdapter menuExpandableListAdapter = new cExpandableListAdapter(
+                Objects.requireNonNull(getActivity()), menuItemTitles, expandableMenuItems);
+        menuExpandableListView.setAdapter(menuExpandableListAdapter);
+
+        /* populate logframe list */
+        // setup recycler view adapter
+        logFrameRecyclerViewAdapter = new cLogFrameAdapter(getActivity(), this,
+                logFrameTreeModels, getFragmentManager());
+
+        // populate the logframe list with data from database
+        logFrameRecyclerView.setAdapter(logFrameRecyclerViewAdapter);
+
+        //logFrameExpandableListAdapter.notifyDataSetChanged();
+        //drawerLayout.invalidate();
+    }
+
+    @Override
+    public void onLogFrameCreated(cLogFrameModel frameModel, String msg) {
+        try {
+            int parentIndex = logFrameRecyclerViewAdapter.getMaxParentIndex();
+            cTreeModel treeModel = new cTreeModel(parentIndex, -1, 0, frameModel);
+            logFrameRecyclerViewAdapter.addData(treeModel);
+            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onSubLogFrameCreated(cLogFrameModel logFrameModel, String msg) {
+
+    }
+
+    @Override
+    public void onLogFrameCreateFailed(String msg) {
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSubLogFrameCreateFailed(String msg) {
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLogFrameUpdated(cLogFrameModel frameModel, int position, String msg) {
+        cTreeModel treeModel = new cTreeModel(frameModel);
+        logFrameRecyclerViewAdapter.notifyTreeModelUpdated(treeModel, position);
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLogFrameUpdateFailed(String msg) {
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLogFrameDeleted(int position, String msg) {
+        try {
+            logFrameRecyclerViewAdapter.notifyTreeModelDeleted(position);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSubLogFrameDeleted(int position, String msg) {
+        try {
+            logFrameRecyclerViewAdapter.notifyTreeModelDeleted(position);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLogFrameDeleteFailed(String msg) {
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLogFrameSynced(cLogFrameModel logFrameModel) {
+
+    }
+
+    @Override
+    public void onSubLogFrameDeleteFailed(String msg) {
+
+    }
+
+    @Override
+    public void onRetrieveSharedOrgsCompleted(ArrayList<cOrganizationModel> organizationModels) {
+        sharedOrganizations = organizationModels;
+    }
+
+    /*================================= BASE VIEW IMPLEMENTATION =================================*/
+
+    @Override
+    public void showProgress() {
+        includeProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+        includeProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showError(String message) {
+
+    }
+
+    /*===================================== UTILITY FUNCTIONS ====================================*/
+
+    private void createAlertDialog(long logFrameID, cLogFrameModel logFrameModel, boolean isLogFrame) {
+        /* inflate the logframe model */
         LayoutInflater inflater = this.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.logframe_update, null);
+        View createView = inflater.inflate(R.layout.logframe_update, null);
+        /* instantiates create views */
+        TextView textViewTitle = createView.findViewById(R.id.textViewTitle);
+        TextView textViewOrganization = createView.findViewById(R.id.textViewOrganization);
+        cSingleSpinnerSearch singleSpinnerSearchOrg = createView.findViewById(R.id.singleSpinnerSearchOrg);
+        AppCompatEditText editTextName = createView.findViewById(R.id.editTextName);
+        AppCompatEditText editTextDescription = createView.findViewById(R.id.editTextDescription);
+        AppCompatEditText startDateEditText = createView.findViewById(R.id.editTextStartDate);
+        AppCompatEditText endDateEditText = createView.findViewById(R.id.editTextEndDate);
+        TextView datePickerIcon = createView.findViewById(R.id.textViewDatePicker);
 
-        final TextView title = (TextView) dialogView.findViewById(R.id.textViewTitle);
-        final AppCompatEditText name = (AppCompatEditText) dialogView.findViewById(R.id.editTextName);
-        final AppCompatEditText description = (AppCompatEditText) dialogView.findViewById(R.id.editTextDescription);
-        final AppCompatEditText startDateEditText = (AppCompatEditText) dialogView.findViewById(R.id.editTextStartDate);
-        final AppCompatEditText endDateEditText = (AppCompatEditText) dialogView.findViewById(R.id.editTextEndDate);
+        /* set a title of the create view */
+        textViewTitle.setText(getContext().getResources().getText(
+                R.string.logframe_create_title));
 
-        /* assign the fields to be updated */
-        title.setText("UPDATE LOGFRAME");
-        name.setText(logFrameModel.getName());
-        description.setText(logFrameModel.getDescription());
-        startDateEditText.setText(sdf.format(logFrameModel.getStartDate()));
-        endDateEditText.setText(sdf.format(logFrameModel.getEndDate()));
+        /* populate the logical model with the create views */
+        /* 1. create selection dialog box for organizations */
+        List<cKeyPairBoolData> keyPairBoolOrgs = new ArrayList<>();
+        for (int i = 0; i < sharedOrganizations.size(); i++) {
+            cKeyPairBoolData idNameBool = new cKeyPairBoolData();
+            idNameBool.setId(sharedOrganizations.get(i).getOrganizationID());
+            idNameBool.setName(sharedOrganizations.get(i).getName());
+            idNameBool.setObject(sharedOrganizations.get(i));
+            idNameBool.setSelected(false);
 
-        final TextView datePickerIcon = (TextView) dialogView.findViewById(R.id.textViewDatePicker);
+            keyPairBoolOrgs.add(idNameBool);
+        }
+
+        // called when click spinner
+        singleSpinnerSearchOrg.setItem(keyPairBoolOrgs, -1, new cSingleSpinnerListener() {
+            @Override
+            public void onItemSelected(cKeyPairBoolData item) {
+                /* assign selected organization name to the view */
+                textViewOrganization.setText(item.getName());
+                /* modify the organization ID for the logframe model */
+
+                logFrameModel.setOrganizationID((int) item.getId());
+                logFrameModel.getOrganizationModel().setName(item.getName());
+            }
+        });
+
+        /* 4. set start and end date */
         datePickerIcon.setTypeface(null, Typeface.NORMAL);
-        datePickerIcon.setTypeface(
-                cFontManager.getTypeface(getActivity(), cFontManager.FONTAWESOME));
+        datePickerIcon.setTypeface(cFontManager.getTypeface(Objects.requireNonNull(getActivity()),
+                        cFontManager.FONTAWESOME));
         datePickerIcon.setTextColor(getActivity().getColor(R.color.colorPrimaryDark));
         datePickerIcon.setText(getActivity().getResources().getString(R.string.fa_calendar));
         datePickerIcon.setOnClickListener(new View.OnClickListener() {
@@ -493,199 +791,223 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
                 picker.addOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialogInterface) {
-                        Log.d(TAG,"DatePicker Activity Dialog was cancelled");
+                        Log.d(TAG, "DatePicker Activity Dialog was cancelled");
                     }
                 });
 
                 picker.addOnPositiveButtonClickListener(
                         new MaterialPickerOnPositiveButtonClickListener<Pair<Long, Long>>() {
-                    @Override
-                    public void onPositiveButtonClick(Pair<Long, Long> selection) {
-                        startDate = new Date(selection.first);
-                        endDate = new Date(selection.second);
-                        String startDateText = sdf.format(startDate);
-                        String endDateText = sdf.format(endDate);
+                            @Override
+                            public void onPositiveButtonClick(Pair<Long, Long> selection) {
+                                /* get start and end date from picker */
+                                assert selection.first != null;
+                                assert selection.second != null;
+                                Date startDate = new Date(selection.first);
+                                Date endDate = new Date(selection.second);
+                                /* populate start and end dates on the view */
+                                startDateEditText.setText(ssdf.format(startDate));
+                                endDateEditText.setText(ssdf.format(endDate));
 
-                        startDateEditText.setText(startDateText);
-                        endDateEditText.setText(endDateText);
+                                /* modify start and end dates of logframe model */
+                                logFrameModel.setStartDate(Timestamp.valueOf(tsdf.format(startDate)));
+                                logFrameModel.setEndDate(Timestamp.valueOf(tsdf.format(endDate)));
 
-
-                        Log.d(TAG,"DatePicker Activity Date String ="+ picker.getHeaderText() +
-                                " Date epoch values :: "+ selection.first +" :: to :: "+ selection.second);
-                    }
-                });
+                                Log.d(TAG, "DatePicker Activity Date String =" +
+                                        picker.getHeaderText() + " Date epoch values :: " +
+                                        selection.first + " :: to :: " + selection.second);
+                            }
+                        });
 
                 picker.addOnNegativeButtonClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Log.d(TAG,"DatePicker Activity Dialog Negative Button was clicked");
+                        Log.d(TAG, "DatePicker Activity Dialog Negative Button was clicked");
                     }
                 });
 
-                picker.show(getFragmentManager(), picker.toString());
-
-
+                picker.show(Objects.requireNonNull(getFragmentManager()), picker.toString());
             }
         });
 
-        alertDialogBuilder.setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
+        /* create or cancel action */
+        MaterialAlertDialogBuilder alertDialogBuilder =
+                new MaterialAlertDialogBuilder(getActivity(), R.style.AlertDialogTheme);
+        alertDialogBuilder.setPositiveButton(getContext().getResources().getText(
+                R.string.Save), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                logFramePresenter.updateLogframe(logFrameModel.getLogFrameID(),
-                        name.toString(), description.toString(), startDate, endDate);
+                /* 2. set name of the logframe */
+                logFrameModel.setName(Objects.requireNonNull(editTextName.getText()).toString());
+                /* 3. set description of the logframe */
+                logFrameModel.setDescription(Objects.requireNonNull(editTextDescription.getText()).
+                        toString());
+
+                if(isLogFrame) {
+                    logFramePresenter.createLogFrameModel(logFrameModel);
+                }else {
+                    logFramePresenter.createSubLogFrameModel(logFrameID, logFrameModel);
+                }
             }
         });
-        alertDialogBuilder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+
+        alertDialogBuilder.setNegativeButton(getContext().getResources().getText(
+                R.string.Cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
             }
         })
-        .setView(dialogView)
-        .show();
-
+                .setView(createView)
+                .show();
     }
 
-    @Override
-    public void onClickDeleteLogframe(long logframeID) {
-        int resID = R.string.fa_delete;
-        String title = "Delete Logframe.";
-        String message = "Are you sure you want to delete this logframe ?";
+    private void updateAlertDialog(int position, cLogFrameModel logFrameModel) {
+        /* inflates */
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.logframe_update, null);
 
-        displayAlertDialog(resID, title, message);
-    }
+        /* instantiate update views */
+        TextView textViewTitle = dialogView.findViewById(R.id.textViewTitle);
+        TextView textViewOrganization = dialogView.findViewById(R.id.textViewOrganization);
+        cSingleSpinnerSearch singleSpinnerSearchOrg = dialogView.findViewById(
+                R.id.singleSpinnerSearchOrg);
+        AppCompatEditText editTextName = dialogView.findViewById(R.id.editTextName);
+        AppCompatEditText editTextDescription = dialogView.findViewById(R.id.editTextDescription);
+        AppCompatEditText startDateEditText = dialogView.findViewById(R.id.editTextStartDate);
+        AppCompatEditText endDateEditText = dialogView.findViewById(R.id.editTextEndDate);
+        TextView datePickerIcon = dialogView.findViewById(R.id.textViewDatePicker);
 
-    @Override
-    public void onClickSyncLogframe(cLogFrameModel logFrameModel) {
+        /* populate the fields to be updated */
+        textViewTitle.setText(getContext().getResources().getText(
+                R.string.logframe_update_title));
+        textViewOrganization.setText(logFrameModel.getOrganizationModel().getName());
+        editTextName.setText(logFrameModel.getName());
+        editTextDescription.setText(logFrameModel.getDescription());
+        startDateEditText.setText(ssdf.format(logFrameModel.getStartDate()));
+        endDateEditText.setText(ssdf.format(logFrameModel.getEndDate()));
 
-    }
+        /* 1. set own organization */
+        List<cKeyPairBoolData> keyPairBoolOrgs = new ArrayList<>();
+        for (int i = 0; i < sharedOrganizations.size(); i++) {
+            cKeyPairBoolData idNameBool = new cKeyPairBoolData();
+            idNameBool.setId(sharedOrganizations.get(i).getOrganizationID());
+            idNameBool.setName(sharedOrganizations.get(i).getName());
+            idNameBool.setObject(sharedOrganizations.get(i));
 
-    @Override
-    public void onClickBoomMenu(int menuIndex) {
-        switch (menuIndex) {
-            case 0: // Impact Fragment
-                //pushFragment(new cTriangleFragment());
-                Log.d(TAG, "Clicked " + menuIndex);
-                break;
-            case 1: // Outcome Fragment
-                //pushFragment(new cTriangleFragment());
-                Log.d(TAG, "Clicked " + menuIndex);
-                break;
-            case 2: // Output Fragment
-                //pushFragment(new cTriangleFragment());
-                Log.d(TAG, "Clicked " + menuIndex);
-                break;
-            case 3: // Activity Fragment
-                //pushFragment(new cTriangleFragment());
-                Log.d(TAG, "Clicked " + menuIndex);
-                break;
-            case 4: // Resources Fragment
-                //pushFragment(new cTriangleFragment());
-                Log.d(TAG, "Clicked " + menuIndex);
-                break;
-            case 5: // Impact Fragment
-                //pushFragment(new cTriangleFragment());
-                Log.d(TAG, "Clicked " + menuIndex);
-                break;
-            case 6: // Impact Fragment
-                //pushFragment(new cTriangleFragment());
-                Log.d(TAG, "Clicked " + menuIndex);
-                break;
-            case 7: // Impact Fragment
-                ///pushFragment(new cTriangleFragment());
-                Log.d(TAG, "Clicked " + menuIndex);
-                break;
-            case 8: // Impact Fragment
-                //pushFragment(new cTriangleFragment());
-                Log.d(TAG, "Clicked " + menuIndex);
-                break;
-            case 9: // Impact Fragment
-                pushFragment(new cTriangleFragment());
-                break;
-            case 10: // Impact Fragment
-                //pushFragment(new cTriangleFragment());
-                Log.d(TAG, "Clicked " + menuIndex);
-                break;
-            case 11: // Impact Fragment
-                //pushFragment(new cTriangleFragment());
-                Log.d(TAG, "Clicked " + menuIndex);
-                break;
-            default:
-                break;
+            /* get the current organization ID */
+            int organizationID = logFrameModel.getOrganizationModel().getOrganizationID();
+
+            if ((sharedOrganizations.get(i).getOrganizationID() == organizationID)) {
+                idNameBool.setSelected(true);
+                /* initialize organization ID for the logframe model */
+                logFrameModel.setOrganizationID(organizationID);
+            } else {
+                idNameBool.setSelected(false);
+            }
+
+            keyPairBoolOrgs.add(idNameBool);
         }
+
+        // called when click spinner
+        singleSpinnerSearchOrg.setItem(keyPairBoolOrgs, -1, new cSingleSpinnerListener() {
+            @Override
+            public void onItemSelected(cKeyPairBoolData item) {
+                /* assign selected organization name to the view */
+                textViewOrganization.setText(item.getName());
+                /* modify the organization ID for the logframe model */
+                logFrameModel.setOrganizationID((int) item.getId());
+                logFrameModel.getOrganizationModel().setName(item.getName());
+            }
+        });
+
+        /* 3. set start and end dates */
+        datePickerIcon.setTypeface(null, Typeface.NORMAL);
+        datePickerIcon.setTypeface(cFontManager.getTypeface(Objects.requireNonNull(getActivity()),
+                        cFontManager.FONTAWESOME));
+        datePickerIcon.setTextColor(getActivity().getColor(R.color.colorPrimaryDark));
+        datePickerIcon.setText(getActivity().getResources().getString(R.string.fa_calendar));
+        datePickerIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // date range picker
+                MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.
+                        dateRangePicker();
+                MaterialDatePicker<Pair<Long, Long>> picker = builder.build();
+
+                picker.addOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        Log.d(TAG, "DatePicker Activity Dialog was cancelled");
+                    }
+                });
+
+                picker.addOnPositiveButtonClickListener(
+                        new MaterialPickerOnPositiveButtonClickListener<Pair<Long, Long>>() {
+                            @Override
+                            public void onPositiveButtonClick(Pair<Long, Long> selection) {
+                                /* get start and end date from picker */
+                                assert selection.first != null;
+                                assert selection.second != null;
+                                Date startDate = new Date(selection.first);
+                                Date endDate = new Date(selection.second);
+                                /* populate start and end dates on the view */
+                                startDateEditText.setText(ssdf.format(startDate));
+                                endDateEditText.setText(ssdf.format(endDate));
+
+                                /* modify start and end dates of logframe model */
+                                logFrameModel.setStartDate(Timestamp.valueOf(tsdf.format(startDate)));
+                                logFrameModel.setEndDate(Timestamp.valueOf(tsdf.format(endDate)));
+
+                                Log.d(TAG, "DatePicker Activity Date String =" +
+                                        picker.getHeaderText() + " Date epoch values :: " +
+                                        selection.first + " :: to :: " + selection.second);
+                            }
+                        });
+
+                picker.addOnNegativeButtonClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Log.d(TAG, "DatePicker Activity Dialog Negative Button was clicked");
+                    }
+                });
+
+                picker.show(Objects.requireNonNull(getFragmentManager()), picker.toString());
+            }
+        });
+
+        /* save or cancel actions */
+        MaterialAlertDialogBuilder alertDialogBuilder =
+                new MaterialAlertDialogBuilder(getActivity(), R.style.AlertDialogTheme);
+        alertDialogBuilder.setPositiveButton(getContext().getResources().getText(
+                R.string.Save), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                /* 2. update the remaining view attributes to the logical model */
+                logFrameModel.setName(Objects.requireNonNull(editTextName.getText()).toString());
+                logFrameModel.setDescription(Objects.requireNonNull(editTextDescription.getText()).
+                        toString());
+
+                logFramePresenter.updateLogFrame(logFrameModel, position);
+
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton(getContext().getResources().getText(
+                R.string.Cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        })
+                .setView(dialogView)
+                .show();
     }
 
-    /*=============================== RESPONSE VIEW IMPLEMENTATION ===============================*/
+    private void deleteAlertDialog(int resID, String title, String message, int position,
+                                   long logFrameID) {
 
-    @Override
-    public void onRetrieveLogFramesCompleted(LinkedHashMap<String, List<String>> expandableMenuItems,
-                                             ArrayList<cTreeModel> logFrameTreeModels) {
-        /* populate navigation menu */
-        menuItemTitles = new ArrayList<String>(expandableMenuItems.keySet());
-        menuExpandableListAdapter = new cExpandableListAdapter(getActivity(), menuItemTitles,
-                expandableMenuItems);
-        menuExpandableListView.setAdapter(menuExpandableListAdapter);
-
-        /* populate logframe list */
-        // setup recycler view adapter
-        logFrameRecyclerViewAdapter = new cLogFrameAdapter(getActivity(), this,
-                logFrameTreeModels, 0);
-
-        // populate the logframe list with data from database
-        logFrameRecyclerView.setAdapter(logFrameRecyclerViewAdapter);
-
-
-        //Log.d(TAG,"MENU ITEMS -->> "+gson.toJson(getExpandableMenuItems()));
-        //Log.d(TAG,"LOGFRAMES  -->> "+gson.toJson(getMenuItemTitles()));
-
-        //logFrameExpandableListAdapter.notifyDataSetChanged();
-        //drawerLayout.invalidate();
-    }
-
-    @Override
-    public void onLogframeCreated(cLogFrameModel logFrameModel) {
-
-    }
-
-    @Override
-    public void onLogframeUpdated(cLogFrameModel logFrameModel) {
-
-    }
-
-    @Override
-    public void onLogframeDeleted(long logframeID) {
-        // we deleted some data, REMOVE FROM LIST and REFRESH !
-        //notifyItemChanged(position);
-
-        //readDesktopPresenter.getAllCosts();
-    }
-
-    @Override
-    public void onLogframeSynced(cLogFrameModel logFrameModel) {
-
-    }
-
-    /*================================= BASE VIEW IMPLEMENTATION =================================*/
-
-    @Override
-    public void showProgress() {
-
-    }
-
-    @Override
-    public void hideProgress() {
-
-    }
-
-    @Override
-    public void showError(String message) {
-
-    }
-
-    /*===================================== UTILITY FUNCTIONS ====================================*/
-
-    private void displayAlertDialog(int resID, String title, String message) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                Objects.requireNonNull(getContext()));
 
         // setting icon to dialog
         TextDrawable faIcon = new TextDrawable(getContext());
@@ -702,13 +1024,15 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         alertDialogBuilder
                 .setMessage(message)
                 .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getContext().getResources().getText(
+                        R.string.Yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        //readDesktopPresenter.deleteLogframe(logframeID);
+                        logFramePresenter.deleteLogFrameModel(logFrameID, position);
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getContext().getResources().getText(
+                        R.string.No), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // if this button is clicked, just close
                         dialog.cancel();
@@ -722,14 +1046,28 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         alertDialog.show();
     }
 
+    private void search(SearchView searchView) {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                logFrameRecyclerViewAdapter.getFilter().filter(query);
+                return false;
+            }
+        });
+    }
+
     protected void pushFragment(Fragment fragment) {
         if (fragment == null)
             return;
 
+        assert getFragmentManager() != null;
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        if (ft != null) {
-            ft.replace(R.id.fragment_frame, fragment);
-            ft.commit();
-        }
+        ft.replace(R.id.fragment_frame, fragment);
+        ft.commit();
     }
 }

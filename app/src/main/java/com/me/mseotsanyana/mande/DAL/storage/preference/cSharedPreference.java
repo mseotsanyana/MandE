@@ -19,16 +19,25 @@ public class cSharedPreference {
     public static final String KEY_USER_PROFILE    = "KEY-USER-PROFILE";
 
     // Global settings for bitwise access control
-    public static final String KEY_USER_ID          = "KEY-USER-ID";
-    public static final String KEY_ORGANIZATION_ID  = "KEY-ORG-ID";
-    public static final String KEY_ORGANIZATIONS_ID = "KEY-ORGS-ID";
+    public static final String KEY_USER_ID     = "KEY-USER-ID";
+    public static final String KEY_ORG_ID      = "KEY-ORG-ID";
+    public static final String KEY_PRIMARY_ROLE_BITS   = "KEY-PRB";
+    public static final String KEY_SECONDARY_ROLE_BITS = "KEY-SRB";
+    public static final String KEY_ORGS_ID     = "KEY-ORGS-ID";
+    public static final String KEY_PERMS_BITS  = "KEY-PERMS-BITS";
+    public static final String KEY_STATUS_BITS = "KEY_STATUS_BITS";
 
     /* prefixes for preference keys */
-    public static final String KEY_PRIMARY_ROLE_BITS     = "KEY-PRB";
-    public static final String KEY_SECONDARY_ROLE_BITS   = "KEY-SRB";
+
     public static final String KEY_ENTITY_TYPE_BITS      = "KEY-ETB";
     public static final String KEY_ENTITY_OPERATION_BITS = "KEY-EOB";
     public static final String KEY_OPERATION_STATUS_BITS = "KEY-OSB";
+
+    public static final String KEY_STATUS_SET = "KEY-SS";
+    public static final String KEY_ROLE_SET   = "KEY-RS";
+
+    public static final String KEY_INDIVIDUAL_OWNER_SET   = "KEY-IOS";
+    public static final String KEY_ORGANIZATION_OWNER_SET = "KEY-OOS";
 
     // All shared preferences file name
     public static final String KEY_IS_LOGGEDIN = "KEY-ISLOGGEDIN";

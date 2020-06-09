@@ -1,67 +1,78 @@
 package com.me.mseotsanyana.mande.PL.ui.adapters.logframe;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
-import android.text.Layout;
-import android.util.TypedValue;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Filter;
+import android.widget.Filterable;
 
+import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
 import com.me.mseotsanyana.bmblibrary.BoomButtons.OnBMClickListener;
 import com.me.mseotsanyana.bmblibrary.BoomButtons.cTextOutsideCircleButton;
 import com.me.mseotsanyana.bmblibrary.cBoomMenuButton;
 import com.me.mseotsanyana.bmblibrary.cUtil;
 import com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cLogFrameModel;
-import com.me.mseotsanyana.mande.PL.presenters.base.cBuilderManager;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iLogFramePresenter;
+import com.me.mseotsanyana.mande.PL.ui.adapters.common.cCommonFragmentAdapter;
+import com.me.mseotsanyana.mande.PL.ui.fragments.common.cCustomViewPager;
+import com.me.mseotsanyana.mande.PL.ui.listeners.common.iViewPagerHeightListener;
+import com.me.mseotsanyana.mande.PL.ui.listeners.logframe.iRecyclerViewLogFrameListener;
 import com.me.mseotsanyana.mande.R;
-import com.me.mseotsanyana.mande.UTIL.TextDrawable;
+import com.me.mseotsanyana.mande.UTIL.cConstant;
 import com.me.mseotsanyana.mande.UTIL.cFontManager;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 import com.me.mseotsanyana.treeadapterlibrary.cNode;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeAdapter;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeViewHolder;
 
-
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by mseotsanyana on 2017/02/27.
  */
 
-public class cLogFrameAdapter extends cTreeAdapter {
+public class cLogFrameAdapter extends cTreeAdapter implements iRecyclerViewLogFrameListener,
+        Filterable {
     private static String TAG = cLogFrameAdapter.class.getSimpleName();
+    private static SimpleDateFormat sdf = cConstant.SHORT_FORMAT_DATE;
 
-    public static final int PARENT_LOGFRAME = 0;
-    public static final int CHILD_LOGFRAME = 1;
+    private static final int PARENT_LOGFRAME = 0;
+    private static final int CHILD_LOGFRAME  = 1;
 
-    public final iLogFramePresenter.View logframePresenterView;
+    private final iLogFramePresenter.View logframePresenterView;
 
+    public FragmentManager fragmentManager;
 
-    final String[] bmb_caption = {
+    private List<cTreeModel> filteredTreeModels;
+
+    private final String[] bmb_caption = {
             "Impacts",
             "Outcomes",
             "Outputs",
             "Activities",
-            "Resources",
+            "Inputs",
             "Questions",
             "Indicators",
-            "Risks",
-            "Evaluations",
-            "Monitoring",
-            "Work Plans",
-            "Budgets"
+            "MoV",
+            "Assumptions/Risks"
     };
 
-    int[] bmb_imageid = {
+    private int[] bmb_imageid = {
             R.drawable.dashboard_goal,
             R.drawable.dashboard_outcome,
             R.drawable.dashboard_output,
@@ -69,12 +80,13 @@ public class cLogFrameAdapter extends cTreeAdapter {
             R.drawable.dashboard_resource,
             R.drawable.dashboard_question,
             R.drawable.dashboard_indicator,
-            R.drawable.dashboard_risk,
-            R.drawable.dashboard_evaluation,
-            R.drawable.dashboard_monitoring,
-            R.drawable.dashboard_workplan,
-            R.drawable.dashboard_budget
-            //R.drawable.dashboard_movs,
+            R.drawable.dashboard_movs,
+            R.drawable.dashboard_risk
+            //R.drawable.dashboard_budget,
+            //R.drawable.dashboard_evaluation,
+            //R.drawable.dashboard_monitoring,
+            //R.drawable.dashboard_workplan,
+            //R.drawable.dashboard_budget
             //R.drawable.dashboard_criterion,
             //R.drawable.dashboard_category,
             //R.drawable.dashboard_evaluating,
@@ -82,26 +94,33 @@ public class cLogFrameAdapter extends cTreeAdapter {
             //R.drawable.dashboard_notification
     };
 
-
     public cLogFrameAdapter(Context context, iLogFramePresenter.View logframePresenterView,
-                            List<cTreeModel> data, int expLevel) {
-        super(context, data, expLevel);
+                            List<cTreeModel> treeModels, FragmentManager fragmentManager) {
+        super(context, treeModels);
 
         this.logframePresenterView = logframePresenterView;
+        this.fragmentManager = fragmentManager;
+
+        this.filteredTreeModels = treeModels;
+
     }
 
     public RecyclerView.ViewHolder OnCreateTreeViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder viewHolder;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view;
+        View view;cCommonFragmentAdapter commonFragmentAdapter;
         switch (viewType) {
             case PARENT_LOGFRAME:
                 view = inflater.inflate(R.layout.logframe_parent_cardview, parent, false);
-                viewHolder = new cParentLogFrameViewHolder(view);
+                commonFragmentAdapter = logframePresenterView.onGetCommonFragmentAdapter();
+                viewHolder = new cParentLogFrameViewHolder(view, commonFragmentAdapter,
+                        this);
                 break;
             case CHILD_LOGFRAME:
-                view = inflater.inflate(R.layout.logframe_child_cardview, parent, false);
-                viewHolder = new cChildLogFrameViewHolder(view);
+                view = inflater.inflate(R.layout.logframe_parent_cardview, parent, false);
+                commonFragmentAdapter = logframePresenterView.onGetCommonFragmentAdapter();
+                viewHolder = new cChildLogFrameViewHolder(view, commonFragmentAdapter,
+                        this);
                 break;
             default:
                 viewHolder = null;
@@ -121,69 +140,80 @@ public class cLogFrameAdapter extends cTreeAdapter {
                     cLogFrameModel parentLogFrameModel = (cLogFrameModel) obj.getModelObject();
                     cParentLogFrameViewHolder PVH = ((cParentLogFrameViewHolder) viewHolder);
 
+                    PVH.setPaddingLeft(20 * node.getLevel());
+
+                    final int parentBackgroundColor = (position%2 == 0) ? R.color.list_even :
+                            R.color.list_odd;
+                    PVH.cardView.setCardBackgroundColor(ContextCompat.getColor(context,
+                            parentBackgroundColor));
+
+                    PVH.textViewOrganization.setText(parentLogFrameModel.getOrganizationModel().
+                            getName());
                     PVH.textViewName.setText(parentLogFrameModel.getName());
                     PVH.textViewDescription.setText(parentLogFrameModel.getDescription());
-                    //PVH.textViewCount.setText("USERS: " + node.numberOfChildren());
+                    PVH.textViewStartDate.setText(sdf.format(parentLogFrameModel.getStartDate()));
+                    PVH.textViewEndDate.setText(sdf.format(parentLogFrameModel.getEndDate()));
 
-                    PVH.bmb.clearBuilders();
-                    for (int i = 0; i < PVH.bmb.getPiecePlaceEnum().pieceNumber(); i++) {
-                        cTextOutsideCircleButton.Builder builder = new cTextOutsideCircleButton.Builder()
+                    PVH.bmbMenu.clearBuilders();
+                    for (int i = 0; i < PVH.bmbMenu.getPiecePlaceEnum().pieceNumber(); i++) {
+                        cTextOutsideCircleButton.Builder builder = new cTextOutsideCircleButton
+                                .Builder()
                                 .isRound(false)
                                 .shadowCornerRadius(cUtil.dp2px(20))
                                 .buttonCornerRadius(cUtil.dp2px(20))
                                 .normalColor(Color.LTGRAY)
-                                .pieceColor(Color.parseColor("#228B22"))//FIXME
+                                .pieceColor(context.getColor(R.color.colorPrimaryDark))
                                 .normalImageRes(bmb_imageid[i])
                                 .normalText(bmb_caption[i])
                                 .listener(new OnBMClickListener() {
                                     @Override
                                     public void onBoomButtonClick(int index) {
                                         /* when the boom-button is clicked. */
-                                        logframePresenterView.onClickBoomMenu(index);
+                                        PVH.logFrameListener.onClickBoomMenu(index);
                                     }
                                 });
-                        PVH.bmb.addBuilder(builder);
+                        PVH.bmbMenu.addBuilder(builder);
                     }
 
-                    PVH.bmb.setOnClickListener(new View.OnClickListener() {
+                    PVH.bmbMenu.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            PVH.bmb.boom();
+                            PVH.bmbMenu.boom();
                         }
                     });
 
-                    PVH.setPaddingLeft(40 * node.getLevel());
-
-                    // the collapse and expansion of the parent logframe
+                    /* the collapse and expansion of the parent logframe */
                     if (node.isLeaf()) {
-                        PVH.textViewExpandLogFrameIcon.setVisibility(View.INVISIBLE);
+                        PVH.textViewExpandIcon.setVisibility(View.GONE);
                     } else {
-                        PVH.textViewExpandLogFrameIcon.setVisibility(View.VISIBLE);
+
+                        PVH.textViewExpandIcon.setVisibility(View.VISIBLE);
                         if (node.isExpand()) {
-                            PVH.textViewExpandLogFrameIcon.setTypeface(null, Typeface.NORMAL);
-                            PVH.textViewExpandLogFrameIcon.setTypeface(
+                            PVH.textViewExpandIcon.setTypeface(null, Typeface.NORMAL);
+                            PVH.textViewExpandIcon.setTypeface(
                                     cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
-                            PVH.textViewExpandLogFrameIcon.setText(
+                            PVH.textViewExpandIcon.setText(
                                     context.getResources().getString(R.string.fa_minus));
                         } else {
-                            PVH.textViewExpandLogFrameIcon.setTypeface(null, Typeface.NORMAL);
-                            PVH.textViewExpandLogFrameIcon.setTypeface(
+                            PVH.textViewExpandIcon.setTypeface(null, Typeface.NORMAL);
+                            PVH.textViewExpandIcon.setTypeface(
                                     cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
-                            PVH.textViewExpandLogFrameIcon.setText(
+                            PVH.textViewExpandIcon.setText(
                                     context.getResources().getString(R.string.fa_plus));
                         }
                     }
 
-                    PVH.textViewExpandLogFrameIcon.setOnClickListener(new View.OnClickListener() {
+                    PVH.textViewExpandIcon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             expandOrCollapse(position);
                         }
                     });
 
-                    // collapse and expansion of the details of the role
+                    /* collapse and expansion of the details */
                     PVH.textViewDetailIcon.setTypeface(null, Typeface.NORMAL);
-                    PVH.textViewDetailIcon.setTypeface(cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
+                    PVH.textViewDetailIcon.setTypeface(cFontManager.getTypeface(context,
+                            cFontManager.FONTAWESOME));
                     PVH.textViewDetailIcon.setTextColor(context.getColor(R.color.colorPrimaryDark));
                     PVH.textViewDetailIcon.setText(context.getResources().getString(R.string.fa_angle_down));
                     PVH.textViewDetailIcon.setOnClickListener(new View.OnClickListener() {
@@ -199,7 +229,7 @@ public class cLogFrameAdapter extends cTreeAdapter {
                         }
                     });
 
-                    /** icon for saving updated record **/
+                    /* icon for saving updated record */
                     PVH.textViewUpdateIcon.setTypeface(null, Typeface.NORMAL);
                     PVH.textViewUpdateIcon.setTypeface(
                             cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
@@ -208,52 +238,12 @@ public class cLogFrameAdapter extends cTreeAdapter {
                     PVH.textViewUpdateIcon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            logframePresenterView.onClickUpdateLogframe(parentLogFrameModel, position);
-
-/*
-                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-
-                            // setting icon to dialog
-                            TextDrawable faIcon = new TextDrawable(context);
-                            faIcon.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
-                            faIcon.setTextAlign(Layout.Alignment.ALIGN_CENTER);
-                            faIcon.setTypeface(cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
-                            faIcon.setText(context.getResources().getText(R.string.fa_save));
-                            faIcon.setTextColor(context.getColor(R.color.colorAccent));
-                            alertDialogBuilder.setIcon(faIcon);
-
-                            // set title
-                            alertDialogBuilder.setTitle("Save Role.");
-                            // set dialog message
-                            alertDialogBuilder
-                                    .setMessage("Do you want to SAVE role: " +
-                                            PVH.textViewName.getText() + " ?")
-                                    .setCancelable(false)
-                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            // update the permissions in the database
-
-                                            //EVH.createPermissions();
-                                            dialog.dismiss();
-                                            //notifyItemChanged(position);
-                                        }
-                                    })
-                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            // if this button is clicked, just close
-                                            dialog.cancel();
-                                        }
-                                    });
-
-                            // create alert dialog
-                            AlertDialog alertDialog = alertDialogBuilder.create();
-
-                            // show it
-                            alertDialog.show();*/
+                            PVH.logFrameListener.onClickUpdateLogFrame(position,
+                                    parentLogFrameModel);
                         }
                     });
 
-                    /** icon for deleting a record **/
+                    /* icon for deleting a record */
                     PVH.textViewDeleteIcon.setTypeface(null, Typeface.NORMAL);
                     PVH.textViewDeleteIcon.setTypeface(
                             cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
@@ -262,12 +252,12 @@ public class cLogFrameAdapter extends cTreeAdapter {
                     PVH.textViewDeleteIcon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            logframePresenterView.onClickDeleteLogframe(
+                            PVH.logFrameListener.onClickDeleteLogFrame(position,
                                     parentLogFrameModel.getLogFrameID());
                         }
                     });
 
-                    /** icon for syncing a record **/
+                    /* icon for syncing a record */
                     PVH.textViewSyncIcon.setTypeface(null, Typeface.NORMAL);
                     PVH.textViewSyncIcon.setTypeface(
                             cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
@@ -276,49 +266,12 @@ public class cLogFrameAdapter extends cTreeAdapter {
                     PVH.textViewSyncIcon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-
-                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-
-                            // setting icon to dialog
-                            TextDrawable faIcon = new TextDrawable(context);
-                            faIcon.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
-                            faIcon.setTextAlign(Layout.Alignment.ALIGN_CENTER);
-                            faIcon.setTypeface(cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
-                            faIcon.setText(context.getResources().getText(R.string.fa_sync));
-                            faIcon.setTextColor(context.getColor(R.color.colorAccent));
-                            alertDialogBuilder.setIcon(faIcon);
-
-                            // set title
-                            alertDialogBuilder.setTitle("Sync Role.");
-                            // set dialog message
-                            alertDialogBuilder
-                                    .setMessage("Do you want to SYNCHRONISE role: " +
-                                            PVH.textViewName.getText() + " ?")
-                                    .setCancelable(false)
-                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            // update the permissions in the database
-                                            //EVH.createPermissions();
-                                            dialog.dismiss();
-                                            //notifyItemChanged(position);
-                                        }
-                                    })
-                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            // if this button is clicked, just close
-                                            dialog.cancel();
-                                        }
-                                    });
-
-                            // create alert dialog
-                            AlertDialog alertDialog = alertDialogBuilder.create();
-
-                            // show it
-                            alertDialog.show();
+                            PVH.logFrameListener.onClickSyncLogFrame(position,
+                                    parentLogFrameModel);
                         }
                     });
 
-                    /** icon for creating a record **/
+                    /* icon for creating a record */
                     PVH.textViewCreateIcon.setTypeface(null, Typeface.NORMAL);
                     PVH.textViewCreateIcon.setTypeface(
                             cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
@@ -327,73 +280,40 @@ public class cLogFrameAdapter extends cTreeAdapter {
                     PVH.textViewCreateIcon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-
-                            // setting icon to dialog
-                            TextDrawable faIcon = new TextDrawable(context);
-                            faIcon.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
-                            faIcon.setTextAlign(Layout.Alignment.ALIGN_CENTER);
-                            faIcon.setTypeface(cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
-                            faIcon.setText(context.getResources().getText(R.string.fa_create));
-                            faIcon.setTextColor(context.getColor(R.color.colorAccent));
-                            alertDialogBuilder.setIcon(faIcon);
-
-                            // set title
-                            alertDialogBuilder.setTitle("Create LogFrame.");
-                            // set dialog message
-                            alertDialogBuilder
-                                    .setMessage("Do you want to CREATE logframe: " +
-                                            PVH.textViewName.getText() + " ?")
-                                    .setCancelable(false)
-                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            // update the permissions in the database
-                                            //EVH.createPermissions();
-                                            dialog.dismiss();
-                                            //notifyItemChanged(position);
-                                        }
-                                    })
-                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            // if this button is clicked, just close
-                                            dialog.cancel();
-                                        }
-                                    });
-
-                            // create alert dialog
-                            AlertDialog alertDialog = alertDialogBuilder.create();
-
-                            // show it
-                            alertDialog.show();
+                            PVH.logFrameListener.onClickCreateSubLogFrame(
+                                    parentLogFrameModel.getLogFrameID(), new cLogFrameModel());
                         }
                     });
+
+                    /* setup the common details */
+                    PVH.setViewPager(parentLogFrameModel);
 
                     break;
 
                 case CHILD_LOGFRAME:
                     cLogFrameModel childLogFrameModel = (cLogFrameModel) obj.getModelObject();
                     cChildLogFrameViewHolder CVH = ((cChildLogFrameViewHolder) viewHolder);
+
+                    /* remove these views */
+                    CVH.textViewExpandIcon.setVisibility(View.GONE);
+                    CVH.textViewOrgCaption.setVisibility(View.GONE);
+                    CVH.textViewOrganization.setVisibility(View.GONE);
+
                     CVH.setPaddingLeft(20 * node.getLevel());
+                    final int childBackgroundColor = (position%2 == 0) ? R.color.list_even :
+                            R.color.list_odd;
+                    CVH.cardView.setCardBackgroundColor(ContextCompat.getColor(context,
+                            childBackgroundColor));
 
                     CVH.textViewName.setText(childLogFrameModel.getName());
                     CVH.textViewDescription.setText(childLogFrameModel.getDescription());
-
-
-                    CVH.bmb.clearBuilders();
-                    for (int i = 0; i < CVH.bmb.getPiecePlaceEnum().pieceNumber(); i++)
-                        CVH.bmb.addBuilder(cBuilderManager.getSimpleCircleButtonBuilder());
-
-                    CVH.bmb.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //cBoomMenuButton bmb = (cBoomMenuButton)view.findViewById(R.id.bmb);
-                            CVH.bmb.boom();
-                        }
-                    });
+                    CVH.textViewStartDate.setText(sdf.format(childLogFrameModel.getStartDate()));
+                    CVH.textViewEndDate.setText(sdf.format(childLogFrameModel.getEndDate()));
 
                     // collapse and expansion of the details of the role
                     CVH.textViewDetailIcon.setTypeface(null, Typeface.NORMAL);
-                    CVH.textViewDetailIcon.setTypeface(cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
+                    CVH.textViewDetailIcon.setTypeface(cFontManager.getTypeface(context,
+                            cFontManager.FONTAWESOME));
                     CVH.textViewDetailIcon.setTextColor(context.getColor(R.color.colorPrimaryDark));
                     CVH.textViewDetailIcon.setText(context.getResources().getString(R.string.fa_angle_down));
                     CVH.textViewDetailIcon.setOnClickListener(new View.OnClickListener() {
@@ -409,7 +329,7 @@ public class cLogFrameAdapter extends cTreeAdapter {
                         }
                     });
 
-                    /** icon for saving updated record **/
+                    /* icon for saving updated record */
                     CVH.textViewUpdateIcon.setTypeface(null, Typeface.NORMAL);
                     CVH.textViewUpdateIcon.setTypeface(
                             cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
@@ -418,49 +338,11 @@ public class cLogFrameAdapter extends cTreeAdapter {
                     CVH.textViewUpdateIcon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 
-                            // setting icon to dialog
-                            TextDrawable faIcon = new TextDrawable(context);
-                            faIcon.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
-                            faIcon.setTextAlign(Layout.Alignment.ALIGN_CENTER);
-                            faIcon.setTypeface(cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
-                            faIcon.setText(context.getResources().getText(R.string.fa_save));
-                            faIcon.setTextColor(context.getColor(R.color.colorAccent));
-                            alertDialogBuilder.setIcon(faIcon);
-
-                            // set title
-                            alertDialogBuilder.setTitle("Save Role.");
-                            // set dialog message
-                            alertDialogBuilder
-                                    .setMessage("Do you want to SAVE role: " +
-                                            CVH.textViewName.getText() + " ?")
-                                    .setCancelable(false)
-                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            // update the permissions in the database
-
-                                            //EVH.createPermissions();
-                                            dialog.dismiss();
-                                            //notifyItemChanged(position);
-                                        }
-                                    })
-                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            // if this button is clicked, just close
-                                            dialog.cancel();
-                                        }
-                                    });
-
-                            // create alert dialog
-                            AlertDialog alertDialog = alertDialogBuilder.create();
-
-                            // show it
-                            alertDialog.show();
                         }
                     });
 
-                    /** icon for deleting a record **/
+                    /* icon for deleting a record */
                     CVH.textViewDeleteIcon.setTypeface(null, Typeface.NORMAL);
                     CVH.textViewDeleteIcon.setTypeface(
                             cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
@@ -469,49 +351,11 @@ public class cLogFrameAdapter extends cTreeAdapter {
                     CVH.textViewDeleteIcon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 
-                            // setting icon to dialog
-                            TextDrawable faIcon = new TextDrawable(context);
-                            faIcon.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
-                            faIcon.setTextAlign(Layout.Alignment.ALIGN_CENTER);
-                            faIcon.setTypeface(cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
-                            faIcon.setText(context.getResources().getText(R.string.fa_delete));
-                            faIcon.setTextColor(context.getColor(R.color.colorAccent));
-                            alertDialogBuilder.setIcon(faIcon);
-
-                            // set title
-                            alertDialogBuilder.setTitle("Remove Role.");
-                            // set dialog message
-                            alertDialogBuilder
-                                    .setMessage("Do you want to REMOVE role: " +
-                                            CVH.textViewName.getText() + " ?")
-                                    .setCancelable(false)
-                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            // update the permissions in the database
-                                            //EVH.createPermissions();
-                                            //permissionHandler.deletePermission()
-                                            dialog.dismiss();
-                                            //notifyItemChanged(position);
-                                        }
-                                    })
-                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            // if this button is clicked, just close
-                                            dialog.cancel();
-                                        }
-                                    });
-
-                            // create alert dialog
-                            AlertDialog alertDialog = alertDialogBuilder.create();
-
-                            // show it
-                            alertDialog.show();
                         }
                     });
 
-                    /** icon for syncing a record **/
+                    /* icon for syncing a record */
                     CVH.textViewSyncIcon.setTypeface(null, Typeface.NORMAL);
                     CVH.textViewSyncIcon.setTypeface(
                             cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
@@ -520,48 +364,11 @@ public class cLogFrameAdapter extends cTreeAdapter {
                     CVH.textViewSyncIcon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 
-                            // setting icon to dialog
-                            TextDrawable faIcon = new TextDrawable(context);
-                            faIcon.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
-                            faIcon.setTextAlign(Layout.Alignment.ALIGN_CENTER);
-                            faIcon.setTypeface(cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
-                            faIcon.setText(context.getResources().getText(R.string.fa_sync));
-                            faIcon.setTextColor(context.getColor(R.color.colorAccent));
-                            alertDialogBuilder.setIcon(faIcon);
-
-                            // set title
-                            alertDialogBuilder.setTitle("Sync Role.");
-                            // set dialog message
-                            alertDialogBuilder
-                                    .setMessage("Do you want to SYNCHRONISE role: " +
-                                            CVH.textViewName.getText() + " ?")
-                                    .setCancelable(false)
-                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            // update the permissions in the database
-                                            //EVH.createPermissions();
-                                            dialog.dismiss();
-                                            //notifyItemChanged(position);
-                                        }
-                                    })
-                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            // if this button is clicked, just close
-                                            dialog.cancel();
-                                        }
-                                    });
-
-                            // create alert dialog
-                            AlertDialog alertDialog = alertDialogBuilder.create();
-
-                            // show it
-                            alertDialog.show();
                         }
                     });
 
-                    /** icon for creating a record **/
+                    /* icon for creating a record */
                     CVH.textViewCreateIcon.setTypeface(null, Typeface.NORMAL);
                     CVH.textViewCreateIcon.setTypeface(
                             cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
@@ -570,132 +377,336 @@ public class cLogFrameAdapter extends cTreeAdapter {
                     CVH.textViewCreateIcon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 
-                            // setting icon to dialog
-                            TextDrawable faIcon = new TextDrawable(context);
-                            faIcon.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
-                            faIcon.setTextAlign(Layout.Alignment.ALIGN_CENTER);
-                            faIcon.setTypeface(cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
-                            faIcon.setText(context.getResources().getText(R.string.fa_create));
-                            faIcon.setTextColor(context.getColor(R.color.colorAccent));
-                            alertDialogBuilder.setIcon(faIcon);
-
-                            // set title
-                            alertDialogBuilder.setTitle("Create LogFrame.");
-                            // set dialog message
-                            alertDialogBuilder
-                                    .setMessage("Do you want to CREATE logframe: " +
-                                            CVH.textViewName.getText() + " ?")
-                                    .setCancelable(false)
-                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            // update the permissions in the database
-                                            //EVH.createPermissions();
-                                            dialog.dismiss();
-                                            //notifyItemChanged(position);
-                                        }
-                                    })
-                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            // if this button is clicked, just close
-                                            dialog.cancel();
-                                        }
-                                    });
-
-                            // create alert dialog
-                            AlertDialog alertDialog = alertDialogBuilder.create();
-
-                            // show it
-                            alertDialog.show();
                         }
                     });
 
+                    /* icon for creating a record */
+                    CVH.bmbMenu.clearBuilders();
+                    for (int i = 0; i < CVH.bmbMenu.getPiecePlaceEnum().pieceNumber(); i++) {
+                        cTextOutsideCircleButton.Builder builder = new cTextOutsideCircleButton
+                                .Builder()
+                                .isRound(false)
+                                .shadowCornerRadius(cUtil.dp2px(20))
+                                .buttonCornerRadius(cUtil.dp2px(20))
+                                .normalColor(Color.LTGRAY)
+                                .pieceColor(context.getColor(R.color.colorPrimaryDark))
+                                .normalImageRes(bmb_imageid[i])
+                                .normalText(bmb_caption[i])
+                                .listener(new OnBMClickListener() {
+                                    @Override
+                                    public void onBoomButtonClick(int index) {
+                                        /* when the boom-button is clicked. */
+                                        //CVH.logFrameListener.onClickBoomMenu(index);
+                                    }
+                                });
+                        CVH.bmbMenu.addBuilder(builder);
+                    }
+
+                    CVH.bmbMenu.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            CVH.bmbMenu.boom();
+                        }
+                    });
+
+                    /* setup the common details */
+                    CVH.setViewPager(childLogFrameModel);
                     break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + obj.getType());
             }
         }
     }
 
-    public static class cParentLogFrameViewHolder extends cTreeViewHolder {
-        private TextView textViewExpandLogFrameIcon;
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+
+                String charString = charSequence.toString();
+                Gson gson = new Gson();
+
+                if (charString.isEmpty()) {
+                    filteredTreeModels = treeModels;
+                } else {
+
+                    ArrayList<cTreeModel> filteredList = new ArrayList<>();
+                    for (cTreeModel treeModel : treeModels) {
+                        if (((cLogFrameModel)treeModel.getModelObject()).getName().toLowerCase().
+                                contains(charString.toLowerCase())) {
+                            filteredList.add(treeModel);
+                            Log.d(TAG, "treeModel = "+gson.toJson(((cLogFrameModel)treeModel.
+                                    getModelObject()).getName()));
+                        }
+                    }
+
+                    filteredTreeModels = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.count  = filteredTreeModels.size();
+                filterResults.values = filteredTreeModels;
+
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                filteredTreeModels = (ArrayList<cTreeModel>) filterResults.values;
+
+                Gson gson = new Gson();
+                Log.d(TAG, "treeModel result = "+gson.toJson(filteredTreeModels));
+                try {
+                    notifyTreeModelChanged(filteredTreeModels);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+    }
+
+    @Override
+    public void onClickBoomMenu(int index) {
+        logframePresenterView.onClickBoomMenu(index);
+    }
+
+    @Override
+    public void onClickCreateSubLogFrame(long logFrameID, cLogFrameModel logFrameModel) {
+        logframePresenterView.onClickCreateSubLogFrame(logFrameID, logFrameModel);
+    }
+
+    @Override
+    public void onClickUpdateLogFrame(int position, cLogFrameModel logFrameModel) {
+        logframePresenterView.onClickUpdateLogFrame(position, logFrameModel);
+    }
+
+    @Override
+    public void onClickDeleteLogFrame(int position, long logframeID) {
+        logframePresenterView.onClickDeleteLogFrame(position, logframeID);
+    }
+
+    @Override
+    public void onClickSyncLogFrame(int position, cLogFrameModel logFrameModel) {
+        logframePresenterView.onClickSyncLogFrame(logFrameModel);
+    }
+
+    public static class cParentLogFrameViewHolder extends cTreeViewHolder implements
+            iViewPagerHeightListener {
+        private CardView cardView;
         private cExpandableLayout expandableLayout;
 
-        //private TextView textViewCount;
-        private cBoomMenuButton bmb;
+        private AppCompatTextView textViewExpandIcon;
+        private AppCompatTextView textViewOrganization;
+        private AppCompatTextView textViewName;
+        private AppCompatTextView textViewDescription;
+        private AppCompatTextView textViewStartDate;
+        private AppCompatTextView textViewEndDate;
 
-        private TextView textViewName;
-        private TextView textViewDescription;
+        private cBoomMenuButton bmbMenu;
+        private AppCompatTextView textViewSyncIcon;
+        private AppCompatTextView textViewDeleteIcon;
+        private AppCompatTextView textViewUpdateIcon;
+        private AppCompatTextView textViewCreateIcon;
+        private AppCompatTextView textViewDetailIcon;
 
-        private TextView textViewDetailIcon;
-        private TextView textViewSyncIcon;
-        private TextView textViewDeleteIcon;
-        private TextView textViewUpdateIcon;
-        private TextView textViewCreateIcon;
+        private cCustomViewPager viewPager;
+        private TabLayout tabLayout;
 
         private View treeView;
+        private cCommonFragmentAdapter commonFragmentAdapter;
+        private iRecyclerViewLogFrameListener logFrameListener;
 
-        public cParentLogFrameViewHolder(final View treeViewHolder) {
+        private cParentLogFrameViewHolder(final View treeViewHolder,
+                                         cCommonFragmentAdapter commonFragmentAdapter,
+                                         iRecyclerViewLogFrameListener recyclerViewLogFrame) {
             super(treeViewHolder);
-            treeView = treeViewHolder;
 
-            this.textViewExpandLogFrameIcon = (TextView)
-                    treeViewHolder.findViewById(R.id.textViewExpandLogFrameIcon);
-            this.expandableLayout = (cExpandableLayout)
-                    treeViewHolder.findViewById(R.id.expandableLayout);
+            this.treeView = treeViewHolder;
+            this.commonFragmentAdapter = commonFragmentAdapter;
+            this.logFrameListener = recyclerViewLogFrame;
 
-            //this.textViewCount = (TextView) treeViewHolder.findViewById(R.id.textViewCount);
-            this.bmb = (cBoomMenuButton) treeViewHolder.findViewById(R.id.bmb);
+            this.cardView = treeViewHolder.findViewById(R.id.cardView);
+            this.expandableLayout = treeViewHolder.findViewById(R.id.expandableLayout);
+            this.textViewExpandIcon = treeViewHolder.findViewById(R.id.textViewExpandIcon);
+            this.bmbMenu = treeViewHolder.findViewById(R.id.bmbMenu);
+            this.textViewOrganization = treeViewHolder.findViewById(R.id.textViewOrganization);
+            this.textViewName = treeViewHolder.findViewById(R.id.textViewName);
+            this.textViewDescription = treeViewHolder.findViewById(R.id.textViewDescription);
+            this.textViewStartDate = treeViewHolder.findViewById(R.id.textViewStartDate);
+            this.textViewEndDate = treeViewHolder.findViewById(R.id.textViewEndDate);
+            this.textViewDetailIcon = treeViewHolder.findViewById(R.id.textViewDetailIcon);
+            this.textViewSyncIcon = treeViewHolder.findViewById(R.id.textViewSyncIcon);
+            this.textViewDeleteIcon = treeViewHolder.findViewById(R.id.textViewDeleteIcon);
+            this.textViewUpdateIcon = treeViewHolder.findViewById(R.id.textViewUpdateIcon);
+            this.textViewCreateIcon = treeViewHolder.findViewById(R.id.textViewCreateIcon);
+            this.viewPager = treeViewHolder.findViewById(R.id.viewPager);
 
-            this.textViewName = (TextView) treeViewHolder.findViewById(R.id.textViewName);
-            this.textViewDescription =
-                    (TextView) treeViewHolder.findViewById(R.id.textViewDescription);
-            this.textViewDetailIcon = (TextView) treeViewHolder.findViewById(R.id.textViewDetailIcon);
-            this.textViewSyncIcon = (TextView) treeViewHolder.findViewById(R.id.textViewSyncIcon);
-            this.textViewDeleteIcon = (TextView) treeViewHolder.findViewById(R.id.textViewDeleteIcon);
-            this.textViewUpdateIcon = (TextView) treeViewHolder.findViewById(R.id.textViewUpdateIcon);
-            this.textViewCreateIcon = (TextView) treeViewHolder.findViewById(R.id.textViewCreateIcon);
+            this.tabLayout = treeViewHolder.findViewById(R.id.tabLayout);
+
+            /*set the listener to the cCustomViewPager */
+            this.viewPager.setOnCustomViewListener(this);
+
+            /* forces the viewpager to create four fragments when loading */
+            this.viewPager.setOffscreenPageLimit(4);
+
+            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+            tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
+
+            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    //onSelectedFragment(position);
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+
+            this.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    //viewPager.setCurrentItem(tab.getPosition());
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
+
         }
 
         public void setPaddingLeft(int paddingLeft) {
             treeView.setPadding(paddingLeft, 0, 0, 0);
+        }
+
+        private void setViewPager(cLogFrameModel logFrameModel) {
+            /* pass data to the adapter */
+            Gson gson = new Gson();
+            this.commonFragmentAdapter.readCommonAttributes(logFrameModel.getOwnerID(),
+                    logFrameModel.getOrgID(), logFrameModel.getGroupBITS(),
+                    logFrameModel.getPermsBITS(), logFrameModel.getStatusBITS(),
+                    gson.toJson(logFrameModel.getCreatedDate()).replace("\"", ""),
+                    gson.toJson(logFrameModel.getModifiedDate()).replace("\"", ""),
+                    gson.toJson(logFrameModel.getSyncedDate()).replace("\"", ""));
+
+            /* bind the adapter to the viewPager */
+            this.viewPager.setAdapter(this.commonFragmentAdapter);
+
+            /* attached the pager to the tabLayer */
+            this.tabLayout.setupWithViewPager(this.viewPager);
+        }
+
+        public void onViewPagerHeightUpdate(int height) {
+            this.expandableLayout.onUpdateHeight(height);
         }
     }
 
-    public static class cChildLogFrameViewHolder extends cTreeViewHolder {
+    public static class cChildLogFrameViewHolder extends cTreeViewHolder implements
+            iViewPagerHeightListener{
+        private CardView cardView;
         private cExpandableLayout expandableLayout;
 
-        private cBoomMenuButton bmb;
+        private AppCompatTextView textViewExpandIcon;
+        private AppCompatTextView textViewOrgCaption;
+        private AppCompatTextView textViewOrganization;
+        private AppCompatTextView textViewName;
+        private AppCompatTextView textViewDescription;
+        private AppCompatTextView textViewStartDate;
+        private AppCompatTextView textViewEndDate;
 
-        private TextView textViewName;
-        private TextView textViewDescription;
+        private AppCompatTextView textViewDetailIcon;
+        private cBoomMenuButton bmbMenu;
+        private AppCompatTextView textViewSyncIcon;
+        private AppCompatTextView textViewDeleteIcon;
+        private AppCompatTextView textViewUpdateIcon;
+        private AppCompatTextView textViewCreateIcon;
 
-        private TextView textViewDetailIcon;
-        private TextView textViewSyncIcon;
-        private TextView textViewDeleteIcon;
-        private TextView textViewUpdateIcon;
-        private TextView textViewCreateIcon;
+        private cCustomViewPager viewPager;
+        private TabLayout tabLayout;
 
         private View treeView;
+        private cCommonFragmentAdapter commonFragmentAdapter;
+        private iRecyclerViewLogFrameListener logFrameListener;
 
-        public cChildLogFrameViewHolder(View treeViewHolder) {
+        private cChildLogFrameViewHolder(View treeViewHolder,
+                                         cCommonFragmentAdapter commonFragmentAdapter,
+                                         iRecyclerViewLogFrameListener recyclerViewLogFrame) {
             super(treeViewHolder);
             treeView = treeViewHolder;
+            this.commonFragmentAdapter = commonFragmentAdapter;
+            this.logFrameListener = recyclerViewLogFrame;
 
-            this.expandableLayout = (cExpandableLayout)
-                    treeViewHolder.findViewById(R.id.expandableLayout);
-            this.bmb = (cBoomMenuButton) treeViewHolder.findViewById(R.id.bmb);
-            this.textViewName = (TextView) treeViewHolder.findViewById(R.id.textViewName);
-            this.textViewDescription =
-                    (TextView) treeViewHolder.findViewById(R.id.textViewDescription);
-            this.textViewDetailIcon = (TextView) treeViewHolder.findViewById(R.id.textViewDetailIcon);
-            this.textViewSyncIcon = (TextView) treeViewHolder.findViewById(R.id.textViewSyncIcon);
-            this.textViewDeleteIcon = (TextView) treeViewHolder.findViewById(R.id.textViewDeleteIcon);
-            this.textViewUpdateIcon = (TextView) treeViewHolder.findViewById(R.id.textViewUpdateIcon);
-            this.textViewCreateIcon = (TextView) treeViewHolder.findViewById(R.id.textViewCreateIcon);
+            this.cardView = treeViewHolder.findViewById(R.id.cardView);
+            this.expandableLayout = treeViewHolder.findViewById(R.id.expandableLayout);
+            this.textViewExpandIcon = treeViewHolder.findViewById(R.id.textViewExpandIcon);
+            this.bmbMenu = treeViewHolder.findViewById(R.id.bmbMenu);
+            this.textViewOrgCaption = treeViewHolder.findViewById(R.id.textViewOrgCaption);
+            this.textViewOrganization = treeViewHolder.findViewById(R.id.textViewOrganization);
+            this.textViewName = treeViewHolder.findViewById(R.id.textViewName);
+            this.textViewDescription = treeViewHolder.findViewById(R.id.textViewDescription);
+            this.textViewStartDate = treeViewHolder.findViewById(R.id.textViewStartDate);
+            this.textViewEndDate = treeViewHolder.findViewById(R.id.textViewEndDate);
+            this.textViewDetailIcon = treeViewHolder.findViewById(R.id.textViewDetailIcon);
+            this.textViewSyncIcon = treeViewHolder.findViewById(R.id.textViewSyncIcon);
+            this.textViewDeleteIcon = treeViewHolder.findViewById(R.id.textViewDeleteIcon);
+            this.textViewUpdateIcon = treeViewHolder.findViewById(R.id.textViewUpdateIcon);
+            this.textViewCreateIcon = treeViewHolder.findViewById(R.id.textViewCreateIcon);
+
+            /* view pager for common attributes */
+            this.viewPager = treeViewHolder.findViewById(R.id.viewPager);
+
+            /* tab layout for common attributes */
+            this.tabLayout = treeViewHolder.findViewById(R.id.tabLayout);
+
+            /*set the listener to the cCustomViewPager */
+            this.viewPager.setOnCustomViewListener(this);
+
+            /* forces the viewpager to create four fragments when loading */
+            this.viewPager.setOffscreenPageLimit(4);
+
+            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+            tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
+        }
+
+        private void setViewPager(cLogFrameModel logFrameModel) {
+            /* pass data to the adapter */
+            Gson gson = new Gson();
+            this.commonFragmentAdapter.readCommonAttributes(logFrameModel.getOwnerID(),
+                    logFrameModel.getOrgID(), logFrameModel.getGroupBITS(),
+                    logFrameModel.getPermsBITS(), logFrameModel.getStatusBITS(),
+                    gson.toJson(logFrameModel.getCreatedDate()).replace("\"", ""),
+                    gson.toJson(logFrameModel.getModifiedDate()).replace("\"", ""),
+                    gson.toJson(logFrameModel.getSyncedDate()).replace("\"", ""));
+
+            /* bind the adapter to the viewPager */
+            this.viewPager.setAdapter(this.commonFragmentAdapter);
+
+            /* attached the pager to the tabLayer */
+            this.tabLayout.setupWithViewPager(this.viewPager);
         }
 
         public void setPaddingLeft(int paddingLeft) {
             treeView.setPadding(paddingLeft, 0, 0, 0);
+        }
+
+        @Override
+        public void onViewPagerHeightUpdate(int height) {
+            this.expandableLayout.onUpdateHeight(height);
         }
     }
 }

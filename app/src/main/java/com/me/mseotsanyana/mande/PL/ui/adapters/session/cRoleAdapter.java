@@ -34,7 +34,7 @@ import com.me.mseotsanyana.mande.UTIL.TextDrawable;
 import com.me.mseotsanyana.mande.UTIL.cFontManager;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cKeyPairBoolData;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cMultiSpinnerSearch;
-import com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch;
+import com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch_old;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cSpinnerListener;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cTableSpinner;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cTableSpinnerListener;
@@ -750,10 +750,10 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
         private cExpandableLayout expandableLayout;
         private TextView textViewExpandRoleIcon;
 
-        private cSingleSpinnerSearch singleSpinnerSearchOwner;
+        private cSingleSpinnerSearch_old singleSpinnerSearchOwner;
         private AppCompatTextView appCompatTextViewOwner;
 
-        private cSingleSpinnerSearch singleSpinnerSearchOrg;
+        private cSingleSpinnerSearch_old singleSpinnerSearchOrg;
         private cMultiSpinnerSearch multiSpinnerSearchOtherOrg;
         private cTableSpinner tableSpinner;
         private cMultiSpinnerSearch multiSpinnerSearchStatuses;
@@ -783,10 +783,10 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
 
             /* common attributes */
             this.singleSpinnerSearchOwner =
-                    (cSingleSpinnerSearch) treeViewHolder.findViewById(R.id.appCompatSpinnerOwner);
+                    (cSingleSpinnerSearch_old) treeViewHolder.findViewById(R.id.appCompatSpinnerOwner);
             this.appCompatTextViewOwner = (AppCompatTextView)treeViewHolder.findViewById(R.id.appCompatTextViewOwner);
             this.singleSpinnerSearchOrg =
-                    (cSingleSpinnerSearch) treeViewHolder.findViewById(R.id.appCompatSpinnerOrg);
+                    (cSingleSpinnerSearch_old) treeViewHolder.findViewById(R.id.appCompatSpinnerOrg);
             this.multiSpinnerSearchOtherOrg =
                     (cMultiSpinnerSearch) treeViewHolder.findViewById(R.id.appCompatSpinnerOtherOrg);
             this.tableSpinner =

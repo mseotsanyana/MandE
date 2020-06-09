@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.me.mseotsanyana.mande.BLL.domain.logframe.cLogFrameDomain;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cActivityModel;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cImpactModel;
 import com.me.mseotsanyana.mande.DAL.model.monitor.cIndicatorModel;
@@ -21,6 +20,7 @@ import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iLogFrameRepository;
 import com.me.mseotsanyana.mande.DAL.storage.excel.cExcelHelper;
 import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
+import com.me.mseotsanyana.mande.DAL.ìmpl.session.cOrganizationRepositoryImpl;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
 
 import org.apache.poi.ss.usermodel.Row;
@@ -30,22 +30,27 @@ import org.apache.poi.ss.usermodel.Workbook;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 public class cLogFrameRepositoryImpl implements iLogFrameRepository {
-    private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
+    private static SimpleDateFormat sdf = cConstant.TIMESTAMP_FORMAT_DATE;
     private static String TAG = cLogFrameRepositoryImpl.class.getSimpleName();
 
     /* an object of the database helper */
     private cSQLDBHelper dbHelper;
+
     /* an object of the excel helper */
     private cExcelHelper excelHelper;
+
+    private cOrganizationRepositoryImpl organizationRepository;
 
     public cLogFrameRepositoryImpl(Context context) {
         dbHelper = new cSQLDBHelper(context);
         excelHelper = new cExcelHelper(context);
+        organizationRepository = new cOrganizationRepositoryImpl(context);
     }
 
     /* ######################################## CREATE ACTIONS ########################################*/
@@ -139,7 +144,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
         return true;
     }
 
-    public boolean addLogFrameTree(int parentID, int childID) {
+    public boolean addLogFrameTree(long parentID, long childID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -159,7 +164,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
     /**
      * this function adds the logframe (i.e., project) details
      */
-    public boolean addLogFrame(cLogFrameDomain logFrameDomain) {
+    public boolean createLogFrameModel(cLogFrameModel logFrameModel) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -167,22 +172,13 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, logFrameDomain.getLogFrameID());
-        cv.put(cSQLDBHelper.KEY_SERVER_ID, logFrameDomain.getServerID());
-        cv.put(cSQLDBHelper.KEY_OWNER_ID, logFrameDomain.getOwnerID());
-        cv.put(cSQLDBHelper.KEY_ORG_ID, logFrameDomain.getOrgID());
-        cv.put(cSQLDBHelper.KEY_GROUP_BITS, logFrameDomain.getGroupBITS());
-        cv.put(cSQLDBHelper.KEY_PERMS_BITS, logFrameDomain.getPermsBITS());
-        cv.put(cSQLDBHelper.KEY_STATUS_BITS, logFrameDomain.getStatusBITS());
-        cv.put(cSQLDBHelper.KEY_NAME, logFrameDomain.getName());
-        cv.put(cSQLDBHelper.KEY_DESCRIPTION, logFrameDomain.getDescription());
-        cv.put(cSQLDBHelper.KEY_START_DATE, sdf.format(logFrameDomain.getStartDate()));
-        cv.put(cSQLDBHelper.KEY_END_DATE, sdf.format(logFrameDomain.getEndDate()));
-        cv.put(cSQLDBHelper.KEY_CREATED_DATE, sdf.format(logFrameDomain.getCreatedDate()));
-        cv.put(cSQLDBHelper.KEY_MODIFIED_DATE, sdf.format(logFrameDomain.getModifiedDate()));
-        cv.put(cSQLDBHelper.KEY_SYNCED_DATE, sdf.format(logFrameDomain.getSyncedDate()));
+        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, logFrameModel.getOrganizationID());
+        cv.put(cSQLDBHelper.KEY_NAME, logFrameModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, logFrameModel.getDescription());
+        cv.put(cSQLDBHelper.KEY_START_DATE, sdf.format(logFrameModel.getStartDate()));
+        cv.put(cSQLDBHelper.KEY_END_DATE, sdf.format(logFrameModel.getEndDate()));
 
-        // insert project details
+        // insert logframe details
         try {
             if (db.insert(cSQLDBHelper.TABLE_tblLOGFRAME, null, cv) < 0) {
                 return false;
@@ -197,6 +193,43 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
         return true;
     }
 
+    @Override
+    public boolean createSubLogFrameModel(long logParentFrameID, cLogFrameModel logSubFrameModel) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // create content object for storing data
+        ContentValues cv = new ContentValues();
+
+        // assign values to the table fields
+        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, logSubFrameModel.getOrganizationID());
+        cv.put(cSQLDBHelper.KEY_NAME, logSubFrameModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, logSubFrameModel.getDescription());
+        cv.put(cSQLDBHelper.KEY_START_DATE, sdf.format(logSubFrameModel.getStartDate()));
+        cv.put(cSQLDBHelper.KEY_END_DATE, sdf.format(logSubFrameModel.getEndDate()));
+
+        // insert logframe details
+        try {
+            long childLOgFrameID = db.insert(cSQLDBHelper.TABLE_tblLOGFRAME, null, cv);
+            if (childLOgFrameID < 0) {
+                return false;
+            }
+
+            // add subLogFrame
+            if (!addLogFrameTree(logParentFrameID, childLOgFrameID)){
+                return false;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in adding sub logframe " + e.getMessage());
+        }
+
+        // close the database connection
+        db.close();
+
+        return true;
+    }
+
+
     /*####################################### READ ACTIONS #######################################*/
 
     public Set<cLogFrameModel> getLogFrameModelSet(int userID, int primaryRoleBITS,
@@ -206,8 +239,10 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String selectQuery =    " SELECT DISTINCT " +
+        String selectQuery = " SELECT " +
                 "logframe." + cSQLDBHelper.KEY_ID + ", " +
+                "logframe_tree." + cSQLDBHelper.KEY_PARENT_FK_ID + ", " +
+                "logframe_tree." + cSQLDBHelper.KEY_CHILD_FK_ID + ", " +
                 "logframe." + cSQLDBHelper.KEY_ORGANIZATION_FK_ID + ", " +
                 "logframe." + cSQLDBHelper.KEY_SERVER_ID + ", " +
                 "logframe." + cSQLDBHelper.KEY_OWNER_ID + ", " +
@@ -222,10 +257,10 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                 "logframe." + cSQLDBHelper.KEY_CREATED_DATE + ", " +
                 "logframe." + cSQLDBHelper.KEY_MODIFIED_DATE + ", " +
                 "logframe." + cSQLDBHelper.KEY_SYNCED_DATE +
-                " FROM " + cSQLDBHelper.TABLE_tblLOGFRAME + " logframe, " +
-                cSQLDBHelper.TABLE_tblLOGFRAMETREE + " logframe_tree " +
-                " WHERE ((logframe." + cSQLDBHelper.KEY_ID + " = logframe_tree." +
-                cSQLDBHelper.KEY_PARENT_FK_ID +") AND " +
+                " FROM " + cSQLDBHelper.TABLE_tblLOGFRAME + " logframe " +
+                " LEFT JOIN " + cSQLDBHelper.TABLE_tblLOGFRAMETREE + " logframe_tree " +
+                " ON logframe."+cSQLDBHelper.KEY_ID + " = logframe_tree."+cSQLDBHelper.KEY_CHILD_FK_ID +
+                " WHERE ("+
                 /* read access permissions */
                 /* organization creator is always allowed to do everything (i.e., where: userID = orgID) */
                 " ((logframe." + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
@@ -256,6 +291,10 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
 
                     logFrameModel.setLogFrameID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    logFrameModel.setLogFrameParentID(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
+                    logFrameModel.setOrganizationID(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
                     logFrameModel.setServerID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
                     logFrameModel.setOwnerID(
@@ -275,7 +314,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                     logFrameModel.setStartDate(Timestamp.valueOf(
                             cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
                     logFrameModel.setEndDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+                           cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
                     logFrameModel.setCreatedDate(Timestamp.valueOf(
                             cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
                     logFrameModel.setModifiedDate(Timestamp.valueOf(
@@ -284,6 +323,10 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                             cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     int logFrameID = logFrameModel.getLogFrameID();
+                    int organizationID = logFrameModel.getOrganizationID();
+
+                    logFrameModel.setOrganizationModel(organizationRepository.getOrganizationByID(
+                            organizationID));
 
                     /* populate child log-frames */
                     logFrameModel.setLogFrameModelSet(getLogFrameModelSetByID(logFrameID, userID,
@@ -326,7 +369,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
-            Log.d(TAG, "Error in reading " + e.getMessage());
+            Log.d(TAG, "Error in reading : " + e.getMessage());
         } finally {
             if (cursor != null && !cursor.isClosed()) {
                 cursor.close();
@@ -1481,19 +1524,70 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
 
     /* ######################################## UPDATE ACTIONS ########################################*/
 
+    public boolean updateLogFrameModel(cLogFrameModel logFrameModel){
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // create content object for storing data
+        ContentValues cv = new ContentValues();
+
+        Date date= new Date();
+        Timestamp timestamp = new Timestamp(date.getTime());
+
+        // assign values to the table fields
+        cv.put(cSQLDBHelper.KEY_ID, logFrameModel.getLogFrameID());
+        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, logFrameModel.getOrganizationID());
+        cv.put(cSQLDBHelper.KEY_NAME, logFrameModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, logFrameModel.getDescription());
+        cv.put(cSQLDBHelper.KEY_START_DATE, sdf.format(logFrameModel.getStartDate()));
+        cv.put(cSQLDBHelper.KEY_END_DATE, sdf.format(logFrameModel.getEndDate()));
+
+        // update a specific record
+        long result = db.update(cSQLDBHelper.TABLE_tblLOGFRAME, cv,
+                        cSQLDBHelper.KEY_ID + "= ?",
+                new String[]{String.valueOf(logFrameModel.getLogFrameID())});
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
     /* ######################################## DELETE ACTIONS ########################################*/
 
     /*
      * the function delate a specific logframe
      */
-    public boolean deleteLogFrame(cLogFrameModel logFrameModel) {
+    public boolean deleteLogFrame(long logFrameID) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // delete a record of a specific ID
         try {
             if (db.delete(cSQLDBHelper.TABLE_tblLOGFRAME, cSQLDBHelper.KEY_ID + " = ?",
-                    new String[]{String.valueOf(logFrameModel.getLogFrameID())}) < 0) {
+                    new String[]{String.valueOf(logFrameID)}) < 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in deleting " + e.getMessage().toString());
+        }
+
+        // close the database connection
+        db.close();
+
+        return true;
+    }
+
+
+    @Override
+    public boolean deleteSubLogFrame(long logSubFrameID) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete a record of a specific ID
+        try {
+            if (db.delete(cSQLDBHelper.TABLE_tblLOGFRAME, cSQLDBHelper.KEY_ID + " = ?",
+                    new String[]{String.valueOf(logSubFrameID)}) < 0) {
                 return false;
             }
         } catch (Exception e) {

@@ -69,13 +69,13 @@ public class cRegisterFragment extends Fragment implements View.OnClickListener{
 
         //btn_register.setOnClickListener(this);
         //tv_login.setOnClickListener(this);
-        bottomNavigationView = (BottomNavigationView) view.findViewById(R.id.bottom_navigation);
-        bottomNavigationView.getMenu().getItem(1).setChecked(true);
+        //bottomNavigationView = (BottomNavigationView) view.findViewById(R.id.bottom_navigation);
+        //bottomNavigationView.getMenu().getItem(1).setChecked(true);
 
-        cUtil.setIcon(getContext(),bottomNavigationView, 1);
-        cUtil.disableShiftMode(bottomNavigationView);
+        //cUtil.setIcon(getContext(),bottomNavigationView, 1);
+        //cUtil.disableShiftMode(bottomNavigationView);
 
-        setupBottomNavigation();
+        //setupBottomNavigation();
     }
 
 
@@ -146,7 +146,7 @@ public class cRegisterFragment extends Fragment implements View.OnClickListener{
             }
         });
     }
-
+/*
     private void setupBottomNavigation() {
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -168,7 +168,7 @@ public class cRegisterFragment extends Fragment implements View.OnClickListener{
             }
         });
     }
-
+*/
     /**
      * Method to push any fragment into given id.
      *

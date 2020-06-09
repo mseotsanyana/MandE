@@ -1,11 +1,14 @@
 package com.me.mseotsanyana.mande.DAL.model.session;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 
-public class cOrganizationModel implements Serializable {
+public class cOrganizationModel implements Parcelable {
     private int organizationID;
     private int serverID;
     private int ownerID;
@@ -50,6 +53,35 @@ public class cOrganizationModel implements Serializable {
         this.setModifiedDate(organizationModel.getModifiedDate());
         this.setSyncedDate(organizationModel.getSyncedDate());
     }
+
+    protected cOrganizationModel(Parcel in) {
+        organizationID = in.readInt();
+        serverID = in.readInt();
+        ownerID = in.readInt();
+        orgID = in.readInt();
+        groupBITS = in.readInt();
+        permsBITS = in.readInt();
+        statusBITS = in.readInt();
+        name = in.readString();
+        phone = in.readString();
+        fax = in.readString();
+        vision = in.readString();
+        mission = in.readString();
+        email = in.readString();
+        website = in.readString();
+    }
+
+    public static final Creator<cOrganizationModel> CREATOR = new Creator<cOrganizationModel>() {
+        @Override
+        public cOrganizationModel createFromParcel(Parcel in) {
+            return new cOrganizationModel(in);
+        }
+
+        @Override
+        public cOrganizationModel[] newArray(int size) {
+            return new cOrganizationModel[size];
+        }
+    };
 
     public int getOrganizationID() {
         return organizationID;
@@ -254,5 +286,28 @@ public class cOrganizationModel implements Serializable {
                 getFax(), getVision(), getMission(), getEmail(), getWebsite(),
                 getCreatedDate(), getModifiedDate(), getSyncedDate(), getUserModelSet(),
                 getRoleModelSet(), getValueModelSet(), getAddressModelSet());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(organizationID);
+        parcel.writeInt(serverID);
+        parcel.writeInt(ownerID);
+        parcel.writeInt(orgID);
+        parcel.writeInt(groupBITS);
+        parcel.writeInt(permsBITS);
+        parcel.writeInt(statusBITS);
+        parcel.writeString(name);
+        parcel.writeString(phone);
+        parcel.writeString(fax);
+        parcel.writeString(vision);
+        parcel.writeString(mission);
+        parcel.writeString(email);
+        parcel.writeString(website);
     }
 }

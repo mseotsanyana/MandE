@@ -71,7 +71,7 @@
 
                 <!-- bmb menu a logframe -->
                 <com.me.mseotsanyana.bmblibrary.cBoomMenuButton
-                    android:id="@+id/bmb"
+                    android:id="@+id/bmbMenu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/textViewDescription"
@@ -90,7 +90,7 @@
                     android:layout_below="@id/textViewDescription"
                     android:layout_marginTop="18dp"
                     android:layout_marginRight="5dp"
-                    android:layout_toLeftOf="@+id/bmb"
+                    android:layout_toLeftOf="@+id/bmbMenu"
                     android:background="@drawable/me_btn_flexible"
                     android:textSize="@dimen/text_size_large"
                     android:textStyle="bold" />

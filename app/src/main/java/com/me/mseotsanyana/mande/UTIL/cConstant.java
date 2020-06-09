@@ -30,6 +30,8 @@ public class cConstant {
             "dd MMMM, yyyy hh:mm:ss a", Locale.US);
     public static final SimpleDateFormat SHORT_FORMAT_DATE = new SimpleDateFormat(
             "dd-MM-yyyy", Locale.US);
+    public static final SimpleDateFormat TIMESTAMP_FORMAT_DATE = new SimpleDateFormat(
+            "yyyy-MM-dd HH:mm:ss", Locale.US);
 
     public static final String BASE_URL = "http://10.0.2.2/";
     public static final String REGISTER_OPERATION = "register";

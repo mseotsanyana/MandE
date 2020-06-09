@@ -68,13 +68,13 @@ public class cJoinFragment extends Fragment implements View.OnClickListener {
         //tv_name.setText("Welcome : "+pref.getString(cConstant.KEY_NAME,""));
         //tv_email.setText(pref.getString(cConstant.KEY_EMAIL,""));
 
-        bottomNavigationView = (BottomNavigationView) view.findViewById(R.id.bottom_navigation);
-        bottomNavigationView.getMenu().getItem(2).setChecked(true);
+        //bottomNavigationView = (BottomNavigationView) view.findViewById(R.id.bottom_navigation);
+        //bottomNavigationView.getMenu().getItem(2).setChecked(true);
 
-        cUtil.setIcon(getContext(),bottomNavigationView, 2);
-        cUtil.disableShiftMode(bottomNavigationView);
+        //cUtil.setIcon(getContext(),bottomNavigationView, 2);
+        //cUtil.disableShiftMode(bottomNavigationView);
 
-        setupBottomNavigation();
+        //setupBottomNavigation();
     }
 
     private void initViews(View view){
@@ -212,7 +212,7 @@ public class cJoinFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
-
+/*
     private void setupBottomNavigation() {
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -234,7 +234,7 @@ public class cJoinFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
-
+*/
     /**
      * Method to push any fragment into given id.
      *

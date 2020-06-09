@@ -1,13 +1,23 @@
 package com.me.mseotsanyana.mande.PL.ui.fragments.logframe;
 
+import android.app.SearchManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +28,7 @@ import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Created by mseotsanyana on 2016/12/04.
@@ -25,32 +36,25 @@ import java.util.ArrayList;
 
 public class cOutcomeFragment extends Fragment {
 
-    private cOutcomeInterator outcomeHandler;
-    private cOutcomeDomain outcomeDomain;
+    private Toolbar toolBar;
 
-    private RecyclerView recyclerView;
-    private cOutcomeAdapter outcomeAdapter;
+    cOutcomeFragment(){
 
-    private int cardPosition = 0;
-    private int level = 0;
+    }
 
-    public static cOutcomeFragment newInstance(ArrayList<cTreeModel> outcomeModel) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("OUTCOMETREE", outcomeModel);
+    public cOutcomeFragment newInstance() {
         cOutcomeFragment fragment = new cOutcomeFragment();
-        fragment.setArguments(bundle);
-
         return fragment;
     }
 
     /*
-    * this event fires 1st, before creation of fragment or any views
-    * the onAttach method is called when the Fragment instance is
-    * associated with an Activity and this does not mean the activity
-    * is fully initialized.
-    */
+     * this event fires 1st, before creation of fragment or any views
+     * the onAttach method is called when the Fragment instance is
+     * associated with an Activity and this does not mean the activity
+     * is fully initialized.
+     */
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
     }
 
@@ -63,13 +67,7 @@ public class cOutcomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // getting a action_list with all projects in a database
-        outcomeHandler = new cOutcomeInterator(getActivity());
-
-        ArrayList<cTreeModel> outcomeTreeData = getArguments().getParcelableArrayList("OUTCOMETREE");
-
-        outcomeAdapter = new cOutcomeAdapter(getActivity(), outcomeTreeData, level);
-
+        setHasOptionsMenu(true);
     }
 
     /**
@@ -78,9 +76,7 @@ public class cOutcomeFragment extends Fragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        // Register the event to subscribe.
-        //-cGlobalBus.getBus().register(this);
-        return inflater.inflate(R.layout.outcome_fragment_recycleview, parent, false);
+        return inflater.inflate(R.layout.outcome_list_fragment, parent, false);
     }
 
     /**
@@ -89,38 +85,88 @@ public class cOutcomeFragment extends Fragment {
      * view lookups and attaching view listeners.
      */
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        // instantiate and initialize the action_list
-        recyclerView = (RecyclerView)view.findViewById(R.id.outcome_recycleview_id);
-        recyclerView.setHasFixedSize(true);
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
 
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-
-        // populate the action_list with data from database
-        recyclerView.setAdapter(outcomeAdapter);
-
-        recyclerView.setLayoutManager(llm);
-
-        // initialise the floating action button (FAB)
         initFab(view);
+
+        // initialize the toolbar
+        toolBar = view.findViewById(R.id.me_toolbar);
+        toolBar.setTitle(R.string.outcome_list_title);
+        toolBar.setTitleTextColor(Color.WHITE);
+
+        ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(toolBar);
     }
 
     // initialise the floating action button
     private void initFab(View view) {
-        view.findViewById(R.id.outcome_fab).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.impactDraggableFAB).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fragmentManager = getFragmentManager();
-                /*-addProjectFragment.setStyle(DialogFragment.STYLE_NORMAL,R.style.CustomDialog);
-                addProjectFragment.setCancelable(false);
-                //addProjectFragment.show(fragmentManager,"fragment_add_project");
-                //Snackbar.make(getView(), "FAB Clicked", Snackbar.LENGTH_SHORT).show();
 
-                addProjectFragment.setTargetFragment(cProjectFragment.this, 0);
-                addProjectFragment.show(fragmentManager,"fragment_add_project");
-                -*/
             }
         });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+
+        toolBar.inflateMenu(R.menu.me_toolbar_menu);
+        Menu toolBarMenu = toolBar.getMenu();
+
+        //MenuItem toolBarMenuItem = toolBarMenu.findItem(R.id.homeItem);
+
+        toolBar.setOnMenuItemClickListener(
+                new Toolbar.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        return onOptionsItemSelected(item);
+                    }
+                });
+
+        SearchManager searchManager = (SearchManager) Objects.requireNonNull(getActivity()).
+                getSystemService(Context.SEARCH_SERVICE);
+
+        SearchView searchView = (SearchView) toolBarMenu.findItem(R.id.searchItem).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+
+        search(searchView);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.homeItem:
+                //pushFragment(cLogFrameFragment.newInstance());
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void search(SearchView searchView) {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                //userAdapter.getFilter().filter(query);
+                return false;
+            }
+        });
+    }
+
+    protected void pushFragment(Fragment fragment) {
+        if (fragment == null)
+            return;
+
+        assert getFragmentManager() != null;
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_frame, fragment);
+        ft.commit();
     }
 }

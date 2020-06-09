@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.appcompat.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/status_cardview_id"
@@ -38,7 +37,7 @@
             android:layout_toLeftOf="@id/textViewDetailIcon"
             android:layout_centerVertical="true" />
 
-        <!-- Rightend Arrow -->
+        <!-- Right end arrow -->
         <TextView
             android:id="@+id/textViewDetailIcon"
             android:padding="10dp"

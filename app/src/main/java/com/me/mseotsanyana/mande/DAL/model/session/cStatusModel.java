@@ -1,5 +1,8 @@
 package com.me.mseotsanyana.mande.DAL.model.session;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -7,7 +10,7 @@ import java.util.Objects;
  * Created by mseotsanyana on 2017/08/24.
  */
 
-public class cStatusModel {
+public class cStatusModel implements Parcelable {
     private int statusID;
     private int serverID;
     private int ownerID;
@@ -20,6 +23,8 @@ public class cStatusModel {
     private Date createdDate;
     private Date modifiedDate;
     private Date syncedDate;
+
+    private boolean state;
 
     public cStatusModel(){}
 
@@ -36,6 +41,19 @@ public class cStatusModel {
         this.setCreatedDate(statusModel.getCreatedDate());
         this.setModifiedDate(statusModel.getModifiedDate());
         this.setSyncedDate(statusModel.getSyncedDate());
+    }
+
+    protected cStatusModel(Parcel in) {
+        statusID = in.readInt();
+        serverID = in.readInt();
+        ownerID = in.readInt();
+        orgID = in.readInt();
+        groupBITS = in.readInt();
+        permsBITS = in.readInt();
+        statusBITS = in.readInt();
+        name = in.readString();
+        description = in.readString();
+        state = in.readByte() != 0;
     }
 
     public int getStatusID() {
@@ -134,6 +152,14 @@ public class cStatusModel {
         this.syncedDate = syncedDate;
     }
 
+    public boolean isState() {
+        return state;
+    }
+
+    public void setState(boolean state) {
+        this.state = state;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -159,5 +185,36 @@ public class cStatusModel {
                 getOrgID(), getGroupBITS(), getPermsBITS(), getStatusBITS(),
                 getName(), getDescription(), getCreatedDate(), getModifiedDate(),
                 getSyncedDate());
+    }
+
+    public static final Creator<cStatusModel> CREATOR = new Creator<cStatusModel>() {
+        @Override
+        public cStatusModel createFromParcel(Parcel in) {
+            return new cStatusModel(in);
+        }
+
+        @Override
+        public cStatusModel[] newArray(int size) {
+            return new cStatusModel[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(statusID);
+        parcel.writeInt(serverID);
+        parcel.writeInt(ownerID);
+        parcel.writeInt(orgID);
+        parcel.writeInt(groupBITS);
+        parcel.writeInt(permsBITS);
+        parcel.writeInt(statusBITS);
+        parcel.writeString(name);
+        parcel.writeString(description);
+        parcel.writeByte((byte) (state ? 1 : 0));
     }
 }

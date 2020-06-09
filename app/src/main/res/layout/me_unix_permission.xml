@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TableLayout
+        android:id="@+id/tableLayoutPermission"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="3dp"
+        android:shrinkColumns="*"
+        android:stretchColumns="*">
+
+        <TableRow
+            android:id="@+id/tableRowOperations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textViewEmpty"
+                android:text=" "
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:id="@+id/textViewCreate"
+                android:text="@string/Create"
+                android:textStyle="bold"
+                android:typeface="serif" />
+
+            <TextView
+                android:id="@+id/textViewRead"
+                android:text="@string/Read"
+                android:textStyle="bold"
+                android:typeface="serif" />
+
+            <TextView
+                android:id="@+id/textViewUpdate"
+                android:text="@string/Update"
+                android:textStyle="bold"
+                android:typeface="serif" />
+
+            <TextView
+                android:id="@+id/textViewDelete"
+                android:text="@string/Delete"
+                android:textStyle="bold"
+                android:typeface="serif" />
+
+            <TextView
+                android:id="@+id/textViewSynchronize"
+                android:text="@string/Sync"
+                android:textStyle="bold"
+                android:typeface="serif" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRowOwner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textViewOwner"
+                android:text="@string/Owner"
+                android:textStyle="bold"
+                android:layout_gravity="center" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkBoxOwnerCreate"
+                android:layout_gravity="center" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkBoxOwnerRead"
+                android:layout_gravity="center" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkBoxOwnerUpdate"
+                android:layout_gravity="center" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkBoxOwnerDelete"
+                android:layout_gravity="center" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkBoxOwnerSync"
+                android:layout_gravity="center" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRowGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textViewGroup"
+                android:text="@string/Group"
+                android:textStyle="bold"
+                android:layout_gravity="center"/>
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkBoxGroupCreate"
+                android:layout_gravity="center"/>
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkBoxGroupRead"
+                android:layout_gravity="center" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkBoxGroupUpdate"
+                android:layout_gravity="center" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkBoxGroupDelete"
+                android:layout_gravity="center" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkBoxGroupSync"
+                android:layout_gravity="center" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRowOther"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textViewOther"
+                android:text="@string/Other"
+                android:textStyle="bold"
+                android:layout_gravity="center" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkBoxOtherCreate"
+                android:layout_gravity="center" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkBoxOtherRead"
+                android:layout_gravity="center" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkBoxOtherUpdate"
+                android:layout_gravity="center" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkBoxOtherDelete"
+                android:layout_gravity="center" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkBoxOtherSync"
+                android:layout_gravity="center" />
+
+        </TableRow>
+
+    </TableLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

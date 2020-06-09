@@ -84,50 +84,6 @@ public class cSettingsFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-        //session = new cSessionManager(getContext());
-
-        presenterSession = new cUploadSessionPresenterImpl(
-                cThreadExecutorImpl.getInstance(),
-                cMainThreadImpl.getInstance(),
-                this,
-                new cUploadSessionRepositoryImpl(getContext()));
-
-        presenterGlobal = new cUploadGlobalPresenterImpl(
-                cThreadExecutorImpl.getInstance(),
-                cMainThreadImpl.getInstance(),
-                this,
-                new cUploadGlobalRepositoryImpl(getContext()));
-
-        presenterLogFrame = new cUploadLogFramePresenterImpl(
-                cThreadExecutorImpl.getInstance(),
-                cMainThreadImpl.getInstance(),
-                this,
-                new cUploadLogFrameRepositoryImpl(getContext()));
-
-        presenterEvaluation = new cUploadEvaluationPresenterImpl(
-                cThreadExecutorImpl.getInstance(),
-                cMainThreadImpl.getInstance(),
-                this,
-                new cUploadEvaluationRepositoryImpl(getContext()));
-
-        presenterMonitoring = new cUploadMonitoringPresenterImpl(
-                cThreadExecutorImpl.getInstance(),
-                cMainThreadImpl.getInstance(),
-                this,
-                new cUploadMonitoringRepositoryImpl(getContext()));
-
-        presenterRAID = new cUploadRAIDPresenterImpl(
-                cThreadExecutorImpl.getInstance(),
-                cMainThreadImpl.getInstance(),
-                this,
-                new cUploadRAIDRepositoryImpl(getContext()));
-
-        presenterAWPB = new cUploadAWPBPresenterImpl(
-                cThreadExecutorImpl.getInstance(),
-                cMainThreadImpl.getInstance(),
-                this,
-                new cUploadAWPBRepositoryImpl(getContext()));
     }
 
     @Nullable
@@ -145,6 +101,13 @@ public class cSettingsFragment extends Fragment implements
         appCompatButtonGlobal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                presenterGlobal = new cUploadGlobalPresenterImpl(
+                        cThreadExecutorImpl.getInstance(),
+                        cMainThreadImpl.getInstance(),
+                        cSettingsFragment.this,
+                        new cUploadGlobalRepositoryImpl(getContext()));
+
                 presenterGlobal.uploadGlobalFromExcel();            }
         });
 
@@ -153,7 +116,12 @@ public class cSettingsFragment extends Fragment implements
         appCompatButtonBRBAC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //new cUploadSessionData(getContext(), session).execute();
+                presenterSession = new cUploadSessionPresenterImpl(
+                        cThreadExecutorImpl.getInstance(),
+                        cMainThreadImpl.getInstance(),
+                        cSettingsFragment.this,
+                        new cUploadSessionRepositoryImpl(getContext()));
+
                 presenterSession.uploadSessionFromExcel();
             }
         });
@@ -163,7 +131,12 @@ public class cSettingsFragment extends Fragment implements
         appCompatButtonLogFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //showProgress();
+                presenterLogFrame = new cUploadLogFramePresenterImpl(
+                        cThreadExecutorImpl.getInstance(),
+                        cMainThreadImpl.getInstance(),
+                        cSettingsFragment.this,
+                        new cUploadLogFrameRepositoryImpl(getContext()));
+
                 presenterLogFrame.uploadLogFrameFromExcel();
             }
         });
@@ -173,7 +146,12 @@ public class cSettingsFragment extends Fragment implements
         appCompatButtonEvaluation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //showProgress();
+                presenterEvaluation = new cUploadEvaluationPresenterImpl(
+                        cThreadExecutorImpl.getInstance(),
+                        cMainThreadImpl.getInstance(),
+                        cSettingsFragment.this,
+                        new cUploadEvaluationRepositoryImpl(getContext()));
+
                 presenterEvaluation.uploadEvaluationFromExcel();
             }
         });
@@ -183,7 +161,12 @@ public class cSettingsFragment extends Fragment implements
         appCompatButtonMonitoring.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //showProgress();
+                presenterMonitoring = new cUploadMonitoringPresenterImpl(
+                        cThreadExecutorImpl.getInstance(),
+                        cMainThreadImpl.getInstance(),
+                        cSettingsFragment.this,
+                        new cUploadMonitoringRepositoryImpl(getContext()));
+
                 presenterMonitoring.uploadMonitoringFromExcel();
             }
         });
@@ -193,7 +176,12 @@ public class cSettingsFragment extends Fragment implements
         appCompatButtonRAID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //showProgress();
+                presenterRAID = new cUploadRAIDPresenterImpl(
+                        cThreadExecutorImpl.getInstance(),
+                        cMainThreadImpl.getInstance(),
+                        cSettingsFragment.this,
+                        new cUploadRAIDRepositoryImpl(getContext()));
+
                 presenterRAID.uploadRAIDFromExcel();
             }
         });
@@ -203,21 +191,26 @@ public class cSettingsFragment extends Fragment implements
         appCompatButtonAWPB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //showProgress();
+                presenterAWPB = new cUploadAWPBPresenterImpl(
+                        cThreadExecutorImpl.getInstance(),
+                        cMainThreadImpl.getInstance(),
+                        cSettingsFragment.this,
+                        new cUploadAWPBRepositoryImpl(getContext()));
+
                 presenterAWPB.uploadAWPBFromExcel();
             }
         });
 
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         /* the view responsible for bottom navigation menu */
-        bottomNavigationView = (BottomNavigationView) view.findViewById(R.id.bottom_navigation);
-        bottomNavigationView.getMenu().getItem(3).setChecked(true);
+        //bottomNavigationView = (BottomNavigationView) view.findViewById(R.id.bottom_navigation);
+        //bottomNavigationView.getMenu().getItem(3).setChecked(true);
 
-        cUtil.setIcon(getContext(), bottomNavigationView, 3);
-        cUtil.disableShiftMode(bottomNavigationView);
-        setupBottomNavigation();
+        //cUtil.setIcon(getContext(), bottomNavigationView, 3);
+        //cUtil.disableShiftMode(bottomNavigationView);
+        //setupBottomNavigation();
     }
-
+/*
     private void setupBottomNavigation() {
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -239,7 +232,7 @@ public class cSettingsFragment extends Fragment implements
             }
         });
     }
-
+*/
     /**
      * Preferences
      * Method to push any fragment into given id.

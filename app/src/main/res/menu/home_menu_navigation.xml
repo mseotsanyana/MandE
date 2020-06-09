@@ -2,16 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_login"
-        android:title="@string/text_login">
-    </item>
+        android:icon="@drawable/ic_home_home_black_24dp"
+        android:title="@string/text_login" />
 
     <item
         android:id="@+id/action_create"
+        android:icon="@drawable/ic_home_register_black_24dp"
         android:title="@string/text_create" />
+
     <item
         android:id="@+id/action_join"
+        android:icon="@drawable/ic_home_join_black_24dp"
         android:title="@string/text_join" />
+
     <item
         android:id="@+id/action_settings"
+        android:icon="@drawable/ic_home_help_black_24dp"
         android:title="@string/text_settings" />
 </menu>

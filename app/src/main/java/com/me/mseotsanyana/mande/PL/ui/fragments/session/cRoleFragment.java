@@ -29,7 +29,7 @@ import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
 import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cOrganizationHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cRoleDomain;
 import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.status.Impl.cStatusHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.status.Impl.cStatusInteractorImpl;
 import com.me.mseotsanyana.mande.PL.ui.adapters.session.cRoleAdapter;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iPermissionInterface;
 import com.me.mseotsanyana.mande.R;
@@ -37,7 +37,7 @@ import com.me.mseotsanyana.mande.UTIL.TextDrawable;
 import com.me.mseotsanyana.mande.UTIL.cFontManager;
 import com.me.mseotsanyana.mande.UTIL.cParam;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cKeyPairBoolData;
-import com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch;
+import com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch_old;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cSpinnerListener;
 import com.me.mseotsanyana.treeadapterlibrary.cNode;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
@@ -64,7 +64,7 @@ public class cRoleFragment extends Fragment implements iPermissionInterface {
 
     private cOrganizationHandler organizationHandler;
     //private cUserRoleHandler userRoleHandler;
-    private cStatusHandler statusHandler;
+    private cStatusInteractorImpl statusHandler;
 
     private cRoleDomain roleDomain;
     private RecyclerView recyclerView;
@@ -114,7 +114,7 @@ public class cRoleFragment extends Fragment implements iPermissionInterface {
         // getting a action_list with all projects in a database
         organizationHandler = new cOrganizationHandler(getActivity());
         //userRoleHandler = new cUserRoleHandler(getActivity(), session);
-        statusHandler   = new cStatusHandler(getActivity());
+        statusHandler   = null;//new cStatusInteractorImpl(getActivity());
 
         roleUserTreeAdapter = new cRoleAdapter(getActivity(),
                 roleUserTree, statusDomains, level, this);
@@ -201,8 +201,8 @@ public class cRoleFragment extends Fragment implements iPermissionInterface {
                 }
 
                 // -1 is no by default selection, 0 to length will select corresponding values
-                cSingleSpinnerSearch singleSpinnerSearchOrg =
-                        (cSingleSpinnerSearch) formElementsView.findViewById(R.id.appCompatSpinnerOrg);
+                cSingleSpinnerSearch_old singleSpinnerSearchOrg =
+                        (cSingleSpinnerSearch_old) formElementsView.findViewById(R.id.appCompatSpinnerOrg);
                 // called when click organization single spinner search
                 singleSpinnerSearchOrg.setItems(keyPairBoolOrgs, -1, new cSpinnerListener() {
                     @Override
@@ -293,7 +293,7 @@ public class cRoleFragment extends Fragment implements iPermissionInterface {
                 */
 
                 statusDomains.clear();
-                statusDomains.addAll(statusHandler.getStatusList());
+                //statusDomains.addAll(statusHandler.getStatusList());
 
                 return null;
             }

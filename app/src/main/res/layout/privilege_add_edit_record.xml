@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-    <com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch
+    <com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch_old
         android:id="@+id/appCompatSpinnerRole"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TableLayout
+        android:id="@+id/tableLayoutDates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:stretchColumns="1">
+
+        <TableRow
+            android:id="@+id/tableRowCreated"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewCreatedDateCaption"
+                android:layout_height="wrap_content"
+                android:text="@string/createdOn"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_small_medium"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewCreatedDate"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_small_medium"
+                android:layout_marginStart="4dp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRowModified"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewModifiedDateCaption"
+                android:layout_height="wrap_content"
+                android:text="@string/modifiedOn"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_small_medium"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewModifiedDate"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_small_medium"
+                android:layout_marginStart="4dp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRowSynced"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewSyncedDateCaption"
+                android:layout_height="wrap_content"
+                android:text="@string/syncedOn"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_small_medium"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewSyncedDate"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_small_medium"
+                android:layout_marginStart="4dp"/>
+        </TableRow>
+    </TableLayout>
+</com.google.android.material.card.MaterialCardView>
+    <!--
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_row">
+
+        - create date caption -
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewCreatedDateCaption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_size_small"
+            android:textStyle="bold"
+            android:text="created on:"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        - create date -
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewCreatedDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="8dp"
+            android:textSize="@dimen/text_size_small_medium"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewCreatedDateCaption" />
+
+        - modified date caption -
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewModifiedDateCaption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_size_small"
+            android:textStyle="bold"
+            android:text="modified on:"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewCreatedDate" />
+
+        - modified date
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewModifiedDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="8dp"
+            android:textSize="@dimen/text_size_small_medium"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewModifiedDateCaption" />
+
+        - synced date caption
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewSyncedDateCaption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_size_small"
+            android:textStyle="bold"
+            android:text="synced on:"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewModifiedDate" />
+
+        - synced date -
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewSyncedDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="8dp"
+            android:textSize="@dimen/text_size_small_medium"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewSyncedDateCaption" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+-->

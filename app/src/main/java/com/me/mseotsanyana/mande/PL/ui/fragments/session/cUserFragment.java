@@ -25,7 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.status.Impl.cStatusHandler;
+import com.me.mseotsanyana.mande.BLL.interactors.session.status.Impl.cStatusInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.domain.session.cUserDomain;
 import com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserHandler;
 import com.me.mseotsanyana.mande.PL.ui.adapters.session.cUserAdapter;
@@ -53,7 +53,7 @@ public class cUserFragment extends Fragment implements iMEEntityInterface {
     private cUserDomain userDomain;
 
     private cUserHandler userHandler;
-    private cStatusHandler statusHandler;
+    private cStatusInteractorImpl statusHandler;
 
     private cUserAdapter userAdapter;
 
@@ -95,7 +95,7 @@ public class cUserFragment extends Fragment implements iMEEntityInterface {
         this.userDomain = new cUserDomain();
 
         this.userHandler = new cUserHandler(getActivity(),  this);
-        this.statusHandler = new cStatusHandler(getActivity());
+        this.statusHandler = null;//new cStatusInteractorImpl(getActivity());
 
         this.userAdapter = new cUserAdapter(getActivity(),
                 listUsers, statusDomains, this);
@@ -187,7 +187,7 @@ public class cUserFragment extends Fragment implements iMEEntityInterface {
                         param[0].getSecondaryRoles()));
 
                 statusDomains.clear();
-                statusDomains.addAll(statusHandler.getStatusList());
+                //statusDomains.addAll(statusHandler.getStatusList());
                 return null;
             }
 

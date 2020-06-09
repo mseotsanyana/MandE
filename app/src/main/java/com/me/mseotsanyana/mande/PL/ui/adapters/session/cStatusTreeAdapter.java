@@ -37,7 +37,7 @@ import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.cFontManager;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cKeyPairBoolData;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cMultiSpinnerSearch;
-import com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch;
+import com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch_old;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cSpinnerListener;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cTableSpinner;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cTableSpinnerListener;
@@ -225,7 +225,7 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
     }
 
     /**
-     * ViewHolder class
+     * cViewHolder class
      */
     public class cStatusViewHolder extends RecyclerView.ViewHolder {
         public TextView textViewStatusName;
@@ -380,8 +380,8 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
             keyPairBoolUsers.add(idNameBool);
         }
         // -1 is no by default selection, 0 to length will select corresponding values
-        cSingleSpinnerSearch singleSpinnerSearchOwner =
-                (cSingleSpinnerSearch) inflatedView.findViewById(R.id.appCompatSpinnerOwner);
+        cSingleSpinnerSearch_old singleSpinnerSearchOwner =
+                (cSingleSpinnerSearch_old) inflatedView.findViewById(R.id.appCompatSpinnerOwner);
         // called when click owner single spinner search
         singleSpinnerSearchOwner.setItems(keyPairBoolUsers, -1, new cSpinnerListener() {
             @Override
@@ -411,8 +411,8 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
             keyPairBoolOrgs.add(idNameBool);
         }
         // -1 is no by default selection, 0 to length will select corresponding values
-        cSingleSpinnerSearch singleSpinnerSearchOrg =
-                (cSingleSpinnerSearch) inflatedView.findViewById(R.id.appCompatSpinnerOrg);
+        cSingleSpinnerSearch_old singleSpinnerSearchOrg =
+                (cSingleSpinnerSearch_old) inflatedView.findViewById(R.id.appCompatSpinnerOrg);
         // called when click organization single spinner search
         singleSpinnerSearchOrg.setItems(keyPairBoolOrgs, -1, new cSpinnerListener() {
             @Override

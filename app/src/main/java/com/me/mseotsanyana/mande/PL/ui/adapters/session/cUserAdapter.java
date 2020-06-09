@@ -38,7 +38,7 @@ import com.me.mseotsanyana.mande.UTIL.cFontManager;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cKeyPairBoolData;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cMultiSpinnerSearch;
-import com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch;
+import com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch_old;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cSpinnerListener;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cTableSpinner;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cTableSpinnerListener;
@@ -744,7 +744,7 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
     }
 
     /**
-     * ViewHolder class
+     * cViewHolder class
      */
     public class cUserViewHolder extends RecyclerView.ViewHolder{
         private CircleImageView textViewUserNameIcon;
@@ -775,10 +775,10 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
         private TextView textViewDeleteUserIcon;
         private TextView textViewEditUserIcon;
 
-        private cSingleSpinnerSearch singleSpinnerSearchOwner;
+        private cSingleSpinnerSearch_old singleSpinnerSearchOwner;
         private AppCompatTextView appCompatTextViewOwner;
 
-        private cSingleSpinnerSearch singleSpinnerSearchOrg;
+        private cSingleSpinnerSearch_old singleSpinnerSearchOrg;
         private cMultiSpinnerSearch multiSpinnerSearchOtherOrg;
         private cTableSpinner tableSpinner;
         private cMultiSpinnerSearch multiSpinnerSearchStatuses;
@@ -824,10 +824,10 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
             this.textViewEditUserIcon = (TextView) view.findViewById(R.id.textViewEditUserIcon);
 
             this.singleSpinnerSearchOwner =
-                    (cSingleSpinnerSearch) view.findViewById(R.id.appCompatSpinnerOwner);
+                    (cSingleSpinnerSearch_old) view.findViewById(R.id.appCompatSpinnerOwner);
             this.appCompatTextViewOwner = (AppCompatTextView)view.findViewById(R.id.appCompatTextViewOwner);
             this.singleSpinnerSearchOrg =
-                    (cSingleSpinnerSearch) view.findViewById(R.id.appCompatSpinnerOrg);
+                    (cSingleSpinnerSearch_old) view.findViewById(R.id.appCompatSpinnerOrg);
             this.multiSpinnerSearchOtherOrg =
                     (cMultiSpinnerSearch) view.findViewById(R.id.appCompatSpinnerOtherOrg);
             this.tableSpinner =

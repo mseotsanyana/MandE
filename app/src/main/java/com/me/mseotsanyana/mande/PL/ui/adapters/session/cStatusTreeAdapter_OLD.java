@@ -219,7 +219,7 @@ public class cStatusTreeAdapter_OLD extends RecyclerView.Adapter<cStatusTreeAdap
     }
 
     /**
-     * ViewHolder class
+     * cViewHolder class
      */
     public class cStatusViewHolder extends RecyclerView.ViewHolder {
         public TextView textViewStatusName;

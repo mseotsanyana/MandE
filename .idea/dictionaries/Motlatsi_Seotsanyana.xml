@@ -20,11 +20,13 @@
       <w>datacollector</w>
       <w>dateresponse</w>
       <w>dependecy</w>
+      <w>enddate</w>
       <w>entitytype</w>
       <w>eresponse</w>
       <w>evaluationcriteria</w>
       <w>evaluationtype</w>
       <w>fiscalyear</w>
+      <w>fliter</w>
       <w>funder</w>
       <w>funders</w>
       <w>generalledger</w>
@@ -38,6 +40,7 @@
       <w>logframe</w>
       <w>logframes</w>
       <w>logframetree</w>
+      <w>mande</w>
       <w>matrixchoice</w>
       <w>matrixchoiceset</w>
       <w>matrixresponse</w>
@@ -48,6 +51,7 @@
       <w>mseotsanyana</w>
       <w>numericresponse</w>
       <w>opbits</w>
+      <w>orgs</w>
       <w>prbits</w>
       <w>precedingactivity</w>
       <w>precedingtask</w>
@@ -80,12 +84,15 @@
       <w>rootcause</w>
       <w>rowoption</w>
       <w>srbits</w>
+      <w>ssdf</w>
+      <w>startdate</w>
       <w>statusset</w>
       <w>stbits</w>
       <w>taskassignment</w>
       <w>textresponse</w>
       <w>timesheet</w>
       <w>timesheets</w>
+      <w>tsdf</w>
       <w>usercomment</w>
       <w>usermodel</w>
       <w>workplan</w>

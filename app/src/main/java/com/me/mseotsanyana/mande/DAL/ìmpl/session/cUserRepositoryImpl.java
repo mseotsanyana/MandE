@@ -36,20 +36,20 @@ public class cUserRepositoryImpl implements iUserRepository {
     // an object of the database helper
     private cSQLDBHelper dbHelper;
 
-    private SharedPreferences settings;
-    private cSharedPreference sharedPreference;
-    SharedPreferences.Editor editor;
+    //private SharedPreferences settings;
+    //private cSharedPreference sharedPreference;
+    //SharedPreferences.Editor editor;
 
-    private int primaryRoleBITS, secondaryRoleBITS, entityBITS, operationBITS, statusBITS;
+    //private int primaryRoleBITS, secondaryRoleBITS, entityBITS, operationBITS, statusBITS;
 
-    private Gson gson;
+    //private Gson gson;
 
     public cUserRepositoryImpl(Context context) {
         dbHelper = new cSQLDBHelper(context);
-        sharedPreference = new cSharedPreference(context);
-        gson = new Gson();
-        settings = sharedPreference.getSettings();
-        editor = sharedPreference.getEditor();
+        //sharedPreference = new cSharedPreference(context);
+        //gson = new Gson();
+        //settings = sharedPreference.getSettings();
+        //editor = sharedPreference.getEditor();
     }
 
     /* ############################################# CREATE ACTIONS ############################################# */
@@ -343,6 +343,67 @@ public class cUserRepositoryImpl implements iUserRepository {
 
         return userModelList;
     }
+
+    public Set<cUserModel> getOwnerSet() {
+
+        Set<cUserModel> userModels = new HashSet<>();
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String selectQuery = "SELECT * FROM " + cSQLDBHelper.TABLE_tblUSER;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    cUserModel user = new cUserModel();
+
+                    user.setUserID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    user.setOrganizationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
+                    user.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+                    user.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    user.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+                    user.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    user.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    user.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    user.setPhoto(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PHOTO)));
+                    user.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    user.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SURNAME)));
+                    user.setGender(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_GENDER)));
+                    user.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    user.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_EMAIL)));
+                    user.setWebsite(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_WEBSITE)));
+                    user.setPhone(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PHONE)));
+                    user.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PASSWORD)));
+                    user.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SALT)));
+                    user.setCreatedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    user.setModifiedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    user.setSyncedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+
+
+                    userModels.add(user);
+
+
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.d(TAG, e.getMessage() + " Error while trying to get users from database");
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+
+        // close the database connection
+        db.close();
+
+        return userModels;
+    }
+
 
     public cOrganizationModel getOrganizationByID(int organizationID) {
         // open connection to read only

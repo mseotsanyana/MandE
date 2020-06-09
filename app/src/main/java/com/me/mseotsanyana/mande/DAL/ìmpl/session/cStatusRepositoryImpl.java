@@ -6,19 +6,23 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.me.mseotsanyana.mande.BLL.repository.session.iStatusRepository;
 import com.me.mseotsanyana.mande.DAL.model.session.cStatusModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by mseotsanyana on 2017/08/24.
  */
 
-public class cStatusRepositoryImpl {
+public class cStatusRepositoryImpl implements iStatusRepository {
     private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
     private static String TAG = cStatusRepositoryImpl.class.getSimpleName();
 
@@ -130,6 +134,62 @@ public class cStatusRepositoryImpl {
         db.close();
 
         return status;
+    }
+
+    public Set<cStatusModel> getStatusSet() {
+
+        Set<cStatusModel> statusModelSet = new HashSet<>();
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ cSQLDBHelper.TABLE_tblSTATUS, null);
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    cStatusModel statusModel = new cStatusModel();
+
+                    statusModel.setStatusID(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    statusModel.setServerID(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+                    statusModel.setOwnerID(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                    statusModel.setOrgID(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+                    statusModel.setGroupBITS(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                    statusModel.setPermsBITS(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                    statusModel.setStatusBITS(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                    statusModel.setName(
+                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                    statusModel.setDescription(
+                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    statusModel.setCreatedDate(Timestamp.valueOf(
+                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                    statusModel.setModifiedDate(Timestamp.valueOf(
+                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    statusModel.setSyncedDate(Timestamp.valueOf(
+                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+
+                    // set of statuses of a status set
+                    statusModelSet.add(statusModel);
+
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Error while reading: "+e.getMessage());
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+
+        // close the database connection
+        db.close();
+
+        return statusModelSet;
     }
 
     public List<cStatusModel> getStatusList() {

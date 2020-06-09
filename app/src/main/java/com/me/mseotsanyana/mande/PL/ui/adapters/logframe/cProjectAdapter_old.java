@@ -11,8 +11,8 @@ import android.util.SparseBooleanArray;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout;
-import com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cAddProjectFragment;
-import com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cProjectFragment;
+import com.me.mseotsanyana.mande.PL.ui.fragments.report.cAddProjectFragment;
+import com.me.mseotsanyana.mande.PL.ui.fragments.report.cProjectFragment;
 import com.me.mseotsanyana.mande.UTIL.BLL.cProjectDomain;
 import com.me.mseotsanyana.mande.R;
 

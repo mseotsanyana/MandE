@@ -1,6 +1,5 @@
 package com.me.mseotsanyana.mande.BLL.repository.logframe;
 
-import com.me.mseotsanyana.mande.BLL.domain.logframe.cLogFrameDomain;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cActivityModel;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cImpactModel;
 import com.me.mseotsanyana.mande.DAL.model.monitor.cIndicatorModel;
@@ -12,12 +11,15 @@ import com.me.mseotsanyana.mande.DAL.model.logframe.cQuestionModel;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cRaidModel;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Set;
 
 public interface iLogFrameRepository {
     /* the create function of the LogFrame entity */
     boolean addLogFrameFromExcel();
-    boolean addLogFrame(cLogFrameDomain logFrameDomain);
+    boolean createLogFrameModel(cLogFrameModel logFrameModel);
+    boolean createSubLogFrameModel(long logFrameID, cLogFrameModel logFrameModel);
+    boolean updateLogFrameModel(cLogFrameModel logFrameModel);
 
     /* the read functions of the LogFrame entity */
     Set<cLogFrameModel> getLogFrameModelSet(int userID, int primaryRoleBITS,
@@ -43,7 +45,8 @@ public interface iLogFrameRepository {
     ArrayList<cQuestionModel> getQuestionsByID(int logFrameID);
     ArrayList<cIndicatorModel> getIndicatorsByID(int logFrameID);
     ArrayList<cRaidModel> getRaidsByID(int logFrameID);
-    boolean deleteLogFrame(cLogFrameModel logFrameModel);
+    boolean deleteLogFrame(long logFrameID);
+    boolean deleteSubLogFrame(long logFrameID);
     boolean deleteLogFrames();
 
     /* emit a set of logFrames */

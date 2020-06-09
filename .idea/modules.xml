@@ -3,10 +3,13 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MandE.iml" filepath="$PROJECT_DIR$/MandE.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Libraries/annotations/annotations.iml" filepath="$PROJECT_DIR$/../Libraries/annotations/annotations.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/../Libraries/bmblibrary/bmblibrary.iml" filepath="$PROJECT_DIR$/../Libraries/bmblibrary/bmblibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Libraries/compilers/compilers.iml" filepath="$PROJECT_DIR$/../Libraries/compilers/compilers.iml" />
       <module fileurl="file://$PROJECT_DIR$/../Libraries/expandablelayoutlibrary/expandablelayoutlibrary.iml" filepath="$PROJECT_DIR$/../Libraries/expandablelayoutlibrary/expandablelayoutlibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/../Libraries/multiselectspinnerlibrary/multiselectspinnerlibrary.iml" filepath="$PROJECT_DIR$/../Libraries/multiselectspinnerlibrary/multiselectspinnerlibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Libraries/placeholderviewlibrary/placeholderviewlibrary.iml" filepath="$PROJECT_DIR$/../Libraries/placeholderviewlibrary/placeholderviewlibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/../Libraries/quickactionlibrary/quickactionlibrary.iml" filepath="$PROJECT_DIR$/../Libraries/quickactionlibrary/quickactionlibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/../Libraries/treeadapterlibrary/treeadapterlibrary.iml" filepath="$PROJECT_DIR$/../Libraries/treeadapterlibrary/treeadapterlibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/../Libraries/validatorlibrary/validatorlibrary.iml" filepath="$PROJECT_DIR$/../Libraries/validatorlibrary/validatorlibrary.iml" />

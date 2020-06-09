@@ -792,6 +792,68 @@ public class cRoleRepositoryImpl implements iRoleRepository {
         return role;
     }
 
+
+    public Set<cRoleModel> getRoleModelSet() {
+
+        Set<cRoleModel> roleModelSet = new HashSet<>();
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String selectQuery = "SELECT * FROM "+ cSQLDBHelper.TABLE_tblROLE;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    cRoleModel role = new cRoleModel();
+
+                    role.setRoleID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    role.setOrganizationID(cursor.getInt(cursor.getColumnIndex(
+                            cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
+                    role.setServerID(cursor.getInt(cursor.getColumnIndex(
+                            cSQLDBHelper.KEY_SERVER_ID)));
+                    role.setOwnerID(cursor.getInt(cursor.getColumnIndex(
+                            cSQLDBHelper.KEY_OWNER_ID)));
+                    role.setOrgID(cursor.getInt(cursor.getColumnIndex(
+                            cSQLDBHelper.KEY_ORG_ID)));
+                    role.setGroupBITS(cursor.getInt(cursor.getColumnIndex(
+                            cSQLDBHelper.KEY_GROUP_BITS)));
+                    role.setPermsBITS(cursor.getInt(cursor.getColumnIndex(
+                            cSQLDBHelper.KEY_PERMS_BITS)));
+                    role.setStatusBITS(cursor.getInt(cursor.getColumnIndex(
+                            cSQLDBHelper.KEY_STATUS_BITS)));
+                    role.setName(cursor.getString(cursor.getColumnIndex(
+                            cSQLDBHelper.KEY_NAME)));
+                    role.setDescription(cursor.getString(cursor.getColumnIndex(
+                            cSQLDBHelper.KEY_DESCRIPTION)));
+                    role.setCreatedDate(Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(
+                            cSQLDBHelper.KEY_CREATED_DATE))));
+                    role.setModifiedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(
+                                    cSQLDBHelper.KEY_MODIFIED_DATE))));
+                    role.setSyncedDate(
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(
+                                    cSQLDBHelper.KEY_SYNCED_DATE))));
+
+                    roleModelSet.add(role);
+
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "ERROR READING ROLE SET:- "+e.getMessage());
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+
+        // close the database connection
+        db.close();
+
+        return roleModelSet;
+    }
+
     /* ############################################# UPDATE ACTIONS ############################################# */
 
     public boolean updateRole(cRoleModel roleModel, int organizationID){

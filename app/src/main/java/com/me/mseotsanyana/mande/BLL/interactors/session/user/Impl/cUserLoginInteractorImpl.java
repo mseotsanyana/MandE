@@ -7,12 +7,15 @@ import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.session.user.iUserLoginInteractor;
+import com.me.mseotsanyana.mande.BLL.repository.session.iOrganizationRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iRoleRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iStatusRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iUserRepository;
 import com.me.mseotsanyana.mande.DAL.model.session.cPermissionModel;
 import com.me.mseotsanyana.mande.DAL.model.session.cRoleModel;
 import com.me.mseotsanyana.mande.DAL.model.session.cUserModel;
+import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +25,9 @@ public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUs
 
     private Callback callback;
     private iUserRepository userRepository;
+    private iOrganizationRepository organizationRepository;
     private iRoleRepository roleRepository;
+    private iStatusRepository statusRepository;
     private iSessionManagerRepository sessionManagerRepository;
 
     private String email, password;
@@ -30,9 +35,11 @@ public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUs
     Gson gson = new Gson();
 
     public cUserLoginInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,
-                                    iSessionManagerRepository sessionManagerRepository,
                                     iUserRepository userRepository,
+                                    iOrganizationRepository organizationRepository,
                                     iRoleRepository roleRepository,
+                                    iStatusRepository statusRepository,
+                                    iSessionManagerRepository sessionManagerRepository,
                                     Callback callback,
                                     String email, String password) {
         super(threadExecutor, mainThread);
@@ -42,7 +49,9 @@ public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUs
         }
         this.sessionManagerRepository = sessionManagerRepository;
         this.userRepository = userRepository;
+        this.organizationRepository = organizationRepository;
         this.roleRepository = roleRepository;
+        this.statusRepository = statusRepository;
         this.callback = callback;
 
         this.email = email;
@@ -80,11 +89,18 @@ public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUs
                 /* delete all shared preferences */
                 sessionManagerRepository.deleteSettings();
 
-                /* compute and save primary role bits for the user */
+                /* save user/owner ID */
+                sessionManagerRepository.saveUserID(userModel.getUserID());
+                /* save owner organization ID */
+                sessionManagerRepository.saveOrganizationID(userModel.getOrganizationID());
+                /* compute and save user primary role bits */
                 sessionManagerRepository.savePrimaryRoleBITS(userModel);
-
-                /* compute and save secondary role bits for the user */
+                /* compute and save user secondary role bits */
                 sessionManagerRepository.saveSecondaryRoleBITS(userModel);
+                /* save default permission bits */
+                sessionManagerRepository.saveDefaultPermsBITS(cBitwise.OWNER);
+                /* set default status bits */
+                sessionManagerRepository.saveDefaultStatusBITS(cBitwise.ACTIVATED);
 
                 /* compute and save entity, operation and statuses bits for the user */
                 Set<cPermissionModel> permissionModelSet = new HashSet<>();
@@ -96,6 +112,14 @@ public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUs
 
                 if (!permissionModelSet.isEmpty()) {
                     sessionManagerRepository.savePermissionBITS(permissionModelSet);
+                    /* compute and save the status and role sets */
+                    sessionManagerRepository.saveStatusSet(statusRepository.getStatusSet());
+                    sessionManagerRepository.saveRoleSet(roleRepository.getRoleModelSet());
+                    /* save the individual and organization owners */
+                    sessionManagerRepository.saveIndividualOwners(userRepository.getOwnerSet());
+                    sessionManagerRepository.saveOrganizationOwners(
+                            organizationRepository.getOrganizationSet());
+
                     /* save the shared preferences */
                     sessionManagerRepository.commitSettings();
                 } else {

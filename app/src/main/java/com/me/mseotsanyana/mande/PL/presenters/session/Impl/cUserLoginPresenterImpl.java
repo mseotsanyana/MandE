@@ -4,8 +4,10 @@ import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserLoginInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.session.user.iUserLoginInteractor;
+import com.me.mseotsanyana.mande.BLL.repository.session.iOrganizationRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iRoleRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iStatusRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iUserRepository;
 import com.me.mseotsanyana.mande.DAL.model.session.cUserModel;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
@@ -19,23 +21,29 @@ public class cUserLoginPresenterImpl extends cAbstractPresenter implements iUser
 
     private View view;
     private iUserRepository userRepository;
-    private iSessionManagerRepository sessionManagerRepository;
+    private iOrganizationRepository organizationRepository;
     private iRoleRepository roleRepository;
+    private iStatusRepository statusRepository;
+    private iSessionManagerRepository sessionManagerRepository;
 
     private cInputValidation inputValidation;
 
-
     public cUserLoginPresenterImpl(iExecutor executor, iMainThread mainThread,
                                    View view,
-                                   iSessionManagerRepository sessionManagerRepository,
                                    iUserRepository userRepository,
-                                   iRoleRepository roleRepository) {
+                                   iOrganizationRepository organizationRepository,
+                                   iRoleRepository roleRepository,
+                                   iStatusRepository statusRepository,
+                                   iSessionManagerRepository sessionManagerRepository) {
         super(executor, mainThread);
 
         this.view = view;
-        this.sessionManagerRepository = sessionManagerRepository;
         this.userRepository = userRepository;
+        this.organizationRepository = organizationRepository;
         this.roleRepository = roleRepository;
+        this.statusRepository = statusRepository;
+        this.sessionManagerRepository = sessionManagerRepository;
+
         this.inputValidation = new cInputValidation();
     }
 
@@ -64,9 +72,11 @@ public class cUserLoginPresenterImpl extends cAbstractPresenter implements iUser
         iUserLoginInteractor userLoginInteractor = new cUserLoginInteractorImpl(
                 executor,
                 mainThread,
-                sessionManagerRepository,
                 userRepository,
+                organizationRepository,
                 roleRepository,
+                statusRepository,
+                sessionManagerRepository,
                 this,
                 email, password);
 

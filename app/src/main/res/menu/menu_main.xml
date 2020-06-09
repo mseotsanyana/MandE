@@ -15,6 +15,6 @@
         android:id="@+id/homeItem"
         android:orderInCategory="11"
         android:title="Home"
-        android:icon="@drawable/home_icon"
+        android:icon="@drawable/ic_help_white_24dp"
         app:showAsAction="ifRoom" />
 </menu>

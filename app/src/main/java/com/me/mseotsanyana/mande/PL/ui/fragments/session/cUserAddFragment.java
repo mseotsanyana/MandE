@@ -36,7 +36,7 @@ import com.me.mseotsanyana.mande.UTIL.INTERFACE.iMEEntityInterface;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.cUtil;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cKeyPairBoolData;
-import com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch;
+import com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch_old;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cSpinnerListener;
 import com.me.mseotsanyana.validatorlibrary.cValidator;
 
@@ -68,7 +68,7 @@ public class cUserAddFragment extends Fragment {
 
     // user profile views
     private ImageView imageViewPhoto;
-    private cSingleSpinnerSearch searchSingleSpinnerOrganization;
+    private cSingleSpinnerSearch_old searchSingleSpinnerOrganization;
 
     private TextInputEditText textInputEditTextFirstName;
     private TextInputEditText textInputEditTextLastName;
@@ -174,7 +174,7 @@ public class cUserAddFragment extends Fragment {
         });
 
         /** 3. initialize spinner views **/
-        searchSingleSpinnerOrganization = (cSingleSpinnerSearch)
+        searchSingleSpinnerOrganization = (cSingleSpinnerSearch_old)
                 view.findViewById(R.id.singleSpinnerSearchOrganization);
 
         /***

@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
+import com.me.mseotsanyana.mande.DAL.model.session.cOrganizationModel;
 import com.me.mseotsanyana.mande.DAL.model.session.cPermissionModel;
 import com.me.mseotsanyana.mande.DAL.model.session.cRoleModel;
 import com.me.mseotsanyana.mande.DAL.model.session.cStatusModel;
@@ -72,7 +74,7 @@ public class cSessionManagerImpl implements iSessionManagerRepository {
      * @param organizationID
      */
     public void saveOrganizationID(int organizationID) {
-        editor.putInt(cSharedPreference.KEY_ORGANIZATION_ID, organizationID);
+        editor.putInt(cSharedPreference.KEY_ORG_ID, organizationID);
     }
 
     /**
@@ -82,7 +84,23 @@ public class cSessionManagerImpl implements iSessionManagerRepository {
      * @return organizationID
      */
     public int loadOrganizationID() {
-        return preferences.getInt(cSharedPreference.KEY_ORGANIZATION_ID, -1);
+        return preferences.getInt(cSharedPreference.KEY_ORG_ID, -1);
+    }
+
+    public void saveDefaultPermsBITS(int bitNumber) {
+        editor.putInt(cSharedPreference.KEY_PERMS_BITS, bitNumber);
+    }
+
+    public int loadDefaultPermsBITS() {
+        return preferences.getInt(cSharedPreference.KEY_PERMS_BITS, -1);
+    }
+
+    public void saveDefaultStatusBITS(int bitNumber) {
+        editor.putInt(cSharedPreference.KEY_STATUS_BITS, bitNumber);
+    }
+
+    public int loadDefaultStatusBITS() {
+        return preferences.getInt(cSharedPreference.KEY_STATUS_BITS, -1);
     }
 
     /**
@@ -263,6 +281,72 @@ public class cSessionManagerImpl implements iSessionManagerRepository {
         statusKey.append("-");
         statusKey.append(operationID);
         return preferences.getInt(String.valueOf(statusKey), 0);
+    }
+
+    @Override
+    public void saveStatusSet(Set<cStatusModel> statusModelSet) {
+        String statusSet = gson.toJson(statusModelSet);
+        editor.putString(cSharedPreference.KEY_STATUS_SET, statusSet);
+    }
+
+    @Override
+    public void saveRoleSet(Set<cRoleModel> roleModelSet) {
+        String roleSet = gson.toJson(roleModelSet);
+        editor.putString(cSharedPreference.KEY_ROLE_SET, roleSet);
+    }
+
+    @Override
+    public Set loadStatusSet() {
+        String statusString = preferences.getString(cSharedPreference.KEY_STATUS_SET,"");
+
+        Set<cStatusModel> statusModelSet = gson.fromJson(statusString,
+                new TypeToken<Set<cStatusModel>>(){}.getType());
+
+        return statusModelSet;
+    }
+
+    @Override
+    public Set loadRoleSet() {
+        String roleString = preferences.getString(cSharedPreference.KEY_ROLE_SET,"");
+
+        Set<cRoleModel> statusModelSet = gson.fromJson(roleString,
+                new TypeToken<Set<cRoleModel>>(){}.getType());
+
+        return statusModelSet;
+    }
+
+    @Override
+    public void saveIndividualOwners(Set<cUserModel> userModels) {
+        String userSet = gson.toJson(userModels);
+        editor.putString(cSharedPreference.KEY_INDIVIDUAL_OWNER_SET, userSet);
+    }
+
+    @Override
+    public void saveOrganizationOwners(Set<cOrganizationModel> organizationModels) {
+        String organizationSet = gson.toJson(organizationModels);
+        editor.putString(cSharedPreference.KEY_ORGANIZATION_OWNER_SET, organizationSet);
+    }
+
+    @Override
+    public Set loadIndividualOwners() {
+        String ownerString = preferences.getString(
+                cSharedPreference.KEY_INDIVIDUAL_OWNER_SET,"");
+
+        Set<cUserModel> userModels = gson.fromJson(ownerString,
+                new TypeToken<Set<cUserModel>>(){}.getType());
+
+        return userModels;
+    }
+
+    @Override
+    public Set loadOrganizationOwners() {
+        String organizationString = preferences.getString(
+                cSharedPreference.KEY_ORGANIZATION_OWNER_SET,"");
+
+        Set<cOrganizationModel> organizationModels = gson.fromJson(organizationString,
+                new TypeToken<Set<cOrganizationModel>>(){}.getType());
+
+        return organizationModels;
     }
 
     /* ###################### FUNCTIONS FOR CRUD AND LOG IN/OUT OPERATIONS ###################### */

@@ -24,7 +24,7 @@
             android:textSize="@dimen/text_size_medium"
             android:textStyle="bold" />
 
-        <com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch
+        <com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch_old
             android:id="@+id/appCompatSpinnerOwner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
             android:textSize="@dimen/text_size_medium"
             android:textStyle="bold" />
 
-        <com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch
+        <com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch_old
             android:id="@+id/appCompatSpinnerOrg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
