@@ -8,18 +8,10 @@ import com.me.mseotsanyana.mande.DAL.model.logframe.cOutcomeModel;
 import java.util.Set;
 
 public interface iOutcomeRepository {
-    /* the create function of the Impact entity */
+    /* the create function of the Outcome entity */
     boolean addOutcome(cOutcomeModel outcomeModel);
 
-    /* the read functions of the Impact entity */
-    Set<cOutcomeModel> getOutcomeModelSet(int userID, int orgID, int primaryRole,
-                                          int secondaryRoles, int operationBITS, int statusBITS);
-    Set<cImpactModel> getImpactModelSetByID(int impactID, int userID, int orgID, int primaryRole,
-                                            int secondaryRoles, int operationBITS, int statusBITS);
-    Set<cOutcomeModel> getOutcomeModelSetByID(int impactID, int userID, int orgID, int primaryRole,
-                                              int secondaryRoles, int operationBITS, int statusBITS);
-    Set<cQuestionModel> getQuestionModelSetByID(int impactID, int userID, int orgID, int primaryRole,
-                                                int secondaryRoles, int operationBITS, int statusBITS);
-    Set<cRaidModel> getRaidModelSetByID(int impactID, int userID, int orgID, int primaryRole,
-                                        int secondaryRoles, int operationBITS, int statusBITS);
+    /* the read functions of the Outcome entity */
+    Set<cOutcomeModel> getOutcomeModelSet(long logFrameID, int userID, int primaryRoleBITS,
+                                          int secondaryRoleBITS, int statusBITS);
 }

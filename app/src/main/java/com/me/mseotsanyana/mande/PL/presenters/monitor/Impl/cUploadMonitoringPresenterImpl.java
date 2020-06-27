@@ -40,7 +40,7 @@ public class cUploadMonitoringPresenterImpl extends cAbstractPresenter implement
     @Override
     public void onUploadMonitoringCompleted(String msg) {
         if(this.view != null) {
-            this.view.onUploadCompleted(msg);
+            this.view.onUploadCompleted("Upload Monitoring", msg);
             this.view.hideProgress();
         }
     }
@@ -69,6 +69,9 @@ public class cUploadMonitoringPresenterImpl extends cAbstractPresenter implement
 
     @Override
     public void onError(String message) {
-
+        if(this.view != null) {
+            this.view.onUploadCompleted("Upload Monitoring", message);
+            this.view.hideProgress();
+        }
     }
 }

@@ -2,7 +2,7 @@ package com.me.mseotsanyana.mande.PL.presenters.raid.Impl;
 
 import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
-import com.me.mseotsanyana.mande.BLL.interactors.raid.cUploadRAIDInteractorImpl;
+import com.me.mseotsanyana.mande.BLL.interactors.raid.Impl.cUploadRAIDInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.raid.iUploadRAIDInteractor;
 import com.me.mseotsanyana.mande.BLL.repository.raid.iUploadRAIDRepository;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
@@ -40,7 +40,7 @@ public class cUploadRAIDPresenterImpl extends cAbstractPresenter implements iUpl
     @Override
     public void onUploadRAIDCompleted(String msg) {
         if(this.view != null) {
-            this.view.onUploadCompleted(msg);
+            this.view.onUploadCompleted("Upload RAID",msg);
             this.view.hideProgress();
         }
     }
@@ -69,6 +69,9 @@ public class cUploadRAIDPresenterImpl extends cAbstractPresenter implements iUpl
 
     @Override
     public void onError(String message) {
-
+        if(this.view != null) {
+            this.view.onUploadCompleted("Upload RAID", message);
+            this.view.hideProgress();
+        }
     }
 }

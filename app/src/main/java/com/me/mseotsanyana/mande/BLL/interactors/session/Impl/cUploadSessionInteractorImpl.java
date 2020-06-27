@@ -46,7 +46,8 @@ public class cUploadSessionInteractorImpl extends cAbstractInteractor
 
     @Override
     public void run() {
-        /* delete from the database */
+        /* delete all session module records */
+
         uploadSessionRepository.deleteAddresses();
         uploadSessionRepository.deleteValues();
         uploadSessionRepository.deleteUsers();
@@ -73,7 +74,8 @@ public class cUploadSessionInteractorImpl extends cAbstractInteractor
         uploadSessionRepository.deleteSubscribers();
         uploadSessionRepository.deleteNotifySettings();
 
-        /* create and insert it in the database */
+        /* upload all session module records */
+
         if(uploadSessionRepository.addAddressFromExcel()){
             postMessage("Address Entity (in Session Module) Added Successfully!");
         }else {

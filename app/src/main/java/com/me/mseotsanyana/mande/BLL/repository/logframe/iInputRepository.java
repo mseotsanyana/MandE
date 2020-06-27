@@ -1,25 +1,14 @@
 package com.me.mseotsanyana.mande.BLL.repository.logframe;
 
-import com.me.mseotsanyana.mande.DAL.model.logframe.cQuestionModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cRaidModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cImpactModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cOutcomeModel;
+import com.me.mseotsanyana.mande.DAL.model.logframe.cInputModel;
 
 import java.util.Set;
 
 public interface iInputRepository {
-    /* the create function of the Impact entity */
+    /* the create function of the Input entity */
+    boolean addInput(cInputModel inputModel);
 
-    boolean addImpact(cImpactModel impactModel);
-    /* the read functions of the Impact entity */
-    Set<cImpactModel> getImpactModelSet(int userID, int orgID, int primaryRole,
-                                        int secondaryRoles, int operationBITS, int statusBITS);
-    Set<cImpactModel> getImpactModelSetByID(int impactID, int userID, int orgID, int primaryRole,
-                                            int secondaryRoles, int operationBITS, int statusBITS);
-    Set<cOutcomeModel> getOutcomeModelSetByID(int impactID, int userID, int orgID, int primaryRole,
-                                              int secondaryRoles, int operationBITS, int statusBITS);
-    Set<cQuestionModel> getQuestionModelSetByID(int impactID, int userID, int orgID, int primaryRole,
-                                                int secondaryRoles, int operationBITS, int statusBITS);
-    Set<cRaidModel> getRaidModelSetByID(int impactID, int userID, int orgID, int primaryRole,
-                                        int secondaryRoles, int operationBITS, int statusBITS);
+    /* the read functions of the Input entity */
+    Set<cInputModel> getInputModelSet(long logFrameID, int userID, int primaryRoleBITS,
+                                      int secondaryRoleBITS, int statusBITS);
 }

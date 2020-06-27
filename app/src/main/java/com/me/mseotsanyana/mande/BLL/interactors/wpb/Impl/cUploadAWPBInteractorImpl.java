@@ -26,9 +26,32 @@ public class cUploadAWPBInteractorImpl extends cAbstractInteractor
         this.callback = callback;
     }
 
+    /* notify on the main thread */
+    private void notifyError(String msg){
+        mainThread.post(new Runnable() {
+            @Override
+            public void run() {
+                callback.onUploadAWPBCompleted(msg);
+            }
+        });
+    }
+
+    /* notify on the main thread */
+    private void postMessage(String msg){
+        mainThread.post(new Runnable() {
+            @Override
+            public void run() {
+                callback.onUploadAWPBCompleted(msg);
+            }
+        });
+    }
+
+
     @Override
     public void run() {
-        /* delete AWPB tables */
+
+        /* upload all AWPB module records */
+
         uploadAWPBRepository.deleteTasks();
         uploadAWPBRepository.deleteActivityTasks();
         uploadAWPBRepository.deletePrecedingTasks();
@@ -45,19 +68,36 @@ public class cUploadAWPBInteractorImpl extends cAbstractInteractor
         uploadAWPBRepository.deleteTransactions();
         uploadAWPBRepository.deleteJournals();
 
-        /* create AWPB tables */
-        uploadAWPBRepository.addTaskFromExcel();
-        uploadAWPBRepository.addDocumentFromExcel();
-        uploadAWPBRepository.addInvoiceFromExcel();
-        uploadAWPBRepository.addTransactionFromExcel();
-        uploadAWPBRepository.addJournalFromExcel();
+        /* upload all AWPB module records */
 
-        /* notify on the main thread that we have inserted this item */
-        mainThread.post(new Runnable() {
-            @Override
-            public void run() {
-                callback.onUploadAWPBCompleted("AWPB Modules Added Successfully!");
-            }
-        });
+        if(uploadAWPBRepository.addTaskFromExcel()){
+            postMessage("Task Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add Task Entity");
+        }
+
+        if(uploadAWPBRepository.addDocumentFromExcel()){
+            postMessage("Document Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add Document Entity");
+        }
+
+        if(uploadAWPBRepository.addInvoiceFromExcel()){
+            postMessage("Invoice Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add Invoice Entity");
+        }
+
+        if(uploadAWPBRepository.addJournalFromExcel()){
+            postMessage("Journal Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add Journal Entity");
+        }
+
+        if(uploadAWPBRepository.addTaskFromExcel()){
+            postMessage("Task Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add Task Entity");
+        }
     }
 }

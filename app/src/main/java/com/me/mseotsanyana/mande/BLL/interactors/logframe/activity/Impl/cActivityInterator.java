@@ -4,15 +4,15 @@ import android.content.Context;
 
 import com.me.mseotsanyana.mande.UTIL.BLL.cMapper;
 import com.me.mseotsanyana.mande.BLL.domain.logframe.cActivityDomain;
-import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cActivityImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cActivityRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cActivityModel;
 
 public class cActivityInterator extends cMapper<cActivityModel, cActivityDomain> {
-    private cActivityImpl activityDBA;
+    private cActivityRepositoryImpl activityDBA;
     private Context context;
 
     public cActivityInterator(Context context) {
-        activityDBA = new cActivityImpl(context);
+        activityDBA = new cActivityRepositoryImpl(context);
         this.context = context;
     }
 /*

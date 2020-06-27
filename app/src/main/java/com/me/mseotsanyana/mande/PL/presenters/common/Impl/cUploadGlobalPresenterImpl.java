@@ -40,7 +40,7 @@ public class cUploadGlobalPresenterImpl extends cAbstractPresenter implements iU
     @Override
     public void onUploadGlobalCompleted(String msg) {
         if(this.view != null) {
-            this.view.onUploadCompleted(msg);
+            this.view.onUploadCompleted("Upload Global", msg);
             this.view.hideProgress();
         }
     }
@@ -69,6 +69,9 @@ public class cUploadGlobalPresenterImpl extends cAbstractPresenter implements iU
 
     @Override
     public void onError(String message) {
-
+        if(this.view != null) {
+            this.view.onUploadCompleted("Upload Global", message);
+            this.view.hideProgress();
+        }
     }
 }

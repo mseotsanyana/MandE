@@ -6,12 +6,25 @@
         <item name="colorPrimary">#4CAF50</item>
         <item name="colorPrimaryDark">#228B22</item>
         <item name="colorAccent">#FF5722</item>
+        <!--do this for changing the color-->
+        <item name="drawerArrowStyle">@style/DrawerHamburgerStyle</item>
+    </style>
 
-        <!--item name="preferenceTheme">@style/PreferenceThemeOverlay</item-->
+    <style name="DrawerHamburgerStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@android:color/white</item>
+    </style>
+
+    <style name="PopupTheme" parent="@style/ThemeOverlay.AppCompat.Light">
+        <item name="android:textColorPrimary">#9E9E9E</item>
+        <item name="android:background">@android:color/white</item>
     </style>
 
 
-    <!-- size of the tabs -->
+
+
+
+    <!-- size of the tabs-->
     <style name="TabTestSize" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">11sp</item>
     </style>
@@ -24,6 +37,7 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
 
     <!-- fab style -->
     <style name="FabStyle">

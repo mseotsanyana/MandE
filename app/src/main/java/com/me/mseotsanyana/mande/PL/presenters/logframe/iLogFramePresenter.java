@@ -14,7 +14,7 @@ import java.util.List;
 public interface iLogFramePresenter extends iPresenter {
     interface View extends iBaseView {
         /* pass data from presenter to the view */
-        void onClickBoomMenu(int menuIndex);
+        void onClickBMBLogFrame(int menuIndex, int logFrameID);
         void onClickCreateLogFrame(cLogFrameModel logFrameModel);
         void onClickCreateSubLogFrame(long logFrameID, cLogFrameModel logFrameModel);
         void onClickUpdateLogFrame(int position, cLogFrameModel logFrameModel);

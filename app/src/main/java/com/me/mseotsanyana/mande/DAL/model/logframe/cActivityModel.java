@@ -1,77 +1,55 @@
 package com.me.mseotsanyana.mande.DAL.model.logframe;
 
-import android.util.Pair;
-
+import com.me.mseotsanyana.mande.DAL.model.wpb.cActivityTaskModel;
 import com.me.mseotsanyana.mande.DAL.model.wpb.cTaskModel;
-import com.me.mseotsanyana.mande.UTIL.DAL.cActivityAssignmentModel;
-import com.me.mseotsanyana.mande.UTIL.DAL.cExpenditureModel;
-import com.me.mseotsanyana.mande.UTIL.DAL.cPrecedingActivityModel;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public class cActivityModel extends cActivityPlanningModel{
-    private int activityID;
+    private int activityPlanningID;
     private int parentID;
-    //private int logFrameID;
     private int outputID;
-    //private int serverID;
-    //private int ownerID;
-    //private int orgID;
-    //private int groupBITS;
-    //private int permsBITS;
-    //private int statusBITS;
-    //private String name;
-    //private String description;
-    //private Date startDate;
-    //private Date endDate;
-    //private Date createdDate;
-    //private Date modifiedDate;
-    //private Date syncedDate;
 
     /*** incoming mappings ***/
     private cLogFrameModel logFrameModel;
     private cOutputModel outputModel;
-    private cActivityModel activityModel;
-    private Set<cActivityModel> activityModelSet;
+    private Set<cActivityModel> childActivityModelSet;
 
     /*** outgoing mappings ***/
-    private Set<cPrecedingActivityModel> precedingActivityModelSet;
-    private Set<cQuestionModel> questionModelSet;
-    private Set<cRaidModel> raidModelSet;
     private Set<cInputModel> inputModelSet;
-    /* many to many related to AWPB */
-    private Set<cTaskModel> taskModelSet;
+    private Set<cActivityTaskModel> taskModelSet;
+    private Set<cRaidModel> raidModelSet;
+    private Set<cQuestionModel> questionModelSet;
+    private Set<cPrecedingActivityModel> precedingActivityModelSet;
     private Set<cActivityAssignmentModel> activityAssignmentModelSet;
-    private Set<cExpenditureModel> expenditureModelSet;
+
     /* set of output in a sub-logframe for the parent activity */
-    private Map<Pair<cLogFrameModel, cLogFrameModel>, Set<cOutputModel>> activityModelSetMap;
+    private Set<cOutputModel> childOutputModelSet;
 
     public cActivityModel(){
         /* incoming mappings */
         logFrameModel = new cLogFrameModel();
         outputModel = new cOutputModel();
-        //activityModel = new cActivityModel();
-        activityModelSet = new HashSet<>();
+        childActivityModelSet = new HashSet<>();
         /* outgoing mappings */
-        precedingActivityModelSet = new HashSet<>();
-        questionModelSet = new HashSet<>();
-        raidModelSet = new HashSet<>();
         inputModelSet = new HashSet<>();
         taskModelSet = new HashSet<>();
+        raidModelSet = new HashSet<>();
+        questionModelSet = new HashSet<>();
+        precedingActivityModelSet = new HashSet<>();
         activityAssignmentModelSet = new HashSet<>();
-        expenditureModelSet = new HashSet<>();
-        activityModelSetMap = new HashMap<>();
+        childOutputModelSet = new HashSet<>();
     }
 
-    public int getActivityID() {
-        return activityID;
+    @Override
+    public int getActivityPlanningID() {
+        return activityPlanningID;
     }
 
-    public void setActivityID(int activityID) {
-        this.activityID = activityID;
+    @Override
+    public void setActivityPlanningID(int activityPlanningID) {
+        this.activityPlanningID = activityPlanningID;
     }
 
     public int getParentID() {
@@ -81,15 +59,7 @@ public class cActivityModel extends cActivityPlanningModel{
     public void setParentID(int parentID) {
         this.parentID = parentID;
     }
-/*
-    public int getLogFrameID() {
-        return logFrameID;
-    }
 
-    public void setLogFrameID(int logFrameID) {
-        this.logFrameID = logFrameID;
-    }
-*/
     public int getOutputID() {
         return outputID;
     }
@@ -97,111 +67,7 @@ public class cActivityModel extends cActivityPlanningModel{
     public void setOutputID(int outputID) {
         this.outputID = outputID;
     }
-/*
-    public int getServerID() {
-        return serverID;
-    }
 
-    public void setServerID(int serverID) {
-        this.serverID = serverID;
-    }
-
-    public int getOwnerID() {
-        return ownerID;
-    }
-
-    public void setOwnerID(int ownerID) {
-        this.ownerID = ownerID;
-    }
-
-    public int getOrgID() {
-        return orgID;
-    }
-
-    public void setOrgID(int orgID) {
-        this.orgID = orgID;
-    }
-
-    public int getGroupBITS() {
-        return groupBITS;
-    }
-
-    public void setGroupBITS(int groupBITS) {
-        this.groupBITS = groupBITS;
-    }
-
-    public int getPermsBITS() {
-        return permsBITS;
-    }
-
-    public void setPermsBITS(int permsBITS) {
-        this.permsBITS = permsBITS;
-    }
-
-    public int getStatusBITS() {
-        return statusBITS;
-    }
-
-    public void setStatusBITS(int statusBITS) {
-        this.statusBITS = statusBITS;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public void setModifiedDate(Date modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
-
-    public Date getSyncedDate() {
-        return syncedDate;
-    }
-
-    public void setSyncedDate(Date syncedDate) {
-        this.syncedDate = syncedDate;
-    }
-*/
     public cLogFrameModel getLogFrameModel() {
         return logFrameModel;
     }
@@ -218,20 +84,12 @@ public class cActivityModel extends cActivityPlanningModel{
         this.outputModel = outputModel;
     }
 
-    public cActivityModel getActivityModel() {
-        return activityModel;
+    public Set<cActivityModel> getChildActivityModelSet() {
+        return childActivityModelSet;
     }
 
-    public void setActivityModel(cActivityModel activityModel) {
-        this.activityModel = activityModel;
-    }
-
-    public Set<cActivityModel> getActivityModelSet() {
-        return activityModelSet;
-    }
-
-    public void setActivityModelSet(Set<cActivityModel> activityModelSet) {
-        this.activityModelSet = activityModelSet;
+    public void setChildActivityModelSet(Set<cActivityModel> childActivityModelSet) {
+        this.childActivityModelSet = childActivityModelSet;
     }
 
     public Set<cPrecedingActivityModel> getPrecedingActivityModelSet() {
@@ -266,11 +124,11 @@ public class cActivityModel extends cActivityPlanningModel{
         this.inputModelSet = inputModelSet;
     }
 
-    public Set<cTaskModel> getTaskModelSet() {
+    public Set<cActivityTaskModel> getTaskModelSet() {
         return taskModelSet;
     }
 
-    public void setTaskModelSet(Set<cTaskModel> taskModelSet) {
+    public void setTaskModelSet(Set<cActivityTaskModel> taskModelSet) {
         this.taskModelSet = taskModelSet;
     }
 
@@ -282,20 +140,12 @@ public class cActivityModel extends cActivityPlanningModel{
         this.activityAssignmentModelSet = activityAssignmentModelSet;
     }
 
-    public Set<cExpenditureModel> getExpenditureModelSet() {
-        return expenditureModelSet;
+    public Set<cOutputModel> getChildOutputModelSet() {
+        return childOutputModelSet;
     }
 
-    public void setExpenditureModelSet(Set<cExpenditureModel> expenditureModelSet) {
-        this.expenditureModelSet = expenditureModelSet;
-    }
-
-    public Map<Pair<cLogFrameModel, cLogFrameModel>, Set<cOutputModel>> getActivityModelSetMap() {
-        return activityModelSetMap;
-    }
-
-    public void setActivityModelSetMap(Map<Pair<cLogFrameModel, cLogFrameModel>, Set<cOutputModel>> activityModelSetMap) {
-        this.activityModelSetMap = activityModelSetMap;
+    public void setChildOutputModelSet(Set<cOutputModel> childOutputModelSet) {
+        this.childOutputModelSet = childOutputModelSet;
     }
 }
 

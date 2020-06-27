@@ -20,7 +20,7 @@ import com.me.mseotsanyana.mande.DAL.model.logframe.cLogFrameModel;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cOutcomeModel;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cOutputModel;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cRaidModel;
-import com.me.mseotsanyana.mande.DAL.model.wpb.cResourceModel;
+import com.me.mseotsanyana.mande.DAL.model.logframe.cResourceModel;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cResourceTypeModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.DAL.storage.excel.cExcelHelper;
@@ -51,7 +51,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         excelHelper = new cExcelHelper(context);
     }
 
-    /* ######################################## LOGFRAME FUNCTIONS ########################################*/
+    /*#################################### LOGFRAME FUNCTIONS ####################################*/
 
     /**
      * This function extracts and adds the logframe data from excel.
@@ -66,41 +66,41 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             return false;
         }
 
-        for (Iterator<Row> ritLogFrame = logFrameSheet.iterator(); ritLogFrame.hasNext(); ) {
-            Row cRow = ritLogFrame.next();
-
+        for (Row cRow : logFrameSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
             }
 
-            cLogFrameModel logFrameModel = new cLogFrameModel();
+            cLogFrameModel logFrame = new cLogFrameModel();
 
-            logFrameModel.setLogFrameID((int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            logFrameModel.setOrganizationID((int) cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            logFrameModel.setName(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            logFrameModel.setDescription(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            logFrame.setLogFrameID(
+                    (int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            logFrame.setOrganizationID(
+                    (int) cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            logFrame.setName(
+                    cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            logFrame.setDescription(
+                    cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
             Set<Integer> subLogFrameDomainSet = new HashSet<>();
             int parentID, childID;
 
             Sheet logFrameTreeSheet = workbook.getSheet(cExcelHelper.SHEET_tblLOGFRAMETREE);
-            for (Iterator<Row> ritLogframeTree = logFrameTreeSheet.iterator(); ritLogframeTree.hasNext(); ) {
-                Row rowLogFrameTree = ritLogframeTree.next();
-
+            for (Row rowLogFrameTree : logFrameTreeSheet) {
                 //just skip the row if row number is 0
                 if (rowLogFrameTree.getRowNum() == 0) {
                     continue;
                 }
 
                 parentID = (int) rowLogFrameTree.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (logFrameModel.getLogFrameID() == parentID) {
+                if (logFrame.getLogFrameID() == parentID) {
                     childID = (int) rowLogFrameTree.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     subLogFrameDomainSet.add(childID);
                 }
             }
 
-            if (!addLogFrameFromExcel(logFrameModel, subLogFrameDomainSet)) {
+            if (!addLogFrameFromExcel(logFrame, subLogFrameDomainSet)) {
                 return false;
             }
         }
@@ -136,9 +136,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
             // add subLogFrame
             for (int childID : subLogFrameSet) {
-                if (addLogFrameTree(logFrameModel.getLogFrameID(), childID))
-                    continue;
-                else
+                if (!addLogFrameTree(logFrameModel.getLogFrameID(), childID))
                     return false;
             }
         } catch (Exception e) {
@@ -173,6 +171,34 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         }
 
         return true;
+    }
+
+    @Override
+    public boolean deleteLogFrame() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblLOGFRAME, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteLogFrameTree() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblLOGFRAMETREE, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
     }
 
     /* #################################### CRITERIA FUNCTIONS ###################################*/
@@ -249,6 +275,21 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         return true;
     }
 
+    @Override
+    public boolean deleteCriteria() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblEVALUATIONCRITERIA, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
     /*################################ QUESTION GROUPING FUNCTIONS ###############################*/
 
     /**
@@ -321,6 +362,21 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         db.close();
 
         return true;
+    }
+
+    @Override
+    public boolean deleteQuestionGroupings() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblQUESTIONGROUPING, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
     }
 
     /* ################################## QUESTION TYPE FUNCTIONS ################################*/
@@ -521,6 +577,67 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         return true;
     }
 
+    @Override
+    public boolean deletePrimitiveTypes() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblPRIMITIVETYPE, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteArrayTypes() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblARRAYTYPE, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteMatrixTypes() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblMATRIXTYPE, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteQuestionTypes() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblQUESTIONTYPE, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+
     /* #################################### QUESTION FUNCTIONS ###################################*/
 
     /**
@@ -637,6 +754,21 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         return true;
     }
 
+    @Override
+    public boolean deleteQuestions() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblQUESTION, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
     /* ######################################## RAID FUNCTIONS ########################################*/
 
     /**
@@ -708,6 +840,21 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         db.close();
 
         return true;
+    }
+
+    @Override
+    public boolean deleteRaids() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblRAID, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
     }
 
     /* ######################################## IMPACT FUNCTIONS ########################################*/
@@ -834,18 +981,14 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
                     int questionID = qcPair.first;
                     int criteriaID = qcPair.second;
 
-                    if (addImpactQuestionCriteria(impactID, questionID, criteriaID))
-                        continue;
-                    else
+                    if (!addImpactQuestionCriteria(impactID, questionID, criteriaID))
                         return false;
                 }
             }
 
             // add raid
             for (Pair<Integer, Integer> pair : raidSet) {
-                if (addImpactRaid(pair.first, pair.second))
-                    continue;
-                else
+                if (!addImpactRaid(pair.first, pair.second))
                     return false;
             }
         } catch (Exception e) {
@@ -902,6 +1045,51 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         }
 
         return true;
+    }
+
+    @Override
+    public boolean deleteImpactQuestions() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblIMPACT_QUESTION, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteImpactRaids() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblIMPACT_RAID, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteImpacts() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblIMPACT, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
     }
 
     /* ######################################## OUTCOME FUNCTIONS ########################################*/
@@ -1059,9 +1247,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
                     int parentID = sPair.first;
                     int childID = sPair.second;
 
-                    if (addOutcomeImpact(parentID, childID, outcomeID, impactID))
-                        continue;
-                    else
+                    if (!addOutcomeImpact(parentID, childID, outcomeID, impactID))
                         return false;
                 }
             }
@@ -1074,9 +1260,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
                     int questionID = qcPair.first;
                     int criteriaID = qcPair.second;
 
-                    if (addOutcomeQuestionCriteria(impactID, questionID, criteriaID))
-                        continue;
-                    else
+                    if (!addOutcomeQuestionCriteria(impactID, questionID, criteriaID))
                         return false;
                 }
             }
@@ -1085,9 +1269,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             for (Pair<Integer, Integer> pair : raidSet) {
                 int raidID = pair.first;
                 int outcomeID = pair.second;
-                if (addOutcomeRaid(outcomeID, raidID))
-                    continue;
-                else
+                if (!addOutcomeRaid(outcomeID, raidID))
                     return false;
             }
 
@@ -1168,6 +1350,66 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         }
 
         return true;
+    }
+
+    @Override
+    public boolean deleteOutcomeImpacts() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblOUTCOME_IMPACT, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteOutcomeQuestions() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblOUTCOME_QUESTION, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteOutcomeRaids() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblOUTCOME_RAID, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteOutcomes() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblOUTCOME, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
     }
 
     /* ######################################## OUTPUT FUNCTIONS ########################################*/
@@ -1433,6 +1675,65 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         return true;
     }
 
+    @Override
+    public boolean deleteOutputOutcomes() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblOUTPUT_OUTCOME, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteOutputQuestions() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblOUTPUT_QUESTION, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteOutputRaids() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblOUTPUT_RAID, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteOutputs() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblOUTPUT, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
 
     /* #################################### ACTIVITY PLANNING FUNCTIONS ###################################*/
 
@@ -1509,6 +1810,21 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         db.close();
 
         return true;
+    }
+
+    @Override
+    public boolean deleteActivityPlannings() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblACTIVITYPLANNING, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
     }
 
     /* ###################################### ACTIVITY FUNCTIONS ######################################*/
@@ -1733,9 +2049,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             for (Pair<Integer, Integer> pair : precedingSet) {
                 int succeedingID = pair.first;
                 int precedingID = pair.second;
-                if (addPrecedingActivity(succeedingID, precedingID))
-                    continue;
-                else
+                if (!addPrecedingActivity(succeedingID, precedingID))
                     return false;
             }
 
@@ -1763,9 +2077,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
                     int parentID = sPair.first;
                     int childID = sPair.second;
 
-                    if (addActivityOutput(parentID, childID, activityID, outputID))
-                        continue;
-                    else
+                    if (!addActivityOutput(parentID, childID, activityID, outputID))
                         return false;
                 }
             }
@@ -1777,9 +2089,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
                     int questionID = qcPair.first;
                     int criteriaID = qcPair.second;
 
-                    if (addActivityQuestionCriteria(activityID, questionID, criteriaID))
-                        continue;
-                    else
+                    if (!addActivityQuestionCriteria(activityID, questionID, criteriaID))
                         return false;
                 }
             }
@@ -1788,9 +2098,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             for (Pair<Integer, Integer> pair : raidSet) {
                 int raidID = pair.first;
                 int activityID = pair.second;
-                if (addActivityRaid(activityID, raidID))
-                    continue;
-                else
+                if (!addActivityRaid(activityID, raidID))
                     return false;
             }
         } catch (Exception e) {
@@ -1814,7 +2122,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
         ContentValues cv = new ContentValues();
 
-        cv.put(cSQLDBHelper.KEY_ACTIVITY_FK_ID, activityID);
+        cv.put(cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID, activityID);
         cv.put(cSQLDBHelper.KEY_PRECEDING_ACTIVITY_FK_ID, precedingID);
 
         if (db.insert(cSQLDBHelper.TABLE_tblPRECEDINGACTIVITY, null, cv) < 0) {
@@ -1838,7 +2146,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
         cv.put(cSQLDBHelper.KEY_ID, assignmentID);
         cv.put(cSQLDBHelper.KEY_STAFF_FK_ID, staffID);
-        cv.put(cSQLDBHelper.KEY_ACTIVITY_FK_ID, activityID);
+        cv.put(cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID, activityID);
 
         if (db.insert(cSQLDBHelper.TABLE_tblACTIVITYASSIGNMENT, null, cv) < 0) {
             return false;
@@ -1862,7 +2170,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
         cv.put(cSQLDBHelper.KEY_PARENT_FK_ID, parentID);
         cv.put(cSQLDBHelper.KEY_CHILD_FK_ID, childID);
-        cv.put(cSQLDBHelper.KEY_ACTIVITY_FK_ID, activityID);
+        cv.put(cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID, activityID);
         cv.put(cSQLDBHelper.KEY_OUTPUT_FK_ID, outputID);
 
         if (db.insert(cSQLDBHelper.TABLE_tblACTIVITY_OUTPUT, null, cv) < 0) {
@@ -1884,7 +2192,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
         ContentValues cv = new ContentValues();
 
-        cv.put(cSQLDBHelper.KEY_ACTIVITY_FK_ID, activityID);
+        cv.put(cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID, activityID);
         cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, questionID);
         cv.put(cSQLDBHelper.KEY_EVALUATION_CRITERIA_FK_ID, criteriaID);
 
@@ -1906,7 +2214,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
         ContentValues cv = new ContentValues();
 
-        cv.put(cSQLDBHelper.KEY_ACTIVITY_FK_ID, activityID);
+        cv.put(cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID, activityID);
         cv.put(cSQLDBHelper.KEY_RAID_FK_ID, raidID);
 
         if (db.insert(cSQLDBHelper.TABLE_tblACTIVITY_RAID, null, cv) < 0) {
@@ -1914,6 +2222,78 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         }
 
         return true;
+    }
+
+    @Override
+    public boolean deletePrecedingActivities() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblPRECEDINGACTIVITY, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteActivityAssignments() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblACTIVITYASSIGNMENT, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteActivityOutputs() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblACTIVITY_OUTPUT, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteActivityQuestions() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblACTIVITY_QUESTION, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteActivityRaids() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblACTIVITY_RAID, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
     }
 
     public boolean deleteActivities() {
@@ -2003,6 +2383,19 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         return true;
     }
 
+    @Override
+    public boolean deleteResourceTypes() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblRESOURCETYPE, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
 
     /*#################################### RESOURCE FUNCTIONS ####################################*/
 
@@ -2081,6 +2474,20 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         return true;
     }
 
+    @Override
+    public boolean deleteResources() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblRESOURCE, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
     /*###################################### INPUT FUNCTIONS #####################################*/
 
     /**
@@ -2099,9 +2506,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             return false;
         }
 
-        for (Iterator<Row> ritInput = inputSheet.iterator(); ritInput.hasNext(); ) {
-            Row cRow = ritInput.next();
-
+        for (Row cRow : inputSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -2120,9 +2525,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             int inputID, questionID, criteriaID;
 
             Sheet iqcSheet = logFrameWorkbook.getSheet(cExcelHelper.SHEET_tblINPUT_QUESTION);
-            for (Iterator<Row> ritIQC = iqcSheet.iterator(); ritIQC.hasNext(); ) {
-                Row rowIQC = ritIQC.next();
-
+            for (Row rowIQC : iqcSheet) {
                 //just skip the row if row number is 0
                 if (rowIQC.getRowNum() == 0) {
                     continue;
@@ -2133,13 +2536,34 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
                     questionID = (int) rowIQC.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     criteriaID = (int) rowIQC.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     qcSet.add(new Pair<>(questionID, criteriaID));
+                    iqcMap.put(inputModel.getInputID(), qcSet);
                 }
             }
-            iqcMap.put(inputModel.getInputID(), qcSet);
 
+            /* get activities of the input for a sub-logframe */
+            Map<Set<Pair<Integer, Integer>>, Pair<Integer, Integer>> siaMap = new HashMap<>();
+            int parentID, childID, activityID;
+
+            Sheet iaSheet = logFrameWorkbook.getSheet(cExcelHelper.SHEET_tblINPUT_ACTIVITY);
+            for (Row rowOI : iaSheet) {
+                //just skip the row if row number is 0
+                if (rowOI.getRowNum() == 0) {
+                    continue;
+                }
+
+                inputID = (int) rowOI.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                if (inputModel.getInputID() == inputID) {
+                    Set<Pair<Integer, Integer>> activitySet = new HashSet<>();
+                    parentID = (int) rowOI.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    childID = (int) rowOI.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    activityID = (int) rowOI.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    activitySet.add(new Pair(inputID, activityID));
+                    siaMap.put(activitySet, new Pair<>(parentID, childID));
+                }
+            }
 
             /* human input */
-            int humanID = -1,  humanQuantity = 0;
+            int humanID = -1, humanQuantity = 0;
             /* human set input */
             Map<Integer, Set<Pair<Integer, Integer>>> hiuMap = new HashMap<>();
             Set<Pair<Integer, Integer>> huSet = new HashSet<>();
@@ -2148,10 +2572,12 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             int materialID = -1, materialQuantity = 0;
 
             /* expense inputs */
-            int expenseID = -1; double expense = 0.0;
+            int expenseID = -1;
+            double expense = 0.0;
 
             /* income inputs */
-            int incomeID = -1, fundID = -1, funderID = -1, beneficiaryID = -1; double fund = 0.0;
+            int incomeID = -1, fundID = -1, funderID = -1, beneficiaryID = -1;
+            double fund = 0.0;
 
             Sheet humanSheet = awpbWorkbook.getSheet(cExcelHelper.SHEET_tblHUMAN);
             for (Iterator<Row> ritHuman = humanSheet.iterator(); ritHuman.hasNext(); ) {
@@ -2187,7 +2613,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
                     }
 
                     break;
-                }else {
+                } else {
                     humanID = -1;
                 }
             }
@@ -2208,7 +2634,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
                 if (inputModel.getInputID() == materialID) {
                     materialQuantity = (int) rowMaterial.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     break;
-                }else {
+                } else {
                     materialID = -1;
                 }
             }
@@ -2250,7 +2676,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
                     }
 
                     break;
-                }else {
+                } else {
                     incomeID = -1;
                 }
             }
@@ -2269,13 +2695,13 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
                 if (inputModel.getInputID() == expenseID) {
                     expense = (int) rowExpense.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     break;
-                }else {
+                } else {
                     expenseID = -1;
                 }
             }
 
             if (!addInput(inputModel,
-                    iqcMap,
+                    iqcMap, siaMap,
                     humanID, humanQuantity, hiuMap,
                     materialID, materialQuantity,
                     incomeID, fundID, funderID, beneficiaryID, fund,
@@ -2291,14 +2717,17 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
      *
      * @param inputModel
      * @param iqcMap
+     * @param siaMap
      * @return
      */
-    public boolean addInput(cInputModel inputModel,
-                            Map<Integer, Set<Pair<Integer, Integer>>> iqcMap,
-                            int humanID, int humanQuantity, Map<Integer, Set<Pair<Integer, Integer>>> hiuMap,
-                            int materialID, int materialQuantity,
-                            int incomeID, int fundID, int funderID, int beneficiaryID, double fund,
-                            int expenseID, double expense) {
+    private boolean addInput(cInputModel inputModel,
+                             Map<Integer, Set<Pair<Integer, Integer>>> iqcMap,
+                             Map<Set<Pair<Integer, Integer>>, Pair<Integer, Integer>> siaMap,
+                             int humanID, int humanQuantity,
+                             Map<Integer, Set<Pair<Integer, Integer>>> hiuMap,
+                             int materialID, int materialQuantity,
+                             int incomeID, int fundID, int funderID, int beneficiaryID, double fund,
+                             int expenseID, double expense) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -2326,39 +2755,41 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
                     int questionID = qcPair.first;
                     int criteriaID = qcPair.second;
 
-                    if (addInputQuestionCriteria(inputID, questionID, criteriaID))
-                        continue;
-                    else
+                    if (!addInputQuestionCriteria(inputID, questionID, criteriaID))
+                        return false;
+                }
+            }
+
+            // add sub-logFrame, activity and output tuple
+            for (Map.Entry<Set<Pair<Integer, Integer>>, Pair<Integer, Integer>> siaEntry :
+                    siaMap.entrySet()) {
+                for (Pair<Integer, Integer> iaPair : siaEntry.getKey()) {
+                    int inputID = iaPair.first;
+                    int activityID = iaPair.second;
+
+                    Pair<Integer, Integer> sPair = siaEntry.getValue();
+                    int parentID = sPair.first;
+                    int childID = sPair.second;
+
+                    if (!addInputActivity(parentID, childID, inputID, activityID))
                         return false;
                 }
             }
 
             if (humanID != -1) {
-                if (addHumanInput(inputModel.getInputID(), humanQuantity, hiuMap))
-                    return true;
-                else
-                    return false;
+                return addHumanInput(inputModel.getInputID(), humanQuantity, hiuMap);
             }
 
             if (materialID != -1) {
-                if (addMaterialInput(inputModel.getInputID(), materialQuantity))
-                    return true;
-                else
-                    return false;
+                return addMaterialInput(inputModel.getInputID(), materialQuantity);
             }
 
             if (incomeID != -1) {
-                if (addIncomeInput(fundID, inputModel.getInputID(), funderID, beneficiaryID, fund))
-                    return true;
-                else
-                    return false;
+                return addIncomeInput(fundID, inputModel.getInputID(), funderID, beneficiaryID, fund);
             }
 
             if (expenseID != -1) {
-                if (addExpenseInput(inputModel.getInputID(), expense))
-                    return true;
-                else
-                    return false;
+                return addExpenseInput(inputModel.getInputID(), expense);
             }
 
         } catch (Exception e) {
@@ -2378,7 +2809,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
      * @param criteriaID
      * @return
      */
-    public boolean addInputQuestionCriteria(int inputID, int questionID, int criteriaID) {
+    private boolean addInputQuestionCriteria(int inputID, int questionID, int criteriaID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -2387,14 +2818,23 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, questionID);
         cv.put(cSQLDBHelper.KEY_EVALUATION_CRITERIA_FK_ID, criteriaID);
 
-        if (db.insert(cSQLDBHelper.TABLE_tblINPUT_QUESTION, null, cv) < 0) {
-            return false;
-        }
-
-        return true;
+        return db.insert(cSQLDBHelper.TABLE_tblINPUT_QUESTION, null, cv) >= 0;
     }
 
-    public boolean addHumanInput(int inputID, int humanQuantity, Map<Integer, Set<Pair<Integer, Integer>>> hiuMap) {
+    private boolean addInputActivity(int parentID, int childID, int inputID, int activityID) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+
+        cv.put(cSQLDBHelper.KEY_PARENT_FK_ID, parentID);
+        cv.put(cSQLDBHelper.KEY_CHILD_FK_ID, childID);
+        cv.put(cSQLDBHelper.KEY_INPUT_FK_ID, inputID);
+        cv.put(cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID, activityID);
+
+        return db.insert(cSQLDBHelper.TABLE_tblINPUT_ACTIVITY, null, cv) >= 0;
+    }
+
+    private boolean addHumanInput(int inputID, int humanQuantity, Map<Integer, Set<Pair<Integer, Integer>>> hiuMap) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -2418,9 +2858,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
                     int humanSetID = huPair.first;
                     int userID = huPair.second;
 
-                    if (addHumanSet(humanSetID, hsInputID, userID))
-                        continue;
-                    else
+                    if (!addHumanSet(humanSetID, hsInputID, userID))
                         return false;
                 }
             }
@@ -2435,7 +2873,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         return true;
     }
 
-    public boolean addHumanSet(int humanSetID, int hsInputID, int userID) {
+    private boolean addHumanSet(int humanSetID, int hsInputID, int userID) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -2463,7 +2901,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         return true;
     }
 
-    public boolean addMaterialInput(int inputID, int materialQuantity) {
+    private boolean addMaterialInput(int inputID, int materialQuantity) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -2489,7 +2927,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         return true;
     }
 
-    public boolean addIncomeInput(int fundID, int inputID, int funderID, int beneficiaryID, double fund) {
+    private boolean addIncomeInput(int fundID, int inputID, int funderID, int beneficiaryID, double fund) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -2520,7 +2958,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         return true;
     }
 
-    public boolean addFund(int fundID, int inputID, int funderID, int beneficiaryID, double fund) {
+    private boolean addFund(int fundID, int inputID, int funderID, int beneficiaryID, double fund) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -2549,7 +2987,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         return true;
     }
 
-    public boolean addExpenseInput(int inputID, double amount) {
+    private boolean addExpenseInput(int inputID, double amount) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -2573,5 +3011,131 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         db.close();
 
         return true;
+    }
+
+    @Override
+    public boolean deleteInputQuestions() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblINPUT_QUESTION, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteInputActivities() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblINPUT_ACTIVITY, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteHumans() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblHUMAN, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteHumanSets() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblHUMANSET, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteMaterials() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblMATERIAL, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteIncomes() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblINCOME, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteFunds() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblFUND, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteExpenses() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblEXPENSE, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteInputs() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblINPUT, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
     }
 }

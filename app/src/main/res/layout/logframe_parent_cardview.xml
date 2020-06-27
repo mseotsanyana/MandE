@@ -23,7 +23,6 @@
             <!-- unhidden layer -->
 
             <!-- hidden layer -->
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -201,6 +200,7 @@
                     android:id="@+id/bmbMenu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     app:bmb_buttonEnum="textOutsideCircle"
                     app:bmb_buttonPlaceEnum="buttonPlace_sc_9_1"
                     app:bmb_inList="true"

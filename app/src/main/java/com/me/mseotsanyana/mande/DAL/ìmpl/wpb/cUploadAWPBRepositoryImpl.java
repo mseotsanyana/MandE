@@ -7,7 +7,7 @@ import android.util.Log;
 import android.util.Pair;
 
 import com.me.mseotsanyana.mande.BLL.repository.wpb.iUploadAWPBRepository;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cDocumentModel;
+import com.me.mseotsanyana.mande.DAL.model.wpb.cDocumentModel;
 import com.me.mseotsanyana.mande.DAL.model.wpb.cExternalModel;
 import com.me.mseotsanyana.mande.DAL.model.wpb.cInternalModel;
 import com.me.mseotsanyana.mande.DAL.model.wpb.cInvoiceModel;
@@ -130,9 +130,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
             Set<Pair<Integer, Integer>> tmSet = new HashSet<>();
             taskID = -1; int milestoneID = -1;
             Sheet tmSheet = workbook.getSheet(cExcelHelper.SHEET_tblTASK_MILESTONE);
-            for (Iterator<Row> ritTM = tmSheet.iterator(); ritTM.hasNext(); ) {
-                Row rowTM = ritTM.next();
-
+            for (Row rowTM : tmSheet) {
                 //just skip the row if row number is 0
                 if (rowTM.getRowNum() == 0) {
                     continue;
@@ -165,11 +163,11 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
         return true;
     }
 
-    public boolean addTask(cTaskModel taskModel,
-                           Set<Pair<Integer, Integer>> activityTaskSet,
-                           Set<Pair<Integer, Integer>> precedingSet,
-                           Set<Pair<Integer, Integer>> tmSet,
-                           Sheet tstSheet, Sheet timesheetSheet, Sheet commentSheet, Sheet itSheet) {
+    private boolean addTask(cTaskModel taskModel,
+                            Set<Pair<Integer, Integer>> activityTaskSet,
+                            Set<Pair<Integer, Integer>> precedingSet,
+                            Set<Pair<Integer, Integer>> tmSet,
+                            Sheet tstSheet, Sheet timesheetSheet, Sheet commentSheet, Sheet itSheet) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -191,9 +189,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
             for (Pair<Integer, Integer> pair : activityTaskSet) {
                 int taskID = pair.first;
                 int activityID = pair.second;
-                if (addActivityTask(taskID, activityID))
-                    continue;
-                else
+                if (!addActivityTask(taskID, activityID))
                     return false;
             }
 
@@ -201,9 +197,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
             for (Pair<Integer, Integer> pair : precedingSet) {
                 int succeedingID = pair.first;
                 int precedingID = pair.second;
-                if (addPrecedingTask(succeedingID, precedingID))
-                    continue;
-                else
+                if (!addPrecedingTask(succeedingID, precedingID))
                     return false;
             }
 
@@ -211,19 +205,14 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
             for (Pair<Integer, Integer> pair : tmSet) {
                 int taskID = pair.first;
                 int milestoneID = pair.second;
-                if (addTaskMilestone(taskID, milestoneID))
-                    continue;
-                else
+                if (!addTaskMilestone(taskID, milestoneID))
                     return false;
             }
-
 
             /* add assigned task */
             int assignmentID = -1, assignedStaffID = -1, assignedTaskID = -1, assignedHours = 0;
             double assignedRate = 0.0;
-            for (Iterator<Row> ritTST = tstSheet.iterator(); ritTST.hasNext(); ) {
-                Row rowTST = ritTST.next();
-
+            for (Row rowTST : tstSheet) {
                 //just skip the row if row number is 0
                 if (rowTST.getRowNum() == 0) {
                     continue;
@@ -246,9 +235,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
             /* add comments for a task */
             int commentID = -1, commentStaffID = -1, commentTaskID = -1;
             String comment = null;
-            for (Iterator<Row> ritUC = commentSheet.iterator(); ritUC.hasNext(); ) {
-                Row rowUC = ritUC.next();
-
+            for (Row rowUC : commentSheet) {
                 //just skip the row if row number is 0
                 if (rowUC.getRowNum() == 0) {
                     continue;
@@ -269,9 +256,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
             /* add timesheet for a task */
             int timesheetID = -1, timesheetStaffID = -1, timesheetTaskID = -1;
             Date startTime, endTime;
-            for (Iterator<Row> ritTS = timesheetSheet.iterator(); ritTS.hasNext(); ) {
-                Row rowTS = ritTS.next();
-
+            for (Row rowTS : timesheetSheet) {
                 //just skip the row if row number is 0
                 if (rowTS.getRowNum() == 0) {
                     continue;
@@ -300,7 +285,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
         return true;
     }
 
-    public boolean addActivityTask(int taskID, int activityID) {
+    private boolean addActivityTask(int taskID, int activityID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -308,14 +293,10 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
         cv.put(cSQLDBHelper.KEY_TASK_FK_ID, taskID);
         cv.put(cSQLDBHelper.KEY_ACTIVITY_FK_ID, activityID);
 
-        if (db.insert(cSQLDBHelper.TABLE_tblACTIVITYTASK, null, cv) < 0) {
-            return false;
-        }
-
-        return true;
+        return db.insert(cSQLDBHelper.TABLE_tblACTIVITYTASK, null, cv) >= 0;
     }
 
-    public boolean addPrecedingTask(int taskID, int precedingID) {
+    private boolean addPrecedingTask(int taskID, int precedingID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -334,7 +315,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
         return true;
     }
 
-    public boolean addTaskMilestone(int taskID, int milestoneID) {
+    private boolean addTaskMilestone(int taskID, int milestoneID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -353,8 +334,8 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
         return true;
     }
 
-    public boolean addAssignedTask(int assignmentID, int assignedStaffID, int assignedTaskID,
-                                   int assignedHours, double assignedRate) {
+    private boolean addAssignedTask(int assignmentID, int assignedStaffID, int assignedTaskID,
+                                    int assignedHours, double assignedRate) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -376,8 +357,8 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
         return true;
     }
 
-    public boolean addTimesheetTask(int timesheetID, int timesheetStaffID, int timesheetTaskID,
-                                    Date startTime, Date endTime, Sheet itSheet) {
+    private boolean addTimesheetTask(int timesheetID, int timesheetStaffID, int timesheetTaskID,
+                                     Date startTime, Date endTime, Sheet itSheet) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -394,9 +375,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
             }
 
             /* add timesheet to an invoice */
-            for (Iterator<Row> ritIT = itSheet.iterator(); ritIT.hasNext(); ) {
-                Row rowIT = ritIT.next();
-
+            for (Row rowIT : itSheet) {
                 //just skip the row if row number is 0
                 if (rowIT.getRowNum() == 0) {
                     continue;
@@ -419,7 +398,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
         return true;
     }
 
-    public boolean addInvoiceTimesheet(int invoiceID, int timesheetID) {
+    private boolean addInvoiceTimesheet(int invoiceID, int timesheetID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -439,8 +418,8 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
     }
 
 
-    public boolean addCommentTask(int commentID, int commentStaffID, int commentTaskID,
-                                  String comment) {
+    private boolean addCommentTask(int commentID, int commentStaffID, int commentTaskID,
+                                   String comment) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -584,9 +563,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
             return false;
         }
 
-        for (Iterator<Row> ritD = DSheet.iterator(); ritD.hasNext(); ) {
-            Row cRow = ritD.next();
-
+        for (Row cRow : DSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -611,7 +588,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
         return true;
     }
 
-    public boolean addDocument(cDocumentModel documentModel) {
+    private boolean addDocument(cDocumentModel documentModel) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -664,9 +641,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
             return false;
         }
 
-        for (Iterator<Row> ritI = ISheet.iterator(); ritI.hasNext(); ) {
-            Row cRow = ritI.next();
-
+        for (Row cRow : ISheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -689,7 +664,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
         return true;
     }
 
-    public boolean addInvoice(cInvoiceModel invoiceModel){
+    private boolean addInvoice(cInvoiceModel invoiceModel){
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -745,9 +720,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
             return false;
         }
 
-        for (Iterator<Row> ritTransaction = transactionSheet.iterator(); ritTransaction.hasNext(); ) {
-            Row cRow = ritTransaction.next();
-
+        for (Row cRow : transactionSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -774,8 +747,8 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
         return true;
     }
 
-    public boolean addTransaction(cTransactionModel transactionModel,
-                                  Sheet internalSheet, Sheet externalSheet){
+    private boolean addTransaction(cTransactionModel transactionModel,
+                                   Sheet internalSheet, Sheet externalSheet){
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -796,9 +769,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
             }
 
             /* add internal for a transaction */
-            for (Iterator<Row> ritI = internalSheet.iterator(); ritI.hasNext(); ) {
-                Row rowI = ritI.next();
-
+            for (Row rowI : internalSheet) {
                 //just skip the row if row number is 0
                 if (rowI.getRowNum() == 0) {
                     continue;
@@ -817,9 +788,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
             }
 
             /* add external for a transaction */
-            for (Iterator<Row> ritE = externalSheet.iterator(); ritE.hasNext(); ) {
-                Row rowE = ritE.next();
-
+            for (Row rowE : externalSheet) {
                 //just skip the row if row number is 0
                 if (rowE.getRowNum() == 0) {
                     continue;
@@ -844,7 +813,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
         return true;
     }
 
-    public boolean addInternal(cInternalModel internalModel){
+    private boolean addInternal(cInternalModel internalModel){
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -870,7 +839,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
         return true;
     }
 
-    public boolean addExternal(cExternalModel externalModel){
+    private boolean addExternal(cExternalModel externalModel){
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -950,8 +919,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
 
         //Log.d(TAG, "HEREEEE - 1");
 
-        for (Iterator<Row> ritJournal = journalSheet.iterator(); ritJournal.hasNext(); ) {
-            Row cRow = ritJournal.next();
+        for (Row cRow : journalSheet) {
             //Log.d(TAG, "HEREEEE - 2");
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
@@ -985,7 +953,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
         return true;
     }
 
-    public boolean addJournal(cJournalModel journalModel){
+    private boolean addJournal(cJournalModel journalModel){
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 

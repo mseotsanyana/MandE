@@ -41,6 +41,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -55,10 +56,14 @@ import com.me.mseotsanyana.mande.PL.presenters.logframe.Impl.cLogFramePresenterI
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iLogFramePresenter;
 import com.me.mseotsanyana.mande.PL.ui.adapters.common.cCommonFragmentAdapter;
 import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cLogFrameAdapter;
-import com.me.mseotsanyana.mande.PL.ui.fragments.report.cResourceFragment;
+import com.me.mseotsanyana.mande.PL.ui.fragments.evaluator.cEvaluatingFragment;
+import com.me.mseotsanyana.mande.PL.ui.fragments.monitor.cMonitoringFragment;
+import com.me.mseotsanyana.mande.PL.ui.fragments.raid.cRiskFragment;
+import com.me.mseotsanyana.mande.PL.ui.fragments.raid.cRiskRegisterFragment;
 import com.me.mseotsanyana.mande.PL.ui.fragments.session.cPermissionFragment;
 import com.me.mseotsanyana.mande.PL.ui.fragments.session.cRoleFragment;
 import com.me.mseotsanyana.mande.PL.ui.fragments.session.cUserFragment;
+import com.me.mseotsanyana.mande.PL.ui.fragments.wpb.cAWPBFragment;
 import com.me.mseotsanyana.mande.UTIL.TextDrawable;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
 
@@ -91,8 +96,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
     private static SimpleDateFormat ssdf = cConstant.SHORT_FORMAT_DATE;
 
     // navigation drawer declarations
-    private Toolbar toolBar;
-
+    private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
 
@@ -100,7 +104,6 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
 
     /* logframe views */
     private ExpandableListView menuExpandableListView;
-    private RecyclerView logFrameRecyclerView;
     private LinearLayout includeProgressBar;
 
     /* logframe interface */
@@ -121,57 +124,26 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
     }
 
     public static cLogFrameFragment newInstance() {
-        //Bundle bundle = new Bundle();
-
-        //bundle.putParcelable("USER_MODEL", userModel);
-
+        /*Bundle bundle = new Bundle();
+        bundle.putInt("LOGFRAME_ID", logFrameID);
         cLogFrameFragment fragment = new cLogFrameFragment();
-        //fragment.setArguments(bundle);
+        fragment.setArguments(bundle);*/
 
-        return fragment;
+        return new cLogFrameFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        init();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         /* get all logframes from the database */
-        //readDesktopPresenter.resume();
-    }
-
-    private void init() {
-        /* contains main menu and its corresponding submenu items */
-        menuItemTitles = new ArrayList<String>();
-        expandableMenuItems = new LinkedHashMap<String, List<String>>();
-        /* contains a tree of logframes */
-        /* logframe data structures */
-        List<cTreeModel> logFrameTreeModels = new ArrayList<cTreeModel>();
-        /* shared preference organizations */
-        sharedOrganizations = new ArrayList<>();
-
-        //sessionManager = new cSessionManagerImpl(getContext());
-        //organizations = new ArrayList<>(sessionManager.loadOrganizationOwners());
-
-        /* get arguments for successful login */
-        //assert getArguments() != null;
-        //cUserModel userModel = getArguments().getParcelable("USER_MODEL");
-        //assert userModel != null;
-
-        logFramePresenter = new cLogFramePresenterImpl(
-                cThreadExecutorImpl.getInstance(),
-                cMainThreadImpl.getInstance(),
-                this,
-                new cSessionManagerImpl(getContext()),
-                new cMenuRepositoryImpl(getContext()),
-                new cLogFrameRepositoryImpl(getContext()));
-
-        activity = ((AppCompatActivity) getActivity());
+        logFramePresenter.readAllLogFrames();
+        logFramePresenter.readSharedOrganizations();
     }
 
     /**
@@ -191,6 +163,8 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
      */
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        init();
+
         /* create navigation drawer menu */
         navigationDrawer(view);
 
@@ -199,9 +173,32 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
 
         /* draggable floating button */
         initDraggableFAB(view);
+    }
 
-        logFramePresenter.readAllLogFrames();
-        logFramePresenter.readSharedOrganizations();
+
+    private void init() {
+        /* contains main menu and its corresponding submenu items */
+        menuItemTitles = new ArrayList<String>();
+        expandableMenuItems = new LinkedHashMap<String, List<String>>();
+        /* contains a tree of logframes */
+        /* logframe data structures */
+        List<cTreeModel> logFrameTreeModels = new ArrayList<cTreeModel>();
+        /* shared preference organizations */
+        sharedOrganizations = new ArrayList<>();
+
+        logFramePresenter = new cLogFramePresenterImpl(
+                cThreadExecutorImpl.getInstance(),
+                cMainThreadImpl.getInstance(),
+                this,
+                new cSessionManagerImpl(getContext()),
+                new cMenuRepositoryImpl(getContext()),
+                new cLogFrameRepositoryImpl(getContext()));
+
+        activity = ((AppCompatActivity) getActivity());
+
+        // setup recycler view adapter
+        logFrameRecyclerViewAdapter = new cLogFrameAdapter(getActivity(), this,
+                logFrameTreeModels, getFragmentManager());
     }
 
     private void navigationDrawer(View view) {
@@ -219,14 +216,15 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
     }
 
     private void logframeView(View view) {
-        includeProgressBar = (LinearLayout) view.findViewById(R.id.includeProgressBar);
+        includeProgressBar = view.findViewById(R.id.includeProgressBar);
 
-        logFrameRecyclerView = view.findViewById(R.id.logframeRecyclerView);
+        RecyclerView logFrameRecyclerView = view.findViewById(R.id.logframeRecyclerView);
         logFrameRecyclerView.setHasFixedSize(true);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
 
+        logFrameRecyclerView.setAdapter(logFrameRecyclerViewAdapter);
         logFrameRecyclerView.setLayoutManager(llm);
     }
 
@@ -254,27 +252,46 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
     }
 
     private void setupDrawerToggle(View view) {
-        //for create home button
-        toolBar = (Toolbar) view.findViewById(R.id.toolbar);
+        /* initialize the toolbar */
+        toolbar = view.findViewById(R.id.toolbar);
+        activity.setSupportActionBar(toolbar);
+        CollapsingToolbarLayout collapsingToolbarLayout =
+                view.findViewById(R.id.collapsingToolbarLayout);
+        collapsingToolbarLayout.setContentScrimColor(Color.WHITE);
 
-        /* start */
-        // initialize the toolbar
-        //toolbar = (Toolbar) view.findViewById(R.id.me_toolbar);
-        toolBar.setTitle(R.string.logframe_list_title);
-        toolBar.setTitleTextColor(Color.WHITE);
 
-        //((AppCompatActivity) getActivity()).setSupportActionBar(toolBar);
-        /* end */
+        //toolBar.setTitle(R.string.logframe_list_title);
+        //toolBar.setTitleTextColor(Color.WHITE);
 
-        //Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        activity.setSupportActionBar(toolBar);
+        //toolBar.inflateMenu(R.menu.home_toolbar_menu);
+        //Menu toolBarMenu = toolBar.getMenu();
 
-        drawerLayout = (DrawerLayout) view.findViewById(R.id.drawer_layout);
+/*
+        MenuItem homeIcon = toolBarMenu.findItem(R.id.infoItem);
+        TextDrawable faIcon = new TextDrawable(getContext());
+        faIcon.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
+        faIcon.setTextAlign(Layout.Alignment.ALIGN_CENTER);
+        faIcon.setTypeface(cFontManager.getTypeface(getContext(), cFontManager.FONTAWESOME));
+        faIcon.setText(getContext().getResources().getText(R.string.fa_information));
+        faIcon.setTextColor(Color.WHITE);
+
+        homeIcon.setIcon(faIcon);
+*/
+
+        toolbar.setOnMenuItemClickListener(
+                new Toolbar.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        return onOptionsItemSelected(item);
+                    }
+                });
+
+        drawerLayout = view.findViewById(R.id.drawer_layout);
 
         drawerToggle = new ActionBarDrawerToggle(
                 getActivity(),            // host activity
                 drawerLayout,             // drawer layout
-                toolBar,                  // custom toolbar
+                toolbar,                  // custom toolbar
                 R.string.drawer_open, // open drawer description
                 R.string.drawer_close // close drawer description
         ) {
@@ -293,6 +310,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
                 Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
             }
         };
+
 
         // show animations
         drawerLayout.addDrawerListener(drawerToggle);
@@ -453,6 +471,29 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        //int id = item.getItemId();
+
+        switch (item.getItemId()) {
+            case R.id.homeItem:
+                //pushFragment(cLogFrameFragment.newInstance(session));
+                break;
+            default:
+                break;
+        }
+
+        // Activate the navigation drawer toggle
+        if (drawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
@@ -462,59 +503,31 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
     public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
         //getActivity().getMenuInflater().inflate(R.menu.drawer_menu_main, menu);
-        inflater.inflate(R.menu.drawer_menu_main, menu);
+        inflater.inflate(R.menu.home_toolbar_menu, menu);
 
-        /* start */
-        toolBar.inflateMenu(R.menu.home_toolbar_menu);
-        Menu toolBarMenu = toolBar.getMenu();
+        //getting the search view from the menu
+        MenuItem toolBarMenu = menu.findItem(R.id.searchItem);
 
-        //toolBarMenuItem = toolBarMenu.findItem(R.id.homeItem);
-
-        toolBar.setOnMenuItemClickListener(
-                new Toolbar.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        return onOptionsItemSelected(item);
-                    }
-                });
-
+        /* getting search manager from system service */
         SearchManager searchManager = (SearchManager) Objects.requireNonNull(getActivity()).
                 getSystemService(Context.SEARCH_SERVICE);
-
-        SearchView searchView = (SearchView) toolBarMenu.findItem(R.id.searchItem).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        /* getting the search view */
+        SearchView searchView = (SearchView) toolBarMenu.getActionView();
+        /* you can put a hint for the search input field */
+        searchView.setQueryHint("Search LogFrames...");
+        searchView.setSearchableInfo(Objects.requireNonNull(searchManager).
+                getSearchableInfo(getActivity().getComponentName()));
         searchView.setMaxWidth(Integer.MAX_VALUE);
-
+        /* by setting it true we are making it iconified
+           so the search input will show up after taping the search iconified
+           if you want to make it visible all the time make it false
+         */
+        //searchView.setIconifiedByDefault(true);
         search(searchView);
 
         /* end */
 
         super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        //int id = item.getItemId();
-
-        /* start */
-        switch (item.getItemId()) {
-            case R.id.homeItem:
-                //pushFragment(cLogFrameFragment.newInstance(session));
-                break;
-            default:
-                break;
-        }
-        /* end */
-
-        // Activate the navigation drawer toggle
-        if (drawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     /*=============================== REQUEST VIEW IMPLEMENTATION ================================*/
@@ -556,35 +569,193 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
     }
 
     @Override
-    public void onClickBoomMenu(int menuIndex) {
+    public void onClickBMBLogFrame(int menuIndex, int logFrameID) {
+        String FLAG;
         switch (menuIndex) {
             case 0: // Impact Fragment
-                pushFragment(new cImpactFragment());
+                FLAG = cImpactFragment.class.getSimpleName() + logFrameID;
+                if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(
+                        Integer.toString(logFrameID)) != null) {
+                    /* if the fragment exists, show it. */
+                    getFragmentManager().beginTransaction().show(
+                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(
+                                    Integer.toString(logFrameID)))).commit();
+                } else {
+                    /* if the fragment does not exist, add it to fragment manager. */
+                    getFragmentManager().beginTransaction().add(
+                            R.id.fragment_frame, cImpactFragment.newInstance(logFrameID),
+                            Integer.toString(logFrameID)).commit();
+                }
+                if (getFragmentManager().findFragmentByTag(TAG) != null) {
+                    /* if the other fragment is visible, hide it. */
+                    getFragmentManager().beginTransaction().hide(
+                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).
+                            commit();
+                }
                 break;
             case 1: // Outcome Fragment
-                pushFragment(new cOutcomeFragment());
+                FLAG = cOutcomeFragment.class.getSimpleName()+logFrameID;
+                if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(FLAG) != null) {
+                    /* if the fragment exists, show it. */
+                    getFragmentManager().beginTransaction().show(
+                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(FLAG))).commit();
+                } else {
+                    /* if the fragment does not exist, add it to fragment manager. */
+                    getFragmentManager().beginTransaction().add(
+                            R.id.fragment_frame, cOutcomeFragment.newInstance(logFrameID), FLAG).commit();
+                }
+                if (getFragmentManager().findFragmentByTag(TAG) != null) {
+                    /* if the other fragment is visible, hide it. */
+                    getFragmentManager().beginTransaction().hide(
+                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).
+                            commit();
+                }
                 break;
             case 2: // Output Fragment
-                pushFragment(new cOutputFragment());
+                FLAG = cOutputFragment.class.getSimpleName() + logFrameID;
+                if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(FLAG) != null) {
+                    /* if the fragment exists, show it. */
+                    getFragmentManager().beginTransaction().show(
+                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(FLAG))).
+                            commit();
+                } else {
+                    /* if the fragment does not exist, add it to fragment manager. */
+                    getFragmentManager().beginTransaction().add(
+                            R.id.fragment_frame, new cOutputFragment(), FLAG).commit();
+                }
+                if (getFragmentManager().findFragmentByTag(TAG) != null) {
+                    /* if the other fragment is visible, hide it. */
+                    getFragmentManager().beginTransaction().hide(
+                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).
+                            commit();
+                }
                 break;
             case 3: // Activity Fragment
-                pushFragment(new cActivityFragment());
+                FLAG = cActivityFragment.class.getSimpleName() + logFrameID;
+                if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(FLAG) != null) {
+                    /* if the fragment exists, show it. */
+                    getFragmentManager().beginTransaction().show(
+                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(FLAG))).
+                            commit();
+                } else {
+                    /* if the fragment does not exist, add it to fragment manager. */
+                    getFragmentManager().beginTransaction().add(
+                            R.id.fragment_frame, cActivityFragment.newInstance(logFrameID),
+                            FLAG).commit();
+                }
+                if (getFragmentManager().findFragmentByTag(TAG) != null) {
+                    /* if the other fragment is visible, hide it. */
+                    getFragmentManager().beginTransaction().hide(
+                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).
+                            commit();
+                }
                 break;
+
             case 4: // Input Fragment
-                pushFragment(new cInputFragment());
+                FLAG = cInputFragment.class.getSimpleName() + logFrameID;
+                if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(FLAG) != null) {
+                    /* if the fragment exists, show it. */
+                    getFragmentManager().beginTransaction().show(
+                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(FLAG))).
+                            commit();
+                } else {
+                    /* if the fragment does not exist, add it to fragment manager. */
+                    getFragmentManager().beginTransaction().add(
+                            R.id.fragment_frame, cInputFragment.newInstance(logFrameID),
+                            FLAG).commit();
+                }
+                if (getFragmentManager().findFragmentByTag(TAG) != null) {
+                    /* if the other fragment is visible, hide it. */
+                    getFragmentManager().beginTransaction().hide(
+                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).
+                            commit();
+                }
                 break;
-            case 5: // Questions Fragment
-                pushFragment(new cQuestionFragment());
+
+            case 5: // AWPB Fragment
+                FLAG = cAWPBFragment.class.getSimpleName() + logFrameID;
+                if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(FLAG) != null) {
+                    /* if the fragment exists, show it. */
+                    getFragmentManager().beginTransaction().show(
+                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(FLAG))).
+                            commit();
+                } else {
+                    /* if the fragment does not exist, add it to fragment manager. */
+                    getFragmentManager().beginTransaction().add(
+                            R.id.fragment_frame, cAWPBFragment.newInstance(logFrameID),
+                            FLAG).commit();
+                }
+                if (getFragmentManager().findFragmentByTag(TAG) != null) {
+                    /* if the other fragment is visible, hide it. */
+                    getFragmentManager().beginTransaction().hide(
+                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).
+                            commit();
+                }
                 break;
-            case 6: // Indicators Fragment
-                pushFragment(new cIndicatorFragment());
+
+            case 6: // Monitoring Fragment
+                FLAG = cMonitoringFragment.class.getSimpleName() + logFrameID;
+                if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(FLAG) != null) {
+                    /* if the fragment exists, show it. */
+                    getFragmentManager().beginTransaction().show(
+                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(FLAG))).
+                            commit();
+                } else {
+                    /* if the fragment does not exist, add it to fragment manager. */
+                    getFragmentManager().beginTransaction().add(
+                            R.id.fragment_frame, cMonitoringFragment.newInstance(logFrameID),
+                            FLAG).commit();
+                }
+                if (getFragmentManager().findFragmentByTag(TAG) != null) {
+                    /* if the other fragment is visible, hide it. */
+                    getFragmentManager().beginTransaction().hide(
+                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).
+                            commit();
+                }
                 break;
-            case 7: // MoV Fragment
-                pushFragment(new cMoVFragment());
+
+            case 7: // Evaluating Fragment
+                FLAG = cEvaluatingFragment.class.getSimpleName() + logFrameID;
+                if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(FLAG) != null) {
+                    /* if the fragment exists, show it. */
+                    getFragmentManager().beginTransaction().show(
+                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(FLAG))).
+                            commit();
+                } else {
+                    /* if the fragment does not exist, add it to fragment manager. */
+                    getFragmentManager().beginTransaction().add(
+                            R.id.fragment_frame, cEvaluatingFragment.newInstance(logFrameID),
+                            FLAG).commit();
+                }
+                if (getFragmentManager().findFragmentByTag(TAG) != null) {
+                    /* if the other fragment is visible, hide it. */
+                    getFragmentManager().beginTransaction().hide(
+                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).
+                            commit();
+                }
                 break;
-            case 8: // Risk/Assumptions Fragment
-                pushFragment(new cRiskFragment());
+
+            case 8: // Risk Register Fragment
+                FLAG = cRiskRegisterFragment.class.getSimpleName() + logFrameID;
+                if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(FLAG) != null) {
+                    /* if the fragment exists, show it. */
+                    getFragmentManager().beginTransaction().show(
+                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(FLAG))).
+                            commit();
+                } else {
+                    /* if the fragment does not exist, add it to fragment manager. */
+                    getFragmentManager().beginTransaction().add(
+                            R.id.fragment_frame, cRiskRegisterFragment.newInstance(logFrameID),
+                            FLAG).commit();
+                }
+                if (getFragmentManager().findFragmentByTag(TAG) != null) {
+                    /* if the other fragment is visible, hide it. */
+                    getFragmentManager().beginTransaction().hide(
+                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).
+                            commit();
+                }
                 break;
+
             default:
                 break;
         }
@@ -620,14 +791,14 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
                 Objects.requireNonNull(getActivity()), menuItemTitles, expandableMenuItems);
         menuExpandableListView.setAdapter(menuExpandableListAdapter);
 
+        try {
+            logFrameRecyclerViewAdapter.notifyTreeModelChanged(logFrameTreeModels);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
         /* populate logframe list */
-        // setup recycler view adapter
-        logFrameRecyclerViewAdapter = new cLogFrameAdapter(getActivity(), this,
-                logFrameTreeModels, getFragmentManager());
-
         // populate the logframe list with data from database
-        logFrameRecyclerView.setAdapter(logFrameRecyclerViewAdapter);
-
         //logFrameExpandableListAdapter.notifyDataSetChanged();
         //drawerLayout.invalidate();
     }
@@ -1061,13 +1232,32 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         });
     }
 
-    protected void pushFragment(Fragment fragment) {
+    protected void pushFragment(Fragment fragment, String flag) {
         if (fragment == null)
             return;
 
         assert getFragmentManager() != null;
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_frame, fragment);
+        ft.add(R.id.fragment_frame, fragment, flag);
         ft.commit();
+    }
+
+    private void showFragment(String selectedFrag){
+        if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(selectedFrag) != null) {
+            //if the fragment exists, show it.
+            getFragmentManager().beginTransaction().show(
+                    Objects.requireNonNull(getFragmentManager().findFragmentByTag(selectedFrag))).
+                    commit();
+        } else {
+            //if the fragment does not exist, add it to fragment manager.
+            getFragmentManager().beginTransaction().add(
+                    R.id.fragment_frame, new cImpactFragment(), selectedFrag).commit();
+        }
+
+        if (getFragmentManager().findFragmentByTag(TAG) != null) {
+            //if the other fragment is visible, hide it.
+            getFragmentManager().beginTransaction().hide(
+                    Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).commit();
+        }
     }
 }

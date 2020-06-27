@@ -17,7 +17,7 @@ import com.me.mseotsanyana.mande.PL.presenters.common.cHeadingView;
 import com.me.mseotsanyana.mande.PL.presenters.common.cIndividualOwnerView;
 import com.me.mseotsanyana.mande.PL.presenters.common.cRolesView;
 import com.me.mseotsanyana.mande.R;
-import com.me.mseotsanyana.placeholderviewlibrary.placeholderview.cExpandablePlaceHolderView;
+import com.me.mseotsanyana.placeholderviewlibrary.cExpandablePlaceHolderView;
 
 import java.util.ArrayList;
 

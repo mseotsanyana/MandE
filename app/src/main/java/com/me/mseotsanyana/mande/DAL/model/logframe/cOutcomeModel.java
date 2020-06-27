@@ -28,32 +28,27 @@ public class cOutcomeModel {
     private Date syncedDate;
 
     /*** incoming mappings ***/
-    private cLogFrameModel logFrameModel;
     private cImpactModel impactModel;
-    private cOutcomeModel outcomeModel;
-    private Set<cOutcomeModel> outcomeModelSet;
+    private cLogFrameModel logFrameModel;
+    private Set<cOutcomeModel> childOutcomeModelSet;
 
     /*** outgoing mappings ***/
     private Set<cOutputModel> outputModelSet;
     private Set<cQuestionModel> questionModelSet;
     private Set<cRaidModel> raidModelSet;
-    /* set of impact in a sub-logframe for the parent outcome */
-    private Map<Pair<cLogFrameModel, cLogFrameModel>, Set<cImpactModel>> outcomeModelSetMap;
-    /* a parent output of the outcome in a sub-logframe */
-    private Map<Pair<cLogFrameModel, cLogFrameModel>, cOutputModel> outcomeModelMap;
+    /* set of impact in a child logframe for the outcome of the parent logframe */
+    private Map<Pair<Long, Long>, Set<cImpactModel>> childImpactModelMap;
 
     public cOutcomeModel(){
         /* incoming mappings */
         logFrameModel = new cLogFrameModel();
         impactModel = new cImpactModel();
-        //outcomeModel = new cOutcomeModel();
-        outcomeModelSet = new HashSet<>();
+        childOutcomeModelSet = new HashSet<>();
         /* outgoing mappings */
         outputModelSet = new HashSet<>();
         questionModelSet = new HashSet<>();
         raidModelSet = new HashSet<>();
-        outcomeModelSetMap = new HashMap<>();
-        outcomeModelMap = new HashMap<>();
+        childImpactModelMap = new HashMap<>();
     }
 
     public int getOutcomeID() {
@@ -208,20 +203,12 @@ public class cOutcomeModel {
         this.impactModel = impactModel;
     }
 
-    public cOutcomeModel getOutcomeModel() {
-        return outcomeModel;
+    public Set<cOutcomeModel> getChildOutcomeModelSet() {
+        return childOutcomeModelSet;
     }
 
-    public void setOutcomeModel(cOutcomeModel outcomeModel) {
-        this.outcomeModel = outcomeModel;
-    }
-
-    public Set<cOutcomeModel> getOutcomeModelSet() {
-        return outcomeModelSet;
-    }
-
-    public void setOutcomeModelSet(Set<cOutcomeModel> outcomeModelSet) {
-        this.outcomeModelSet = outcomeModelSet;
+    public void setChildOutcomeModelSet(Set<cOutcomeModel> childOutcomeModelSet) {
+        this.childOutcomeModelSet = childOutcomeModelSet;
     }
 
     public Set<cOutputModel> getOutputModelSet() {
@@ -248,19 +235,11 @@ public class cOutcomeModel {
         this.raidModelSet = raidModelSet;
     }
 
-    public Map<Pair<cLogFrameModel, cLogFrameModel>, Set<cImpactModel>> getOutcomeModelSetMap() {
-        return outcomeModelSetMap;
+    public Map<Pair<Long, Long>, Set<cImpactModel>> getChildImpactModelMap() {
+        return childImpactModelMap;
     }
 
-    public void setOutcomeModelSetMap(Map<Pair<cLogFrameModel, cLogFrameModel>, Set<cImpactModel>> outcomeModelSetMap) {
-        this.outcomeModelSetMap = outcomeModelSetMap;
-    }
-
-    public Map<Pair<cLogFrameModel, cLogFrameModel>, cOutputModel> getOutcomeModelMap() {
-        return outcomeModelMap;
-    }
-
-    public void setOutcomeModelMap(Map<Pair<cLogFrameModel, cLogFrameModel>, cOutputModel> outcomeModelMap) {
-        this.outcomeModelMap = outcomeModelMap;
+    public void setChildImpactModelMap(Map<Pair<Long, Long>, Set<cImpactModel>> childImpactModelMap) {
+        this.childImpactModelMap = childImpactModelMap;
     }
 }

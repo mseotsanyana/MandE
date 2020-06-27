@@ -2,7 +2,7 @@ package com.me.mseotsanyana.mande.UTIL.DAL;
 
 import android.content.Context;
 
-import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cImpactImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cImpactRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 
 import java.text.SimpleDateFormat;
@@ -19,14 +19,14 @@ public class cTriangleDBA {
     private cSQLDBHelper dbHelper;
     private static final String TAG = "dbHelper";
 
-    private cImpactImpl goalDBA;
+    private cImpactRepositoryImpl goalDBA;
     private cSpecificAimDBA specificAimDBA;
     private cObjectiveDBA objectiveDBA;
 
     public cTriangleDBA(Context context) {
         dbHelper = new cSQLDBHelper(context);
 
-        goalDBA = new cImpactImpl(context);
+        goalDBA = new cImpactRepositoryImpl(context);
         specificAimDBA = new cSpecificAimDBA(context);
         objectiveDBA = new cObjectiveDBA(context);
     }

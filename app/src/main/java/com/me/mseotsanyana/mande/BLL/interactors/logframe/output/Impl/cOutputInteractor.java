@@ -4,15 +4,15 @@ import android.content.Context;
 
 import com.me.mseotsanyana.mande.UTIL.BLL.cMapper;
 import com.me.mseotsanyana.mande.BLL.domain.logframe.cOutputDomain;
-import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cOutputImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cOutputRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cOutputModel;
 
 public class cOutputInteractor extends cMapper<cOutputModel, cOutputDomain> {
-    private cOutputImpl outputDBA;
+    private cOutputRepositoryImpl outputDBA;
     private Context context;
 
     public cOutputInteractor(Context context) {
-        outputDBA = new cOutputImpl(context);
+        outputDBA = new cOutputRepositoryImpl(context);
         this.context = context;
     }
 /***

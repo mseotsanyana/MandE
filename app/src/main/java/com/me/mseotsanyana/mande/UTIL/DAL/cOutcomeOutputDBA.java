@@ -2,8 +2,8 @@ package com.me.mseotsanyana.mande.UTIL.DAL;
 
 import android.content.Context;
 
-import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cOutcomeImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cOutputImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cOutcomeRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cOutputRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 
 import java.text.SimpleDateFormat;
@@ -17,16 +17,16 @@ public class cOutcomeOutputDBA {
     // an object of the database helper
     private cSQLDBHelper dbHelper;
 
-    private cOutcomeImpl outcomeDBA;
-    private cOutputImpl outputDBA;
+    private cOutcomeRepositoryImpl outcomeDBA;
+    private cOutputRepositoryImpl outputDBA;
 
     private static final SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
     private static final String TAG = "dbHelper";
 
     public cOutcomeOutputDBA(Context context) {
         dbHelper = new cSQLDBHelper(context);
-        outcomeDBA = new cOutcomeImpl(context);
-        outputDBA = new cOutputImpl(context);
+        outcomeDBA = new cOutcomeRepositoryImpl(context);
+        outputDBA = new cOutputRepositoryImpl(context);
     }
 /*
     public boolean addOutcomeOutput(cOutcomeOutputModel outcomeOutputModel){

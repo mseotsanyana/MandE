@@ -33,7 +33,7 @@
                     android:adjustViewBounds="true"
                     android:fitsSystemWindows="true"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/plane"
+                    android:src="@mipmap/shepherds"
                     app:layout_collapseMode="parallax"
                     app:layout_collapseParallaxMultiplier="0.7" />
 
@@ -46,6 +46,7 @@
                     android:elevation="1dp"
                     android:minHeight="65dp"
                     android:textColor="@color/title_text"
+                    app:popupTheme="@style/PopupTheme"
                     app:layout_collapseMode="pin" />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
@@ -64,7 +65,7 @@
             layout="@layout/me_progress_bar"
             android:visibility="visible" />
 
-        <!-- the FAB layout -->
+        <!-- the DraggableFAB layout -->
         <com.me.mseotsanyana.bmblibrary.cDraggableFAB
             android:id="@+id/logframeFAB"
             style="@style/FabStyle"

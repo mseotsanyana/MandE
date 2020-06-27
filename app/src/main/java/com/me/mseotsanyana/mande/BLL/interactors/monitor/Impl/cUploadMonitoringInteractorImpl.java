@@ -26,12 +26,30 @@ public class cUploadMonitoringInteractorImpl extends cAbstractInteractor
         this.callback = callback;
     }
 
+    /* notify on the main thread */
+    private void notifyError(String msg){
+        mainThread.post(new Runnable() {
+            @Override
+            public void run() {
+                callback.onUploadMonitoringCompleted(msg);
+            }
+        });
+    }
+
+    /* notify on the main thread */
+    private void postMessage(String msg){
+        mainThread.post(new Runnable() {
+            @Override
+            public void run() {
+                callback.onUploadMonitoringCompleted(msg);
+            }
+        });
+    }
 
     @Override
     public void run() {
-        /* create a new repository objects and insert it in the database */
+        /* delete all monitoring module records */
 
-        /* delete functions */
         uploadMonitoringRepository.deleteMOVs();
         uploadMonitoringRepository.deleteMethods();
         uploadMonitoringRepository.deleteUnits();
@@ -45,22 +63,54 @@ public class cUploadMonitoringInteractorImpl extends cAbstractInteractor
         uploadMonitoringRepository.deleteQualitatives();
         uploadMonitoringRepository.deleteQualitativeChoiceSets();
 
-        /* add functions */
-        uploadMonitoringRepository.addMOVFromExcel();
-        uploadMonitoringRepository.addMethodFromExcel();
-        uploadMonitoringRepository.addUnitFromExcel();
-        uploadMonitoringRepository.addIndicatorTypeFromExcel();
-        uploadMonitoringRepository.addQualitativeChoiceFromExcel();
-        uploadMonitoringRepository.addDataCollectorFromExcel();
-        uploadMonitoringRepository.addIndicatorFromExcel();
-        uploadMonitoringRepository.addMResponseFromExcel();
+        /* upload all monitoring module records */
 
-        /* notify on the main thread that we have inserted this item */
-        mainThread.post(new Runnable() {
-            @Override
-            public void run() {
-                callback.onUploadMonitoringCompleted("Monitoring Modules Added Successfully!");
-            }
-        });
+        if(uploadMonitoringRepository.addMOVFromExcel()){
+            postMessage("Frequency Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add Frequency Entity");
+        }
+
+        if(uploadMonitoringRepository.addMethodFromExcel()){
+            postMessage("Method Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add Method Entity");
+        }
+
+        if(uploadMonitoringRepository.addUnitFromExcel()){
+            postMessage("Unit Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add Unit Entity");
+        }
+
+        if(uploadMonitoringRepository.addIndicatorTypeFromExcel()){
+            postMessage("IndicatorType Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add IndicatorType Entity");
+        }
+
+        if(uploadMonitoringRepository.addQualitativeChoiceFromExcel()){
+            postMessage("QualitativeChoice Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add QualitativeChoice Entity");
+        }
+
+        if(uploadMonitoringRepository.addDataCollectorFromExcel()){
+            postMessage("DataCollector Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add DataCollector Entity");
+        }
+
+        if(uploadMonitoringRepository.addIndicatorFromExcel()){
+            postMessage("Indicator Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add Indicator Entity");
+        }
+
+        if(uploadMonitoringRepository.addMResponseFromExcel()){
+            postMessage("MResponse Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add MResponse Entity");
+        }
     }
 }

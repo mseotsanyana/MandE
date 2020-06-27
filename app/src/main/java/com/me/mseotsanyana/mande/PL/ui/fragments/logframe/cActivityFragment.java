@@ -35,11 +35,22 @@ import java.util.Objects;
  */
 
 public class cActivityFragment extends Fragment {
+    private static String TAG = cActivityFragment.class.getSimpleName();
 
     private Toolbar toolBar;
 
-    cActivityFragment(){
+    private cActivityFragment(){
 
+    }
+
+    public static cActivityFragment newInstance(int logFrameID) {
+        Bundle bundle = new Bundle();
+        cActivityFragment fragment = new cActivityFragment();
+
+        bundle.putLong("LOGFRAME_ID", logFrameID);
+        fragment.setArguments(bundle);
+
+        return fragment;
     }
 
     public cActivityFragment newInstance() {
@@ -99,7 +110,7 @@ public class cActivityFragment extends Fragment {
 
     // initialise the floating action button
     private void initFab(View view) {
-        view.findViewById(R.id.impactDraggableFAB).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.activityFAB).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -137,7 +148,7 @@ public class cActivityFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.homeItem:
-                //pushFragment(cLogFrameFragment.newInstance());
+                showFragment(cLogFrameFragment.class.getSimpleName());
                 break;
             default:
                 break;
@@ -158,6 +169,24 @@ public class cActivityFragment extends Fragment {
                 return false;
             }
         });
+    }
+
+    private void showFragment(String selectedFrag){
+        if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(selectedFrag) != null) {
+            /* if the fragment exists, show it. */
+            getFragmentManager().beginTransaction().show(
+                    Objects.requireNonNull(getFragmentManager().findFragmentByTag(selectedFrag))).
+                    commit();
+        } else {
+            /* if the fragment does not exist, add it to fragment manager. */
+            getFragmentManager().beginTransaction().add(
+                    R.id.fragment_frame, new cLogFrameFragment(), selectedFrag).commit();
+        }
+        if (getFragmentManager().findFragmentByTag(TAG) != null) {
+            /* if the other fragment is visible, hide it. */
+            getFragmentManager().beginTransaction().hide(
+                    Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).commit();
+        }
     }
 
     protected void pushFragment(Fragment fragment) {

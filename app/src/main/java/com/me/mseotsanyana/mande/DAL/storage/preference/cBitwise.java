@@ -35,7 +35,8 @@ public class cBitwise {
     public static final int OUTCOME      = 4;
     public static final int OUTPUT       = 8;
     public static final int ACTIVITY     = 16;
-    public static final int INDICATOR    = 32;
+    public static final int INPUT        = 32;
+
     public static final int MOVs         = 64;
     public static final int RISK         = 512;
     public static final int WORKPLAN     = 1024;
@@ -76,7 +77,7 @@ public class cBitwise {
             OUTCOME,      /* 14 = 2 */
             OUTPUT,       /* 15 = 2 */
             ACTIVITY,     /* 17 = 2 */
-            INDICATOR,    /* 18 = 2 */
+            INPUT,        /* 18 = 2 */
             MOVs,         /* 19 = 2 */
             RISK,         /* 20 = 2 */
             WORKPLAN,     /* 21 = 2 */
@@ -163,7 +164,7 @@ public class cBitwise {
             "Other Update", /* 8  */
             "Owner Delete", /* 9  */
             "Group Delete", /* 10 */
-            "Other Delate", /* 11 */
+            "Other Delete", /* 11 */
             "Owner Sync",   /* 12 */
             "Group Sync",   /* 13 */
             "Other Sync"    /* 14 */

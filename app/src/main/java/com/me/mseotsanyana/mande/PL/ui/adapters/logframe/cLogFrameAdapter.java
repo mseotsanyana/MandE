@@ -29,7 +29,7 @@ import com.me.mseotsanyana.mande.PL.presenters.logframe.iLogFramePresenter;
 import com.me.mseotsanyana.mande.PL.ui.adapters.common.cCommonFragmentAdapter;
 import com.me.mseotsanyana.mande.PL.ui.fragments.common.cCustomViewPager;
 import com.me.mseotsanyana.mande.PL.ui.listeners.common.iViewPagerHeightListener;
-import com.me.mseotsanyana.mande.PL.ui.listeners.logframe.iRecyclerViewLogFrameListener;
+import com.me.mseotsanyana.mande.PL.ui.listeners.logframe.iViewLogFrameListener;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
 import com.me.mseotsanyana.mande.UTIL.cFontManager;
@@ -46,7 +46,7 @@ import java.util.List;
  * Created by mseotsanyana on 2017/02/27.
  */
 
-public class cLogFrameAdapter extends cTreeAdapter implements iRecyclerViewLogFrameListener,
+public class cLogFrameAdapter extends cTreeAdapter implements iViewLogFrameListener,
         Filterable {
     private static String TAG = cLogFrameAdapter.class.getSimpleName();
     private static SimpleDateFormat sdf = cConstant.SHORT_FORMAT_DATE;
@@ -66,32 +66,22 @@ public class cLogFrameAdapter extends cTreeAdapter implements iRecyclerViewLogFr
             "Outputs",
             "Activities",
             "Inputs",
-            "Questions",
-            "Indicators",
-            "MoV",
-            "Assumptions/Risks"
+            "AWP&B",
+            "Monitoring",
+            "Evaluation",
+            "Risk Register"
     };
 
     private int[] bmb_imageid = {
-            R.drawable.dashboard_goal,
+            R.drawable.dashboard_impact,
             R.drawable.dashboard_outcome,
             R.drawable.dashboard_output,
             R.drawable.dashboard_activity,
-            R.drawable.dashboard_resource,
-            R.drawable.dashboard_question,
-            R.drawable.dashboard_indicator,
-            R.drawable.dashboard_movs,
+            R.drawable.dashboard_input,
+            R.drawable.dashboard_budget,
+            R.drawable.dashboard_monitoring,
+            R.drawable.dashboard_evaluating,
             R.drawable.dashboard_risk
-            //R.drawable.dashboard_budget,
-            //R.drawable.dashboard_evaluation,
-            //R.drawable.dashboard_monitoring,
-            //R.drawable.dashboard_workplan,
-            //R.drawable.dashboard_budget
-            //R.drawable.dashboard_criterion,
-            //R.drawable.dashboard_category,
-            //R.drawable.dashboard_evaluating,
-            //R.drawable.dashboard_report,
-            //R.drawable.dashboard_notification
     };
 
     public cLogFrameAdapter(Context context, iLogFramePresenter.View logframePresenterView,
@@ -137,7 +127,7 @@ public class cLogFrameAdapter extends cTreeAdapter implements iRecyclerViewLogFr
         if (obj != null) {
             switch (obj.getType()) {
                 case PARENT_LOGFRAME:
-                    cLogFrameModel parentLogFrameModel = (cLogFrameModel) obj.getModelObject();
+                    cLogFrameModel parentLogFrame = (cLogFrameModel) obj.getModelObject();
                     cParentLogFrameViewHolder PVH = ((cParentLogFrameViewHolder) viewHolder);
 
                     PVH.setPaddingLeft(20 * node.getLevel());
@@ -147,12 +137,13 @@ public class cLogFrameAdapter extends cTreeAdapter implements iRecyclerViewLogFr
                     PVH.cardView.setCardBackgroundColor(ContextCompat.getColor(context,
                             parentBackgroundColor));
 
-                    PVH.textViewOrganization.setText(parentLogFrameModel.getOrganizationModel().
+                    PVH.textViewOrganization.setText(parentLogFrame.getOrganizationModel().
                             getName());
-                    PVH.textViewName.setText(parentLogFrameModel.getName());
-                    PVH.textViewDescription.setText(parentLogFrameModel.getDescription());
-                    PVH.textViewStartDate.setText(sdf.format(parentLogFrameModel.getStartDate()));
-                    PVH.textViewEndDate.setText(sdf.format(parentLogFrameModel.getEndDate()));
+
+                    PVH.textViewName.setText(parentLogFrame.getName());
+                    PVH.textViewDescription.setText(parentLogFrame.getDescription());
+                    PVH.textViewStartDate.setText(sdf.format(parentLogFrame.getStartDate()));
+                    PVH.textViewEndDate.setText(sdf.format(parentLogFrame.getEndDate()));
 
                     PVH.bmbMenu.clearBuilders();
                     for (int i = 0; i < PVH.bmbMenu.getPiecePlaceEnum().pieceNumber(); i++) {
@@ -169,7 +160,8 @@ public class cLogFrameAdapter extends cTreeAdapter implements iRecyclerViewLogFr
                                     @Override
                                     public void onBoomButtonClick(int index) {
                                         /* when the boom-button is clicked. */
-                                        PVH.logFrameListener.onClickBoomMenu(index);
+                                        PVH.logFrameListener.onClickBMBLogFrame(
+                                                index, parentLogFrame.getLogFrameID());
                                     }
                                 });
                         PVH.bmbMenu.addBuilder(builder);
@@ -238,8 +230,7 @@ public class cLogFrameAdapter extends cTreeAdapter implements iRecyclerViewLogFr
                     PVH.textViewUpdateIcon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            PVH.logFrameListener.onClickUpdateLogFrame(position,
-                                    parentLogFrameModel);
+                            PVH.logFrameListener.onClickUpdateLogFrame(position, parentLogFrame);
                         }
                     });
 
@@ -253,7 +244,7 @@ public class cLogFrameAdapter extends cTreeAdapter implements iRecyclerViewLogFr
                         @Override
                         public void onClick(View view) {
                             PVH.logFrameListener.onClickDeleteLogFrame(position,
-                                    parentLogFrameModel.getLogFrameID());
+                                    parentLogFrame.getLogFrameID());
                         }
                     });
 
@@ -266,8 +257,7 @@ public class cLogFrameAdapter extends cTreeAdapter implements iRecyclerViewLogFr
                     PVH.textViewSyncIcon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            PVH.logFrameListener.onClickSyncLogFrame(position,
-                                    parentLogFrameModel);
+                            PVH.logFrameListener.onClickSyncLogFrame(position, parentLogFrame);
                         }
                     });
 
@@ -281,12 +271,12 @@ public class cLogFrameAdapter extends cTreeAdapter implements iRecyclerViewLogFr
                         @Override
                         public void onClick(View view) {
                             PVH.logFrameListener.onClickCreateSubLogFrame(
-                                    parentLogFrameModel.getLogFrameID(), new cLogFrameModel());
+                                    parentLogFrame.getLogFrameID(), new cLogFrameModel());
                         }
                     });
 
                     /* setup the common details */
-                    PVH.setViewPager(parentLogFrameModel);
+                    PVH.setViewPager(parentLogFrame);
 
                     break;
 
@@ -468,8 +458,8 @@ public class cLogFrameAdapter extends cTreeAdapter implements iRecyclerViewLogFr
     }
 
     @Override
-    public void onClickBoomMenu(int index) {
-        logframePresenterView.onClickBoomMenu(index);
+    public void onClickBMBLogFrame(int index, int logFrameID) {
+        logframePresenterView.onClickBMBLogFrame(index, logFrameID);
     }
 
     @Override
@@ -516,16 +506,16 @@ public class cLogFrameAdapter extends cTreeAdapter implements iRecyclerViewLogFr
 
         private View treeView;
         private cCommonFragmentAdapter commonFragmentAdapter;
-        private iRecyclerViewLogFrameListener logFrameListener;
+        private iViewLogFrameListener logFrameListener;
 
         private cParentLogFrameViewHolder(final View treeViewHolder,
                                          cCommonFragmentAdapter commonFragmentAdapter,
-                                         iRecyclerViewLogFrameListener recyclerViewLogFrame) {
+                                         iViewLogFrameListener listener) {
             super(treeViewHolder);
 
             this.treeView = treeViewHolder;
             this.commonFragmentAdapter = commonFragmentAdapter;
-            this.logFrameListener = recyclerViewLogFrame;
+            this.logFrameListener = listener;
 
             this.cardView = treeViewHolder.findViewById(R.id.cardView);
             this.expandableLayout = treeViewHolder.findViewById(R.id.expandableLayout);
@@ -641,11 +631,11 @@ public class cLogFrameAdapter extends cTreeAdapter implements iRecyclerViewLogFr
 
         private View treeView;
         private cCommonFragmentAdapter commonFragmentAdapter;
-        private iRecyclerViewLogFrameListener logFrameListener;
+        private iViewLogFrameListener logFrameListener;
 
         private cChildLogFrameViewHolder(View treeViewHolder,
                                          cCommonFragmentAdapter commonFragmentAdapter,
-                                         iRecyclerViewLogFrameListener recyclerViewLogFrame) {
+                                         iViewLogFrameListener recyclerViewLogFrame) {
             super(treeViewHolder);
             treeView = treeViewHolder;
             this.commonFragmentAdapter = commonFragmentAdapter;

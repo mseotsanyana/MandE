@@ -40,15 +40,15 @@ public class cUploadSessionPresenterImpl extends cAbstractPresenter implements i
     @Override
     public void onUploadingSessionFailed(String msg) {
         if(this.view != null) {
-            this.view.onUploadCompleted(msg);
+            this.view.onUploadCompleted("Uploading Session",msg);
             this.view.hideProgress();
         }
     }
 
     @Override
-    public void onUploadingSessionSucceeded(String msg) {
+    public void onUploadingSessionSucceeded(String message) {
         if(this.view != null) {
-            this.view.onUploadCompleted(msg);
+            this.view.onUploadCompleted("Uploading Session", message);
             this.view.hideProgress();
         }
     }

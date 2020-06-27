@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,10 +34,13 @@ import com.me.mseotsanyana.mande.UTIL.cUtil;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.cMainThreadImpl;
 
-public class cLoginFragment extends Fragment implements iUserLoginPresenter.View{
-    //private cSessionManager session;
+import java.util.Objects;
 
-//    private OnFragmentInteractionListener mListener;
+public class cLoginFragment extends Fragment implements iUserLoginPresenter.View{
+    private static String TAG = cLoginFragment.class.getSimpleName();
+
+
+    //    private OnFragmentInteractionListener mListener;
     private AppCompatButton loginButton;
     private TextInputLayout emailTextInputLayout, passwordTextInputLayout;
     private TextInputEditText emailTextInputEditText, passwordTextInputEditText;
@@ -195,14 +199,30 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
      *
      * @param fragment An instance of Fragment to show into the given id.
      */
-    protected void pushFragment(Fragment fragment) {
+    protected void pushFragment(Fragment fragment, String fragmentTag) {
         if (fragment == null)
             return;
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        if (ft != null) {
-            ft.replace(R.id.fragment_frame, fragment);
-            ft.commit();
+        ft.add(R.id.fragment_frame, fragment, fragmentTag);
+        ft.commit();
+    }
+
+    private void showFragment(String selectedFrag){
+        if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(selectedFrag) != null) {
+            //if the fragment exists, show it.
+            getFragmentManager().beginTransaction().show(
+                    Objects.requireNonNull(getFragmentManager().findFragmentByTag(selectedFrag))).
+                    commit();
+        } else {
+            //if the fragment does not exist, add it to fragment manager.
+            getFragmentManager().beginTransaction().add(
+                    R.id.fragment_frame, new cLogFrameFragment(), selectedFrag).commit();
+        }
+        if (getFragmentManager().findFragmentByTag(TAG) != null) {
+            //if the other fragment is visible, hide it.
+            getFragmentManager().beginTransaction().hide(
+                    Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).commit();
         }
     }
 
@@ -211,7 +231,10 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
         // get the session data
         //FIXME: load the MainFragment (MainMenuFragment) with set of menu items
         /* this populates the navigation menu and list of logframes with Boom menu */
-        pushFragment(new cLogFrameFragment());
+
+        showFragment(cLogFrameFragment.class.getSimpleName());
+
+        //pushFragment(new cLogFrameFragment(), cLogFrameFragment.class.getSimpleName());
         (getActivity().findViewById(R.id.bottom_navigation)).setVisibility(View.GONE);
     }
 

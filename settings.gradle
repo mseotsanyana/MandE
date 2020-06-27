@@ -1,4 +1,4 @@
-include ':app', ':treeadapterlibrary', ':expandablelayoutlibrary', ':multiselectspinnerlibrary', ':quickactionlibrary', ':validatorlibrary', ':viewpagerlibrary', ':bmblibrary', ':placeholderviewlibrary', ':annotations', ':compilers'
+include ':app', ':treeadapterlibrary', ':expandablelayoutlibrary', ':multiselectspinnerlibrary', ':quickactionlibrary', ':validatorlibrary', ':viewpagerlibrary',':bmblibrary', ':placeholderviewlibrary', ':annotations', ':compilers'
 project(':quickactionlibrary').projectDir = new File(settingsDir, '../Libraries/quickactionlibrary')
 project(':expandablelayoutlibrary').projectDir = new File(settingsDir, '../Libraries/expandablelayoutlibrary')
 project(':treeadapterlibrary').projectDir = new File(settingsDir, '../Libraries/treeadapterlibrary')

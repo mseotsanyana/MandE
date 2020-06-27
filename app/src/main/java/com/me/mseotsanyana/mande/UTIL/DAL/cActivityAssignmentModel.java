@@ -1,4 +1,0 @@
-package com.me.mseotsanyana.mande.UTIL.DAL;
-
-public class cActivityAssignmentModel {
-}

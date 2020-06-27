@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -7,29 +9,24 @@
     <!-- include a toolbar layout -->
     <include layout="@layout/me_toolbar_layout" />
 
-    <LinearLayout
+    <!-- activity list layout -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/activityRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/me_toolbar"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        <!-- user list layout
-        <androidx.appcompat.widget.RecyclerView
-            android:id="@+id/impactRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical" />-->
-    </LinearLayout>
+    <!-- progress bar -->
+    <include
+        android:id="@+id/includeProgressBar"
+        layout="@layout/me_progress_bar"
+        android:visibility="visible" />
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <!-- the DraggableFAB layout -->
+    <com.me.mseotsanyana.bmblibrary.cDraggableFAB
+        android:id="@+id/activityFAB"
+        style="@style/FabStyle"
+        android:layout_gravity="bottom|end" />
 
-        <!-- the FAB layout -->
-        <com.me.mseotsanyana.bmblibrary.cDraggableFAB
-            android:id="@+id/impactDraggableFAB"
-            style="@style/FabStyle"
-            android:layout_gravity="bottom|end" />
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

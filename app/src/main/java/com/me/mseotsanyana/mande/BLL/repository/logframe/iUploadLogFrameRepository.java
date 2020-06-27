@@ -1,21 +1,55 @@
 package com.me.mseotsanyana.mande.BLL.repository.logframe;
 
 public interface iUploadLogFrameRepository {
-    /*boolean deleteCriteria();
-    boolean deleteQuestionGrouping();
-    boolean deleteQuestionType();
-    boolean deleteQuestion();
-    boolean deleteLogFrame();
-    boolean deleteRaid();
-    boolean deleteImpact();
-    boolean deleteOutcome();
-    boolean deleteOutput();
-    boolean deleteActivityPlanning();
-    boolean deleteActivity();
-    boolean deleteResourceType();
-    boolean deleteResource();
-    boolean deleteInput();*/
+    boolean deleteCriteria();
 
+    boolean deleteQuestionGroupings();
+    boolean deletePrimitiveTypes();
+    boolean deleteArrayTypes();
+    boolean deleteMatrixTypes();
+    boolean deleteQuestionTypes();
+    boolean deleteQuestions();
+
+    boolean deleteRaids();
+
+    boolean deleteImpactQuestions();
+    boolean deleteImpactRaids();
+    boolean deleteImpacts();
+
+    boolean deleteOutcomeImpacts();
+    boolean deleteOutcomeQuestions();
+    boolean deleteOutcomeRaids();
+    boolean deleteOutcomes();
+
+    boolean deleteOutputOutcomes();
+    boolean deleteOutputQuestions();
+    boolean deleteOutputRaids();
+    boolean deleteOutputs();
+
+    boolean deleteActivityPlannings();
+
+    boolean deletePrecedingActivities();
+    boolean deleteActivityAssignments();
+    boolean deleteActivityOutputs();
+    boolean deleteActivityQuestions();
+    boolean deleteActivityRaids();
+    boolean deleteActivities();
+
+    boolean deleteResourceTypes();
+    boolean deleteResources();
+
+    boolean deleteInputQuestions();
+    boolean deleteInputActivities();
+    boolean deleteHumans();
+    boolean deleteHumanSets();
+    boolean deleteMaterials();
+    boolean deleteIncomes();
+    boolean deleteFunds();
+    boolean deleteExpenses();
+    boolean deleteInputs();
+
+    boolean deleteLogFrameTree();
+    boolean deleteLogFrame();
 
     /* add (create) functions */
     boolean addCriteriaFromExcel();
@@ -33,6 +67,4 @@ public interface iUploadLogFrameRepository {
     boolean addResourceFromExcel();
     boolean addInputFromExcel();
 
-    /* delete functions */
-    boolean deleteActivities();
 }

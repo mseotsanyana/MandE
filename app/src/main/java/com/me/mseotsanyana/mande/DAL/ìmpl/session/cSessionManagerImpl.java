@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Set;
 
-import static com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise.entity_types;
+import static com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise.types;
 
 public class cSessionManagerImpl implements iSessionManagerRepository {
     private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
@@ -215,20 +215,19 @@ public class cSessionManagerImpl implements iSessionManagerRepository {
             statusKey.append("-");
             statusKey.append(perm.get(i).getOperationID());
             editor.putInt(String.valueOf(statusKey), (Integer) statusBITS);
-
         }
 
         /* save entity BITS for an entity : ENTITY-TYPE->BITS */
-        for (int i = 0; i < entity_types.length; i++) {
+        for (int i = 0; i < types.length; i++) {
             int entityBITS = 0;
             for (cPermissionModel entityModel : permissionModelSet) {
-                if (entityModel.getEntityTypeID() == entity_types[i]) {
+                if (entityModel.getEntityTypeID() == types[i]) {
                     entityBITS |= entityModel.getEntityID();
                 }
             }
             StringBuilder entityKey = new StringBuilder(cSharedPreference.KEY_ENTITY_TYPE_BITS);
             entityKey.append("-");
-            entityKey.append(entity_types[i]);
+            entityKey.append(types[i]);
             editor.putInt(String.valueOf(entityKey), (Integer) entityBITS);
         }
     }

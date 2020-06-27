@@ -29,7 +29,6 @@ public class cImpactModel {
 /*
     /*** incoming mappings ***/
     private cLogFrameModel logFrameModel;
-    private cImpactModel impactModel;
     private Set<cImpactModel> impactModelSet; //children
 
     /*** outgoing mappings ***/
@@ -37,18 +36,15 @@ public class cImpactModel {
     private Set<cQuestionModel> questionModelSet;
     private Set<cRaidModel> raidModelSet;
     /* a parent outcome of the impact in a sub-logframe */
-    private Map<Pair<cLogFrameModel, cLogFrameModel>, cOutcomeModel> outcomeModelMap;
 
     public cImpactModel(){
         /* incoming mappings */
         logFrameModel = new cLogFrameModel();
-        //impactModel = new cImpactModel() FIXME;
         impactModelSet = new HashSet<>();
         /* outgoing mappings */
         outcomeModelSet = new HashSet<>();
         questionModelSet = new HashSet<>();
         raidModelSet = new HashSet<>();
-        outcomeModelMap = new HashMap<>();
     }
 
     public int getImpactID() {
@@ -187,14 +183,6 @@ public class cImpactModel {
         this.logFrameModel = logFrameModel;
     }
 
-    public cImpactModel getImpactModel() {
-        return impactModel;
-    }
-
-    public void setImpactModel(cImpactModel impactModel) {
-        this.impactModel = impactModel;
-    }
-
     public Set<cImpactModel> getImpactModelSet() {
         return impactModelSet;
     }
@@ -225,13 +213,5 @@ public class cImpactModel {
 
     public void setRaidModelSet(Set<cRaidModel> raidModelSet) {
         this.raidModelSet = raidModelSet;
-    }
-
-    public Map<Pair<cLogFrameModel, cLogFrameModel>, cOutcomeModel> getOutcomeModelMap() {
-        return outcomeModelMap;
-    }
-
-    public void setOutcomeModelMap(Map<Pair<cLogFrameModel, cLogFrameModel>, cOutcomeModel> outcomeModelMap) {
-        this.outcomeModelMap = outcomeModelMap;
     }
 }

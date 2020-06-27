@@ -16,6 +16,21 @@ import com.me.mseotsanyana.mande.R;
  */
 
 public class cEvaluatingFragment extends Fragment {
+
+    private cEvaluatingFragment(){
+
+    }
+
+    public static cEvaluatingFragment newInstance(int logFrameID) {
+        Bundle bundle = new Bundle();
+        cEvaluatingFragment fragment = new cEvaluatingFragment();
+
+        bundle.putLong("LOGFRAME_ID", logFrameID);
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
+
     /*
 * this event fires 1st, before creation of fragment or any views
 * the onAttach method is called when the Fragment instance is

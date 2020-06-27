@@ -26,22 +26,46 @@ public class cUploadGlobalInteractorImpl extends cAbstractInteractor
         this.callback = callback;
     }
 
+    /* notify on the main thread */
+    private void notifyError(String msg){
+        mainThread.post(new Runnable() {
+            @Override
+            public void run() {
+                callback.onUploadGlobalCompleted(msg);
+            }
+        });
+    }
+
+    /* notify on the main thread */
+    private void postMessage(String msg){
+        mainThread.post(new Runnable() {
+            @Override
+            public void run() {
+                callback.onUploadGlobalCompleted(msg);
+            }
+        });
+    }
+
     @Override
     public void run() {
-        /* create a new objects and insert it in the database */
+        /* delete all global module records */
+
         uploadGlobalRepository.deleteFrequencies();
         uploadGlobalRepository.deletePeriods();
         uploadGlobalRepository.deleteFiscalYears();
 
-        uploadGlobalRepository.addFrequencyFromExcel();
-        uploadGlobalRepository.addFiscalYearFromExcel();
+        /* upload all global module records */
 
-        /* notify on the main thread that we have inserted this item */
-        mainThread.post(new Runnable() {
-            @Override
-            public void run() {
-                callback.onUploadGlobalCompleted("Global Modules Added Successfully!");
-            }
-        });
+        if(uploadGlobalRepository.addFrequencyFromExcel()){
+            postMessage("Frequency Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add Frequency Entity");
+        }
+
+        if(uploadGlobalRepository.addFiscalYearFromExcel()){
+            postMessage("FiscalYear Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add FiscalYear Entity");
+        }
     }
 }

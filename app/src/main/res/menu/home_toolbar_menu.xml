@@ -11,10 +11,23 @@
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
-    <item
-        android:id="@+id/homeItem"
+    <!--item
+        android:id="@+id/infoItem"
         android:orderInCategory="11"
+        android:title="Help" /-->
+
+    <item
+        android:id="@+id/menuAbout"
+        android:title="About"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/infoItem"
         android:title="Help"
-        android:icon="@drawable/ic_info_white_24dp"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menuLogout"
+        android:title="Logout"
+        app:showAsAction="never"/>
 </menu>

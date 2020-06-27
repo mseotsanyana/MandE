@@ -59,15 +59,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         Fragment fragment;
         cUserRepositoryImpl session = null;
         if (false) {
-            fragment = null;//new cLogFrameFragment().newInstance();
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_frame, fragment);
-            ft.commit();
+            pushFragment(new cLogFrameFragment(), cLogFrameFragment.class.getSimpleName());
+            //fragment = null;//new cLogFrameFragment().newInstance();
+            //FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            //ft.replace(R.id.fragment_frame, fragment);
+            //ft.commit();
         } else {
-            fragment = new cLoginFragment();//.newInstance(session);
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_frame, fragment);
-            ft.commit();
+            pushFragment(new cLoginFragment(), cLoginFragment.class.getSimpleName());
+            //fragment = new cLoginFragment();//.newInstance(session);
+            //FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            //ft.replace(R.id.fragment_frame, fragment);
+            //ft.commit();
         }
     }
 
@@ -76,34 +78,34 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         Fragment fragment = null;
         switch (item.getItemId()) {
             case R.id.action_login:
-                pushFragment(new cLoginFragment());//.newInstance(null));
+                pushFragment(new cLoginFragment(), cLoginFragment.class.getSimpleName());//.newInstance(null));
                 return true;
             case R.id.action_create:
-                pushFragment(cRegisterFragment.newInstance());
+                pushFragment(cRegisterFragment.newInstance(), cRegisterFragment.class.getSimpleName());
                 return true;
             case R.id.action_join:
-                pushFragment(cJoinFragment.newInstance());
+                pushFragment(cJoinFragment.newInstance(), cJoinFragment.class.getSimpleName());
                 return true;
             case R.id.action_settings:
-                pushFragment(cSettingsFragment.newInstance());
+                pushFragment(cSettingsFragment.newInstance(), cSettingsFragment.class.getSimpleName());
                 return true;
         }
         return false;
     }
 
-    protected void pushFragment(Fragment fragment) {
+    protected void pushFragment(Fragment fragment, String fragmentTag) {
         if (fragment == null)
             return;
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if (ft != null) {
-            ft.replace(R.id.fragment_frame, fragment);
+            ft.replace(R.id.fragment_frame, fragment, fragmentTag);
             ft.commit();
         }
     }
 
-    /* called when a home button is clicked */
-    public void onClickHome(View v) {
+    /* called when a home button is clicked 
+    public void onClickHome3(View v) {
         Fragment dashboard = new cLogFrameFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_frame, dashboard);
@@ -116,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         ft.replace(R.id.fragment_frame, dashboard);
         ft.commit();
         return true;
-    }
+    }*/
 
     @Override
     public void onBackPressed() {

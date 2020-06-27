@@ -15,6 +15,8 @@
     <string name="fa_logout">&#xf08b;</string>
     <string name="fa_chevron_right">&#xf054;</string>
     <string name="fa_chevron_down">&#xf078;</string>
+    <string name="fa_home">&#xf015;</string>
+    <string name="fa_information">&#xf05a;</string>
 
     <!-- icons for bottom navigation menu -->
     <string name="fa_login">&#xf090;</string>
@@ -72,6 +74,7 @@
     <string name="Apply">Apply</string>
     <string name="Yes">Yes</string>
     <string name="No">No</string>
+    <string name="Ok">Ok</string>
 
     <!-- unix groups -->
     <string name="Owner">Owner</string>
@@ -95,8 +98,8 @@
     <string name="logframe_update_title">UPDATE LOGFRAME</string>
     <string name="logframe_delete_title">DELETE LOGFRAME</string>
     <string name="logframe_organization_caption">organization:</string>
-    <string name="logframe_name_caption">name:</string>
-    <string name="logframe_description_caption">discretion:</string>
+    <string name="logframe_name_caption">logical framework:</string>
+    <string name="logframe_description_caption">description:</string>
     <string name="logframe_startdate_caption">start date: </string>
     <string name="logframe_enddate_caption">end date: </string>
 
@@ -180,29 +183,30 @@
     <string name="privilege_filter_add_title">Filter Entities to Add.</string>
     <string name="privilege_filter_remove_title">Filter Entities to Remove.</string>
     <string name="privilege_filter_error">Filtering Error.</string>
-    <string name="privilege_filter_error_msg">Error in filtering entities...</string>
+    <string name="privilege_filter_error_msg">Error in filtering entities…</string>
 
     <!-- the organization strings -->
     <string name="organization_list_title">Organizations</string>
+    <string name="organization_caption">organization:</string>
 
     <!-- the Impact strings -->
-    <string name="impact_list_title">Impacts</string>
-
-    <!-- the triangle method strings -->
-    <string name="triangle_list_title">CES Triangle</string>
-
-    <!-- the impact strings -->
-    <string name="input_list_title">Inputs</string>
+    <string name="impact_list_title">List of Impacts</string>
+    <string name="impact_caption">impact:</string>
 
     <!-- the outcome strings -->
-    <string name="outcome_list_title">Outcomes</string>
+    <string name="outcome_list_title">List of Outcomes</string>
+    <string name="outcome_caption">outcome:</string>
 
     <!-- the output strings -->
-    <string name="output_list_title">Outputs</string>
-
+    <string name="output_list_title">List of Outputs</string>
+    <string name="output_caption">output:</string>
 
     <!-- the activity strings -->
-    <string name="activity_list_title">Activities</string>
+    <string name="activity_list_title">List of Activities</string>
+    <string name="activity_caption">activity:</string>
+
+    <!-- the input strings -->
+    <string name="input_list_title">Inputs</string>
 
     <!-- the indicator strings -->
     <string name="indicator_list_title">Indicators</string>
@@ -212,6 +216,7 @@
 
     <!-- the risk strings -->
     <string name="risk_list_title">Risks</string>
+    <string name="risk_caption">activity:</string>
 
     <!-- the workplan strings -->
     <string name="workplan_list_title">Work plans</string>
@@ -229,7 +234,8 @@
     <string name="criterion_list_title">Criteria</string>
 
     <!-- the question strings -->
-    <string name="question_list_title">Questions</string>
+    <string name="question_list_title">List of Questions</string>
+    <string name="question_caption">question:</string>
 
     <!-- the category strings -->
     <string name="category_list_title">Categories</string>
@@ -245,6 +251,9 @@
 
     <!-- the alert strings -->
     <string name="alert_list_title">Alerts</string>
+
+    <!-- the triangle method strings -->
+    <string name="triangle_list_title">CES Triangle</string>
 
     <!-- Attributes for BMB Menu -->
     <string name="text_inside_circle_button_text_normal">Text Inside Circle Button(Normal)</string>

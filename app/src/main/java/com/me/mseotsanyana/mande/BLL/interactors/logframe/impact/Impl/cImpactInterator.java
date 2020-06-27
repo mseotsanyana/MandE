@@ -4,16 +4,16 @@ import android.content.Context;
 
 import com.me.mseotsanyana.mande.UTIL.BLL.cGoalDomain;
 import com.me.mseotsanyana.mande.UTIL.BLL.cMapper;
-import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cImpactImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cImpactRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cImpactModel;
 
 public class cImpactInterator extends cMapper<cImpactModel, cGoalDomain>
 {
-    private cImpactImpl goalDBA;
+    private cImpactRepositoryImpl goalDBA;
     private Context context;
 
     public cImpactInterator(Context context) {
-        goalDBA = new cImpactImpl(context);
+        goalDBA = new cImpactRepositoryImpl(context);
         this.setContext(context);
     }
 

@@ -40,7 +40,7 @@ public class cUploadAWPBPresenterImpl extends cAbstractPresenter implements iUpl
     @Override
     public void onUploadAWPBCompleted(String msg) {
         if(this.view != null) {
-            this.view.onUploadCompleted(msg);
+            this.view.onUploadCompleted("Upload AWPB", msg);
             this.view.hideProgress();
         }
     }
@@ -69,6 +69,9 @@ public class cUploadAWPBPresenterImpl extends cAbstractPresenter implements iUpl
 
     @Override
     public void onError(String message) {
-
+        if(this.view != null) {
+            this.view.onUploadCompleted("Upload AWPB", message);
+            this.view.hideProgress();
+        }
     }
 }

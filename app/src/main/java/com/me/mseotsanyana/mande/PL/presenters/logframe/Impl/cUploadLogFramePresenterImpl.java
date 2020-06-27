@@ -40,7 +40,7 @@ public class cUploadLogFramePresenterImpl extends cAbstractPresenter implements 
     @Override
     public void onUploadLogFrameCompleted(String msg) {
         if(this.view != null) {
-            this.view.onUploadCompleted(msg);
+            this.view.onUploadCompleted("Upload LogFrame", msg);
             this.view.hideProgress();
         }
     }
@@ -69,6 +69,9 @@ public class cUploadLogFramePresenterImpl extends cAbstractPresenter implements 
 
     @Override
     public void onError(String message) {
-
+        if(this.view != null) {
+            this.view.onUploadCompleted("Upload LogFrame", message);
+            this.view.hideProgress();
+        }
     }
 }

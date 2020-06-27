@@ -24,6 +24,26 @@ public class cUploadEvaluationInteractorImpl extends cAbstractInteractor
         this.callback = callback;
     }
 
+    /* notify on the main thread */
+    private void notifyError(String msg){
+        mainThread.post(new Runnable() {
+            @Override
+            public void run() {
+                callback.onUploadEvaluationCompleted(msg);
+            }
+        });
+    }
+
+    /* notify on the main thread */
+    private void postMessage(String msg){
+        mainThread.post(new Runnable() {
+            @Override
+            public void run() {
+                callback.onUploadEvaluationCompleted(msg);
+            }
+        });
+    }
+
     @Override
     public void run() {
         /* create a new ARRAY CHOICE object and insert it in the database */
@@ -46,20 +66,46 @@ public class cUploadEvaluationInteractorImpl extends cAbstractInteractor
         uploadEvaluationRepository.deleteArrayResponses();
         uploadEvaluationRepository.deleteMatrixResponses();
 
-        uploadEvaluationRepository.addArrayChoiceFromExcel();
-        uploadEvaluationRepository.addRowOptionFromExcel();
-        uploadEvaluationRepository.addColOptionFromExcel();
-        uploadEvaluationRepository.addMatrixChoiceFromExcel();
-        uploadEvaluationRepository.addEvaluationTypeFromExcel();
-        uploadEvaluationRepository.addQuestionnaireFromExcel();
-        uploadEvaluationRepository.addEResponseFromExcel();
+        if(uploadEvaluationRepository.addArrayChoiceFromExcel()){
+            postMessage("ArrayChoice Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add ArrayChoice Entity");
+        }
 
-        /* notify on the main thread that we have inserted this item */
-        mainThread.post(new Runnable() {
-            @Override
-            public void run() {
-                callback.onUploadEvaluationCompleted("Evaluation Modules Added Successfully!");
-            }
-        });
+        if(uploadEvaluationRepository.addRowOptionFromExcel()){
+            postMessage("RowOption Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add RowOption Entity");
+        }
+
+        if(uploadEvaluationRepository.addColOptionFromExcel()){
+            postMessage("ColOption Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add ColOption Entity");
+        }
+
+        if(uploadEvaluationRepository.addMatrixChoiceFromExcel()){
+            postMessage("MatrixChoice Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add MatrixChoice Entity");
+        }
+
+        if(uploadEvaluationRepository.addEvaluationTypeFromExcel()){
+            postMessage("EvaluationType Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add EvaluationType Entity");
+        }
+
+        if(uploadEvaluationRepository.addQuestionnaireFromExcel()){
+            postMessage("Questionnaire Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add Questionnaire Entity");
+        }
+
+        if(uploadEvaluationRepository.addEResponseFromExcel()){
+            postMessage("EResponse Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add EResponse Entity");
+        }
     }
 }

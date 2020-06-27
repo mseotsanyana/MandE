@@ -1,8 +1,6 @@
 package com.me.mseotsanyana.mande.DAL.model.logframe;
 
-import com.me.mseotsanyana.mande.UTIL.DAL.cBudgetModel;
-import com.me.mseotsanyana.mande.UTIL.DAL.cHumanSetModel;
-import com.me.mseotsanyana.mande.UTIL.DAL.cMaterialModel;
+import com.me.mseotsanyana.mande.DAL.model.wpb.cJournalModel;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -19,28 +17,32 @@ public class cInputModel {
 	private int groupBITS;
 	private int permsBITS;
 	private int statusBITS;
-	//private String name;
-	//private String description;
 	private Date startDate;
 	private Date endDate;
 	private Date createdDate;
     private Date modifiedDate;
     private Date syncedDate;
 
-    /* foreign key */
+	/*** incoming mappings ***/
+	private cResourceModel resourceModel;
     private cLogFrameModel logFrameModel;
     private cActivityModel activityModel;
 
-    /* one to one */
-	private cHumanSetModel humanSetModel;
-	private cMaterialModel materialModel;
-	private cBudgetModel budgetModel;
+	/*** outgoing mappings ***/
+	private Set<cQuestionModel> questionModelSet;
+	private Set<cJournalModel> journalModelSet;
 
-	/* many to many*/
-    private Set<cQuestionModel> questionModelSet;
+	/* set of activity in a sub-logframe for the parent input */
+	private Set<cActivityModel> childActivityModelSet;
 
 	public cInputModel(){
+		logFrameModel = new cLogFrameModel();
+		activityModel = new cActivityModel();
+		resourceModel = new cResourceModel();
+
+		journalModelSet = new HashSet<>();
 		questionModelSet = new HashSet<>();
+		childActivityModelSet = new HashSet<>();
 	}
 
 	public int getInputID() {
@@ -179,28 +181,20 @@ public class cInputModel {
 		this.activityModel = activityModel;
 	}
 
-	public cHumanSetModel getHumanSetModel() {
-		return humanSetModel;
+	public cResourceModel getResourceModel() {
+		return resourceModel;
 	}
 
-	public void setHumanSetModel(cHumanSetModel humanSetModel) {
-		this.humanSetModel = humanSetModel;
+	public void setResourceModel(cResourceModel resourceModel) {
+		this.resourceModel = resourceModel;
 	}
 
-	public cMaterialModel getMaterialModel() {
-		return materialModel;
+	public Set<cJournalModel> getJournalModelSet() {
+		return journalModelSet;
 	}
 
-	public void setMaterialModel(cMaterialModel materialModel) {
-		this.materialModel = materialModel;
-	}
-
-	public cBudgetModel getBudgetModel() {
-		return budgetModel;
-	}
-
-	public void setBudgetModel(cBudgetModel budgetModel) {
-		this.budgetModel = budgetModel;
+	public void setJournalModelSet(Set<cJournalModel> journalModelSet) {
+		this.journalModelSet = journalModelSet;
 	}
 
 	public Set<cQuestionModel> getQuestionModelSet() {
@@ -209,6 +203,14 @@ public class cInputModel {
 
 	public void setQuestionModelSet(Set<cQuestionModel> questionModelSet) {
 		this.questionModelSet = questionModelSet;
+	}
+
+	public Set<cActivityModel> getChildActivityModelSet() {
+		return childActivityModelSet;
+	}
+
+	public void setChildActivityModelSet(Set<cActivityModel> childActivityModelSet) {
+		this.childActivityModelSet = childActivityModelSet;
 	}
 }
 

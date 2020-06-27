@@ -2,21 +2,23 @@ package com.me.mseotsanyana.mande.PL.ui.fragments.session;
 
 //import android.app.Fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.text.Layout;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.wpb.cUploadAWPBRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.evaluator.cUploadEvaluationRepositoryImpl;
@@ -39,9 +41,12 @@ import com.me.mseotsanyana.mande.PL.presenters.monitor.iUploadMonitoringPresente
 import com.me.mseotsanyana.mande.PL.presenters.raid.iUploadRAIDPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.session.Impl.cUploadSessionPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.session.iUploadSessionPresenter;
-import com.me.mseotsanyana.mande.UTIL.cUtil;
+import com.me.mseotsanyana.mande.UTIL.TextDrawable;
+import com.me.mseotsanyana.mande.UTIL.cFontManager;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.cMainThreadImpl;
+
+import java.util.Objects;
 
 public class cSettingsFragment extends Fragment implements
         iUploadSessionPresenter.View, iUploadGlobalPresenter.View,
@@ -53,15 +58,7 @@ public class cSettingsFragment extends Fragment implements
 
     //private cSessionManager session;
 
-    private AppCompatButton appCompatButtonGlobal;
-    private AppCompatButton appCompatButtonBRBAC;
-    private AppCompatButton appCompatButtonLogFrame;
-    private AppCompatButton appCompatButtonEvaluation;
-    private AppCompatButton appCompatButtonMonitoring;
-    private AppCompatButton appCompatButtonRAID;
-    private AppCompatButton appCompatButtonAWPB;
-
-    private BottomNavigationView bottomNavigationView;
+    //private BottomNavigationView bottomNavigationView;
     private ProgressBar progressBar;
 
     private iUploadSessionPresenter presenterSession;
@@ -97,7 +94,7 @@ public class cSettingsFragment extends Fragment implements
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         /* a button to upload Global data set */
-        appCompatButtonGlobal = (AppCompatButton) view.findViewById(R.id.appCompatButtonUploadGlobal);
+        AppCompatButton appCompatButtonGlobal = (AppCompatButton) view.findViewById(R.id.appCompatButtonUploadGlobal);
         appCompatButtonGlobal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,7 +109,7 @@ public class cSettingsFragment extends Fragment implements
         });
 
         /* a button to upload Session data set */
-        appCompatButtonBRBAC = (AppCompatButton) view.findViewById(R.id.appCompatButtonUploadBRBAC);
+        AppCompatButton appCompatButtonBRBAC = (AppCompatButton) view.findViewById(R.id.appCompatButtonUploadBRBAC);
         appCompatButtonBRBAC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,7 +124,7 @@ public class cSettingsFragment extends Fragment implements
         });
 
         /* a button to upload LogFrame data set */
-        appCompatButtonLogFrame = (AppCompatButton) view.findViewById(R.id.appCompatButtonUploadLogFrame);
+        AppCompatButton appCompatButtonLogFrame = (AppCompatButton) view.findViewById(R.id.appCompatButtonUploadLogFrame);
         appCompatButtonLogFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,7 +139,7 @@ public class cSettingsFragment extends Fragment implements
         });
 
         /* a button to upload Evaluation data set */
-        appCompatButtonEvaluation = (AppCompatButton) view.findViewById(R.id.appCompatButtonUploadEvaluation);
+        AppCompatButton appCompatButtonEvaluation = (AppCompatButton) view.findViewById(R.id.appCompatButtonUploadEvaluation);
         appCompatButtonEvaluation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,7 +154,7 @@ public class cSettingsFragment extends Fragment implements
         });
 
         /* a button to upload Monitoring data set */
-        appCompatButtonMonitoring = (AppCompatButton) view.findViewById(R.id.appCompatButtonUploadMonitoring);
+        AppCompatButton appCompatButtonMonitoring = (AppCompatButton) view.findViewById(R.id.appCompatButtonUploadMonitoring);
         appCompatButtonMonitoring.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,7 +169,7 @@ public class cSettingsFragment extends Fragment implements
         });
 
         /* a button to upload RAID data set */
-        appCompatButtonRAID = (AppCompatButton) view.findViewById(R.id.appCompatButtonUploadRAID);
+        AppCompatButton appCompatButtonRAID = (AppCompatButton) view.findViewById(R.id.appCompatButtonUploadRAID);
         appCompatButtonRAID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,7 +184,7 @@ public class cSettingsFragment extends Fragment implements
         });
 
         /* a button to upload AWPB data set */
-        appCompatButtonAWPB = (AppCompatButton) view.findViewById(R.id.appCompatButtonUploadAWPB);
+        AppCompatButton appCompatButtonAWPB = (AppCompatButton) view.findViewById(R.id.appCompatButtonUploadAWPB);
         appCompatButtonAWPB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -244,10 +241,8 @@ public class cSettingsFragment extends Fragment implements
             return;
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        if (ft != null) {
-            ft.replace(R.id.fragment_frame, fragment);
-            ft.commit();
-        }
+        ft.replace(R.id.fragment_frame, fragment);
+        ft.commit();
     }
 
     @Override
@@ -267,7 +262,41 @@ public class cSettingsFragment extends Fragment implements
 
     /* declared in all module.View */
     @Override
-    public void onUploadCompleted(String msg) {
-        Log.d(TAG, msg);
+    public void onUploadCompleted(String title, String msg) {
+        deleteAlertDialog(title, msg);
+    }
+
+    private void deleteAlertDialog(String title, String message) {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                Objects.requireNonNull(getContext()));
+
+        // setting icon to dialog
+        TextDrawable faIcon = new TextDrawable(getContext());
+        faIcon.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
+        faIcon.setTextAlign(Layout.Alignment.ALIGN_CENTER);
+        faIcon.setTypeface(cFontManager.getTypeface(getContext(), cFontManager.FONTAWESOME));
+        faIcon.setText(getContext().getResources().getText(R.string.fa_delete));
+        faIcon.setTextColor(getContext().getColor(R.color.colorPrimaryDark));
+        alertDialogBuilder.setIcon(faIcon);
+
+        // set title
+        alertDialogBuilder.setTitle(title);
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton(getContext().getResources().getText(
+                        R.string.Ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 }

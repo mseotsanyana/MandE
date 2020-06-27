@@ -28,32 +28,28 @@ public class cOutputModel {
     private Date syncedDate;
 
     /*** incoming mappings ***/
-    private cOutputModel outputModel;
     private cOutcomeModel outcomeModel;
     private cLogFrameModel logFrameModel;
-    private Set<cOutputModel> outputModelSet;
+    private Set<cOutputModel> childrenOutputModelSet;
 
     /*** outgoing mappings */
     private Set<cActivityModel> activityModelSet;
     private Set<cQuestionModel> questionModelSet;
     private Set<cRaidModel> raidModelSet;
-    /* set of outcome in a sub-logframe for the parent output */
-    private Map<Pair<cLogFrameModel, cLogFrameModel>, Set<cOutcomeModel>> outputModelSetMap;
-    /* a parent activity of the output in a sub-logframe */
-    private Map<Pair<cLogFrameModel, cLogFrameModel>, cActivityModel> outputModelMap;
+    /* set of outcome in a child logframe for the output of the parent logframe */
+    private Set<cOutcomeModel> childOutcomeModelSet;
 
     public cOutputModel(){
         /* incoming mapping */
         //outputModel = new cOutputModel();
         outcomeModel = new cOutcomeModel();
         logFrameModel = new cLogFrameModel();
-        outputModelSet = new HashSet<>();
+        childrenOutputModelSet = new HashSet<>();
         /* outgoing mapping */
         activityModelSet = new HashSet<>();
         questionModelSet = new HashSet<>();
         raidModelSet = new HashSet<>();
-        outputModelSetMap = new HashMap<>();
-        outputModelMap = new HashMap<>();
+        childOutcomeModelSet = new HashSet<>();
     }
 
     public int getOutputID() {
@@ -192,14 +188,6 @@ public class cOutputModel {
         this.syncedDate = syncedDate;
     }
 
-    public cOutputModel getOutputModel() {
-        return outputModel;
-    }
-
-    public void setOutputModel(cOutputModel outputModel) {
-        this.outputModel = outputModel;
-    }
-
     public cOutcomeModel getOutcomeModel() {
         return outcomeModel;
     }
@@ -214,14 +202,6 @@ public class cOutputModel {
 
     public void setLogFrameModel(cLogFrameModel logFrameModel) {
         this.logFrameModel = logFrameModel;
-    }
-
-    public Set<cOutputModel> getOutputModelSet() {
-        return outputModelSet;
-    }
-
-    public void setOutputModelSet(Set<cOutputModel> outputModelSet) {
-        this.outputModelSet = outputModelSet;
     }
 
     public Set<cActivityModel> getActivityModelSet() {
@@ -248,20 +228,20 @@ public class cOutputModel {
         this.raidModelSet = raidModelSet;
     }
 
-    public Map<Pair<cLogFrameModel, cLogFrameModel>, Set<cOutcomeModel>> getOutputModelSetMap() {
-        return outputModelSetMap;
+    public Set<cOutputModel> getChildrenOutputModelSet() {
+        return childrenOutputModelSet;
     }
 
-    public void setOutputModelSetMap(Map<Pair<cLogFrameModel, cLogFrameModel>, Set<cOutcomeModel>> outputModelSetMap) {
-        this.outputModelSetMap = outputModelSetMap;
+    public void setChildrenOutputModelSet(Set<cOutputModel> childrenOutputModelSet) {
+        this.childrenOutputModelSet = childrenOutputModelSet;
     }
 
-    public Map<Pair<cLogFrameModel, cLogFrameModel>, cActivityModel> getOutputModelMap() {
-        return outputModelMap;
+    public Set<cOutcomeModel> getChildOutcomeModelSet() {
+        return childOutcomeModelSet;
     }
 
-    public void setOutputModelMap(Map<Pair<cLogFrameModel, cLogFrameModel>, cActivityModel> outputModelMap) {
-        this.outputModelMap = outputModelMap;
+    public void setChildOutcomeModelSet(Set<cOutcomeModel> childOutcomeModelSet) {
+        this.childOutcomeModelSet = childOutcomeModelSet;
     }
 }
 
