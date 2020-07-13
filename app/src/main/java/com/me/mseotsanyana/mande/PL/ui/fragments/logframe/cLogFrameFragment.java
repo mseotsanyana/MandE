@@ -569,22 +569,22 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
     }
 
     @Override
-    public void onClickBMBLogFrame(int menuIndex, int logFrameID) {
+    public void onClickBMBLogFrame(int menuIndex, long logFrameID) {
         String FLAG;
         switch (menuIndex) {
             case 0: // Impact Fragment
                 FLAG = cImpactFragment.class.getSimpleName() + logFrameID;
                 if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(
-                        Integer.toString(logFrameID)) != null) {
+                        Long.toString(logFrameID)) != null) {
                     /* if the fragment exists, show it. */
                     getFragmentManager().beginTransaction().show(
                             Objects.requireNonNull(getFragmentManager().findFragmentByTag(
-                                    Integer.toString(logFrameID)))).commit();
+                                    Long.toString(logFrameID)))).commit();
                 } else {
                     /* if the fragment does not exist, add it to fragment manager. */
                     getFragmentManager().beginTransaction().add(
                             R.id.fragment_frame, cImpactFragment.newInstance(logFrameID),
-                            Integer.toString(logFrameID)).commit();
+                            Long.toString(logFrameID)).commit();
                 }
                 if (getFragmentManager().findFragmentByTag(TAG) != null) {
                     /* if the other fragment is visible, hide it. */
@@ -621,7 +621,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
                 } else {
                     /* if the fragment does not exist, add it to fragment manager. */
                     getFragmentManager().beginTransaction().add(
-                            R.id.fragment_frame, new cOutputFragment(), FLAG).commit();
+                            R.id.fragment_frame, cOutputFragment.newInstance(logFrameID), FLAG).commit();
                 }
                 if (getFragmentManager().findFragmentByTag(TAG) != null) {
                     /* if the other fragment is visible, hide it. */
@@ -1066,7 +1066,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
             idNameBool.setObject(sharedOrganizations.get(i));
 
             /* get the current organization ID */
-            int organizationID = logFrameModel.getOrganizationModel().getOrganizationID();
+            long organizationID = logFrameModel.getOrganizationModel().getOrganizationID();
 
             if ((sharedOrganizations.get(i).getOrganizationID() == organizationID)) {
                 idNameBool.setSelected(true);

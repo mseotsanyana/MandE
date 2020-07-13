@@ -10,6 +10,6 @@ public interface iOutputRepository {
     boolean addOutput(cOutputModel outputModel);
 
     /* the read functions of the Output entity */
-    Set<cOutputModel> getOutputModelSet(long logFrameID, int userID, int primaryRoleBITS,
+    Set<cOutputModel> getOutputModelSet(long logFrameID, long userID, int primaryRoleBITS,
                                           int secondaryRoleBITS, int statusBITS);
 }

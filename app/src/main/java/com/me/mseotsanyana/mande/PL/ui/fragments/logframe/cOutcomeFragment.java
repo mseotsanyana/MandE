@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cOutcomeModel;
+import com.me.mseotsanyana.mande.DAL.model.logframe.cOutputModel;
 import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cOutcomeRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cSessionManagerImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.Impl.cOutcomePresenterImpl;
@@ -300,7 +301,7 @@ public class cOutcomeFragment extends Fragment implements iOutcomePresenter.View
     }
 
     @Override
-    public void onRetrieveOutcomesCompleted(String logFrameName, ArrayList<cTreeModel> outcomeModelSet) {
+    public void onOutcomeModelsRetrieved(String logFrameName, ArrayList<cTreeModel> outcomeModelSet) {
         try {
             /* update subtitle */
             this.logFrameName.setText(logFrameName);
@@ -310,6 +311,12 @@ public class cOutcomeFragment extends Fragment implements iOutcomePresenter.View
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void onOutcomeModelsFailed(String msg) {
+
+    }
+
 
     @Override
     public void onClickBMBOutcome(int menuIndex) {
@@ -322,17 +329,52 @@ public class cOutcomeFragment extends Fragment implements iOutcomePresenter.View
     }
 
     @Override
-    public void onClickUpdateOutcome(int position, cOutcomeModel outcomeModel) {
+    public void onClickUpdateOutcome(cOutcomeModel outcomeModel, int position) {
 
     }
 
     @Override
-    public void onClickDeleteOutcome(int position, long outcomeID) {
+    public void onClickDeleteOutcome(long outcomeID, int position) {
 
     }
 
     @Override
     public void onClickSyncOutcome(cOutcomeModel outcomeModel) {
+
+    }
+
+    @Override
+    public void onClickBMBOutput(int menuIndex) {
+
+    }
+
+    @Override
+    public void onClickCreateOutput(cOutputModel outputModel) {
+
+    }
+
+    @Override
+    public void onClickUpdateOutput(cOutputModel outputModel, int position) {
+
+    }
+
+    @Override
+    public void onClickDeleteOutput(long outputID, int position) {
+
+    }
+
+    @Override
+    public void onClickSyncOutput(cOutputModel outputModel) {
+
+    }
+
+    @Override
+    public void onOutputModelsRetrieved(String logFrameName, ArrayList<cTreeModel> outputModelSet) {
+
+    }
+
+    @Override
+    public void onOutputModelsFailed(String msg) {
 
     }
 

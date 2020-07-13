@@ -59,9 +59,6 @@ public class cOutcomeAdapter extends cTreeAdapter implements iViewImpactListener
     private static final int PARENT = 0;
     private static final int CHILD = 1;
 
-    private final iOutcomePresenter.View outcomePresenterView;
-    private final iOutputPresenter.View outputPresenterView;
-
     private final String[] bmb_caption = {
             "Sub-LogFrame Impacts",
             "Child Outcomes",
@@ -77,6 +74,9 @@ public class cOutcomeAdapter extends cTreeAdapter implements iViewImpactListener
             R.drawable.dashboard_question,
             R.drawable.dashboard_risk
     };
+
+    private final iOutcomePresenter.View outcomePresenterView;
+    private final iOutputPresenter.View outputPresenterView;
 
     public cOutcomeAdapter(Context context, iOutcomePresenter.View outcomePresenterView,
                            iOutputPresenter.View outputPresenterView,
@@ -358,17 +358,17 @@ public class cOutcomeAdapter extends cTreeAdapter implements iViewImpactListener
     }
 
     @Override
-    public void onClickUpdateOutcome(int position, cOutcomeModel outcomeModel) {
+    public void onClickUpdateOutcome(cOutcomeModel outcomeModel, int position) {
 
     }
 
     @Override
-    public void onClickDeleteOutcome(int position, int outcomeID) {
+    public void onClickDeleteOutcome(long outcomeID, int position) {
 
     }
 
     @Override
-    public void onClickSyncOutcome(int position, cOutcomeModel outcomeModel) {
+    public void onClickSyncOutcome(cOutcomeModel outcomeModel, int position) {
 
     }
 
@@ -383,7 +383,7 @@ public class cOutcomeAdapter extends cTreeAdapter implements iViewImpactListener
     }
 
     @Override
-    public void onClickDeleteOutput(int position, int outputID) {
+    public void onClickDeleteOutput(int position, long outputID) {
 
     }
 
@@ -398,7 +398,7 @@ public class cOutcomeAdapter extends cTreeAdapter implements iViewImpactListener
     }
 
     @Override
-    public void onClickBMBImpact(int index, int impactID) {
+    public void onClickBMBImpact(int index, long impactID) {
 
     }
 

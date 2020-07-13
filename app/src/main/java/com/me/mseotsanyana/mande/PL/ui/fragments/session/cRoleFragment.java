@@ -26,7 +26,6 @@ import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cOrganizationHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cRoleDomain;
 import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
 import com.me.mseotsanyana.mande.BLL.interactors.session.status.Impl.cStatusInteractorImpl;
@@ -62,7 +61,7 @@ public class cRoleFragment extends Fragment implements iPermissionInterface {
     private Menu toolBarMenu;
     private MenuItem toolBarMenuItem;
 
-    private cOrganizationHandler organizationHandler;
+    //private cOrganizationHandler organizationHandler;
     //private cUserRoleHandler userRoleHandler;
     private cStatusInteractorImpl statusHandler;
 
@@ -112,7 +111,7 @@ public class cRoleFragment extends Fragment implements iPermissionInterface {
         statusDomains = new ArrayList<>();
 
         // getting a action_list with all projects in a database
-        organizationHandler = new cOrganizationHandler(getActivity());
+        //organizationHandler = new cOrganizationHandler(getActivity());
         //userRoleHandler = new cUserRoleHandler(getActivity(), session);
         statusHandler   = null;//new cStatusInteractorImpl(getActivity());
 

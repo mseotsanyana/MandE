@@ -22,29 +22,29 @@ public interface iLogFrameRepository {
     boolean updateLogFrameModel(cLogFrameModel logFrameModel);
 
     /* the read functions of the LogFrame entity */
-    Set<cLogFrameModel> getLogFrameModelSet(int userID, int primaryRoleBITS,
+    Set<cLogFrameModel> getLogFrameModelSet(long userID, int primaryRoleBITS,
                                             int secondaryRoleBITS, int statusBITS);
-    Set<cImpactModel> getImpactModelSetByID(int logFrameID, int userID, int primaryRole,
+    Set<cImpactModel> getImpactModelSetByID(long logFrameID, long userID, int primaryRole,
                                                 int secondaryRoles, int statusBITS);
-    Set<cOutcomeModel> getOutcomeModelSetByID(int logFrameID, int userID, int primaryRole,
+    Set<cOutcomeModel> getOutcomeModelSetByID(long logFrameID, long userID, int primaryRole,
                                                 int secondaryRoles, int statusBITS);
-    Set<cOutputModel> getOutputModelSetByID(int logFrameID, int userID, int primaryRole,
+    Set<cOutputModel> getOutputModelSetByID(long logFrameID, long userID, int primaryRole,
                                                 int secondaryRoles, int statusBITS);
-    Set<cActivityModel> getActivityModelSetByID(int logFrameID, int userID, int primaryRole,
+    Set<cActivityModel> getActivityModelSetByID(long logFrameID, long userID, int primaryRole,
                                                 int secondaryRoles, int statusBITS);
-    Set<cInputModel> getInputModelSetByID(int logFrameID, int userID, int primaryRole,
+    Set<cInputModel> getInputModelSetByID(long logFrameID, long userID, int primaryRole,
                                                 int secondaryRoles, int statusBITS);
 
     ArrayList<cLogFrameModel> getLogFrameModels();
-    ArrayList<cLogFrameModel> getChildLogFramesByID(int parentID);
-    ArrayList<cImpactModel> getImpactsByID(int logFrameID);
-    ArrayList<cOutcomeModel> getOutcomesByID(int logFrameID);
-    ArrayList<cOutputModel> getOutputsByID(int logFrameID);
-    ArrayList<cActivityModel> getActivitiesByID(int logFrameID);
-    ArrayList<cInputModel> getInputsByID(int logFrameID);
-    ArrayList<cQuestionModel> getQuestionsByID(int logFrameID);
-    ArrayList<cIndicatorModel> getIndicatorsByID(int logFrameID);
-    ArrayList<cRaidModel> getRaidsByID(int logFrameID);
+    ArrayList<cLogFrameModel> getChildLogFramesByID(long parentID);
+    ArrayList<cImpactModel> getImpactsByID(long logFrameID);
+    ArrayList<cOutcomeModel> getOutcomesByID(long logFrameID);
+    ArrayList<cOutputModel> getOutputsByID(long logFrameID);
+    ArrayList<cActivityModel> getActivitiesByID(long logFrameID);
+    ArrayList<cInputModel> getInputsByID(long logFrameID);
+    ArrayList<cQuestionModel> getQuestionsByID(long logFrameID);
+    ArrayList<cIndicatorModel> getIndicatorsByID(long logFrameID);
+    ArrayList<cRaidModel> getRaidsByID(long logFrameID);
     boolean deleteLogFrame(long logFrameID);
     boolean deleteSubLogFrame(long logFrameID);
     boolean deleteLogFrames();

@@ -11,7 +11,6 @@ import com.me.mseotsanyana.mande.BLL.interactors.session.address.Impl.cAddressHa
 import com.me.mseotsanyana.mande.BLL.interactors.session.entity.Impl.cEntityHandler;
 import com.me.mseotsanyana.mande.BLL.interactors.session.menu.Impl.cMenuHandler;
 import com.me.mseotsanyana.mande.BLL.interactors.session.operation.Impl.cOperationHandler;
-import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cOrganizationHandler;
 import com.me.mseotsanyana.mande.BLL.interactors.session.role.Impl.cRoleHandler;
 import com.me.mseotsanyana.mande.BLL.interactors.session.session.Impl.cSessionHandler;
 import com.me.mseotsanyana.mande.BLL.interactors.session.status.Impl.cStatusInteractorImpl;
@@ -42,7 +41,7 @@ public class cUploadSessionData extends AsyncTask<String, Integer, String> {
             "tblPUBLISHER","tblSUBSCRIBER","tblNOTIFY_SETTING"};*/
 
     private cAddressHandler addressHandler;
-    private cOrganizationHandler organizationHandler;
+    //private cOrganizationHandler organizationHandler;
     private cValueHandler valueHandler;
     private cUserHandler userHandler;
     private cSessionHandler sessionHandler;
@@ -75,7 +74,7 @@ public class cUploadSessionData extends AsyncTask<String, Integer, String> {
         //this.session = session;
 
         addressHandler = new cAddressHandler(context);
-        organizationHandler = new cOrganizationHandler(context);
+        //organizationHandler = new cOrganizationHandler(context);
         valueHandler = new cValueHandler(context);
         userHandler = new cUserHandler(context);
         menuHandler = new cMenuHandler(context);

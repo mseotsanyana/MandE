@@ -104,7 +104,7 @@ public class cUserRepositoryImpl implements iUserRepository {
         return true;
     }
 
-    public long addUser(cUserModel userModel, int organizationID) {
+    public long addUser(cUserModel userModel, long organizationID) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -141,7 +141,7 @@ public class cUserRepositoryImpl implements iUserRepository {
         return userID;
     }
 
-    public boolean addUserAddress(int userID, int addressID) {
+    public boolean addUserAddress(long userID, long addressID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -250,7 +250,7 @@ public class cUserRepositoryImpl implements iUserRepository {
      * @return
      */
     public List<cUserModel> getUserList(
-            int userID, int primaryRole, int secondaryRoles, int operationBITS, int statusBITS) {
+            long userID, int primaryRole, int secondaryRoles, int operationBITS, int statusBITS) {
 
         List<cUserModel> userModelList = new ArrayList<>();
 
@@ -405,7 +405,7 @@ public class cUserRepositoryImpl implements iUserRepository {
     }
 
 
-    public cOrganizationModel getOrganizationByID(int organizationID) {
+    public cOrganizationModel getOrganizationByID(long organizationID) {
         // open connection to read only
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = null;
@@ -463,7 +463,7 @@ public class cUserRepositoryImpl implements iUserRepository {
      * @param userID
      * @return
      */
-    public Set<cAddressModel> getAddressByUserID(int userID) {
+    public Set<cAddressModel> getAddressByUserID(long userID) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -535,7 +535,7 @@ public class cUserRepositoryImpl implements iUserRepository {
      * @param userID
      * @return Set
      */
-    public Set<cRoleModel> getRolesByUserID(int userID) {
+    public Set<cRoleModel> getRolesByUserID(long userID) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -609,7 +609,7 @@ public class cUserRepositoryImpl implements iUserRepository {
      * @param subscriberID
      * @return
      */
-    public Set<cNotificationModel> getNotificationsBySubscriberID(int subscriberID) {
+    public Set<cNotificationModel> getNotificationsBySubscriberID(long subscriberID) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -682,7 +682,7 @@ public class cUserRepositoryImpl implements iUserRepository {
      * @param publisherID
      * @return
      */
-    public Set<cNotificationModel> getNotificationsByPublisherID(int publisherID) {
+    public Set<cNotificationModel> getNotificationsByPublisherID(long publisherID) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 

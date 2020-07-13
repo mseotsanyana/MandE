@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public interface iReadOutcomeInteractor extends iInteractor {
     interface Callback {
-        void onOutcomesRetrieved(String logFrameName, ArrayList<cTreeModel> outcomeTreeModels);
-        void onOutcomesRetrieveFailed(String msg);
+        void onOutcomeModelsRetrieved(String logFrameName, ArrayList<cTreeModel> outcomeTreeModels);
+        void onOutcomeModelsFailed(String msg);
     }
 }

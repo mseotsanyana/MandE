@@ -27,7 +27,6 @@ import com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout;
 import com.me.mseotsanyana.mande.BLL.domain.session.cAddressDomain;
 import com.me.mseotsanyana.mande.BLL.interactors.session.address.Impl.cAddressHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cOrganizationHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cPermissionDomain;
 import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
 import com.me.mseotsanyana.mande.BLL.domain.session.cUserDomain;
@@ -72,7 +71,7 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
 
     private cAddressHandler addressHandler;
     private cUserHandler userHandler;
-    private cOrganizationHandler organizationHandler;
+   // private cOrganizationHandler organizationHandler;
 
     private iMEEntityInterface userInterface;
 
@@ -91,7 +90,7 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
 
         this.addressHandler = new cAddressHandler(context);
         this.userHandler    = new cUserHandler(context);
-        this.organizationHandler = new cOrganizationHandler(context);
+        //this.organizationHandler = new cOrganizationHandler(context);
 
         // used to mask statuses
         this.statusDomains = statusDomains;

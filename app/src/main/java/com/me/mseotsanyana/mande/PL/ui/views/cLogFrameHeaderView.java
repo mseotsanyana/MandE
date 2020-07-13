@@ -46,7 +46,7 @@ public class cLogFrameHeaderView {
     public void onResolved() {
         toggleIcon.setTypeface(null, Typeface.NORMAL);
         toggleIcon.setTypeface(cFontManager.getTypeface(this.context, cFontManager.FONTAWESOME));
-        toggleIcon.setTextColor(context.getColor(R.color.white));
+        //toggleIcon.setTextColor(context.getColor(R.color.white));
         toggleIcon.setText(context.getResources().getString(R.string.fa_angle_up));
 
         textViewHeading.setText(this.heading);
@@ -56,7 +56,7 @@ public class cLogFrameHeaderView {
     public void onExpand() {
         toggleIcon.setTypeface(null, Typeface.NORMAL);
         toggleIcon.setTypeface(cFontManager.getTypeface(this.context, cFontManager.FONTAWESOME));
-        toggleIcon.setTextColor(context.getColor(R.color.white));
+        //toggleIcon.setTextColor(context.getColor(R.color.white));
         toggleIcon.setText(context.getResources().getString(R.string.fa_angle_down));
     }
 
@@ -64,7 +64,7 @@ public class cLogFrameHeaderView {
     public void onCollapse() {
         toggleIcon.setTypeface(null, Typeface.NORMAL);
         toggleIcon.setTypeface(cFontManager.getTypeface(this.context, cFontManager.FONTAWESOME));
-        toggleIcon.setTextColor(context.getColor(R.color.white));
+        //toggleIcon.setTextColor(context.getColor(R.color.white));
         toggleIcon.setText(context.getResources().getString(R.string.fa_angle_up));
     }
 }

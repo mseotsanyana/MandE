@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public interface iReadActivityInteractor extends iInteractor {
     interface Callback {
-        void onActivitiesRetrieved(String logFrameName, ArrayList<cTreeModel> activityTreeModels);
-        void onActivitiesRetrieveFailed(String msg);
+        void onActivityModelsRetrieved(String logFrameName, ArrayList<cTreeModel> activityTreeModels);
+        void onActivityModelsFailed(String msg);
     }
 }

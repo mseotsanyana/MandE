@@ -1,38 +1,44 @@
-package com.me.mseotsanyana.mande.DAL.model.logframe;
+package com.me.mseotsanyana.mande.DAL.model.wpb;
 
 import java.util.Date;
 
-public class cActivityPlanningModel {
-    private int activityPlanningID;
-    private int logFrameID;
+public class cFundModel {
+    private int fundID;
+    private int funderID;
+    private int inputID;
     private int serverID;
     private int ownerID;
     private int orgID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
-    private String name;
-    private String description;
-    private Date startDate;
-    private Date endDate;
+    private double amount;
     private Date createdDate;
     private Date modifiedDate;
     private Date syncedDate;
 
-    public int getActivityPlanningID() {
-        return activityPlanningID;
+    public int getFundID() {
+        return fundID;
     }
 
-    public void setActivityPlanningID(int activityPlanningID) {
-        this.activityPlanningID = activityPlanningID;
+    public void setFundID(int fundID) {
+        this.fundID = fundID;
     }
 
-    public int getLogFrameID() {
-        return logFrameID;
+    public int getFunderID() {
+        return funderID;
     }
 
-    public void setLogFrameID(int logFrameID) {
-        this.logFrameID = logFrameID;
+    public void setFunderID(int funderID) {
+        this.funderID = funderID;
+    }
+
+    public int getInputID() {
+        return inputID;
+    }
+
+    public void setInputID(int inputID) {
+        this.inputID = inputID;
     }
 
     public int getServerID() {
@@ -83,36 +89,12 @@ public class cActivityPlanningModel {
         this.statusBITS = statusBITS;
     }
 
-    public String getName() {
-        return name;
+    public double getAmount() {
+        return amount;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
     public Date getCreatedDate() {

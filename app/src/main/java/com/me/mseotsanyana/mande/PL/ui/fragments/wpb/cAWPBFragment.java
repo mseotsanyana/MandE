@@ -36,7 +36,7 @@ public class cAWPBFragment extends Fragment {
 
     }
 
-    public static cAWPBFragment newInstance(int logFrameID) {
+    public static cAWPBFragment newInstance(long logFrameID) {
         Bundle bundle = new Bundle();
         cAWPBFragment fragment = new cAWPBFragment();
 

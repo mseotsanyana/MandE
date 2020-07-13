@@ -15,7 +15,9 @@ import com.me.mseotsanyana.bmblibrary.Piece.cPiecePlaceEnum;
 import com.me.mseotsanyana.bmblibrary.cBoomMenuButton;
 import com.me.mseotsanyana.bmblibrary.cUtil;
 import com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout;
+import com.me.mseotsanyana.mande.DAL.model.logframe.cActivityModel;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cOutputModel;
+import com.me.mseotsanyana.mande.PL.ui.listeners.logframe.iViewActivityListener;
 import com.me.mseotsanyana.mande.PL.ui.listeners.logframe.iViewOutputListener;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
@@ -93,28 +95,28 @@ public class cActivityBodyView {
     };
 
     private Context context;
-    private iViewOutputListener listener;
-    private cOutputModel outputModel;
+    private iViewActivityListener listener;
+    private cActivityModel activityModel;
 
     private String output;
     private String description;
     private String startDate;
     private String endDate;
 
-    public cActivityBodyView(Context context, iViewOutputListener listener,
-                             cOutputModel outputModel) {
+    public cActivityBodyView(Context context,
+                             cActivityModel activityModel) {
         this.context = context;
-        this.listener = listener;
-        this.outputModel = outputModel;
-        this.output = outputModel.getName();
-        this.description = outputModel.getDescription();
-        this.startDate = sdf.format(outputModel.getStartDate());
-        this.endDate = sdf.format(outputModel.getEndDate());
+        //this.listener = listener;
+        this.activityModel = activityModel;
+        this.output = activityModel.getName();
+        this.description = activityModel.getDescription();
+        this.startDate = sdf.format(activityModel.getStartDate());
+        this.endDate = sdf.format(activityModel.getEndDate());
     }
 
     @Resolve
     public void onResolved() {
-        textViewNameCaption.setText(R.string.output_caption);
+        textViewNameCaption.setText(R.string.activity_caption);
         textViewName.setText(output);
         textViewDescription.setText(description);
         textViewStartDate.setText(startDate);
@@ -166,7 +168,7 @@ public class cActivityBodyView {
                         @Override
                         public void onBoomButtonClick(int index) {
                             /* when the boom-button is clicked. */
-                            listener.onClickBMBOutput(index);
+                            listener.onClickBMBActivity(index);
                         }
                     });
             this.bmbMenu.addBuilder(builder);
@@ -190,20 +192,20 @@ public class cActivityBodyView {
 
     @Click(R.id.textViewUpdateIcon)
     void onUpdateIconClick(){
-        listener.onClickUpdateOutput(childPosition, outputModel);
+        listener.onClickUpdateActivity(childPosition, activityModel);
     }
 
     @Click(R.id.textViewDeleteIcon)
     void onDeleteIconClick(){
-        listener.onClickDeleteOutput(childPosition, outputModel.getOutputID());
+        listener.onClickDeleteActivity(childPosition, activityModel.getOutputID());
     }
 
     @Click(R.id.textViewSyncIcon)
     void onSyncIconClick(){
-        listener.onClickSyncOutput(childPosition, outputModel);
+        listener.onClickSyncActivity(childPosition, activityModel);
     }
 
-    public void setPlaceHolderViewOutputListener(iViewOutputListener listener) {
+    public void setPlaceHolderViewActivityListener(iViewActivityListener listener) {
         this.listener = listener;
     }
 }

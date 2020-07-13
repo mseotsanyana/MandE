@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout;
 import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cOrganizationHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cRoleDomain;
 import com.me.mseotsanyana.mande.BLL.interactors.session.role.Impl.cRoleHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
@@ -71,7 +70,7 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
     private ArrayList<cRoleDomain> filteredRoles;
 
     private cUserHandler userHandler;
-    private cOrganizationHandler organizationHandler;
+//    private cOrganizationHandler organizationHandler;
     private cRoleHandler roleHandler;
 
     private cStatusAdapter statusAdapter;
@@ -103,7 +102,7 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
 
         this.userHandler = null;//new cUserHandler(context, session);
         this.roleHandler = null;//new cRoleHandler(context, session);
-        this.organizationHandler = null;//new cOrganizationHandler(context, session);
+        //this.organizationHandler = null;//new cOrganizationHandler(context, session);
 
         this.roleInterface = roleInterface;
 

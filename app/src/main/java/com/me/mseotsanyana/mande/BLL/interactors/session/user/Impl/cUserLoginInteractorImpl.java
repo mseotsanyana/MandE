@@ -84,6 +84,10 @@ public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUs
         /* get the logged in user */
         cUserModel userModel = userRepository.getUserByEmailPassword(email, password);
 
+        Gson gson = new Gson();
+        Log.d(TAG,"USER MODEL: "+gson.toJson(userModel));
+
+
         if (userModel != null) {
             if (!userModel.getRoleModelSet().isEmpty()) {
                 /* delete all shared preferences */

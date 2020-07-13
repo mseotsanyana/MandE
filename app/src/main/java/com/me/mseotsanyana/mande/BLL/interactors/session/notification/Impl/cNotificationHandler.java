@@ -5,7 +5,6 @@ import android.content.Context;
 
 import com.me.mseotsanyana.mande.BLL.domain.session.cMenuDomain;
 import com.me.mseotsanyana.mande.BLL.domain.session.cNotificationDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cOrganizationHandler;
 import com.me.mseotsanyana.mande.BLL.interactors.session.menu.Impl.cMenuHandler;
 import com.me.mseotsanyana.mande.DAL.model.session.cMenuModel;
 import com.me.mseotsanyana.mande.DAL.model.session.cNotificationModel;
@@ -157,7 +156,7 @@ public class cNotificationHandler extends cMapper<cNotificationModel, cNotificat
     @Override
     protected cNotificationModel DomainToModel(cNotificationDomain domain) {
         cNotificationModel model = new cNotificationModel();
-        cOrganizationHandler organizationHandler = new cOrganizationHandler();
+        //cOrganizationHandler organizationHandler = new cOrganizationHandler();
 /*
         model.setRoleID(domain.getRoleID());
         model.setOrganizationID(domain.getOrganizationID());

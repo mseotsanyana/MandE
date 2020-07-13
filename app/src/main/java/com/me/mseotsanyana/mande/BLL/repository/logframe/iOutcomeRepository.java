@@ -12,6 +12,6 @@ public interface iOutcomeRepository {
     boolean addOutcome(cOutcomeModel outcomeModel);
 
     /* the read functions of the Outcome entity */
-    Set<cOutcomeModel> getOutcomeModelSet(long logFrameID, int userID, int primaryRoleBITS,
+    Set<cOutcomeModel> getOutcomeModelSet(long logFrameID, long userID, int primaryRoleBITS,
                                           int secondaryRoleBITS, int statusBITS);
 }

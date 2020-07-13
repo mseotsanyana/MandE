@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.appcompat.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
                         app:civ_border_color="#FF000000"
                         app:civ_border_width="2dp" />
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/textViewUserName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/textViewUserAddressIcon"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
@@ -71,7 +71,7 @@
                         android:layout_span="2"
                         android:orientation="vertical">
 
-                        <android.support.v7.widget.AppCompatTextView
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/textViewUserAddressStreet"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
                             android:textColor="@android:color/white"
                             android:textSize="18sp" />
 
-                        <android.support.v7.widget.AppCompatTextView
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/textViewUserAddressCity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
                             android:textColor="@android:color/white"
                             android:textSize="18sp" />
 
-                        <android.support.v7.widget.AppCompatTextView
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/textViewUserAddressProvince"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -95,7 +95,7 @@
                             android:textColor="@android:color/white"
                             android:textSize="18sp" />
 
-                        <android.support.v7.widget.AppCompatTextView
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/textViewUserAddressPotalCode"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
                             android:textColor="@android:color/white"
                             android:textSize="18sp" />
 
-                        <android.support.v7.widget.AppCompatTextView
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/textViewUserAddressCountry"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/textViewUserEmailIcon"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -125,7 +125,7 @@
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="18sp" />
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/textViewUserEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -141,14 +141,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/textViewUserWebsiteIcon"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="18sp" />
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/textViewUserWebsite"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -164,14 +164,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/textViewUserPhoneIcon"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="18sp" />
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/textViewUserPhone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -185,7 +185,7 @@
             </TableLayout>
 
             <!-- See users under the role -->
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewUserDetailIcon"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -201,7 +201,7 @@
 
 
             <!-- synchronise user -->
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewSyncUserIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -213,7 +213,7 @@
                 android:textStyle="bold" />
 
             <!-- delete user -->
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewDeleteUserIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -226,7 +226,7 @@
                 android:textStyle="bold" />
 
             <!-- edit user  -->
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewEditUserIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -254,4 +254,4 @@
         </RelativeLayout>
 
     </com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout>
-</androidx.appcompat.widget.CardView>
+</androidx.cardview.widget.CardView>

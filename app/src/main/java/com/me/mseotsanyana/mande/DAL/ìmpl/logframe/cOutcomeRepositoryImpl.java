@@ -90,7 +90,7 @@ public class cOutcomeRepositoryImpl implements iOutcomeRepository {
     /*
      * the function fetches all outcomes
      */
-    public Set<cOutcomeModel> getOutcomeModelSet(long logFrameID, int userID, int primaryRoleBITS,
+    public Set<cOutcomeModel> getOutcomeModelSet(long logFrameID, long userID, int primaryRoleBITS,
                                                  int secondaryRoleBITS, int statusBITS) {
         // list of outcomes
         Set<cOutcomeModel> outcomeModelSet = new HashSet<>();
@@ -222,7 +222,7 @@ public class cOutcomeRepositoryImpl implements iOutcomeRepository {
      * @param statusBITS        status bits
      * @return logFrame
      */
-    private cLogFrameModel getLogFrameModelByID(int logFrameID, int userID, int primaryRoleBITS,
+    private cLogFrameModel getLogFrameModelByID(long logFrameID, long userID, int primaryRoleBITS,
                                                 int secondaryRoleBITS, int statusBITS) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -311,7 +311,7 @@ public class cOutcomeRepositoryImpl implements iOutcomeRepository {
      * @param statusBITS        status bits
      * @return impact
      */
-    private cImpactModel getImpactModelByID(int impactID, int userID, int primaryRoleBITS,
+    private cImpactModel getImpactModelByID(long impactID, long userID, int primaryRoleBITS,
                                             int secondaryRoleBITS, int statusBITS) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -403,7 +403,7 @@ public class cOutcomeRepositoryImpl implements iOutcomeRepository {
      * @param statusBITS        status bits
      * @return child outcomes
      */
-    private Set<cOutcomeModel> getOutcomeModelSetByID(int outcomeID, int userID, int primaryRoleBITS,
+    private Set<cOutcomeModel> getOutcomeModelSetByID(long outcomeID, long userID, int primaryRoleBITS,
                                                       int secondaryRoleBITS, int statusBITS) {
 
         Set<cOutcomeModel> outcomeModelSet = new HashSet<>();
@@ -603,7 +603,7 @@ public class cOutcomeRepositoryImpl implements iOutcomeRepository {
      * @param statusBITS        status bits
      * @return questions
      */
-    private Set<cQuestionModel> getQuestionModelSetByID(int outcomeID, int userID, int primaryRoleBITS,
+    private Set<cQuestionModel> getQuestionModelSetByID(long outcomeID, long userID, int primaryRoleBITS,
                                                         int secondaryRoleBITS, int statusBITS) {
 
         Set<cQuestionModel> questionModelSet = new HashSet<>();
@@ -719,7 +719,7 @@ public class cOutcomeRepositoryImpl implements iOutcomeRepository {
      * @param statusBITS        status bits
      * @return raids
      */
-    private Set<cRaidModel> getRaidModelSetByID(int outcomeID, int userID, int primaryRoleBITS,
+    private Set<cRaidModel> getRaidModelSetByID(long outcomeID, long userID, int primaryRoleBITS,
                                                 int secondaryRoleBITS, int statusBITS) {
 
         Set<cRaidModel> raidModelSet = new HashSet<>();
@@ -821,7 +821,7 @@ public class cOutcomeRepositoryImpl implements iOutcomeRepository {
 
 
     private Map<Pair<Long, Long>, Set<cImpactModel>> getChildImpactMapByID(
-            int outcomeID, int userID, int primaryRoleBITS, int secondaryRoleBITS, int statusBITS) {
+            long outcomeID, long userID, int primaryRoleBITS, int secondaryRoleBITS, int statusBITS) {
 
         Map<Pair<Long, Long>, Set<cImpactModel>> impactMap = new HashMap<>();
 
@@ -939,7 +939,7 @@ public class cOutcomeRepositoryImpl implements iOutcomeRepository {
         return impactMap;
     }
 
-    private Set<cImpactModel> getImpactSetByLogFrameID(long childLogFrameID, int userID,
+    private Set<cImpactModel> getImpactSetByLogFrameID(long childLogFrameID, long userID,
                                                        int primaryRoleBITS, int secondaryRoleBITS,
                                                        int statusBITS) {
         // open the connection to the database
@@ -1033,7 +1033,7 @@ public class cOutcomeRepositoryImpl implements iOutcomeRepository {
     }
 
     // get outcome impacts
-    public ArrayList<cImpactModel> getOutcomeImpactsByID(int outcomeID) {
+    public ArrayList<cImpactModel> getOutcomeImpactsByID(long outcomeID) {
         // list of child impact
         ArrayList<cImpactModel> impactModels = new ArrayList<cImpactModel>();
 
@@ -1100,7 +1100,7 @@ public class cOutcomeRepositoryImpl implements iOutcomeRepository {
     //=============================================================================================
 
     // get outcomes for a given outcome ID
-    public cOutcomeModel getOutcomeByID(int outcomeID) {
+    public cOutcomeModel getOutcomeByID(long outcomeID) {
         // list of outcomes
         cOutcomeModel outcomeModel = new cOutcomeModel();
 

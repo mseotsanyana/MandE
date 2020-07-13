@@ -44,8 +44,10 @@ public class cInputBodyView$cExpandableViewBinder extends cExpandableViewBinder<
   @Override
   protected void bindViews(cInputBodyView resolver, View itemView) {
     resolver.cardView = (CardView)itemView.findViewById(R.id.cardView);
-    resolver.textViewNameCaption = (TextView)itemView.findViewById(R.id.textViewNameCaption);
-    resolver.textViewName = (TextView)itemView.findViewById(R.id.textViewName);
+    resolver.textViewActivityCaption = (TextView)itemView.findViewById(R.id.textViewActivityCaption);
+    resolver.textViewActivity = (TextView)itemView.findViewById(R.id.textViewActivity);
+    resolver.textViewInputCaption = (TextView)itemView.findViewById(R.id.textViewInputCaption);
+    resolver.textViewInput = (TextView)itemView.findViewById(R.id.textViewInput);
     resolver.textViewDescription = (TextView)itemView.findViewById(R.id.textViewDescription);
     resolver.textViewStartDate = (TextView)itemView.findViewById(R.id.textViewStartDate);
     resolver.textViewEndDate = (TextView)itemView.findViewById(R.id.textViewEndDate);

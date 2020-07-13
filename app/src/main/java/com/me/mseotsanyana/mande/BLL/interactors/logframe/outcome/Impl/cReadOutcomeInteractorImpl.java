@@ -30,8 +30,8 @@ public class cReadOutcomeInteractorImpl extends cAbstractInteractor
 
     private Callback callback;
     private iOutcomeRepository outcomeRepository;
-    private long logFrameID;
-    private int userID, primaryRoleBITS, secondaryRoleBITS, operationBITS, statusBITS;
+    private long userID, logFrameID;
+    private int primaryRoleBITS, secondaryRoleBITS, operationBITS, statusBITS;
 
     private String logFrameName;
 
@@ -67,7 +67,7 @@ public class cReadOutcomeInteractorImpl extends cAbstractInteractor
         mainThread.post(new Runnable() {
             @Override
             public void run() {
-                callback.onOutcomesRetrieveFailed(msg);
+                callback.onOutcomeModelsFailed(msg);
             }
         });
     }
@@ -77,7 +77,7 @@ public class cReadOutcomeInteractorImpl extends cAbstractInteractor
         mainThread.post(new Runnable() {
             @Override
             public void run() {
-                callback.onOutcomesRetrieved(logFrameName, outcomeTreeModels);
+                callback.onOutcomeModelsRetrieved(logFrameName, outcomeTreeModels);
             }
         });
     }

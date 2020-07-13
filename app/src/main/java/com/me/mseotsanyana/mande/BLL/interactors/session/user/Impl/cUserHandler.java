@@ -14,7 +14,6 @@ import com.me.mseotsanyana.mande.BLL.domain.session.cUserDomain;
 import com.me.mseotsanyana.mande.BLL.interactors.session.address.Impl.cAddressHandler;
 import com.me.mseotsanyana.mande.BLL.interactors.session.session.Impl.cSessionHandler;
 import com.me.mseotsanyana.mande.BLL.interactors.session.notification.Impl.cNotificationHandler;
-import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cOrganizationHandler;
 import com.me.mseotsanyana.mande.BLL.interactors.session.role.Impl.cRoleHandler;
 import com.me.mseotsanyana.mande.DAL.model.session.cAddressModel;
 import com.me.mseotsanyana.mande.DAL.model.session.cNotificationModel;
@@ -418,7 +417,7 @@ public class cUserHandler extends cMapper<cUserModel, cUserDomain> {
     @Override
     protected cUserModel DomainToModel(cUserDomain domain) {
         cUserModel model = new cUserModel();
-        cOrganizationHandler organizationHandler = new cOrganizationHandler();
+        //cOrganizationHandler organizationHandler = new cOrganizationHandler();
 
         model.setUserID(domain.getUserID());
         model.setOrganizationID(domain.getOrganizationID());
@@ -476,13 +475,13 @@ public class cUserHandler extends cMapper<cUserModel, cUserDomain> {
     @Override
     protected cUserDomain ModelToDomain(cUserModel model) {
         cUserDomain domain = new cUserDomain();
-        cOrganizationHandler organizationHandler = new cOrganizationHandler();
+        //cOrganizationHandler organizationHandler = new cOrganizationHandler();
 
-        domain.setUserID(model.getUserID());
-        domain.setOrganizationID(model.getOrganizationID());
-        domain.setServerID(model.getServerID());
-        domain.setOwnerID(model.getOwnerID());
-        domain.setOrgID(model.getOrgID());
+        //domain.setUserID(model.getUserID());
+        //domain.setOrganizationID(model.getOrganizationID());
+        //domain.setServerID(model.getServerID());
+        //domain.setOwnerID(model.getOwnerID());
+        //domain.setOrgID(model.getOrgID());
         domain.setUniqueID(model.getUniqueID());
         domain.setGroupBITS(model.getGroupBITS());
         domain.setPermsBITS(model.getPermsBITS());

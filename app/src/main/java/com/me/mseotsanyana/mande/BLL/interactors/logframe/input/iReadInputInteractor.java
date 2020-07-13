@@ -4,6 +4,7 @@ import com.me.mseotsanyana.mande.BLL.interactors.base.iInteractor;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  *  This interactor is responsible for retrieving a set inputs
@@ -11,7 +12,7 @@ import java.util.ArrayList;
  */
 public interface iReadInputInteractor extends iInteractor {
     interface Callback {
-        void onInputsRetrieved(String logFrameName, ArrayList<cTreeModel> inputTreeModels);
-        void onInputsRetrieveFailed(String msg);
+        void onInputModelsRetrieved(Map<Integer, ArrayList<cTreeModel>> inputTreeModels);
+        void onInputModelsFailed(String msg);
     }
 }

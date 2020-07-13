@@ -9,6 +9,6 @@ public interface iInputRepository {
     boolean addInput(cInputModel inputModel);
 
     /* the read functions of the Input entity */
-    Set<cInputModel> getInputModelSet(long logFrameID, int userID, int primaryRoleBITS,
+    Set<cInputModel> getInputModelSet(long logFrameID, long userID, int primaryRoleBITS,
                                       int secondaryRoleBITS, int statusBITS);
 }

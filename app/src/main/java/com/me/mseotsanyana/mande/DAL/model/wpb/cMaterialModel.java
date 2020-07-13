@@ -3,13 +3,13 @@ package com.me.mseotsanyana.mande.DAL.model.wpb;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cInputModel;
 
 public class cMaterialModel extends cInputModel {
-    private int inputID;
+    private int quantity;
 
-    public int getInputID() {
-        return inputID;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setInputID(int inputID) {
-        this.inputID = inputID;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

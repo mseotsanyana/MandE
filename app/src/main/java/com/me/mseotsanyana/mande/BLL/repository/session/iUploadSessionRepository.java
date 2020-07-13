@@ -8,6 +8,7 @@ public interface iUploadSessionRepository {
     boolean deleteOrgAddresses();
     boolean deleteBeneficiaries();
     boolean deleteFunders();
+    boolean deleteCrowdFunds();
     boolean deleteImplementingAgencies();
     boolean deleteMenuItems();
     boolean deleteEntities();

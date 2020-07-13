@@ -6,7 +6,6 @@ import android.content.Context;
 import com.me.mseotsanyana.mande.BLL.domain.session.cMenuDomain;
 import com.me.mseotsanyana.mande.BLL.domain.session.cRoleDomain;
 import com.me.mseotsanyana.mande.BLL.interactors.session.menu.Impl.cMenuHandler;
-import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cOrganizationHandler;
 import com.me.mseotsanyana.mande.DAL.model.session.cMenuModel;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cRoleRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.session.cRoleModel;
@@ -157,7 +156,7 @@ public class cRoleHandler extends cMapper<cRoleModel, cRoleDomain> {
     @Override
     protected cRoleModel DomainToModel(cRoleDomain domain) {
         cRoleModel model = new cRoleModel();
-        cOrganizationHandler organizationHandler = new cOrganizationHandler();
+        //cOrganizationHandler organizationHandler = new cOrganizationHandler();
 
         model.setRoleID(domain.getRoleID());
         model.setOrganizationID(domain.getOrganizationID());
@@ -187,7 +186,7 @@ public class cRoleHandler extends cMapper<cRoleModel, cRoleDomain> {
     @Override
     protected cRoleDomain ModelToDomain(cRoleModel model) {
         cRoleDomain domain = new cRoleDomain();
-        cOrganizationHandler organizationHandler = new cOrganizationHandler();
+        //cOrganizationHandler organizationHandler = new cOrganizationHandler();
 
         domain.setRoleID(model.getRoleID());
         domain.setOrganizationID(model.getOrganizationID());

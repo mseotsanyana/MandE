@@ -36,7 +36,7 @@ public class cRiskRegisterFragment extends Fragment {
 
     }
 
-    public static cRiskRegisterFragment newInstance(int logFrameID) {
+    public static cRiskRegisterFragment newInstance(long logFrameID) {
         Bundle bundle = new Bundle();
         cRiskRegisterFragment fragment = new cRiskRegisterFragment();
 

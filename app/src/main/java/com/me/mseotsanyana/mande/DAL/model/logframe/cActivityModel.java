@@ -1,15 +1,13 @@
 package com.me.mseotsanyana.mande.DAL.model.logframe;
 
 import com.me.mseotsanyana.mande.DAL.model.wpb.cActivityTaskModel;
-import com.me.mseotsanyana.mande.DAL.model.wpb.cTaskModel;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class cActivityModel extends cActivityPlanningModel{
-    private int activityPlanningID;
-    private int parentID;
-    private int outputID;
+public class cActivityModel extends cWorkplanModel {
+    private long parentID;
+    private long outputID;
 
     /*** incoming mappings ***/
     private cLogFrameModel logFrameModel;
@@ -42,29 +40,19 @@ public class cActivityModel extends cActivityPlanningModel{
         childOutputModelSet = new HashSet<>();
     }
 
-    @Override
-    public int getActivityPlanningID() {
-        return activityPlanningID;
-    }
-
-    @Override
-    public void setActivityPlanningID(int activityPlanningID) {
-        this.activityPlanningID = activityPlanningID;
-    }
-
-    public int getParentID() {
+    public long getParentID() {
         return parentID;
     }
 
-    public void setParentID(int parentID) {
+    public void setParentID(long parentID) {
         this.parentID = parentID;
     }
 
-    public int getOutputID() {
+    public long getOutputID() {
         return outputID;
     }
 
-    public void setOutputID(int outputID) {
+    public void setOutputID(long outputID) {
         this.outputID = outputID;
     }
 

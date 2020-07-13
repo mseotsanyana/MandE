@@ -27,8 +27,8 @@ public class cOwnershipFragment extends Fragment {
 
     cExpandablePlaceHolderView expandablePlaceholderView;
 
-    private int ownerID;
-    private int ownOrgID;
+    private long ownerID;
+    private long ownOrgID;
     private int groupBITS;
     private int primaryRoles;
     private int secondaryRoles;
@@ -36,15 +36,15 @@ public class cOwnershipFragment extends Fragment {
     ArrayList<cUserModel> userModels;
     ArrayList<cOrganizationModel> organizationModels;
 
-    public static cOwnershipFragment newInstance(int ownerID, int ownOrgID, int groupBITS,
+    public static cOwnershipFragment newInstance(long ownerID, long ownOrgID, int groupBITS,
                                                  ArrayList<cUserModel> userModels,
                                                  ArrayList<cOrganizationModel> organizationModels,
                                                  int primaryRoles, int secondaryRoles,
                                                  ArrayList<cRoleModel> roleModels) {
         Bundle bundle = new Bundle();
 
-        bundle.putInt("OWNER_ID", ownerID);
-        bundle.putInt("OWN_ORG_ID", ownOrgID);
+        bundle.putLong("OWNER_ID", ownerID);
+        bundle.putLong("OWN_ORG_ID", ownOrgID);
         bundle.putInt("GROUP_BITS", groupBITS);
         bundle.putInt("PRIMARY_ROLE", primaryRoles);
         bundle.putInt("SECONDARY_ROLE", secondaryRoles);
@@ -89,7 +89,7 @@ public class cOwnershipFragment extends Fragment {
         expandablePlaceholderView.addView(new cHeadingView(getContext(),
                 "Individual and Organization Owners"));
         expandablePlaceholderView.addView(new cIndividualOwnerView(getContext(),
-                getIndividualOwner(),userModels));
+                getIndividualOwner(), userModels));
         expandablePlaceholderView.addView(new cOrganizationOwnerView(getContext(),
                 getOrganizationOwner(), organizationModels));
 

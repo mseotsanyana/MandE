@@ -66,7 +66,7 @@ public class cLogFrameAdapter extends cTreeAdapter implements iViewLogFrameListe
             "Outputs",
             "Activities",
             "Inputs",
-            "AWP&B",
+            "Questions",
             "Monitoring",
             "Evaluation",
             "Risk Register"
@@ -78,7 +78,7 @@ public class cLogFrameAdapter extends cTreeAdapter implements iViewLogFrameListe
             R.drawable.dashboard_output,
             R.drawable.dashboard_activity,
             R.drawable.dashboard_input,
-            R.drawable.dashboard_budget,
+            R.drawable.dashboard_question,
             R.drawable.dashboard_monitoring,
             R.drawable.dashboard_evaluating,
             R.drawable.dashboard_risk
@@ -276,7 +276,7 @@ public class cLogFrameAdapter extends cTreeAdapter implements iViewLogFrameListe
                     });
 
                     /* setup the common details */
-                    PVH.setViewPager(parentLogFrame);
+                    //PVH.setViewPager(parentLogFrame);
 
                     break;
 
@@ -401,7 +401,7 @@ public class cLogFrameAdapter extends cTreeAdapter implements iViewLogFrameListe
                     });
 
                     /* setup the common details */
-                    CVH.setViewPager(childLogFrameModel);
+                    //CVH.setViewPager(childLogFrameModel);
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + obj.getType());
@@ -458,7 +458,7 @@ public class cLogFrameAdapter extends cTreeAdapter implements iViewLogFrameListe
     }
 
     @Override
-    public void onClickBMBLogFrame(int index, int logFrameID) {
+    public void onClickBMBLogFrame(int index, long logFrameID) {
         logframePresenterView.onClickBMBLogFrame(index, logFrameID);
     }
 

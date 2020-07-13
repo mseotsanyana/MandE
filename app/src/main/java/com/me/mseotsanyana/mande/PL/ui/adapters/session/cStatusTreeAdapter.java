@@ -27,7 +27,6 @@ import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.domain.session.cEntityDomain;
 import com.me.mseotsanyana.mande.BLL.domain.session.cOperationDomain;
 import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cOrganizationHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cPermissionDomain;
 import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
 import com.me.mseotsanyana.mande.BLL.domain.session.cUserDomain;
@@ -76,7 +75,7 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
     private cStatusDomain statusDomain;
 
     private cUserHandler userHandler;
-    private cOrganizationHandler organizationHandler;
+   // private cOrganizationHandler organizationHandler;
 
     private AppCompatCheckBox appCompatCheckBoxOperation;
     private AppCompatCheckBox appCompatCheckBoxAllStatuses;
@@ -125,7 +124,7 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
         this.origStatusDomains = origStatusDomains;
 
         this.userHandler = null;//new cUserHandler(context, session);
-        this.organizationHandler = null;//new cOrganizationHandler(context, session);
+        //this.organizationHandler = null;//new cOrganizationHandler(context, session);
 
         this.appCompatCheckBoxOperation = appCompatCheckBoxOperation;
         this.appCompatCheckBoxAllStatuses = appCompatCheckBoxAllStatuses;

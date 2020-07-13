@@ -46,7 +46,7 @@ public interface iImpactPresenter extends iPresenter {
     /* pass data from view to the interactor */
     //void createLogFrameModel(cLogFrameModel logFrameModel);
     //void createSubLogFrameModel(long logFrameID, cLogFrameModel logSubFrameModel);
-    void readImpacts(int logFrameID);
+    void readImpacts(long logFrameID);
     //void updateLogFrame(cLogFrameModel logFrameModel, int position);
     //void deleteLogFrameModel(long logFrameID, int position);
     //void deleteSubLogFrameModel(long logSubFrameID, int position);

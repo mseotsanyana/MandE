@@ -50,7 +50,7 @@ public class cActivityRepositoryImpl implements iActivityRepository {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, activityModel.getActivityPlanningID());
+        cv.put(cSQLDBHelper.KEY_ID, activityModel.getWorkplanID());
         cv.put(cSQLDBHelper.KEY_SERVER_ID, activityModel.getServerID());
         cv.put(cSQLDBHelper.KEY_OWNER_ID, activityModel.getOwnerID());
         cv.put(cSQLDBHelper.KEY_ORG_ID, activityModel.getOrgID());
@@ -85,7 +85,7 @@ public class cActivityRepositoryImpl implements iActivityRepository {
     /*
      * the function fetches all activities
      */
-    public Set<cActivityModel> getActivityModelSet(long logFrameID, int userID, int primaryRoleBITS,
+    public Set<cActivityModel> getActivityModelSet(long logFrameID, long userID, int primaryRoleBITS,
                                                int secondaryRoleBITS, int statusBITS) {
         // list of activities
         Set<cActivityModel> activityModelSet = new HashSet<>();
@@ -93,7 +93,9 @@ public class cActivityRepositoryImpl implements iActivityRepository {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String selectQuery = "SELECT * FROM " + cSQLDBHelper.TABLE_tblACTIVITY +
+        String selectQuery = "SELECT * FROM " + cSQLDBHelper.TABLE_tblWORKPLAN +" W INNER JOIN " +
+                cSQLDBHelper.TABLE_tblACTIVITY +" A ON W."+cSQLDBHelper.KEY_ID +" = A." +
+                cSQLDBHelper.KEY_WORKPLAN_FK_ID +
                 " WHERE ((" + cSQLDBHelper.KEY_LOGFRAME_FK_ID + " = ?) AND " +
                 /* read access permissions */
                 /* organization creator is always allowed to do everything (i.e., where: userID = orgID)*/
@@ -123,8 +125,8 @@ public class cActivityRepositoryImpl implements iActivityRepository {
                 do {
                     cActivityModel activity = new cActivityModel();
 
-                    activity.setActivityPlanningID(cursor.getInt(
-                            cursor.getColumnIndex(cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID)));
+                    activity.setWorkplanID(cursor.getInt(
+                            cursor.getColumnIndex(cSQLDBHelper.KEY_WORKPLAN_FK_ID)));
                     activity.setParentID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
                     activity.setLogFrameID(
@@ -169,25 +171,25 @@ public class cActivityRepositoryImpl implements iActivityRepository {
 
                     /* sets */
 
-                    /* populate input components */
-                    activity.setInputModelSet(getInputModelSetByID(activity.getActivityPlanningID(),
-                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
-                    /* populate activity components */
-                    activity.setTaskModelSet(getTaskModelSetByID(activity.getActivityPlanningID(),
-                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
-                    /* populate question components */
+                    /* populate input components
+                    activity.setInputModelSet(getInputModelSetByID(activity.getWorkplanID(),
+                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));*/
+                    /* populate activity components
+                    activity.setTaskModelSet(getTaskModelSetByID(activity.getWorkplanID(),
+                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));*/
+                    /* populate question components
                     activity.setQuestionModelSet(getQuestionModelSetByID(
-                            activity.getActivityPlanningID(), userID, primaryRoleBITS,
-                            secondaryRoleBITS, statusBITS));
-                    /* populate raid components */
-                    activity.setRaidModelSet(getRaidModelSetByID(activity.getActivityPlanningID(),
-                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
+                            activity.getWorkplanID(), userID, primaryRoleBITS,
+                            secondaryRoleBITS, statusBITS));*/
+                    /* populate raid components
+                    activity.setRaidModelSet(getRaidModelSetByID(activity.getWorkplanID(),
+                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));*/
 
                     /* maps */
 
-                    /* populate child output for the activity */
+                    /* populate child output for the activity
                     activity.setChildOutputModelSet(getChildOutputSetByID(activity.getOutputID(),
-                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
+                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));*/
 
                     /* add outcome entity */
                     activityModelSet.add(activity);
@@ -382,7 +384,7 @@ public class cActivityRepositoryImpl implements iActivityRepository {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String selectQuery = "SELECT * FROM " + cSQLDBHelper.TABLE_tblINPUT +
-                " WHERE ((" + cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID + " = ?) AND " +
+                " WHERE ((" + cSQLDBHelper.KEY_WORKPLAN_FK_ID + " = ?) AND " +
                 /* read access permissions */
                 /* organization creator is always allowed to do everything (i.e., where: userID = orgID)*/
                 " ((" + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
@@ -414,8 +416,8 @@ public class cActivityRepositoryImpl implements iActivityRepository {
 
                     input.setInputID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    input.setActivityPlanningID(cursor.getInt(
-                            cursor.getColumnIndex(cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID)));
+                    input.setWorkplanID(cursor.getInt(
+                            cursor.getColumnIndex(cSQLDBHelper.KEY_WORKPLAN_FK_ID)));
                     input.setLogFrameID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
                     input.setResourceID(
@@ -452,14 +454,14 @@ public class cActivityRepositoryImpl implements iActivityRepository {
                     input.setResourceModel(getResourceModelByID(input.getResourceID(), userID,
                             primaryRoleBITS, secondaryRoleBITS, statusBITS));
                     /* populate an activity object */
-                    input.setActivityModel(getActivityModelByID(input.getActivityPlanningID(),
+                    input.setActivityModel(getActivityModelByID(input.getWorkplanID(),
                             userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
                     inputModelSet.add(input);
 
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
-            Log.d(TAG, "Error while trying to read an ACTIVITY entity: " + e.getMessage());
+            Log.d(TAG, "Error while trying to read an INPUT entity: " + e.getMessage());
         } finally {
             if (cursor != null && !cursor.isClosed()) {
                 cursor.close();
@@ -540,7 +542,7 @@ public class cActivityRepositoryImpl implements iActivityRepository {
                         userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
             }
         } catch (Exception e) {
-            Log.d(TAG, "Error while trying to read an OUTCOME entity: " + e.getMessage());
+            Log.d(TAG, "Error while trying to read an RESOURCE entity: " + e.getMessage());
         } finally {
             if (cursor != null && !cursor.isClosed()) {
                 cursor.close();
@@ -617,7 +619,7 @@ public class cActivityRepositoryImpl implements iActivityRepository {
                         cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
             }
         } catch (Exception e) {
-            Log.d(TAG, "Error while trying to read an OUTCOME entity: " + e.getMessage());
+            Log.d(TAG, "Error while trying to read an RESOURCE TYPE entity: " + e.getMessage());
         } finally {
             if (cursor != null && !cursor.isClosed()) {
                 cursor.close();
@@ -639,7 +641,7 @@ public class cActivityRepositoryImpl implements iActivityRepository {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String selectQuery = "SELECT * FROM " + cSQLDBHelper.TABLE_tblACTIVITYTASK +
-                " WHERE ((" + cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID + " = ?) AND " +
+                " WHERE ((" + cSQLDBHelper.KEY_WORKPLAN_FK_ID + " = ?) AND " +
                 /* read access permissions */
                 /* organization creator is always allowed to do everything (i.e., where: userID = orgID)*/
                 " ((" + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
@@ -672,7 +674,7 @@ public class cActivityRepositoryImpl implements iActivityRepository {
                     task.setActivityTaskID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                     task.setActivityPlanningID(cursor.getInt(
-                            cursor.getColumnIndex(cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID)));
+                            cursor.getColumnIndex(cSQLDBHelper.KEY_WORKPLAN_FK_ID)));
                     task.setServerID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
                     task.setOwnerID(
@@ -753,8 +755,8 @@ public class cActivityRepositoryImpl implements iActivityRepository {
         try {
             if (cursor.moveToFirst()) {
 
-                activity.setActivityPlanningID(cursor.getInt(
-                        cursor.getColumnIndex(cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID)));
+                activity.setWorkplanID(cursor.getInt(
+                        cursor.getColumnIndex(cSQLDBHelper.KEY_WORKPLAN_FK_ID)));
                 activity.setParentID(
                         cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
                 activity.setLogFrameID(
@@ -801,7 +803,7 @@ public class cActivityRepositoryImpl implements iActivityRepository {
         return activity;
     }
 
-    private Set<cQuestionModel> getQuestionModelSetByID(int activityPlanningID, int userID,
+    private Set<cQuestionModel> getQuestionModelSetByID(long activityPlanningID, long userID,
                                                         int primaryRoleBITS, int secondaryRoleBITS,
                                                         int statusBITS) {
 
@@ -1010,7 +1012,7 @@ public class cActivityRepositoryImpl implements iActivityRepository {
     }
 
     private Set<cOutputModel> getChildOutputSetByID(
-            int outputID, int userID, int primaryRoleBITS, int secondaryRoleBITS, int statusBITS) {
+            long outputID, long userID, int primaryRoleBITS, int secondaryRoleBITS, int statusBITS) {
 
         Set<cOutputModel> outputModelSet = new HashSet<>();
 
@@ -1140,7 +1142,7 @@ public class cActivityRepositoryImpl implements iActivityRepository {
                 do {
                     cActivityModel activityModel = new cActivityModel();
 
-                    activityModel.setActivityPlanningID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID)));
+                    activityModel.setWorkplanID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_WORKPLAN_FK_ID)));
                     activityModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
                     activityModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
                     activityModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));

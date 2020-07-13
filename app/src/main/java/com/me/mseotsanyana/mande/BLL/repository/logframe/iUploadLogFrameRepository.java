@@ -26,7 +26,7 @@ public interface iUploadLogFrameRepository {
     boolean deleteOutputRaids();
     boolean deleteOutputs();
 
-    boolean deleteActivityPlannings();
+    boolean deleteWorkplans();
 
     boolean deletePrecedingActivities();
     boolean deleteActivityAssignments();
@@ -61,10 +61,9 @@ public interface iUploadLogFrameRepository {
     boolean addImpactFromExcel();
     boolean addOutcomeFromExcel();
     boolean addOutputFromExcel();
-    boolean addActivityPlanningFromExcel();
+    boolean addWorkplanFromExcel();
     boolean addActivityFromExcel();
     boolean addResourceTypeFromExcel();
     boolean addResourceFromExcel();
     boolean addInputFromExcel();
-
 }

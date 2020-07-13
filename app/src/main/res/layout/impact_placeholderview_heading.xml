@@ -4,12 +4,13 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="2dp"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
     android:paddingTop="10dp"
     android:paddingBottom="10dp"
     android:gravity="center"
-    android:background="@drawable/me_placeholderview_header">
+    android:background="@drawable/me_rounded_corner">
 
     <TextView
         android:id="@+id/textViewHeading"
@@ -17,7 +18,7 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:singleLine="true"
-        android:textColor="@color/white"
+        android:textColor="@color/colorAccent"
         android:textSize="16sp"
         android:textStyle="bold"
         android:typeface="sans" />
@@ -37,7 +38,7 @@
             android:id="@+id/toggleIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
+            android:textColor="@color/colorAccent"
             android:textSize="30sp" />
     </LinearLayout>
 </LinearLayout>

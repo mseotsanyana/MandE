@@ -25,15 +25,15 @@ public class cReadImpactInteractorImpl extends cAbstractInteractor
 
     private Callback callback;
     private iImpactRepository impactRepository;
-    private int logFrameID;
-    private int userID, primaryRoleBITS, secondaryRoleBITS, operationBITS, statusBITS;
+    private long userID, logFrameID;
+    private int primaryRoleBITS, secondaryRoleBITS, operationBITS, statusBITS;
 
     private String logFrameName;
 
     public cReadImpactInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,
                                      iSessionManagerRepository sessionManagerRepository,
                                      iImpactRepository impactRepository,
-                                     Callback callback, int logFrameID) {
+                                     Callback callback, long logFrameID) {
         super(threadExecutor, mainThread);
 
         if (sessionManagerRepository == null || impactRepository == null || callback == null) {
@@ -62,7 +62,7 @@ public class cReadImpactInteractorImpl extends cAbstractInteractor
         mainThread.post(new Runnable() {
             @Override
             public void run() {
-                callback.onImpactsRetrieveFailed(msg);
+                callback.onImpactModelsFailed(msg);
             }
         });
     }
@@ -72,7 +72,7 @@ public class cReadImpactInteractorImpl extends cAbstractInteractor
         mainThread.post(new Runnable() {
             @Override
             public void run() {
-                callback.onImpactsRetrieved(logFrameName, impactTreeModels);
+                callback.onImpactModelsRetrieved(logFrameName, impactTreeModels);
             }
         });
     }

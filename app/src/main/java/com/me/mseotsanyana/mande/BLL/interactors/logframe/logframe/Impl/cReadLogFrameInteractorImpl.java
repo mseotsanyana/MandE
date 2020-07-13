@@ -31,7 +31,8 @@ public class cReadLogFrameInteractorImpl extends cAbstractInteractor
     private iSessionManagerRepository sessionManagerRepository;
     private iMenuRepository menuRepository;
     private iLogFrameRepository logFrameRepository;
-    private int userID, primaryRoleBITS, secondaryRoleBITS,
+    private long userID;
+    private int primaryRoleBITS, secondaryRoleBITS,
             operationMenuBITS, statusMenuBITS, operationLogFrameBITS, statusLogFrameBITS;
 
     public cReadLogFrameInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,

@@ -338,7 +338,7 @@ public class cImpactAdapter extends cTreeAdapter implements iViewImpactListener,
     /* impact click events */
 
     @Override
-    public void onClickBMBImpact(int index, int impactID) {
+    public void onClickBMBImpact(int index, long impactID) {
         this.impactPresenterView.onClickBMBImpact(index);
     }
 
@@ -364,17 +364,17 @@ public class cImpactAdapter extends cTreeAdapter implements iViewImpactListener,
     /* outcome click events */
 
     @Override
-    public void onClickUpdateOutcome(int position, cOutcomeModel outcomeModel) {
-        this.outcomePresenterView.onClickUpdateOutcome(position, outcomeModel);
+    public void onClickUpdateOutcome(cOutcomeModel outcomeModel, int position) {
+        this.outcomePresenterView.onClickUpdateOutcome(outcomeModel, position);
     }
 
     @Override
-    public void onClickDeleteOutcome(int position, int outcomeID) {
-        this.outcomePresenterView.onClickDeleteOutcome(position, outcomeID);
+    public void onClickDeleteOutcome(long outcomeID, int position) {
+        this.outcomePresenterView.onClickDeleteOutcome(outcomeID, position);
     }
 
     @Override
-    public void onClickSyncOutcome(int position, cOutcomeModel outcomeModel) {
+    public void onClickSyncOutcome(cOutcomeModel outcomeModel, int position) {
         this.outcomePresenterView.onClickSyncOutcome(outcomeModel);
     }
 

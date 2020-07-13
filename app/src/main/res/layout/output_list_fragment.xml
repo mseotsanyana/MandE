@@ -1,35 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="false">
 
-    <!-- include a toolbar layout -->
-    <include layout="@layout/me_toolbar_layout" />
-
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/me_toolbar"
-        android:orientation="vertical">
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <!-- user list layout
-        <androidx.appcompat.widget.RecyclerView
-            android:id="@+id/impactRecyclerView"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbarLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="vertical" />-->
-    </LinearLayout>
+            android:fitsSystemWindows="false"
+            app:contentScrim="@color/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:title="@string/impact_list_title"
+            app:titleEnabled="true">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:fitsSystemWindows="true"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/shepherds"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.7" />
+
+            <LinearLayout
+                android:id="@+id/headerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:background="#00FFFFFF"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:padding="10dp"
+                app:layout_collapseMode="parallax">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="My title"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:textSize="17sp"/>
+
+                <TextView
+                    android:id="@+id/subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="My subtitle"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:textSize="24sp"/>
+            </LinearLayout>
+
+            <!-- the toolbar layout -->
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                android:background="@color/title_background"
+                android:elevation="1dp"
+                android:minHeight="65dp"
+                android:textColor="@color/title_text"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/PopupTheme">
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- impact list layout -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/outputRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        <!-- the FAB layout -->
-        <com.me.mseotsanyana.bmblibrary.cDraggableFAB
-            android:id="@+id/impactDraggableFAB"
-            style="@style/FabStyle"
-            android:layout_gravity="bottom|end" />
+    <!-- progress bar -->
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</RelativeLayout>
+    <!-- the DraggableFAB layout -->
+    <include
+        android:id="@+id/outputProgressBar"
+        layout="@layout/me_progress_bar"
+        android:visibility="visible" />
+
+    <com.me.mseotsanyana.bmblibrary.cDraggableFAB
+        android:id="@+id/outputFAB"
+        style="@style/FabStyle"
+        android:layout_gravity="bottom|end" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

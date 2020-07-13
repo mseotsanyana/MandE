@@ -14,8 +14,8 @@ public interface iSessionManagerRepository {
     void deleteSettings();
 
     /* save personal preferences of the loggedIn user */
-    void saveUserID(int userID);
-    void saveOrganizationID(int organizationID);
+    void saveUserID(long userID);
+    void saveOrganizationID(long organizationID);
     void savePrimaryRoleBITS(cUserModel userModel);
     void saveSecondaryRoleBITS(cUserModel userModel);
     void saveDefaultPermsBITS(int bitNumber);
@@ -30,17 +30,17 @@ public interface iSessionManagerRepository {
 
     /* load personal preferences of the loggedIn user */
     boolean isLoggedIn();
-    int loadUserID();
-    int loadOrganizationID();
+    long loadUserID();
+    long loadOrganizationID();
     int loadPrimaryRoleBITS();
     int loadSecondaryRoleBITS();
     int loadDefaultPermsBITS();
     int loadDefaultStatusBITS();
 
     String loadUserProfile();
-    int loadEntityBITS(int entityTypeID);
-    int loadOperationBITS(int entityID, int entityTypeID);
-    int loadStatusBITS(int entityID, int entityTypeID, int operationID);
+    int loadEntityBITS(long entityTypeID);
+    int loadOperationBITS(long entityID, long entityTypeID);
+    int loadStatusBITS(long entityID, long entityTypeID, long operationID);
     Set loadStatusSet();
     Set loadRoleSet();
     Set loadIndividualOwners();

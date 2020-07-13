@@ -3,10 +3,10 @@ package com.me.mseotsanyana.mande.DAL.model.common;
 import java.util.Date;
 
 public class cFrequencyModel {
-    private int frequencyID;
-    private int serverID;
-    private int ownerID;
-    private int orgID;
+    private long frequencyID;
+    private long serverID;
+    private long ownerID;
+    private long orgID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
@@ -16,35 +16,35 @@ public class cFrequencyModel {
     private Date modifiedDate;
     private Date syncedDate;
 
-    public int getFrequencyID() {
+    public long getFrequencyID() {
         return frequencyID;
     }
 
-    public void setFrequencyID(int frequencyID) {
+    public void setFrequencyID(long frequencyID) {
         this.frequencyID = frequencyID;
     }
 
-    public int getServerID() {
+    public long getServerID() {
         return serverID;
     }
 
-    public void setServerID(int serverID) {
+    public void setServerID(long serverID) {
         this.serverID = serverID;
     }
 
-    public int getOwnerID() {
+    public long getOwnerID() {
         return ownerID;
     }
 
-    public void setOwnerID(int ownerID) {
+    public void setOwnerID(long ownerID) {
         this.ownerID = ownerID;
     }
 
-    public int getOrgID() {
+    public long getOrgID() {
         return orgID;
     }
 
-    public void setOrgID(int orgID) {
+    public void setOrgID(long orgID) {
         this.orgID = orgID;
     }
 

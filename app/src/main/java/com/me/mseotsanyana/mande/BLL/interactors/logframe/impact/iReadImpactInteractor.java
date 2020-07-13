@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public interface iReadImpactInteractor extends iInteractor {
     interface Callback {
-        void onImpactsRetrieved(String logFrameName, ArrayList<cTreeModel> impactTreeModels);
-        void onImpactsRetrieveFailed(String msg);
+        void onImpactModelsRetrieved(String logFrameName, ArrayList<cTreeModel> impactTreeModels);
+        void onImpactModelsFailed(String msg);
     }
 }

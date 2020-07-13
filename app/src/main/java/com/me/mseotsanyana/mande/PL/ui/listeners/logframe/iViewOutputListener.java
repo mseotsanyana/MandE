@@ -4,7 +4,7 @@ import com.me.mseotsanyana.mande.DAL.model.logframe.cOutputModel;
 
 public interface iViewOutputListener {
     void onClickUpdateOutput(int position, cOutputModel outputModel);
-    void onClickDeleteOutput(int position, int outputID);
+    void onClickDeleteOutput(int position, long outputID);
     void onClickSyncOutput(int position, cOutputModel outputModel);
     void onClickBMBOutput(int index);
 }

@@ -9,6 +9,6 @@ public interface iImpactRepository {
     boolean addImpact(cImpactModel impactModel);
 
     /* the read functions of the Impact entity with different sets */
-    Set<cImpactModel> getImpactModelSet(int logFrameID, int userID, int orgID, int primaryRole,
-                                        int secondaryRoles);
+    Set<cImpactModel> getImpactModelSet(long logFrameID, long userID, int primaryRole,
+                                        int secondaryRoles, int statusBITS);
 }

@@ -55,6 +55,7 @@ public class cUploadSessionInteractorImpl extends cAbstractInteractor
         uploadSessionRepository.deleteOrgAddresses();
         uploadSessionRepository.deleteBeneficiaries();
         uploadSessionRepository.deleteFunders();
+        uploadSessionRepository.deleteCrowdFunds();
         uploadSessionRepository.deleteImplementingAgencies();
         uploadSessionRepository.deleteMenuItems();
         uploadSessionRepository.deleteEntities();

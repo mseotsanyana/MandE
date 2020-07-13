@@ -88,16 +88,17 @@ public class cUploadAWPBInteractorImpl extends cAbstractInteractor
             notifyError("Failed to Add Invoice Entity");
         }
 
+        if(uploadAWPBRepository.addTransactionFromExcel()){
+            postMessage("Transaction Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add Transaction Entity");
+        }
+
+
         if(uploadAWPBRepository.addJournalFromExcel()){
             postMessage("Journal Entity Added Successfully!");
         }else {
             notifyError("Failed to Add Journal Entity");
-        }
-
-        if(uploadAWPBRepository.addTaskFromExcel()){
-            postMessage("Task Entity Added Successfully!");
-        }else {
-            notifyError("Failed to Add Task Entity");
         }
     }
 }

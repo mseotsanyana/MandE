@@ -10,11 +10,11 @@ import java.util.Objects;
 import java.util.Set;
 
 public class cUserModel implements Parcelable {
-    private int userID;
-    private int organizationID;
-    private int serverID;
-    private int ownerID;
-    private int orgID;
+    private long userID;
+    private long organizationID;
+    private long serverID;
+    private long ownerID;
+    private long orgID;
     private String uniqueID;
     private int groupBITS;
     private int permsBITS;
@@ -44,6 +44,7 @@ public class cUserModel implements Parcelable {
     Set<cNotificationModel> subscriberModelSet;
 
     public cUserModel(){
+        organizationModel = new cOrganizationModel();
         addressModelSet = new HashSet<>();
         sessionModelSet = new HashSet<>();
         roleModelSet = new HashSet<>();
@@ -99,43 +100,43 @@ public class cUserModel implements Parcelable {
         newPassword = in.readString();
     }
 
-    public int getUserID() {
+    public long getUserID() {
         return userID;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(long userID) {
         this.userID = userID;
     }
 
-    public int getOrganizationID() {
+    public long getOrganizationID() {
         return organizationID;
     }
 
-    public void setOrganizationID(int organizationID) {
+    public void setOrganizationID(long organizationID) {
         this.organizationID = organizationID;
     }
 
-    public int getServerID() {
+    public long getServerID() {
         return serverID;
     }
 
-    public void setServerID(int serverID) {
+    public void setServerID(long serverID) {
         this.serverID = serverID;
     }
 
-    public int getOwnerID() {
+    public long getOwnerID() {
         return ownerID;
     }
 
-    public void setOwnerID(int ownerID) {
+    public void setOwnerID(long ownerID) {
         this.ownerID = ownerID;
     }
 
-    public int getOrgID() {
+    public long getOrgID() {
         return orgID;
     }
 
-    public void setOrgID(int orgID) {
+    public void setOrgID(long orgID) {
         this.orgID = orgID;
     }
 
@@ -407,11 +408,11 @@ public class cUserModel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(userID);
-        dest.writeInt(organizationID);
-        dest.writeInt(serverID);
-        dest.writeInt(ownerID);
-        dest.writeInt(orgID);
+        dest.writeLong(userID);
+        dest.writeLong(organizationID);
+        dest.writeLong(serverID);
+        dest.writeLong(ownerID);
+        dest.writeLong(orgID);
         dest.writeString(uniqueID);
         dest.writeInt(groupBITS);
         dest.writeInt(permsBITS);

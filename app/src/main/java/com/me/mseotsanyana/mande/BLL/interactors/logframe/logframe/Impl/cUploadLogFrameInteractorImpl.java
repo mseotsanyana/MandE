@@ -1,5 +1,8 @@
 package com.me.mseotsanyana.mande.BLL.interactors.logframe.logframe.Impl;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
@@ -74,7 +77,7 @@ public class cUploadLogFrameInteractorImpl extends cAbstractInteractor
         uploadLMRepository.deleteOutputRaids();
         uploadLMRepository.deleteOutputs();
 
-        uploadLMRepository.deleteActivityPlannings();
+        uploadLMRepository.deleteWorkplans();
 
         uploadLMRepository.deletePrecedingActivities();
         uploadLMRepository.deleteActivityAssignments();
@@ -143,16 +146,22 @@ public class cUploadLogFrameInteractorImpl extends cAbstractInteractor
             notifyError("Failed to Add Impact Entity");
         }
 
+        if (uploadLMRepository.addOutcomeFromExcel()) {
+            postMessage("Outcome Entity Added Successfully!");
+        } else {
+            notifyError("Failed to Add Outcome Entity");
+        }
+
         if (uploadLMRepository.addOutputFromExcel()) {
             postMessage("Output Entity Added Successfully!");
         } else {
             notifyError("Failed to Add Output Entity");
         }
 
-        if (uploadLMRepository.addActivityPlanningFromExcel()) {
-            postMessage("ActivityPlanning Entity Added Successfully!");
+        if (uploadLMRepository.addWorkplanFromExcel()) {
+            postMessage("Workplan Entity Added Successfully!");
         } else {
-            notifyError("Failed to Add ActivityPlanning Entity");
+            notifyError("Failed to Add Workplan Entity");
         }
 
         if (uploadLMRepository.addActivityFromExcel()) {
@@ -171,12 +180,6 @@ public class cUploadLogFrameInteractorImpl extends cAbstractInteractor
             postMessage("Resource Entity Added Successfully!");
         } else {
             notifyError("Failed to Add Resource Entity");
-        }
-
-        if (uploadLMRepository.addOutcomeFromExcel()) {
-            postMessage("Criteria Entity Added Successfully!");
-        } else {
-            notifyError("Failed to Add Criteria Entity");
         }
 
         if (uploadLMRepository.addInputFromExcel()) {

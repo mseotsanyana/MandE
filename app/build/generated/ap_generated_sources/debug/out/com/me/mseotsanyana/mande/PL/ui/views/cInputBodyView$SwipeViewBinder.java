@@ -34,8 +34,10 @@ public class cInputBodyView$SwipeViewBinder extends cSwipeViewBinder<cInputBodyV
     boolean nullable = isNullable();
     if (resolver != null && nullable) {
       resolver.cardView = null;
-      resolver.textViewNameCaption = null;
-      resolver.textViewName = null;
+      resolver.textViewActivityCaption = null;
+      resolver.textViewActivity = null;
+      resolver.textViewInputCaption = null;
+      resolver.textViewInput = null;
       resolver.textViewDescription = null;
       resolver.textViewStartDate = null;
       resolver.textViewEndDate = null;
@@ -57,8 +59,10 @@ public class cInputBodyView$SwipeViewBinder extends cSwipeViewBinder<cInputBodyV
   @Override
   protected void bindViews(cInputBodyView resolver, cSwipePlaceHolderView.FrameView itemView) {
     resolver.cardView = (CardView)itemView.findViewById(R.id.cardView);
-    resolver.textViewNameCaption = (TextView)itemView.findViewById(R.id.textViewNameCaption);
-    resolver.textViewName = (TextView)itemView.findViewById(R.id.textViewName);
+    resolver.textViewActivityCaption = (TextView)itemView.findViewById(R.id.textViewActivityCaption);
+    resolver.textViewActivity = (TextView)itemView.findViewById(R.id.textViewActivity);
+    resolver.textViewInputCaption = (TextView)itemView.findViewById(R.id.textViewInputCaption);
+    resolver.textViewInput = (TextView)itemView.findViewById(R.id.textViewInput);
     resolver.textViewDescription = (TextView)itemView.findViewById(R.id.textViewDescription);
     resolver.textViewStartDate = (TextView)itemView.findViewById(R.id.textViewStartDate);
     resolver.textViewEndDate = (TextView)itemView.findViewById(R.id.textViewEndDate);

@@ -207,6 +207,10 @@
 
     <!-- the input strings -->
     <string name="input_list_title">Inputs</string>
+    <string name="input_caption">input:</string>
+    <string name="input_number_caption">number required:</string>
+    <string name="input_expense_caption">budgeted for:</string>
+    <string name="input_income_caption">fund:</string>
 
     <!-- the indicator strings -->
     <string name="indicator_list_title">Indicators</string>

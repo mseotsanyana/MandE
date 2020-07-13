@@ -8,12 +8,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class cLogFrameModel {
-    private int logFrameID;
-    private int logFrameParentID;
-    private int organizationID;
-    private int serverID;
-    private int orgID;
-    private int ownerID;
+    private long logFrameID;
+    private long logFrameParentID;
+    private long organizationID;
+    private long serverID;
+    private long orgID;
+    private long ownerID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
@@ -50,54 +50,53 @@ public class cLogFrameModel {
         questionModelSet = new HashSet<>();
         indicatorModelSet = new HashSet<>();
         raidModelSet = new HashSet<>();
-
     }
 
-    public int getLogFrameID() {
+    public long getLogFrameID() {
         return logFrameID;
     }
 
-    public void setLogFrameID(int logFrameID) {
+    public void setLogFrameID(long logFrameID) {
         this.logFrameID = logFrameID;
     }
 
-    public int getLogFrameParentID() {
+    public long getLogFrameParentID() {
         return logFrameParentID;
     }
 
-    public void setLogFrameParentID(int logFrameParentID) {
+    public void setLogFrameParentID(long logFrameParentID) {
         this.logFrameParentID = logFrameParentID;
     }
 
-    public int getOrganizationID() {
+    public long getOrganizationID() {
         return organizationID;
     }
 
-    public void setOrganizationID(int organizationID) {
+    public void setOrganizationID(long organizationID) {
         this.organizationID = organizationID;
     }
 
-    public int getServerID() {
+    public long getServerID() {
         return serverID;
     }
 
-    public void setServerID(int serverID) {
+    public void setServerID(long serverID) {
         this.serverID = serverID;
     }
 
-    public int getOrgID() {
+    public long getOrgID() {
         return orgID;
     }
 
-    public void setOrgID(int orgID) {
+    public void setOrgID(long orgID) {
         this.orgID = orgID;
     }
 
-    public int getOwnerID() {
+    public long getOwnerID() {
         return ownerID;
     }
 
-    public void setOwnerID(int ownerID) {
+    public void setOwnerID(long ownerID) {
         this.ownerID = ownerID;
     }
 

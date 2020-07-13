@@ -191,17 +191,17 @@ public class cOutcomeBodyView {
 
     @Click(R.id.textViewUpdateIcon)
     void onUpdateIconClick(){
-        listener.onClickUpdateOutcome(childPosition, outcomeModel);
+        listener.onClickUpdateOutcome(outcomeModel, childPosition);
     }
 
     @Click(R.id.textViewDeleteIcon)
     void onDeleteIconClick(){
-        listener.onClickDeleteOutcome(childPosition, outcomeModel.getOutcomeID());
+        listener.onClickDeleteOutcome(outcomeModel.getOutcomeID(), childPosition);
     }
 
     @Click(R.id.textViewSyncIcon)
     void onSyncIconClick(){
-        listener.onClickSyncOutcome(childPosition, outcomeModel);
+        listener.onClickSyncOutcome(outcomeModel, childPosition);
     }
 
     public void setPlaceHolderViewOutcomeListener(iViewOutcomeListener listener) {

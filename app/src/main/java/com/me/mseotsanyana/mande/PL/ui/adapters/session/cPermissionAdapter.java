@@ -34,7 +34,6 @@ import com.me.mseotsanyana.mande.BLL.interactors.session.entity.Impl.cEntityHand
 import com.me.mseotsanyana.mande.BLL.domain.session.cOperationDomain;
 import com.me.mseotsanyana.mande.BLL.interactors.session.operation.Impl.cOperationHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cOrganizationHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cPermissionDomain;
 import com.me.mseotsanyana.mande.BLL.interactors.session.permission.Impl.cPermissionHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
@@ -107,7 +106,7 @@ public class cPermissionAdapter extends cTreeAdapter {
     //private cSessionManager session;
 
     private cUserHandler userHandler;
-    private cOrganizationHandler organizationHandler;
+    //private cOrganizationHandler organizationHandler;
     private cPermissionHandler privilegeHandler;
     private cEntityHandler entityHandler;
     private cOperationHandler operationHandler;
@@ -175,7 +174,7 @@ public class cPermissionAdapter extends cTreeAdapter {
         this.syncStatuses = new cStatusDomain[NUM_OPS][NUM_STS];
 
         this.userHandler = new cUserHandler(context);
-        this.organizationHandler = new cOrganizationHandler(context);
+        //this.organizationHandler = new cOrganizationHandler(context);
         this.privilegeHandler = new cPermissionHandler(context);
         this.entityHandler = new cEntityHandler(context);
         this.operationHandler = new cOperationHandler(context);

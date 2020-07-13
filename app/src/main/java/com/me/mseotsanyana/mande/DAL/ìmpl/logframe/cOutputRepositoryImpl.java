@@ -82,7 +82,7 @@ public class cOutputRepositoryImpl implements iOutputRepository {
     /*
      * the function fetches all outputs
      */
-    public Set<cOutputModel> getOutputModelSet(long logFrameID, int userID, int primaryRoleBITS,
+    public Set<cOutputModel> getOutputModelSet(long logFrameID, long userID, int primaryRoleBITS,
                                                  int secondaryRoleBITS, int statusBITS) {
         // list of outputs
         Set<cOutputModel> outputModelSet = new HashSet<>();
@@ -191,7 +191,7 @@ public class cOutputRepositoryImpl implements iOutputRepository {
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
-            Log.d(TAG, "Error in reading all OUTCOME entities: " + e.getMessage());
+            Log.d(TAG, "Error in reading all OUTPUT entities: " + e.getMessage());
         } finally {
             if (cursor != null && !cursor.isClosed()) {
                 cursor.close();
@@ -204,7 +204,7 @@ public class cOutputRepositoryImpl implements iOutputRepository {
         return outputModelSet;
     }
 
-    private cLogFrameModel getLogFrameModelByID(int logFrameID, int userID, int primaryRoleBITS,
+    private cLogFrameModel getLogFrameModelByID(long logFrameID, long userID, int primaryRoleBITS,
                                                 int secondaryRoleBITS, int statusBITS) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -283,7 +283,7 @@ public class cOutputRepositoryImpl implements iOutputRepository {
         return logFrame;
     }
 
-    private cOutcomeModel getOutcomeModelByID(int outcomeID, int userID, int primaryRoleBITS,
+    private cOutcomeModel getOutcomeModelByID(long outcomeID, long userID, int primaryRoleBITS,
                                             int secondaryRoleBITS, int statusBITS) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -365,7 +365,7 @@ public class cOutputRepositoryImpl implements iOutputRepository {
         return outcome;
     }
 
-    private Set<cOutputModel> getOutputModelSetByID(int outputID, int userID, int primaryRoleBITS,
+    private Set<cOutputModel> getOutputModelSetByID(long outputID, long userID, int primaryRoleBITS,
                                                       int secondaryRoleBITS, int statusBITS) {
 
         Set<cOutputModel> outputModelSet = new HashSet<>();
@@ -462,8 +462,11 @@ public class cOutputRepositoryImpl implements iOutputRepository {
         Set<cActivityModel> activityModelSet = new HashSet<>();
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
+        //SELECT * FROM tblWORKPLAN W INNER JOIN tblACTIVITY A ON W._id = A._id_workplan_fk;
 
-        String selectQuery = "SELECT * FROM " + cSQLDBHelper.TABLE_tblACTIVITY +
+        String selectQuery = "SELECT * FROM " + cSQLDBHelper.TABLE_tblWORKPLAN +" W INNER JOIN " +
+                cSQLDBHelper.TABLE_tblACTIVITY +" A ON W."+cSQLDBHelper.KEY_ID +" = A." +
+                cSQLDBHelper.KEY_WORKPLAN_FK_ID +
                 " WHERE ((" + cSQLDBHelper.KEY_OUTPUT_FK_ID + " = ?) AND " +
                 /* read access permissions */
                 /* organization creator is always allowed to do everything (i.e., where: userID = orgID)*/
@@ -494,8 +497,8 @@ public class cOutputRepositoryImpl implements iOutputRepository {
                 do {
                     cActivityModel activity = new cActivityModel();
 
-                    activity.setActivityPlanningID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    activity.setWorkplanID(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_WORKPLAN_FK_ID)));
                     activity.setParentID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
                     activity.setLogFrameID(
@@ -529,6 +532,8 @@ public class cOutputRepositoryImpl implements iOutputRepository {
                     activity.setSyncedDate(Timestamp.valueOf(
                             cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
+
+
                     activityModelSet.add(activity);
 
                 } while (cursor.moveToNext());
@@ -546,7 +551,7 @@ public class cOutputRepositoryImpl implements iOutputRepository {
         return activityModelSet;
     }
 
-    private Set<cQuestionModel> getQuestionModelSetByID(int outputID, int userID, int primaryRoleBITS,
+    private Set<cQuestionModel> getQuestionModelSetByID(long outputID, long userID, int primaryRoleBITS,
                                                         int secondaryRoleBITS, int statusBITS) {
 
         Set<cQuestionModel> questionModelSet = new HashSet<>();
@@ -652,7 +657,7 @@ public class cOutputRepositoryImpl implements iOutputRepository {
         return questionModelSet;
     }
 
-    private Set<cRaidModel> getRaidModelSetByID(int outputID, int userID, int primaryRoleBITS,
+    private Set<cRaidModel> getRaidModelSetByID(long outputID, long userID, int primaryRoleBITS,
                                                 int secondaryRoleBITS, int statusBITS) {
 
         Set<cRaidModel> raidModelSet = new HashSet<>();
@@ -753,50 +758,50 @@ public class cOutputRepositoryImpl implements iOutputRepository {
     }
 
     private Set<cOutcomeModel> getChildOutcomeSetByID(
-            int outputID, int userID, int primaryRoleBITS, int secondaryRoleBITS, int statusBITS) {
+            long outputID, long userID, int primaryRoleBITS, int secondaryRoleBITS, int statusBITS) {
 
         Set<cOutcomeModel> outcomeModelSet = new HashSet<>();
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String selectQuery = "SELECT DISTINCT " +
-                "O." + cSQLDBHelper.KEY_ID + ", O." + cSQLDBHelper.KEY_PARENT_FK_ID + ", " +
-                "O." + cSQLDBHelper.KEY_IMPACT_FK_ID + ", " +
-                "O." + cSQLDBHelper.KEY_LOGFRAME_FK_ID + " AS PARENT_LOGFRAME_ID, " +
-                "I." + cSQLDBHelper.KEY_LOGFRAME_FK_ID + " AS CHILD_LOGFRAME_ID, " +
-                "O." + cSQLDBHelper.KEY_SERVER_ID + ", O." + cSQLDBHelper.KEY_OWNER_ID + ", " +
-                "O." + cSQLDBHelper.KEY_ORG_ID + ", O." + cSQLDBHelper.KEY_GROUP_BITS + ", " +
-                "O." + cSQLDBHelper.KEY_PERMS_BITS + ", O." + cSQLDBHelper.KEY_STATUS_BITS + ", " +
-                "O." + cSQLDBHelper.KEY_NAME + ", O." + cSQLDBHelper.KEY_DESCRIPTION + ", " +
-                "O." + cSQLDBHelper.KEY_START_DATE + ", O." + cSQLDBHelper.KEY_END_DATE + ", " +
-                "O." + cSQLDBHelper.KEY_CREATED_DATE + ", O." + cSQLDBHelper.KEY_MODIFIED_DATE + ", " +
-                "O." + cSQLDBHelper.KEY_SYNCED_DATE +
+                "O1." + cSQLDBHelper.KEY_ID + ", O1." + cSQLDBHelper.KEY_LOGFRAME_FK_ID + ", " +
+                "O2." + cSQLDBHelper.KEY_ID + ", O2." + cSQLDBHelper.KEY_LOGFRAME_FK_ID + ", " +
+                "O2." + cSQLDBHelper.KEY_PARENT_FK_ID + ", O2." + cSQLDBHelper.KEY_IMPACT_FK_ID + ", " +
+                "O2." + cSQLDBHelper.KEY_SERVER_ID + ", O2." + cSQLDBHelper.KEY_OWNER_ID + ", " +
+                "O2." + cSQLDBHelper.KEY_ORG_ID + ", O2." + cSQLDBHelper.KEY_GROUP_BITS + ", " +
+                "O2." + cSQLDBHelper.KEY_PERMS_BITS + ", O2." + cSQLDBHelper.KEY_STATUS_BITS + ", " +
+                "O2." + cSQLDBHelper.KEY_NAME + ", O2." + cSQLDBHelper.KEY_DESCRIPTION + ", " +
+                "O2." + cSQLDBHelper.KEY_START_DATE + ", O2." + cSQLDBHelper.KEY_END_DATE + ", " +
+                "O2." + cSQLDBHelper.KEY_CREATED_DATE + ", O2." + cSQLDBHelper.KEY_MODIFIED_DATE + ", " +
+                "O2." + cSQLDBHelper.KEY_SYNCED_DATE +
                 " FROM " +
-                cSQLDBHelper.TABLE_tblOUTPUT + " O, " +
-                cSQLDBHelper.TABLE_tblOUTCOME + " I, " +
-                cSQLDBHelper.TABLE_tblOUTPUT_OUTCOME + " OI, " +
+                cSQLDBHelper.TABLE_tblOUTPUT + " O1, " +
+                cSQLDBHelper.TABLE_tblOUTCOME + " O2, " +
+                cSQLDBHelper.TABLE_tblOUTPUT_OUTCOME + " OO, " +
                 cSQLDBHelper.TABLE_tblLOGFRAMETREE + " LT " +
-                " WHERE ((O." + cSQLDBHelper.KEY_ID + " = OI." + cSQLDBHelper.KEY_OUTCOME_FK_ID +
-                " AND O." + cSQLDBHelper.KEY_LOGFRAME_FK_ID + " = OI." + cSQLDBHelper.KEY_PARENT_FK_ID +
-                " AND I." + cSQLDBHelper.KEY_LOGFRAME_FK_ID + " = OI." + cSQLDBHelper.KEY_CHILD_FK_ID +
-                " AND OI." + cSQLDBHelper.KEY_PARENT_FK_ID + " = LT." + cSQLDBHelper.KEY_PARENT_FK_ID +
-                " AND OI." + cSQLDBHelper.KEY_CHILD_FK_ID + " = LT." + cSQLDBHelper.KEY_CHILD_FK_ID +
-                " AND O." + cSQLDBHelper.KEY_ID + " = ?) AND " +
+                " WHERE ((O1." + cSQLDBHelper.KEY_ID + " = OO." + cSQLDBHelper.KEY_OUTPUT_FK_ID +
+                " AND O1." + cSQLDBHelper.KEY_LOGFRAME_FK_ID + " = OO." + cSQLDBHelper.KEY_PARENT_FK_ID +
+                " AND O2." + cSQLDBHelper.KEY_ID + " = OO." + cSQLDBHelper.KEY_OUTCOME_FK_ID +
+                " AND O2." + cSQLDBHelper.KEY_LOGFRAME_FK_ID + " = OO." + cSQLDBHelper.KEY_CHILD_FK_ID +
+                " AND OO." + cSQLDBHelper.KEY_PARENT_FK_ID + " = LT." + cSQLDBHelper.KEY_PARENT_FK_ID +
+                " AND OO." + cSQLDBHelper.KEY_CHILD_FK_ID + " = LT." + cSQLDBHelper.KEY_CHILD_FK_ID +
+                " AND O1." + cSQLDBHelper.KEY_ID + " = ?) AND " +
                 /* read access permissions */
                 /* organization creator is always allowed to do everything (i.e., where: userID = orgID)*/
-                " ((O." + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
+                " ((O2." + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
                 /* owner permission */
-                " OR ((((O." + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
-                " AND ((O." + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OWNER_READ + ") != 0))" +
+                " OR ((((O2." + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
+                " AND ((O2." + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OWNER_READ + ") != 0))" +
                 /* group (owner/primary organization) permission */
-                " OR (((O." + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                " AND ((O." + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.GROUP_READ + ") != 0))" +
+                " OR (((O2." + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
+                " AND ((O2." + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.GROUP_READ + ") != 0))" +
                 /* other (secondary organizations) permission */
-                " OR (((O." + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                " AND ((O." + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OTHER_READ + ") != 0)))" +
+                " OR (((O2." + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
+                " AND ((O2." + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OTHER_READ + ") != 0)))" +
                 /* owner, group and other permissions allowed when the statuses hold */
-                " AND ((O." + cSQLDBHelper.KEY_STATUS_BITS + " = 0) " +
-                " OR ((O." + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0)))))";
+                " AND ((O2." + cSQLDBHelper.KEY_STATUS_BITS + " = 0) " +
+                " OR ((O2." + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0)))))";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{
                 String.valueOf(outputID),
@@ -817,8 +822,8 @@ public class cOutputRepositoryImpl implements iOutputRepository {
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
                     outcome.setImpactID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_IMPACT_FK_ID)));
-                    //outcome.setLogFrameID(
-                    //        cursor.getInt(cursor.getColumnIndex("PARENT_LOGFRAME_ID")));
+                    outcome.setLogFrameID(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
                     outcome.setServerID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
                     outcome.setOwnerID(
@@ -846,18 +851,7 @@ public class cOutputRepositoryImpl implements iOutputRepository {
                     outcome.setSyncedDate(Timestamp.valueOf(
                             cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
-                    /* compute set of impacts under sub-logframe */
-                    long parentLogFrameID, childLogFrameID;
-                    parentLogFrameID = cursor.getInt(cursor.getColumnIndex("PARENT_LOGFRAME_ID"));
-                    childLogFrameID = cursor.getInt(cursor.getColumnIndex("CHILD_LOGFRAME_ID"));
-
-
                     outcomeModelSet.add(outcome);
-
-                    /*Set<cImpactModel> impactModelSet = getOutcomeSetByLogFrameID(
-                            childLogFrameID, userID, primaryRoleBITS, secondaryRoleBITS, statusBITS);
-
-                    impactMap.put(new Pair<>(parentLogFrameID, childLogFrameID), impactModelSet);*/
 
                 } while (cursor.moveToNext());
             }

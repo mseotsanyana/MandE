@@ -18,8 +18,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.text.SimpleDateFormat;
-import java.util.Iterator;
-
 
 public class cUploadGlobalRepositoryImpl implements iUploadGlobalRepository {
     private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
@@ -46,9 +44,7 @@ public class cUploadGlobalRepositoryImpl implements iUploadGlobalRepository {
             return false;
         }
 
-        for (Iterator<Row> ritF = FSheet.iterator(); ritF.hasNext(); ) {
-            Row cRowF = ritF.next();
-
+        for (Row cRowF : FSheet) {
             //just skip the row if row number is 0
             if (cRowF.getRowNum() == 0) {
                 continue;
@@ -124,9 +120,7 @@ public class cUploadGlobalRepositoryImpl implements iUploadGlobalRepository {
             return false;
         }
 
-        for (Iterator<Row> ritFY = FYSheet.iterator(); ritFY.hasNext(); ) {
-            Row cRowFY = ritFY.next();
-
+        for (Row cRowFY : FYSheet) {
             //just skip the row if row number is 0
             if (cRowFY.getRowNum() == 0) {
                 continue;
@@ -174,11 +168,9 @@ public class cUploadGlobalRepositoryImpl implements iUploadGlobalRepository {
             }
 
             /* add assigned task */
-            int periodID = -1, fiscalYearID = -1;
-            String name = null, description = null;
-            for (Iterator<Row> ritP = PSheet.iterator(); ritP.hasNext(); ) {
-                Row rowP = ritP.next();
+            long fiscalYearID = -1;
 
+            for (Row rowP : PSheet) {
                 //just skip the row if row number is 0
                 if (rowP.getRowNum() == 0) {
                     continue;
@@ -188,7 +180,7 @@ public class cUploadGlobalRepositoryImpl implements iUploadGlobalRepository {
                 if (fiscalYearModel.getFiscalYearID() == fiscalYearID) {
                     cPeriodModel periodModel = new cPeriodModel();
 
-                    periodModel.setPeriodID((int)rowP.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+                    periodModel.setPeriodID((int) rowP.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
                     periodModel.setFiscalYearID((int) rowP.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
                     periodModel.setName(rowP.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
                     periodModel.setDescription(rowP.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());

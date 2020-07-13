@@ -55,8 +55,8 @@ public class cSessionManagerImpl implements iSessionManagerRepository {
      *
      * @param userID
      */
-    public void saveUserID(int userID) {
-        editor.putInt(cSharedPreference.KEY_USER_ID, userID);
+    public void saveUserID(long userID) {
+        editor.putLong(cSharedPreference.KEY_USER_ID, userID);
     }
 
     /**
@@ -64,8 +64,8 @@ public class cSessionManagerImpl implements iSessionManagerRepository {
      *
      * @return userID
      */
-    public int loadUserID() {
-        return preferences.getInt(cSharedPreference.KEY_USER_ID, -1);
+    public long loadUserID() {
+        return preferences.getLong(cSharedPreference.KEY_USER_ID, -1);
     }
 
     /**
@@ -73,8 +73,8 @@ public class cSessionManagerImpl implements iSessionManagerRepository {
      *
      * @param organizationID
      */
-    public void saveOrganizationID(int organizationID) {
-        editor.putInt(cSharedPreference.KEY_ORG_ID, organizationID);
+    public void saveOrganizationID(long organizationID) {
+        editor.putLong(cSharedPreference.KEY_ORG_ID, organizationID);
     }
 
     /**
@@ -83,8 +83,8 @@ public class cSessionManagerImpl implements iSessionManagerRepository {
      *
      * @return organizationID
      */
-    public int loadOrganizationID() {
-        return preferences.getInt(cSharedPreference.KEY_ORG_ID, -1);
+    public long loadOrganizationID() {
+        return preferences.getLong(cSharedPreference.KEY_ORG_ID, -1);
     }
 
     public void saveDefaultPermsBITS(int bitNumber) {
@@ -238,7 +238,7 @@ public class cSessionManagerImpl implements iSessionManagerRepository {
      * @param entityTypeID
      * @return
      */
-    public int loadEntityBITS(int entityTypeID) {
+    public int loadEntityBITS(long entityTypeID) {
         StringBuilder entityTypeKey = new StringBuilder(cSharedPreference.KEY_ENTITY_TYPE_BITS);
         entityTypeKey.append("-");
         entityTypeKey.append(entityTypeID);
@@ -253,7 +253,7 @@ public class cSessionManagerImpl implements iSessionManagerRepository {
      * @param entityTypeID
      * @return
      */
-    public int loadOperationBITS(int entityID, int entityTypeID) {
+    public int loadOperationBITS(long entityID, long entityTypeID) {
         StringBuilder operationKey = new StringBuilder(cSharedPreference.KEY_ENTITY_OPERATION_BITS);
         operationKey.append("-");
         operationKey.append(entityID);
@@ -271,7 +271,7 @@ public class cSessionManagerImpl implements iSessionManagerRepository {
      * @param operationID
      * @return
      */
-    public int loadStatusBITS(int entityID, int entityTypeID, int operationID) {
+    public int loadStatusBITS(long entityID, long entityTypeID, long operationID) {
         StringBuilder statusKey = new StringBuilder(cSharedPreference.KEY_OPERATION_STATUS_BITS);
         statusKey.append("-");
         statusKey.append(entityID);

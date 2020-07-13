@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iInputRepository;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cActivityModel;
-import com.me.mseotsanyana.mande.DAL.model.wpb.cBudgetModel;
+import com.me.mseotsanyana.mande.DAL.model.wpb.cIncomeModel;
 import com.me.mseotsanyana.mande.DAL.model.wpb.cHumanSetModel;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cLogFrameModel;
 import com.me.mseotsanyana.mande.DAL.model.wpb.cMaterialModel;
@@ -23,7 +23,6 @@ import com.me.mseotsanyana.mande.UTIL.cConstant;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -72,7 +71,7 @@ public class cInputRepositoryImpl implements iInputRepository {
                 return false;
             }
         } catch (Exception e) {
-            Log.d(TAG, "Exception in adding OUTPUT " + e.getMessage().toString());
+            Log.d(TAG, "Exception in adding INPUT " + e.getMessage());
         }
 
         // close the database connection
@@ -100,7 +99,7 @@ public class cInputRepositoryImpl implements iInputRepository {
                 return false;
             }
         } catch (Exception e) {
-            Log.d(TAG, "Exception in adding OUTPUT " + e.getMessage().toString());
+            Log.d(TAG, "Exception in adding HUMAN SET " + e.getMessage());
         }
 
         // close the database connection
@@ -129,7 +128,7 @@ public class cInputRepositoryImpl implements iInputRepository {
                 return false;
             }
         } catch (Exception e) {
-            Log.d(TAG, "Exception in adding OUTPUT " + e.getMessage().toString());
+            Log.d(TAG, "Exception in adding MATERIAL " + e.getMessage());
         }
 
         // close the database connection
@@ -142,7 +141,7 @@ public class cInputRepositoryImpl implements iInputRepository {
     /*
      * the function adding a specific input
      */
-    public boolean addInputBudget(cInputModel inputModel, cBudgetModel budgetModel) {
+    public boolean addInputBudget(cInputModel inputModel, cIncomeModel budgetModel) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -171,7 +170,7 @@ public class cInputRepositoryImpl implements iInputRepository {
                 return false;
             }
         } catch (Exception e) {
-            Log.d(TAG, "Exception in adding OUTPUT " + e.getMessage().toString());
+            Log.d(TAG, "Exception in adding INPUT " + e.getMessage());
         }
 
         // close the database connection
@@ -227,7 +226,7 @@ public class cInputRepositoryImpl implements iInputRepository {
 
 
     @Override
-    public Set<cInputModel> getInputModelSet(long logFrameID, int userID, int primaryRoleBITS,
+    public Set<cInputModel> getInputModelSet(long logFrameID, long userID, int primaryRoleBITS,
                                              int secondaryRoleBITS, int statusBITS) {
 
         // list of inputs
@@ -236,23 +235,36 @@ public class cInputRepositoryImpl implements iInputRepository {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String selectQuery = "SELECT * FROM " + cSQLDBHelper.TABLE_tblINPUT +
-                " WHERE ((" + cSQLDBHelper.KEY_LOGFRAME_FK_ID + " = ?) AND " +
+        String selectQuery = "SELECT I." + cSQLDBHelper.KEY_ID + ", " +
+                "I." + cSQLDBHelper.KEY_WORKPLAN_FK_ID + ", I." + cSQLDBHelper.KEY_LOGFRAME_FK_ID + ", " +
+                "I." + cSQLDBHelper.KEY_RESOURCE_FK_ID +  ", R." + cSQLDBHelper.KEY_RESOURCE_TYPE_FK_ID + ", " +
+                "I." + cSQLDBHelper.KEY_SERVER_ID + ", I." + cSQLDBHelper.KEY_OWNER_ID + ", " +
+                "I." + cSQLDBHelper.KEY_ORG_ID + ", I." + cSQLDBHelper.KEY_GROUP_BITS + ", " +
+                "I." + cSQLDBHelper.KEY_PERMS_BITS + ", I." + cSQLDBHelper.KEY_STATUS_BITS + ", " +
+                "R." + cSQLDBHelper.KEY_NAME + ", R." + cSQLDBHelper.KEY_DESCRIPTION + ", " +
+                "I." + cSQLDBHelper.KEY_START_DATE + ", I." + cSQLDBHelper.KEY_END_DATE + ", " +
+                "I." + cSQLDBHelper.KEY_CREATED_DATE + ", I." + cSQLDBHelper.KEY_MODIFIED_DATE + ", " +
+                "I." + cSQLDBHelper.KEY_SYNCED_DATE +
+                " FROM " + cSQLDBHelper.TABLE_tblINPUT +" I INNER JOIN " +
+                cSQLDBHelper.TABLE_tblRESOURCE +" R ON R."+cSQLDBHelper.KEY_ID +" = I." +
+                cSQLDBHelper.KEY_RESOURCE_FK_ID +
+                " WHERE ((I." + cSQLDBHelper.KEY_LOGFRAME_FK_ID + " = ?) AND " +
                 /* read access permissions */
                 /* organization creator is always allowed to do everything (i.e., where: userID = orgID)*/
-                " ((" + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
+                " ((I." + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
                 /* owner permission */
-                " OR ((((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OWNER_READ + ") != 0))" +
+                " OR ((((I." + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
+                " AND ((I." + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OWNER_READ + ") != 0))" +
                 /* group (owner/primary organization) permission */
-                " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.GROUP_READ + ") != 0))" +
+                " OR (((I." + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
+                " AND ((I." + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.GROUP_READ + ") != 0))" +
                 /* other (secondary organizations) permission */
-                " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OTHER_READ + ") != 0)))" +
+                " OR (((I." + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
+                " AND ((I." + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OTHER_READ + ") != 0)))" +
                 /* owner, group and other permissions allowed when the statuses hold */
-                " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " = 0) " +
-                " OR ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0)))))";
+                " AND ((I." + cSQLDBHelper.KEY_STATUS_BITS + " = 0) " +
+                " OR ((I." + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0)))))" +
+                " ORDER BY R."+cSQLDBHelper.KEY_RESOURCE_TYPE_FK_ID + " ASC ";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{
                 String.valueOf(logFrameID),       /* access due to logframe foreign key */
@@ -268,8 +280,8 @@ public class cInputRepositoryImpl implements iInputRepository {
 
                     input.setInputID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    input.setActivityPlanningID(cursor.getInt(
-                            cursor.getColumnIndex(cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID)));
+                    input.setWorkplanID(cursor.getInt(
+                            cursor.getColumnIndex(cSQLDBHelper.KEY_WORKPLAN_FK_ID)));
                     input.setLogFrameID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
                     input.setResourceID(
@@ -306,7 +318,7 @@ public class cInputRepositoryImpl implements iInputRepository {
                     input.setResourceModel(getResourceModelByID(input.getResourceID(), userID,
                             primaryRoleBITS, secondaryRoleBITS, statusBITS));
                     /* populate an activity object */
-                    input.setActivityModel(getActivityModelByID(input.getActivityPlanningID(),
+                    input.setActivityModel(getActivityModelByID(input.getWorkplanID(),
                             userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
 
                     /* sets */
@@ -343,7 +355,19 @@ public class cInputRepositoryImpl implements iInputRepository {
         return inputModelSet;
     }
 
-    private cLogFrameModel getLogFrameModelByID(int logFrameID, int userID, int primaryRoleBITS,
+    /*############# utility functions used in the subclass repository implementations ############*/
+
+    /**
+     * returns a logframe model
+     *
+     * @param logFrameID logframe identification
+     * @param userID user identification
+     * @param primaryRoleBITS primary role bits
+     * @param secondaryRoleBITS secondary role bits
+     * @param statusBITS status bits
+     * @return logframe model
+     */
+    protected cLogFrameModel getLogFrameModelByID(long logFrameID, long userID, int primaryRoleBITS,
                                                 int secondaryRoleBITS, int statusBITS) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -422,7 +446,17 @@ public class cInputRepositoryImpl implements iInputRepository {
         return logFrame;
     }
 
-    private cResourceModel getResourceModelByID(int inputID, int userID, int primaryRoleBITS,
+    /**
+     * returns a resource model
+     *
+     * @param resourceID resource identification
+     * @param userID user identification
+     * @param primaryRoleBITS primary role bits
+     * @param secondaryRoleBITS secondary role bits
+     * @param statusBITS status bits
+     * @return resource model
+     */
+    protected cResourceModel getResourceModelByID(long resourceID, long userID, int primaryRoleBITS,
                                                 int secondaryRoleBITS, int statusBITS) {
 
         // open the connection to the database
@@ -448,7 +482,7 @@ public class cInputRepositoryImpl implements iInputRepository {
                 " OR ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0)))))";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{
-                String.valueOf(inputID),
+                String.valueOf(resourceID),
                 String.valueOf(userID),           /* access due to organization creator */
                 String.valueOf(userID),           /* access due to record owner */
                 String.valueOf(primaryRoleBITS),  /* access due to membership in primary role */
@@ -504,7 +538,17 @@ public class cInputRepositoryImpl implements iInputRepository {
         return resource;
     }
 
-    private cResourceTypeModel getResourceTypeModelByID(int resourceTypeID, int userID,
+    /**
+     * return a resource type model
+     *
+     * @param resourceTypeID resource type identification
+     * @param userID user identification
+     * @param primaryRoleBITS primary role bits
+     * @param secondaryRoleBITS secondary role bits
+     * @param statusBITS status bits
+     * @return resource type model
+     */
+    protected cResourceTypeModel getResourceTypeModelByID(long resourceTypeID, long userID,
                                                         int primaryRoleBITS, int secondaryRoleBITS,
                                                         int statusBITS) {
         // open the connection to the database
@@ -567,7 +611,7 @@ public class cInputRepositoryImpl implements iInputRepository {
                         cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
             }
         } catch (Exception e) {
-            Log.d(TAG, "Error while trying to read an OUTCOME entity: " + e.getMessage());
+            Log.d(TAG, "Error while trying to read an RESOURCE TYPE entity: " + e.getMessage());
         } finally {
             if (cursor != null && !cursor.isClosed()) {
                 cursor.close();
@@ -580,16 +624,26 @@ public class cInputRepositoryImpl implements iInputRepository {
         return resourceType;
     }
 
-    private cActivityModel getActivityModelByID(long setActivityPlanningID, long userID,
+    /**
+     * return an activity model
+     *
+     * @param workplanID work plan identification
+     * @param userID user identification
+     * @param primaryRoleBITS primary role bits
+     * @param secondaryRoleBITS secondary role bits
+     * @param statusBITS status bits
+     * @return activity model
+     */
+    protected cActivityModel getActivityModelByID(long workplanID, long userID,
                                                 int primaryRoleBITS, int secondaryRoleBITS,
                                                 int statusBITS) {
 
-        cActivityModel activityModel = new cActivityModel();
-
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String selectQuery = "SELECT * FROM " + cSQLDBHelper.TABLE_tblACTIVITY +
-                " WHERE ((" + cSQLDBHelper.KEY_ID + " = ?) AND " +
+        String selectQuery = "SELECT * FROM " + cSQLDBHelper.TABLE_tblWORKPLAN +" W INNER JOIN " +
+                cSQLDBHelper.TABLE_tblACTIVITY +" A ON W."+cSQLDBHelper.KEY_ID +" = A." +
+                cSQLDBHelper.KEY_WORKPLAN_FK_ID +
+                " WHERE ((W." + cSQLDBHelper.KEY_ID + " = ?) AND " +
                 /* read access permissions */
                 /* organization creator is always allowed to do everything (i.e., where: userID = orgID)*/
                 " ((" + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
@@ -607,7 +661,7 @@ public class cInputRepositoryImpl implements iInputRepository {
                 " OR ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0)))))";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{
-                String.valueOf(setActivityPlanningID),
+                String.valueOf(workplanID),
                 String.valueOf(userID),           /* access due to organization creator */
                 String.valueOf(userID),           /* access due to record owner */
                 String.valueOf(primaryRoleBITS),  /* access due to membership in primary role */
@@ -619,8 +673,8 @@ public class cInputRepositoryImpl implements iInputRepository {
         try {
             if (cursor.moveToFirst()) {
 
-                activity.setActivityPlanningID(cursor.getInt(
-                        cursor.getColumnIndex(cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID)));
+                activity.setWorkplanID(cursor.getInt(
+                        cursor.getColumnIndex(cSQLDBHelper.KEY_WORKPLAN_FK_ID)));
                 activity.setParentID(
                         cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
                 activity.setLogFrameID(
@@ -667,8 +721,18 @@ public class cInputRepositoryImpl implements iInputRepository {
         return activity;
     }
 
-    private Set<cQuestionModel> getQuestionModelSetByID(int inputID, int userID, int primaryRoleBITS,
-                                                        int secondaryRoleBITS, int statusBITS) {
+    /**
+     * return a set of question models
+     *
+     * @param inputID input identification
+     * @param userID user identification
+     * @param primaryRoleBITS primary role bits
+     * @param secondaryRoleBITS secondary role bits
+     * @param statusBITS status bits
+     * @return set of questions
+     */
+    protected Set<cQuestionModel> getQuestionModelSetByID(
+            long inputID, long userID, int primaryRoleBITS, int secondaryRoleBITS, int statusBITS) {
 
         Set<cQuestionModel> questionModelSet = new HashSet<>();
 
@@ -773,7 +837,17 @@ public class cInputRepositoryImpl implements iInputRepository {
         return questionModelSet;
     }
 
-    private Set<cJournalModel> getJournalModelSetByID(int inputID, int userID, int primaryRoleBITS,
+    /**
+     * return set of journal entries
+     *
+     * @param inputID input identification
+     * @param userID user identification
+     * @param primaryRoleBITS primary role bits
+     * @param secondaryRoleBITS secondary role bits
+     * @param statusBITS status bits
+     * @return set of journal entries
+     */
+    protected Set<cJournalModel> getJournalModelSetByID(long inputID, long userID, int primaryRoleBITS,
                                                       int secondaryRoleBITS, int statusBITS) {
 
         Set<cJournalModel> journalModelSet = new HashSet<>();
@@ -857,52 +931,60 @@ public class cInputRepositoryImpl implements iInputRepository {
         return journalModelSet;
     }
 
-
-    private Set<cActivityModel> getChildActivitySetByID(
-            int inputID, int userID, int primaryRoleBITS, int secondaryRoleBITS, int statusBITS) {
+    /**
+     * return set of sub-logframe activity models
+     * @param inputID input identification
+     * @param userID user identification
+     * @param primaryRoleBITS primary role bits
+     * @param secondaryRoleBITS secondary role bits
+     * @param statusBITS status bits
+     * @return set of activities
+     */
+    protected Set<cActivityModel> getChildActivitySetByID(
+            long inputID, long userID, int primaryRoleBITS, int secondaryRoleBITS, int statusBITS) {
 
         Set<cActivityModel> activityModelSet = new HashSet<>();
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String selectQuery = "SELECT DISTINCT " +
-                "I." + cSQLDBHelper.KEY_ID + ", A." + cSQLDBHelper.KEY_ID + ", " +
-                "I." + cSQLDBHelper.KEY_LOGFRAME_FK_ID + ", A." + cSQLDBHelper.KEY_LOGFRAME_FK_ID + ", " +
-                "A." + cSQLDBHelper.KEY_PARENT_FK_ID + ", A." + cSQLDBHelper.KEY_OUTPUT_FK_ID + ", " +
-                "A." + cSQLDBHelper.KEY_SERVER_ID + ", A." + cSQLDBHelper.KEY_OWNER_ID + ", " +
-                "A." + cSQLDBHelper.KEY_ORG_ID + ", A." + cSQLDBHelper.KEY_GROUP_BITS + ", " +
-                "A." + cSQLDBHelper.KEY_PERMS_BITS + ", A." + cSQLDBHelper.KEY_STATUS_BITS + ", " +
-                "A." + cSQLDBHelper.KEY_NAME + ", A." + cSQLDBHelper.KEY_DESCRIPTION + ", " +
-                "A." + cSQLDBHelper.KEY_START_DATE + ", A." + cSQLDBHelper.KEY_END_DATE + ", " +
-                "A." + cSQLDBHelper.KEY_CREATED_DATE + ", A." + cSQLDBHelper.KEY_MODIFIED_DATE + ", " +
-                "A." + cSQLDBHelper.KEY_SYNCED_DATE +
-                " FROM " +
+        String selectQuery = "SELECT DISTINCT I." + cSQLDBHelper.KEY_ID + ", " +
+                "WOR." + cSQLDBHelper.KEY_ID + ", WOR." + cSQLDBHelper.KEY_LOGFRAME_FK_ID + ", " +
+                "ACT." + cSQLDBHelper.KEY_PARENT_FK_ID + ", ACT." + cSQLDBHelper.KEY_OUTPUT_FK_ID + ", " +
+                "WOR." + cSQLDBHelper.KEY_SERVER_ID + ", WOR." + cSQLDBHelper.KEY_OWNER_ID + ", " +
+                "WOR." + cSQLDBHelper.KEY_ORG_ID + ", WOR." + cSQLDBHelper.KEY_GROUP_BITS + ", " +
+                "WOR." + cSQLDBHelper.KEY_PERMS_BITS + ", WOR." + cSQLDBHelper.KEY_STATUS_BITS + ", " +
+                "WOR." + cSQLDBHelper.KEY_NAME + ", WOR." + cSQLDBHelper.KEY_DESCRIPTION + ", " +
+                "WOR." + cSQLDBHelper.KEY_START_DATE + ", WOR." + cSQLDBHelper.KEY_END_DATE + ", " +
+                "WOR." + cSQLDBHelper.KEY_CREATED_DATE + ", WOR." + cSQLDBHelper.KEY_MODIFIED_DATE + ", " +
+                "WOR." + cSQLDBHelper.KEY_SYNCED_DATE +
+                " FROM " + cSQLDBHelper.TABLE_tblWORKPLAN +" WOR " +
+                " INNER JOIN " + cSQLDBHelper.TABLE_tblACTIVITY +" ACT " +
+                " ON WOR."+cSQLDBHelper.KEY_ID +" = ACT."+cSQLDBHelper.KEY_WORKPLAN_FK_ID + ", " +
                 cSQLDBHelper.TABLE_tblINPUT + " I, " +
-                cSQLDBHelper.TABLE_tblACTIVITY + " A, " +
-                cSQLDBHelper.TABLE_tblINPUT_ACTIVITY + " IA, " +
+                cSQLDBHelper.TABLE_tblINPUT_ACTIVITY + " I_A, " +
                 cSQLDBHelper.TABLE_tblLOGFRAMETREE + " LT " +
-                " WHERE ((I." + cSQLDBHelper.KEY_ID + " = IA." + cSQLDBHelper.KEY_INPUT_FK_ID +
-                " AND I." + cSQLDBHelper.KEY_LOGFRAME_FK_ID + " = IA." + cSQLDBHelper.KEY_PARENT_FK_ID +
-                " AND A." + cSQLDBHelper.KEY_ID + " = IA." + cSQLDBHelper.KEY_ACTIVITY_FK_ID +
-                " AND A." + cSQLDBHelper.KEY_LOGFRAME_FK_ID + " = IA." + cSQLDBHelper.KEY_CHILD_FK_ID +
-                " AND IA." + cSQLDBHelper.KEY_PARENT_FK_ID + " = LT." + cSQLDBHelper.KEY_PARENT_FK_ID +
-                " AND IA." + cSQLDBHelper.KEY_CHILD_FK_ID + " = LT." + cSQLDBHelper.KEY_CHILD_FK_ID +
+                " WHERE ((I." + cSQLDBHelper.KEY_ID + " = I_A." + cSQLDBHelper.KEY_INPUT_FK_ID +
+                " AND I." + cSQLDBHelper.KEY_LOGFRAME_FK_ID + " = I_A." + cSQLDBHelper.KEY_PARENT_FK_ID +
+                " AND WOR." + cSQLDBHelper.KEY_ID + " = I_A." + cSQLDBHelper.KEY_WORKPLAN_FK_ID +
+                " AND WOR." + cSQLDBHelper.KEY_LOGFRAME_FK_ID + " = I_A." + cSQLDBHelper.KEY_CHILD_FK_ID +
+                " AND I_A." + cSQLDBHelper.KEY_PARENT_FK_ID + " = LT." + cSQLDBHelper.KEY_PARENT_FK_ID +
+                " AND I_A." + cSQLDBHelper.KEY_CHILD_FK_ID + " = LT." + cSQLDBHelper.KEY_CHILD_FK_ID +
                 " AND I." + cSQLDBHelper.KEY_ID + " = ?) AND " +
                 /* read access permissions */
                 /* organization creator is always allowed to do everything (i.e., where: userID = orgID)*/
-                " ((O." + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
+                " ((WOR." + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
                 /* owner permission */
-                " OR ((((O." + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
-                " AND ((O." + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OWNER_READ + ") != 0))" +
+                " OR ((((WOR." + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
+                " AND ((WOR." + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OWNER_READ + ") != 0))" +
                 /* group (owner/primary organization) permission */
-                " OR (((O." + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                " AND ((O." + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.GROUP_READ + ") != 0))" +
+                " OR (((WOR." + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
+                " AND ((WOR." + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.GROUP_READ + ") != 0))" +
                 /* other (secondary organizations) permission */
-                " OR (((O." + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
-                " AND ((O." + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OTHER_READ + ") != 0)))" +
+                " OR (((WOR." + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
+                " AND ((WOR." + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OTHER_READ + ") != 0)))" +
                 /* owner, group and other permissions allowed when the statuses hold */
-                " AND ((O." + cSQLDBHelper.KEY_STATUS_BITS + " = 0) " +
-                " OR ((O." + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0)))))";
+                " AND ((WOR." + cSQLDBHelper.KEY_STATUS_BITS + " = 0) " +
+                " OR ((WOR." + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0)))))";
 
         Cursor cursor = db.rawQuery(selectQuery, new String[]{
                 String.valueOf(inputID),
@@ -917,8 +999,8 @@ public class cInputRepositoryImpl implements iInputRepository {
                 do {
                     cActivityModel activity = new cActivityModel();
 
-                    activity.setActivityPlanningID(cursor.getInt(
-                            cursor.getColumnIndex(cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID)));
+                    activity.setWorkplanID(cursor.getInt(
+                            cursor.getColumnIndex(cSQLDBHelper.KEY_WORKPLAN_FK_ID)));
                     activity.setParentID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
                     activity.setOutputID(
@@ -965,122 +1047,6 @@ public class cInputRepositoryImpl implements iInputRepository {
         db.close();
 
         return activityModelSet;
-    }
-
-
-
-    /*
-     * the function fetches all inputs
-     */
-    public ArrayList<cInputModel> getInputModels() {
-        // list of inputs
-        ArrayList<cInputModel> inputModels = new ArrayList<>();
-
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        // construct a selection query
-        String selectQuery = "SELECT * FROM " + cSQLDBHelper.TABLE_tblACTIVITY;
-
-        // construct an argument cursor
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    cInputModel inputModel = new cInputModel();
-
-                    inputModel.setInputID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    inputModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    inputModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    inputModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    inputModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    inputModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    inputModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    //inputModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    //inputModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    inputModel.setStartDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    inputModel.setEndDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    inputModel.setCreatedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    inputModel.setModifiedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    inputModel.setSyncedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
-
-                    inputModels.add(inputModel);
-
-                } while (cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Exception in reading all OUTPUTs " + e.getMessage().toString());
-        } finally {
-            if (cursor != null && !cursor.isClosed()) {
-                cursor.close();
-            }
-        }
-
-        // close the database connection
-        db.close();
-
-        return inputModels;
-    }
-
-    // get input outcomes
-    public ArrayList<cMaterialModel> getInputMaterialsByID(int inputID) {
-        // list of child outcome
-        ArrayList<cMaterialModel> materialModels = new ArrayList<cMaterialModel>();
-
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        // construct a selection query
-        String selectQuery = "SELECT * FROM " +
-                cSQLDBHelper.TABLE_tblACTIVITY + " input, " +
-                cSQLDBHelper.TABLE_tblOUTPUT + " output, " +
-                cSQLDBHelper.TABLE_tblACTIVITY_OUTPUT + " input_output " +
-                " WHERE input." + cSQLDBHelper.KEY_ID + " = input_output." + cSQLDBHelper.KEY_ACTIVITY_FK_ID +
-                " AND input." + cSQLDBHelper.KEY_LOGFRAME_FK_ID + " = input_output." + cSQLDBHelper.KEY_PARENT_FK_ID +
-                " AND output." + cSQLDBHelper.KEY_ID + " = input_output." + cSQLDBHelper.KEY_OUTPUT_FK_ID +
-                " AND output." + cSQLDBHelper.KEY_LOGFRAME_FK_ID + " = input_output." + cSQLDBHelper.KEY_CHILD_FK_ID +
-                " AND input." + cSQLDBHelper.KEY_ID + " = ?";
-
-        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(inputID)});
-
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-
-                    cMaterialModel outputModel = new cMaterialModel();
-/*
-                    outputModel.setID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    outputModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    outputModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    outputModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    outputModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    outputModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    outputModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    outputModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    outputModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    outputModel.setStartDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    outputModel.setEndDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    outputModel.setCreatedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    outputModel.setModifiedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    outputModel.setSyncedDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
-*/
-                    materialModels.add(outputModel);
-
-                } while (cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Exception in reading all ACTIVITY_OUTPUTs " + e.getMessage().toString());
-        } finally {
-            if (cursor != null && !cursor.isClosed()) {
-                cursor.close();
-            }
-        }
-
-        // close the database connection
-        db.close();
-
-        return materialModels;
     }
 
     /* ######################################## DELETE ACTIONS ########################################*/

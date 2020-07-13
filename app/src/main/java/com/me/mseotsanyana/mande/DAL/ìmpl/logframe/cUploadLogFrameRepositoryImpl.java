@@ -8,7 +8,7 @@ import android.util.Pair;
 
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iUploadLogFrameRepository;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cActivityPlanningModel;
+import com.me.mseotsanyana.mande.DAL.model.logframe.cWorkplanModel;
 import com.me.mseotsanyana.mande.DAL.model.evaluator.cEvaluationCriteriaModel;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cQuestionGroupingModel;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cQuestionModel;
@@ -56,7 +56,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function extracts and adds the logframe data from excel.
      *
-     * @return
+     * @return logFrame
      */
     @Override
     public boolean addLogFrameFromExcel() {
@@ -83,8 +83,8 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             logFrame.setDescription(
                     cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
-            Set<Integer> subLogFrameDomainSet = new HashSet<>();
-            int parentID, childID;
+            Set<Long> subLogFrameDomainSet = new HashSet<>();
+            long parentID, childID;
 
             Sheet logFrameTreeSheet = workbook.getSheet(cExcelHelper.SHEET_tblLOGFRAMETREE);
             for (Row rowLogFrameTree : logFrameTreeSheet) {
@@ -111,11 +111,11 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function adds the logframe and sub-logframe data from excel.
      *
-     * @param logFrameModel
-     * @param subLogFrameSet
-     * @return
+     * @param logFrameModel logFrame
+     * @param subLogFrameSet sub logFrame set
+     * @return boolean
      */
-    public boolean addLogFrameFromExcel(cLogFrameModel logFrameModel, Set<Integer> subLogFrameSet) {
+    public boolean addLogFrameFromExcel(cLogFrameModel logFrameModel, Set<Long> subLogFrameSet) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -135,7 +135,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             }
 
             // add subLogFrame
-            for (int childID : subLogFrameSet) {
+            for (long childID : subLogFrameSet) {
                 if (!addLogFrameTree(logFrameModel.getLogFrameID(), childID))
                     return false;
             }
@@ -152,11 +152,11 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function adds the sub-logframe data from excel.
      *
-     * @param parentID
-     * @param childID
-     * @return
+     * @param parentID parent identification
+     * @param childID child identification
+     * @return boolean
      */
-    public boolean addLogFrameTree(int parentID, int childID) {
+    public boolean addLogFrameTree(long parentID, long childID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -164,13 +164,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         cv.put(cSQLDBHelper.KEY_PARENT_FK_ID, parentID);
         cv.put(cSQLDBHelper.KEY_CHILD_FK_ID, childID);
 
-        //Gson gson = new Gson();
-        //Log.d(TAG, gson.toJson(parentID)+" -> "+gson.toJson(childID));
-        if (db.insert(cSQLDBHelper.TABLE_tblLOGFRAMETREE, null, cv) < 0) {
-            return false;
-        }
-
-        return true;
+        return db.insert(cSQLDBHelper.TABLE_tblLOGFRAMETREE, null, cv) >= 0;
     }
 
     @Override
@@ -206,7 +200,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function extracts criteria data from excel and adds it to the database.
      *
-     * @return
+     * @return boolean
      */
     @Override
     public boolean addCriteriaFromExcel() {
@@ -217,9 +211,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             return false;
         }
 
-        for (Iterator<Row> ritC = CSheet.iterator(); ritC.hasNext(); ) {
-            Row cRow = ritC.next();
-
+        for (Row cRow : CSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -245,8 +237,8 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function adds criteria data to the database.
      *
-     * @param criteriaModel
-     * @return
+     * @param criteriaModel criteria model
+     * @return boolean
      */
     public boolean addQuestionCriteria(cEvaluationCriteriaModel criteriaModel) {
         // open the connection to the database
@@ -295,7 +287,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function extracts question grouping data from excel and adds it to the database.
      *
-     * @return
+     * @return boolean
      */
     @Override
     public boolean addQuestionGroupingFromExcel() {
@@ -306,9 +298,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             return false;
         }
 
-        for (Iterator<Row> ritQG = QGSheet.iterator(); ritQG.hasNext(); ) {
-            Row cRow = ritQG.next();
-
+        for (Row cRow : QGSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -334,8 +324,8 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function adds question grouping data to the database.
      *
-     * @param questionGroupingModel
-     * @return
+     * @param questionGroupingModel question grouping model
+     * @return boolean
      */
     public boolean addQuestionGroupingFromExcel(cQuestionGroupingModel questionGroupingModel) {
         // open the connection to the database
@@ -384,7 +374,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function extracts question type data from excel and adds it to the database.
      *
-     * @return
+     * @return boolean
      */
     @Override
     public boolean addQuestionTypeFromExcel() {
@@ -395,9 +385,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             return false;
         }
 
-        for (Iterator<Row> ritQT = QTSheet.iterator(); ritQT.hasNext(); ) {
-            Row cRow = ritQT.next();
-
+        for (Row cRow : QTSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -417,15 +405,14 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             Sheet primitiveSheet = workbook.getSheet(cExcelHelper.SHEET_tblPRIMITIVETYPE);
             int questionTypeID, primitiveTypeID = -1;
 
-            for (Iterator<Row> ritPrimitive = primitiveSheet.iterator(); ritPrimitive.hasNext(); ) {
-                Row rowPrimitive = ritPrimitive.next();
-
+            for (Row rowPrimitive : primitiveSheet) {
                 //just skip the row if row number is 0
                 if (rowPrimitive.getRowNum() == 0) {
                     continue;
                 }
 
-                questionTypeID = (int) rowPrimitive.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                questionTypeID = (int) rowPrimitive.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (questionTypeModel.getQuestionTypeID() == questionTypeID) {
                     primitiveTypeID = questionTypeID;
                     break;
@@ -436,15 +423,14 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             Sheet arraySheet = workbook.getSheet(cExcelHelper.SHEET_tblARRAYTYPE);
             int arrayTypeID = -1;//Pair<Integer, Integer> customTypePair = null;
             //int customID, optionID;
-            for (Iterator<Row> ritArrayType = arraySheet.iterator(); ritArrayType.hasNext(); ) {
-                Row rowArrayType = ritArrayType.next();
-
+            for (Row rowArrayType : arraySheet) {
                 //just skip the row if row number is 0
                 if (rowArrayType.getRowNum() == 0) {
                     continue;
                 }
 
-                questionTypeID = (int) rowArrayType.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                questionTypeID = (int) rowArrayType.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (questionTypeModel.getQuestionTypeID() == questionTypeID) {
                     //optionID = (int) rowCustom.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     //customTypePair = new Pair<>(customID, optionID);
@@ -457,15 +443,14 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             Sheet matrixSheet = workbook.getSheet(cExcelHelper.SHEET_tblMATRIXTYPE);
             int matrixTypeID = -1;//Pair<Integer, Integer> customTypePair = null;
             //int customID, optionID;
-            for (Iterator<Row> ritMatrixType = matrixSheet.iterator(); ritMatrixType.hasNext(); ) {
-                Row rowMatrixType = ritMatrixType.next();
-
+            for (Row rowMatrixType : matrixSheet) {
                 //just skip the row if row number is 0
                 if (rowMatrixType.getRowNum() == 0) {
                     continue;
                 }
 
-                questionTypeID = (int) rowMatrixType.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                questionTypeID = (int) rowMatrixType.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (questionTypeModel.getQuestionTypeID() == questionTypeID) {
                     //optionID = (int) rowCustom.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     //customTypePair = new Pair<>(customID, optionID);
@@ -504,11 +489,11 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function adds question type to the database.
      *
-     * @param questionTypeModel
-     * @param primitiveTypeID
-     * @param arrayTypeID
-     * @param matrixTypeID
-     * @return
+     * @param questionTypeModel question type model
+     * @param primitiveTypeID primitive type identification
+     * @param arrayTypeID array type identification
+     * @param matrixTypeID matrix type identification
+     * @return boolean
      */
     public boolean addQuestionTypeFromExcel(cQuestionTypeModel questionTypeModel,
                                             int primitiveTypeID,
@@ -643,7 +628,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function extracts question data from excel and adds it to the database.
      *
-     * @return
+     * @return boolean
      */
     @Override
     public boolean addQuestionFromExcel() {
@@ -654,9 +639,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             return false;
         }
 
-        for (Iterator<Row> ritQuestion = questionSheet.iterator(); ritQuestion.hasNext(); ) {
-            Row cRow = ritQuestion.next();
-
+        for (Row cRow : questionSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -664,12 +647,18 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
             cQuestionModel questionModel = new cQuestionModel();
 
-            questionModel.setQuestionID((int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            questionModel.setLogFrameID((int) cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            questionModel.setQuestionTypeID((int) cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            questionModel.setQuestionGroupID((int) cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            questionModel.setName(cRow.getCell(4, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            questionModel.setDescription(cRow.getCell(5, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            questionModel.setQuestionID((int) cRow.getCell(0,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            questionModel.setLogFrameID((int) cRow.getCell(1,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            questionModel.setQuestionTypeID((int) cRow.getCell(2,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            questionModel.setQuestionGroupID((int) cRow.getCell(3,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            questionModel.setName(cRow.getCell(4,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            questionModel.setDescription(cRow.getCell(5,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
             /* get evaluation question type
             Sheet evaluationSheet = workbook.getSheet(cExcelHelper.SHEET_tblEVALUATION_QUESTION);
@@ -720,8 +709,8 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function adds question data to the database.
      *
-     * @param questionModel
-     * @return
+     * @param questionModel question model
+     * @return boolean
      */
     public boolean addQuestionFromExcel(cQuestionModel questionModel) {
         // open the connection to the database
@@ -774,7 +763,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function extracts raid data from excel and adds it to the database.
      *
-     * @return
+     * @return boolean
      */
     @Override
     public boolean addRaidFromExcel() {
@@ -785,9 +774,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             return false;
         }
 
-        for (Iterator<Row> ritR = RSheet.iterator(); ritR.hasNext(); ) {
-            Row cRow = ritR.next();
-
+        for (Row cRow : RSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -795,10 +782,14 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
             cRaidModel raidModel = new cRaidModel();
 
-            raidModel.setRaidID((int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            raidModel.setLogFrameID((int) cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            raidModel.setName(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            raidModel.setDescription(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            raidModel.setRaidID((int) cRow.getCell(0,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            raidModel.setLogFrameID((int) cRow.getCell(1,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            raidModel.setName(cRow.getCell(2,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            raidModel.setDescription(cRow.getCell(3,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
             if (!addRaidFromExcel(raidModel)) {
                 return false;
@@ -811,8 +802,8 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function adds raid data to the database.
      *
-     * @param raidModel
-     * @return
+     * @param raidModel raid model
+     * @return boolean
      */
     public boolean addRaidFromExcel(cRaidModel raidModel) {
         // open the connection to the database
@@ -862,7 +853,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function extracts and adds the impact data from excel.
      *
-     * @return
+     * @return boolean
      */
     @Override
     public boolean addImpactFromExcel() {
@@ -873,9 +864,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             return false;
         }
 
-        for (Iterator<Row> ritImpact = impactSheet.iterator(); ritImpact.hasNext(); ) {
-            Row cRow = ritImpact.next();
-
+        for (Row cRow : impactSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -883,49 +872,55 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
             cImpactModel impactModel = new cImpactModel();
 
-            impactModel.setImpactID((int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            impactModel.setParentID((int) cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            impactModel.setLogFrameID((int) cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            impactModel.setName(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            impactModel.setDescription(cRow.getCell(4, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            impactModel.setImpactID((int) cRow.getCell(0,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            impactModel.setParentID((int) cRow.getCell(1,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            impactModel.setLogFrameID((int) cRow.getCell(2,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            impactModel.setName(cRow.getCell(3,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            impactModel.setDescription(cRow.getCell(4,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
             /* get questions grouped by criteria of the impact */
-            Map<Integer, Set<Pair<Integer, Integer>>> iqcMap = new HashMap<>();
-            Set<Pair<Integer, Integer>> qcSet = new HashSet<>();
-            int impactID, questionID, criteriaID;
+            Map<Long, Set<Pair<Long, Long>>> iqcMap = new HashMap<>();
+            Set<Pair<Long, Long>> qcSet = new HashSet<>();
+            long impactID, questionID, criteriaID;
 
             Sheet iqcSheet = workbook.getSheet(cExcelHelper.SHEET_tblIMPACT_QUESTION);
-            for (Iterator<Row> ritIQC = iqcSheet.iterator(); ritIQC.hasNext(); ) {
-                Row rowIQC = ritIQC.next();
-
+            for (Row rowIQC : iqcSheet) {
                 //just skip the row if row number is 0
                 if (rowIQC.getRowNum() == 0) {
                     continue;
                 }
 
-                impactID = (int) rowIQC.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                impactID = (int) rowIQC.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (impactModel.getImpactID() == impactID) {
-                    questionID = (int) rowIQC.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    criteriaID = (int) rowIQC.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    questionID = (int) rowIQC.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    criteriaID = (int) rowIQC.getCell(2,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     qcSet.add(new Pair<>(questionID, criteriaID));
                 }
             }
 
             /* get raids of the impact */
-            Set<Pair<Integer, Integer>> raidSet = new HashSet<>();
-            int raidID;
+            Set<Pair<Long, Long>> raidSet = new HashSet<>();
+            long raidID;
             Sheet impactRaidSheet = workbook.getSheet(cExcelHelper.SHEET_tblIMPACT_RAID);
-            for (Iterator<Row> ritImpactRaid = impactRaidSheet.iterator(); ritImpactRaid.hasNext(); ) {
-                Row rowImpactRaid = ritImpactRaid.next();
-
+            for (Row rowImpactRaid : impactRaidSheet) {
                 //just skip the row if row number is 0
                 if (rowImpactRaid.getRowNum() == 0) {
                     continue;
                 }
 
-                impactID = (int) rowImpactRaid.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                impactID = (int) rowImpactRaid.getCell(1,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (impactModel.getImpactID() == impactID) {
-                    raidID = (int) rowImpactRaid.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    raidID = (int) rowImpactRaid.getCell(0,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     raidSet.add(new Pair<>(raidID, impactID));
                 }
             }
@@ -947,14 +942,14 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function extracts and adds the impact data from excel.
      *
-     * @param impactModel
-     * @param iqcMap
-     * @param raidSet
-     * @return
+     * @param impactModel impact model
+     * @param iqcMap impact question criteria
+     * @param raidSet raid set
+     * @return boolean
      */
     public boolean addImpactFromExcel(cImpactModel impactModel,
-                                      Map<Integer, Set<Pair<Integer, Integer>>> iqcMap,
-                                      Set<Pair<Integer, Integer>> raidSet) {
+                                      Map<Long, Set<Pair<Long, Long>>> iqcMap,
+                                      Set<Pair<Long, Long>> raidSet) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -975,11 +970,11 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             }
 
             // add impact, question and criteria tuple
-            for (Map.Entry<Integer, Set<Pair<Integer, Integer>>> iqcEntry : iqcMap.entrySet()) {
-                int impactID = iqcEntry.getKey();
-                for (Pair<Integer, Integer> qcPair : iqcEntry.getValue()) {
-                    int questionID = qcPair.first;
-                    int criteriaID = qcPair.second;
+            for (Map.Entry<Long, Set<Pair<Long, Long>>> iqcEntry : iqcMap.entrySet()) {
+                long impactID = iqcEntry.getKey();
+                for (Pair<Long, Long> qcPair : iqcEntry.getValue()) {
+                    long questionID = qcPair.first;
+                    long criteriaID = qcPair.second;
 
                     if (!addImpactQuestionCriteria(impactID, questionID, criteriaID))
                         return false;
@@ -987,7 +982,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             }
 
             // add raid
-            for (Pair<Integer, Integer> pair : raidSet) {
+            for (Pair<Long, Long> pair : raidSet) {
                 if (!addImpactRaid(pair.first, pair.second))
                     return false;
             }
@@ -1004,12 +999,12 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function adds the impact, question and criteria to the database.
      *
-     * @param impactID
-     * @param questionID
-     * @param criteriaID
-     * @return
+     * @param impactID impact identification
+     * @param questionID question identification
+     * @param criteriaID criteria identification
+     * @return boolean
      */
-    public boolean addImpactQuestionCriteria(int impactID, int questionID, int criteriaID) {
+    public boolean addImpactQuestionCriteria(long impactID, long questionID, long criteriaID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -1018,21 +1013,17 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, questionID);
         cv.put(cSQLDBHelper.KEY_EVALUATION_CRITERIA_FK_ID, criteriaID);
 
-        if (db.insert(cSQLDBHelper.TABLE_tblIMPACT_QUESTION, null, cv) < 0) {
-            return false;
-        }
-
-        return true;
+        return db.insert(cSQLDBHelper.TABLE_tblIMPACT_QUESTION, null, cv) >= 0;
     }
 
     /**
      * This function adds the impact and raid to the database.
      *
-     * @param impactID
-     * @param raidID
-     * @return
+     * @param impactID impact identification
+     * @param raidID raid identification
+     * @return boolean
      */
-    public boolean addImpactRaid(int impactID, int raidID) {
+    public boolean addImpactRaid(long impactID, long raidID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -1040,11 +1031,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         cv.put(cSQLDBHelper.KEY_IMPACT_FK_ID, impactID);
         cv.put(cSQLDBHelper.KEY_RAID_FK_ID, raidID);
 
-        if (db.insert(cSQLDBHelper.TABLE_tblIMPACT_RAID, null, cv) < 0) {
-            return false;
-        }
-
-        return true;
+        return db.insert(cSQLDBHelper.TABLE_tblIMPACT_RAID, null, cv) >= 0;
     }
 
     @Override
@@ -1097,7 +1084,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function extracts and adds the outcome data from excel.
      *
-     * @return
+     * @return boolean
      */
     @Override
     public boolean addOutcomeFromExcel() {
@@ -1108,9 +1095,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             return false;
         }
 
-        for (Iterator<Row> ritOutcome = outcomeSheet.iterator(); ritOutcome.hasNext(); ) {
-            Row cRow = ritOutcome.next();
-
+        for (Row cRow : outcomeSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -1118,44 +1103,49 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
             cOutcomeModel outcomeModel = new cOutcomeModel();
 
-            outcomeModel.setOutcomeID((int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            outcomeModel.setParentID((int) cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            outcomeModel.setImpactID((int) cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            outcomeModel.setLogFrameID((int) cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            outcomeModel.setName(cRow.getCell(4, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            outcomeModel.setDescription(cRow.getCell(5, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            outcomeModel.setOutcomeID((int) cRow.getCell(0,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            outcomeModel.setParentID((int) cRow.getCell(1,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            outcomeModel.setImpactID((int) cRow.getCell(2,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            outcomeModel.setLogFrameID((int) cRow.getCell(3,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            outcomeModel.setName(cRow.getCell(4,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            outcomeModel.setDescription(cRow.getCell(5,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
             /* get questions grouped by criteria of the outcome */
-            Map<Integer, Set<Pair<Integer, Integer>>> oqcMap = new HashMap<>();
-            Set<Pair<Integer, Integer>> qcSet = new HashSet<>();
-            int outcomeID, questionID, criteriaID;
+            Map<Long, Set<Pair<Long, Long>>> oqcMap = new HashMap<>();
+            Set<Pair<Long, Long>> qcSet = new HashSet<>();
+            long outcomeID, questionID, criteriaID;
 
             Sheet oqcSheet = workbook.getSheet(cExcelHelper.SHEET_tblOUTCOME_QUESTION);
-            for (Iterator<Row> ritOQC = oqcSheet.iterator(); ritOQC.hasNext(); ) {
-                Row rowOQC = ritOQC.next();
-
+            for (Row rowOQC : oqcSheet) {
                 //just skip the row if row number is 0
                 if (rowOQC.getRowNum() == 0) {
                     continue;
                 }
 
-                outcomeID = (int) rowOQC.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                outcomeID = (int) rowOQC.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (outcomeModel.getOutcomeID() == outcomeID) {
-                    questionID = (int) rowOQC.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    criteriaID = (int) rowOQC.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    questionID = (int) rowOQC.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    criteriaID = (int) rowOQC.getCell(2,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     qcSet.add(new Pair<>(questionID, criteriaID));
                 }
             }
             oqcMap.put(outcomeModel.getOutcomeID(), qcSet);
 
             /* get impacts of the outcome for a sub-logframe */
-            Map<Set<Pair<Integer, Integer>>, Pair<Integer, Integer>> soiMap = new HashMap<>();
-            int parentID, childID, impactID;
+            Map<Set<Pair<Long, Long>>, Pair<Long, Long>> soiMap = new HashMap<>();
+            long parentID, childID, impactID;
 
             Sheet oiSheet = workbook.getSheet(cExcelHelper.SHEET_tblOUTCOME_IMPACT);
-            for (Iterator<Row> ritOI = oiSheet.iterator(); ritOI.hasNext(); ) {
-                Row rowOI = ritOI.next();
-
+            for (Row rowOI : oiSheet) {
                 //just skip the row if row number is 0
                 if (rowOI.getRowNum() == 0) {
                     continue;
@@ -1163,7 +1153,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
                 outcomeID = (int) rowOI.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (outcomeModel.getOutcomeID() == outcomeID) {
-                    Set<Pair<Integer, Integer>> impactSet = new HashSet<>();
+                    Set<Pair<Long, Long>> impactSet = new HashSet<>();
                     parentID = (int) rowOI.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     childID = (int) rowOI.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     impactID = (int) rowOI.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
@@ -1173,29 +1163,26 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             }
 
             /* get raids of the outcome */
-            Set<Pair<Integer, Integer>> raidSet = new HashSet<>();
-            int raidID;
+            Set<Pair<Long, Long>> raidSet = new HashSet<>();
+            long raidID;
             Sheet outcomeRaidSheet = workbook.getSheet(cExcelHelper.SHEET_tblOUTCOME_RAID);
-            for (Iterator<Row> ritOutcomeRaid = outcomeRaidSheet.iterator(); ritOutcomeRaid.hasNext(); ) {
-                Row rowOutcomeRaid = ritOutcomeRaid.next();
-
+            for (Row rowOutcomeRaid : outcomeRaidSheet) {
                 //just skip the row if row number is 0
                 if (rowOutcomeRaid.getRowNum() == 0) {
                     continue;
                 }
 
-                outcomeID = (int) rowOutcomeRaid.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                outcomeID = (int) rowOutcomeRaid.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (outcomeModel.getOutcomeID() == outcomeID) {
-                    raidID = (int) rowOutcomeRaid.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    raidID = (int) rowOutcomeRaid.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     raidSet.add(new Pair<>(outcomeID, raidID));
                 }
             }
-
-
             //Log.d(TAG, gson.toJson(osiMap));
             //Log.d(TAG, gson.toJson(oqcMap));
             //Log.d(TAG, gson.toJson(raidSet));
-
 
             if (!addOutcomeFromExcel(outcomeModel, soiMap, oqcMap, raidSet)) {
                 return false;
@@ -1206,17 +1193,16 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     }
 
     /**
-     *
-     * @param outcomeModel
-     * @param soiMap
-     * @param oqcMap
-     * @param raidSet
-     * @return
+     * @param outcomeModel outcome model
+     * @param soiMap sub-logframe outcome impact
+     * @param oqcMap outcome question criteria
+     * @param raidSet raid set
+     * @return boolean
      */
     public boolean addOutcomeFromExcel(cOutcomeModel outcomeModel,
-                                       Map<Set<Pair<Integer, Integer>>, Pair<Integer, Integer>> soiMap,
-                                       Map<Integer, Set<Pair<Integer, Integer>>> oqcMap,
-                                       Set<Pair<Integer, Integer>> raidSet) {
+                                       Map<Set<Pair<Long, Long>>, Pair<Long, Long>> soiMap,
+                                       Map<Long, Set<Pair<Long, Long>>> oqcMap,
+                                       Set<Pair<Long, Long>> raidSet) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -1238,14 +1224,15 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             }
 
             // add sub-logFrame, outcome and impact tuple
-            for (Map.Entry<Set<Pair<Integer, Integer>>, Pair<Integer, Integer>> soiEntry : soiMap.entrySet()) {
-                for (Pair<Integer, Integer> oiPair : soiEntry.getKey()) {
-                    int outcomeID = oiPair.first;
-                    int impactID = oiPair.second;
+            for (Map.Entry<Set<Pair<Long, Long>>, Pair<Long, Long>> soiEntry :
+                    soiMap.entrySet()) {
+                for (Pair<Long, Long> oiPair : soiEntry.getKey()) {
+                    long outcomeID = oiPair.first;
+                    long impactID = oiPair.second;
 
-                    Pair<Integer, Integer> sPair = soiEntry.getValue();
-                    int parentID = sPair.first;
-                    int childID = sPair.second;
+                    Pair<Long, Long> sPair = soiEntry.getValue();
+                    long parentID = sPair.first;
+                    long childID = sPair.second;
 
                     if (!addOutcomeImpact(parentID, childID, outcomeID, impactID))
                         return false;
@@ -1254,11 +1241,11 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
 
             // add outcome, question and criteria tuple
-            for (Map.Entry<Integer, Set<Pair<Integer, Integer>>> oqcEntry : oqcMap.entrySet()) {
-                int impactID = oqcEntry.getKey();
-                for (Pair<Integer, Integer> qcPair : oqcEntry.getValue()) {
-                    int questionID = qcPair.first;
-                    int criteriaID = qcPair.second;
+            for (Map.Entry<Long, Set<Pair<Long, Long>>> oqcEntry : oqcMap.entrySet()) {
+                long impactID = oqcEntry.getKey();
+                for (Pair<Long, Long> qcPair : oqcEntry.getValue()) {
+                    long questionID = qcPair.first;
+                    long criteriaID = qcPair.second;
 
                     if (!addOutcomeQuestionCriteria(impactID, questionID, criteriaID))
                         return false;
@@ -1266,9 +1253,9 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             }
 
             // add outcome raid
-            for (Pair<Integer, Integer> pair : raidSet) {
-                int raidID = pair.first;
-                int outcomeID = pair.second;
+            for (Pair<Long, Long> pair : raidSet) {
+                long raidID = pair.first;
+                long outcomeID = pair.second;
                 if (!addOutcomeRaid(outcomeID, raidID))
                     return false;
             }
@@ -1284,14 +1271,13 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     }
 
     /**
-     *
-     * @param parentID
-     * @param childID
-     * @param outcomeID
-     * @param impactID
-     * @return
+     * @param parentID parent identification
+     * @param childID child identification
+     * @param outcomeID outcome identification
+     * @param impactID impact identification
+     * @return boolean
      */
-    public boolean addOutcomeImpact(int parentID, int childID, int outcomeID, int impactID) {
+    public boolean addOutcomeImpact(long parentID, long childID, long outcomeID, long impactID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -1301,21 +1287,16 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         cv.put(cSQLDBHelper.KEY_OUTCOME_FK_ID, outcomeID);
         cv.put(cSQLDBHelper.KEY_IMPACT_FK_ID, impactID);
 
-        if (db.insert(cSQLDBHelper.TABLE_tblOUTCOME_IMPACT, null, cv) < 0) {
-            return false;
-        }
-
-        return true;
+        return db.insert(cSQLDBHelper.TABLE_tblOUTCOME_IMPACT, null, cv) >= 0;
     }
 
     /**
-     *
-     * @param outcomeID
-     * @param questionID
-     * @param criteriaID
-     * @return
+     * @param outcomeID outcome identification
+     * @param questionID question identification
+     * @param criteriaID criteria identification
+     * @return boolean
      */
-    public boolean addOutcomeQuestionCriteria(int outcomeID, int questionID, int criteriaID) {
+    public boolean addOutcomeQuestionCriteria(long outcomeID, long questionID, long criteriaID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -1324,20 +1305,15 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, questionID);
         cv.put(cSQLDBHelper.KEY_EVALUATION_CRITERIA_FK_ID, criteriaID);
 
-        if (db.insert(cSQLDBHelper.TABLE_tblOUTCOME_QUESTION, null, cv) < 0) {
-            return false;
-        }
-
-        return true;
+        return db.insert(cSQLDBHelper.TABLE_tblOUTCOME_QUESTION, null, cv) >= 0;
     }
 
     /**
-     *
-     * @param outcomeID
-     * @param raidID
-     * @return
+     * @param outcomeID outcome identification
+     * @param raidID raid identification
+     * @return boolean
      */
-    public boolean addOutcomeRaid(int outcomeID, int raidID) {
+    public boolean addOutcomeRaid(long outcomeID, long raidID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -1345,11 +1321,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         cv.put(cSQLDBHelper.KEY_OUTCOME_FK_ID, outcomeID);
         cv.put(cSQLDBHelper.KEY_RAID_FK_ID, raidID);
 
-        if (db.insert(cSQLDBHelper.TABLE_tblOUTCOME_RAID, null, cv) < 0) {
-            return false;
-        }
-
-        return true;
+        return db.insert(cSQLDBHelper.TABLE_tblOUTCOME_RAID, null, cv) >= 0;
     }
 
     @Override
@@ -1417,7 +1389,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function extracts and adds the output data from excel.
      *
-     * @return
+     * @return boolean
      */
     @Override
     public boolean addOutputFromExcel() {
@@ -1428,9 +1400,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             return false;
         }
 
-        for (Iterator<Row> ritOutput = outputSheet.iterator(); ritOutput.hasNext(); ) {
-            Row cRow = ritOutput.next();
-
+        for (Row cRow : outputSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -1438,44 +1408,49 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
             cOutputModel outputModel = new cOutputModel();
 
-            outputModel.setOutputID((int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            outputModel.setParentID((int) cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            outputModel.setOutcomeID((int) cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            outputModel.setLogFrameID((int) cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            outputModel.setName(cRow.getCell(4, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            outputModel.setDescription(cRow.getCell(5, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            outputModel.setOutputID((int) cRow.getCell(0,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            outputModel.setParentID((int) cRow.getCell(1,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            outputModel.setOutcomeID((int) cRow.getCell(2,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            outputModel.setLogFrameID((int) cRow.getCell(3,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            outputModel.setName(cRow.getCell(4,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            outputModel.setDescription(cRow.getCell(5,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
             /* get questions grouped by criteria of the output */
-            Map<Integer, Set<Pair<Integer, Integer>>> oqcMap = new HashMap<>();
-            Set<Pair<Integer, Integer>> qcSet = new HashSet<>();
-            int outputID, questionID, criteriaID;
+            Map<Long, Set<Pair<Long, Long>>> oqcMap = new HashMap<>();
+            Set<Pair<Long, Long>> qcSet = new HashSet<>();
+            long outputID, questionID, criteriaID;
 
             Sheet oqcSheet = workbook.getSheet(cExcelHelper.SHEET_tblOUTPUT_QUESTION);
-            for (Iterator<Row> ritOQC = oqcSheet.iterator(); ritOQC.hasNext(); ) {
-                Row rowOQC = ritOQC.next();
-
+            for (Row rowOQC : oqcSheet) {
                 //just skip the row if row number is 0
                 if (rowOQC.getRowNum() == 0) {
                     continue;
                 }
 
-                outputID = (int) rowOQC.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                outputID = (int) rowOQC.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (outputModel.getOutputID() == outputID) {
-                    questionID = (int) rowOQC.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    criteriaID = (int) rowOQC.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    questionID = (int) rowOQC.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    criteriaID = (int) rowOQC.getCell(2,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     qcSet.add(new Pair<>(questionID, criteriaID));
                 }
             }
             oqcMap.put(outputModel.getOutputID(), qcSet);
 
             /* get outcomes of the output for a sub-logframe */
-            Map<Set<Pair<Integer, Integer>>, Pair<Integer, Integer>> sooMap = new HashMap<>();
-            int parentID, childID, outcomeID;
+            Map<Set<Pair<Long, Long>>, Pair<Long, Long>> sooMap = new HashMap<>();
+            long parentID, childID, outcomeID;
 
             Sheet ooSheet = workbook.getSheet(cExcelHelper.SHEET_tblOUTPUT_OUTCOME);
-            for (Iterator<Row> ritOO = ooSheet.iterator(); ritOO.hasNext(); ) {
-                Row rowOO = ritOO.next();
-
+            for (Row rowOO : ooSheet) {
                 //just skip the row if row number is 0
                 if (rowOO.getRowNum() == 0) {
                     continue;
@@ -1483,7 +1458,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
                 outputID = (int) rowOO.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (outputModel.getOutputID() == outputID) {
-                    Set<Pair<Integer, Integer>> impactSet = new HashSet<>();
+                    Set<Pair<Long, Long>> impactSet = new HashSet<>();
                     parentID = (int) rowOO.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     childID = (int) rowOO.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     outcomeID = (int) rowOO.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
@@ -1493,12 +1468,10 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             }
 
             /* get raids of the output */
-            Set<Pair<Integer, Integer>> raidSet = new HashSet<>();
-            int raidID;
+            Set<Pair<Long, Long>> raidSet = new HashSet<>();
+            long raidID;
             Sheet outputRaidSheet = workbook.getSheet(cExcelHelper.SHEET_tblOUTPUT_RAID);
-            for (Iterator<Row> ritOutputRaid = outputRaidSheet.iterator(); ritOutputRaid.hasNext(); ) {
-                Row rowOutputRaid = ritOutputRaid.next();
-
+            for (Row rowOutputRaid : outputRaidSheet) {
                 //just skip the row if row number is 0
                 if (rowOutputRaid.getRowNum() == 0) {
                     continue;
@@ -1524,17 +1497,16 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     }
 
     /**
-     *
-     * @param outputModel
-     * @param sooMap
-     * @param oqcMap
-     * @param raidSet
-     * @return
+     * @param outputModel output model
+     * @param sooMap sub-logframe output outcome
+     * @param oqcMap output question criteria
+     * @param raidSet raid set
+     * @return boolean
      */
     public boolean addOutputFromExcel(cOutputModel outputModel,
-                                      Map<Set<Pair<Integer, Integer>>, Pair<Integer, Integer>> sooMap,
-                                      Map<Integer, Set<Pair<Integer, Integer>>> oqcMap,
-                                      Set<Pair<Integer, Integer>> raidSet) {
+                                      Map<Set<Pair<Long, Long>>, Pair<Long, Long>> sooMap,
+                                      Map<Long, Set<Pair<Long, Long>>> oqcMap,
+                                      Set<Pair<Long, Long>> raidSet) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -1556,43 +1528,38 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             }
 
             // add sub-logFrame, outcome and impact tuple
-            for (Map.Entry<Set<Pair<Integer, Integer>>, Pair<Integer, Integer>> sooEntry : sooMap.entrySet()) {
-                for (Pair<Integer, Integer> ooPair : sooEntry.getKey()) {
-                    int outputID = ooPair.first;
-                    int outcomeID = ooPair.second;
+            for (Map.Entry<Set<Pair<Long, Long>>, Pair<Long, Long>> sooEntry :
+                    sooMap.entrySet()) {
+                for (Pair<Long, Long> ooPair : sooEntry.getKey()) {
+                    long outputID = ooPair.first;
+                    long outcomeID = ooPair.second;
 
-                    Pair<Integer, Integer> sPair = sooEntry.getValue();
-                    int parentID = sPair.first;
-                    int childID = sPair.second;
+                    Pair<Long, Long> sPair = sooEntry.getValue();
+                    long parentID = sPair.first;
+                    long childID = sPair.second;
 
-                    if (addOutputOutcome(parentID, childID, outputID, outcomeID))
-                        continue;
-                    else
+                    if (!addOutputOutcome(parentID, childID, outputID, outcomeID))
                         return false;
                 }
             }
 
             // add output, question and criteria tuple
-            for (Map.Entry<Integer, Set<Pair<Integer, Integer>>> oqcEntry : oqcMap.entrySet()) {
-                int outputID = oqcEntry.getKey();
-                for (Pair<Integer, Integer> qcPair : oqcEntry.getValue()) {
-                    int questionID = qcPair.first;
-                    int criteriaID = qcPair.second;
+            for (Map.Entry<Long, Set<Pair<Long, Long>>> oqcEntry : oqcMap.entrySet()) {
+                long outputID = oqcEntry.getKey();
+                for (Pair<Long, Long> qcPair : oqcEntry.getValue()) {
+                    long questionID = qcPair.first;
+                    long criteriaID = qcPair.second;
 
-                    if (addOutputQuestionCriteria(outputID, questionID, criteriaID))
-                        continue;
-                    else
+                    if (!addOutputQuestionCriteria(outputID, questionID, criteriaID))
                         return false;
                 }
             }
 
             // add output raid
-            for (Pair<Integer, Integer> pair : raidSet) {
-                int raidID = pair.first;
-                int outputID = pair.second;
-                if (addOutputRaid(outputID, raidID))
-                    continue;
-                else
+            for (Pair<Long, Long> pair : raidSet) {
+                long raidID = pair.first;
+                long outputID = pair.second;
+                if (!addOutputRaid(outputID, raidID))
                     return false;
             }
 
@@ -1607,14 +1574,13 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     }
 
     /**
-     *
-     * @param parentID
-     * @param childID
-     * @param outputID
-     * @param outcomeID
-     * @return
+     * @param parentID parent identification
+     * @param childID child identification
+     * @param outputID output identification
+     * @param outcomeID outcome identification
+     * @return boolean
      */
-    public boolean addOutputOutcome(int parentID, int childID, int outputID, int outcomeID) {
+    public boolean addOutputOutcome(long parentID, long childID, long outputID, long outcomeID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -1632,13 +1598,12 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     }
 
     /**
-     *
-     * @param outputID
-     * @param questionID
-     * @param criteriaID
-     * @return
+     * @param outputID output identification
+     * @param questionID question identification
+     * @param criteriaID criteria identification
+     * @return boolean
      */
-    public boolean addOutputQuestionCriteria(int outputID, int questionID, int criteriaID) {
+    public boolean addOutputQuestionCriteria(long outputID, long questionID, long criteriaID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -1647,20 +1612,15 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, questionID);
         cv.put(cSQLDBHelper.KEY_EVALUATION_CRITERIA_FK_ID, criteriaID);
 
-        if (db.insert(cSQLDBHelper.TABLE_tblOUTPUT_QUESTION, null, cv) < 0) {
-            return false;
-        }
-
-        return true;
+        return db.insert(cSQLDBHelper.TABLE_tblOUTPUT_QUESTION, null, cv) >= 0;
     }
 
     /**
-     *
-     * @param outputID
-     * @param raidID
-     * @return
+     * @param outputID output identification
+     * @param raidID raid identification
+     * @return boolean
      */
-    public boolean addOutputRaid(int outputID, int raidID) {
+    public boolean addOutputRaid(long outputID, long raidID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -1668,11 +1628,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         cv.put(cSQLDBHelper.KEY_OUTPUT_FK_ID, outputID);
         cv.put(cSQLDBHelper.KEY_RAID_FK_ID, raidID);
 
-        if (db.insert(cSQLDBHelper.TABLE_tblOUTPUT_RAID, null, cv) < 0) {
-            return false;
-        }
-
-        return true;
+        return db.insert(cSQLDBHelper.TABLE_tblOUTPUT_RAID, null, cv) >= 0;
     }
 
     @Override
@@ -1735,42 +1691,40 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         return result > -1;
     }
 
-    /* #################################### ACTIVITY PLANNING FUNCTIONS ###################################*/
+    /* #################################### WORKPLAN FUNCTIONS ###################################*/
 
     /**
      * This function extracts criteria data from excel and adds it to the database.
      *
-     * @return
+     * @return boolean
      */
     @Override
-    public boolean addActivityPlanningFromExcel() {
+    public boolean addWorkplanFromExcel() {
         Workbook workbook = excelHelper.getWorkbookLOGFRAME();
-        Sheet APSheet = workbook.getSheet(cExcelHelper.SHEET_tblACTIVITYPLANNING);
+        Sheet WPSheet = workbook.getSheet(cExcelHelper.SHEET_tblWORKPLAN);
 
-        if (APSheet == null) {
+        if (WPSheet == null) {
             return false;
         }
 
-        for (Iterator<Row> ritAP = APSheet.iterator(); ritAP.hasNext(); ) {
-            Row cRow = ritAP.next();
-
+        for (Row cRow : WPSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
             }
 
-            cActivityPlanningModel activityPlanningModel = new cActivityPlanningModel();
+            cWorkplanModel workplanModel = new cWorkplanModel();
 
-            activityPlanningModel.setActivityPlanningID((int)
+            workplanModel.setWorkplanID((int)
                     cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            activityPlanningModel.setLogFrameID((int)
+            workplanModel.setLogFrameID((int)
                     cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            activityPlanningModel.setName(
+            workplanModel.setName(
                     cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            activityPlanningModel.setDescription(
+            workplanModel.setDescription(
                     cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
-            if (!addActivityPlanning(activityPlanningModel)) {
+            if (!addWorkplan(workplanModel)) {
                 return false;
             }
         }
@@ -1781,10 +1735,10 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function adds criteria data to the database.
      *
-     * @param activityPlanningModel
-     * @return
+     * @param workplanModel workplan model
+     * @return boolean
      */
-    public boolean addActivityPlanning(cActivityPlanningModel activityPlanningModel) {
+    public boolean addWorkplan(cWorkplanModel workplanModel) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -1792,18 +1746,18 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, activityPlanningModel.getActivityPlanningID());
-        cv.put(cSQLDBHelper.KEY_LOGFRAME_FK_ID, activityPlanningModel.getLogFrameID());
-        cv.put(cSQLDBHelper.KEY_NAME, activityPlanningModel.getName());
-        cv.put(cSQLDBHelper.KEY_DESCRIPTION, activityPlanningModel.getDescription());
+        cv.put(cSQLDBHelper.KEY_ID, workplanModel.getWorkplanID());
+        cv.put(cSQLDBHelper.KEY_LOGFRAME_FK_ID, workplanModel.getLogFrameID());
+        cv.put(cSQLDBHelper.KEY_NAME, workplanModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, workplanModel.getDescription());
 
         // insert project details
         try {
-            if (db.insert(cSQLDBHelper.TABLE_tblACTIVITYPLANNING, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblWORKPLAN, null, cv) < 0) {
                 return false;
             }
         } catch (Exception e) {
-            Log.d(TAG, "Exception in importing ACTIVITY PLANNING from Excel: " + e.getMessage());
+            Log.d(TAG, "Exception in importing WORKPLAN from Excel: " + e.getMessage());
         }
 
         // close the database connection
@@ -1813,12 +1767,12 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     }
 
     @Override
-    public boolean deleteActivityPlannings() {
+    public boolean deleteWorkplans() {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_tblACTIVITYPLANNING, null,
+        long result = db.delete(cSQLDBHelper.TABLE_tblWORKPLAN, null,
                 null);
 
         // close the database connection
@@ -1833,33 +1787,160 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function extracts and adds the activity data from excel.
      *
-     * @return
+     * @return boolean
      */
     @Override
     public boolean addActivityFromExcel() {
+        Gson gson = new Gson();
         Workbook workbook = excelHelper.getWorkbookLOGFRAME();
-        Sheet activitySheet = workbook.getSheet(cExcelHelper.SHEET_tblACTIVITY);
+        Sheet ASheet = workbook.getSheet(cExcelHelper.SHEET_tblACTIVITY);
 
-        if (activitySheet == null) {
+        if (ASheet == null) {
             return false;
         }
 
-        for (Iterator<Row> ritActivity = activitySheet.iterator(); ritActivity.hasNext(); ) {
-            Row cRow = ritActivity.next();
+        for (Row rowActivity : ASheet) {
 
             //just skip the row if row number is 0
-            if (cRow.getRowNum() == 0) {
+            if (rowActivity.getRowNum() == 0) {
                 continue;
             }
-
             cActivityModel activityModel = new cActivityModel();
 
-            activityModel.setActivityID((int)
-                    cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+           activityModel.setWorkplanID((int)
+                   rowActivity.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             activityModel.setParentID((int)
-                    cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+                    rowActivity.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             activityModel.setOutputID((int)
-                    cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+                    rowActivity.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+
+            /* get preceding activities of the activity*/
+            Set<Pair<Long, Long>> precedingSet = new HashSet<>();
+            long precedingActivityID, succeedingActivityID;
+            Sheet precedingActivitySheet = workbook.getSheet(cExcelHelper.SHEET_tblPRECEDINGACTIVITY);
+            for (Row rowPrecedingActivity : precedingActivitySheet) {
+                //just skip the row if row number is 0
+                if (rowPrecedingActivity.getRowNum() == 0) {
+                    continue;
+                }
+
+                precedingActivityID = (int) rowPrecedingActivity.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                if (activityModel.getWorkplanID() == precedingActivityID) {
+                    succeedingActivityID = (int) rowPrecedingActivity.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    precedingSet.add(new Pair<>(precedingActivityID, succeedingActivityID));
+                }
+            }
+
+            /* get activity assignment */
+            Map<Long, Set<Pair<Long, Long>>> asaMap = new HashMap<>();
+            Set<Pair<Long, Long>> asSet = new HashSet<>();
+            long assignmentID, staffID, assignedActivityID;
+
+            Sheet aqaSheet = workbook.getSheet(cExcelHelper.SHEET_tblACTIVITYASSIGNMENT);
+            for (Row rowAQA : aqaSheet) {
+                //just skip the row if row number is 0
+                if (rowAQA.getRowNum() == 0) {
+                    continue;
+                }
+
+                assignedActivityID = (int) rowAQA.getCell(2,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                if (activityModel.getWorkplanID() == assignedActivityID) {
+                    staffID = (int) rowAQA.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    assignmentID = (int) rowAQA.getCell(0,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    asSet.add(new Pair<>(assignmentID, staffID));
+                }
+            }
+            asaMap.put(activityModel.getWorkplanID(), asSet);
+
+
+            /* get questions grouped by criteria of the activity */
+            Map<Long, Set<Pair<Long, Long>>> aqcMap = new HashMap<>();
+            Set<Pair<Long, Long>> qcSet = new HashSet<>();
+            long activityID, questionID, criteriaID;
+
+            Sheet aqcSheet = workbook.getSheet(cExcelHelper.SHEET_tblACTIVITY_QUESTION);
+            for (Row rowAQC : aqcSheet) {
+                //just skip the row if row number is 0
+                if (rowAQC.getRowNum() == 0) {
+                    continue;
+                }
+
+                activityID = (int) rowAQC.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                if (activityModel.getWorkplanID() == activityID) {
+                    questionID = (int) rowAQC.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    criteriaID = (int) rowAQC.getCell(2,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    qcSet.add(new Pair<>(questionID, criteriaID));
+                }
+            }
+            aqcMap.put(activityModel.getOutputID(), qcSet);
+
+            /* get outputs of the activity for a sub-logframe */
+            Map<Set<Pair<Long, Long>>, Pair<Long, Long>> saoMap = new HashMap<>();
+            long parentID, childID, outputID;
+
+            Sheet aoSheet = workbook.getSheet(cExcelHelper.SHEET_tblACTIVITY_OUTPUT);
+            for (Row rowAO : aoSheet) {
+                //just skip the row if row number is 0
+                if (rowAO.getRowNum() == 0) {
+                    continue;
+                }
+
+                activityID = (int) rowAO.getCell(2,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                if (activityModel.getWorkplanID() == activityID) {
+                    Set<Pair<Long, Long>> AOSet = new HashSet<>();
+                    parentID = (int) rowAO.getCell(0,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    childID = (int) rowAO.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    outputID = (int) rowAO.getCell(3,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    AOSet.add(new Pair(activityID, outputID));
+                    saoMap.put(AOSet, new Pair<>(parentID, childID));
+                }
+            }
+
+            /* get raids of the activity */
+            Set<Pair<Long, Long>> raidSet = new HashSet<>();
+            long raidID;
+            Sheet activityRaidSheet = workbook.getSheet(cExcelHelper.SHEET_tblACTIVITY_RAID);
+            for (Row rowActivityRaid : activityRaidSheet) {
+                //just skip the row if row number is 0
+                if (rowActivityRaid.getRowNum() == 0) {
+                    continue;
+                }
+
+                activityID = (int) rowActivityRaid.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                if (activityModel.getWorkplanID() == activityID) {
+                    raidID = (int) rowActivityRaid.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    raidSet.add(new Pair<>(activityID, raidID));
+                }
+            }
+
+            //Log.d(TAG, gson.toJson(activityModel));
+            //Log.d(TAG, gson.toJson(precedingSet));
+            //Log.d(TAG, gson.toJson(asaMap));
+            //Log.d(TAG, gson.toJson(aqcMap));
+            //Log.d(TAG, gson.toJson(saoMap));
+            //Log.d(TAG, gson.toJson(raidSet));
+
+            if (!addActivity(activityModel, precedingSet, asaMap, saoMap, aqcMap, raidSet)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
             /* get activities of the activity planning*/
             //Set<Pair<Integer, Integer>> planningSet = new HashSet<>();
@@ -1887,146 +1968,26 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
                     break;
                 }
             }
-*/
-            /* get preceding activities of the activity */
-            Set<Pair<Integer, Integer>> precedingSet = new HashSet<>();
-            int precedingActivityID, succeedingActivityID;
-            Sheet precedingActivitySheet = workbook.getSheet(cExcelHelper.SHEET_tblPRECEDINGACTIVITY);
-            for (Iterator<Row> ritPrecedingActivity = precedingActivitySheet.iterator(); ritPrecedingActivity.hasNext(); ) {
-                Row rowPrecedingActivity = ritPrecedingActivity.next();
-
-                //just skip the row if row number is 0
-                if (rowPrecedingActivity.getRowNum() == 0) {
-                    continue;
-                }
-
-                precedingActivityID = (int) rowPrecedingActivity.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (activityModel.getActivityID() == precedingActivityID) {
-                    succeedingActivityID = (int) rowPrecedingActivity.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    precedingSet.add(new Pair<>(precedingActivityID, succeedingActivityID));
-                }
-            }
-
-            /* get activity assignment */
-            Map<Integer, Set<Pair<Integer, Integer>>> asaMap = new HashMap<>();
-            Set<Pair<Integer, Integer>> asSet = new HashSet<>();
-            int assignmentID, staffID, assignedActivityID;
-
-            Sheet aqaSheet = workbook.getSheet(cExcelHelper.SHEET_tblACTIVITYASSIGNMENT);
-            for (Iterator<Row> ritAQA = aqaSheet.iterator(); ritAQA.hasNext(); ) {
-                Row rowAQA = ritAQA.next();
-
-                //just skip the row if row number is 0
-                if (rowAQA.getRowNum() == 0) {
-                    continue;
-                }
-
-                assignedActivityID = (int) rowAQA.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (activityModel.getActivityID() == assignedActivityID) {
-                    staffID = (int) rowAQA.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    assignmentID = (int) rowAQA.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    asSet.add(new Pair<>(assignmentID, staffID));
-                }
-            }
-            asaMap.put(activityModel.getActivityID(), asSet);
-
-            /* get questions grouped by criteria of the output */
-            Map<Integer, Set<Pair<Integer, Integer>>> aqcMap = new HashMap<>();
-            Set<Pair<Integer, Integer>> qcSet = new HashSet<>();
-            int activityID, questionID, criteriaID;
-
-            Sheet aqcSheet = workbook.getSheet(cExcelHelper.SHEET_tblACTIVITY_QUESTION);
-            for (Iterator<Row> ritAQC = aqcSheet.iterator(); ritAQC.hasNext(); ) {
-                Row rowAQC = ritAQC.next();
-
-                //just skip the row if row number is 0
-                if (rowAQC.getRowNum() == 0) {
-                    continue;
-                }
-
-                activityID = (int) rowAQC.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (activityModel.getActivityID() == activityID) {
-                    questionID = (int) rowAQC.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    criteriaID = (int) rowAQC.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    qcSet.add(new Pair<>(questionID, criteriaID));
-                }
-            }
-            aqcMap.put(activityModel.getOutputID(), qcSet);
-
-            /* get outputs of the activity for a sub-logframe */
-            Map<Set<Pair<Integer, Integer>>, Pair<Integer, Integer>> saoMap = new HashMap<>();
-            int parentID, childID, outputID;
-
-            Sheet aoSheet = workbook.getSheet(cExcelHelper.SHEET_tblACTIVITY_OUTPUT);
-            for (Iterator<Row> ritAO = aoSheet.iterator(); ritAO.hasNext(); ) {
-                Row rowAO = ritAO.next();
-
-                //just skip the row if row number is 0
-                if (rowAO.getRowNum() == 0) {
-                    continue;
-                }
-
-                activityID = (int) rowAO.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (activityModel.getActivityID() == activityID) {
-                    Set<Pair<Integer, Integer>> AOSet = new HashSet<>();
-                    parentID = (int) rowAO.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    childID = (int) rowAO.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    outputID = (int) rowAO.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    AOSet.add(new Pair(activityID, outputID));
-                    saoMap.put(AOSet, new Pair<>(parentID, childID));
-                }
-            }
-
-            /* get raids of the output */
-            Set<Pair<Integer, Integer>> raidSet = new HashSet<>();
-            int raidID;
-            Sheet activityRaidSheet = workbook.getSheet(cExcelHelper.SHEET_tblACTIVITY_RAID);
-            for (Iterator<Row> ritActivityRaid = activityRaidSheet.iterator(); ritActivityRaid.hasNext(); ) {
-                Row rowActivityRaid = ritActivityRaid.next();
-
-                //just skip the row if row number is 0
-                if (rowActivityRaid.getRowNum() == 0) {
-                    continue;
-                }
-
-                activityID = (int) rowActivityRaid.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (activityModel.getActivityID() == activityID) {
-                    raidID = (int) rowActivityRaid.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    raidSet.add(new Pair<>(activityID, raidID));
-                }
-            }
-
-            Gson gson = new Gson();
-            Log.d(TAG, gson.toJson(activityModel));
-            Log.d(TAG, gson.toJson(precedingSet));
-            Log.d(TAG, gson.toJson(asaMap));
-            Log.d(TAG, gson.toJson(saoMap));
-            Log.d(TAG, gson.toJson(aqcMap));
-            Log.d(TAG, gson.toJson(raidSet));
-
-            if (!addActivityFromExcel(activityModel, precedingSet, asaMap, saoMap, aqcMap, raidSet)) {
-                return false;
-            }
         }
 
         return true;
-    }
+    }*/
 
     /**
      *
-     * @param activityModel
-     * @param precedingSet
-     * @param saoMap
-     * @param aqcMap
-     * @param raidSet
-     * @return
+     * @param activityModel activity model
+     * @param precedingSet preceding set
+     * @param saoMap sub-activity output
+     * @param aqcMap activity question criteria
+     * @param raidSet raid set
+     * @return boolean
      */
-    public boolean addActivityFromExcel(cActivityModel activityModel,
-                                        Set<Pair<Integer, Integer>> precedingSet,
-                                        Map<Integer, Set<Pair<Integer, Integer>>> asaMap,
-                                        Map<Set<Pair<Integer, Integer>>, Pair<Integer, Integer>> saoMap,
-                                        Map<Integer, Set<Pair<Integer, Integer>>> aqcMap,
-                                        Set<Pair<Integer, Integer>> raidSet) {
+    public boolean addActivity(cActivityModel activityModel,
+                                        Set<Pair<Long, Long>> precedingSet,
+                                        Map<Long, Set<Pair<Long, Long>>> asaMap,
+                                        Map<Set<Pair<Long, Long>>, Pair<Long, Long>> saoMap,
+                                        Map<Long, Set<Pair<Long, Long>>> aqcMap,
+                                        Set<Pair<Long, Long>> raidSet) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -2034,7 +1995,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID, activityModel.getActivityID());
+        cv.put(cSQLDBHelper.KEY_WORKPLAN_FK_ID, activityModel.getWorkplanID());
         cv.put(cSQLDBHelper.KEY_PARENT_FK_ID, activityModel.getParentID());
         cv.put(cSQLDBHelper.KEY_OUTPUT_FK_ID, activityModel.getOutputID());
 
@@ -2046,36 +2007,34 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             }
 
             // add preceding activity
-            for (Pair<Integer, Integer> pair : precedingSet) {
-                int succeedingID = pair.first;
-                int precedingID = pair.second;
+            for (Pair<Long, Long> pair : precedingSet) {
+                long succeedingID = pair.first;
+                long precedingID = pair.second;
                 if (!addPrecedingActivity(succeedingID, precedingID))
                     return false;
             }
 
             // add assignment, staff and activity tuple
-            for (Map.Entry<Integer, Set<Pair<Integer, Integer>>> asaEntry : asaMap.entrySet()) {
-                int activityID = asaEntry.getKey();
-                for (Pair<Integer, Integer> saPair : asaEntry.getValue()) {
-                    int assignmentID = saPair.first;
-                    int staffID = saPair.second;
+            for (Map.Entry<Long, Set<Pair<Long, Long>>> asaEntry : asaMap.entrySet()) {
+                long activityID = asaEntry.getKey();
+                for (Pair<Long, Long> saPair : asaEntry.getValue()) {
+                    long assignmentID = saPair.first;
+                    long staffID = saPair.second;
 
-                    if (addActivityAssignment(assignmentID, staffID, activityID))
-                        continue;
-                    else
+                    if (!addActivityAssignment(assignmentID, staffID, activityID))
                         return false;
                 }
             }
 
             // add sub-logFrame, activity and output tuple
-            for (Map.Entry<Set<Pair<Integer, Integer>>, Pair<Integer, Integer>> saoEntry : saoMap.entrySet()) {
-                for (Pair<Integer, Integer> aoPair : saoEntry.getKey()) {
-                    int activityID = aoPair.first;
-                    int outputID = aoPair.second;
+            for (Map.Entry<Set<Pair<Long, Long>>, Pair<Long, Long>> saoEntry : saoMap.entrySet()) {
+                for (Pair<Long, Long> aoPair : saoEntry.getKey()) {
+                    long activityID = aoPair.first;
+                    long outputID = aoPair.second;
 
-                    Pair<Integer, Integer> sPair = saoEntry.getValue();
-                    int parentID = sPair.first;
-                    int childID = sPair.second;
+                    Pair<Long, Long> sPair = saoEntry.getValue();
+                    long parentID = sPair.first;
+                    long childID = sPair.second;
 
                     if (!addActivityOutput(parentID, childID, activityID, outputID))
                         return false;
@@ -2083,11 +2042,11 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             }
 
             // add activity, question and criteria tuple
-            for (Map.Entry<Integer, Set<Pair<Integer, Integer>>> aqcEntry : aqcMap.entrySet()) {
-                int activityID = aqcEntry.getKey();
-                for (Pair<Integer, Integer> qcPair : aqcEntry.getValue()) {
-                    int questionID = qcPair.first;
-                    int criteriaID = qcPair.second;
+            for (Map.Entry<Long, Set<Pair<Long, Long>>> aqcEntry : aqcMap.entrySet()) {
+                long activityID = aqcEntry.getKey();
+                for (Pair<Long, Long> qcPair : aqcEntry.getValue()) {
+                    long questionID = qcPair.first;
+                    long criteriaID = qcPair.second;
 
                     if (!addActivityQuestionCriteria(activityID, questionID, criteriaID))
                         return false;
@@ -2095,9 +2054,9 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             }
 
             // add activity raid
-            for (Pair<Integer, Integer> pair : raidSet) {
-                int raidID = pair.first;
-                int activityID = pair.second;
+            for (Pair<Long, Long> pair : raidSet) {
+                long raidID = pair.first;
+                long activityID = pair.second;
                 if (!addActivityRaid(activityID, raidID))
                     return false;
             }
@@ -2113,40 +2072,36 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
     /**
      *
-     * @param activityID
-     * @param precedingID
-     * @return
+     * @param activityID activity identification
+     * @param precedingID preceding identification
+     * @return boolean
      */
-    public boolean addPrecedingActivity(int activityID, int precedingID) {
+    public boolean addPrecedingActivity(long activityID, long precedingID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
 
-        cv.put(cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID, activityID);
+        cv.put(cSQLDBHelper.KEY_WORKPLAN_FK_ID, activityID);
         cv.put(cSQLDBHelper.KEY_PRECEDING_ACTIVITY_FK_ID, precedingID);
 
-        if (db.insert(cSQLDBHelper.TABLE_tblPRECEDINGACTIVITY, null, cv) < 0) {
-            return false;
-        }
-
-        return true;
+        return db.insert(cSQLDBHelper.TABLE_tblPRECEDINGACTIVITY, null, cv) >= 0;
     }
 
     /**
      *
-     * @param assignmentID
-     * @param staffID
-     * @param activityID
-     * @return
+     * @param assignmentID assignment identification
+     * @param staffID staff identification
+     * @param activityID activity identification
+     * @return boolean
      */
-    public boolean addActivityAssignment(int assignmentID, int staffID, int activityID) {
+    public boolean addActivityAssignment(long assignmentID, long staffID, long activityID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
 
         cv.put(cSQLDBHelper.KEY_ID, assignmentID);
         cv.put(cSQLDBHelper.KEY_STAFF_FK_ID, staffID);
-        cv.put(cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID, activityID);
+        cv.put(cSQLDBHelper.KEY_WORKPLAN_FK_ID, activityID);
 
         if (db.insert(cSQLDBHelper.TABLE_tblACTIVITYASSIGNMENT, null, cv) < 0) {
             return false;
@@ -2157,71 +2112,59 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
     /**
      *
-     * @param parentID
-     * @param childID
-     * @param activityID
-     * @param outputID
-     * @return
+     * @param parentID parent identification
+     * @param childID child identification
+     * @param activityID activity identification
+     * @param outputID output identification
+     * @return boolean
      */
-    public boolean addActivityOutput(int parentID, int childID, int activityID, int outputID) {
+    public boolean addActivityOutput(long parentID, long childID, long activityID, long outputID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
 
         cv.put(cSQLDBHelper.KEY_PARENT_FK_ID, parentID);
         cv.put(cSQLDBHelper.KEY_CHILD_FK_ID, childID);
-        cv.put(cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID, activityID);
+        cv.put(cSQLDBHelper.KEY_WORKPLAN_FK_ID, activityID);
         cv.put(cSQLDBHelper.KEY_OUTPUT_FK_ID, outputID);
 
-        if (db.insert(cSQLDBHelper.TABLE_tblACTIVITY_OUTPUT, null, cv) < 0) {
-            return false;
-        }
-
-        return true;
+        return db.insert(cSQLDBHelper.TABLE_tblACTIVITY_OUTPUT, null, cv) >= 0;
     }
 
     /**
      *
-     * @param activityID
-     * @param questionID
-     * @param criteriaID
-     * @return
+     * @param activityID activity identification
+     * @param questionID question identification
+     * @param criteriaID criteria identification
+     * @return boolean
      */
-    public boolean addActivityQuestionCriteria(int activityID, int questionID, int criteriaID) {
+    public boolean addActivityQuestionCriteria(long activityID, long questionID, long criteriaID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
 
-        cv.put(cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID, activityID);
+        cv.put(cSQLDBHelper.KEY_WORKPLAN_FK_ID, activityID);
         cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, questionID);
         cv.put(cSQLDBHelper.KEY_EVALUATION_CRITERIA_FK_ID, criteriaID);
 
-        if (db.insert(cSQLDBHelper.TABLE_tblACTIVITY_QUESTION, null, cv) < 0) {
-            return false;
-        }
-
-        return true;
+        return db.insert(cSQLDBHelper.TABLE_tblACTIVITY_QUESTION, null, cv) >= 0;
     }
 
     /**
      *
-     * @param activityID
-     * @param raidID
-     * @return
+     * @param activityID activity identification
+     * @param raidID raid identification
+     * @return boolean
      */
-    public boolean addActivityRaid(int activityID, int raidID) {
+    public boolean addActivityRaid(long activityID, long raidID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
 
-        cv.put(cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID, activityID);
+        cv.put(cSQLDBHelper.KEY_WORKPLAN_FK_ID, activityID);
         cv.put(cSQLDBHelper.KEY_RAID_FK_ID, raidID);
 
-        if (db.insert(cSQLDBHelper.TABLE_tblACTIVITY_RAID, null, cv) < 0) {
-            return false;
-        }
-
-        return true;
+        return db.insert(cSQLDBHelper.TABLE_tblACTIVITY_RAID, null, cv) >= 0;
     }
 
     @Override
@@ -2314,7 +2257,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function extracts resource type data from excel and adds it to the database.
      *
-     * @return
+     * @return boolean
      */
     @Override
     public boolean addResourceTypeFromExcel() {
@@ -2325,9 +2268,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             return false;
         }
 
-        for (Iterator<Row> ritRT = RTSheet.iterator(); ritRT.hasNext(); ) {
-            Row cRow = ritRT.next();
-
+        for (Row cRow : RTSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -2353,8 +2294,8 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function adds resource type data to the database.
      *
-     * @param resourceTypeModel
-     * @return
+     * @param resourceTypeModel resource type model
+     * @return boolean
      */
     public boolean addResourceType(cResourceTypeModel resourceTypeModel) {
         // open the connection to the database
@@ -2402,7 +2343,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function extracts resource type data from excel and adds it to the database.
      *
-     * @return
+     * @return boolean
      */
     @Override
     public boolean addResourceFromExcel() {
@@ -2413,9 +2354,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             return false;
         }
 
-        for (Iterator<Row> ritR = RSheet.iterator(); ritR.hasNext(); ) {
-            Row cRow = ritR.next();
-
+        for (Row cRow : RSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -2443,8 +2382,8 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function adds resource data to the database.
      *
-     * @param resourceModel
-     * @return
+     * @param resourceModel resource model
+     * @return boolean
      */
     public boolean addResource(cResourceModel resourceModel) {
         // open the connection to the database
@@ -2493,7 +2432,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function extracts and adds the input data from excel.
      *
-     * @return
+     * @return boolean
      */
     @Override
     public boolean addInputFromExcel() {
@@ -2501,6 +2440,14 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         Workbook awpbWorkbook = excelHelper.getWorkbookAWPB();
 
         Sheet inputSheet = logFrameWorkbook.getSheet(cExcelHelper.SHEET_tblINPUT);
+        Sheet iqcSheet = logFrameWorkbook.getSheet(cExcelHelper.SHEET_tblINPUT_QUESTION);
+        Sheet iaSheet = logFrameWorkbook.getSheet(cExcelHelper.SHEET_tblINPUT_ACTIVITY);
+        Sheet humanSheet = awpbWorkbook.getSheet(cExcelHelper.SHEET_tblHUMAN);
+        Sheet humanSetSheet = awpbWorkbook.getSheet(cExcelHelper.SHEET_tblHUMANSET);
+        Sheet materialSheet = awpbWorkbook.getSheet(cExcelHelper.SHEET_tblMATERIAL);
+        Sheet incomeSheet = awpbWorkbook.getSheet(cExcelHelper.SHEET_tblINCOME);
+        Sheet fundSheet = awpbWorkbook.getSheet(cExcelHelper.SHEET_tblFUND);
+        Sheet expenseSheet = awpbWorkbook.getSheet(cExcelHelper.SHEET_tblEXPENSE);
 
         if (inputSheet == null) {
             return false;
@@ -2514,37 +2461,40 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
             cInputModel inputModel = new cInputModel();
 
-            inputModel.setInputID((int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            inputModel.setActivityPlanningID((int) cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            inputModel.setLogFrameID((int) cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            inputModel.setResourceID((int) cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            inputModel.setInputID((int) cRow.getCell(0,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            inputModel.setWorkplanID((int) cRow.getCell(1,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            inputModel.setLogFrameID((int) cRow.getCell(2,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            inputModel.setResourceID((int) cRow.getCell(3,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
 
             /* get questions grouped by criteria of the input */
-            Map<Integer, Set<Pair<Integer, Integer>>> iqcMap = new HashMap<>();
-            Set<Pair<Integer, Integer>> qcSet = new HashSet<>();
-            int inputID, questionID, criteriaID;
+            Map<Long, Set<Pair<Long, Long>>> iqcMap = new HashMap<>();
+            Set<Pair<Long, Long>> qcSet = new HashSet<>();
+            long inputID, questionID, criteriaID;
 
-            Sheet iqcSheet = logFrameWorkbook.getSheet(cExcelHelper.SHEET_tblINPUT_QUESTION);
             for (Row rowIQC : iqcSheet) {
                 //just skip the row if row number is 0
                 if (rowIQC.getRowNum() == 0) {
                     continue;
                 }
-
-                inputID = (int) rowIQC.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                inputID = (long) rowIQC.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (inputModel.getInputID() == inputID) {
-                    questionID = (int) rowIQC.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    criteriaID = (int) rowIQC.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    questionID = (int) rowIQC.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    criteriaID = (int) rowIQC.getCell(2,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     qcSet.add(new Pair<>(questionID, criteriaID));
                     iqcMap.put(inputModel.getInputID(), qcSet);
                 }
             }
 
             /* get activities of the input for a sub-logframe */
-            Map<Set<Pair<Integer, Integer>>, Pair<Integer, Integer>> siaMap = new HashMap<>();
-            int parentID, childID, activityID;
+            Map<Set<Pair<Long, Long>>, Pair<Long, Long>> siaMap = new HashMap<>();
+            long parentID, childID, activityID;
 
-            Sheet iaSheet = logFrameWorkbook.getSheet(cExcelHelper.SHEET_tblINPUT_ACTIVITY);
             for (Row rowOI : iaSheet) {
                 //just skip the row if row number is 0
                 if (rowOI.getRowNum() == 0) {
@@ -2553,7 +2503,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
                 inputID = (int) rowOI.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (inputModel.getInputID() == inputID) {
-                    Set<Pair<Integer, Integer>> activitySet = new HashSet<>();
+                    Set<Pair<Long, Long>> activitySet = new HashSet<>();
                     parentID = (int) rowOI.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     childID = (int) rowOI.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     activityID = (int) rowOI.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
@@ -2565,24 +2515,19 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             /* human input */
             int humanID = -1, humanQuantity = 0;
             /* human set input */
-            Map<Integer, Set<Pair<Integer, Integer>>> hiuMap = new HashMap<>();
-            Set<Pair<Integer, Integer>> huSet = new HashSet<>();
+            Map<Long, Set<Pair<Long, Long>>> hiuMap = new HashMap<>();
+            Set<Pair<Long, Long>> huSet = new HashSet<>();
 
             /* material input */
             int materialID = -1, materialQuantity = 0;
 
             /* expense inputs */
-            int expenseID = -1;
-            double expense = 0.0;
+            int expenseID = -1; double expense = 0.0;
 
             /* income inputs */
-            int incomeID = -1, fundID = -1, funderID = -1, beneficiaryID = -1;
-            double fund = 0.0;
+            int incomeID = -1, funderID = -1; double fund = 0.0;
 
-            Sheet humanSheet = awpbWorkbook.getSheet(cExcelHelper.SHEET_tblHUMAN);
-            for (Iterator<Row> ritHuman = humanSheet.iterator(); ritHuman.hasNext(); ) {
-                Row rowHuman = ritHuman.next();
-
+            for (Row rowHuman : humanSheet) {
                 //just skip the row if row number is 0
                 if (rowHuman.getRowNum() == 0) {
                     continue;
@@ -2590,24 +2535,25 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
                 humanID = (int) rowHuman.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (inputModel.getInputID() == humanID) {
-                    humanQuantity = (int) rowHuman.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    humanQuantity = (int) rowHuman.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
 
                     /* human set input */
-                    int humanSetInputID = -1, humanSetID = -1, userID = -1;
+                    long humanSetInputID = -1, humanSetID = -1, userID = -1;
 
-                    Sheet humanSetSheet = awpbWorkbook.getSheet(cExcelHelper.SHEET_tblHUMANSET);
-                    for (Iterator<Row> ritHumanSet = humanSetSheet.iterator(); ritHumanSet.hasNext(); ) {
-                        Row rowHumanSet = ritHumanSet.next();
-
+                    for (Row rowHumanSet : humanSetSheet) {
                         //just skip the row if row number is 0
                         if (rowHumanSet.getRowNum() == 0) {
                             continue;
                         }
 
-                        humanSetInputID = (int) rowHumanSet.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                        humanSetInputID = (int) rowHumanSet.getCell(1,
+                                Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                         if (inputModel.getInputID() == humanSetInputID) {
-                            humanSetID = (int) rowHumanSet.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                            userID = (int) rowHumanSet.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                            humanSetID = (int) rowHumanSet.getCell(0,
+                                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                            userID = (int) rowHumanSet.getCell(2,
+                                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                             huSet.add(new Pair<>(humanSetID, userID));
                         }
                     }
@@ -2621,18 +2567,17 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             hiuMap.put(inputModel.getInputID(), huSet);
 
             /* material input */
-            Sheet materialSheet = awpbWorkbook.getSheet(cExcelHelper.SHEET_tblMATERIAL);
-            for (Iterator<Row> ritMaterial = materialSheet.iterator(); ritMaterial.hasNext(); ) {
-                Row rowMaterial = ritMaterial.next();
-
+            for (Row rowMaterial : materialSheet) {
                 //just skip the row if row number is 0
                 if (rowMaterial.getRowNum() == 0) {
                     continue;
                 }
 
-                materialID = (int) rowMaterial.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                materialID = (int) rowMaterial.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (inputModel.getInputID() == materialID) {
-                    materialQuantity = (int) rowMaterial.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    materialQuantity = (int) rowMaterial.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     break;
                 } else {
                     materialID = -1;
@@ -2640,40 +2585,40 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             }
 
             /* income input */
-            Sheet incomeSheet = awpbWorkbook.getSheet(cExcelHelper.SHEET_tblINCOME);
-            for (Iterator<Row> ritIncome = incomeSheet.iterator(); ritIncome.hasNext(); ) {
-                Row rowIncome = ritIncome.next();
-
+            Map<Long, Set<Pair<Long, Double>>> ffaMap = new HashMap<>();
+            Set<Pair<Long, Double>> fundSet = new HashSet<>();
+            long fundInputID, fundID = -1; double amount;
+            for (Row rowIncome : incomeSheet) {
                 //just skip the row if row number is 0
                 if (rowIncome.getRowNum() == 0) {
                     continue;
                 }
 
-                incomeID = (int) rowIncome.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                incomeID = (int) rowIncome.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+
                 if (inputModel.getInputID() == incomeID) {
 
-                    /* fund input */
-                    //Set<Pair<Integer, Integer>> huSet = new HashSet<>();
-                    int humanSetInputID = -1, humanSetID, userID;
-
-                    Sheet fundSheet = awpbWorkbook.getSheet(cExcelHelper.SHEET_tblFUND);
-                    for (Iterator<Row> ritFund = fundSheet.iterator(); ritFund.hasNext(); ) {
-                        Row rowFund = ritFund.next();
-
+                    for (Row rowFundSet : fundSheet) {
                         //just skip the row if row number is 0
-                        if (rowFund.getRowNum() == 0) {
+                        if (rowFundSet.getRowNum() == 0) {
                             continue;
                         }
 
-                        int fundInputID = (int) rowFund.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                        fundInputID = (int) rowFundSet.getCell(1,
+                                Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                         if (inputModel.getInputID() == fundInputID) {
-                            fundID = (int) rowFund.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                            funderID = (int) rowFund.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                            beneficiaryID = (int) rowFund.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                            fund = (double) rowFund.getCell(4, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                            break;
+                            fundID = (int) rowFundSet.getCell(0,
+                                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                            funderID = (int) rowFundSet.getCell(2,
+                                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                            fund = (double) rowFundSet.getCell(3,
+                                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+
+                            fundSet.add(new Pair<Long, Double>((long) funderID, fund));
                         }
                     }
+                    ffaMap.put(fundID, fundSet);
 
                     break;
                 } else {
@@ -2682,18 +2627,17 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             }
 
             /* expense input */
-            Sheet expenseSheet = awpbWorkbook.getSheet(cExcelHelper.SHEET_tblEXPENSE);
-            for (Iterator<Row> ritExpense = expenseSheet.iterator(); ritExpense.hasNext(); ) {
-                Row rowExpense = ritExpense.next();
-
+            for (Row rowExpense : expenseSheet) {
                 //just skip the row if row number is 0
                 if (rowExpense.getRowNum() == 0) {
                     continue;
                 }
 
-                expenseID = (int) rowExpense.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                expenseID = (int) rowExpense.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (inputModel.getInputID() == expenseID) {
-                    expense = (int) rowExpense.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    expense = (int) rowExpense.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     break;
                 } else {
                     expenseID = -1;
@@ -2704,7 +2648,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
                     iqcMap, siaMap,
                     humanID, humanQuantity, hiuMap,
                     materialID, materialQuantity,
-                    incomeID, fundID, funderID, beneficiaryID, fund,
+                    incomeID, ffaMap,
                     expenseID, expense)) {
                 return false;
             }
@@ -2715,19 +2659,20 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
     /**
      *
-     * @param inputModel
-     * @param iqcMap
-     * @param siaMap
-     * @return
+     * @param inputModel input model
+     * @param iqcMap input question criteria
+     * @param siaMap sub-logframe input activity
+     * @return boolean
      */
     private boolean addInput(cInputModel inputModel,
-                             Map<Integer, Set<Pair<Integer, Integer>>> iqcMap,
-                             Map<Set<Pair<Integer, Integer>>, Pair<Integer, Integer>> siaMap,
-                             int humanID, int humanQuantity,
-                             Map<Integer, Set<Pair<Integer, Integer>>> hiuMap,
-                             int materialID, int materialQuantity,
-                             int incomeID, int fundID, int funderID, int beneficiaryID, double fund,
-                             int expenseID, double expense) {
+                             Map<Long, Set<Pair<Long, Long>>> iqcMap,
+                             Map<Set<Pair<Long, Long>>, Pair<Long, Long>> siaMap,
+                             long humanID, int humanQuantity,
+                             Map<Long, Set<Pair<Long, Long>>> hiuMap,
+                             long materialID, int materialQuantity,
+                             long incomeID, Map<Long, Set<Pair<Long, Double>>> ffaMap,
+                             long expenseID, double expense) {
+
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -2736,11 +2681,9 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ID, inputModel.getInputID());
-        cv.put(cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID, inputModel.getActivityPlanningID());
+        cv.put(cSQLDBHelper.KEY_WORKPLAN_FK_ID, inputModel.getWorkplanID());
         cv.put(cSQLDBHelper.KEY_LOGFRAME_FK_ID, inputModel.getLogFrameID());
         cv.put(cSQLDBHelper.KEY_RESOURCE_FK_ID, inputModel.getResourceID());
-        //cv.put(cSQLDBHelper.KEY_NAME, inputModel.getName());
-        //cv.put(cSQLDBHelper.KEY_DESCRIPTION, inputModel.getDescription());
 
         // insert project details
         try {
@@ -2749,11 +2692,11 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             }
 
             // add activity, question and criteria tuple
-            for (Map.Entry<Integer, Set<Pair<Integer, Integer>>> iqcEntry : iqcMap.entrySet()) {
-                int inputID = iqcEntry.getKey();
-                for (Pair<Integer, Integer> qcPair : iqcEntry.getValue()) {
-                    int questionID = qcPair.first;
-                    int criteriaID = qcPair.second;
+            for (Map.Entry<Long, Set<Pair<Long, Long>>> iqcEntry : iqcMap.entrySet()) {
+                long inputID = iqcEntry.getKey();
+                for (Pair<Long, Long> qcPair : iqcEntry.getValue()) {
+                    long questionID = qcPair.first;
+                    long criteriaID = qcPair.second;
 
                     if (!addInputQuestionCriteria(inputID, questionID, criteriaID))
                         return false;
@@ -2761,15 +2704,15 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             }
 
             // add sub-logFrame, activity and output tuple
-            for (Map.Entry<Set<Pair<Integer, Integer>>, Pair<Integer, Integer>> siaEntry :
+            for (Map.Entry<Set<Pair<Long, Long>>, Pair<Long, Long>> siaEntry :
                     siaMap.entrySet()) {
-                for (Pair<Integer, Integer> iaPair : siaEntry.getKey()) {
-                    int inputID = iaPair.first;
-                    int activityID = iaPair.second;
+                for (Pair<Long, Long> iaPair : siaEntry.getKey()) {
+                    long inputID = iaPair.first;
+                    long activityID = iaPair.second;
 
-                    Pair<Integer, Integer> sPair = siaEntry.getValue();
-                    int parentID = sPair.first;
-                    int childID = sPair.second;
+                    Pair<Long, Long> sPair = siaEntry.getValue();
+                    long parentID = sPair.first;
+                    long childID = sPair.second;
 
                     if (!addInputActivity(parentID, childID, inputID, activityID))
                         return false;
@@ -2785,7 +2728,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             }
 
             if (incomeID != -1) {
-                return addIncomeInput(fundID, inputModel.getInputID(), funderID, beneficiaryID, fund);
+                return addIncomeInput(inputModel.getInputID(), ffaMap);
             }
 
             if (expenseID != -1) {
@@ -2804,12 +2747,12 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
     /**
      *
-     * @param inputID
-     * @param questionID
-     * @param criteriaID
-     * @return
+     * @param inputID input identification
+     * @param questionID question identification
+     * @param criteriaID criteria identification
+     * @return boolean
      */
-    private boolean addInputQuestionCriteria(int inputID, int questionID, int criteriaID) {
+    private boolean addInputQuestionCriteria(long inputID, long questionID, long criteriaID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -2821,7 +2764,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         return db.insert(cSQLDBHelper.TABLE_tblINPUT_QUESTION, null, cv) >= 0;
     }
 
-    private boolean addInputActivity(int parentID, int childID, int inputID, int activityID) {
+    private boolean addInputActivity(long parentID, long childID, long inputID, long activityID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -2829,12 +2772,13 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         cv.put(cSQLDBHelper.KEY_PARENT_FK_ID, parentID);
         cv.put(cSQLDBHelper.KEY_CHILD_FK_ID, childID);
         cv.put(cSQLDBHelper.KEY_INPUT_FK_ID, inputID);
-        cv.put(cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID, activityID);
+        cv.put(cSQLDBHelper.KEY_WORKPLAN_FK_ID, activityID);
 
         return db.insert(cSQLDBHelper.TABLE_tblINPUT_ACTIVITY, null, cv) >= 0;
     }
 
-    private boolean addHumanInput(int inputID, int humanQuantity, Map<Integer, Set<Pair<Integer, Integer>>> hiuMap) {
+    private boolean addHumanInput(long inputID, int humanQuantity, Map<Long,
+            Set<Pair<Long, Long>>> hiuMap) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -2852,11 +2796,11 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             }
 
             // add activity, question and criteria tuple
-            for (Map.Entry<Integer, Set<Pair<Integer, Integer>>> hiuEntry : hiuMap.entrySet()) {
-                int hsInputID = hiuEntry.getKey();
-                for (Pair<Integer, Integer> huPair : hiuEntry.getValue()) {
-                    int humanSetID = huPair.first;
-                    int userID = huPair.second;
+            for (Map.Entry<Long, Set<Pair<Long, Long>>> hiuEntry : hiuMap.entrySet()) {
+                long hsInputID = hiuEntry.getKey();
+                for (Pair<Long, Long> huPair : hiuEntry.getValue()) {
+                    long humanSetID = huPair.first;
+                    long userID = huPair.second;
 
                     if (!addHumanSet(humanSetID, hsInputID, userID))
                         return false;
@@ -2873,7 +2817,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         return true;
     }
 
-    private boolean addHumanSet(int humanSetID, int hsInputID, int userID) {
+    private boolean addHumanSet(long humanSetID, long hsInputID, long userID) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -2901,7 +2845,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         return true;
     }
 
-    private boolean addMaterialInput(int inputID, int materialQuantity) {
+    private boolean addMaterialInput(long inputID, int materialQuantity) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -2927,7 +2871,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         return true;
     }
 
-    private boolean addIncomeInput(int fundID, int inputID, int funderID, int beneficiaryID, double fund) {
+    private boolean addIncomeInput(long inputID, Map<Long, Set<Pair<Long, Double>>> ffaMap) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -2936,18 +2880,26 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_INPUT_FK_ID, inputID);
-
+        //cv.put(cSQLDBHelper.KEY_FUNDER_FK_ID, funderID);
+        //cv.put(cSQLDBHelper.KEY_INCOME, income);
         // insert evaluation type details
         try {
             if (db.insert(cSQLDBHelper.TABLE_tblINCOME, null, cv) < 0) {
                 return false;
             }
 
-            if (addFund(fundID, inputID, funderID, beneficiaryID, fund))
-                return true;
-            else
-                return false;
-
+            // add fundID, inputID, funderID and amount/fund tuple
+            Gson gson = new Gson();
+            for (Map.Entry<Long, Set<Pair<Long, Double>>> ffaEntry : ffaMap.entrySet()) {
+                long fundID = ffaEntry.getKey();
+                for (Pair<Long, Double> ifPair : ffaEntry.getValue()) {
+                    long funderID = ifPair.first;
+                    double fund = ifPair.second;
+                    if (!addFund(fundID, inputID, funderID, fund)) {
+                        return false;
+                    }
+                }
+            }
         } catch (Exception e) {
             Log.d(TAG, "Exception in importing INCOME INPUT from Excel: " + e.getMessage());
         }
@@ -2958,7 +2910,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         return true;
     }
 
-    private boolean addFund(int fundID, int inputID, int funderID, int beneficiaryID, double fund) {
+    private boolean addFund(long fundID, long inputID, long funderID, double fund) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -2969,7 +2921,6 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         cv.put(cSQLDBHelper.KEY_ID, fundID);
         cv.put(cSQLDBHelper.KEY_INPUT_FK_ID, inputID);
         cv.put(cSQLDBHelper.KEY_FUNDER_FK_ID, funderID);
-        cv.put(cSQLDBHelper.KEY_BENEFICIARY_FK_ID, beneficiaryID);
         cv.put(cSQLDBHelper.KEY_FUND, fund);
 
         // insert evaluation type details
@@ -2987,7 +2938,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         return true;
     }
 
-    private boolean addExpenseInput(int inputID, double amount) {
+    private boolean addExpenseInput(long inputID, double amount) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 

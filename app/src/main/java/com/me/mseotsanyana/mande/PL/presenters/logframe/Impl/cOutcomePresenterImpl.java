@@ -105,7 +105,7 @@ public class cOutcomePresenterImpl extends cAbstractPresenter implements iOutcom
 
     /* ======================================= START READ ======================================= */
     @Override
-    public void readOutcomes(long logFrameID) {
+    public void readOutcomeModels(long logFrameID) {
         iReadOutcomeInteractor readOutcomeInteractor = new cReadOutcomeInteractorImpl(
                 executor,
                 mainThread,
@@ -119,16 +119,19 @@ public class cOutcomePresenterImpl extends cAbstractPresenter implements iOutcom
     }
 
     @Override
-    public void onOutcomesRetrieved(String logFrameName, ArrayList<cTreeModel> impactTreeModels) {
+    public void onOutcomeModelsRetrieved(String logFrameName, ArrayList<cTreeModel> impactTreeModels) {
         if(this.view != null) {
-            this.view.onRetrieveOutcomesCompleted(logFrameName, impactTreeModels);
+            this.view.onOutcomeModelsRetrieved(logFrameName, impactTreeModels);
             this.view.hideProgress();
         }
     }
 
     @Override
-    public void onOutcomesRetrieveFailed(String msg) {
-
+    public void onOutcomeModelsFailed(String msg) {
+        if(this.view != null) {
+            this.view.onOutcomeModelsFailed(msg);
+            this.view.hideProgress();
+        }
     }
 
     /* ======================================== END READ ======================================== */
@@ -268,7 +271,7 @@ public class cOutcomePresenterImpl extends cAbstractPresenter implements iOutcom
     /* corresponding view functions */
     @Override
     public void resume() {
-        readOutcomes(this.logFrameID);
+        readOutcomeModels(this.logFrameID);
     }
 
     @Override

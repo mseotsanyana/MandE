@@ -10,7 +10,7 @@ public interface iActivityRepository {
     boolean addActivity(cActivityModel activityModel);
 
     /* the read functions of the Activity entity */
-    Set<cActivityModel> getActivityModelSet(long logFrameID, int userID, int primaryRoleBITS,
+    Set<cActivityModel> getActivityModelSet(long logFrameID, long userID, int primaryRoleBITS,
                                             int secondaryRoleBITS, int statusBITS);
 
 }

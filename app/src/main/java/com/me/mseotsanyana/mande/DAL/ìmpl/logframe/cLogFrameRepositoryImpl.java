@@ -232,7 +232,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
 
     /*####################################### READ ACTIONS #######################################*/
 
-    public Set<cLogFrameModel> getLogFrameModelSet(int userID, int primaryRoleBITS,
+    public Set<cLogFrameModel> getLogFrameModelSet(long userID, int primaryRoleBITS,
                                                    int secondaryRoleBITS, int statusBITS) {
 
         Set<cLogFrameModel> logFrameModelSet = new HashSet<>();
@@ -322,8 +322,8 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                     logFrameModel.setSyncedDate(Timestamp.valueOf(
                             cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
-                    int logFrameID = logFrameModel.getLogFrameID();
-                    int organizationID = logFrameModel.getOrganizationID();
+                    long logFrameID = logFrameModel.getLogFrameID();
+                    long organizationID = logFrameModel.getOrganizationID();
 
                     logFrameModel.setOrganizationModel(organizationRepository.getOrganizationByID(
                             organizationID));
@@ -392,7 +392,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
      * @param statusBITS
      * @return
      */
-    public Set<cLogFrameModel> getLogFrameModelSetByID(int logFrameID, int userID, int primaryRole,
+    public Set<cLogFrameModel> getLogFrameModelSetByID(long logFrameID, long userID, int primaryRole,
                                                        int secondaryRoles, int statusBITS) {
 
         Set<cLogFrameModel> logFrameModelSet = new HashSet<>();
@@ -511,7 +511,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
      * @param statusBITS
      * @return
      */
-    public Set<cImpactModel> getImpactModelSetByID(int logFrameID, int userID, int primaryRole,
+    public Set<cImpactModel> getImpactModelSetByID(long logFrameID, long userID, int primaryRole,
                                                    int secondaryRoles, int statusBITS) {
 
         Set<cImpactModel> impactModelSet = new HashSet<>();
@@ -600,7 +600,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
      * @param statusBITS
      * @return
      */
-    public Set<cOutcomeModel> getOutcomeModelSetByID(int logFrameID, int userID, int primaryRole,
+    public Set<cOutcomeModel> getOutcomeModelSetByID(long logFrameID, long userID, int primaryRole,
                                                      int secondaryRoles, int statusBITS) {
 
         Set<cOutcomeModel> outcomeModelSet = new HashSet<>();
@@ -691,7 +691,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
      * @param statusBITS
      * @return
      */
-    public Set<cOutputModel> getOutputModelSetByID(int logFrameID, int userID, int primaryRole,
+    public Set<cOutputModel> getOutputModelSetByID(long logFrameID, long userID, int primaryRole,
                                                    int secondaryRoles, int statusBITS) {
 
         Set<cOutputModel> outputModelSet = new HashSet<>();
@@ -781,7 +781,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
      * @param statusBITS
      * @return
      */
-    public Set<cActivityModel> getActivityModelSetByID(int logFrameID, int userID, int primaryRole,
+    public Set<cActivityModel> getActivityModelSetByID(long logFrameID, long userID, int primaryRole,
                                                        int secondaryRoles, int statusBITS) {
 
         Set<cActivityModel> activityModelSet = new HashSet<>();
@@ -821,7 +821,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                 do {
                     cActivityModel activityModel = new cActivityModel();
 
-                    activityModel.setActivityID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    activityModel.setWorkplanID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                     activityModel.setParentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
                     //activityModel.setLogFrameID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
                     activityModel.setOutputID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OUTPUT_FK_ID)));
@@ -872,7 +872,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
      * @param statusBITS
      * @return
      */
-    public Set<cInputModel> getInputModelSetByID(int logFrameID, int userID, int primaryRole,
+    public Set<cInputModel> getInputModelSetByID(long logFrameID, long userID, int primaryRole,
                                                  int secondaryRoles, int statusBITS) {
 
         Set<cInputModel> inputModelSet = new HashSet<>();
@@ -913,7 +913,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                     cInputModel inputModel = new cInputModel();
 
                     inputModel.setInputID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    inputModel.setActivityPlanningID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ACTIVITYPLANNING_FK_ID)));
+                    inputModel.setWorkplanID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_WORKPLAN_FK_ID)));
                     inputModel.setLogFrameID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
                     inputModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
                     inputModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
@@ -1006,7 +1006,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
     }
 
     // get child logFrames
-    public ArrayList<cLogFrameModel> getChildLogFramesByID(int parentID) {
+    public ArrayList<cLogFrameModel> getChildLogFramesByID(long parentID) {
         // list of child logFrames
         ArrayList<cLogFrameModel> logFrameModels = new ArrayList<>();
 
@@ -1064,7 +1064,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
     }
 
     // get impacts for a given logFrame
-    public ArrayList<cImpactModel> getImpactsByID(int logFrameID) {
+    public ArrayList<cImpactModel> getImpactsByID(long logFrameID) {
         // list of impacts
         ArrayList<cImpactModel> impactModels = new ArrayList<>();
 
@@ -1120,7 +1120,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
     }
 
     // get outcomes for a given logFrame
-    public ArrayList<cOutcomeModel> getOutcomesByID(int logFrameID) {
+    public ArrayList<cOutcomeModel> getOutcomesByID(long logFrameID) {
         // list of outcomes
         ArrayList<cOutcomeModel> outcomeModels = new ArrayList<>();
 
@@ -1177,7 +1177,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
     }
 
     // get outputs for a given logFrame
-    public ArrayList<cOutputModel> getOutputsByID(int logFrameID) {
+    public ArrayList<cOutputModel> getOutputsByID(long logFrameID) {
         // list of outputs
         ArrayList<cOutputModel> outputModels = new ArrayList<>();
 
@@ -1233,7 +1233,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
     }
 
     // get activities for a given logFrame
-    public ArrayList<cActivityModel> getActivitiesByID(int logFrameID) {
+    public ArrayList<cActivityModel> getActivitiesByID(long logFrameID) {
         // list of activities
         ArrayList<cActivityModel> activityModels = new ArrayList<>();
 
@@ -1252,7 +1252,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                 do {
                     cActivityModel activityModel = new cActivityModel();
 
-                    activityModel.setActivityID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                    activityModel.setWorkplanID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                     activityModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
                     activityModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
                     activityModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
@@ -1291,7 +1291,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
     }
 
     // get inputs for a given logFrame
-    public ArrayList<cInputModel> getInputsByID(int logFrameID) {
+    public ArrayList<cInputModel> getInputsByID(long logFrameID) {
         // list of inputs
         ArrayList<cInputModel> inputModels = new ArrayList<>();
 
@@ -1349,7 +1349,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
     }
 
     // get questions for a given logFrame
-    public ArrayList<cQuestionModel> getQuestionsByID(int logFrameID) {
+    public ArrayList<cQuestionModel> getQuestionsByID(long logFrameID) {
         // list of questions
         ArrayList<cQuestionModel> questionModels = new ArrayList<>();
 
@@ -1407,7 +1407,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
     }
 
     // get indicators for a given logFrame
-    public ArrayList<cIndicatorModel> getIndicatorsByID(int logFrameID) {
+    public ArrayList<cIndicatorModel> getIndicatorsByID(long logFrameID) {
         // list of indicators
         ArrayList<cIndicatorModel> indicatorModels = new ArrayList<>();
 
@@ -1465,7 +1465,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
     }
 
     // get raids for a given logFrame
-    public ArrayList<cRaidModel> getRaidsByID(int logFrameID) {
+    public ArrayList<cRaidModel> getRaidsByID(long logFrameID) {
         // list of raids
         ArrayList<cRaidModel> raidModels = new ArrayList<>();
 

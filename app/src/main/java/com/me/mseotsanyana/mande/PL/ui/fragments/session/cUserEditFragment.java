@@ -31,7 +31,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.me.mseotsanyana.mande.BLL.domain.session.cAddressDomain;
 import com.me.mseotsanyana.mande.BLL.interactors.session.address.Impl.cAddressHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cOrganizationHandler;
 import com.me.mseotsanyana.mande.BLL.domain.session.cUserDomain;
 import com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserHandler;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iMEEntityInterface;
@@ -62,7 +61,7 @@ public class cUserEditFragment extends Fragment {
     private cUserDomain userDomain;
     private cAddressDomain addressDomain;
 
-    private cOrganizationHandler organizationHandler;
+    //private cOrganizationHandler organizationHandler;
     private cUserHandler userHandler;
     private cAddressHandler addressHandler;
 
@@ -135,7 +134,7 @@ public class cUserEditFragment extends Fragment {
         addressHandler = new cAddressHandler(getContext());
 
         // initialise a handler and get organization data from the database
-        organizationHandler = new cOrganizationHandler(getContext());
+        //organizationHandler = new cOrganizationHandler(getContext());
     }
 
     @Override
@@ -148,7 +147,7 @@ public class cUserEditFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // get all organization from database
-        final ArrayList<cOrganizationDomain> allOrganizations = organizationHandler.getOrganizationList();
+        final ArrayList<cOrganizationDomain> allOrganizations = null;//organizationHandler.getOrganizationList();
 
         // create a action_list of organization ids and names
         final List<cKeyPairBoolData> keyPairBoolDataList = new ArrayList<>();

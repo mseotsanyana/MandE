@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public class cOrganizationModel implements Parcelable {
-    private int organizationID;
+    private long organizationID;
     private int serverID;
     private int ownerID;
     private int orgID;
@@ -83,11 +83,11 @@ public class cOrganizationModel implements Parcelable {
         }
     };
 
-    public int getOrganizationID() {
+    public long getOrganizationID() {
         return organizationID;
     }
 
-    public void setOrganizationID(int organizationID) {
+    public void setOrganizationID(long organizationID) {
         this.organizationID = organizationID;
     }
 
@@ -295,7 +295,7 @@ public class cOrganizationModel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(organizationID);
+        parcel.writeLong(organizationID);
         parcel.writeInt(serverID);
         parcel.writeInt(ownerID);
         parcel.writeInt(orgID);

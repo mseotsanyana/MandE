@@ -22,12 +22,12 @@ public class cImpactPresenterImpl extends cAbstractPresenter implements iImpactP
     private View view;
     private iSessionManagerRepository sessionManagerRepository;
     private iImpactRepository impactRepository;
-    private int logFrameID;
+    private long logFrameID;
 
     public cImpactPresenterImpl(iExecutor executor, iMainThread mainThread,
                                 View view,
                                 iSessionManagerRepository sessionManagerRepository,
-                                iImpactRepository impactRepository, int logFrameID) {
+                                iImpactRepository impactRepository, long logFrameID) {
         super(executor, mainThread);
 
         this.view = view;
@@ -105,7 +105,7 @@ public class cImpactPresenterImpl extends cAbstractPresenter implements iImpactP
 
     /* ======================================= START READ ======================================= */
     @Override
-    public void readImpacts(int logFrameID) {
+    public void readImpacts(long logFrameID) {
         iReadImpactInteractor readImpactInteractor = new cReadImpactInteractorImpl(
                 executor,
                 mainThread,
@@ -119,7 +119,7 @@ public class cImpactPresenterImpl extends cAbstractPresenter implements iImpactP
     }
 
     @Override
-    public void onImpactsRetrieved(String logFrameName, ArrayList<cTreeModel> impactTreeModels) {
+    public void onImpactModelsRetrieved(String logFrameName, ArrayList<cTreeModel> impactTreeModels) {
         if(this.view != null) {
             this.view.onRetrieveImpactsCompleted(logFrameName, impactTreeModels);
             this.view.hideProgress();
@@ -127,7 +127,7 @@ public class cImpactPresenterImpl extends cAbstractPresenter implements iImpactP
     }
 
     @Override
-    public void onImpactsRetrieveFailed(String msg) {
+    public void onImpactModelsFailed(String msg) {
 
     }
 

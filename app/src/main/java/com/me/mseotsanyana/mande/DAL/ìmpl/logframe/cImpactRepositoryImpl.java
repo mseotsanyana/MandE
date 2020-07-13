@@ -87,7 +87,7 @@ public class cImpactRepositoryImpl implements iImpactRepository {
      * @param statusBITS statuses
      * @return set of impacts
      */
-    public Set<cImpactModel> getImpactModelSet(int logFrameID, int userID, int primaryRoleBITS,
+    public Set<cImpactModel> getImpactModelSet(long logFrameID, long userID, int primaryRoleBITS,
                                                int secondaryRoleBITS, int statusBITS) {
 
         Set<cImpactModel> impactModelSet = new HashSet<>();
@@ -206,7 +206,7 @@ public class cImpactRepositoryImpl implements iImpactRepository {
      * @param statusBITS statuses
      * @return a parent logframe
      */
-    private cLogFrameModel getLogFrameByID(int logFrameID, int userID, int primaryRoleBITS,
+    private cLogFrameModel getLogFrameByID(long logFrameID, long userID, int primaryRoleBITS,
                                            int secondaryRoleBITS, int statusBITS) {
         // open connection to read only
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -300,7 +300,7 @@ public class cImpactRepositoryImpl implements iImpactRepository {
      * @param statusBITS statuses
      * @return set of child impacts
      */
-    private Set<cImpactModel> getImpactModelSetByID(int impactID, int userID, int primaryRoleBITS,
+    private Set<cImpactModel> getImpactModelSetByID(long impactID, long userID, int primaryRoleBITS,
                                                    int secondaryRoleBITS, int statusBITS) {
 
         Set<cImpactModel> impactModelSet = new HashSet<>();
@@ -398,7 +398,7 @@ public class cImpactRepositoryImpl implements iImpactRepository {
      * @param statusBITS statuses
      * @return set of outcomes
      */
-    private Set<cOutcomeModel> getOutcomeModelSetByID(int impactID, int userID, int primaryRoleBITS,
+    private Set<cOutcomeModel> getOutcomeModelSetByID(long impactID, long userID, int primaryRoleBITS,
                                                      int secondaryRoleBITS, int statusBITS) {
 
         Set<cOutcomeModel> outcomeModelSet = new HashSet<>();
@@ -498,7 +498,7 @@ public class cImpactRepositoryImpl implements iImpactRepository {
      * @param statusBITS statuses
      * @return set of questions
      */
-    private Set<cQuestionModel> getQuestionModelSetByID(int impactID, int userID, int primaryRoleBITS,
+    private Set<cQuestionModel> getQuestionModelSetByID(long impactID, long userID, int primaryRoleBITS,
                                                        int secondaryRoleBITS, int statusBITS) {
 
         Set<cQuestionModel> questionModelSet = new HashSet<>();
@@ -598,7 +598,7 @@ public class cImpactRepositoryImpl implements iImpactRepository {
      * @param statusBITS statuses
      * @return set of raid
      */
-    private Set<cRaidModel> getRaidModelSetByID(int impactID, int userID, int primaryRoleBITS,
+    private Set<cRaidModel> getRaidModelSetByID(long impactID, long userID, int primaryRoleBITS,
                                                int secondaryRoleBITS, int statusBITS) {
 
         Set<cRaidModel> raidModelSet = new HashSet<>();

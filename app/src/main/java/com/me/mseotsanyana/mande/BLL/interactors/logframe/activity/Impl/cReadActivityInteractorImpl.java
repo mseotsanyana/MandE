@@ -25,8 +25,8 @@ public class cReadActivityInteractorImpl extends cAbstractInteractor
 
     private Callback callback;
     private iActivityRepository activityRepository;
-    private long logFrameID;
-    private int userID, primaryRoleBITS, secondaryRoleBITS, operationBITS, statusBITS;
+    private long logFrameID, userID;
+    private int primaryRoleBITS, secondaryRoleBITS, operationBITS, statusBITS;
 
     private String logFrameName;
 
@@ -62,7 +62,7 @@ public class cReadActivityInteractorImpl extends cAbstractInteractor
         mainThread.post(new Runnable() {
             @Override
             public void run() {
-                callback.onActivitiesRetrieveFailed(msg);
+                callback.onActivityModelsFailed(msg);
             }
         });
     }
@@ -72,7 +72,7 @@ public class cReadActivityInteractorImpl extends cAbstractInteractor
         mainThread.post(new Runnable() {
             @Override
             public void run() {
-                callback.onActivitiesRetrieved(logFrameName, activityTreeModels);
+                callback.onActivityModelsRetrieved(logFrameName, activityTreeModels);
             }
         });
     }

@@ -154,7 +154,7 @@ public class cOrganizationRepositoryImpl implements iOrganizationRepository {
      * @param addressID
      * @return
      */
-    public boolean addOrganizationAddress(int organizationID, int addressID) {
+    public boolean addOrganizationAddress(long organizationID, long addressID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -339,7 +339,7 @@ public class cOrganizationRepositoryImpl implements iOrganizationRepository {
      * @param organizationID
      * @return
      */
-    public Set<cUserModel> getUsersByOrganizationID(int organizationID) {
+    public Set<cUserModel> getUsersByOrganizationID(long organizationID) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -420,7 +420,7 @@ public class cOrganizationRepositoryImpl implements iOrganizationRepository {
      * @param organizationID
      * @return
      */
-    public Set<cRoleModel> getRolesByOrganizationID(int organizationID) {
+    public Set<cRoleModel> getRolesByOrganizationID(long organizationID) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -491,7 +491,7 @@ public class cOrganizationRepositoryImpl implements iOrganizationRepository {
      * @param organizationID
      * @return
      */
-    public Set<cValueModel> getValuesByOrganizationID(int organizationID) {
+    public Set<cValueModel> getValuesByOrganizationID(long organizationID) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -564,7 +564,7 @@ public class cOrganizationRepositoryImpl implements iOrganizationRepository {
      * @param organizationID
      * @return
      */
-    public Set<cAddressModel> getAddressByOrganizationID(int organizationID) {
+    public Set<cAddressModel> getAddressByOrganizationID(long organizationID) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -640,7 +640,7 @@ public class cOrganizationRepositoryImpl implements iOrganizationRepository {
      * @param organizationID
      * @return cOrganizationModel
      */
-    public cOrganizationModel getOrganizationByID(int organizationID) {
+    public cOrganizationModel getOrganizationByID(long organizationID) {
         // open connection to read only
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = null;

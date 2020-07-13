@@ -7,10 +7,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class cInputModel {
-	private int inputID;
-	private int activityPlanningID;
-	private int logFrameID;
-	private int resourceID;
+	private long inputID;
+	private long workplanID;
+	private long logFrameID;
+	private long resourceID;
 	private int serverID;
 	private int ownerID;
 	private int orgID;
@@ -45,32 +45,58 @@ public class cInputModel {
 		childActivityModelSet = new HashSet<>();
 	}
 
-	public int getInputID() {
+	public cInputModel(cInputModel inputModel){
+		setInputID(inputModel.getInputID());
+		setInputID(inputModel.getWorkplanID());
+		setInputID(inputModel.getLogFrameID());
+		setResourceID(inputModel.getResourceID());
+		setServerID(inputModel.getServerID());
+		setOwnerID(inputModel.getOwnerID());
+		setOrgID(inputModel.getOrgID());
+		setGroupBITS(inputModel.getGroupBITS());
+		setPermsBITS(inputModel.getPermsBITS());
+		setStatusBITS(inputModel.getStatusBITS());
+		setStartDate(inputModel.getStartDate());
+		setEndDate(inputModel.getEndDate());
+		setCreatedDate(inputModel.getCreatedDate());
+		setModifiedDate(inputModel.getModifiedDate());
+		setSyncedDate(inputModel.getSyncedDate());
+
+		setResourceModel(inputModel.getResourceModel());
+		setLogFrameModel(inputModel.getLogFrameModel());
+		setActivityModel(inputModel.getActivityModel());
+	}
+
+	public long getInputID() {
 		return inputID;
 	}
 
-	public void setInputID(int inputID) {
+	public void setInputID(long inputID) {
 		this.inputID = inputID;
 	}
 
-	public int getActivityPlanningID() {
-		return activityPlanningID;
+	public long getWorkplanID() {
+		return workplanID;
 	}
 
-	public void setActivityPlanningID(int activityPlanningID) {
-		this.activityPlanningID = activityPlanningID;
+	public void setWorkplanID(long workplanID) {
+		this.workplanID = workplanID;
 	}
 
-	public int getLogFrameID() {
+	public long getLogFrameID() {
 		return logFrameID;
 	}
 
-	public void setLogFrameID(int logFrameID) {
+	public void setLogFrameID(long logFrameID) {
 		this.logFrameID = logFrameID;
 	}
 
-	public int getResourceID() {
+	public long getResourceID() {
 		return resourceID;
+	}
+
+	public void setResourceID(long resourceID) {
+		this.resourceID = resourceID;
 	}
 
 	public void setResourceID(int resourceID) {

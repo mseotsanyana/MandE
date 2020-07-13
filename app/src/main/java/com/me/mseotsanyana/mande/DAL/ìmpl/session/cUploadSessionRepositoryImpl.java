@@ -49,7 +49,7 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
     /**
      * This function extracts criteria data from excel and adds it to the database.
      *
-     * @return
+     * @return boolean
      */
     @Override
     public boolean addAddressFromExcel() {
@@ -60,9 +60,7 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
             return false;
         }
 
-        for (Iterator<Row> ritA = ASheet.iterator(); ritA.hasNext(); ) {
-            Row cRow = ritA.next();
-
+        for (Row cRow : ASheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -70,12 +68,18 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
 
             cAddressModel addressModel = new cAddressModel();
 
-            addressModel.setAddressID((int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            addressModel.setStreet(cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            addressModel.setCity(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            addressModel.setProvince(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            addressModel.setPostalCode(cRow.getCell(4, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            addressModel.setCountry(cRow.getCell(5, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            addressModel.setAddressID((int) cRow.getCell(0,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            addressModel.setStreet(cRow.getCell(1,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            addressModel.setCity(cRow.getCell(2,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            addressModel.setProvince(cRow.getCell(3,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            addressModel.setPostalCode(cRow.getCell(4,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            addressModel.setCountry(cRow.getCell(5,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
             if (!addAddress(addressModel)) {
                 return false;
@@ -88,8 +92,8 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
     /**
      * This function adds address data to the database.
      *
-     * @param addressModel
-     * @return
+     * @param addressModel address
+     * @return boolean
      */
     public boolean addAddress(cAddressModel addressModel) {
         // open the connection to the database
@@ -131,12 +135,11 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
         Sheet orgBeneficiarySheet = workbook.getSheet("tblBENEFICIARY");
         Sheet orgFunderSheet = workbook.getSheet("tblFUNDER");
         Sheet orgIASheet = workbook.getSheet("tblIMPLEMENTINGAGENCY");
+        Sheet orgCFSheet = workbook.getSheet("tblCROWDFUND");
         Sheet orgValueSheet = workbook.getSheet("tblVALUE");
-        Sheet orgUserSheet = workbook.getSheet("tblUSER");
+        //Sheet orgUserSheet = workbook.getSheet("tblUSER");
 
-        for (Iterator<Row> rit = orgSheet.iterator(); rit.hasNext(); ) {
-            Row cRow = rit.next();
-
+        for (Row cRow : orgSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -163,7 +166,7 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
 
             // add the row into the database
             if (!addOrganization(organizationModel, orgAddressSheet, orgBeneficiarySheet,
-                    orgFunderSheet, orgIASheet, orgValueSheet, orgUserSheet)) {
+                    orgFunderSheet, orgIASheet, orgCFSheet, orgValueSheet)) {
                 return false;
             }
         }
@@ -173,7 +176,7 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
     // add an organization record from excel to database
     public boolean addOrganization(cOrganizationModel organizationModel, Sheet orgAddressSheet,
                                    Sheet orgBeneficiarySheet, Sheet orgFunderSheet,
-                                   Sheet orgIASheet, Sheet orgValueSheet, Sheet orgUserSheet) {
+                                   Sheet orgIASheet, Sheet orgCFSheet, Sheet orgValueSheet) {
 
 
         // open the connection to the database
@@ -198,32 +201,28 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
                 return false;
             }
 
-            int organizationID, addressID, beneficiaryID, funderID, agencyID;
+            long organizationID, addressID, beneficiaryID, funderID, agencyID;
 
             /* Organization Address */
-            for (Iterator<Row> rit = orgAddressSheet.iterator(); rit.hasNext(); ) {
-                Row cOrgAddressRow = rit.next();
-
+            for (Row cOrgAddressRow : orgAddressSheet) {
                 //just skip the row if row number is 0
                 if (cOrgAddressRow.getRowNum() == 0) {
                     continue;
                 }
 
-                organizationID = (int) cOrgAddressRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                organizationID = (int) cOrgAddressRow.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (organizationModel.getOrganizationID() == organizationID) {
-                    addressID = (int) cOrgAddressRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    addressID = (int) cOrgAddressRow.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     // add organization addresses
-                    if (addOrganizationAddress(organizationModel.getOrganizationID(), addressID))
-                        continue;
-                    else
+                    if (!addOrganizationAddress(organizationModel.getOrganizationID(), addressID))
                         return false;
                 }
             }
 
             /* Beneficiary Organization */
-            for (Iterator<Row> rit = orgBeneficiarySheet.iterator(); rit.hasNext(); ) {
-                Row cOrgBeneficiaryRow = rit.next();
-
+            for (Row cOrgBeneficiaryRow : orgBeneficiarySheet) {
                 //just skip the row if row number is 0
                 if (cOrgBeneficiaryRow.getRowNum() == 0) {
                     continue;
@@ -232,17 +231,13 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
                 beneficiaryID = (int) cOrgBeneficiaryRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (organizationModel.getOrganizationID() == beneficiaryID) {
                     // add beneficiary
-                    if (addBeneficiary(beneficiaryID))
-                        continue;
-                    else
+                    if (!addBeneficiary(beneficiaryID))
                         return false;
                 }
             }
 
             /* Funder Organization */
-            for (Iterator<Row> rit = orgFunderSheet.iterator(); rit.hasNext(); ) {
-                Row cOrgFunderRow = rit.next();
-
+            for (Row cOrgFunderRow : orgFunderSheet) {
                 //just skip the row if row number is 0
                 if (cOrgFunderRow.getRowNum() == 0) {
                     continue;
@@ -251,17 +246,13 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
                 funderID = (int) cOrgFunderRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (organizationModel.getOrganizationID() == funderID) {
                     // add funders
-                    if (addFunder(funderID))
-                        continue;
-                    else
+                    if (!addFunder(funderID, orgCFSheet))
                         return false;
                 }
             }
 
             /* Implementation Agency Organization */
-            for (Iterator<Row> rit = orgIASheet.iterator(); rit.hasNext(); ) {
-                Row cOrgAgencyRow = rit.next();
-
+            for (Row cOrgAgencyRow : orgIASheet) {
                 //just skip the row if row number is 0
                 if (cOrgAgencyRow.getRowNum() == 0) {
                     continue;
@@ -270,17 +261,13 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
                 agencyID = (int) cOrgAgencyRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (organizationModel.getOrganizationID() == agencyID) {
                     // add organization addresses
-                    if (addAgency(agencyID))
-                        continue;
-                    else
+                    if (!addAgency(agencyID))
                         return false;
                 }
             }
 
             /* Values */
-            for (Iterator<Row> rit = orgValueSheet.iterator(); rit.hasNext(); ) {
-                Row cValueRow = rit.next();
-
+            for (Row cValueRow : orgValueSheet) {
                 //just skip the row if row number is 0
                 if (cValueRow.getRowNum() == 0) {
                     continue;
@@ -290,16 +277,17 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
                 if (organizationModel.getOrganizationID() == organizationID) {
                     cValueModel valueModel = new cValueModel();
 
-                    valueModel.setValueID((int) cValueRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+                    valueModel.setValueID((int) cValueRow.getCell(0,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
                     valueModel.setOrganizationID(organizationID);
-                    valueModel.setName(cValueRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-                    valueModel.setDescription(cValueRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+                    valueModel.setName(cValueRow.getCell(2,
+                            Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+                    valueModel.setDescription(cValueRow.getCell(3,
+                            Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
 
                     // add organization addresses
-                    if (addValue(valueModel))
-                        continue;
-                    else
+                    if (!addValue(valueModel))
                         return false;
                 }
             }
@@ -314,55 +302,100 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
         return true;
     }
 
-    public boolean addOrganizationAddress(int organizationID, int addressID) {
+    public boolean addOrganizationAddress(long organizationID, long addressID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
         cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, organizationID);
         cv.put(cSQLDBHelper.KEY_ADDRESS_FK_ID, addressID);
 
-        if (db.insert(cSQLDBHelper.TABLE_tblORG_ADDRESS, null, cv) < 0) {
-            return false;
-        }
-
-        return true;
+        return db.insert(cSQLDBHelper.TABLE_tblORG_ADDRESS, null, cv) >= 0;
     }
 
-    public boolean addBeneficiary(int organizationID) {
+    public boolean addBeneficiary(long organizationID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
         cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, organizationID);
 
-        if (db.insert(cSQLDBHelper.TABLE_tblBENEFICIARY, null, cv) < 0) {
-            return false;
-        }
-
-        return true;
+        return db.insert(cSQLDBHelper.TABLE_tblBENEFICIARY, null, cv) >= 0;
     }
 
-    public boolean addFunder(int organizationID) {
+    public boolean addFunder(long organizationID, Sheet orgCFSheet) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
         cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, organizationID);
 
-        if (db.insert(cSQLDBHelper.TABLE_tblFUNDER, null, cv) < 0) {
-            return false;
+        if(db.insert(cSQLDBHelper.TABLE_tblFUNDER, null, cv) >= 0){
+            /* Funder Organization */
+            long cfID, logFrameID, funderID, beneficiaryID; double amount; String description;
+            for (Row cOrgCFRow : orgCFSheet) {
+                //just skip the row if row number is 0
+                if (cOrgCFRow.getRowNum() == 0) {
+                    continue;
+                }
+
+                funderID = (int) cOrgCFRow.getCell(2,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                if (organizationID == funderID) {
+                    cfID = (int) cOrgCFRow.getCell(0,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    logFrameID = (int) cOrgCFRow.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    beneficiaryID = (int) cOrgCFRow.getCell(3,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    amount = (int) cOrgCFRow.getCell(4,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    description = cOrgCFRow.getCell(5,
+                            Row.CREATE_NULL_AS_BLANK).getStringCellValue();
+
+                    if (!addCrowdFund(cfID, logFrameID, funderID, beneficiaryID, amount,
+                            description))
+                        return false;
+                }
+            }
         }
 
-        return true;
+        return db.insert(cSQLDBHelper.TABLE_tblFUNDER, null, cv) >= 0;
     }
 
-    public boolean addAgency(int organizationID) {
+    public boolean addAgency(long organizationID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
         cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, organizationID);
 
-        if (db.insert(cSQLDBHelper.TABLE_tblIMPLEMENTINGAGENCY, null, cv) < 0) {
-            return false;
+        return db.insert(cSQLDBHelper.TABLE_tblIMPLEMENTINGAGENCY, null, cv) >= 0;
+    }
+
+    public boolean addCrowdFund(long cfID, long logFrameID, long funderID, long beneficiaryID,
+                                double amount, String description) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // create content object for storing data
+        ContentValues cv = new ContentValues();
+
+        // assign values to the table fields
+        cv.put(cSQLDBHelper.KEY_ID, cfID);
+        cv.put(cSQLDBHelper.KEY_LOGFRAME_FK_ID, logFrameID);
+        cv.put(cSQLDBHelper.KEY_FUNDER_FK_ID, funderID);
+        cv.put(cSQLDBHelper.KEY_BENEFICIARY_FK_ID, beneficiaryID);
+        cv.put(cSQLDBHelper.KEY_FUND, amount);
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, description);
+
+        // insert value record
+        try {
+            if (db.insert(cSQLDBHelper.TABLE_tblCROWDFUND, null, cv) < 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in importing CROWD FUND from Excel: " + e.getMessage());
         }
+
+        // close the database connection
+        db.close();
 
         return true;
     }
@@ -480,6 +513,20 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
     }
 
     @Override
+    public boolean deleteCrowdFunds() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblCROWDFUND, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
     public boolean deleteImplementingAgencies() {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -505,9 +552,7 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
             return false;
         }
 
-        for (Iterator<Row> rit = USheet.iterator(); rit.hasNext(); ) {
-            Row cRow = rit.next();
-
+        for (Row cRow : USheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -515,8 +560,10 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
 
             cUserModel userModel = new cUserModel();
 
-            userModel.setUserID((int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            userModel.setOrganizationID((int) cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            userModel.setUserID((int) cRow.getCell(0,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            userModel.setOrganizationID((int) cRow.getCell(1,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             userModel.setName(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
             userModel.setSurname(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
             userModel.setGender(cRow.getCell(4, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
@@ -528,9 +575,7 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
             userModel.setSalt(cRow.getCell(10, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
             // add organization addresses
-            if (addUser(userModel, UASheet))
-                continue;
-            else
+            if (!addUser(userModel, UASheet))
                 return false;
         }
 
@@ -564,9 +609,7 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
             }
 
             /* User Address */
-            for (Iterator<Row> rit = UASheet.iterator(); rit.hasNext(); ) {
-                Row cRow = rit.next();
-
+            for (Row cRow : UASheet) {
                 //just skip the row if row number is 0
                 if (cRow.getRowNum() == 0) {
                     continue;
@@ -574,11 +617,10 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
 
                 int userID = (int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (userModel.getUserID() == userID) {
-                    int addressID = (int) cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    int addressID = (int) cRow.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     // add organization addresses
-                    if (addUserAddress(userID, addressID))
-                        continue;
-                    else
+                    if (!addUserAddress(userID, addressID))
                         return false;
                 }
             }
@@ -654,9 +696,7 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
             return false;
         }
 
-        for (Iterator<Row> ritM = MSheet.iterator(); ritM.hasNext(); ) {
-            Row cRow = ritM.next();
-
+        for (Row cRow : MSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -664,10 +704,14 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
 
             cMenuModel menuModel = new cMenuModel();
 
-            menuModel.setMenuID((int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            menuModel.setParentID((int) cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            menuModel.setName(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            menuModel.setDescription(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            menuModel.setMenuID((int) cRow.getCell(0,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            menuModel.setParentID((int) cRow.getCell(1,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            menuModel.setName(cRow.getCell(2,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            menuModel.setDescription(cRow.getCell(3,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
             if (!addMenu(menuModel)) {
                 return false;
@@ -730,9 +774,7 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
             return false;
         }
 
-        for (Iterator<Row> ritE = ESheet.iterator(); ritE.hasNext(); ) {
-            Row cRow = ritE.next();
-
+        for (Row cRow : ESheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -740,10 +782,14 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
 
             cEntityModel entityModel = new cEntityModel();
 
-            entityModel.setEntityID((int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            entityModel.setEntityTypeID((int) cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            entityModel.setName(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            entityModel.setDescription(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            entityModel.setEntityID((int) cRow.getCell(0,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            entityModel.setEntityTypeID((int) cRow.getCell(1,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            entityModel.setName(cRow.getCell(2,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            entityModel.setDescription(cRow.getCell(3,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
 
             if (!addEntity(entityModel)) {
@@ -807,9 +853,7 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
             return false;
         }
 
-        for (Iterator<Row> ritO = OSheet.iterator(); ritO.hasNext(); ) {
-            Row cRow = ritO.next();
-
+        for (Row cRow : OSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -817,9 +861,12 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
 
             cOperationModel operationModel = new cOperationModel();
 
-            operationModel.setOperationID((int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            operationModel.setName(cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            operationModel.setDescription(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            operationModel.setOperationID((int) cRow.getCell(0,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            operationModel.setName(cRow.getCell(1,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            operationModel.setDescription(cRow.getCell(2,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
             if (!addOperation(operationModel)) {
                 return false;
@@ -882,9 +929,7 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
             return false;
         }
 
-        for (Iterator<Row> ritS = SSheet.iterator(); ritS.hasNext(); ) {
-            Row cRow = ritS.next();
-
+        for (Row cRow : SSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -892,9 +937,12 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
 
             cStatusModel statusModel = new cStatusModel();
 
-            statusModel.setStatusID((int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            statusModel.setName(cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            statusModel.setDescription(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            statusModel.setStatusID((int) cRow.getCell(0,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            statusModel.setName(cRow.getCell(1,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            statusModel.setDescription(cRow.getCell(2,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
             if (!addStatus(statusModel)) {
                 return false;
@@ -957,9 +1005,7 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
             return false;
         }
 
-        for (Iterator<Row> ritS = SSheet.iterator(); ritS.hasNext(); ) {
-            Row cRow = ritS.next();
-
+        for (Row cRow : SSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -1001,24 +1047,22 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
             }
 
             // add statusset status
-            for (Iterator<Row> rit = SSSheet.iterator(); rit.hasNext(); ) {
-                Row cRow = rit.next();
-
+            for (Row cRow : SSSheet) {
                 //just skip the row if row number is 0
                 if (cRow.getRowNum() == 0) {
                     continue;
                 }
 
-                int statusSetID = (int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                int statusSetID = (int) cRow.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
 
                 if (statusSetModel.getStatusSetID() == statusSetID) {
 
-                    int statusID = (int) cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    int statusID = (int) cRow.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
 
                     // add organization addresses
-                    if (addStatusSetStatus(statusSetID, statusID))
-                        continue;
-                    else
+                    if (!addStatusSetStatus(statusSetID, statusID))
                         return false;
                 }
             }
@@ -1093,9 +1137,7 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
             return false;
         }
 
-        for (Iterator<Row> ritP = PSheet.iterator(); ritP.hasNext(); ) {
-            Row cRow = ritP.next();
-
+        for (Row cRow : PSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -1179,9 +1221,7 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
             return false;
         }
 
-        for (Iterator<Row> ritR = RSheet.iterator(); ritR.hasNext(); ) {
-            Row cRow = ritR.next();
-
+        for (Row cRow : RSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -1189,10 +1229,14 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
 
             cRoleModel roleModel = new cRoleModel();
 
-            roleModel.setRoleID((int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            roleModel.setOrganizationID((int) cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            roleModel.setName(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            roleModel.setDescription(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            roleModel.setRoleID((int) cRow.getCell(0,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            roleModel.setOrganizationID((int) cRow.getCell(1,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            roleModel.setName(cRow.getCell(2,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            roleModel.setDescription(cRow.getCell(3,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
             if (!addRole(roleModel, URSheet, MRSheet, PSheet)) {
                 return false;
@@ -1222,33 +1266,31 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
             }
 
             // add user roles
-            for (Iterator<Row> rit = URSheet.iterator(); rit.hasNext(); ) {
-                Row cRow = rit.next();
-
+            for (Row cRow : URSheet) {
                 //just skip the row if row number is 0
                 if (cRow.getRowNum() == 0) {
                     continue;
                 }
 
-                int organizationID = (int) cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                int roleID = (int) cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                int organizationID = (int) cRow.getCell(1,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                int roleID = (int) cRow.getCell(2,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
 
-                if (roleModel.getOrganizationID() == organizationID && roleModel.getRoleID() == roleID) {
+                if (roleModel.getOrganizationID() == organizationID &&
+                        roleModel.getRoleID() == roleID) {
 
-                    int userID = (int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    int userID = (int) cRow.getCell(0,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
 
                     // add organization addresses
-                    if (addUserRole(userID, organizationID, roleID))
-                        continue;
-                    else
+                    if (!addUserRole(userID, organizationID, roleID))
                         return false;
                 }
             }
 
             // add menu roles
-            for (Iterator<Row> rit = MRSheet.iterator(); rit.hasNext(); ) {
-                Row cRow = rit.next();
-
+            for (Row cRow : MRSheet) {
                 //just skip the row if row number is 0
                 if (cRow.getRowNum() == 0) {
                     continue;
@@ -1262,18 +1304,14 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
                     int menuID = (int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
 
                     // add organization addresses
-                    if (addMenuRole(menuID, roleID, organizationID))
-                        continue;
-                    else
+                    if (!addMenuRole(menuID, roleID, organizationID))
                         return false;
                 }
             }
 
             // add privilege
             //Log.d(TAG,"PRIV-SIZE = "+PSheet.getPhysicalNumberOfRows());
-            for (Iterator<Row> rit = PSheet.iterator(); rit.hasNext(); ) {
-                Row cRow = rit.next();
-
+            for (Row cRow : PSheet) {
                 //just skip the row if row number is 0
                 if (cRow.getRowNum() == 0) {
                     continue;
@@ -1284,16 +1322,15 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
                 int roleID = (int) cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 //Log.d(TAG,"ORG = "+organizationID+", ROLE = "+roleID);
 
-                if (roleModel.getOrganizationID() == organizationID && roleModel.getRoleID() == roleID) {
+                if (roleModel.getOrganizationID() == organizationID &&
+                        roleModel.getRoleID() == roleID) {
 
                     //Log.d(TAG,"PRIV-2");
                     int permissionID = (int) cRow.getCell(0,
                             Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
 
                     // add organization addresses
-                    if (addPrivilege(permissionID, organizationID, roleID))
-                        continue;
-                    else
+                    if (!addPrivilege(permissionID, organizationID, roleID))
                         return false;
                 }
             }
@@ -1440,9 +1477,7 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
             return false;
         }
 
-        for (Iterator<Row> ritS = SSheet.iterator(); ritS.hasNext(); ) {
-            Row cRow = ritS.next();
-
+        for (Row cRow : SSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -1450,10 +1485,13 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
 
             cSettingModel settingModel = new cSettingModel();
 
-            settingModel.setSettingID((int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            settingModel.setSettingID((int) cRow.getCell(0,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             settingModel.setName(cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            settingModel.setDescription(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            settingModel.setSettingValue((int) cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            settingModel.setDescription(cRow.getCell(2,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            settingModel.setSettingValue((int) cRow.getCell(3,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
 
             if (!addSetting(settingModel)) {
                 return false;
@@ -1519,9 +1557,7 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
             return false;
         }
 
-        for (Iterator<Row> rit = NSheet.iterator(); rit.hasNext(); ) {
-            Row cRow = rit.next();
-
+        for (Row cRow : NSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -1529,12 +1565,18 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
 
             cNotificationModel notificationModel = new cNotificationModel();
 
-            notificationModel.setNotificationID((int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            notificationModel.setEntityID((int) cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            notificationModel.setEntityTypeID((int) cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            notificationModel.setOperationID((int) cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            notificationModel.setName(cRow.getCell(4, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            notificationModel.setDescription(cRow.getCell(5, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            notificationModel.setNotificationID((int) cRow.getCell(0,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            notificationModel.setEntityID((int) cRow.getCell(1,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            notificationModel.setEntityTypeID((int) cRow.getCell(2,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            notificationModel.setOperationID((int) cRow.getCell(3,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            notificationModel.setName(cRow.getCell(4,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            notificationModel.setDescription(cRow.getCell(5,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
             if (!addNotification(notificationModel, PSheet, SSheet, NSSheet)) {
                 return false;
@@ -1567,9 +1609,7 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
             }
 
             // add notification publishers
-            for (Iterator<Row> rit = PSheet.iterator(); rit.hasNext(); ) {
-                Row cRow = rit.next();
-
+            for (Row cRow : PSheet) {
                 //just skip the row if row number is 0
                 if (cRow.getRowNum() == 0) {
                     continue;
@@ -1581,53 +1621,46 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
                     int userID = (int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
 
                     // add organization addresses
-                    if (addPublisher(userID, notificationID))
-                        continue;
-                    else
+                    if (!addPublisher(userID, notificationID))
                         return false;
                 }
             }
 
             // add notification subscribers
-            for (Iterator<Row> rit = SSheet.iterator(); rit.hasNext(); ) {
-                Row cRow = rit.next();
-
+            for (Row cRow : SSheet) {
                 //just skip the row if row number is 0
                 if (cRow.getRowNum() == 0) {
                     continue;
                 }
 
-                int notificationID = (int) cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                int notificationID = (int) cRow.getCell(1,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (notificationModel.getNotificationID() == notificationID) {
 
-                    int userID = (int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    int userID = (int) cRow.getCell(0,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
 
                     // add organization addresses
-                    if (addSubscriber(userID, notificationID))
-                        continue;
-                    else
+                    if (!addSubscriber(userID, notificationID))
                         return false;
                 }
             }
 
             // add notification settings
-            for (Iterator<Row> rit = NSSheet.iterator(); rit.hasNext(); ) {
-                Row cRow = rit.next();
-
+            for (Row cRow : NSSheet) {
                 //just skip the row if row number is 0
                 if (cRow.getRowNum() == 0) {
                     continue;
                 }
 
-                int notificationID = (int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                int notificationID = (int) cRow.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (notificationModel.getNotificationID() == notificationID) {
-
-                    int settingID = (int) cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    int settingID = (int) cRow.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
 
                     // add organization addresses
-                    if (addNotificationSetting(notificationID, settingID))
-                        continue;
-                    else
+                    if (!addNotificationSetting(notificationID, settingID))
                         return false;
                 }
             }

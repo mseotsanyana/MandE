@@ -10,12 +10,12 @@ import java.util.Map;
 import java.util.Set;
 
 public class cImpactModel {
-	private int impactID;
-	private int parentID;
-	private int logFrameID;
-	private int serverID;
-    private int ownerID;
-    private int orgID;
+	private long impactID;
+	private long parentID;
+	private long logFrameID;
+	private long serverID;
+    private long ownerID;
+    private long orgID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
@@ -47,51 +47,51 @@ public class cImpactModel {
         raidModelSet = new HashSet<>();
     }
 
-    public int getImpactID() {
+    public long getImpactID() {
         return impactID;
     }
 
-    public void setImpactID(int impactID) {
+    public void setImpactID(long impactID) {
         this.impactID = impactID;
     }
 
-    public int getParentID() {
+    public long getParentID() {
         return parentID;
     }
 
-    public void setParentID(int parentID) {
+    public void setParentID(long parentID) {
         this.parentID = parentID;
     }
 
-    public int getLogFrameID() {
+    public long getLogFrameID() {
         return logFrameID;
     }
 
-    public void setLogFrameID(int logFrameID) {
+    public void setLogFrameID(long logFrameID) {
         this.logFrameID = logFrameID;
     }
 
-    public int getServerID() {
+    public long getServerID() {
         return serverID;
     }
 
-    public void setServerID(int serverID) {
+    public void setServerID(long serverID) {
         this.serverID = serverID;
     }
 
-    public int getOwnerID() {
+    public long getOwnerID() {
         return ownerID;
     }
 
-    public void setOwnerID(int ownerID) {
+    public void setOwnerID(long ownerID) {
         this.ownerID = ownerID;
     }
 
-    public int getOrgID() {
+    public long getOrgID() {
         return orgID;
     }
 
-    public void setOrgID(int orgID) {
+    public void setOrgID(long orgID) {
         this.orgID = orgID;
     }
 

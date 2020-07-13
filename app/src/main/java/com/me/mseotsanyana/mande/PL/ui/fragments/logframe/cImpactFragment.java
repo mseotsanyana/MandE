@@ -61,7 +61,7 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
     /* impact interface */
     private iImpactPresenter impactPresenter;
 
-    private int logFrameID;
+    private long logFrameID;
     private TextView logFrameName;
 
     private AppCompatActivity activity;
@@ -71,11 +71,11 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
 
     }
 
-    public static cImpactFragment newInstance(int logFrameID) {
+    public static cImpactFragment newInstance(long logFrameID) {
         Bundle bundle = new Bundle();
         cImpactFragment fragment = new cImpactFragment();
 
-        bundle.putInt("LOGFRAME_ID", logFrameID);
+        bundle.putLong("LOGFRAME_ID", logFrameID);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -103,7 +103,7 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        this.logFrameID = Objects.requireNonNull(getArguments()).getInt("LOGFRAME_ID");
+        this.logFrameID = Objects.requireNonNull(getArguments()).getLong("LOGFRAME_ID");
     }
 
     @Override
@@ -159,8 +159,7 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
                 cMainThreadImpl.getInstance(),
                 this,
                 new cSessionManagerImpl(getContext()),
-                new cImpactRepositoryImpl(getContext()),
-                logFrameID);
+                new cImpactRepositoryImpl(getContext()), logFrameID);
 
         // setup recycler view adapter
         impactAdapter = new cImpactAdapter(getActivity(), this,
@@ -284,11 +283,11 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
             getFragmentManager().beginTransaction().add(
                     R.id.fragment_frame, new cLogFrameFragment(), selectedFrag).commit();
         }
-        if (getFragmentManager().findFragmentByTag(Integer.toString(logFrameID)) != null) {
+        if (getFragmentManager().findFragmentByTag(Long.toString(logFrameID)) != null) {
             /* if the other fragment is visible, hide it. */
             getFragmentManager().beginTransaction().hide(
                     Objects.requireNonNull(getFragmentManager().findFragmentByTag(
-                            Integer.toString(logFrameID)))).commit();
+                            Long.toString(logFrameID)))).commit();
         }
     }
 
@@ -368,12 +367,12 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
     }
 
     @Override
-    public void onClickUpdateOutcome(int position, cOutcomeModel outcomeModel) {
+    public void onClickUpdateOutcome(cOutcomeModel outcomeModel, int position) {
 
     }
 
     @Override
-    public void onClickDeleteOutcome(int position, long outcomeID) {
+    public void onClickDeleteOutcome(long outcomeID, int position) {
 
     }
 
@@ -383,7 +382,12 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
     }
 
     @Override
-    public void onRetrieveOutcomesCompleted(String logFrameName, ArrayList<cTreeModel> outcomeModelSet) {
+    public void onOutcomeModelsRetrieved(String logFrameName, ArrayList<cTreeModel> outcomeModelSet) {
+
+    }
+
+    @Override
+    public void onOutcomeModelsFailed(String msg) {
 
     }
 }

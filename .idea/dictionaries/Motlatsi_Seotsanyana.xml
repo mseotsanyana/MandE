@@ -16,6 +16,7 @@
       <w>choiceset</w>
       <w>coloption</w>
       <w>contingencyplan</w>
+      <w>crowdfund</w>
       <w>currentcontrol</w>
       <w>datacollector</w>
       <w>dateresponse</w>
@@ -25,6 +26,7 @@
       <w>eresponse</w>
       <w>evaluationcriteria</w>
       <w>evaluationtype</w>
+      <w>firstname</w>
       <w>fiscalyear</w>
       <w>fliter</w>
       <w>funder</w>
@@ -36,6 +38,7 @@
       <w>indicatormilestone</w>
       <w>indicatortype</w>
       <w>interactor</w>
+      <w>lastname</w>
       <w>likelihoodset</w>
       <w>logframe</w>
       <w>logframes</w>
@@ -98,6 +101,7 @@
       <w>usercomment</w>
       <w>usermodel</w>
       <w>workplan</w>
+      <w>workplans</w>
     </words>
   </dictionary>
 </component>

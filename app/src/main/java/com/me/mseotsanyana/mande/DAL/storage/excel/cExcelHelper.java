@@ -22,7 +22,6 @@ public class cExcelHelper {
     private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
     private static String TAG = cExcelHelper.class.getSimpleName();
 
-    private AssetManager assetManager;
     private InputStream excelGLOBAL, excelSESSION, excelLOGFRAME,excelEVALUATION,
             excelMONITORING, excelRAID, excelAWPB;
 
@@ -79,7 +78,7 @@ public class cExcelHelper {
     public static final String SHEET_tblIMPACT             = "tblIMPACT";                   /* 3  */
     public static final String SHEET_tblOUTCOME            = "tblOUTCOME";                  /* 4  */
     public static final String SHEET_tblOUTPUT             = "tblOUTPUT";                   /* 5  */
-    public static final String SHEET_tblACTIVITYPLANNING   = "tblACTIVITYPLANNING";         /* 6  */
+    public static final String SHEET_tblWORKPLAN           = "tblWORKPLAN";                 /* 6  */
     public static final String SHEET_tblACTIVITY           = "tblACTIVITY";                 /* 7  */
     public static final String SHEET_tblINPUT              = "tblINPUT";                    /* 8  */
     public static final String SHEET_tblCRITERIA           = "tblCRITERIA";                 /* 9  */
@@ -101,7 +100,7 @@ public class cExcelHelper {
     public static final String SHEET_tblIMPACT_QUESTION    = "tblIMPACT_QUESTION_CRITERIA"; /* 25 */
     public static final String SHEET_tblOUTCOME_QUESTION   = "tblOUTCOME_QUESTION_CRITERIA";/* 26 */
     public static final String SHEET_tblOUTPUT_QUESTION    = "tblOUTPUT_QUESTION_CRITERIA"; /* 27 */
-    public static final String SHEET_tblACTIVITY_QUESTION  = "tblACTIVITY_QUESTION_CRTERIA";/* 28 */
+    public static final String SHEET_tblACTIVITY_QUESTION  = "tblACTIVITY_QUESTION_CRITERIA";/* 28 */
     public static final String SHEET_tblINPUT_QUESTION     = "tblINPUT_QUESTION_CRITERIA";  /* 29 */
     public static final String SHEET_tblIMPACT_RAID        = "tblIMPACT_RAID";              /* 30 */
     public static final String SHEET_tblOUTCOME_RAID       = "tblOUTCOME_RAID";             /* 31 */
@@ -191,7 +190,7 @@ public class cExcelHelper {
 
     public cExcelHelper(Context context){
         try {
-            assetManager = context.getAssets();
+            AssetManager assetManager = context.getAssets();
 
             setExcelGLOBAL(assetManager.open("GLOBAL.xlsx"));
             setExcelSESSION(assetManager.open("SESSION.xlsx"));

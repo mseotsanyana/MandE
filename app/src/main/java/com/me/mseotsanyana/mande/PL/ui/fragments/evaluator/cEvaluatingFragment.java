@@ -21,7 +21,7 @@ public class cEvaluatingFragment extends Fragment {
 
     }
 
-    public static cEvaluatingFragment newInstance(int logFrameID) {
+    public static cEvaluatingFragment newInstance(long logFrameID) {
         Bundle bundle = new Bundle();
         cEvaluatingFragment fragment = new cEvaluatingFragment();
 

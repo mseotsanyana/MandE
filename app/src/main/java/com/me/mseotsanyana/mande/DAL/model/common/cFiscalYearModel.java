@@ -3,10 +3,10 @@ package com.me.mseotsanyana.mande.DAL.model.common;
 import java.util.Date;
 
 public class cFiscalYearModel {
-    private int fiscalYearID;
-    private int serverID;
-    private int ownerID;
-    private int orgID;
+    private long fiscalYearID;
+    private long serverID;
+    private long ownerID;
+    private long orgID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
@@ -18,35 +18,35 @@ public class cFiscalYearModel {
     private Date modifiedDate;
     private Date syncedDate;
 
-    public int getFiscalYearID() {
+    public long getFiscalYearID() {
         return fiscalYearID;
     }
 
-    public void setFiscalYearID(int fiscalYearID) {
+    public void setFiscalYearID(long fiscalYearID) {
         this.fiscalYearID = fiscalYearID;
     }
 
-    public int getServerID() {
+    public long getServerID() {
         return serverID;
     }
 
-    public void setServerID(int serverID) {
+    public void setServerID(long serverID) {
         this.serverID = serverID;
     }
 
-    public int getOwnerID() {
+    public long getOwnerID() {
         return ownerID;
     }
 
-    public void setOwnerID(int ownerID) {
+    public void setOwnerID(long ownerID) {
         this.ownerID = ownerID;
     }
 
-    public int getOrgID() {
+    public long getOrgID() {
         return orgID;
     }
 
-    public void setOrgID(int orgID) {
+    public void setOrgID(long orgID) {
         this.orgID = orgID;
     }
 

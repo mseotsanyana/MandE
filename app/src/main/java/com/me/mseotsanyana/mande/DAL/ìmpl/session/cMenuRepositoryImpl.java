@@ -102,7 +102,7 @@ public class cMenuRepositoryImpl implements iMenuRepository {
 
     /* ############################################# READ ACTIONS ############################################# */
 
-    public Set<cMenuModel> getMenuModelSet(int userID, int primaryRoleBITS,
+    public Set<cMenuModel> getMenuModelSet(long userID, int primaryRoleBITS,
                                            int secondaryRoleBITS, int statusBITS) {
         Set<cMenuModel> menuModelSet = new HashSet<>();
 

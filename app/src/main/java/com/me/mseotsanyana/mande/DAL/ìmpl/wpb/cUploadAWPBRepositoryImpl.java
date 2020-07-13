@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.util.Pair;
 
+import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.repository.wpb.iUploadAWPBRepository;
 import com.me.mseotsanyana.mande.DAL.model.wpb.cDocumentModel;
 import com.me.mseotsanyana.mande.DAL.model.wpb.cExternalModel;
@@ -46,13 +47,26 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
     public boolean addTaskFromExcel() {
         Workbook workbook = excelHelper.getWorkbookAWPB();
         Sheet taskSheet = workbook.getSheet(cExcelHelper.SHEET_tblTASK);
+        /* get preceding tasks */
+        Sheet precedingTaskSheet = workbook.getSheet(cExcelHelper.SHEET_tblPRECEDINGTASK);
+        /* get activity tasks */
+        Sheet activityTaskSheet = workbook.getSheet(cExcelHelper.SHEET_tblACTIVITYTASK);
+        /* get time sheet */
+        Sheet tmSheet = workbook.getSheet(cExcelHelper.SHEET_tblTASK_MILESTONE);
+        /* get task assignment */
+        Sheet tstSheet = workbook.getSheet(cExcelHelper.SHEET_tblTASKASSIGNMENT);
+        /* get task comments */
+        Sheet commentSheet = workbook.getSheet(cExcelHelper.SHEET_tblUSERCOMMENT);
+        /* get time sheets */
+        Sheet timesheetSheet = workbook.getSheet(cExcelHelper.SHEET_tblTIMESHEET);
+        /* get invoice for timesheet sheets */
+        Sheet itSheet = workbook.getSheet(cExcelHelper.SHEET_tblINVOICE_TIMESHEET);
+
         if (taskSheet == null) {
             return false;
         }
 
-        for (Iterator<Row> ritTask = taskSheet.iterator(); ritTask.hasNext(); ) {
-            Row cRow = ritTask.next();
-
+        for (Row cRow : taskSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -60,102 +74,148 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
 
             cTaskModel taskModel = new cTaskModel();
 
-            taskModel.setTaskID((int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            taskModel.setName(cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            taskModel.setDescription(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-
-            /* get task of the activity */
-            Set<Pair<Integer, Integer>> taskSet = new HashSet<>();
-            int taskID, activityID;
-            Sheet activityTaskSheet = workbook.getSheet(cExcelHelper.SHEET_tblACTIVITYTASK);
-            for (Iterator<Row> ritActivityTask = activityTaskSheet.iterator(); ritActivityTask.hasNext(); ) {
-                Row rowActivityTask = ritActivityTask.next();
-
-                //just skip the row if row number is 0
-                if (rowActivityTask.getRowNum() == 0) {
-                    continue;
-                }
-
-                taskID = (int) rowActivityTask.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (taskModel.getTaskID() == taskID) {
-                    activityID = (int) rowActivityTask.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    taskSet.add(new Pair<>(taskID, activityID));
-                }
-            }
-
-/*
-            Map<Integer, Set<Pair<Integer, Integer>>> tamMap = new HashMap<>();
-            Set<Pair<Integer, Integer>> amSet = new HashSet<>();
-            int taskID, activityID, milestoneID;
-
-            Sheet tamSheet = workbook.getSheet(cExcelHelper.SHEET_tblACTIVITYTASK);
-            for (Iterator<Row> ritTAM = tamSheet.iterator(); ritTAM.hasNext(); ) {
-                Row rowTAM = ritTAM.next();
-
-                //just skip the row if row number is 0
-                if (rowTAM.getRowNum() == 0) {
-                    continue;
-                }
-
-                taskID = (int) rowTAM.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (taskModel.getTaskID() == taskID) {
-                    activityID = (int) rowTAM.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    milestoneID = (int) rowTAM.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    amSet.add(new Pair<>(activityID, milestoneID));
-                }
-            }
-            tamMap.put(taskModel.getTaskID(), amSet);
-            */
+            taskModel.setTaskID((int) cRow.getCell(0,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            taskModel.setName(cRow.getCell(1,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            taskModel.setDescription(cRow.getCell(2,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
             /* get preceding tasks of the task */
-            Set<Pair<Integer, Integer>> precedingSet = new HashSet<>();
-            int precedingTaskID, succeedingTaskID;
-            Sheet precedingTaskSheet = workbook.getSheet(cExcelHelper.SHEET_tblPRECEDINGTASK);
-            for (Iterator<Row> ritPrecedingTask = precedingTaskSheet.iterator(); ritPrecedingTask.hasNext(); ) {
-                Row rowPrecedingTask = ritPrecedingTask.next();
-
+            Set<Pair<Long, Long>> precedingSet = new HashSet<>();
+            long precedingTaskID, succeedingTaskID;
+            for (Row rowPrecedingTask : precedingTaskSheet) {
                 //just skip the row if row number is 0
                 if (rowPrecedingTask.getRowNum() == 0) {
                     continue;
                 }
 
-                precedingTaskID = (int) rowPrecedingTask.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                precedingTaskID = (int) rowPrecedingTask.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (taskModel.getTaskID() == precedingTaskID) {
-                    succeedingTaskID = (int) rowPrecedingTask.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    succeedingTaskID = (int) rowPrecedingTask.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     precedingSet.add(new Pair<>(precedingTaskID, succeedingTaskID));
                 }
             }
 
+            /* get task of the activity */
+            Set<Pair<Long, Long>> taskSet = new HashSet<>();
+            long taskID, activityID;
+
+            for (Row rowActivityTask : activityTaskSheet) {
+                //just skip the row if row number is 0
+                if (rowActivityTask.getRowNum() == 0) {
+                    continue;
+                }
+
+                taskID = (int) rowActivityTask.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                if (taskModel.getTaskID() == taskID) {
+                    activityID = (int) rowActivityTask.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    taskSet.add(new Pair<>(taskID, activityID));
+                }
+            }
+
             /* get milestone for the task */
-            Set<Pair<Integer, Integer>> tmSet = new HashSet<>();
-            taskID = -1; int milestoneID = -1;
-            Sheet tmSheet = workbook.getSheet(cExcelHelper.SHEET_tblTASK_MILESTONE);
+            Set<Pair<Long, Long>> milestoneSet = new HashSet<>();
+            taskID = -1;
+            long milestoneID = -1;
             for (Row rowTM : tmSheet) {
                 //just skip the row if row number is 0
                 if (rowTM.getRowNum() == 0) {
                     continue;
                 }
 
-                taskID = (int) rowTM.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                taskID = (int) rowTM.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (taskModel.getTaskID() == taskID) {
-                    milestoneID = (int) rowTM.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    tmSet.add(new Pair<>(taskID, milestoneID));
+                    milestoneID = (int) rowTM.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    milestoneSet.add(new Pair<>(taskID, milestoneID));
                 }
             }
 
-            /* get task assignment */
-            Sheet tstSheet = workbook.getSheet(cExcelHelper.SHEET_tblTASKASSIGNMENT);
+            /* add assigned task */
+            int assignmentID = -1, assignedStaffID = -1, assignedTaskID = -1, assignedHours = 0;
+            double assignedRate = 0.0;
+            for (Row rowTST : tstSheet) {
+                //just skip the row if row number is 0
+                if (rowTST.getRowNum() == 0) {
+                    continue;
+                }
 
-            /* get time sheets */
-            Sheet timesheetSheet = workbook.getSheet(cExcelHelper.SHEET_tblTIMESHEET);
+                assignedTaskID = (int) rowTST.getCell(2,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                if (taskModel.getTaskID() == assignedTaskID) {
+                    assignmentID = (int) rowTST.getCell(0,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    assignedStaffID = (int) rowTST.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    assignedHours = (int) rowTST.getCell(3,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    assignedRate = (int) rowTST.getCell(4,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
 
-            /* get invoice for timesheet sheets */
-            Sheet itSheet = workbook.getSheet(cExcelHelper.SHEET_tblINVOICE_TIMESHEET);
+                    if (!addAssignedTask(assignmentID, assignedStaffID,
+                            assignedTaskID, assignedHours, assignedRate)) {
+                        return false;
+                    }
+                }
+            }
 
-            /* get task comments */
-            Sheet commentSheet = workbook.getSheet(cExcelHelper.SHEET_tblUSERCOMMENT);
+            /* add comments for a task */
+            int commentID = -1, commentStaffID = -1, commentTaskID = -1;
+            String comment = null;
+            for (Row rowUC : commentSheet) {
+                //just skip the row if row number is 0
+                if (rowUC.getRowNum() == 0) {
+                    continue;
+                }
 
-            if (!addTask(taskModel, taskSet, precedingSet, tmSet,
+                commentTaskID = (int) rowUC.getCell(2,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                if (taskModel.getTaskID() == commentTaskID) {
+                    commentID = (int) rowUC.getCell(0,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    commentStaffID = (int) rowUC.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    comment = rowUC.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue();
+
+                    if (!addCommentTask(commentID, commentStaffID, commentTaskID, comment)) {
+                        return false;
+                    }
+                }
+            }
+
+            /* add timesheet for a task */
+            int timesheetID = -1, timesheetStaffID = -1, timesheetTaskID = -1;
+            Date startTime, endTime;
+            for (Row rowTS : timesheetSheet) {
+                //just skip the row if row number is 0
+                if (rowTS.getRowNum() == 0) {
+                    continue;
+                }
+
+                timesheetTaskID = (int) rowTS.getCell(2,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                if (taskModel.getTaskID() == timesheetTaskID) {
+                    timesheetID = (int) rowTS.getCell(0,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    timesheetStaffID = (int) rowTS.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    startTime = rowTS.getCell(3, Row.CREATE_NULL_AS_BLANK).getDateCellValue();
+                    endTime = rowTS.getCell(4, Row.CREATE_NULL_AS_BLANK).getDateCellValue();
+
+                    if (!addTimesheetTask(timesheetID,
+                            timesheetStaffID, timesheetTaskID, startTime, endTime, itSheet)) {
+                        return false;
+                    }
+                }
+            }
+
+            if (!addTask(taskModel, taskSet, precedingSet, milestoneSet,
                     tstSheet, timesheetSheet, commentSheet, itSheet)) {
                 return false;
             }
@@ -164,9 +224,9 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
     }
 
     private boolean addTask(cTaskModel taskModel,
-                            Set<Pair<Integer, Integer>> activityTaskSet,
-                            Set<Pair<Integer, Integer>> precedingSet,
-                            Set<Pair<Integer, Integer>> tmSet,
+                            Set<Pair<Long, Long>> activityTaskSet,
+                            Set<Pair<Long, Long>> precedingSet,
+                            Set<Pair<Long, Long>> milestoneSet,
                             Sheet tstSheet, Sheet timesheetSheet, Sheet commentSheet, Sheet itSheet) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -186,95 +246,29 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
             }
 
             // add activity task
-            for (Pair<Integer, Integer> pair : activityTaskSet) {
-                int taskID = pair.first;
-                int activityID = pair.second;
+            for (Pair<Long, Long> pair : activityTaskSet) {
+                long taskID = pair.first;
+                long activityID = pair.second;
                 if (!addActivityTask(taskID, activityID))
                     return false;
             }
 
             /* add preceding task */
-            for (Pair<Integer, Integer> pair : precedingSet) {
-                int succeedingID = pair.first;
-                int precedingID = pair.second;
+            for (Pair<Long, Long> pair : precedingSet) {
+                long succeedingID = pair.first;
+                long precedingID = pair.second;
                 if (!addPrecedingTask(succeedingID, precedingID))
                     return false;
             }
 
             /* add milestone task */
-            for (Pair<Integer, Integer> pair : tmSet) {
-                int taskID = pair.first;
-                int milestoneID = pair.second;
+            for (Pair<Long, Long> pair : milestoneSet) {
+                long taskID = pair.first;
+                long milestoneID = pair.second;
                 if (!addTaskMilestone(taskID, milestoneID))
                     return false;
             }
 
-            /* add assigned task */
-            int assignmentID = -1, assignedStaffID = -1, assignedTaskID = -1, assignedHours = 0;
-            double assignedRate = 0.0;
-            for (Row rowTST : tstSheet) {
-                //just skip the row if row number is 0
-                if (rowTST.getRowNum() == 0) {
-                    continue;
-                }
-
-                assignedTaskID = (int) rowTST.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (taskModel.getTaskID() == assignedTaskID) {
-                    assignmentID = (int) rowTST.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    assignedStaffID = (int) rowTST.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    assignedHours = (int) rowTST.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    assignedRate = (int) rowTST.getCell(4, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-
-                    if (!addAssignedTask(assignmentID, assignedStaffID,
-                            assignedTaskID, assignedHours, assignedRate)) {
-                        return false;
-                    }
-                }
-            }
-
-            /* add comments for a task */
-            int commentID = -1, commentStaffID = -1, commentTaskID = -1;
-            String comment = null;
-            for (Row rowUC : commentSheet) {
-                //just skip the row if row number is 0
-                if (rowUC.getRowNum() == 0) {
-                    continue;
-                }
-
-                commentTaskID = (int) rowUC.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (taskModel.getTaskID() == commentTaskID) {
-                    commentID = (int) rowUC.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    commentStaffID = (int) rowUC.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    comment = rowUC.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue();
-
-                    if (!addCommentTask(commentID, commentStaffID, commentTaskID, comment)) {
-                        return false;
-                    }
-                }
-            }
-
-            /* add timesheet for a task */
-            int timesheetID = -1, timesheetStaffID = -1, timesheetTaskID = -1;
-            Date startTime, endTime;
-            for (Row rowTS : timesheetSheet) {
-                //just skip the row if row number is 0
-                if (rowTS.getRowNum() == 0) {
-                    continue;
-                }
-
-                timesheetTaskID = (int) rowTS.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (taskModel.getTaskID() == timesheetTaskID) {
-                    timesheetID = (int) rowTS.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    timesheetStaffID = (int) rowTS.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    startTime = rowTS.getCell(3, Row.CREATE_NULL_AS_BLANK).getDateCellValue();
-                    endTime = rowTS.getCell(4, Row.CREATE_NULL_AS_BLANK).getDateCellValue();
-
-                    if (!addTimesheetTask(timesheetID,
-                            timesheetStaffID, timesheetTaskID, startTime, endTime, itSheet)) {
-                        return false;
-                    }
-                }
-            }
         } catch (Exception e) {
             Log.d(TAG, "Exception in importing TASK from Excel: " + e.getMessage());
         }
@@ -285,18 +279,25 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
         return true;
     }
 
-    private boolean addActivityTask(int taskID, int activityID) {
+    private boolean addActivityTask(long taskID, long activityID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
 
         cv.put(cSQLDBHelper.KEY_TASK_FK_ID, taskID);
         cv.put(cSQLDBHelper.KEY_ACTIVITY_FK_ID, activityID);
+        try {
+            if (db.insert(cSQLDBHelper.TABLE_tblACTIVITYTASK, null, cv) < 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in importing ACTIVITY TASK from Excel: " + e.getMessage());
+        }
 
-        return db.insert(cSQLDBHelper.TABLE_tblACTIVITYTASK, null, cv) >= 0;
+        return true;
     }
 
-    private boolean addPrecedingTask(int taskID, int precedingID) {
+    private boolean addPrecedingTask(long taskID, long precedingID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -315,7 +316,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
         return true;
     }
 
-    private boolean addTaskMilestone(int taskID, int milestoneID) {
+    private boolean addTaskMilestone(long taskID, long milestoneID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -381,9 +382,11 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
                     continue;
                 }
 
-                int timesheetFKID = (int) rowIT.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                int timesheetFKID = (int) rowIT.getCell(1,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (timesheetID == timesheetFKID) {
-                    int invoiceFKID = (int) rowIT.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    int invoiceFKID = (int) rowIT.getCell(0,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
 
                     if (!addInvoiceTimesheet(invoiceFKID, timesheetFKID)) {
                         return false;
@@ -397,26 +400,6 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
 
         return true;
     }
-
-    private boolean addInvoiceTimesheet(int invoiceID, int timesheetID) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        ContentValues cv = new ContentValues();
-
-        cv.put(cSQLDBHelper.KEY_INVOICE_FK_ID, invoiceID);
-        cv.put(cSQLDBHelper.KEY_TIMESHEET_FK_ID, timesheetID);
-
-        try {
-            if (db.insert(cSQLDBHelper.TABLE_tblINVOICE_TIMESHEET, null, cv) < 0) {
-                return false;
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Exception in importing INVOICE TIMESHEET from Excel: " + e.getMessage());
-        }
-
-        return true;
-    }
-
 
     private boolean addCommentTask(int commentID, int commentStaffID, int commentTaskID,
                                    String comment) {
@@ -435,6 +418,24 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
             }
         } catch (Exception e) {
             Log.d(TAG, "Exception in importing USER COMMENT from Excel: " + e.getMessage());
+        }
+        return true;
+    }
+
+    private boolean addInvoiceTimesheet(int invoiceID, int timesheetID) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+
+        cv.put(cSQLDBHelper.KEY_INVOICE_FK_ID, invoiceID);
+        cv.put(cSQLDBHelper.KEY_TIMESHEET_FK_ID, timesheetID);
+
+        try {
+            if (db.insert(cSQLDBHelper.TABLE_tblINVOICE_TIMESHEET, null, cv) < 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in importing INVOICE TIMESHEET from Excel: " + e.getMessage());
         }
 
         return true;
@@ -634,7 +635,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
 
     @Override
     public boolean addInvoiceFromExcel() {
-        Workbook workbook = excelHelper.getWorkbookLOGFRAME();
+        Workbook workbook = excelHelper.getWorkbookAWPB();
         Sheet ISheet = workbook.getSheet(cExcelHelper.SHEET_tblINVOICE);
 
         if (ISheet == null) {
@@ -664,7 +665,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
         return true;
     }
 
-    private boolean addInvoice(cInvoiceModel invoiceModel){
+    private boolean addInvoice(cInvoiceModel invoiceModel) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -748,7 +749,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
     }
 
     private boolean addTransaction(cTransactionModel transactionModel,
-                                   Sheet internalSheet, Sheet externalSheet){
+                                   Sheet internalSheet, Sheet externalSheet) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -813,7 +814,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
         return true;
     }
 
-    private boolean addInternal(cInternalModel internalModel){
+    private boolean addInternal(cInternalModel internalModel) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -839,7 +840,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
         return true;
     }
 
-    private boolean addExternal(cExternalModel externalModel){
+    private boolean addExternal(cExternalModel externalModel) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -917,10 +918,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
             return false;
         }
 
-        //Log.d(TAG, "HEREEEE - 1");
-
         for (Row cRow : journalSheet) {
-            //Log.d(TAG, "HEREEEE - 2");
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -941,19 +939,15 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
             //journalModel.setCreatedDate(
             //        cRow.getCell(5, Row.CREATE_NULL_AS_BLANK).getDateCellValue());
 
-            //Gson gson = new Gson();
-            //Log.d(TAG,gson.toJson(journalModel));
-
             if (!addJournal(journalModel)) {
                 return false;
             }
         }
-        //Log.d(TAG, "HEREEEE - 3");
 
         return true;
     }
 
-    private boolean addJournal(cJournalModel journalModel){
+    private boolean addJournal(cJournalModel journalModel) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -966,7 +960,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
         cv.put(cSQLDBHelper.KEY_TRANSACTION_FK_ID, journalModel.getTransactionID());
         cv.put(cSQLDBHelper.KEY_ENTRY_TYPE, journalModel.getEntryType());
         cv.put(cSQLDBHelper.KEY_AMOUNT, journalModel.getAmount());
-        cv.put(cSQLDBHelper.KEY_CREATED_DATE, String.valueOf(journalModel.getCreatedDate()));
+        //cv.put(cSQLDBHelper.KEY_CREATED_DATE, sdf.format(String.valueOf(journalModel.getCreatedDate())));
 
         // insert project details
         try {

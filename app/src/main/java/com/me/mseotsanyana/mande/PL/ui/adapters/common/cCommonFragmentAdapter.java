@@ -27,8 +27,8 @@ public class cCommonFragmentAdapter extends FragmentStatePagerAdapter {
     private static int TAB_COUNT = 4;
     private int currentPosition = -1;
 
-    private int ownerID    = -1;
-    private int ownOrgID   = -1;
+    private long ownerID    = -1;
+    private long ownOrgID   = -1;
     private int groupBITS  = -1;
     private int permBITS   = -1;
     private int statusBITS = -1;
@@ -45,7 +45,7 @@ public class cCommonFragmentAdapter extends FragmentStatePagerAdapter {
         this.sessionManager = sessionManager;
     }
 
-    public void readCommonAttributes(int ownerID, int ownOrgID, int groupBITS, int permBITS,
+    public void readCommonAttributes(long ownerID, long ownOrgID, int groupBITS, int permBITS,
                                      int statusBITS, String createdDate, String modifiedDate,
                                      String syncedDate){
         this.ownerID      = ownerID;

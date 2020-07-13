@@ -57,9 +57,9 @@ public class cValueHandler extends cMapper<cValueModel, cValueDomain>
     protected cValueDomain ModelToDomain(cValueModel model) {
         cValueDomain domain = new cValueDomain();
 
-        domain.setValueID(model.getValueID());
-        domain.setOrganizationID(model.getOrganizationID());
-        domain.setOwnerID(model.getOwnerID());
+        //domain.setValueID(model.getValueID());
+        //domain.setOrganizationID(model.getOrganizationID());
+        //domain.setOwnerID(model.getOwnerID());
         domain.setValueName(model.getName());
         domain.setCreateDate(model.getCreatedDate());
 

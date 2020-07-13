@@ -7,11 +7,11 @@ import java.util.Date;
  */
 
 public class cValueModel {
-    private int valueID;
-    private int organizationID;
-    private int serverID;
-    private int ownerID;
-    private int orgID;
+    private long valueID;
+    private long organizationID;
+    private long serverID;
+    private long ownerID;
+    private long orgID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
@@ -22,43 +22,43 @@ public class cValueModel {
     private Date modifiedDate;
     private Date syncedDate;
 
-    public int getValueID() {
+    public long getValueID() {
         return valueID;
     }
 
-    public void setValueID(int valueID) {
+    public void setValueID(long valueID) {
         this.valueID = valueID;
     }
 
-    public int getOrganizationID() {
+    public long getOrganizationID() {
         return organizationID;
     }
 
-    public void setOrganizationID(int organizationID) {
+    public void setOrganizationID(long organizationID) {
         this.organizationID = organizationID;
     }
 
-    public int getServerID() {
+    public long getServerID() {
         return serverID;
     }
 
-    public void setServerID(int serverID) {
+    public void setServerID(long serverID) {
         this.serverID = serverID;
     }
 
-    public int getOwnerID() {
+    public long getOwnerID() {
         return ownerID;
     }
 
-    public void setOwnerID(int ownerID) {
+    public void setOwnerID(long ownerID) {
         this.ownerID = ownerID;
     }
 
-    public int getOrgID() {
+    public long getOrgID() {
         return orgID;
     }
 
-    public void setOrgID(int orgID) {
+    public void setOrgID(long orgID) {
         this.orgID = orgID;
     }
 
