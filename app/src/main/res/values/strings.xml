@@ -56,6 +56,10 @@
     <string name="fa_perms">&#xf085;</string>
     <string name="fa_com_attr">&#xf057;</string>
 
+    <!-- Global Icons-->
+    <string name="fa_clock">&#xf017;</string>
+    <string name="fa_angle_right">&#xf105;</string>
+
     <!-- start common attributes -->
     <!-- operations -->
     <string name="Create">Create</string>
@@ -239,7 +243,14 @@
 
     <!-- the question strings -->
     <string name="question_list_title">List of Questions</string>
-    <string name="question_caption">question:</string>
+    <string name="question_label">Identifier : </string>
+    <string name="question_caption">Question : </string>
+    <string name="question_type">Type : </string>
+    <string name="question_description">Description : </string>
+    <string name="question_group">Group : </string>
+    <string name="question_group_description">Group Desc.: </string>
+    <string name="question_valid_startdate">Valid From </string>
+    <string name="question_to_enddate"> To </string>
 
     <!-- the category strings -->
     <string name="category_list_title">Categories</string>

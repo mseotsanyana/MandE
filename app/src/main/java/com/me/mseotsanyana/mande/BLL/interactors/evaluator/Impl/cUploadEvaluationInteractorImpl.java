@@ -55,11 +55,11 @@ public class cUploadEvaluationInteractorImpl extends cAbstractInteractor
         uploadEvaluationRepository.deleteMatrixChoices();
         uploadEvaluationRepository.deleteMatrixChoiceSets();
         uploadEvaluationRepository.deleteEvaluationTypes();
-        uploadEvaluationRepository.deleteQuestionnaires();
-        uploadEvaluationRepository.deleteQuestionnaireQuestions();
+        uploadEvaluationRepository.deleteEvaluations();
+        uploadEvaluationRepository.deleteEvaluationQuestions();
         uploadEvaluationRepository.deleteConditionalOrders();
-        uploadEvaluationRepository.deleteQuestionnaireUsers();
-        uploadEvaluationRepository.deleteEResponses();
+        uploadEvaluationRepository.deleteUserEvaluations();
+        uploadEvaluationRepository.deleteEvaluationResponses();
         uploadEvaluationRepository.deleteNumericResponses();
         uploadEvaluationRepository.deleteTextResponses();
         uploadEvaluationRepository.deleteDateResponses();
@@ -96,16 +96,16 @@ public class cUploadEvaluationInteractorImpl extends cAbstractInteractor
             notifyError("Failed to Add EvaluationType Entity");
         }
 
-        if(uploadEvaluationRepository.addQuestionnaireFromExcel()){
-            postMessage("Questionnaire Entity Added Successfully!");
+        if(uploadEvaluationRepository.addEvaluationFromExcel()){
+            postMessage("Evaluation Entity Added Successfully!");
         }else {
-            notifyError("Failed to Add Questionnaire Entity");
+            notifyError("Failed to Add Evaluation Entity");
         }
 
-        if(uploadEvaluationRepository.addEResponseFromExcel()){
-            postMessage("EResponse Entity Added Successfully!");
+        if(uploadEvaluationRepository.addEvaluationResponseFromExcel()){
+            postMessage("Evaluation Response Entity Added Successfully!");
         }else {
-            notifyError("Failed to Add EResponse Entity");
+            notifyError("Failed to Add Evaluation Response Entity");
         }
     }
 }

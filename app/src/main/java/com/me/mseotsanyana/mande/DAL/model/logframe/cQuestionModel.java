@@ -1,18 +1,34 @@
 package com.me.mseotsanyana.mande.DAL.model.logframe;
 
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cQuestionnaireModel;
-import com.me.mseotsanyana.mande.UTIL.DAL.cMQuestionModel;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Pair;
+
+import com.me.mseotsanyana.mande.DAL.model.evaluator.cArrayChoiceModel;
+import com.me.mseotsanyana.mande.DAL.model.evaluator.cArrayResponseModel;
+import com.me.mseotsanyana.mande.DAL.model.evaluator.cColOptionModel;
+import com.me.mseotsanyana.mande.DAL.model.evaluator.cDateResponseModel;
+import com.me.mseotsanyana.mande.DAL.model.evaluator.cMatrixChoiceModel;
+import com.me.mseotsanyana.mande.DAL.model.evaluator.cMatrixResponseModel;
+import com.me.mseotsanyana.mande.DAL.model.evaluator.cNumericResponseModel;
+import com.me.mseotsanyana.mande.DAL.model.evaluator.cRowOptionModel;
+import com.me.mseotsanyana.mande.DAL.model.evaluator.cTextResponseModel;
+import com.me.mseotsanyana.mande.DAL.model.monitor.cIndicatorModel;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-public class cQuestionModel {
-    private int questionID;
-    private int logFrameID;
-    private int questionTypeID;
-    private int questionGroupID;
-    private int serverID;
-    private int ownerID;
-    private int orgID;
+public class cQuestionModel implements Parcelable {
+    private long questionID;
+    private long logFrameID;
+    private long questionTypeID;
+    private long questionGroupID;
+    private long serverID;
+    private long ownerID;
+    private long orgID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
@@ -24,70 +40,94 @@ public class cQuestionModel {
     private Date modifiedDate;
     private Date syncedDate;
 
-    /*foreign keys  */
+    /* logframe */
     private cLogFrameModel logFrameModel;
+    /* questions on the same page */
     private cQuestionGroupingModel questionGroupingModel;
+    /* link to primitive type, array type and matrix type */
     private cQuestionTypeModel questionTypeModel;
 
-    /*one to one relation */
-    private cQuestionnaireModel eQuestionModel;
-    private cMQuestionModel mQuestionModel;
+    /* set of evaluation responses for the question */
+    private Set<cDateResponseModel> dateResponseModelSet;
+    private Set<cNumericResponseModel> numericResponseModelSet;
+    private Set<cTextResponseModel> textResponseModelSet;
+    private Set<cArrayResponseModel> arrayResponseModelSet;
+    private Set<cMatrixResponseModel> matrixResponseModelSet;
 
-    public cQuestionModel(){}
+    /* set of monitoring indicators for the question */
+    private Set<cIndicatorModel> indicatorModelSet;
 
-    public int getQuestionID() {
+    /* maps containing question types and response choices */
+    private Set<cArrayChoiceModel> arrayChoiceModelSet;
+    private Set<Pair<cRowOptionModel, cColOptionModel>> matrixChoiceModelSet;
+
+    //private Map<cArrayTypeModel, Set<cArrayChoiceModel>> arrayChoiceMap;
+    //private Map<cMatrixTypeModel, Set<cMatrixChoiceModel>> matrixChoiceMap;
+
+    public cQuestionModel(){
+        logFrameModel = new cLogFrameModel();
+        questionGroupingModel = new cQuestionGroupingModel();
+        questionTypeModel = new cQuestionTypeModel();
+
+        arrayChoiceModelSet = new HashSet<>();
+        matrixChoiceModelSet = new HashSet<>();
+
+        indicatorModelSet = new HashSet<>();
+    }
+
+    public long getQuestionID() {
         return questionID;
     }
 
-    public void setQuestionID(int questionID) {
+    public void setQuestionID(long questionID) {
         this.questionID = questionID;
     }
 
-    public int getLogFrameID() {
+    public long getLogFrameID() {
         return logFrameID;
     }
 
-    public void setLogFrameID(int logFrameID) {
+    public void setLogFrameID(long logFrameID) {
         this.logFrameID = logFrameID;
     }
 
-    public int getQuestionTypeID() {
+    public long getQuestionTypeID() {
         return questionTypeID;
     }
 
-    public void setQuestionTypeID(int questionTypeID) {
+    public void setQuestionTypeID(long questionTypeID) {
         this.questionTypeID = questionTypeID;
     }
 
-    public int getQuestionGroupID() {
+    public long getQuestionGroupID() {
         return questionGroupID;
     }
 
-    public void setQuestionGroupID(int questionGroupID) {
+    public void setQuestionGroupID(long questionGroupID) {
         this.questionGroupID = questionGroupID;
     }
 
-    public int getServerID() {
+    public long getServerID() {
         return serverID;
     }
 
-    public void setServerID(int serverID) {
+    public void setServerID(long serverID) {
         this.serverID = serverID;
     }
 
-    public int getOwnerID() {
+    public long getOwnerID() {
         return ownerID;
     }
 
-    public void setOwnerID(int ownerID) {
+    public void setOwnerID(long ownerID) {
         this.ownerID = ownerID;
     }
 
-    public int getOrgID() {
+    public long getOrgID() {
         return orgID;
     }
 
-    public void setOrgID(int orgID) {
+    public void setOrgID(long orgID) {
         this.orgID = orgID;
     }
 
@@ -195,19 +235,115 @@ public class cQuestionModel {
         this.questionTypeModel = questionTypeModel;
     }
 
-    public cQuestionnaireModel geteQuestionModel() {
-        return eQuestionModel;
+    public Set<cDateResponseModel> getDateResponseModelSet() {
+        return dateResponseModelSet;
     }
 
-    public void seteQuestionModel(cQuestionnaireModel eQuestionModel) {
-        this.eQuestionModel = eQuestionModel;
+    public void setDateResponseModelSet(Set<cDateResponseModel> dateResponseModelSet) {
+        this.dateResponseModelSet = dateResponseModelSet;
     }
 
-    public cMQuestionModel getmQuestionModel() {
-        return mQuestionModel;
+    public Set<cNumericResponseModel> getNumericResponseModelSet() {
+        return numericResponseModelSet;
     }
 
-    public void setmQuestionModel(cMQuestionModel mQuestionModel) {
-        this.mQuestionModel = mQuestionModel;
+    public void setNumericResponseModelSet(Set<cNumericResponseModel> numericResponseModelSet) {
+        this.numericResponseModelSet = numericResponseModelSet;
+    }
+
+    public Set<cTextResponseModel> getTextResponseModelSet() {
+        return textResponseModelSet;
+    }
+
+    public void setTextResponseModelSet(Set<cTextResponseModel> textResponseModelSet) {
+        this.textResponseModelSet = textResponseModelSet;
+    }
+
+    public Set<cArrayResponseModel> getArrayResponseModelSet() {
+        return arrayResponseModelSet;
+    }
+
+    public void setArrayResponseModelSet(Set<cArrayResponseModel> arrayResponseModelSet) {
+        this.arrayResponseModelSet = arrayResponseModelSet;
+    }
+
+    public Set<cMatrixResponseModel> getMatrixResponseModelSet() {
+        return matrixResponseModelSet;
+    }
+
+    public void setMatrixResponseModelSet(Set<cMatrixResponseModel> matrixResponseModelSet) {
+        this.matrixResponseModelSet = matrixResponseModelSet;
+    }
+
+    public Set<cIndicatorModel> getIndicatorModelSet() {
+        return indicatorModelSet;
+    }
+
+    public void setIndicatorModelSet(Set<cIndicatorModel> indicatorModelSet) {
+        this.indicatorModelSet = indicatorModelSet;
+    }
+
+    public Set<cArrayChoiceModel> getArrayChoiceModelSet() {
+        return arrayChoiceModelSet;
+    }
+
+    public void setArrayChoiceModelSet(Set<cArrayChoiceModel> arrayChoiceModelSet) {
+        this.arrayChoiceModelSet = arrayChoiceModelSet;
+    }
+
+    public Set<Pair<cRowOptionModel, cColOptionModel>> getMatrixChoiceModelSet() {
+        return matrixChoiceModelSet;
+    }
+
+    public void setMatrixChoiceModelSet(Set<Pair<cRowOptionModel, cColOptionModel>> matrixChoiceModelSet) {
+        this.matrixChoiceModelSet = matrixChoiceModelSet;
+    }
+
+    protected cQuestionModel(Parcel in) {
+        questionID = in.readInt();
+        logFrameID = in.readInt();
+        questionTypeID = in.readInt();
+        questionGroupID = in.readInt();
+        serverID = in.readInt();
+        ownerID = in.readInt();
+        orgID = in.readInt();
+        groupBITS = in.readInt();
+        permsBITS = in.readInt();
+        statusBITS = in.readInt();
+        name = in.readString();
+        description = in.readString();
+    }
+
+    public static final Creator<cQuestionModel> CREATOR = new Creator<cQuestionModel>() {
+        @Override
+        public cQuestionModel createFromParcel(Parcel in) {
+            return new cQuestionModel(in);
+        }
+
+        @Override
+        public cQuestionModel[] newArray(int size) {
+            return new cQuestionModel[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(questionID);
+        parcel.writeLong(logFrameID);
+        parcel.writeLong(questionTypeID);
+        parcel.writeLong(questionGroupID);
+        parcel.writeLong(serverID);
+        parcel.writeLong(ownerID);
+        parcel.writeLong(orgID);
+        parcel.writeInt(groupBITS);
+        parcel.writeInt(permsBITS);
+        parcel.writeInt(statusBITS);
+        parcel.writeString(name);
+        parcel.writeString(description);
     }
 }

@@ -10,10 +10,10 @@ import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.repository.evaluator.iUploadEvaluationRepository;
 import com.me.mseotsanyana.mande.DAL.model.evaluator.cArrayChoiceModel;
 import com.me.mseotsanyana.mande.DAL.model.evaluator.cColOptionModel;
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cEResponseModel;
+import com.me.mseotsanyana.mande.DAL.model.evaluator.cEvaluationResponseModel;
 import com.me.mseotsanyana.mande.DAL.model.evaluator.cEvaluationTypeModel;
 import com.me.mseotsanyana.mande.DAL.model.evaluator.cMatrixChoiceModel;
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cQuestionnaireModel;
+import com.me.mseotsanyana.mande.DAL.model.evaluator.cEvaluationModel;
 import com.me.mseotsanyana.mande.DAL.model.evaluator.cRowOptionModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.DAL.storage.excel.cExcelHelper;
@@ -27,7 +27,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -61,9 +60,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
             return false;
         }
 
-        for (Iterator<Row> ritAC = ACSheet.iterator(); ritAC.hasNext(); ) {
-            Row cRow = ritAC.next();
-
+        for (Row cRow : ACSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -80,14 +77,12 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
 
 
             /* get array choices grouped by question and array type */
-            Map<Integer, Set<Pair<Integer, Integer>>> qtcMap = new HashMap<>();
-            Set<Pair<Integer, Integer>> tcSet = new HashSet<>();
-            int questionID, typeID, choiceID;
+            Map<Long, Set<Pair<Long, Long>>> qtcMap = new HashMap<>();
+            Set<Pair<Long, Long>> tcSet = new HashSet<>();
+            long questionID, typeID, choiceID;
 
             Sheet qtcSheet = workbook.getSheet(cExcelHelper.SHEET_tblARRAYCHOICESET);
-            for (Iterator<Row> ritQTC = qtcSheet.iterator(); ritQTC.hasNext(); ) {
-                Row rowQTC = ritQTC.next();
-
+            for (Row rowQTC : qtcSheet) {
                 //just skip the row if row number is 0
                 if (rowQTC.getRowNum() == 0) {
                     continue;
@@ -117,12 +112,12 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
     /**
      * This function adds array choice data to the database.
      *
-     * @param arrayChoiceModel
-     * @param qtcMap
-     * @return
+     * @param arrayChoiceModel array choice model
+     * @param qtcMap question
+     * @return bool
      */
     public boolean addArrayChoice(cArrayChoiceModel arrayChoiceModel,
-                                  Map<Integer, Set<Pair<Integer, Integer>>> qtcMap) {
+                                  Map<Long, Set<Pair<Long, Long>>> qtcMap) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -141,15 +136,13 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
             }
 
             // add question, type and choice tuple
-            for (Map.Entry<Integer, Set<Pair<Integer, Integer>>> qtcEntry : qtcMap.entrySet()) {
-                int choiceID = qtcEntry.getKey();
-                for (Pair<Integer, Integer> qcPair : qtcEntry.getValue()) {
-                    int questionID = qcPair.first;
-                    int typeID = qcPair.second;
+            for (Map.Entry<Long, Set<Pair<Long, Long>>> qtcEntry : qtcMap.entrySet()) {
+                long choiceID = qtcEntry.getKey();
+                for (Pair<Long, Long> qcPair : qtcEntry.getValue()) {
+                    long questionID = qcPair.first;
+                    long typeID = qcPair.second;
 
-                    if (addQuestionArrayTypeChoice(questionID, typeID, choiceID))
-                        continue;
-                    else
+                    if (!addQuestionArrayTypeChoice(questionID, typeID, choiceID))
                         return false;
                 }
             }
@@ -165,12 +158,12 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
     }
 
     /**
-     * @param questionID
-     * @param typeID
-     * @param choiceID
-     * @return
+     * @param questionID question identification
+     * @param typeID type identification
+     * @param choiceID choice identification
+     * @return bool
      */
-    public boolean addQuestionArrayTypeChoice(int questionID, int typeID, int choiceID) {
+    public boolean addQuestionArrayTypeChoice(long questionID, long typeID, long choiceID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -221,7 +214,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
     /**
      * This function extracts row option data from excel and adds it to the database.
      *
-     * @return
+     * @return bool
      */
     @Override
     public boolean addRowOptionFromExcel() {
@@ -232,9 +225,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
             return false;
         }
 
-        for (Iterator<Row> ritRO = ROSheet.iterator(); ritRO.hasNext(); ) {
-            Row cRow = ritRO.next();
-
+        for (Row cRow : ROSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -260,8 +251,8 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
     /**
      * This function adds row option data to the database.
      *
-     * @param rowOptionModel
-     * @return
+     * @param rowOptionModel row option
+     * @return bool
      */
     public boolean addRowOption(cRowOptionModel rowOptionModel) {
         // open the connection to the database
@@ -308,7 +299,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
     /**
      * This function extracts col option data from excel and adds it to the database.
      *
-     * @return
+     * @return bool
      */
 
     @Override
@@ -320,9 +311,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
             return false;
         }
 
-        for (Iterator<Row> ritCO = COSheet.iterator(); ritCO.hasNext(); ) {
-            Row cRow = ritCO.next();
-
+        for (Row cRow : COSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -346,8 +335,8 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
     }
 
     /**
-     * @param colOptionModel
-     * @return
+     * @param colOptionModel column option
+     * @return bool
      */
     public boolean addColOption(cColOptionModel colOptionModel) {
         // open the connection to the database
@@ -394,7 +383,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
     /**
      * This function extracts matrix choice data from excel and adds it to the database.
      *
-     * @return
+     * @return bool
      */
     @Override
     public boolean addMatrixChoiceFromExcel() {
@@ -405,9 +394,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
             return false;
         }
 
-        for (Iterator<Row> ritMC = MCSheet.iterator(); ritMC.hasNext(); ) {
-            Row cRow = ritMC.next();
-
+        for (Row cRow : MCSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -423,14 +410,12 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
                     (int) cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
 
             /* get array choices grouped by question and matrix type */
-            Map<Integer, Set<Pair<Integer, Integer>>> qtcMap = new HashMap<>();
-            Set<Pair<Integer, Integer>> tcSet = new HashSet<>();
-            int questionID, typeID, choiceID;
+            Map<Long, Set<Pair<Long, Long>>> qtcMap = new HashMap<>();
+            Set<Pair<Long, Long>> tcSet = new HashSet<>();
+            long questionID, typeID, choiceID;
 
             Sheet qtcSheet = workbook.getSheet(cExcelHelper.SHEET_tblMATRIXCHOICESET);
-            for (Iterator<Row> ritQTC = qtcSheet.iterator(); ritQTC.hasNext(); ) {
-                Row rowQTC = ritQTC.next();
-
+            for (Row rowQTC : qtcSheet) {
                 //just skip the row if row number is 0
                 if (rowQTC.getRowNum() == 0) {
                     continue;
@@ -460,11 +445,11 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
     /**
      * This function adds matrix choice data to the database.
      *
-     * @param matrixChoiceModel
-     * @return
+     * @param matrixChoiceModel matrix choice
+     * @return bool
      */
     public boolean addMatrixChoice(cMatrixChoiceModel matrixChoiceModel,
-                                   Map<Integer, Set<Pair<Integer, Integer>>> qtcMap) {
+                                   Map<Long, Set<Pair<Long, Long>>> qtcMap) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -483,15 +468,13 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
             }
 
             // add question, type and choice tuple
-            for (Map.Entry<Integer, Set<Pair<Integer, Integer>>> qtcEntry : qtcMap.entrySet()) {
-                int choiceID = qtcEntry.getKey();
-                for (Pair<Integer, Integer> qcPair : qtcEntry.getValue()) {
-                    int questionID = qcPair.first;
-                    int typeID = qcPair.second;
+            for (Map.Entry<Long, Set<Pair<Long, Long>>> qtcEntry : qtcMap.entrySet()) {
+                long choiceID = qtcEntry.getKey();
+                for (Pair<Long, Long> qcPair : qtcEntry.getValue()) {
+                    long questionID = qcPair.first;
+                    long typeID = qcPair.second;
 
-                    if (addQuestionMatrixTypeChoice(questionID, typeID, choiceID))
-                        continue;
-                    else
+                    if (!addQuestionMatrixTypeChoice(questionID, typeID, choiceID))
                         return false;
                 }
             }
@@ -506,7 +489,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         return true;
     }
 
-    public boolean addQuestionMatrixTypeChoice(int questionID, int typeID, int choiceID) {
+    public boolean addQuestionMatrixTypeChoice(long questionID, long typeID, long choiceID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -515,11 +498,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         cv.put(cSQLDBHelper.KEY_MATRIX_TYPE_FK_ID, typeID);
         cv.put(cSQLDBHelper.KEY_MATRIX_CHOICE_FK_ID, choiceID);
 
-        if (db.insert(cSQLDBHelper.TABLE_tblMATRIXCHOICESET, null, cv) < 0) {
-            return false;
-        }
-
-        return true;
+        return db.insert(cSQLDBHelper.TABLE_tblMATRIXCHOICESET, null, cv) >= 0;
     }
 
     public boolean deleteMatrixChoices() {
@@ -553,7 +532,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
     /**
      * This function extracts evaluation data from excel and adds it to the database.
      *
-     * @return
+     * @return bool
      */
     @Override
     public boolean addEvaluationTypeFromExcel() {
@@ -564,9 +543,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
             return false;
         }
 
-        for (Iterator<Row> ritET = ETSheet.iterator(); ritET.hasNext(); ) {
-            Row cRow = ritET.next();
-
+        for (Row cRow : ETSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -592,8 +569,8 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
     /**
      * This function adds evaluation type data to the database.
      *
-     * @param evaluationTypeModel
-     * @return
+     * @param evaluationTypeModel evaluation type
+     * @return bool
      */
     public boolean addEvaluationType(cEvaluationTypeModel evaluationTypeModel) {
         // open the connection to the database
@@ -635,91 +612,79 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         return result > -1;
     }
 
-    /* ################################# QUESTIONNAIRE FUNCTIONS #################################*/
+    /* ################################# EVALUATION FUNCTIONS #################################*/
 
     @Override
-    public boolean addQuestionnaireFromExcel() {
+    public boolean addEvaluationFromExcel() {
         Workbook workbook = excelHelper.getWorkbookEVALUATION();
-        Sheet QSheet = workbook.getSheet(cExcelHelper.SHEET_tblQUESTIONNAIRE);
+        Sheet QSheet = workbook.getSheet(cExcelHelper.SHEET_tblEVALUATION);
 
         if (QSheet == null) {
             return false;
         }
 
-        for (Iterator<Row> ritQ = QSheet.iterator(); ritQ.hasNext(); ) {
-            Row cRow = ritQ.next();
-
+        for (Row cRow : QSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
             }
 
-            cQuestionnaireModel questionnaireModel = new cQuestionnaireModel();
+            cEvaluationModel evaluationModel = new cEvaluationModel();
 
-            questionnaireModel.setQuestionnaireID((int)
+            evaluationModel.setEvaluationID((int)
                     cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            questionnaireModel.setEvaluationTypeID((int)
+            evaluationModel.setEvaluationTypeID((int)
                     cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            questionnaireModel.setName(
+            evaluationModel.setName(
                     cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            questionnaireModel.setDescription(
+            evaluationModel.setDescription(
                     cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
             /* get questions of the questionnaire*/
-            Set<Pair<Integer, Integer>> questionSet = new HashSet<>();
-            int qqID = -1, questionnaireID = -1, questionID = -1;
-            Sheet QQSheet = workbook.getSheet(cExcelHelper.SHEET_tblQUESTIONNAIRE_QUESTION);
-            for (Iterator<Row> ritQQ = QQSheet.iterator(); ritQQ.hasNext(); ) {
-                Row rowQQ = ritQQ.next();
-
+            Set<Pair<Long, Long>> questionSet = new HashSet<>();
+            long eqID = -1, evaluationID = -1, questionID = -1;
+            Sheet EQSheet = workbook.getSheet(cExcelHelper.SHEET_tblEVALUATION_QUESTION);
+            for (Row rowEQ : EQSheet) {
                 //just skip the row if row number is 0
-                if (rowQQ.getRowNum() == 0) {
+                if (rowEQ.getRowNum() == 0) {
                     continue;
                 }
 
-                questionnaireID = (int) rowQQ.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (questionnaireModel.getQuestionnaireID() == questionnaireID) {
-                    qqID = (int) rowQQ.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    questionID = (int) rowQQ.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    questionSet.add(new Pair<>(qqID, questionID));
+                evaluationID = (int) rowEQ.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                if (evaluationModel.getEvaluationID() == evaluationID) {
+                    eqID = (int) rowEQ.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    questionID = (int) rowEQ.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    questionSet.add(new Pair<>(eqID, questionID));
                 }
             }
 
-            /* get users of the questionnaire */
-            Set<Pair<Integer, Integer>> userSet = new HashSet<>();
-            int quID = -1, userID = -1;
-            questionnaireID = -1;
-            Sheet QUSheet = workbook.getSheet(cExcelHelper.SHEET_tblQUESTIONNAIRE_USER);
-            for (Iterator<Row> ritQU = QUSheet.iterator(); ritQU.hasNext(); ) {
-                Row rowQU = ritQU.next();
-
+            /* get users of the evaluation */
+            Set<Pair<Long, Long>> userSet = new HashSet<>();
+            long ueID = -1, userID = -1;
+            evaluationID = -1;
+            Sheet UESheet = workbook.getSheet(cExcelHelper.SHEET_tblUSER_EVALUATION);
+            for (Row rowUE : UESheet) {
                 //just skip the row if row number is 0
-                if (rowQU.getRowNum() == 0) {
+                if (rowUE.getRowNum() == 0) {
                     continue;
                 }
 
-                questionnaireID = (int) rowQU.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (questionnaireModel.getQuestionnaireID() == questionnaireID) {
-                    quID = (int) rowQU.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    userID = (int) rowQU.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    userSet.add(new Pair<>(quID, userID));
+                evaluationID = (int) rowUE.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                if (evaluationModel.getEvaluationID() == evaluationID) {
+                    ueID = (int) rowUE.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    userID = (int) rowUE.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    userSet.add(new Pair<>(ueID, userID));
                 }
             }
 
-            if (!addQuestionnaire(questionnaireModel, questionSet, userSet)) {
+            if (!addEvaluation(evaluationModel, questionSet, userSet)) {
                 return false;
             }
 
-            Gson gson = new Gson();
-            Log.d(TAG, gson.toJson(questionnaireModel));
-            Log.d(TAG, gson.toJson(userSet));
-
-            /* conditional order of the questionnaire*/
+            /* conditional order of the questionnaire */
             int coID = -1, questionOrderID = -1, rQuestionID = -1, prQuestionID = -1, nrQuestionID = -1;
             Sheet COSheet = workbook.getSheet(cExcelHelper.SHEET_tblCONDITIONAL_ORDER);
-            for (Iterator<Row> ritCO = COSheet.iterator(); ritCO.hasNext(); ) {
-                Row rowCO = ritCO.next();
-
+            for (Row rowCO : COSheet) {
                 //just skip the row if row number is 0
                 if (rowCO.getRowNum() == 0) {
                     continue;
@@ -727,7 +692,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
 
                 for (Pair question : questionSet) {
                     questionOrderID = (int) rowCO.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    if ((int) question.first == questionOrderID) {
+                    if ((long) question.second == questionOrderID) {
                         coID = (int) rowCO.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                         rQuestionID = (int) rowCO.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                         prQuestionID = (int) rowCO.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
@@ -740,14 +705,19 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
                     }
                 }
             }
+
+
+            Gson gson = new Gson();
+            Log.d(TAG, gson.toJson(evaluationModel));
+            Log.d(TAG, gson.toJson(userSet));
         }
 
         return true;
     }
 
-    public boolean addQuestionnaire(cQuestionnaireModel questionnaireModel,
-                                    Set<Pair<Integer, Integer>> questionSet,
-                                    Set<Pair<Integer, Integer>> userSet) {
+    public boolean addEvaluation(cEvaluationModel evaluationModel,
+                                    Set<Pair<Long, Long>> questionSet,
+                                    Set<Pair<Long, Long>> userSet) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -755,36 +725,32 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, questionnaireModel.getQuestionnaireID());
-        cv.put(cSQLDBHelper.KEY_EVALUATION_TYPE_FK_ID, questionnaireModel.getEvaluationTypeID());
-        cv.put(cSQLDBHelper.KEY_NAME, questionnaireModel.getName());
-        cv.put(cSQLDBHelper.KEY_DESCRIPTION, questionnaireModel.getDescription());
+        cv.put(cSQLDBHelper.KEY_ID, evaluationModel.getEvaluationID());
+        cv.put(cSQLDBHelper.KEY_EVALUATION_TYPE_FK_ID, evaluationModel.getEvaluationTypeID());
+        cv.put(cSQLDBHelper.KEY_NAME, evaluationModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, evaluationModel.getDescription());
 
         // insert evaluation type details
         try {
-            if (db.insert(cSQLDBHelper.TABLE_tblQUESTIONNAIRE, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblEVALUATION, null, cv) < 0) {
                 return false;
             }
 
             // add questions
-            for (Pair<Integer, Integer> pair : questionSet) {
-                if (addQuestionnaireQuestion(pair.first, questionnaireModel.getQuestionnaireID(), pair.second))
-                    continue;
-                else
+            for (Pair<Long, Long> pair : questionSet) {
+                if (!addEvaluationQuestion(pair.first, evaluationModel.getEvaluationID(), pair.second))
                     return false;
             }
 
             // add users
-            for (Pair<Integer, Integer> pair : userSet) {
-                if (addQuestionnaireUser(pair.first, questionnaireModel.getQuestionnaireID(), pair.second))
-                    continue;
-                else
+            for (Pair<Long, Long> pair : userSet) {
+                if (!addUserEvaluation(pair.first, evaluationModel.getEvaluationID(), pair.second))
                     return false;
             }
 
 
         } catch (Exception e) {
-            Log.d(TAG, "Exception in importing QUESTIONNAIRE from Excel: " + e.getMessage());
+            Log.d(TAG, "Exception in importing EVALUATION from Excel: " + e.getMessage());
         }
 
         // close the database connection
@@ -793,7 +759,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         return true;
     }
 
-    public boolean addQuestionnaireQuestion(int qqID, int questionnaireID, int questionID) {
+    public boolean addEvaluationQuestion(long qqID, long evaluationID, long questionID) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -802,16 +768,16 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ID, qqID);
-        cv.put(cSQLDBHelper.KEY_QUESTIONNAIRE_FK_ID, questionnaireID);
+        cv.put(cSQLDBHelper.KEY_EVALUATION_FK_ID, evaluationID);
         cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, questionID);
 
         // insert evaluation type details
         try {
-            if (db.insert(cSQLDBHelper.TABLE_tblQUESTION_QUESTIONNAIRE, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblQUESTION_EVALUATION, null, cv) < 0) {
                 return false;
             }
         } catch (Exception e) {
-            Log.d(TAG, "Exception in importing QUESTIONNAIRE QUESTIONS from Excel: " + e.getMessage());
+            Log.d(TAG, "Exception in importing EVALUATION QUESTIONS from Excel: " + e.getMessage());
         }
 
         // close the database connection
@@ -820,8 +786,8 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         return true;
     }
 
-    public boolean addConditionalOrder(int coID, int questionOrderID,
-                                       int rQuestionID, int prQuestionID, int nrQuestionID) {
+    public boolean addConditionalOrder(long coID, long questionOrderID,
+                                       long rQuestionID, long prQuestionID, long nrQuestionID) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -851,7 +817,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
     }
 
 
-    public boolean addQuestionnaireUser(int quID, int questionnaireID, int userID) {
+    public boolean addUserEvaluation(long quID, long evaluationID, long userID) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -860,16 +826,16 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ID, quID);
-        cv.put(cSQLDBHelper.KEY_QUESTIONNAIRE_FK_ID, questionnaireID);
+        cv.put(cSQLDBHelper.KEY_EVALUATION_FK_ID, evaluationID);
         cv.put(cSQLDBHelper.KEY_USER_FK_ID, userID);
 
         // insert evaluation type details
         try {
-            if (db.insert(cSQLDBHelper.TABLE_tblQUESTIONNAIRE_USER, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblUSER_EVALUATION, null, cv) < 0) {
                 return false;
             }
         } catch (Exception e) {
-            Log.d(TAG, "Exception in importing QUESTIONNAIRE USERS from Excel: " + e.getMessage());
+            Log.d(TAG, "Exception in importing USER EVALUATION from Excel: " + e.getMessage());
         }
 
         // close the database connection
@@ -878,12 +844,12 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         return true;
     }
 
-    public boolean deleteQuestionnaires() {
+    public boolean deleteEvaluations() {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_tblQUESTIONNAIRE, null, null);
+        long result = db.delete(cSQLDBHelper.TABLE_tblEVALUATION, null, null);
 
         // close the database connection
         db.close();
@@ -891,12 +857,12 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         return result > -1;
     }
 
-    public boolean deleteQuestionnaireQuestions() {
+    public boolean deleteEvaluationQuestions() {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_tblQUESTION_QUESTIONNAIRE, null, null);
+        long result = db.delete(cSQLDBHelper.TABLE_tblQUESTION_EVALUATION, null, null);
 
         // close the database connection
         db.close();
@@ -917,12 +883,12 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         return result > -1;
     }
 
-    public boolean deleteQuestionnaireUsers() {
+    public boolean deleteUserEvaluations() {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_tblQUESTIONNAIRE_USER, null, null);
+        long result = db.delete(cSQLDBHelper.TABLE_tblUSER_EVALUATION, null, null);
 
         // close the database connection
         db.close();
@@ -933,128 +899,123 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
     /* ############################### EVALUATION RESPONSE FUNCTIONS #############################*/
 
     @Override
-    public boolean addEResponseFromExcel() {
+    public boolean addEvaluationResponseFromExcel() {
         Workbook workbook = excelHelper.getWorkbookEVALUATION();
-        Sheet ERSheet = workbook.getSheet(cExcelHelper.SHEET_tblERESPONSE);
+        Sheet ERSheet = workbook.getSheet(cExcelHelper.SHEET_tblEVALUATION_RESPONSE);
 
         if (ERSheet == null) {
             return false;
         }
 
-        for (Iterator<Row> ritER = ERSheet.iterator(); ritER.hasNext(); ) {
-            Row cRow = ritER.next();
-
+        for (Row cRow : ERSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
             }
 
-            cEResponseModel eResponseModel = new cEResponseModel();
+            cEvaluationResponseModel eresponseModel = new cEvaluationResponseModel();
 
-            eResponseModel.setEresponseID((int)
+            eresponseModel.setEvaluationResponseID((int)
                     cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            eResponseModel.setQuestionID((int)
+            eresponseModel.setUserEvaluationID((int)
                     cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            eResponseModel.setQuestionnaireUserID((int)
-                    cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
 
-            int responseID, numericResponse = -1;
-            int textResponseID;
+            long responseID, numQuestionID = -1, txtQuestionID = -1, dateQuestionID = -1,
+                    arrQuestionID = -1, matQuestionID = -1, numericResponse = -1;
+            long textResponseID;
             String textResponse = null;
-            int dateResponseID;
+            long dateResponseID;
             Date dateResponse = null;
-            int arrayResponseID, arrayResponse = -1;
-            int matrixResponseID, matrixResponse = -1, rowResponse = 0, colResponse = 0;
+            long arrayResponseID, arrayResponse = -1;
+            long matrixResponseID, matrixResponse = -1, rowResponse = 0, colResponse = 0;
 
             /* get numeric responses */
 
             Sheet NRSheet = workbook.getSheet(cExcelHelper.SHEET_tblNUMERICRESPONSE);
-            for (Iterator<Row> ritNR = NRSheet.iterator(); ritNR.hasNext(); ) {
-                Row rowNR = ritNR.next();
-
+            for (Row rowNR : NRSheet) {
                 //just skip the row if row number is 0
                 if (rowNR.getRowNum() == 0) {
                     continue;
                 }
 
                 responseID = (int) rowNR.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (eResponseModel.getEresponseID() == responseID) {
-                    numericResponse = (int) rowNR.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                if (eresponseModel.getEvaluationResponseID() == responseID) {
+                    numQuestionID = (int) rowNR.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    numericResponse = (int) rowNR.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 }
             }
 
             /* get text responses */
 
             Sheet TRSheet = workbook.getSheet(cExcelHelper.SHEET_tblTEXTRESPONSE);
-            for (Iterator<Row> ritTR = TRSheet.iterator(); ritTR.hasNext(); ) {
-                Row rowTR = ritTR.next();
-
+            for (Row rowTR : TRSheet) {
                 //just skip the row if row number is 0
                 if (rowTR.getRowNum() == 0) {
                     continue;
                 }
 
                 textResponseID = (int) rowTR.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (eResponseModel.getEresponseID() == textResponseID) {
-                    textResponse = rowTR.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue();
+                if (eresponseModel.getEvaluationResponseID() == textResponseID) {
+                    txtQuestionID = (int) rowTR.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    textResponse = rowTR.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue();
                 }
             }
 
             /* get text responses */
 
             Sheet DRSheet = workbook.getSheet(cExcelHelper.SHEET_tblDATERESPONSE);
-            for (Iterator<Row> ritDR = DRSheet.iterator(); ritDR.hasNext(); ) {
-                Row rowDR = ritDR.next();
-
+            for (Row rowDR : DRSheet) {
                 //just skip the row if row number is 0
                 if (rowDR.getRowNum() == 0) {
                     continue;
                 }
 
                 dateResponseID = (int) rowDR.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (eResponseModel.getEresponseID() == dateResponseID) {
-                    dateResponse = rowDR.getCell(1, Row.CREATE_NULL_AS_BLANK).getDateCellValue();
+                if (eresponseModel.getEvaluationResponseID() == dateResponseID) {
+                    dateQuestionID = (int) rowDR.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    dateResponse = rowDR.getCell(2, Row.CREATE_NULL_AS_BLANK).getDateCellValue();
                 }
             }
 
             /* get array responses */
 
             Sheet ARSheet = workbook.getSheet(cExcelHelper.SHEET_tblARRAYRESPONSE);
-            for (Iterator<Row> ritAR = ARSheet.iterator(); ritAR.hasNext(); ) {
-                Row rowAR = ritAR.next();
-
+            for (Row rowAR : ARSheet) {
                 //just skip the row if row number is 0
                 if (rowAR.getRowNum() == 0) {
                     continue;
                 }
 
                 arrayResponseID = (int) rowAR.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (eResponseModel.getEresponseID() == arrayResponseID) {
-                    arrayResponse = (int) rowAR.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                if (eresponseModel.getEvaluationResponseID() == arrayResponseID) {
+                    arrQuestionID = (int) rowAR.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    arrayResponse = (int) rowAR.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 }
             }
 
             /* get matrix responses */
 
             Sheet MRSheet = workbook.getSheet(cExcelHelper.SHEET_tblMATRIXRESPONSE);
-            for (Iterator<Row> ritMR = MRSheet.iterator(); ritMR.hasNext(); ) {
-                Row rowMR = ritMR.next();
-
+            for (Row rowMR : MRSheet) {
                 //just skip the row if row number is 0
                 if (rowMR.getRowNum() == 0) {
                     continue;
                 }
 
                 matrixResponseID = (int) rowMR.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (eResponseModel.getEresponseID() == matrixResponseID) {
-                    matrixResponse = (int) rowMR.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    rowResponse = (int) rowMR.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    colResponse = (int) rowMR.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+
+                if (eresponseModel.getEvaluationResponseID() == matrixResponseID) {
+                    matQuestionID = (int) rowMR.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    matrixResponse = (int) rowMR.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    rowResponse = (int) rowMR.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    colResponse = (int) rowMR.getCell(4, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 }
             }
 
-            if (!addEResponse(eResponseModel, numericResponse,
-                    textResponse, dateResponse, arrayResponse, matrixResponse, rowResponse, colResponse)) {
+            if (!addEvaluationResponse(eresponseModel, numQuestionID, numericResponse,
+                    txtQuestionID, textResponse, dateQuestionID, dateResponse,
+                    arrQuestionID, arrayResponse, matQuestionID, matrixResponse,
+                    rowResponse, colResponse)) {
                 return false;
             }
         }
@@ -1062,9 +1023,12 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         return true;
     }
 
-    public boolean addEResponse(cEResponseModel eResponseModel, int numericResponse,
-                                String textResponse, Date dateResponse, int arrayResponse,
-                                int matrixResponse, int rowResponse, int colResponse) {
+    public boolean addEvaluationResponse(cEvaluationResponseModel eresponseModel, long numQuestionID,
+                                long numericResponse, long txtQuestionID, String textResponse,
+                                long dateQuestionID, Date dateResponse, long arrQuestionID,
+                                long arrayResponse, long matQuestionID, long matrixResponse,
+                                long rowResponse, long colResponse) {
+
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -1072,53 +1036,47 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, eResponseModel.getEresponseID());
-        cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, eResponseModel.getQuestionID());
-        cv.put(cSQLDBHelper.KEY_QUESTIONNAIRE_USER_FK_ID, eResponseModel.getQuestionnaireUserID());
+        cv.put(cSQLDBHelper.KEY_ID, eresponseModel.getEvaluationResponseID());
+        cv.put(cSQLDBHelper.KEY_USER_EVALUATION_FK_ID, eresponseModel.getUserEvaluationID());
 
         // insert evaluation type details
         try {
-            if (db.insert(cSQLDBHelper.TABLE_tblERESPONSE, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblEVALUATION_RESPONSE, null, cv) < 0) {
                 return false;
             }
 
             if (numericResponse != -1) {
-                if (addNumericResponse(eResponseModel.getEresponseID(), numericResponse))
-                    return true;
-                else
+                if (!addNumericResponse(eresponseModel.getEvaluationResponseID(), numQuestionID,
+                        numericResponse))
                     return false;
             }
 
             if (textResponse != null) {
-                if (addTextResponse(eResponseModel.getEresponseID(), textResponse))
-                    return true;
-                else
+                if (!addTextResponse(eresponseModel.getEvaluationResponseID(), txtQuestionID,
+                        textResponse))
                     return false;
             }
 
             if (dateResponse != null) {
-                if (addDateResponse(eResponseModel.getEresponseID(), dateResponse))
-                    return true;
-                else
+                if (!addDateResponse(eresponseModel.getEvaluationResponseID(), dateQuestionID,
+                        dateResponse))
                     return false;
             }
 
             if (arrayResponse != -1) {
-                if (addArrayResponse(eResponseModel.getEresponseID(), arrayResponse))
-                    return true;
-                else
+                if (!addArrayResponse(eresponseModel.getEvaluationResponseID(), arrQuestionID,
+                        arrayResponse))
                     return false;
             }
 
             if (matrixResponse != -1) {
-                if (addMatrixResponse(eResponseModel.getEresponseID(), matrixResponse, rowResponse, colResponse))
-                    return true;
-                else
+                if (!addMatrixResponse(eresponseModel.getEvaluationResponseID(), matQuestionID,
+                        matrixResponse, rowResponse, colResponse))
                     return false;
             }
 
         } catch (Exception e) {
-            Log.d(TAG, "Exception in importing EVALUATION RESPONSES from Excel: " + e.getMessage());
+            Log.d(TAG, "Exception in importing EVALUATION RESPONSE from Excel: " + e.getMessage());
         }
 
         // close the database connection
@@ -1127,7 +1085,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         return true;
     }
 
-    public boolean addNumericResponse(int eresponseID, int numericResponse) {
+    public boolean addNumericResponse(long eresponseID, long numQuestionID, long numericResponse) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -1135,8 +1093,9 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_RESPONSE_FK_ID, eresponseID);
-        cv.put(cSQLDBHelper.KEY_NUMERIC_RESPONSE_FK_ID, numericResponse);
+        cv.put(cSQLDBHelper.KEY_EVALUATION_RESPONSE_FK_ID, eresponseID);
+        cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, numQuestionID);
+        cv.put(cSQLDBHelper.KEY_NUMERIC_RESPONSE, numericResponse);
 
         // insert evaluation type details
         try {
@@ -1153,7 +1112,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         return true;
     }
 
-    public boolean addTextResponse(int eresponseID, String testResponse) {
+    public boolean addTextResponse(long eresponseID, long txtQuestionID, String testResponse) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -1161,8 +1120,9 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_RESPONSE_FK_ID, eresponseID);
-        cv.put(cSQLDBHelper.KEY_TEXT_RESPONSE_FK_ID, testResponse);
+        cv.put(cSQLDBHelper.KEY_EVALUATION_RESPONSE_FK_ID, eresponseID);
+        cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, txtQuestionID);
+        cv.put(cSQLDBHelper.KEY_TEXT_RESPONSE, testResponse);
 
         // insert evaluation type details
         try {
@@ -1179,7 +1139,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         return true;
     }
 
-    public boolean addDateResponse(int eresponseID, Date dateResponse) {
+    public boolean addDateResponse(long eresponseID, long dateQuestionID, Date dateResponse) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -1187,8 +1147,9 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_RESPONSE_FK_ID, eresponseID);
-        cv.put(cSQLDBHelper.KEY_DATE_RESPONSE_FK_ID, String.valueOf(dateResponse));
+        cv.put(cSQLDBHelper.KEY_EVALUATION_RESPONSE_FK_ID, eresponseID);
+        cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, dateQuestionID);
+        cv.put(cSQLDBHelper.KEY_DATE_RESPONSE, String.valueOf(dateResponse));
 
         // insert evaluation type details
         try {
@@ -1205,7 +1166,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         return true;
     }
 
-    public boolean addArrayResponse(int eresponseID, int arrayResponse) {
+    public boolean addArrayResponse(long eresponseID, long arrQuestionID, long arrayResponse) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -1213,7 +1174,8 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_RESPONSE_FK_ID, eresponseID);
+        cv.put(cSQLDBHelper.KEY_EVALUATION_RESPONSE_FK_ID, eresponseID);
+        cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, arrQuestionID);
         cv.put(cSQLDBHelper.KEY_ARRAY_RESPONSE_FK_ID, arrayResponse);
 
         // insert evaluation type details
@@ -1231,7 +1193,8 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         return true;
     }
 
-    public boolean addMatrixResponse(int eresponseID, int matrixResponse, int rowResponse, int colResponse) {
+    public boolean addMatrixResponse(long eresponseID, long matQuestionID, long matrixResponse,
+                                     long rowResponse, long colResponse) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -1239,7 +1202,8 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_RESPONSE_FK_ID, eresponseID);
+        cv.put(cSQLDBHelper.KEY_EVALUATION_RESPONSE_FK_ID, eresponseID);
+        cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, matQuestionID);
         cv.put(cSQLDBHelper.KEY_MATRIX_RESPONSE_FK_ID, matrixResponse);
         cv.put(cSQLDBHelper.KEY_ROW_RESPONSE_FK_ID, rowResponse);
         cv.put(cSQLDBHelper.KEY_COL_RESPONSE_FK_ID, colResponse);
@@ -1260,12 +1224,12 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         return true;
     }
 
-    public boolean deleteEResponses() {
+    public boolean deleteEvaluationResponses() {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_tblERESPONSE, null, null);
+        long result = db.delete(cSQLDBHelper.TABLE_tblEVALUATION_RESPONSE, null, null);
 
         // close the database connection
         db.close();

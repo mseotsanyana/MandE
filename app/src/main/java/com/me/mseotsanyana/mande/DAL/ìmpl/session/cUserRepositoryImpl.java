@@ -9,12 +9,14 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.repository.session.iUserRepository;
+import com.me.mseotsanyana.mande.DAL.model.logframe.cQuestionTypeModel;
 import com.me.mseotsanyana.mande.DAL.model.session.cAddressModel;
 import com.me.mseotsanyana.mande.DAL.model.session.cNotificationModel;
 import com.me.mseotsanyana.mande.DAL.model.session.cOrganizationModel;
 import com.me.mseotsanyana.mande.DAL.model.session.cRoleModel;
 import com.me.mseotsanyana.mande.DAL.model.session.cUserModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
+import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
 import com.me.mseotsanyana.mande.DAL.storage.preference.cSharedPreference;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
 
@@ -149,11 +151,7 @@ public class cUserRepositoryImpl implements iUserRepository {
         cv.put(cSQLDBHelper.KEY_USER_FK_ID, userID);
         cv.put(cSQLDBHelper.KEY_ADDRESS_FK_ID, addressID);
 
-        if (db.insert(cSQLDBHelper.TABLE_tblUSER_ADDRESS, null, cv) < 0) {
-            return false;
-        }
-
-        return true;
+        return db.insert(cSQLDBHelper.TABLE_tblUSER_ADDRESS, null, cv) >= 0;
     }
 
     /* ############################################# READ ACTIONS ############################################# */
@@ -227,6 +225,93 @@ public class cUserRepositoryImpl implements iUserRepository {
             }
         } catch (Exception e) {
             Log.d(TAG, "Error while trying to get user by email from database");
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+
+        // close the database connection
+        db.close();
+
+        return user;
+    }
+
+    /**
+     * return user
+     *
+     * @param userID user identification
+     * @param primaryRoleBITS primary role bits
+     * @param secondaryRoleBITS secondary role bits
+     * @param statusBITS status bits
+     * @return user
+     */
+    public cUserModel getUserModelByID(long userID, int primaryRoleBITS, int secondaryRoleBITS,
+                                       int statusBITS) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        // construct a selection query
+        String selectQuery = "SELECT * FROM " + cSQLDBHelper.TABLE_tblUSER +
+                " WHERE ((" + cSQLDBHelper.KEY_ID + "= ? ) AND " +
+                /* read access permissions */
+                /* organization creator is always allowed to do everything (i.e., where: userID = orgID)*/
+                " ((" + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
+                /* owner permission */
+                " OR ((((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OWNER_READ + ") != 0))" +
+                /* group (owner/primary organization) permission */
+                " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.GROUP_READ + ") != 0))" +
+                /* other (secondary organizations) permission */
+                " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OTHER_READ + ") != 0)))" +
+                /* owner, group and other permissions allowed when the statuses hold */
+                " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " = 0) " +
+                " OR ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0)))))";
+
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{
+                String.valueOf(userID),
+                String.valueOf(userID),           /* access due to organization creator */
+                String.valueOf(userID),           /* access due to record owner */
+                String.valueOf(primaryRoleBITS),  /* access due to membership in primary role */
+                String.valueOf(secondaryRoleBITS),/* access due to membership in secondary role */
+                String.valueOf(statusBITS)});     /* access due to assigned statuses */
+
+        cUserModel user = new cUserModel();;
+
+        try {
+            if (cursor.moveToFirst()) {
+
+                user.setUserID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                user.setOrganizationID(
+                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
+                user.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+                user.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                user.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+                user.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                user.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                user.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                user.setPhoto(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PHOTO)));
+                user.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                user.setSurname(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SURNAME)));
+                user.setGender(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_GENDER)));
+                user.setDescription(
+                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                user.setEmail(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_EMAIL)));
+                user.setWebsite(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_WEBSITE)));
+                user.setPhone(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PHONE)));
+                user.setPassword(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_PASSWORD)));
+                user.setSalt(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SALT)));
+                user.setCreatedDate(Timestamp.valueOf(
+                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                user.setModifiedDate(Timestamp.valueOf(
+                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                user.setSyncedDate(Timestamp.valueOf(
+                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Error while trying to get USER entity"+e.getMessage());
         } finally {
             if (cursor != null && !cursor.isClosed()) {
                 cursor.close();

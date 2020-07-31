@@ -63,9 +63,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
             return false;
         }
 
-        for (Iterator<Row> ritLogFrame = logFrameSheet.iterator(); ritLogFrame.hasNext(); ) {
-            Row cRow = ritLogFrame.next();
-
+        for (Row cRow : logFrameSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -81,9 +79,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
             int parentID, childID;
 
             Sheet logFrameTreeSheet = workbook.getSheet(cExcelHelper.SHEET_tblLOGFRAMETREE);
-            for (Iterator<Row> ritLogframeTree = logFrameTreeSheet.iterator(); ritLogframeTree.hasNext(); ) {
-                Row rowLogFrameTree = ritLogframeTree.next();
-
+            for (Row rowLogFrameTree : logFrameTreeSheet) {
                 //just skip the row if row number is 0
                 if (rowLogFrameTree.getRowNum() == 0) {
                     continue;
@@ -129,9 +125,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
 
             // add subLogFrame
             for (int childID : subLogFrameSet) {
-                if (addLogFrameTree(logFrameModel.getLogFrameID(), childID))
-                    continue;
-                else
+                if (!addLogFrameTree(logFrameModel.getLogFrameID(), childID))
                     return false;
             }
         } catch (Exception e) {
@@ -154,11 +148,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
 
         Gson gson = new Gson();
         Log.d(TAG, gson.toJson(parentID) + " -> " + gson.toJson(childID));
-        if (db.insert(cSQLDBHelper.TABLE_tblLOGFRAMETREE, null, cv) < 0) {
-            return false;
-        }
-
-        return true;
+        return db.insert(cSQLDBHelper.TABLE_tblLOGFRAMETREE, null, cv) >= 0;
     }
 
     /**
@@ -216,7 +206,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
             }
 
             // add subLogFrame
-            if (!addLogFrameTree(logParentFrameID, childLOgFrameID)){
+            if (!addLogFrameTree(logParentFrameID, childLOgFrameID)) {
                 return false;
             }
         } catch (Exception e) {
@@ -231,6 +221,99 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
 
 
     /*####################################### READ ACTIONS #######################################*/
+
+    /**
+     * This returns the logframe.
+     *
+     * @param logFrameID logframe identification
+     * @param userID user identification
+     * @param primaryRoleBITS primary role bits
+     * @param secondaryRoleBITS secondary role bits
+     * @param statusBITS status bits
+     * @return logframe
+     */
+    public cLogFrameModel getLogFrameModelByID(long logFrameID, long userID, int primaryRoleBITS,
+                                               int secondaryRoleBITS, int statusBITS) {
+
+        Set<cLogFrameModel> logFrameModelSet = new HashSet<>();
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String selectQuery = "SELECT * FROM " + cSQLDBHelper.TABLE_tblLOGFRAME +
+                " WHERE ((" + cSQLDBHelper.KEY_ID + "= ? ) AND " +
+                /* read access permissions */
+                /* organization creator is always allowed to do everything (i.e., where: userID = orgID)*/
+                " ((" + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
+                /* owner permission */
+                " OR ((((" + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OWNER_READ + ") != 0))" +
+                /* group (owner/primary organization) permission */
+                " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.GROUP_READ + ") != 0))" +
+                /* other (secondary organizations) permission */
+                " OR (((" + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
+                " AND ((" + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OTHER_READ + ") != 0)))" +
+                /* owner, group and other permissions allowed when the statuses hold */
+                " AND ((" + cSQLDBHelper.KEY_STATUS_BITS + " = 0) " +
+                " OR ((" + cSQLDBHelper.KEY_STATUS_BITS + " & ?) != 0)))))";
+
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{
+                String.valueOf(logFrameID),
+                String.valueOf(userID),
+                String.valueOf(userID),
+                String.valueOf(primaryRoleBITS),
+                String.valueOf(secondaryRoleBITS),
+                String.valueOf(statusBITS)});
+
+        cLogFrameModel logFrameModel = new cLogFrameModel();
+
+        try {
+            if (cursor.moveToFirst()) {
+
+                logFrameModel.setLogFrameID(
+                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                logFrameModel.setOrganizationID(
+                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
+                logFrameModel.setServerID(
+                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+                logFrameModel.setOwnerID(
+                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+                logFrameModel.setOrgID(
+                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+                logFrameModel.setGroupBITS(
+                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+                logFrameModel.setPermsBITS(
+                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+                logFrameModel.setStatusBITS(
+                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+                logFrameModel.setName(
+                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                logFrameModel.setDescription(
+                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                logFrameModel.setStartDate(Timestamp.valueOf(
+                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+                logFrameModel.setEndDate(Timestamp.valueOf(
+                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+                logFrameModel.setCreatedDate(Timestamp.valueOf(
+                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+                logFrameModel.setModifiedDate(Timestamp.valueOf(
+                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+                logFrameModel.setSyncedDate(Timestamp.valueOf(
+                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Error while trying to read LogFrame entity: " + e.getMessage());
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        // close the database connection
+        db.close();
+
+        return logFrameModel;
+    }
 
     public Set<cLogFrameModel> getLogFrameModelSet(long userID, int primaryRoleBITS,
                                                    int secondaryRoleBITS, int statusBITS) {
@@ -259,8 +342,8 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                 "logframe." + cSQLDBHelper.KEY_SYNCED_DATE +
                 " FROM " + cSQLDBHelper.TABLE_tblLOGFRAME + " logframe " +
                 " LEFT JOIN " + cSQLDBHelper.TABLE_tblLOGFRAMETREE + " logframe_tree " +
-                " ON logframe."+cSQLDBHelper.KEY_ID + " = logframe_tree."+cSQLDBHelper.KEY_CHILD_FK_ID +
-                " WHERE ("+
+                " ON logframe." + cSQLDBHelper.KEY_ID + " = logframe_tree." + cSQLDBHelper.KEY_CHILD_FK_ID +
+                " WHERE (" +
                 /* read access permissions */
                 /* organization creator is always allowed to do everything (i.e., where: userID = orgID) */
                 " ((logframe." + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
@@ -314,7 +397,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                     logFrameModel.setStartDate(Timestamp.valueOf(
                             cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
                     logFrameModel.setEndDate(Timestamp.valueOf(
-                           cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
                     logFrameModel.setCreatedDate(Timestamp.valueOf(
                             cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
                     logFrameModel.setModifiedDate(Timestamp.valueOf(
@@ -426,9 +509,9 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                         /* read access permissions */
                         /* organization creator is always allowed to do everything (i.e., where:
                            userID = orgID)*/
-                        " ((logframe." +cSQLDBHelper.KEY_ORG_ID + " = ?) " +
+                        " ((logframe." + cSQLDBHelper.KEY_ORG_ID + " = ?) " +
                         /* owner permission */
-                        " OR ((((logframe." +cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
+                        " OR ((((logframe." + cSQLDBHelper.KEY_OWNER_ID + " = ?) " +
                         " AND ((logframe." + cSQLDBHelper.KEY_PERMS_BITS + " & " + cBitwise.OWNER_READ + ") != 0))" +
                         /* group (owner/primary organization) permission */
                         " OR (((logframe." + cSQLDBHelper.KEY_GROUP_BITS + " & ?) != 0) " +
@@ -500,6 +583,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
 
         return logFrameModelSet;
     }
+
 
     /**
      * This returns a set of impact entities.
@@ -1524,14 +1608,14 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
 
     /* ######################################## UPDATE ACTIONS ########################################*/
 
-    public boolean updateLogFrameModel(cLogFrameModel logFrameModel){
+    public boolean updateLogFrameModel(cLogFrameModel logFrameModel) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // create content object for storing data
         ContentValues cv = new ContentValues();
 
-        Date date= new Date();
+        Date date = new Date();
         Timestamp timestamp = new Timestamp(date.getTime());
 
         // assign values to the table fields
@@ -1544,7 +1628,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
 
         // update a specific record
         long result = db.update(cSQLDBHelper.TABLE_tblLOGFRAME, cv,
-                        cSQLDBHelper.KEY_ID + "= ?",
+                cSQLDBHelper.KEY_ID + "= ?",
                 new String[]{String.valueOf(logFrameModel.getLogFrameID())});
 
         // close the database connection

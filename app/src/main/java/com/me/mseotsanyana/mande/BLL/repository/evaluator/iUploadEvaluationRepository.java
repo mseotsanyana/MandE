@@ -8,11 +8,11 @@ public interface iUploadEvaluationRepository {
     boolean deleteMatrixChoices();
     boolean deleteMatrixChoiceSets();
     boolean deleteEvaluationTypes();
-    boolean deleteQuestionnaires();
-    boolean deleteQuestionnaireQuestions();
+    boolean deleteEvaluations();
+    boolean deleteEvaluationQuestions();
     boolean deleteConditionalOrders();
-    boolean deleteQuestionnaireUsers();
-    boolean deleteEResponses();
+    boolean deleteUserEvaluations();
+    boolean deleteEvaluationResponses();
     boolean deleteNumericResponses();
     boolean deleteTextResponses();
     boolean deleteDateResponses();
@@ -24,6 +24,6 @@ public interface iUploadEvaluationRepository {
     boolean addColOptionFromExcel();
     boolean addMatrixChoiceFromExcel();
     boolean addEvaluationTypeFromExcel();
-    boolean addQuestionnaireFromExcel();
-    boolean addEResponseFromExcel();
+    boolean addEvaluationFromExcel();
+    boolean addEvaluationResponseFromExcel();
 }

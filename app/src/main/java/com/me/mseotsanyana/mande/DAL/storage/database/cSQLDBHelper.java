@@ -17,7 +17,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     // Database Name
     private static final String DATABASE_NAME = "MEDB.db";
     // Database Version
-    private static final int DATABASE_VERSION = 102;
+    private static final int DATABASE_VERSION = 104;
 
     /*################################ START GLOBAL MODULE TABLES ################################*/
 
@@ -152,23 +152,23 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
 
     /*############################# START EVALUATION MODULE TABLES ###############################*/
 
-    public static final String TABLE_tblARRAYCHOICE            = "tblARRAYCHOICE";           /* 1 */
-    public static final String TABLE_tblARRAYCHOICESET         = "tblARRAYCHOICESET";        /* 2 */
-    public static final String TABLE_tblROWOPTION              = "tblROWOPTION";             /* 3 */
-    public static final String TABLE_tblCOLOPTION              = "tblCOLOPTION";             /* 4 */
-    public static final String TABLE_tblMATRIXCHOICE           = "tblMATRIXCHOICE";          /* 5 */
-    public static final String TABLE_tblMATRIXCHOICESET        = "tblMATRIXCHOICESET";       /* 6 */
-    public static final String TABLE_tblEVALUATIONTYPE         = "tblEVALUATIONTYPE";        /* 7 */
-    public static final String TABLE_tblQUESTIONNAIRE          = "tblQUESTIONNAIRE";         /* 8 */
-    public static final String TABLE_tblQUESTION_QUESTIONNAIRE = "tblQUESTION_QUESTIONNAIRE";/* 9 */
-    public static final String TABLE_tblCONDITIONAL_ORDER      = "tblCONDITIONAL_ORDER";     /* 10*/
-    public static final String TABLE_tblQUESTIONNAIRE_USER     = "tblQUESTIONNAIRE_USER";    /* 11*/
-    public static final String TABLE_tblERESPONSE              = "tblERESPONSE";             /* 12*/
-    public static final String TABLE_tblNUMERICRESPONSE        = "tblNUMERICRESPONSE";       /* 13*/
-    public static final String TABLE_tblTEXTRESPONSE           = "tblTEXTRESPONSE";          /* 14*/
-    public static final String TABLE_tblDATERESPONSE           = "tblDATERESPONSE";          /* 15*/
-    public static final String TABLE_tblARRAYRESPONSE          = "tblARRAYRESPONSE";         /* 16*/
-    public static final String TABLE_tblMATRIXRESPONSE         = "tblMATRIXRESPONSE";        /* 17*/
+    public static final String TABLE_tblARRAYCHOICE         = "tblARRAYCHOICE";           /* 1 */
+    public static final String TABLE_tblARRAYCHOICESET      = "tblARRAYCHOICESET";        /* 2 */
+    public static final String TABLE_tblROWOPTION           = "tblROWOPTION";             /* 3 */
+    public static final String TABLE_tblCOLOPTION           = "tblCOLOPTION";             /* 4 */
+    public static final String TABLE_tblMATRIXCHOICE        = "tblMATRIXCHOICE";          /* 5 */
+    public static final String TABLE_tblMATRIXCHOICESET     = "tblMATRIXCHOICESET";       /* 6 */
+    public static final String TABLE_tblEVALUATIONTYPE      = "tblEVALUATIONTYPE";        /* 7 */
+    public static final String TABLE_tblEVALUATION          = "tblEVALUATION";            /* 8 */
+    public static final String TABLE_tblQUESTION_EVALUATION = "tblQUESTION_EVALUATION";   /* 9 */
+    public static final String TABLE_tblCONDITIONAL_ORDER   = "tblCONDITIONAL_ORDER";     /* 10*/
+    public static final String TABLE_tblUSER_EVALUATION     = "tblUSER_EVALUATION";       /* 11*/
+    public static final String TABLE_tblEVALUATION_RESPONSE = "tblEVALUATION_RESPONSE";   /* 12*/
+    public static final String TABLE_tblNUMERICRESPONSE     = "tblNUMERICRESPONSE";       /* 13*/
+    public static final String TABLE_tblTEXTRESPONSE        = "tblTEXTRESPONSE";          /* 14*/
+    public static final String TABLE_tblDATERESPONSE        = "tblDATERESPONSE";          /* 15*/
+    public static final String TABLE_tblARRAYRESPONSE       = "tblARRAYRESPONSE";         /* 16*/
+    public static final String TABLE_tblMATRIXRESPONSE      = "tblMATRIXRESPONSE";        /* 17*/
 
     /*############################## END EVALUATION MODULE TABLES ################################*/
 
@@ -275,6 +275,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     public static final String KEY_COL_OPTION_FK_ID = "_id_col_option_fk";
     public static final String KEY_MATRIX_CHOICE_FK_ID = "_id_matrix_choice_fk";
     public static final String KEY_EVALUATION_CRITERIA_FK_ID = "_id_evaluation_criteria_fk";
+    public static final String KEY_EVALUATION_FK_ID = "_id_evaluation_fk";
     public static final String KEY_RAID_FK_ID = "_id_raid_fk";
     public static final String KEY_RESOURCE_FK_ID = "_id_resource_fk";
     public static final String KEY_ADDRESS_FK_ID = "_id_address_fk";
@@ -290,7 +291,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     public static final String KEY_NOTIFICATION_FK_ID = "_id_notification_fk";
     public static final String KEY_SETTING_FK_ID = "_id_setting_fk";
 
-    public static final String KEY_QUESTIONNAIRE_FK_ID = "_id_questionnaire_fk";
+    //public static final String KEY_EVALUATION_FK_ID = "_id_evaluation_fk";
     public static final String KEY_QUESTION_ORDER_FK_ID = "_id_question_order_fk";
     public static final String KEY_QUESTION_RESPONSE_FK_ID = "_id_question_response_fk";
     public static final String KEY_POS_RES_ORDER_FK_ID = "_id_pos_res_order_fk";
@@ -304,9 +305,10 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
 
     public static final String KEY_MRESPONSE_FK_ID = "_id_mresponse_fk";
 
-    public static final String KEY_NUMERIC_RESPONSE_FK_ID = "_id_numeric_response_fk";
-    public static final String KEY_TEXT_RESPONSE_FK_ID = "_id_text_response_fk";
-    public static final String KEY_DATE_RESPONSE_FK_ID = "_id_date_response_fk";
+    public static final String KEY_EVALUATION_RESPONSE_FK_ID = "_id_evaluation_response_fk";
+    public static final String KEY_NUMERIC_RESPONSE = "_id_numeric_response";
+    public static final String KEY_TEXT_RESPONSE = "_id_text_response";
+    public static final String KEY_DATE_RESPONSE = "_id_date_response";
     public static final String KEY_ARRAY_RESPONSE_FK_ID = "_id_array_response_fk";
     public static final String KEY_MATRIX_RESPONSE_FK_ID = "_id_matrix_response_fk";
     public static final String KEY_ROW_RESPONSE_FK_ID = "_id_row_response_fk";
@@ -325,8 +327,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     public static final String KEY_DOCUMENT_FK_ID = "_id_document_fk";
     public static final String KEY_TRANSACTION_FK_ID = "_id_transaction_fk";
 
-    public static final String KEY_QUESTIONNAIRE_USER_FK_ID = "_id_questionnaire_user_fk";
-    public static final String KEY_RESPONSE_FK_ID = "_id_response_fk";
+    public static final String KEY_USER_EVALUATION_FK_ID = "_id_user_evaluation_fk";
     public static final String KEY_FREQUENCY_FK_ID = "_id_frequency_fk";
     public static final String KEY_RISK_REGISTER_FK_ID = "_id_risk_register_fk";
     public static final String KEY_RISK_LIKELIHOOD_FK_ID = "_id_risk_likelihood_fk";
@@ -471,15 +472,6 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_tblFUNDER = "CREATE TABLE " +
             TABLE_tblFUNDER + "("
             + KEY_ORGANIZATION_FK_ID + " INTEGER NOT NULL, "
-            /*+ KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "*/
             + "PRIMARY KEY (" + KEY_ORGANIZATION_FK_ID + "), "
             + "FOREIGN KEY (" + KEY_ORGANIZATION_FK_ID + ") "
             + "REFERENCES " + TABLE_tblORGANIZATION + "(" + KEY_ID + ") "
@@ -491,15 +483,6 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_tblBENEFICIARY = "CREATE TABLE " +
             TABLE_tblBENEFICIARY + "("
             + KEY_ORGANIZATION_FK_ID + " INTEGER NOT NULL, "
-            /*+ KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "*/
             + "PRIMARY KEY (" + KEY_ORGANIZATION_FK_ID + "), "
             + "FOREIGN KEY (" + KEY_ORGANIZATION_FK_ID + ") "
             + "REFERENCES " + TABLE_tblORGANIZATION + "(" + KEY_ID + ") "
@@ -511,15 +494,6 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_tblIMPLEMENTINGAGENCY = "CREATE TABLE " +
             TABLE_tblIMPLEMENTINGAGENCY+ "("
             + KEY_ORGANIZATION_FK_ID + " INTEGER NOT NULL, "
-            /*+ KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "*/
             + "PRIMARY KEY (" + KEY_ORGANIZATION_FK_ID + "), "
             + "FOREIGN KEY (" + KEY_ORGANIZATION_FK_ID + ") "
             + "REFERENCES " + TABLE_tblORGANIZATION + "(" + KEY_ID + ") "
@@ -1263,19 +1237,6 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_WORKPLAN_FK_ID + " INTEGER NOT NULL, "
             + KEY_PARENT_FK_ID + " INTEGER DEFAULT NULL, "
             + KEY_OUTPUT_FK_ID + " INTEGER NOT NULL, "
-            /*
-            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
-            + KEY_START_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_END_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            */
             + " PRIMARY KEY (" + KEY_WORKPLAN_FK_ID + " ), "
             + " FOREIGN KEY (" + KEY_WORKPLAN_FK_ID + ") "
             + " REFERENCES " + TABLE_tblWORKPLAN + " (" + KEY_ID + ") "
@@ -2422,6 +2383,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
             + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
+            + KEY_DESCRIPTION + " TEXT, "
             + KEY_ENTRY_TYPE + " INTEGER, "
             + KEY_AMOUNT + " DOUBLE, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -3010,8 +2972,8 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     //-- -------------------------------------------------------------------------------------------
     //-- Table `tblQUESTIONNAIRE` (8)
     //-- -------------------------------------------------------------------------------------------
-    private static final String CREATE_TABLE_tblQUESTIONNAIRE = "CREATE TABLE " +
-            TABLE_tblQUESTIONNAIRE + "("
+    private static final String CREATE_TABLE_tblEVALUATION = "CREATE TABLE " +
+            TABLE_tblEVALUATION + "("
             + KEY_ID + " INTEGER NOT NULL, "
             + KEY_EVALUATION_TYPE_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
@@ -3031,14 +2993,14 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + " ON DELETE CASCADE ON UPDATE CASCADE);";
 
     //-- -------------------------------------------------------------------------------------------
-    //-- Table `tblQUESTION_QUESTIONNAIRE` (9)
+    //-- Table `tblQUESTION_EVALUATION` (9)
     //-- -------------------------------------------------------------------------------------------
 
-    private static final String CREATE_TABLE_tblQUESTION_QUESTIONNAIRE = "CREATE TABLE " +
-            TABLE_tblQUESTION_QUESTIONNAIRE + "("
+    private static final String CREATE_TABLE_tblQUESTION_EVALUATION = "CREATE TABLE " +
+            TABLE_tblQUESTION_EVALUATION + "("
             + KEY_ID + " INTEGER NOT NULL, "
             + KEY_QUESTION_FK_ID + " INTEGER NOT NULL, "
-            + KEY_QUESTIONNAIRE_FK_ID + " INTEGER NOT NULL, "
+            + KEY_EVALUATION_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
@@ -3052,8 +3014,8 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + " FOREIGN KEY (" + KEY_QUESTION_FK_ID + ") "
             + " REFERENCES " + TABLE_tblQUESTION + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_QUESTIONNAIRE_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblQUESTIONNAIRE + " (" + KEY_ID + ") "
+            + " FOREIGN KEY (" + KEY_EVALUATION_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblEVALUATION + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- -------------------------------------------------------------------------------------------
@@ -3078,28 +3040,28 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + "PRIMARY KEY (" + KEY_ID + "),"
             + " FOREIGN KEY (" + KEY_QUESTION_ORDER_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblQUESTION_QUESTIONNAIRE + " (" + KEY_ID + ") "
+            + " REFERENCES " + TABLE_tblQUESTION_EVALUATION + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
             + " FOREIGN KEY (" + KEY_QUESTION_RESPONSE_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblQUESTION_QUESTIONNAIRE + " (" + KEY_ID + ") "
+            + " REFERENCES " + TABLE_tblQUESTION_EVALUATION + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
             + " FOREIGN KEY (" + KEY_POS_RES_ORDER_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblQUESTION_QUESTIONNAIRE + " (" + KEY_ID + ") "
+            + " REFERENCES " + TABLE_tblQUESTION_EVALUATION + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
             + " FOREIGN KEY (" + KEY_NEG_RES_ORDER_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblQUESTION_QUESTIONNAIRE + " (" + KEY_ID + ") "
+            + " REFERENCES " + TABLE_tblQUESTION_EVALUATION + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
 
     //-- -------------------------------------------------------------------------------------------
-    //-- Table `tblQUESTIONNAIRE_USER ` (11)
+    //-- Table `tblUSER_EVALUATION ` (11)
     //-- -------------------------------------------------------------------------------------------
 
-    private static final String CREATE_TABLE_tblQUESTIONNAIRE_USER = "CREATE TABLE " +
-            TABLE_tblQUESTIONNAIRE_USER + "("
+    private static final String CREATE_TABLE_tblUSER_EVALUATION = "CREATE TABLE " +
+            TABLE_tblUSER_EVALUATION + "("
             + KEY_ID + " INTEGER NOT NULL, "
             + KEY_USER_FK_ID + " INTEGER NOT NULL, "
-            + KEY_QUESTIONNAIRE_FK_ID + " INTEGER NOT NULL, "
+            + KEY_EVALUATION_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
@@ -3113,19 +3075,18 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + " FOREIGN KEY (" + KEY_USER_FK_ID + ") "
             + " REFERENCES " + TABLE_tblUSER + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_QUESTIONNAIRE_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblQUESTIONNAIRE + " (" + KEY_ID + ") "
+            + " FOREIGN KEY (" + KEY_EVALUATION_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblEVALUATION + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- -------------------------------------------------------------------------------------------
-    //-- Table `tblRESPONSE` (12)
+    //-- Table `tblEVALUATION_RESPONSE` (12)
     //-- -------------------------------------------------------------------------------------------
 
-    private static final String CREATE_TABLE_tblERESPONSE = "CREATE TABLE " +
-            TABLE_tblERESPONSE+ "("
+    private static final String CREATE_TABLE_tblEVALUATION_RESPONSE = "CREATE TABLE " +
+            TABLE_tblEVALUATION_RESPONSE+ "("
             + KEY_ID + " INTEGER NOT NULL, "
-            + KEY_QUESTION_FK_ID + " INTEGER NOT NULL, "
-            + KEY_QUESTIONNAIRE_USER_FK_ID + " INTEGER NOT NULL, "
+            + KEY_USER_EVALUATION_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
@@ -3136,11 +3097,8 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + "PRIMARY KEY (" + KEY_ID + "),"
-            + " FOREIGN KEY (" + KEY_QUESTION_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblQUESTION + " (" + KEY_ID + ") "
-            + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_QUESTIONNAIRE_USER_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblQUESTIONNAIRE_USER + " (" + KEY_ID + ") "
+            + " FOREIGN KEY (" + KEY_USER_EVALUATION_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblUSER_EVALUATION + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- -------------------------------------------------------------------------------------------
@@ -3149,20 +3107,15 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_tblNUMERICRESPONSE = "CREATE TABLE " +
             TABLE_tblNUMERICRESPONSE+ "("
-            + KEY_RESPONSE_FK_ID + " INTEGER NOT NULL, "
-            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
-            + KEY_NUMERIC_RESPONSE_FK_ID + " INTEGER NOT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + "PRIMARY KEY (" + KEY_RESPONSE_FK_ID + "),"
-            + " FOREIGN KEY (" + KEY_RESPONSE_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblERESPONSE + " (" + KEY_ID + ") "
+            + KEY_EVALUATION_RESPONSE_FK_ID + " INTEGER NOT NULL, "
+            + KEY_QUESTION_FK_ID + " INTEGER NOT NULL, "
+            + KEY_NUMERIC_RESPONSE + " INTEGER NOT NULL, "
+            + " PRIMARY KEY (" + KEY_EVALUATION_RESPONSE_FK_ID + "),"
+            + " FOREIGN KEY (" + KEY_QUESTION_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblQUESTION + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_EVALUATION_RESPONSE_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblEVALUATION_RESPONSE + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- -------------------------------------------------------------------------------------------
@@ -3171,20 +3124,15 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_tblTEXTRESPONSE = "CREATE TABLE " +
             TABLE_tblTEXTRESPONSE+ "("
-            + KEY_RESPONSE_FK_ID + " INTEGER NOT NULL, "
-            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
-            + KEY_TEXT_RESPONSE_FK_ID + " TEXT NOT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + "PRIMARY KEY (" + KEY_RESPONSE_FK_ID + "),"
-            + " FOREIGN KEY (" + KEY_RESPONSE_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblERESPONSE + " (" + KEY_ID + ") "
+            + KEY_EVALUATION_RESPONSE_FK_ID + " INTEGER NOT NULL, "
+            + KEY_QUESTION_FK_ID + " INTEGER NOT NULL, "
+            + KEY_TEXT_RESPONSE + " TEXT NOT NULL, "
+            + "PRIMARY KEY (" + KEY_EVALUATION_RESPONSE_FK_ID + "),"
+            + " FOREIGN KEY (" + KEY_QUESTION_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblQUESTION + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_EVALUATION_RESPONSE_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblEVALUATION_RESPONSE + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- -------------------------------------------------------------------------------------------
@@ -3193,20 +3141,15 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_tblDATERESPONSE = "CREATE TABLE " +
             TABLE_tblDATERESPONSE+ "("
-            + KEY_RESPONSE_FK_ID + " INTEGER NOT NULL, "
-            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
-            + KEY_DATE_RESPONSE_FK_ID + " DATE NOT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + "PRIMARY KEY (" + KEY_RESPONSE_FK_ID + "),"
-            + " FOREIGN KEY (" + KEY_RESPONSE_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblERESPONSE + " (" + KEY_ID + ") "
+            + KEY_EVALUATION_RESPONSE_FK_ID + " INTEGER NOT NULL, "
+            + KEY_QUESTION_FK_ID + " INTEGER NOT NULL, "
+            + KEY_DATE_RESPONSE + " DATE NOT NULL, "
+            + " PRIMARY KEY (" + KEY_EVALUATION_RESPONSE_FK_ID + "),"
+            + " FOREIGN KEY (" + KEY_QUESTION_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblQUESTION + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_EVALUATION_RESPONSE_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblEVALUATION_RESPONSE + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- -------------------------------------------------------------------------------------------
@@ -3215,20 +3158,18 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_tblARRAYRESPONSE = "CREATE TABLE " +
             TABLE_tblARRAYRESPONSE+ "("
-            + KEY_RESPONSE_FK_ID + " INTEGER NOT NULL, "
-            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
+            + KEY_EVALUATION_RESPONSE_FK_ID + " INTEGER NOT NULL, "
+            + KEY_QUESTION_FK_ID + " INTEGER NOT NULL, "
             + KEY_ARRAY_RESPONSE_FK_ID + " INTEGER NOT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + "PRIMARY KEY (" + KEY_RESPONSE_FK_ID + "),"
-            + " FOREIGN KEY (" + KEY_RESPONSE_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblERESPONSE + " (" + KEY_ID + ") "
+            + " PRIMARY KEY (" + KEY_EVALUATION_RESPONSE_FK_ID + "),"
+            + " FOREIGN KEY (" + KEY_ARRAY_RESPONSE_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblARRAYCHOICE + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_QUESTION_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblQUESTION + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_EVALUATION_RESPONSE_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblEVALUATION_RESPONSE + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     //-- -------------------------------------------------------------------------------------------
@@ -3237,22 +3178,26 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_tblMATRIXRESPONSE = "CREATE TABLE " +
             TABLE_tblMATRIXRESPONSE+ "("
-            + KEY_RESPONSE_FK_ID + " INTEGER NOT NULL, "
-            + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
-            + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
-            + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
-            + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
+            + KEY_EVALUATION_RESPONSE_FK_ID + " INTEGER NOT NULL, "
+            + KEY_QUESTION_FK_ID + " INTEGER NOT NULL, "
             + KEY_MATRIX_RESPONSE_FK_ID + " INTEGER NOT NULL, "
             + KEY_ROW_RESPONSE_FK_ID + " INTEGER NOT NULL, "
             + KEY_COL_RESPONSE_FK_ID + " INTEGER NOT NULL, "
-            + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
-            + "PRIMARY KEY (" + KEY_RESPONSE_FK_ID + "),"
-            + " FOREIGN KEY (" + KEY_RESPONSE_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblERESPONSE + " (" + KEY_ID + ") "
+            + " PRIMARY KEY (" + KEY_EVALUATION_RESPONSE_FK_ID + "),"
+            + " FOREIGN KEY (" + KEY_COL_RESPONSE_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblCOLOPTION + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_ROW_RESPONSE_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblROWOPTION + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_MATRIX_RESPONSE_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblMATRIXCHOICE + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_QUESTION_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblQUESTION + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_EVALUATION_RESPONSE_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblEVALUATION_RESPONSE + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE); ";
 
     /*#################################### END EVALUATION MODULE #################################*/
@@ -3669,6 +3614,10 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
         /* drop all tables */
         dropTables(db);
 
+        db.execSQL("DROP TABLE IF EXISTS " + "tblQUESTIONNAIRE");
+        db.execSQL("DROP TABLE IF EXISTS " + "tblQUESTION_QUESTIONNAIRE");
+        db.execSQL("DROP TABLE IF EXISTS " + "tblQUESTIONNAIRE_USER");
+        db.execSQL("DROP TABLE IF EXISTS " + "tblERESPONSE");
         /*db.execSQL("DROP TABLE IF EXISTS " + "tblISSUE");
         db.execSQL("DROP TABLE IF EXISTS " + "tblRISKISSUE");
         db.execSQL("DROP TABLE IF EXISTS " + "tblLIKELIHOOD");
@@ -3785,9 +3734,9 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
                 CREATE_TABLE_tblARRAYCHOICE, CREATE_TABLE_tblARRAYCHOICESET,
                 CREATE_TABLE_tblROWOPTION, CREATE_TABLE_tblCOLOPTION,
                 CREATE_TABLE_tblMATRIXCHOICE, CREATE_TABLE_tblMATRIXCHOICESET,
-                CREATE_TABLE_tblEVALUATIONTYPE, CREATE_TABLE_tblQUESTIONNAIRE,
-                CREATE_TABLE_tblQUESTION_QUESTIONNAIRE, CREATE_TABLE_tblCONDITIONAL_ORDER,
-                CREATE_TABLE_tblQUESTIONNAIRE_USER, CREATE_TABLE_tblERESPONSE,
+                CREATE_TABLE_tblEVALUATIONTYPE, CREATE_TABLE_tblEVALUATION,
+                CREATE_TABLE_tblQUESTION_EVALUATION, CREATE_TABLE_tblCONDITIONAL_ORDER,
+                CREATE_TABLE_tblUSER_EVALUATION, CREATE_TABLE_tblEVALUATION_RESPONSE,
                 CREATE_TABLE_tblNUMERICRESPONSE, CREATE_TABLE_tblTEXTRESPONSE,
                 CREATE_TABLE_tblDATERESPONSE, CREATE_TABLE_tblARRAYRESPONSE,
                 CREATE_TABLE_tblMATRIXRESPONSE
@@ -3899,8 +3848,8 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
         String[] evaluation_tables = new String[]{
                 TABLE_tblARRAYCHOICE, TABLE_tblARRAYCHOICESET, TABLE_tblROWOPTION,
                 TABLE_tblCOLOPTION, TABLE_tblMATRIXCHOICE, TABLE_tblMATRIXCHOICESET,
-                TABLE_tblEVALUATIONTYPE, TABLE_tblQUESTIONNAIRE, TABLE_tblQUESTION_QUESTIONNAIRE,
-                TABLE_tblCONDITIONAL_ORDER, TABLE_tblQUESTIONNAIRE_USER, TABLE_tblERESPONSE,
+                TABLE_tblEVALUATIONTYPE, TABLE_tblEVALUATION, TABLE_tblQUESTION_EVALUATION,
+                TABLE_tblCONDITIONAL_ORDER, TABLE_tblUSER_EVALUATION, TABLE_tblEVALUATION_RESPONSE,
                 TABLE_tblNUMERICRESPONSE, TABLE_tblTEXTRESPONSE, TABLE_tblDATERESPONSE,
                 TABLE_tblARRAYRESPONSE, TABLE_tblMATRIXRESPONSE
         };
@@ -4939,7 +4888,6 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + "PRIMARY KEY (" + KEY_MONITORING_FK_ID + ", " + KEY_QUESTION_FK_ID + "));";
 
     // EVALUATION_QUESTIONNAIRE table - column names
-    private static final String KEY_EVALUATION_FK_ID = "_id_monitoring_fk";
     private static final String KEY_EVALUATION_QUESTIONNAIRE_OWNER_ID = "_id_owner";
 
     // EVALUATION_QUESTIONNAIRE table - create statement

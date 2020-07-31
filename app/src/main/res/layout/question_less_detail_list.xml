@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:padding="4dp"
+
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="6dp"
+        card_view:cardElevation="6dp"
+        card_view:contentPadding="7dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableLayout
+                android:id="@+id/tableLayoutQuestion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout_constraintStart_toStartOf="parent"
+                tools:layout_constraintTop_toTopOf="parent">
+
+                <TableRow
+                    android:layout_width="377dp"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textViewLabelCaption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/question_label"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_size_small"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textViewLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Question identifier"
+                        android:textSize="@dimen/text_size_small_medium"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/textViewQuestionCaption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/question_caption"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_size_small" />
+
+                    <TextView
+                        android:id="@+id/textViewQuestion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Question"
+                        android:textSize="@dimen/text_size_small_medium" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/textViewQuestionTypeCaption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/question_type"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_size_small" />
+
+                    <TextView
+                        android:id="@+id/textViewQuestionType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Question Type"
+                        android:textSize="@dimen/text_size_small_medium" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/textViewDescriptionCaption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/question_description"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_size_small" />
+
+                    <TextView
+                        android:id="@+id/textViewDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Description"
+                        android:textSize="@dimen/text_size_small_medium" />
+
+                </TableRow>
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/textViewGroupCaption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/question_group"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_size_small" />
+
+                    <TextView
+                        android:id="@+id/textViewGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Group"
+                        android:textSize="@dimen/text_size_small_medium" />
+
+                </TableRow>
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/textViewGroupDescriptionCaption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/question_group_description"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_size_small" />
+
+                    <TextView
+                        android:id="@+id/textViewGroupDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Group Description"
+                        android:textSize="@dimen/text_size_small_medium" />
+
+                </TableRow>
+            </TableLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewStartDateCaption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/question_valid_startdate"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/textViewStartDate"
+                app:layout_constraintTop_toBottomOf="@id/tableLayoutQuestion"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewStartDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:text="value"
+                android:textSize="@dimen/text_size_small"
+                app:layout_constraintEnd_toStartOf="@+id/textViewEndDateCaption"
+                app:layout_constraintTop_toBottomOf="@id/tableLayoutQuestion" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewEndDateCaption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="2dp"
+                android:text="@string/question_to_enddate"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/textViewEndDate"
+                app:layout_constraintTop_toBottomOf="@id/tableLayoutQuestion" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewEndDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:text="value"
+                android:textSize="@dimen/text_size_small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tableLayoutQuestion" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

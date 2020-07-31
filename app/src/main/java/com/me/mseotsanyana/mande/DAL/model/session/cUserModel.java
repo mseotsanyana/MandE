@@ -1,6 +1,5 @@
 package com.me.mseotsanyana.mande.DAL.model.session;
 
-
 import android.os.Parcel;
 import android.os.Parcelable;
 

@@ -1,10 +1,9 @@
 package com.me.mseotsanyana.mande.PL.ui.views;
 
 import android.view.View;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import androidx.cardview.widget.CardView;
-import com.me.mseotsanyana.bmblibrary.cBoomMenuButton;
-import com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout;
 import com.me.mseotsanyana.placeholderview.annotationlibrary.Keep;
 import com.me.mseotsanyana.placeholderviewlibrary.$.R;
 import com.me.mseotsanyana.placeholderviewlibrary.cExpandableViewBinder;
@@ -43,18 +42,16 @@ public class cQuestionBodyView$cExpandableViewBinder extends cExpandableViewBind
 
   @Override
   protected void bindViews(cQuestionBodyView resolver, View itemView) {
-    resolver.cardView = (CardView)itemView.findViewById(R.id.cardView);
-    resolver.textViewNameCaption = (TextView)itemView.findViewById(R.id.textViewNameCaption);
-    resolver.textViewName = (TextView)itemView.findViewById(R.id.textViewName);
+    resolver.cardViewQuestion = (CardView)itemView.findViewById(R.id.cardViewQuestion);
+    resolver.tableLayoutQuestion = (TableLayout)itemView.findViewById(R.id.tableLayoutQuestion);
+    resolver.textViewLabel = (TextView)itemView.findViewById(R.id.textViewLabel);
+    resolver.textViewQuestion = (TextView)itemView.findViewById(R.id.textViewQuestion);
+    resolver.textViewQuestionType = (TextView)itemView.findViewById(R.id.textViewQuestionType);
     resolver.textViewDescription = (TextView)itemView.findViewById(R.id.textViewDescription);
+    resolver.textViewGroup = (TextView)itemView.findViewById(R.id.textViewGroup);
+    resolver.textViewGroupDescription = (TextView)itemView.findViewById(R.id.textViewGroupDescription);
     resolver.textViewStartDate = (TextView)itemView.findViewById(R.id.textViewStartDate);
     resolver.textViewEndDate = (TextView)itemView.findViewById(R.id.textViewEndDate);
-    resolver.expandableLayout = (cExpandableLayout)itemView.findViewById(R.id.expandableLayout);
-    resolver.textViewDetailIcon = (TextView)itemView.findViewById(R.id.textViewDetailIcon);
-    resolver.textViewUpdateIcon = (TextView)itemView.findViewById(R.id.textViewUpdateIcon);
-    resolver.textViewDeleteIcon = (TextView)itemView.findViewById(R.id.textViewDeleteIcon);
-    resolver.textViewSyncIcon = (TextView)itemView.findViewById(R.id.textViewSyncIcon);
-    resolver.bmbMenu = (cBoomMenuButton)itemView.findViewById(R.id.bmbMenu);
   }
 
   @Override

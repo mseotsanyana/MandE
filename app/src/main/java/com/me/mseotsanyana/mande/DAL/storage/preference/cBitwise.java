@@ -14,8 +14,9 @@ public class cBitwise {
     // used to publicly access valid permission sets.
 
     /* system module constants */
-    public static final int SESSION_MODULE  = 1;
-    public static final int LOGFRAME_MODULE = 2;
+    public static final int SESSION_MODULE    = 1;
+    public static final int LOGFRAME_MODULE   = 2;
+    public static final int EVALUATION_MODULE = 4;
 
     /* system entity constants */
     public static final int ADDRESS      = 1;

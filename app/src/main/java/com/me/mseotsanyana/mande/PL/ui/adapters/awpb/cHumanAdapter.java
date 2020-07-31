@@ -23,8 +23,11 @@ import com.me.mseotsanyana.mande.DAL.model.logframe.cActivityModel;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cQuestionModel;
 import com.me.mseotsanyana.mande.DAL.model.session.cUserModel;
 import com.me.mseotsanyana.mande.DAL.model.wpb.cHumanModel;
+import com.me.mseotsanyana.mande.DAL.model.wpb.cJournalModel;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iInputPresenter;
 import com.me.mseotsanyana.mande.PL.ui.views.cActivityBodyView;
+import com.me.mseotsanyana.mande.PL.ui.views.cJournalBodyView;
+import com.me.mseotsanyana.mande.PL.ui.views.cJournalHeaderView;
 import com.me.mseotsanyana.mande.PL.ui.views.cLogFrameHeaderView;
 import com.me.mseotsanyana.mande.PL.ui.views.cQuestionBodyView;
 import com.me.mseotsanyana.mande.PL.ui.views.cUserBodyView;
@@ -311,22 +314,6 @@ public class cHumanAdapter extends cTreeAdapter {
                             if (i == 0) {
                                 HCH.resourcesPlaceholderView.addView(new cLogFrameHeaderView(
                                         context, "Key Performance Questions"));
-                                HCH.resourcesPlaceholderView.addView(new cQuestionBodyView(
-                                        context, (cQuestionModel) objects.get(i)));
-
-                                Log.d(TAG, "1. QUESTION: " + objects.get(i));
-                            } else {
-                                HCH.resourcesPlaceholderView.addView(new cQuestionBodyView(context,
-                                        (cQuestionModel) objects.get(i)));
-                                Log.d(TAG, "2. QUESTION: " + objects.get(i));
-                            }
-                        }
-
-                        /* list of journal entries under this input */
-                        if (objects.get(i) instanceof cQuestionModel) {
-                            if (i == 0) {
-                                HCH.resourcesPlaceholderView.addView(new cLogFrameHeaderView(
-                                        context, "List of Journal Entries"));
                                 HCH.resourcesPlaceholderView.addView(new cQuestionBodyView(
                                         context, (cQuestionModel) objects.get(i)));
 

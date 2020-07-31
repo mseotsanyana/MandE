@@ -116,11 +116,11 @@ public class cExcelHelper {
     public static final String SHEET_tblMATRIXCHOICE           = "tblMATRIXCHOICE";          /* 5 */
     public static final String SHEET_tblMATRIXCHOICESET        = "tblMATRIXCHOICESET";       /* 6 */
     public static final String SHEET_tblEVALUATIONTYPE         = "tblEVALUATIONTYPE";        /* 7 */
-    public static final String SHEET_tblQUESTIONNAIRE          = "tblQUESTIONNAIRE";         /* 8 */
-    public static final String SHEET_tblQUESTIONNAIRE_QUESTION = "tblQUESTIONNAIRE_QUESTION";/* 9 */
+    public static final String SHEET_tblEVALUATION             = "tblEVALUATION";            /* 8 */
+    public static final String SHEET_tblEVALUATION_QUESTION    = "tblEVALUATION_QUESTION";   /* 9 */
     public static final String SHEET_tblCONDITIONAL_ORDER      = "tblCONDITIONAL_ORDER";     /* 10*/
-    public static final String SHEET_tblQUESTIONNAIRE_USER     = "tblQUESTIONNAIRE_USER";    /* 11*/
-    public static final String SHEET_tblERESPONSE              = "tblERESPONSE";             /* 12*/
+    public static final String SHEET_tblUSER_EVALUATION        = "tblUSER_EVALUATION";       /* 11*/
+    public static final String SHEET_tblEVALUATION_RESPONSE    = "tblEVALUATION_RESPONSE";   /* 12*/
     public static final String SHEET_tblNUMERICRESPONSE        = "tblNUMERICRESPONSE";       /* 13*/
     public static final String SHEET_tblTEXTRESPONSE           = "tblTEXTRESPONSE";          /* 14*/
     public static final String SHEET_tblDATERESPONSE           = "tblDATERESPONSE";          /* 15*/

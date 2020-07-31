@@ -1,5 +1,6 @@
 package com.me.mseotsanyana.mande.UTIL;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -32,6 +33,11 @@ public class cConstant {
             "dd-MM-yyyy", Locale.US);
     public static final SimpleDateFormat TIMESTAMP_FORMAT_DATE = new SimpleDateFormat(
             "yyyy-MM-dd HH:mm:ss", Locale.US);
+
+    public static final NumberFormat SA_CURRENCY_FORMAT = NumberFormat.getCurrencyInstance(
+            Locale.getDefault());
+    public static final NumberFormat USA_CURRENCY_FORMAT = NumberFormat.getCurrencyInstance(
+            Locale.US);
 
     public static final String BASE_URL = "http://10.0.2.2/";
     public static final String REGISTER_OPERATION = "register";

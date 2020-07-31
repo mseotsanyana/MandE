@@ -3,12 +3,12 @@ package com.me.mseotsanyana.mande.DAL.model.evaluator;
 import java.util.Date;
 
 public class cMatrixChoiceModel {
-    private int matrixChoiceID;
-    private int rowID;
-    private int colID;
-    private int serverID;
-    private int ownerID;
-    private int orgID;
+    private long matrixChoiceID;
+    private long rowID;
+    private long colID;
+    private long serverID;
+    private long ownerID;
+    private long orgID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
@@ -16,48 +16,60 @@ public class cMatrixChoiceModel {
     private Date modifiedDate;
     private Date syncedDate;
 
-    public int getMatrixChoiceID() {
+    private cRowOptionModel rowOptionModel;
+    private cColOptionModel colOptionModel;
+
+    public cMatrixChoiceModel(){
+        rowOptionModel = new cRowOptionModel();
+        colOptionModel = new cColOptionModel();
+    }
+
+    public long getMatrixChoiceID() {
         return matrixChoiceID;
     }
 
-    public void setMatrixChoiceID(int matrixChoiceID) {
+    public void setMatrixChoiceID(long matrixChoiceID) {
         this.matrixChoiceID = matrixChoiceID;
     }
 
-    public int getRowID() {
+    public long getRowID() {
         return rowID;
     }
 
-    public void setRowID(int rowID) {
+    public void setRowID(long rowID) {
         this.rowID = rowID;
     }
 
-    public int getColID() {
+    public long getColID() {
         return colID;
     }
 
-    public void setColID(int colID) {
+    public void setColID(long colID) {
         this.colID = colID;
     }
 
-    public int getServerID() {
+    public long getServerID() {
         return serverID;
     }
 
-    public void setServerID(int serverID) {
+    public void setServerID(long serverID) {
         this.serverID = serverID;
     }
 
-    public int getOwnerID() {
+    public long getOwnerID() {
         return ownerID;
     }
 
-    public void setOwnerID(int ownerID) {
+    public void setOwnerID(long ownerID) {
         this.ownerID = ownerID;
     }
 
-    public int getOrgID() {
+    public long getOrgID() {
         return orgID;
+    }
+
+    public void setOrgID(long orgID) {
+        this.orgID = orgID;
     }
 
     public void setOrgID(int orgID) {
@@ -110,5 +122,21 @@ public class cMatrixChoiceModel {
 
     public void setSyncedDate(Date syncedDate) {
         this.syncedDate = syncedDate;
+    }
+
+    public cRowOptionModel getRowOptionModel() {
+        return rowOptionModel;
+    }
+
+    public void setRowOptionModel(cRowOptionModel rowOptionModel) {
+        this.rowOptionModel = rowOptionModel;
+    }
+
+    public cColOptionModel getColOptionModel() {
+        return colOptionModel;
+    }
+
+    public void setColOptionModel(cColOptionModel colOptionModel) {
+        this.colOptionModel = colOptionModel;
     }
 }

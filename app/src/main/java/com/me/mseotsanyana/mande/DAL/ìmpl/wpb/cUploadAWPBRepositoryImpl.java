@@ -936,8 +936,10 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
                     cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             journalModel.setAmount(
                     cRow.getCell(4, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            journalModel.setDescription(
+                    cRow.getCell(5, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
             //journalModel.setCreatedDate(
-            //        cRow.getCell(5, Row.CREATE_NULL_AS_BLANK).getDateCellValue());
+            //        cRow.getCell(6, Row.CREATE_NULL_AS_BLANK).getDateCellValue());
 
             if (!addJournal(journalModel)) {
                 return false;
@@ -960,6 +962,7 @@ public class cUploadAWPBRepositoryImpl implements iUploadAWPBRepository {
         cv.put(cSQLDBHelper.KEY_TRANSACTION_FK_ID, journalModel.getTransactionID());
         cv.put(cSQLDBHelper.KEY_ENTRY_TYPE, journalModel.getEntryType());
         cv.put(cSQLDBHelper.KEY_AMOUNT, journalModel.getAmount());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, journalModel.getDescription());
         //cv.put(cSQLDBHelper.KEY_CREATED_DATE, sdf.format(String.valueOf(journalModel.getCreatedDate())));
 
         // insert project details

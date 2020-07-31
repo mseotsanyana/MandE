@@ -8,20 +8,48 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
+import com.me.mseotsanyana.mande.DAL.model.logframe.cQuestionModel;
+import com.me.mseotsanyana.mande.DAL.model.session.cUserModel;
+import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cInputViewPagerAdapter;
 import com.me.mseotsanyana.mande.R;
+
+import java.util.ArrayList;
 
 /**
  * Created by mseotsanyana on 2016/12/13.
  */
 
 public class cEvaluationFragment extends Fragment {
+
+    private static final int USER     = 1;
+    private static final int QUESTION = 2;
+
+    private ArrayList<cUserModel> userModels;
+    private ArrayList<cQuestionModel> questionModels;
+
+    private cEvaluationFragment() {
+
+    }
+
+    public static cEvaluationFragment newInstance(long logFrameID) {
+        Bundle bundle = new Bundle();
+        cEvaluationFragment fragment = new cEvaluationFragment();
+
+        bundle.putLong("LOGFRAME_ID", logFrameID);
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
+
     /*
-* this event fires 1st, before creation of fragment or any views
-* the onAttach method is called when the Fragment instance is
-* associated with an Activity and this does not mean the activity
-* is fully initialized.
-*/
+    * this event fires 1st, before creation of fragment or any views
+    * the onAttach method is called when the Fragment instance is
+    * associated with an Activity and this does not mean the activity
+    * is fully initialized.
+    */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -81,6 +109,21 @@ public class cEvaluationFragment extends Fragment {
         // initialise the floating action button (FAB)
         initFab(view);
     }
+
+    private void setupViewPager(ViewPager viewPager) {
+        /*evaluationViewPagerAdapter = new cEvaluationViewPagerAdapter(getFragmentManager(),
+                FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+
+        evaluationViewPagerAdapter.addFrag(cUserFragment.newInstance(userModels),"user");
+        evaluationViewPagerAdapter.addFrag(cQuestionFragment.newInstance(questionModels),"question");
+
+        // use a number higher than half your fragments.
+        viewPager.setOffscreenPageLimit(3);
+        viewPager.setAdapter(evaluationViewPagerAdapter);
+
+         */
+    }
+
 
     // initialise the floating action button
     private void initFab(View view) {

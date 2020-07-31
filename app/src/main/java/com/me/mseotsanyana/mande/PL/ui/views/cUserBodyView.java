@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 
 import static com.me.mseotsanyana.mande.R.color.gray;
 
-@Layout(R.layout.user_short_list)
+@Layout(R.layout.user_less_detail_list)
 public class cUserBodyView {
     private static final String TAG = cUserBodyView.class.getSimpleName();
     private static SimpleDateFormat sdf = cConstant.SHORT_FORMAT_DATE;

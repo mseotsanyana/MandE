@@ -24,8 +24,11 @@ import com.me.mseotsanyana.mande.DAL.model.logframe.cQuestionModel;
 import com.me.mseotsanyana.mande.DAL.model.session.cUserModel;
 import com.me.mseotsanyana.mande.DAL.model.wpb.cHumanModel;
 import com.me.mseotsanyana.mande.DAL.model.wpb.cIncomeModel;
+import com.me.mseotsanyana.mande.DAL.model.wpb.cJournalModel;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iInputPresenter;
 import com.me.mseotsanyana.mande.PL.ui.views.cActivityBodyView;
+import com.me.mseotsanyana.mande.PL.ui.views.cJournalBodyView;
+import com.me.mseotsanyana.mande.PL.ui.views.cJournalHeaderView;
 import com.me.mseotsanyana.mande.PL.ui.views.cLogFrameHeaderView;
 import com.me.mseotsanyana.mande.PL.ui.views.cQuestionBodyView;
 import com.me.mseotsanyana.mande.PL.ui.views.cUserBodyView;
@@ -106,6 +109,13 @@ public class cIncomeAdapter extends cTreeAdapter {
         cTreeModel obj = (cTreeModel) node.getObj();
 
         if (obj != null){
+
+            cTreeModel parentTree = null;
+            if (obj.getType() == CHILD) {
+                cNode parentNode = node.getParent();
+                parentTree = (cTreeModel) parentNode.getObj();
+            }
+
             switch (obj.getType()) {
                 case PARENT:
                     cIncomeModel humanModel = (cIncomeModel) obj.getModelObject();
@@ -276,8 +286,27 @@ public class cIncomeAdapter extends cTreeAdapter {
                     HCH.resourcesPlaceholderView.removeAllViews();
 
                     for (int i = 0; i < objects.size(); i++) {
+
+                        /* list of journal entries under this input */
+                        if (objects.get(i) instanceof cJournalModel) {
+                            if (i == 0) {
+                                HCH.resourcesPlaceholderView.addView(new cJournalHeaderView(
+                                        context, "Journal Entries"));
+
+                                HCH.resourcesPlaceholderView.addView(new cJournalBodyView(
+                                        context, (cJournalModel) objects.get(i)));
+
+                                Log.d(TAG, "1. JOURNAL ENTRIES: " + objects.get(i));
+                            } else {
+                                HCH.resourcesPlaceholderView.addView(new cJournalBodyView(
+                                        context, (cJournalModel) objects.get(i)));
+
+                                Log.d(TAG, "2. JOURNAL ENTRIES: " + objects.get(i));
+                            }
+                        }
+
                         /* list of users under human group */
-                        if (objects.get(i) instanceof cUserModel) {
+                        if (objects.get(i) instanceof cIncomeModel) {
                             if (i == 0) {
                                 HCH.resourcesPlaceholderView.addView(new cLogFrameHeaderView(
                                         context, "List of Users"));

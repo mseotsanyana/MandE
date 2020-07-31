@@ -2,60 +2,72 @@ package com.me.mseotsanyana.mande.DAL.model.evaluator;
 
 import java.util.Date;
 
-public class cQuestionnaireModel {
-    private int questionnaireID;
-    private int evaluationTypeID;
-    private int serverID;
-    private int ownerID;
-    private int orgID;
+public class cEvaluationResponseModel {
+    private long evaluationResponseID;
+    private long userEvaluationID;
+    private long questionID;
+
+    private long serverID;
+    private long ownerID;
+    private long orgID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
-    private String name;
-    private String description;
     private Date createdDate;
     private Date modifiedDate;
     private Date syncedDate;
 
-    public cQuestionnaireModel(){}
+    private cUserEvaluationModel userEvaluationModel;
 
-    public int getQuestionnaireID() {
-        return questionnaireID;
+    public cEvaluationResponseModel() {
+        userEvaluationModel = new cUserEvaluationModel();
     }
 
-    public void setQuestionnaireID(int questionnaireID) {
-        this.questionnaireID = questionnaireID;
+    public long getEvaluationResponseID() {
+        return evaluationResponseID;
     }
 
-    public int getEvaluationTypeID() {
-        return evaluationTypeID;
+    public void setEvaluationResponseID(long evaluationResponseID) {
+        this.evaluationResponseID = evaluationResponseID;
     }
 
-    public void setEvaluationTypeID(int evaluationTypeID) {
-        this.evaluationTypeID = evaluationTypeID;
+    public long getUserEvaluationID() {
+        return userEvaluationID;
     }
 
-    public int getServerID() {
+    public void setUserEvaluationID(long userEvaluationID) {
+        this.userEvaluationID = userEvaluationID;
+    }
+
+    public long getQuestionID() {
+        return questionID;
+    }
+
+    public void setQuestionID(long questionID) {
+        this.questionID = questionID;
+    }
+
+    public long getServerID() {
         return serverID;
     }
 
-    public void setServerID(int serverID) {
+    public void setServerID(long serverID) {
         this.serverID = serverID;
     }
 
-    public int getOwnerID() {
+    public long getOwnerID() {
         return ownerID;
     }
 
-    public void setOwnerID(int ownerID) {
+    public void setOwnerID(long ownerID) {
         this.ownerID = ownerID;
     }
 
-    public int getOrgID() {
+    public long getOrgID() {
         return orgID;
     }
 
-    public void setOrgID(int orgID) {
+    public void setOrgID(long orgID) {
         this.orgID = orgID;
     }
 
@@ -83,22 +95,6 @@ public class cQuestionnaireModel {
         this.statusBITS = statusBITS;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -121,5 +117,13 @@ public class cQuestionnaireModel {
 
     public void setSyncedDate(Date syncedDate) {
         this.syncedDate = syncedDate;
+    }
+
+    public cUserEvaluationModel getUserEvaluationModel() {
+        return userEvaluationModel;
+    }
+
+    public void setUserEvaluationModel(cUserEvaluationModel userEvaluationModel) {
+        this.userEvaluationModel = userEvaluationModel;
     }
 }

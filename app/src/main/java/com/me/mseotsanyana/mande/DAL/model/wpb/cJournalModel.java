@@ -14,6 +14,7 @@ public class cJournalModel {
     private int statusBITS;
     private int entryType;
     private double amount;
+    private String description;
     private Date createdDate;
     private Date modifiedDate;
     private Date syncedDate;
@@ -104,6 +105,14 @@ public class cJournalModel {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Date getCreatedDate() {

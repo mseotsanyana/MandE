@@ -3,10 +3,10 @@ package com.me.mseotsanyana.mande.DAL.model.evaluator;
 import java.util.Date;
 
 public class cArrayChoiceModel {
-    private int arrayChoiceID;
-    private int serverID;
-    private int ownerID;
-    private int orgID;
+    private long arrayChoiceID;
+    private long serverID;
+    private long ownerID;
+    private long orgID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
@@ -16,35 +16,35 @@ public class cArrayChoiceModel {
     private Date modifiedDate;
     private Date syncedDate;
 
-    public int getArrayChoiceID() {
+    public long getArrayChoiceID() {
         return arrayChoiceID;
     }
 
-    public void setArrayChoiceID(int arrayChoiceID) {
+    public void setArrayChoiceID(long arrayChoiceID) {
         this.arrayChoiceID = arrayChoiceID;
     }
 
-    public int getServerID() {
+    public long getServerID() {
         return serverID;
     }
 
-    public void setServerID(int serverID) {
+    public void setServerID(long serverID) {
         this.serverID = serverID;
     }
 
-    public int getOwnerID() {
+    public long getOwnerID() {
         return ownerID;
     }
 
-    public void setOwnerID(int ownerID) {
+    public void setOwnerID(long ownerID) {
         this.ownerID = ownerID;
     }
 
-    public int getOrgID() {
+    public long getOrgID() {
         return orgID;
     }
 
-    public void setOrgID(int orgID) {
+    public void setOrgID(long orgID) {
         this.orgID = orgID;
     }
 
