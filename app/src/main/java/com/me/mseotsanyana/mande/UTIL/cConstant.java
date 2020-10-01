@@ -27,6 +27,13 @@ public class cConstant {
     public static final int CONS_ANNUALLY_ID     = 6;
 
 
+    /* types of indicators */
+    public static final int QUALITATIVE_INDICATOR  = 1;
+    public static final int QUANTITATIVE_INDICATOR = 2;
+    public static final int ARRAY_INDICATOR        = 3;
+    public static final int MATRIX_INDICATOR       = 4;
+
+
     public static final SimpleDateFormat FORMAT_DATE = new SimpleDateFormat(
             "dd MMMM, yyyy hh:mm:ss a", Locale.US);
     public static final SimpleDateFormat SHORT_FORMAT_DATE = new SimpleDateFormat(

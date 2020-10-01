@@ -124,8 +124,9 @@ public class cHumanRepositoryImpl extends cInputRepositoryImpl implements iHuman
                             userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
 
                     /* populate question components */
-                    human.setQuestionModelSet(getQuestionModelSetByID(human.getInputID(),
-                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
+                    human.setQuestionModelSet(getQuestionModelSetByID(
+                            human.getInputID(), userID, primaryRoleBITS, secondaryRoleBITS,
+                            statusBITS));
                     /* populate journal components */
                     human.setJournalModelSet(getJournalModelSetByID(human.getInputID(), userID,
                             primaryRoleBITS, secondaryRoleBITS, statusBITS));

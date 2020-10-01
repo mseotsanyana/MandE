@@ -13,10 +13,7 @@ import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 import java.util.ArrayList;
 
 public class cEvaluationPresenterImpl extends cAbstractPresenter implements iEvaluationPresenter,
-        iReadEvaluationInteractor.Callback/*, iReadSharedOrgsInteractor.Callback,
-        iCreateLogFrameInteractor.Callback, iCreateSubLogFrameInteractor.Callback,
-        iUpdateLogFrameInteractor.Callback, iDeleteLogFrameInteractor.Callback,
-        iDeleteSubLogFrameInteractor.Callback*/{
+        iReadEvaluationInteractor.Callback{
     private static String TAG = cEvaluationPresenterImpl.class.getSimpleName();
 
     private View view;
@@ -119,9 +116,9 @@ public class cEvaluationPresenterImpl extends cAbstractPresenter implements iEva
     }
 
     @Override
-    public void onEvaluationModelsRetrieved(ArrayList<cTreeModel> evaluationTreeModels) {
+    public void onEvaluationModelsRetrieved(String logFrameName, ArrayList<cTreeModel> evaluationTreeModels) {
         if(this.view != null) {
-            this.view.onEvaluationModelsRetrieved(evaluationTreeModels);
+            this.view.onEvaluationModelsRetrieved(logFrameName, evaluationTreeModels);
             this.view.hideProgress();
         }
     }

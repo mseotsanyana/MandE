@@ -2,11 +2,13 @@ package com.me.mseotsanyana.mande.BLL.repository.evaluator;
 
 public interface iUploadEvaluationRepository {
     boolean deleteArrayChoices();
+    boolean deleteArraySets();
     boolean deleteArrayChoiceSets();
-    boolean deleteRowOptions();
-    boolean deleteColOptions();
-    boolean deleteMatrixChoices();
+    boolean deleteRowChoices();
+    boolean deleteColChoices();
+    boolean deleteMatrixSets();
     boolean deleteMatrixChoiceSets();
+
     boolean deleteEvaluationTypes();
     boolean deleteEvaluations();
     boolean deleteEvaluationQuestions();
@@ -20,9 +22,12 @@ public interface iUploadEvaluationRepository {
     boolean deleteMatrixResponses();
 
     boolean addArrayChoiceFromExcel();
-    boolean addRowOptionFromExcel();
-    boolean addColOptionFromExcel();
-    boolean addMatrixChoiceFromExcel();
+    boolean addArraySetFromExcel();
+
+    boolean addRowChoiceFromExcel();
+    boolean addColChoiceFromExcel();
+    boolean addMatrixSetFromExcel();
+
     boolean addEvaluationTypeFromExcel();
     boolean addEvaluationFromExcel();
     boolean addEvaluationResponseFromExcel();

@@ -1,9 +1,5 @@
 package com.me.mseotsanyana.mande.DAL.model.logframe;
 
-import com.me.mseotsanyana.mande.UTIL.DAL.cAssumptionModel;
-import com.me.mseotsanyana.mande.UTIL.DAL.cDependencyModel;
-import com.me.mseotsanyana.mande.UTIL.DAL.cRiskIssueModel;
-
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -26,9 +22,9 @@ public class cRaidModel {
 
     private cLogFrameModel logFrameModel;
 
-    private cRiskIssueModel riskIssueModel;
-    private cDependencyModel dependencyModel;
-    private cAssumptionModel assumptionModel;
+//    private cRiskIssueModel riskIssueModel;
+//    private cDependencyModel dependencyModel;
+//    private cAssumptionModel assumptionModel;
 
     private ArrayList<cImpactModel> impactModels;
     private ArrayList<cOutcomeModel> outcomeModels;
@@ -198,30 +194,30 @@ public class cRaidModel {
     public void setLogFrameModel(cLogFrameModel logFrameModel) {
         this.logFrameModel = logFrameModel;
     }
-
-    public cRiskIssueModel getRiskIssueModel() {
-        return riskIssueModel;
-    }
-
-    public void setRiskIssueModel(cRiskIssueModel riskIssueModel) {
-        this.riskIssueModel = riskIssueModel;
-    }
-
-    public cDependencyModel getDependencyModel() {
-        return dependencyModel;
-    }
-
-    public void setDependencyModel(cDependencyModel dependencyModel) {
-        this.dependencyModel = dependencyModel;
-    }
-
-    public cAssumptionModel getAssumptionModel() {
-        return assumptionModel;
-    }
-
-    public void setAssumptionModel(cAssumptionModel assumptionModel) {
-        this.assumptionModel = assumptionModel;
-    }
+//
+//    public cRiskIssueModel getRiskIssueModel() {
+//        return riskIssueModel;
+//    }
+//
+//    public void setRiskIssueModel(cRiskIssueModel riskIssueModel) {
+//        this.riskIssueModel = riskIssueModel;
+//    }
+//
+//    public cDependencyModel getDependencyModel() {
+//        return dependencyModel;
+//    }
+//
+//    public void setDependencyModel(cDependencyModel dependencyModel) {
+//        this.dependencyModel = dependencyModel;
+//    }
+//
+//    public cAssumptionModel getAssumptionModel() {
+//        return assumptionModel;
+//    }
+//
+//    public void setAssumptionModel(cAssumptionModel assumptionModel) {
+//        this.assumptionModel = assumptionModel;
+//    }
 
     public ArrayList<cImpactModel> getImpactModels() {
         return impactModels;

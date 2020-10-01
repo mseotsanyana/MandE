@@ -2,18 +2,19 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MandE.iml" filepath="$PROJECT_DIR$/MandE.iml" group="MandE" />
-      <module fileurl="file://$PROJECT_DIR$/../Libraries/annotations/annotations.iml" filepath="$PROJECT_DIR$/../Libraries/annotations/annotations.iml" group="MandE/annotations" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="MandE/app" />
-      <module fileurl="file://$PROJECT_DIR$/../Libraries/bmblibrary/bmblibrary.iml" filepath="$PROJECT_DIR$/../Libraries/bmblibrary/bmblibrary.iml" group="MandE/bmblibrary" />
-      <module fileurl="file://$PROJECT_DIR$/../Libraries/compilers/compilers.iml" filepath="$PROJECT_DIR$/../Libraries/compilers/compilers.iml" group="MandE/compilers" />
-      <module fileurl="file://$PROJECT_DIR$/../Libraries/expandablelayoutlibrary/expandablelayoutlibrary.iml" filepath="$PROJECT_DIR$/../Libraries/expandablelayoutlibrary/expandablelayoutlibrary.iml" group="MandE/expandablelayoutlibrary" />
-      <module fileurl="file://$PROJECT_DIR$/../Libraries/multiselectspinnerlibrary/multiselectspinnerlibrary.iml" filepath="$PROJECT_DIR$/../Libraries/multiselectspinnerlibrary/multiselectspinnerlibrary.iml" group="MandE/multiselectspinnerlibrary" />
-      <module fileurl="file://$PROJECT_DIR$/../Libraries/placeholderviewlibrary/placeholderviewlibrary.iml" filepath="$PROJECT_DIR$/../Libraries/placeholderviewlibrary/placeholderviewlibrary.iml" group="MandE/placeholderviewlibrary" />
-      <module fileurl="file://$PROJECT_DIR$/../Libraries/quickactionlibrary/quickactionlibrary.iml" filepath="$PROJECT_DIR$/../Libraries/quickactionlibrary/quickactionlibrary.iml" group="MandE/quickactionlibrary" />
-      <module fileurl="file://$PROJECT_DIR$/../Libraries/treeadapterlibrary/treeadapterlibrary.iml" filepath="$PROJECT_DIR$/../Libraries/treeadapterlibrary/treeadapterlibrary.iml" group="MandE/treeadapterlibrary" />
-      <module fileurl="file://$PROJECT_DIR$/../Libraries/validatorlibrary/validatorlibrary.iml" filepath="$PROJECT_DIR$/../Libraries/validatorlibrary/validatorlibrary.iml" group="MandE/validatorlibrary" />
-      <module fileurl="file://$PROJECT_DIR$/../Libraries/viewpagerlibrary/viewpagerlibrary.iml" filepath="$PROJECT_DIR$/../Libraries/viewpagerlibrary/viewpagerlibrary.iml" group="MandE/viewpagerlibrary" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MandE.iml" filepath="$PROJECT_DIR$/.idea/modules/MandE.iml" group="MandE" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-678992889/annotations.iml" filepath="$PROJECT_DIR$/.idea/modules/-678992889/annotations.iml" group="MandE/annotations" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="MandE/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-687877599/bmblibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/-687877599/bmblibrary.iml" group="MandE/bmblibrary" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1490129577/compilers.iml" filepath="$PROJECT_DIR$/.idea/modules/-1490129577/compilers.iml" group="MandE/compilers" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/924919872/expandablelayoutlibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/924919872/expandablelayoutlibrary.iml" group="MandE/expandablelayoutlibrary" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/580878042/multiselectspinnerlibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/580878042/multiselectspinnerlibrary.iml" group="MandE/multiselectspinnerlibrary" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-686295456/placeholderviewlibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/-686295456/placeholderviewlibrary.iml" group="MandE/placeholderviewlibrary" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/2046324789/questionnairelibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/2046324789/questionnairelibrary.iml" group="MandE/questionnairelibrary" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1848828597/quickactionlibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/1848828597/quickactionlibrary.iml" group="MandE/quickactionlibrary" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-515660953/treeadapterlibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/-515660953/treeadapterlibrary.iml" group="MandE/treeadapterlibrary" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-867219930/validatorlibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/-867219930/validatorlibrary.iml" group="MandE/validatorlibrary" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1557062726/viewpagerlibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/-1557062726/viewpagerlibrary.iml" group="MandE/viewpagerlibrary" />
     </modules>
   </component>
 </project>

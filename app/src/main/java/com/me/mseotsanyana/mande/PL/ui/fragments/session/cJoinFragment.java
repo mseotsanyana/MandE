@@ -22,10 +22,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iRequestInterface;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
-import com.me.mseotsanyana.mande.UTIL.cUtil;
 import com.me.mseotsanyana.mande.DAL.model.session.cUserModel;
-import com.me.mseotsanyana.mande.UTIL.DAL.cUserRequest;
-import com.me.mseotsanyana.mande.UTIL.DAL.cUserResponse;
 import com.me.mseotsanyana.mande.R;
 
 import retrofit2.Call;
@@ -163,55 +160,55 @@ public class cJoinFragment extends Fragment implements View.OnClickListener {
         ft.commit();
     }
 */
-    private void changePasswordProcess(String email,String old_password,String new_password){
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(cConstant.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        iRequestInterface iRequestInterface = retrofit.create(iRequestInterface.class);
-
-        cUserModel user = new cUserModel();
-        user.setEmail(email);
-        user.setOldPassword(old_password);
-        user.setNewPassword(new_password);
-        cUserRequest request = new cUserRequest();
-        request.setOperation(cConstant.CHANGE_PASSWORD_OPERATION);
-        request.setUser(user);
-        Call<cUserResponse> response = iRequestInterface.operation(request);
-
-        response.enqueue(new Callback<cUserResponse>() {
-            @Override
-            public void onResponse(Call<cUserResponse> call, retrofit2.Response<cUserResponse> response) {
-
-                cUserResponse resp = response.body();
-                if(resp.getResult().equals(cConstant.SUCCESS)){
-                    progress.setVisibility(View.GONE);
-                    tv_message.setVisibility(View.GONE);
-                    dialog.dismiss();
-                    Snackbar.make(getView(), resp.getMessage(), Snackbar.LENGTH_LONG).show();
-
-                }else {
-                    progress.setVisibility(View.GONE);
-                    tv_message.setVisibility(View.VISIBLE);
-                    tv_message.setText(resp.getMessage());
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<cUserResponse> call, Throwable t) {
-
-                //Log.d(cConstant.KEY_TAG,"failed");
-                progress.setVisibility(View.GONE);
-                tv_message.setVisibility(View.VISIBLE);
-                tv_message.setText(t.getLocalizedMessage());
-
-
-            }
-        });
-    }
+//    private void changePasswordProcess(String email,String old_password,String new_password){
+//
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(cConstant.BASE_URL)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//
+//        iRequestInterface iRequestInterface = retrofit.create(iRequestInterface.class);
+//
+//        cUserModel user = new cUserModel();
+//        user.setEmail(email);
+//        user.setOldPassword(old_password);
+//        user.setNewPassword(new_password);
+//        cUserRequest request = new cUserRequest();
+//        request.setOperation(cConstant.CHANGE_PASSWORD_OPERATION);
+//        request.setUser(user);
+//        Call<cUserResponse> response = iRequestInterface.operation(request);
+//
+//        response.enqueue(new Callback<cUserResponse>() {
+//            @Override
+//            public void onResponse(Call<cUserResponse> call, retrofit2.Response<cUserResponse> response) {
+//
+//                cUserResponse resp = response.body();
+//                if(resp.getResult().equals(cConstant.SUCCESS)){
+//                    progress.setVisibility(View.GONE);
+//                    tv_message.setVisibility(View.GONE);
+//                    dialog.dismiss();
+//                    Snackbar.make(getView(), resp.getMessage(), Snackbar.LENGTH_LONG).show();
+//
+//                }else {
+//                    progress.setVisibility(View.GONE);
+//                    tv_message.setVisibility(View.VISIBLE);
+//                    tv_message.setText(resp.getMessage());
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<cUserResponse> call, Throwable t) {
+//
+//                //Log.d(cConstant.KEY_TAG,"failed");
+//                progress.setVisibility(View.GONE);
+//                tv_message.setVisibility(View.VISIBLE);
+//                tv_message.setText(t.getLocalizedMessage());
+//
+//
+//            }
+//        });
+//    }
 /*
     private void setupBottomNavigation() {
 

@@ -28,7 +28,7 @@ public class cQuestionGroupingRepositoryImpl {
 
     /* ####################################### READ ACTIONS ######################################*/
 
-    protected cQuestionGroupingModel getQuestionGroupingModelByID(
+    public cQuestionGroupingModel getQuestionGroupingModelByID(
             long questionGroupingID, long userID, int primaryRoleBITS, int secondaryRoleBITS,
             int statusBITS) {
         // open the connection to the database

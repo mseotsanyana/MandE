@@ -3,7 +3,7 @@ package com.me.mseotsanyana.mande.DAL.model.monitor;
 import java.util.Date;
 
 public class cIndicatorTypeModel {
-    private int indicatorTypeID;
+    private long indicatorTypeID;
     private int serverID;
     private int ownerID;
     private int orgID;
@@ -16,11 +16,11 @@ public class cIndicatorTypeModel {
     private Date modifiedDate;
     private Date syncedDate;
 
-    public int getIndicatorTypeID() {
+    public long getIndicatorTypeID() {
         return indicatorTypeID;
     }
 
-    public void setIndicatorTypeID(int indicatorTypeID) {
+    public void setIndicatorTypeID(long indicatorTypeID) {
         this.indicatorTypeID = indicatorTypeID;
     }
 

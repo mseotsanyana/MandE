@@ -34,9 +34,11 @@ public class cOutcomeRepositoryImpl implements iOutcomeRepository {
 
     // an object of the database helper
     private cSQLDBHelper dbHelper;
+    private cQuestionRepositoryImpl questionRepository;
 
     public cOutcomeRepositoryImpl(Context context) {
         dbHelper = new cSQLDBHelper(context);
+        questionRepository = new cQuestionRepositoryImpl(context);
     }
 
     /* ######################################## CREATE ACTIONS ########################################*/
@@ -181,8 +183,9 @@ public class cOutcomeRepositoryImpl implements iOutcomeRepository {
                     outcome.setOutputModelSet(getOutputModelSetByID(outcome.getOutcomeID(), userID,
                             primaryRoleBITS, secondaryRoleBITS, statusBITS));
                     /* populate question components */
-                    outcome.setQuestionModelSet(getQuestionModelSetByID(outcome.getOutcomeID(),
-                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
+                    outcome.setQuestionModelSet(getQuestionModelSetByID(
+                            outcome.getOutcomeID(), userID, primaryRoleBITS, secondaryRoleBITS,
+                            statusBITS));
                     /* populate raid components */
                     outcome.setRaidModelSet(getRaidModelSetByID(outcome.getOutcomeID(), userID,
                             primaryRoleBITS, secondaryRoleBITS, statusBITS));
@@ -617,7 +620,7 @@ public class cOutcomeRepositoryImpl implements iOutcomeRepository {
                 "Q." + cSQLDBHelper.KEY_SERVER_ID + ", Q." + cSQLDBHelper.KEY_OWNER_ID + ", " +
                 "Q." + cSQLDBHelper.KEY_ORG_ID + ", Q." + cSQLDBHelper.KEY_GROUP_BITS + ", " +
                 "Q." + cSQLDBHelper.KEY_PERMS_BITS + ", Q." + cSQLDBHelper.KEY_STATUS_BITS + ", " +
-                "Q." + cSQLDBHelper.KEY_NAME + ", Q." + cSQLDBHelper.KEY_DESCRIPTION + ", " +
+                "Q." + cSQLDBHelper.KEY_LABEL + ", Q." + cSQLDBHelper.KEY_QUESTION + ", " +
                 "Q." + cSQLDBHelper.KEY_START_DATE + ", Q." + cSQLDBHelper.KEY_END_DATE + ", " +
                 "Q." + cSQLDBHelper.KEY_CREATED_DATE + ", Q." + cSQLDBHelper.KEY_MODIFIED_DATE + ", " +
                 "Q." + cSQLDBHelper.KEY_SYNCED_DATE +
@@ -677,10 +680,10 @@ public class cOutcomeRepositoryImpl implements iOutcomeRepository {
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
                     question.setStatusBITS(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    question.setName(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    question.setDescription(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    question.setLabel(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LABEL)));
+                    question.setQuestion(
+                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION)));
                     question.setStartDate(Timestamp.valueOf(
                             cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
                     question.setEndDate(Timestamp.valueOf(

@@ -29,9 +29,11 @@ public class cImpactRepositoryImpl implements iImpactRepository {
 
     /* an object of the database helper */
     private cSQLDBHelper dbHelper;
+    private cQuestionRepositoryImpl questionRepository;
 
     public cImpactRepositoryImpl(Context context) {
         dbHelper = new cSQLDBHelper(context);
+        questionRepository = new cQuestionRepositoryImpl(context);
     }
 
     /* ######################################## CREATE ACTIONS ########################################*/
@@ -171,8 +173,9 @@ public class cImpactRepositoryImpl implements iImpactRepository {
                             primaryRoleBITS, secondaryRoleBITS, statusBITS));
 
                     /* populate question component */
-                    impact.setQuestionModelSet(getQuestionModelSetByID(impact.getImpactID(), userID,
-                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
+                    impact.setQuestionModelSet(getQuestionModelSetByID(
+                            impact.getImpactID(), userID, primaryRoleBITS, secondaryRoleBITS,
+                            statusBITS));
 
                     /* populate RAID component */
                     impact.setRaidModelSet(getRaidModelSetByID(impact.getImpactID(), userID,
@@ -488,6 +491,7 @@ public class cImpactRepositoryImpl implements iImpactRepository {
         return outcomeModelSet;
     }
 
+
     /**
      * This returns a set of questions
      *
@@ -499,7 +503,7 @@ public class cImpactRepositoryImpl implements iImpactRepository {
      * @return set of questions
      */
     private Set<cQuestionModel> getQuestionModelSetByID(long impactID, long userID, int primaryRoleBITS,
-                                                       int secondaryRoleBITS, int statusBITS) {
+                                                        int secondaryRoleBITS, int statusBITS) {
 
         Set<cQuestionModel> questionModelSet = new HashSet<>();
 
@@ -556,9 +560,9 @@ public class cImpactRepositoryImpl implements iImpactRepository {
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
                     question.setStatusBITS(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    question.setName(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    question.setDescription(
+                    question.setLabel(
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LABEL)));
+                    question.setQuestion(
                             cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
                     question.setStartDate(Timestamp.valueOf(
                             cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));

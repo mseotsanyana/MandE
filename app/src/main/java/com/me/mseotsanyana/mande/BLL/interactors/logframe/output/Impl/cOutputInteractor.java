@@ -2,12 +2,11 @@ package com.me.mseotsanyana.mande.BLL.interactors.logframe.output.Impl;
 
 import android.content.Context;
 
-import com.me.mseotsanyana.mande.UTIL.BLL.cMapper;
 import com.me.mseotsanyana.mande.BLL.domain.logframe.cOutputDomain;
 import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cOutputRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cOutputModel;
 
-public class cOutputInteractor extends cMapper<cOutputModel, cOutputDomain> {
+public class cOutputInteractor {
     private cOutputRepositoryImpl outputDBA;
     private Context context;
 
@@ -40,7 +39,7 @@ public class cOutputInteractor extends cMapper<cOutputModel, cOutputDomain> {
         return outputDomain;
     }
 ***/
-    @Override
+
     protected cOutputModel DomainToModel(cOutputDomain domain) {
         cOutputModel model = new cOutputModel();
 /*
@@ -54,7 +53,6 @@ public class cOutputInteractor extends cMapper<cOutputModel, cOutputDomain> {
         return model;
     }
 
-    @Override
     protected cOutputDomain ModelToDomain(cOutputModel model) {
         cOutputDomain domain = new cOutputDomain();
 /*

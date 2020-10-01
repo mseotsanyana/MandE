@@ -4,21 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Pair;
 
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cArrayChoiceModel;
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cArrayResponseModel;
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cColOptionModel;
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cDateResponseModel;
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cMatrixChoiceModel;
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cMatrixResponseModel;
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cNumericResponseModel;
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cRowOptionModel;
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cTextResponseModel;
 import com.me.mseotsanyana.mande.DAL.model.monitor.cIndicatorModel;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public class cQuestionModel implements Parcelable {
@@ -32,8 +21,9 @@ public class cQuestionModel implements Parcelable {
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
-    private String name;
-    private String description;
+    private int label;
+    private String question;
+    private long defaultChart;
     private Date startDate;
     private Date endDate;
     private Date createdDate;
@@ -47,31 +37,22 @@ public class cQuestionModel implements Parcelable {
     /* link to primitive type, array type and matrix type */
     private cQuestionTypeModel questionTypeModel;
 
-    /* set of evaluation responses for the question */
-    private Set<cDateResponseModel> dateResponseModelSet;
-    private Set<cNumericResponseModel> numericResponseModelSet;
-    private Set<cTextResponseModel> textResponseModelSet;
-    private Set<cArrayResponseModel> arrayResponseModelSet;
-    private Set<cMatrixResponseModel> matrixResponseModelSet;
-
     /* set of monitoring indicators for the question */
     private Set<cIndicatorModel> indicatorModelSet;
 
     /* maps containing question types and response choices */
-    private Set<cArrayChoiceModel> arrayChoiceModelSet;
-    private Set<Pair<cRowOptionModel, cColOptionModel>> matrixChoiceModelSet;
+    //private Set<cArrayChoiceModel> arrayChoiceModelSet;
+    //private Set<Pair<cRowChoiceModel, cColChoiceModel>> matrixChoiceModelSet;
 
-    //private Map<cArrayTypeModel, Set<cArrayChoiceModel>> arrayChoiceMap;
-    //private Map<cMatrixTypeModel, Set<cMatrixChoiceModel>> matrixChoiceMap;
+    /* frequency table for array response questions */
+    private Set<Pair<String, Long>> arrayResponseFreqTable;
 
     public cQuestionModel(){
         logFrameModel = new cLogFrameModel();
         questionGroupingModel = new cQuestionGroupingModel();
-        questionTypeModel = new cQuestionTypeModel();
+        //questionTypeModel = new cQuestionTypeModel();
 
-        arrayChoiceModelSet = new HashSet<>();
-        matrixChoiceModelSet = new HashSet<>();
-
+        arrayResponseFreqTable = new HashSet<>();
         indicatorModelSet = new HashSet<>();
     }
 
@@ -155,20 +136,28 @@ public class cQuestionModel implements Parcelable {
         this.statusBITS = statusBITS;
     }
 
-    public String getName() {
-        return name;
+    public int getLabel() {
+        return label;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLabel(int label) {
+        this.label = label;
     }
 
-    public String getDescription() {
-        return description;
+    public String getQuestion() {
+        return question;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public long getDefaultChart() {
+        return defaultChart;
+    }
+
+    public void setDefaultChart(long defaultChart) {
+        this.defaultChart = defaultChart;
     }
 
     public Date getStartDate() {
@@ -235,44 +224,12 @@ public class cQuestionModel implements Parcelable {
         this.questionTypeModel = questionTypeModel;
     }
 
-    public Set<cDateResponseModel> getDateResponseModelSet() {
-        return dateResponseModelSet;
+    public Set<Pair<String, Long>> getArrayResponseFreqTable() {
+        return arrayResponseFreqTable;
     }
 
-    public void setDateResponseModelSet(Set<cDateResponseModel> dateResponseModelSet) {
-        this.dateResponseModelSet = dateResponseModelSet;
-    }
-
-    public Set<cNumericResponseModel> getNumericResponseModelSet() {
-        return numericResponseModelSet;
-    }
-
-    public void setNumericResponseModelSet(Set<cNumericResponseModel> numericResponseModelSet) {
-        this.numericResponseModelSet = numericResponseModelSet;
-    }
-
-    public Set<cTextResponseModel> getTextResponseModelSet() {
-        return textResponseModelSet;
-    }
-
-    public void setTextResponseModelSet(Set<cTextResponseModel> textResponseModelSet) {
-        this.textResponseModelSet = textResponseModelSet;
-    }
-
-    public Set<cArrayResponseModel> getArrayResponseModelSet() {
-        return arrayResponseModelSet;
-    }
-
-    public void setArrayResponseModelSet(Set<cArrayResponseModel> arrayResponseModelSet) {
-        this.arrayResponseModelSet = arrayResponseModelSet;
-    }
-
-    public Set<cMatrixResponseModel> getMatrixResponseModelSet() {
-        return matrixResponseModelSet;
-    }
-
-    public void setMatrixResponseModelSet(Set<cMatrixResponseModel> matrixResponseModelSet) {
-        this.matrixResponseModelSet = matrixResponseModelSet;
+    public void setArrayResponseFreqTable(Set<Pair<String, Long>> arrayResponseFreqTable) {
+        this.arrayResponseFreqTable = arrayResponseFreqTable;
     }
 
     public Set<cIndicatorModel> getIndicatorModelSet() {
@@ -281,22 +238,6 @@ public class cQuestionModel implements Parcelable {
 
     public void setIndicatorModelSet(Set<cIndicatorModel> indicatorModelSet) {
         this.indicatorModelSet = indicatorModelSet;
-    }
-
-    public Set<cArrayChoiceModel> getArrayChoiceModelSet() {
-        return arrayChoiceModelSet;
-    }
-
-    public void setArrayChoiceModelSet(Set<cArrayChoiceModel> arrayChoiceModelSet) {
-        this.arrayChoiceModelSet = arrayChoiceModelSet;
-    }
-
-    public Set<Pair<cRowOptionModel, cColOptionModel>> getMatrixChoiceModelSet() {
-        return matrixChoiceModelSet;
-    }
-
-    public void setMatrixChoiceModelSet(Set<Pair<cRowOptionModel, cColOptionModel>> matrixChoiceModelSet) {
-        this.matrixChoiceModelSet = matrixChoiceModelSet;
     }
 
     protected cQuestionModel(Parcel in) {
@@ -310,8 +251,8 @@ public class cQuestionModel implements Parcelable {
         groupBITS = in.readInt();
         permsBITS = in.readInt();
         statusBITS = in.readInt();
-        name = in.readString();
-        description = in.readString();
+        label = in.readInt();
+        question = in.readString();
     }
 
     public static final Creator<cQuestionModel> CREATOR = new Creator<cQuestionModel>() {
@@ -343,7 +284,7 @@ public class cQuestionModel implements Parcelable {
         parcel.writeInt(groupBITS);
         parcel.writeInt(permsBITS);
         parcel.writeInt(statusBITS);
-        parcel.writeString(name);
-        parcel.writeString(description);
+        parcel.writeInt(label);
+        parcel.writeString(question);
     }
 }

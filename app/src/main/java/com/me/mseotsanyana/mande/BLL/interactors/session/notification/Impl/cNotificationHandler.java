@@ -8,7 +8,7 @@ import com.me.mseotsanyana.mande.BLL.domain.session.cNotificationDomain;
 import com.me.mseotsanyana.mande.BLL.interactors.session.menu.Impl.cMenuHandler;
 import com.me.mseotsanyana.mande.DAL.model.session.cMenuModel;
 import com.me.mseotsanyana.mande.DAL.model.session.cNotificationModel;
-import com.me.mseotsanyana.mande.UTIL.BLL.cMapper;
+
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,7 +20,7 @@ import java.util.Set;
  */
 
 
-public class cNotificationHandler extends cMapper<cNotificationModel, cNotificationDomain> {
+public class cNotificationHandler  {
     //private cNotificationRepositoryImpl roleDBA;
     private Context context;
     //private cSessionManager session;
@@ -153,7 +153,7 @@ public class cNotificationHandler extends cMapper<cNotificationModel, cNotificat
         return roleDomain;
     }
 
-    @Override
+    //@Override
     protected cNotificationModel DomainToModel(cNotificationDomain domain) {
         cNotificationModel model = new cNotificationModel();
         //cOrganizationHandler organizationHandler = new cOrganizationHandler();
@@ -180,7 +180,7 @@ public class cNotificationHandler extends cMapper<cNotificationModel, cNotificat
         return model;
     }
 
-    @Override
+    //@Override
     protected cNotificationDomain ModelToDomain(cNotificationModel model) {
 
         cNotificationDomain domain = new cNotificationDomain();

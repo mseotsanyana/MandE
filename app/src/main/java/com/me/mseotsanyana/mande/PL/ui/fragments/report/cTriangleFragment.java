@@ -17,8 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cLogFrameAdapter;
-import com.me.mseotsanyana.mande.UTIL.BLL.cTriangleDomain;
-import com.me.mseotsanyana.mande.UTIL.BLL.cTriangleHandler;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.quickactionlibrary.cCustomActionItemText;
 import com.me.mseotsanyana.quickactionlibrary.cCustomQuickAction;
@@ -32,8 +30,7 @@ import java.util.List;
  */
 
 public class cTriangleFragment extends Fragment {
-    private cTriangleHandler triangleHandler;
-    private cTriangleDomain triangleDomain;
+    //private cTriangleDomain triangleDomain;
 
     private RecyclerView recyclerView;
     private cLogFrameAdapter triangleAdapter;
@@ -71,7 +68,7 @@ public class cTriangleFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // getting a action_list with all projects in a database
-        triangleHandler = new cTriangleHandler();
+        //triangleHandler = new cTriangleHandler();
 
         ArrayList<cTreeModel> triangleTreeData = getArguments().getParcelableArrayList("TRIANGLE");
 

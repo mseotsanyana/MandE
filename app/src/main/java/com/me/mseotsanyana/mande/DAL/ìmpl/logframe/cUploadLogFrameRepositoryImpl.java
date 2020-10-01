@@ -111,7 +111,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function adds the logframe and sub-logframe data from excel.
      *
-     * @param logFrameModel logFrame
+     * @param logFrameModel  logFrame
      * @param subLogFrameSet sub logFrame set
      * @return boolean
      */
@@ -153,7 +153,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
      * This function adds the sub-logframe data from excel.
      *
      * @param parentID parent identification
-     * @param childID child identification
+     * @param childID  child identification
      * @return boolean
      */
     public boolean addLogFrameTree(long parentID, long childID) {
@@ -195,7 +195,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         return result > -1;
     }
 
-    /* #################################### CRITERIA FUNCTIONS ###################################*/
+    /* ############################## EVALUATION CRITERIA FUNCTIONS ##############################*/
 
     /**
      * This function extracts criteria data from excel and adds it to the database.
@@ -203,15 +203,15 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
      * @return boolean
      */
     @Override
-    public boolean addCriteriaFromExcel() {
+    public boolean addEvaluationCriteriaFromExcel() {
         Workbook workbook = excelHelper.getWorkbookLOGFRAME();
-        Sheet CSheet = workbook.getSheet(cExcelHelper.SHEET_tblCRITERIA);
+        Sheet ECSheet = workbook.getSheet(cExcelHelper.SHEET_tblEVALUATIONCRITERIA);
 
-        if (CSheet == null) {
+        if (ECSheet == null) {
             return false;
         }
 
-        for (Row cRow : CSheet) {
+        for (Row cRow : ECSheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -226,7 +226,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             criteriaModel.setDescription(
                     cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
-            if (!addQuestionCriteria(criteriaModel)) {
+            if (!addEvaluationCriteria(criteriaModel)) {
                 return false;
             }
         }
@@ -240,7 +240,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
      * @param criteriaModel criteria model
      * @return boolean
      */
-    public boolean addQuestionCriteria(cEvaluationCriteriaModel criteriaModel) {
+    public boolean addEvaluationCriteria(cEvaluationCriteriaModel criteriaModel) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -258,7 +258,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
                 return false;
             }
         } catch (Exception e) {
-            Log.d(TAG, "Exception in importing CRITERIA from Excel: " + e.getMessage());
+            Log.d(TAG, "Exception in importing EVALUATION CRITERIA from Excel: " + e.getMessage());
         }
 
         // close the database connection
@@ -268,7 +268,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     }
 
     @Override
-    public boolean deleteCriteria() {
+    public boolean deleteEvaluationCriteria() {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -308,10 +308,12 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
             questionGroupingModel.setQuestionGroupingID(
                     (int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            questionGroupingModel.setLabel((int) cRow.getCell(1,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             questionGroupingModel.setName(
-                    cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            questionGroupingModel.setDescription(
                     cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            questionGroupingModel.setDescription(
+                    cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
             if (!addQuestionGroupingFromExcel(questionGroupingModel)) {
                 return false;
@@ -336,6 +338,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ID, questionGroupingModel.getQuestionGroupingID());
+        cv.put(cSQLDBHelper.KEY_LABEL, questionGroupingModel.getLabel());
         cv.put(cSQLDBHelper.KEY_NAME, questionGroupingModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, questionGroupingModel.getDescription());
 
@@ -376,6 +379,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
      *
      * @return boolean
      */
+
     @Override
     public boolean addQuestionTypeFromExcel() {
         Workbook workbook = excelHelper.getWorkbookLOGFRAME();
@@ -400,85 +404,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             questionTypeModel.setDescription(
                     cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
-
-            /* get primitive type */
-            Sheet primitiveSheet = workbook.getSheet(cExcelHelper.SHEET_tblPRIMITIVETYPE);
-            int questionTypeID, primitiveTypeID = -1;
-
-            for (Row rowPrimitive : primitiveSheet) {
-                //just skip the row if row number is 0
-                if (rowPrimitive.getRowNum() == 0) {
-                    continue;
-                }
-
-                questionTypeID = (int) rowPrimitive.getCell(0,
-                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (questionTypeModel.getQuestionTypeID() == questionTypeID) {
-                    primitiveTypeID = questionTypeID;
-                    break;
-                }
-            }
-
-            /* get array type */
-            Sheet arraySheet = workbook.getSheet(cExcelHelper.SHEET_tblARRAYTYPE);
-            int arrayTypeID = -1;//Pair<Integer, Integer> customTypePair = null;
-            //int customID, optionID;
-            for (Row rowArrayType : arraySheet) {
-                //just skip the row if row number is 0
-                if (rowArrayType.getRowNum() == 0) {
-                    continue;
-                }
-
-                questionTypeID = (int) rowArrayType.getCell(0,
-                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (questionTypeModel.getQuestionTypeID() == questionTypeID) {
-                    //optionID = (int) rowCustom.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    //customTypePair = new Pair<>(customID, optionID);
-                    arrayTypeID = questionTypeID;
-                    break;
-                }
-            }
-
-            /* get matrix type */
-            Sheet matrixSheet = workbook.getSheet(cExcelHelper.SHEET_tblMATRIXTYPE);
-            int matrixTypeID = -1;//Pair<Integer, Integer> customTypePair = null;
-            //int customID, optionID;
-            for (Row rowMatrixType : matrixSheet) {
-                //just skip the row if row number is 0
-                if (rowMatrixType.getRowNum() == 0) {
-                    continue;
-                }
-
-                questionTypeID = (int) rowMatrixType.getCell(0,
-                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (questionTypeModel.getQuestionTypeID() == questionTypeID) {
-                    //optionID = (int) rowCustom.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    //customTypePair = new Pair<>(customID, optionID);
-                    matrixTypeID = questionTypeID;
-                    break;
-                }
-            }
-
-            /* get choice of the question type
-            Set<Pair<Integer, Integer>> choiceSet = new HashSet<>();
-            int choiceID;
-            Sheet choiceSetSheet = workbook.getSheet(cExcelHelper.SHEET_tblCHOICESET);
-            for (Iterator<Row> ritChoiceSet = choiceSetSheet.iterator(); ritChoiceSet.hasNext(); ) {
-                Row rowChoiceSet = ritChoiceSet.next();
-
-                //just skip the row if row number is 0
-                if (rowChoiceSet.getRowNum() == 0) {
-                    continue;
-                }
-
-                questionTypeID = (int) rowChoiceSet.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (questionTypeModel.getQuestionTypeID() == questionTypeID) {
-                    choiceID = (int) rowChoiceSet.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    choiceSet.add(new Pair<>(questionTypeID, choiceID));
-                }
-            }*/
-
-            if (!addQuestionTypeFromExcel(questionTypeModel, primitiveTypeID, arrayTypeID, matrixTypeID)) {
+            if (!addQuestionTypeFromExcel(questionTypeModel)) {
                 return false;
             }
         }
@@ -487,18 +413,12 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     }
 
     /**
-     * This function adds question type to the database.
+     * This function adds question grouping data to the database.
      *
-     * @param questionTypeModel question type model
-     * @param primitiveTypeID primitive type identification
-     * @param arrayTypeID array type identification
-     * @param matrixTypeID matrix type identification
+     * @param questionTypeModel question grouping model
      * @return boolean
      */
-    public boolean addQuestionTypeFromExcel(cQuestionTypeModel questionTypeModel,
-                                            int primitiveTypeID,
-                                            int arrayTypeID,
-                                            int matrixTypeID) {
+    public boolean addQuestionTypeFromExcel(cQuestionTypeModel questionTypeModel) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -510,48 +430,11 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         cv.put(cSQLDBHelper.KEY_NAME, questionTypeModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, questionTypeModel.getDescription());
 
-        // insert question type details
+        // insert project details
         try {
             if (db.insert(cSQLDBHelper.TABLE_tblQUESTIONTYPE, null, cv) < 0) {
                 return false;
             }
-
-            /* insert primitive type in the database */
-            if (primitiveTypeID > -1) {
-                ContentValues cvPrimitive = new ContentValues();
-
-                cvPrimitive.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID, primitiveTypeID);
-
-                if (db.insert(cSQLDBHelper.TABLE_tblPRIMITIVETYPE, null,
-                        cvPrimitive) < 0) {
-                    return false;
-                }
-            }
-
-            /* insert array type in the database */
-            if (arrayTypeID > -1) {
-                ContentValues cvArrayType = new ContentValues();
-
-                cvArrayType.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID, arrayTypeID);
-
-                if (db.insert(cSQLDBHelper.TABLE_tblARRAYTYPE, null,
-                        cvArrayType) < 0) {
-                    return false;
-                }
-            }
-
-            /* insert matrix type in the database */
-            if (matrixTypeID > -1) {
-                ContentValues cvMatrixType = new ContentValues();
-
-                cvMatrixType.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID, matrixTypeID);
-
-                if (db.insert(cSQLDBHelper.TABLE_tblMATRIXTYPE, null,
-                        cvMatrixType) < 0) {
-                    return false;
-                }
-            }
-
         } catch (Exception e) {
             Log.d(TAG, "Exception in importing QUESTION TYPE from Excel: " + e.getMessage());
         }
@@ -560,51 +443,6 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         db.close();
 
         return true;
-    }
-
-    @Override
-    public boolean deletePrimitiveTypes() {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_tblPRIMITIVETYPE, null,
-                null);
-
-        // close the database connection
-        db.close();
-
-        return result > -1;
-    }
-
-    @Override
-    public boolean deleteArrayTypes() {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_tblARRAYTYPE, null,
-                null);
-
-        // close the database connection
-        db.close();
-
-        return result > -1;
-    }
-
-    @Override
-    public boolean deleteMatrixTypes() {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_tblMATRIXTYPE, null,
-                null);
-
-        // close the database connection
-        db.close();
-
-        return result > -1;
     }
 
     @Override
@@ -622,6 +460,374 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         return result > -1;
     }
 
+//    @Override
+//    public boolean addQuestionTypeFromExcel() {
+//        Workbook workbook = excelHelper.getWorkbookLOGFRAME();
+//        Sheet QTSheet = workbook.getSheet(cExcelHelper.SHEET_tblQUESTIONTYPE);
+//        Sheet PSheet = workbook.getSheet(cExcelHelper.SHEET_tblPRIMITIVE_CHART);
+//        Sheet ASheet = workbook.getSheet(cExcelHelper.SHEET_tblARRAY_CHART);
+//        Sheet MSheet = workbook.getSheet(cExcelHelper.SHEET_tblMATRIX_CHART);
+//
+//        if (QTSheet == null) {
+//            return false;
+//        }
+//
+//        for (Row cRow : QTSheet) {
+//            //just skip the row if row number is 0
+//            if (cRow.getRowNum() == 0) {
+//                continue;
+//            }
+//
+//            cQuestionTypeModel questionTypeModel = new cQuestionTypeModel();
+//
+//            questionTypeModel.setQuestionTypeID(
+//                    (int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            questionTypeModel.setName(
+//                    cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+//            questionTypeModel.setDescription(
+//                    cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+//
+//
+//            /* get primitive type */
+//            Sheet primitiveSheet = workbook.getSheet(cExcelHelper.SHEET_tblPRIMITIVETYPE);
+//            int questionTypeID, primitiveTypeID = -1;
+//
+//            for (Row rowPrimitive : primitiveSheet) {
+//                //just skip the row if row number is 0
+//                if (rowPrimitive.getRowNum() == 0) {
+//                    continue;
+//                }
+//
+//                questionTypeID = (int) rowPrimitive.getCell(0,
+//                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                if (questionTypeModel.getQuestionTypeID() == questionTypeID) {
+//                    primitiveTypeID = questionTypeID;
+//                    break;
+//                }
+//            }
+//
+//            /* get array type */
+//            Sheet arraySheet = workbook.getSheet(cExcelHelper.SHEET_tblARRAYTYPE);
+//            int arrayTypeID = -1;//Pair<Integer, Integer> customTypePair = null;
+//            //int customID, optionID;
+//            for (Row rowArrayType : arraySheet) {
+//                //just skip the row if row number is 0
+//                if (rowArrayType.getRowNum() == 0) {
+//                    continue;
+//                }
+//
+//                questionTypeID = (int) rowArrayType.getCell(0,
+//                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                if (questionTypeModel.getQuestionTypeID() == questionTypeID) {
+//                    //optionID = (int) rowCustom.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    //customTypePair = new Pair<>(customID, optionID);
+//                    arrayTypeID = questionTypeID;
+//                    break;
+//                }
+//            }
+//
+//            /* get matrix type */
+//            Sheet matrixSheet = workbook.getSheet(cExcelHelper.SHEET_tblMATRIXTYPE);
+//            int matrixTypeID = -1;//Pair<Integer, Integer> customTypePair = null;
+//            //int customID, optionID;
+//            for (Row rowMatrixType : matrixSheet) {
+//                //just skip the row if row number is 0
+//                if (rowMatrixType.getRowNum() == 0) {
+//                    continue;
+//                }
+//
+//                questionTypeID = (int) rowMatrixType.getCell(0,
+//                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                if (questionTypeModel.getQuestionTypeID() == questionTypeID) {
+//                    //optionID = (int) rowCustom.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    //customTypePair = new Pair<>(customID, optionID);
+//                    matrixTypeID = questionTypeID;
+//                    break;
+//                }
+//            }
+//
+//            /* get choice of the question type
+//            Set<Pair<Integer, Integer>> choiceSet = new HashSet<>();
+//            int choiceID;
+//            Sheet choiceSetSheet = workbook.getSheet(cExcelHelper.SHEET_tblCHOICESET);
+//            for (Iterator<Row> ritChoiceSet = choiceSetSheet.iterator(); ritChoiceSet.hasNext(); ) {
+//                Row rowChoiceSet = ritChoiceSet.next();
+//
+//                //just skip the row if row number is 0
+//                if (rowChoiceSet.getRowNum() == 0) {
+//                    continue;
+//                }
+//
+//                questionTypeID = (int) rowChoiceSet.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                if (questionTypeModel.getQuestionTypeID() == questionTypeID) {
+//                    choiceID = (int) rowChoiceSet.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    choiceSet.add(new Pair<>(questionTypeID, choiceID));
+//                }
+//            }*/
+//
+//            if (!addQuestionTypeFromExcel(questionTypeModel, primitiveTypeID, arrayTypeID,
+//                    matrixTypeID, PSheet, ASheet, MSheet)) {
+//                return false;
+//            }
+//        }
+//
+//        return true;
+//    }
+//
+//    /**
+//     * This function adds question type to the database.
+//     *
+//     * @param questionTypeModel question type model
+//     * @param primitiveTypeID   primitive type identification
+//     * @param arrayTypeID       array type identification
+//     * @param matrixTypeID      matrix type identification
+//     * @return boolean
+//     */
+//    public boolean addQuestionTypeFromExcel(
+//            cQuestionTypeModel questionTypeModel, int primitiveTypeID, int arrayTypeID,
+//            int matrixTypeID, Sheet PSheet, Sheet ASheet, Sheet MSheet) {
+//
+//        // open the connection to the database
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        // create content object for storing data
+//        ContentValues cv = new ContentValues();
+//
+//        // assign values to the table fields
+//        cv.put(cSQLDBHelper.KEY_ID, questionTypeModel.getQuestionTypeID());
+//        cv.put(cSQLDBHelper.KEY_NAME, questionTypeModel.getName());
+//        cv.put(cSQLDBHelper.KEY_DESCRIPTION, questionTypeModel.getDescription());
+//
+//        // insert question type details
+//        try {
+//            if (db.insert(cSQLDBHelper.TABLE_tblQUESTIONTYPE, null, cv) < 0) {
+//                return false;
+//            }
+//
+//            /* insert primitive type in the database */
+//            if (primitiveTypeID > -1) {
+//                ContentValues cvPrimitive = new ContentValues();
+//
+//                cvPrimitive.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID, primitiveTypeID);
+//
+//                if (db.insert(cSQLDBHelper.TABLE_tblPRIMITIVETYPE, null,
+//                        cvPrimitive) > 0) {
+//
+//                    for (Row pRow : PSheet){
+//                        if (pRow.getRowNum() == 0) {
+//                            continue;
+//                        }
+//                        long chartID = (int) pRow.getCell(0,
+//                                Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                        if (primitiveTypeID == questionTypeModel.getQuestionTypeID()){
+//                            if (!addPrimitiveChart(arrayTypeID, chartID))
+//                                return false;
+//                        }
+//                    }
+//                    return true;
+//                }else{
+//                    return false;
+//                }
+//            }
+//
+//            /* insert array type in the database */
+//            if (arrayTypeID > -1) {
+//                ContentValues cvArrayType = new ContentValues();
+//
+//                cvArrayType.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID, arrayTypeID);
+//
+//                if (db.insert(cSQLDBHelper.TABLE_tblARRAYTYPE, null,
+//                        cvArrayType) > 0) {
+//                    for (Row aRow : ASheet){
+//                        if (aRow.getRowNum() == 0) {
+//                            continue;
+//                        }
+//                        long chartID = (int) aRow.getCell(0,
+//                                Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                        if (arrayTypeID == questionTypeModel.getQuestionTypeID()){
+//                            if (!addArrayChart(arrayTypeID, chartID))
+//                                return false;
+//                        }
+//                    }
+//                    return true;
+//                } else {
+//                    return false;
+//                }
+//            }
+//
+//            /* insert matrix type in the database */
+//            if (matrixTypeID > -1) {
+//                ContentValues cvMatrixType = new ContentValues();
+//
+//                cvMatrixType.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID, matrixTypeID);
+//
+//                if (db.insert(cSQLDBHelper.TABLE_tblMATRIXTYPE, null,
+//                        cvMatrixType) > 0) {
+//                    for (Row mRow : MSheet){
+//                        if (mRow.getRowNum() == 0) {
+//                            continue;
+//                        }
+//                        long chartID = (int) mRow.getCell(0,
+//                                Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                        if (matrixTypeID == chartID){
+//                            if (!addMatrixChart(matrixTypeID, chartID))
+//                                return false;
+//                        }
+//                    }
+//                    return true;
+//                }else{
+//                    return false;
+//                }
+//            }
+//
+//        } catch (Exception e) {
+//            Log.d(TAG, "Exception in importing QUESTION TYPE from Excel: " + e.getMessage());
+//        }
+//
+//        // close the database connection
+//        db.close();
+//
+//        return true;
+//    }
+//
+//    public boolean addPrimitiveChart(long primitiveTypeID, long chartID) {
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        ContentValues cv = new ContentValues();
+//
+//        cv.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID, primitiveTypeID);
+//        cv.put(cSQLDBHelper.KEY_CHART_FK_ID, chartID);
+//
+//        return db.insert(cSQLDBHelper.TABLE_tblPRIMITIVE_CHART, null, cv) >= 0;
+//    }
+//
+//    public boolean addArrayChart(long arrayTypeID, long chartID) {
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        ContentValues cv = new ContentValues();
+//
+//        cv.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID, arrayTypeID);
+//        cv.put(cSQLDBHelper.KEY_CHART_FK_ID, chartID);
+//
+//        return db.insert(cSQLDBHelper.TABLE_tblARRAY_CHART, null, cv) >= 0;
+//    }
+//
+//    public boolean addMatrixChart(long matrixTypeID, long chartID) {
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        ContentValues cv = new ContentValues();
+//
+//        cv.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID, matrixTypeID);
+//        cv.put(cSQLDBHelper.KEY_CHART_FK_ID, chartID);
+//
+//        return db.insert(cSQLDBHelper.TABLE_tblMATRIX_CHART, null, cv) >= 0;
+//    }
+//
+//    @Override
+//    public boolean deletePrimitiveTypes() {
+//        // open the connection to the database
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        // delete all records
+//        long result = db.delete(cSQLDBHelper.TABLE_tblPRIMITIVETYPE, null,
+//                null);
+//
+//        // close the database connection
+//        db.close();
+//
+//        return result > -1;
+//    }
+//
+//    @Override
+//    public boolean deletePrimitiveCharts() {
+//        // open the connection to the database
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        // delete all records
+//        long result = db.delete(cSQLDBHelper.TABLE_tblPRIMITIVE_CHART, null,
+//                null);
+//
+//        // close the database connection
+//        db.close();
+//
+//        return result > -1;
+//    }
+//
+//    @Override
+//    public boolean deleteArrayTypes() {
+//        // open the connection to the database
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        // delete all records
+//        long result = db.delete(cSQLDBHelper.TABLE_tblARRAYTYPE, null,
+//                null);
+//
+//        // close the database connection
+//        db.close();
+//
+//        return result > -1;
+//    }
+//
+//    @Override
+//    public boolean deleteArrayCharts() {
+//        // open the connection to the database
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        // delete all records
+//        long result = db.delete(cSQLDBHelper.TABLE_tblARRAY_CHART, null,
+//                null);
+//
+//        // close the database connection
+//        db.close();
+//
+//        return result > -1;
+//    }
+//
+//    @Override
+//    public boolean deleteMatrixTypes() {
+//        // open the connection to the database
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        // delete all records
+//        long result = db.delete(cSQLDBHelper.TABLE_tblMATRIXTYPE, null,
+//                null);
+//
+//        // close the database connection
+//        db.close();
+//
+//        return result > -1;
+//    }
+//
+//    @Override
+//    public boolean deleteMatrixCharts() {
+//        // open the connection to the database
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        // delete all records
+//        long result = db.delete(cSQLDBHelper.TABLE_tblMATRIX_CHART, null,
+//                null);
+//
+//        // close the database connection
+//        db.close();
+//
+//        return result > -1;
+//    }
+
+//    @Override
+//    public boolean deleteQuestionTypes() {
+//        // open the connection to the database
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        // delete all records
+//        long result = db.delete(cSQLDBHelper.TABLE_tblQUESTIONTYPE, null,
+//                null);
+//
+//        // close the database connection
+//        db.close();
+//
+//        return result > -1;
+//    }
+
 
     /* #################################### QUESTION FUNCTIONS ###################################*/
 
@@ -634,6 +840,9 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     public boolean addQuestionFromExcel() {
         Workbook workbook = excelHelper.getWorkbookLOGFRAME();
         Sheet questionSheet = workbook.getSheet(cExcelHelper.SHEET_tblQUESTION);
+        Sheet PQSheet = workbook.getSheet(cExcelHelper.SHEET_tblPRIMITIVEQUESTION);
+        Sheet AQSheet = workbook.getSheet(cExcelHelper.SHEET_tblARRAYQUESTION);
+        Sheet MQSheet = workbook.getSheet(cExcelHelper.SHEET_tblMATRIXQUESTION);
 
         if (questionSheet == null) {
             return false;
@@ -655,50 +864,70 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
                     Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             questionModel.setQuestionGroupID((int) cRow.getCell(3,
                     Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            questionModel.setName(cRow.getCell(4,
+            questionModel.setLabel((int) cRow.getCell(4,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            questionModel.setQuestion(cRow.getCell(5,
                     Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            questionModel.setDescription(cRow.getCell(5,
-                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            questionModel.setDefaultChart((int) cRow.getCell(6,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
 
-            /* get evaluation question type
-            Sheet evaluationSheet = workbook.getSheet(cExcelHelper.SHEET_tblEVALUATION_QUESTION);
-            int questionID, evaluationID = -1;
+            /* get primitive question */
+            long questionID;
+            Set<Long> primitiveChartIDs = new HashSet<>();
 
-            for (Iterator<Row> ritEvaluation = evaluationSheet.iterator(); ritEvaluation.hasNext(); ) {
-                Row rowEvaluation = ritEvaluation.next();
-
+            for (Row rowPQ : PQSheet) {
                 //just skip the row if row number is 0
-                if (rowEvaluation.getRowNum() == 0) {
+                if (rowPQ.getRowNum() == 0) {
                     continue;
                 }
 
-                questionID = (int) rowEvaluation.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                questionID = (int) rowPQ.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (questionModel.getQuestionID() == questionID) {
-                    evaluationID = questionModel.getQuestionID();
-                    break;
+                    primitiveChartIDs.add((long) rowPQ.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
                 }
-            }*/
+            }
 
-            /* get monitoring question type
-            Sheet monitoringSheet = workbook.getSheet(cExcelHelper.SHEET_tblMONITORING_QUESTION);
-            int monitoringID = -1;
-
-            for (Iterator<Row> ritMonitoring = monitoringSheet.iterator(); ritMonitoring.hasNext(); ) {
-                Row rowMonitoring = ritMonitoring.next();
-
+            /* get array question */
+            Set<Pair<Long, Long>> arrayChartIDs = new HashSet<>();
+            for (Row rowAQ : AQSheet) {
                 //just skip the row if row number is 0
-                if (rowMonitoring.getRowNum() == 0) {
+                if (rowAQ.getRowNum() == 0) {
                     continue;
                 }
 
-                questionID = (int) rowMonitoring.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                questionID = (long) rowAQ.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (questionModel.getQuestionID() == questionID) {
-                    monitoringID = questionModel.getQuestionID();
-                    break;
+                    long arraySet = (long) rowAQ.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    long arrayChart = (long) rowAQ.getCell(2,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    arrayChartIDs.add(new Pair<>(arraySet, arrayChart));
                 }
-            }*/
+            }
 
-            if (!addQuestionFromExcel(questionModel)) {
+            /* get matrix question */
+            Set<Pair<Long, Long>> matrixChartIDs = new HashSet<>();
+            for (Row rowMQ : MQSheet) {
+                //just skip the row if row number is 0
+                if (rowMQ.getRowNum() == 0) {
+                    continue;
+                }
+
+                questionID = (long) rowMQ.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                if (questionModel.getQuestionID() == questionID) {
+                    long matrixSet = (long) rowMQ.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    long matrixChart = (long) rowMQ.getCell(2,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    matrixChartIDs.add(new Pair<>(matrixSet, matrixChart));
+                }
+            }
+
+            if (!addQuestionFromExcel(questionModel, primitiveChartIDs, arrayChartIDs,
+                    matrixChartIDs)) {
                 return false;
             }
         }
@@ -712,7 +941,10 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
      * @param questionModel question model
      * @return boolean
      */
-    public boolean addQuestionFromExcel(cQuestionModel questionModel) {
+    public boolean addQuestionFromExcel(cQuestionModel questionModel,
+                                        Set<Long> primitiveChartIDs,
+                                        Set<Pair<Long, Long>> arrayChartIDs,
+                                        Set<Pair<Long, Long>> matrixChartIDs) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -724,8 +956,9 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         cv.put(cSQLDBHelper.KEY_LOGFRAME_FK_ID, questionModel.getLogFrameID());
         cv.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID, questionModel.getQuestionTypeID());
         cv.put(cSQLDBHelper.KEY_QUESTION_GROUPING_FK_ID, questionModel.getQuestionGroupID());
-        cv.put(cSQLDBHelper.KEY_NAME, questionModel.getName());
-        cv.put(cSQLDBHelper.KEY_DESCRIPTION, questionModel.getDescription());
+        cv.put(cSQLDBHelper.KEY_LABEL, questionModel.getLabel());
+        cv.put(cSQLDBHelper.KEY_QUESTION, questionModel.getQuestion());
+        cv.put(cSQLDBHelper.KEY_DEFAULT_CHART, questionModel.getDefaultChart());
 
         try {
             /* insert question details */
@@ -733,8 +966,105 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
                 return false;
             }
 
+            for (long chartID : primitiveChartIDs) {
+                if (!addPrimitiveQuestion(questionModel.getQuestionID(), chartID))
+                    return false;
+            }
+
+            for (Pair<Long,Long> arrayQuestion: arrayChartIDs) {
+                if (!addArrayQuestion(questionModel.getQuestionID(), arrayQuestion.first,
+                        arrayQuestion.second))
+                    return false;
+            }
+
+            for (Pair<Long,Long> matrixQuestion: matrixChartIDs) {
+                if (!addMatrixQuestion(questionModel.getQuestionID(), matrixQuestion.first,
+                        matrixQuestion.second))
+                    return false;
+            }
+
         } catch (Exception e) {
             Log.d(TAG, "Exception in importing QUESTION from Excel: " + e.getMessage());
+        }
+
+        // close the database connection
+        db.close();
+
+        return true;
+    }
+
+    public boolean addPrimitiveQuestion(long questionID, long primitiveChartID) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // create content object for storing data
+        ContentValues cv = new ContentValues();
+
+        // assign values to the table fields
+        cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, questionID);
+        cv.put(cSQLDBHelper.KEY_PRIMITIVE_CHART_FK_ID, primitiveChartID);
+
+        // insert project details
+        try {
+            if (db.insert(cSQLDBHelper.TABLE_tblPRIMITIVEQUESTION, null, cv) < 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in importing PRIMITIVE QUESTION from Excel: "+e.getMessage());
+        }
+
+        // close the database connection
+        db.close();
+
+        return true;
+    }
+
+    public boolean addArrayQuestion(long questionID, long arraySetID, long arrayChartID) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // create content object for storing data
+        ContentValues cv = new ContentValues();
+
+        // assign values to the table fields
+        cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, questionID);
+        cv.put(cSQLDBHelper.KEY_ARRAY_SET_FK_ID, arraySetID);
+        cv.put(cSQLDBHelper.KEY_ARRAY_CHART_FK_ID, arrayChartID);
+
+        // insert project details
+        try {
+            if (db.insert(cSQLDBHelper.TABLE_tblARRAYQUESTION, null, cv) < 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in importing ARRAY QUESTION from Excel: "+e.getMessage());
+        }
+
+        // close the database connection
+        db.close();
+
+        return true;
+    }
+
+    public boolean addMatrixQuestion(long questionID, long matrixSetID, long matrixChartID) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // create content object for storing data
+        ContentValues cv = new ContentValues();
+
+        // assign values to the table fields
+        cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, questionID);
+        cv.put(cSQLDBHelper.KEY_MATRIX_SET_FK_ID, matrixSetID);
+        cv.put(cSQLDBHelper.KEY_MATRIX_CHART_FK_ID, matrixChartID);
+
+        // insert project details
+        try {
+            if (db.insert(cSQLDBHelper.TABLE_tblMATRIXQUESTION, null, cv) < 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in importing MATRIX QUESTION from Excel: "+e.getMessage());
         }
 
         // close the database connection
@@ -750,6 +1080,51 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
         // delete all records
         long result = db.delete(cSQLDBHelper.TABLE_tblQUESTION, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deletePrimitiveQuestions() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblPRIMITIVEQUESTION, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteArrayQuestions() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblARRAYQUESTION, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    @Override
+    public boolean deleteMatrixQuestions() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblMATRIXQUESTION, null,
                 null);
 
         // close the database connection
@@ -943,8 +1318,8 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
      * This function extracts and adds the impact data from excel.
      *
      * @param impactModel impact model
-     * @param iqcMap impact question criteria
-     * @param raidSet raid set
+     * @param iqcMap      impact question criteria
+     * @param raidSet     raid set
      * @return boolean
      */
     public boolean addImpactFromExcel(cImpactModel impactModel,
@@ -999,7 +1374,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     /**
      * This function adds the impact, question and criteria to the database.
      *
-     * @param impactID impact identification
+     * @param impactID   impact identification
      * @param questionID question identification
      * @param criteriaID criteria identification
      * @return boolean
@@ -1020,7 +1395,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
      * This function adds the impact and raid to the database.
      *
      * @param impactID impact identification
-     * @param raidID raid identification
+     * @param raidID   raid identification
      * @return boolean
      */
     public boolean addImpactRaid(long impactID, long raidID) {
@@ -1157,7 +1532,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
                     parentID = (int) rowOI.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     childID = (int) rowOI.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     impactID = (int) rowOI.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    impactSet.add(new Pair(outcomeID, impactID));
+                    impactSet.add(new Pair<>(outcomeID, impactID));
                     soiMap.put(impactSet, new Pair<>(parentID, childID));
                 }
             }
@@ -1194,9 +1569,9 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
     /**
      * @param outcomeModel outcome model
-     * @param soiMap sub-logframe outcome impact
-     * @param oqcMap outcome question criteria
-     * @param raidSet raid set
+     * @param soiMap       sub-logframe outcome impact
+     * @param oqcMap       outcome question criteria
+     * @param raidSet      raid set
      * @return boolean
      */
     public boolean addOutcomeFromExcel(cOutcomeModel outcomeModel,
@@ -1271,10 +1646,10 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     }
 
     /**
-     * @param parentID parent identification
-     * @param childID child identification
+     * @param parentID  parent identification
+     * @param childID   child identification
      * @param outcomeID outcome identification
-     * @param impactID impact identification
+     * @param impactID  impact identification
      * @return boolean
      */
     public boolean addOutcomeImpact(long parentID, long childID, long outcomeID, long impactID) {
@@ -1291,7 +1666,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     }
 
     /**
-     * @param outcomeID outcome identification
+     * @param outcomeID  outcome identification
      * @param questionID question identification
      * @param criteriaID criteria identification
      * @return boolean
@@ -1310,7 +1685,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
     /**
      * @param outcomeID outcome identification
-     * @param raidID raid identification
+     * @param raidID    raid identification
      * @return boolean
      */
     public boolean addOutcomeRaid(long outcomeID, long raidID) {
@@ -1459,9 +1834,12 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
                 outputID = (int) rowOO.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (outputModel.getOutputID() == outputID) {
                     Set<Pair<Long, Long>> impactSet = new HashSet<>();
-                    parentID = (int) rowOO.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    childID = (int) rowOO.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    outcomeID = (int) rowOO.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    parentID = (int) rowOO.getCell(0,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    childID = (int) rowOO.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    outcomeID = (int) rowOO.getCell(3,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     impactSet.add(new Pair(outputID, outcomeID));
                     sooMap.put(impactSet, new Pair<>(parentID, childID));
                 }
@@ -1477,9 +1855,11 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
                     continue;
                 }
 
-                outputID = (int) rowOutputRaid.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                outputID = (int) rowOutputRaid.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (outputModel.getOutputID() == outputID) {
-                    raidID = (int) rowOutputRaid.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    raidID = (int) rowOutputRaid.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     raidSet.add(new Pair<>(outputID, raidID));
                 }
             }
@@ -1498,9 +1878,9 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
     /**
      * @param outputModel output model
-     * @param sooMap sub-logframe output outcome
-     * @param oqcMap output question criteria
-     * @param raidSet raid set
+     * @param sooMap      sub-logframe output outcome
+     * @param oqcMap      output question criteria
+     * @param raidSet     raid set
      * @return boolean
      */
     public boolean addOutputFromExcel(cOutputModel outputModel,
@@ -1574,9 +1954,9 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     }
 
     /**
-     * @param parentID parent identification
-     * @param childID child identification
-     * @param outputID output identification
+     * @param parentID  parent identification
+     * @param childID   child identification
+     * @param outputID  output identification
      * @param outcomeID outcome identification
      * @return boolean
      */
@@ -1590,15 +1970,11 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         cv.put(cSQLDBHelper.KEY_OUTPUT_FK_ID, outputID);
         cv.put(cSQLDBHelper.KEY_OUTCOME_FK_ID, outcomeID);
 
-        if (db.insert(cSQLDBHelper.TABLE_tblOUTPUT_OUTCOME, null, cv) < 0) {
-            return false;
-        }
-
-        return true;
+        return db.insert(cSQLDBHelper.TABLE_tblOUTPUT_OUTCOME, null, cv) >= 0;
     }
 
     /**
-     * @param outputID output identification
+     * @param outputID   output identification
      * @param questionID question identification
      * @param criteriaID criteria identification
      * @return boolean
@@ -1617,7 +1993,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
     /**
      * @param outputID output identification
-     * @param raidID raid identification
+     * @param raidID   raid identification
      * @return boolean
      */
     public boolean addOutputRaid(long outputID, long raidID) {
@@ -1807,8 +2183,8 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             }
             cActivityModel activityModel = new cActivityModel();
 
-           activityModel.setWorkplanID((int)
-                   rowActivity.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            activityModel.setWorkplanID((int)
+                    rowActivity.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             activityModel.setParentID((int)
                     rowActivity.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             activityModel.setOutputID((int)
@@ -1942,8 +2318,8 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         return true;
     }
 
-            /* get activities of the activity planning*/
-            //Set<Pair<Integer, Integer>> planningSet = new HashSet<>();
+    /* get activities of the activity planning*/
+    //Set<Pair<Integer, Integer>> planningSet = new HashSet<>();
 /*
             int activityID;
             Sheet activitySheet = workbook.getSheet(cExcelHelper.SHEET_tblACTIVITY);
@@ -1974,20 +2350,19 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     }*/
 
     /**
-     *
      * @param activityModel activity model
-     * @param precedingSet preceding set
-     * @param saoMap sub-activity output
-     * @param aqcMap activity question criteria
-     * @param raidSet raid set
+     * @param precedingSet  preceding set
+     * @param saoMap        sub-activity output
+     * @param aqcMap        activity question criteria
+     * @param raidSet       raid set
      * @return boolean
      */
     public boolean addActivity(cActivityModel activityModel,
-                                        Set<Pair<Long, Long>> precedingSet,
-                                        Map<Long, Set<Pair<Long, Long>>> asaMap,
-                                        Map<Set<Pair<Long, Long>>, Pair<Long, Long>> saoMap,
-                                        Map<Long, Set<Pair<Long, Long>>> aqcMap,
-                                        Set<Pair<Long, Long>> raidSet) {
+                               Set<Pair<Long, Long>> precedingSet,
+                               Map<Long, Set<Pair<Long, Long>>> asaMap,
+                               Map<Set<Pair<Long, Long>>, Pair<Long, Long>> saoMap,
+                               Map<Long, Set<Pair<Long, Long>>> aqcMap,
+                               Set<Pair<Long, Long>> raidSet) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -2071,8 +2446,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     }
 
     /**
-     *
-     * @param activityID activity identification
+     * @param activityID  activity identification
      * @param precedingID preceding identification
      * @return boolean
      */
@@ -2088,10 +2462,9 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     }
 
     /**
-     *
      * @param assignmentID assignment identification
-     * @param staffID staff identification
-     * @param activityID activity identification
+     * @param staffID      staff identification
+     * @param activityID   activity identification
      * @return boolean
      */
     public boolean addActivityAssignment(long assignmentID, long staffID, long activityID) {
@@ -2111,11 +2484,10 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     }
 
     /**
-     *
-     * @param parentID parent identification
-     * @param childID child identification
+     * @param parentID   parent identification
+     * @param childID    child identification
      * @param activityID activity identification
-     * @param outputID output identification
+     * @param outputID   output identification
      * @return boolean
      */
     public boolean addActivityOutput(long parentID, long childID, long activityID, long outputID) {
@@ -2132,7 +2504,6 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     }
 
     /**
-     *
      * @param activityID activity identification
      * @param questionID question identification
      * @param criteriaID criteria identification
@@ -2151,9 +2522,8 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     }
 
     /**
-     *
      * @param activityID activity identification
-     * @param raidID raid identification
+     * @param raidID     raid identification
      * @return boolean
      */
     public boolean addActivityRaid(long activityID, long raidID) {
@@ -2522,10 +2892,12 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             int materialID = -1, materialQuantity = 0;
 
             /* expense inputs */
-            int expenseID = -1; double expense = 0.0;
+            int expenseID = -1;
+            double expense = 0.0;
 
             /* income inputs */
-            int incomeID = -1, funderID = -1; double fund = 0.0;
+            int incomeID = -1, funderID = -1;
+            double fund = 0.0;
 
             for (Row rowHuman : humanSheet) {
                 //just skip the row if row number is 0
@@ -2587,7 +2959,8 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             /* income input */
             Map<Long, Set<Pair<Long, Double>>> ffaMap = new HashMap<>();
             Set<Pair<Long, Double>> fundSet = new HashSet<>();
-            long fundInputID, fundID = -1; double amount;
+            long fundInputID, fundID = -1;
+            double amount;
             for (Row rowIncome : incomeSheet) {
                 //just skip the row if row number is 0
                 if (rowIncome.getRowNum() == 0) {
@@ -2658,10 +3031,9 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     }
 
     /**
-     *
      * @param inputModel input model
-     * @param iqcMap input question criteria
-     * @param siaMap sub-logframe input activity
+     * @param iqcMap     input question criteria
+     * @param siaMap     sub-logframe input activity
      * @return boolean
      */
     private boolean addInput(cInputModel inputModel,
@@ -2746,8 +3118,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     }
 
     /**
-     *
-     * @param inputID input identification
+     * @param inputID    input identification
      * @param questionID question identification
      * @param criteriaID criteria identification
      * @return boolean

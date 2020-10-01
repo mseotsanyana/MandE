@@ -2,11 +2,8 @@ package com.me.mseotsanyana.mande.PL.presenters.logframe.Impl;
 
 import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
-import com.me.mseotsanyana.mande.BLL.interactors.logframe.outcome.Impl.cReadOutcomeInteractorImpl;
-import com.me.mseotsanyana.mande.BLL.interactors.logframe.outcome.iReadOutcomeInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.output.Impl.cReadOutputInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.output.iReadOutputInteractor;
-import com.me.mseotsanyana.mande.BLL.repository.logframe.iOutcomeRepository;
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iOutputRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;

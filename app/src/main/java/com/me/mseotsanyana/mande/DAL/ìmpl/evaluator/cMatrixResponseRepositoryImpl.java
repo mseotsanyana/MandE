@@ -91,9 +91,9 @@ public class cMatrixResponseRepositoryImpl extends cEvaluationResponseRepository
                     matrix.setMatrixChoiceID(cursor.getInt(
                             cursor.getColumnIndex(cSQLDBHelper.KEY_MATRIX_CHOICE_FK_ID)));
                     matrix.setRowID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROW_OPTION_FK_ID)));
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ROW_CHOICE_FK_ID)));
                     matrix.setColID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COL_OPTION_FK_ID)));
+                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COL_CHOICE_FK_ID)));
                     matrix.setServerID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
                     matrix.setOwnerID(

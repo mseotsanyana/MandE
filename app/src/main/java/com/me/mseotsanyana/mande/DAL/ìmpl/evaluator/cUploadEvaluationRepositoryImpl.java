@@ -9,12 +9,13 @@ import android.util.Pair;
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.repository.evaluator.iUploadEvaluationRepository;
 import com.me.mseotsanyana.mande.DAL.model.evaluator.cArrayChoiceModel;
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cColOptionModel;
+import com.me.mseotsanyana.mande.DAL.model.evaluator.cArraySetModel;
+import com.me.mseotsanyana.mande.DAL.model.evaluator.cColChoiceModel;
 import com.me.mseotsanyana.mande.DAL.model.evaluator.cEvaluationResponseModel;
 import com.me.mseotsanyana.mande.DAL.model.evaluator.cEvaluationTypeModel;
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cMatrixChoiceModel;
 import com.me.mseotsanyana.mande.DAL.model.evaluator.cEvaluationModel;
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cRowOptionModel;
+import com.me.mseotsanyana.mande.DAL.model.evaluator.cMatrixSetModel;
+import com.me.mseotsanyana.mande.DAL.model.evaluator.cRowChoiceModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.DAL.storage.excel.cExcelHelper;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
@@ -25,9 +26,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationRepository {
@@ -51,6 +50,11 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
      *
      * @return
      */
+    /**
+     * This function extracts criteria data from excel and adds it to the database.
+     *
+     * @return boolean
+     */
     @Override
     public boolean addArrayChoiceFromExcel() {
         Workbook workbook = excelHelper.getWorkbookEVALUATION();
@@ -68,56 +72,28 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
 
             cArrayChoiceModel arrayChoiceModel = new cArrayChoiceModel();
 
-            arrayChoiceModel.setArrayChoiceID(
-                    (int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            arrayChoiceModel.setArrayChoiceID((int)
+                    cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             arrayChoiceModel.setName(
                     cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
             arrayChoiceModel.setDescription(
                     cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
-
-            /* get array choices grouped by question and array type */
-            Map<Long, Set<Pair<Long, Long>>> qtcMap = new HashMap<>();
-            Set<Pair<Long, Long>> tcSet = new HashSet<>();
-            long questionID, typeID, choiceID;
-
-            Sheet qtcSheet = workbook.getSheet(cExcelHelper.SHEET_tblARRAYCHOICESET);
-            for (Row rowQTC : qtcSheet) {
-                //just skip the row if row number is 0
-                if (rowQTC.getRowNum() == 0) {
-                    continue;
-                }
-
-                choiceID = (int) rowQTC.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (arrayChoiceModel.getArrayChoiceID() == choiceID) {
-                    questionID = (int) rowQTC.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    typeID = (int) rowQTC.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    tcSet.add(new Pair<>(questionID, typeID));
-                }
-            }
-
-            qtcMap.put(arrayChoiceModel.getArrayChoiceID(), tcSet);
-
-            if (!addArrayChoice(arrayChoiceModel, qtcMap)) {
+            if (!addArrayChoice(arrayChoiceModel)) {
                 return false;
             }
-
-            //Gson gson = new Gson();
-            //Log.d(TAG, gson.toJson(arrayChoiceModel));
         }
 
         return true;
     }
 
     /**
-     * This function adds array choice data to the database.
+     * This function adds criteria data to the database.
      *
      * @param arrayChoiceModel array choice model
-     * @param qtcMap question
-     * @return bool
+     * @return boolean
      */
-    public boolean addArrayChoice(cArrayChoiceModel arrayChoiceModel,
-                                  Map<Long, Set<Pair<Long, Long>>> qtcMap) {
+    public boolean addArrayChoice(cArrayChoiceModel arrayChoiceModel) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -134,19 +110,6 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
             if (db.insert(cSQLDBHelper.TABLE_tblARRAYCHOICE, null, cv) < 0) {
                 return false;
             }
-
-            // add question, type and choice tuple
-            for (Map.Entry<Long, Set<Pair<Long, Long>>> qtcEntry : qtcMap.entrySet()) {
-                long choiceID = qtcEntry.getKey();
-                for (Pair<Long, Long> qcPair : qtcEntry.getValue()) {
-                    long questionID = qcPair.first;
-                    long typeID = qcPair.second;
-
-                    if (!addQuestionArrayTypeChoice(questionID, typeID, choiceID))
-                        return false;
-                }
-            }
-
         } catch (Exception e) {
             Log.d(TAG, "Exception in importing ARRAY CHOICE from Excel: " + e.getMessage());
         }
@@ -157,38 +120,308 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         return true;
     }
 
-    /**
-     * @param questionID question identification
-     * @param typeID type identification
-     * @param choiceID choice identification
-     * @return bool
-     */
-    public boolean addQuestionArrayTypeChoice(long questionID, long typeID, long choiceID) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        ContentValues cv = new ContentValues();
-
-        cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, questionID);
-        cv.put(cSQLDBHelper.KEY_ARRAY_TYPE_FK_ID, typeID);
-        cv.put(cSQLDBHelper.KEY_ARRAY_CHOICE_FK_ID, choiceID);
-
-        try {
-            if (db.insert(cSQLDBHelper.TABLE_tblARRAYCHOICESET, null, cv) < 0) {
-                return false;
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Exception in importing ARRAY TYPE CHOICE from Excel: " + e.getMessage());
-        }
-
-        return true;
-    }
-
     public boolean deleteArrayChoices() {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // delete all records
         long result = db.delete(cSQLDBHelper.TABLE_tblARRAYCHOICE, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    /*################################### ROW CHOICE FUNCTIONS ###################################*/
+
+    /**
+     * This function extracts row choice data from excel and adds it to the database.
+     *
+     * @return bool
+     */
+    @Override
+    public boolean addRowChoiceFromExcel() {
+        Workbook workbook = excelHelper.getWorkbookEVALUATION();
+        Sheet RCSheet = workbook.getSheet(cExcelHelper.SHEET_tblROWCHOICE);
+
+        if (RCSheet == null) {
+            return false;
+        }
+
+        for (Row cRow : RCSheet) {
+            //just skip the row if row number is 0
+            if (cRow.getRowNum() == 0) {
+                continue;
+            }
+
+            cRowChoiceModel rowChoiceModel = new cRowChoiceModel();
+
+            rowChoiceModel.setRowChoiceID((int)
+                    cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            rowChoiceModel.setName(
+                    cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            rowChoiceModel.setDescription(
+                    cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+
+            if (!addRowChoice(rowChoiceModel)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * This function adds row choice data to the database.
+     *
+     * @param rowChoiceModel row option
+     * @return bool
+     */
+    public boolean addRowChoice(cRowChoiceModel rowChoiceModel) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // create content object for storing data
+        ContentValues cv = new ContentValues();
+
+        // assign values to the table fields
+        cv.put(cSQLDBHelper.KEY_ID, rowChoiceModel.getRowChoiceID());
+        cv.put(cSQLDBHelper.KEY_NAME, rowChoiceModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, rowChoiceModel.getDescription());
+
+        // insert project details
+        try {
+            if (db.insert(cSQLDBHelper.TABLE_tblROWCHOICE, null, cv) < 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in importing ROW CHOICE from Excel: " + e.getMessage());
+        }
+
+        // close the database connection
+        db.close();
+
+        return true;
+    }
+
+    public boolean deleteRowChoices() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblROWCHOICE, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    /*################################### COL CHOICE FUNCTIONS ###################################*/
+
+    /**
+     * This function extracts col choice data from excel and adds it to the database.
+     *
+     * @return bool
+     */
+
+    @Override
+    public boolean addColChoiceFromExcel() {
+        Workbook workbook = excelHelper.getWorkbookEVALUATION();
+        Sheet CCSheet = workbook.getSheet(cExcelHelper.SHEET_tblCOLCHOICE);
+
+        if (CCSheet == null) {
+            return false;
+        }
+
+        for (Row cRow : CCSheet) {
+            //just skip the row if row number is 0
+            if (cRow.getRowNum() == 0) {
+                continue;
+            }
+
+            cColChoiceModel colChoiceModel = new cColChoiceModel();
+
+            colChoiceModel.setColChoiceID((int)
+                    cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            colChoiceModel.setName(
+                    cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            colChoiceModel.setDescription(
+                    cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+
+            if (!addColChoice(colChoiceModel)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param colChoiceModel column option
+     * @return bool
+     */
+    public boolean addColChoice(cColChoiceModel colChoiceModel) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // create content object for storing data
+        ContentValues cv = new ContentValues();
+
+        // assign values to the table fields
+        cv.put(cSQLDBHelper.KEY_ID, colChoiceModel.getColChoiceID());
+        cv.put(cSQLDBHelper.KEY_NAME, colChoiceModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, colChoiceModel.getDescription());
+
+        // insert project details
+        try {
+            if (db.insert(cSQLDBHelper.TABLE_tblCOLCHOICE, null, cv) < 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in importing COL CHOICE from Excel: " + e.getMessage());
+        }
+
+        // close the database connection
+        db.close();
+
+        return true;
+    }
+
+    public boolean deleteColChoices() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblCOLCHOICE, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+
+    /*################################ ARRAY SET FUNCTIONS ################################*/
+
+    /**
+     * This function extracts array choice data from excel and adds it to the database.
+     *
+     * @return
+     */
+    @Override
+    public boolean addArraySetFromExcel() {
+        Workbook workbook = excelHelper.getWorkbookEVALUATION();
+        Sheet ASSheet = workbook.getSheet(cExcelHelper.SHEET_tblARRAYSET);
+        Sheet ACSSheet = workbook.getSheet(cExcelHelper.SHEET_tblARRAYCHOICESET);
+
+        if (ASSheet == null) {
+            return false;
+        }
+
+        for (Row cASRow : ASSheet) {
+            //just skip the row if row number is 0
+            if (cASRow.getRowNum() == 0) {
+                continue;
+            }
+
+            cArraySetModel arraySetModel = new cArraySetModel();
+
+            arraySetModel.setArraySetID(
+                    (int) cASRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            arraySetModel.setName(
+                    cASRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            arraySetModel.setDescription(
+                    cASRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+
+
+            /* array choices */
+            Set<Long> arrayChoiceSet = new HashSet<>();
+            long arraySetID, arrayChoiceID;
+
+            for (Row rowACS : ACSSheet) {
+                //just skip the row if row number is 0
+                if (rowACS.getRowNum() == 0) {
+                    continue;
+                }
+
+                arraySetID = (int) rowACS.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                if (arraySetModel.getArraySetID() == arraySetID) {
+                    arrayChoiceID = (int) rowACS.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    arrayChoiceSet.add(arrayChoiceID);
+                }
+            }
+
+            if (!addArraySet(arraySetModel, arrayChoiceSet)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean addArraySet(cArraySetModel arraySetModel, Set<Long> arrayChoiceSet) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // create content object for storing data
+        ContentValues cv = new ContentValues();
+
+        // assign values to the table fields
+        cv.put(cSQLDBHelper.KEY_ID, arraySetModel.getArraySetID());
+        cv.put(cSQLDBHelper.KEY_NAME, arraySetModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, arraySetModel.getDescription());
+
+        // insert project details
+        try {
+            if (db.insert(cSQLDBHelper.TABLE_tblARRAYSET, null, cv) < 0) {
+                return false;
+            }
+
+            // add question, type and choice tuple
+            for (Long arrayChoiceID : arrayChoiceSet) {
+                if (!addArrayChoiceSet(arraySetModel.getArraySetID(), arrayChoiceID))
+                    return false;
+            }
+
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in importing ARRAY SET from Excel: " + e.getMessage());
+        }
+
+        // close the database connection
+        db.close();
+
+        return true;
+    }
+
+    public boolean addArrayChoiceSet(long arraySetID, long arrayChoiceID) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+
+        cv.put(cSQLDBHelper.KEY_ARRAY_SET_FK_ID, arraySetID);
+        cv.put(cSQLDBHelper.KEY_ARRAY_CHOICE_FK_ID, arrayChoiceID);
+
+        try {
+            if (db.insert(cSQLDBHelper.TABLE_tblARRAYCHOICESET, null, cv) < 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in importing ARRAY CHOICE SET from Excel: " + e.getMessage());
+        }
+
+        return true;
+    }
+
+    public boolean deleteArraySets() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblARRAYSET, null, null);
 
         // close the database connection
         db.close();
@@ -209,247 +442,76 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         return result > -1;
     }
 
-    /*################################### ROW OPTION FUNCTIONS ###################################*/
+    /*################################# MATRIX SET FUNCTIONS ##################################*/
 
     /**
-     * This function extracts row option data from excel and adds it to the database.
+     * This function extracts matrix set data from excel and adds it to the database.
      *
      * @return bool
      */
     @Override
-    public boolean addRowOptionFromExcel() {
+    public boolean addMatrixSetFromExcel() {
         Workbook workbook = excelHelper.getWorkbookEVALUATION();
-        Sheet ROSheet = workbook.getSheet(cExcelHelper.SHEET_tblROWOPTION);
+        Sheet MSSheet = workbook.getSheet(cExcelHelper.SHEET_tblMATRIXSET);
+        Sheet MCSSheet = workbook.getSheet(cExcelHelper.SHEET_tblMATRIXCHOICESET);
 
-        if (ROSheet == null) {
+        if (MSSheet == null) {
             return false;
         }
 
-        for (Row cRow : ROSheet) {
+        for (Row rowMS : MSSheet) {
             //just skip the row if row number is 0
-            if (cRow.getRowNum() == 0) {
+            if (rowMS.getRowNum() == 0) {
                 continue;
             }
 
-            cRowOptionModel rowOptionModel = new cRowOptionModel();
+            cMatrixSetModel matrixSetModel = new cMatrixSetModel();
 
-            rowOptionModel.setRowOptionID((int)
-                    cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            rowOptionModel.setName(
-                    cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            rowOptionModel.setDescription(
-                    cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            matrixSetModel.setMatrixSetID(
+                    (int) rowMS.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            matrixSetModel.setName(
+                    rowMS.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            matrixSetModel.setDescription(
+                    rowMS.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
-            if (!addRowOption(rowOptionModel)) {
-                return false;
-            }
-        }
 
-        return true;
-    }
+            /* matrix choices */
+            Set<Pair<Long, Long>> matrixChoiceSet = new HashSet<>();
+            long matrixSetID, rowChoiceID, colChoiceID;
 
-    /**
-     * This function adds row option data to the database.
-     *
-     * @param rowOptionModel row option
-     * @return bool
-     */
-    public boolean addRowOption(cRowOptionModel rowOptionModel) {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // create content object for storing data
-        ContentValues cv = new ContentValues();
-
-        // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, rowOptionModel.getRowOptionID());
-        cv.put(cSQLDBHelper.KEY_NAME, rowOptionModel.getName());
-        cv.put(cSQLDBHelper.KEY_DESCRIPTION, rowOptionModel.getDescription());
-
-        // insert project details
-        try {
-            if (db.insert(cSQLDBHelper.TABLE_tblROWOPTION, null, cv) < 0) {
-                return false;
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Exception in importing ROW OPTION from Excel: " + e.getMessage());
-        }
-
-        // close the database connection
-        db.close();
-
-        return true;
-    }
-
-    public boolean deleteRowOptions() {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_tblROWOPTION, null, null);
-
-        // close the database connection
-        db.close();
-
-        return result > -1;
-    }
-
-    /*################################### COL OPTION FUNCTIONS ###################################*/
-
-    /**
-     * This function extracts col option data from excel and adds it to the database.
-     *
-     * @return bool
-     */
-
-    @Override
-    public boolean addColOptionFromExcel() {
-        Workbook workbook = excelHelper.getWorkbookEVALUATION();
-        Sheet COSheet = workbook.getSheet(cExcelHelper.SHEET_tblCOLOPTION);
-
-        if (COSheet == null) {
-            return false;
-        }
-
-        for (Row cRow : COSheet) {
-            //just skip the row if row number is 0
-            if (cRow.getRowNum() == 0) {
-                continue;
-            }
-
-            cColOptionModel colOptionModel = new cColOptionModel();
-
-            colOptionModel.setColOptionID((int)
-                    cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            colOptionModel.setName(
-                    cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            colOptionModel.setDescription(
-                    cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-
-            if (!addColOption(colOptionModel)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * @param colOptionModel column option
-     * @return bool
-     */
-    public boolean addColOption(cColOptionModel colOptionModel) {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // create content object for storing data
-        ContentValues cv = new ContentValues();
-
-        // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, colOptionModel.getColOptionID());
-        cv.put(cSQLDBHelper.KEY_NAME, colOptionModel.getName());
-        cv.put(cSQLDBHelper.KEY_DESCRIPTION, colOptionModel.getDescription());
-
-        // insert project details
-        try {
-            if (db.insert(cSQLDBHelper.TABLE_tblCOLOPTION, null, cv) < 0) {
-                return false;
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Exception in importing COL OPTION from Excel: " + e.getMessage());
-        }
-
-        // close the database connection
-        db.close();
-
-        return true;
-    }
-
-    public boolean deleteColOptions() {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_tblCOLOPTION, null, null);
-
-        // close the database connection
-        db.close();
-
-        return result > -1;
-    }
-
-    /*################################# MATRIX CHOICE FUNCTIONS ##################################*/
-
-    /**
-     * This function extracts matrix choice data from excel and adds it to the database.
-     *
-     * @return bool
-     */
-    @Override
-    public boolean addMatrixChoiceFromExcel() {
-        Workbook workbook = excelHelper.getWorkbookEVALUATION();
-        Sheet MCSheet = workbook.getSheet(cExcelHelper.SHEET_tblMATRIXCHOICE);
-
-        if (MCSheet == null) {
-            return false;
-        }
-
-        for (Row cRow : MCSheet) {
-            //just skip the row if row number is 0
-            if (cRow.getRowNum() == 0) {
-                continue;
-            }
-
-            cMatrixChoiceModel matrixChoiceModel = new cMatrixChoiceModel();
-
-            matrixChoiceModel.setMatrixChoiceID(
-                    (int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            matrixChoiceModel.setRowID(
-                    (int) cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            matrixChoiceModel.setColID(
-                    (int) cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-
-            /* get array choices grouped by question and matrix type */
-            Map<Long, Set<Pair<Long, Long>>> qtcMap = new HashMap<>();
-            Set<Pair<Long, Long>> tcSet = new HashSet<>();
-            long questionID, typeID, choiceID;
-
-            Sheet qtcSheet = workbook.getSheet(cExcelHelper.SHEET_tblMATRIXCHOICESET);
-            for (Row rowQTC : qtcSheet) {
+            for (Row rowMCS : MCSSheet) {
                 //just skip the row if row number is 0
-                if (rowQTC.getRowNum() == 0) {
+                if (rowMCS.getRowNum() == 0) {
                     continue;
                 }
 
-                choiceID = (int) rowQTC.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (matrixChoiceModel.getMatrixChoiceID() == choiceID) {
-                    questionID = (int) rowQTC.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    typeID = (int) rowQTC.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    tcSet.add(new Pair<>(questionID, typeID));
+                matrixSetID = (int) rowMCS.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                if (matrixSetModel.getMatrixSetID() == matrixSetID) {
+                    rowChoiceID = (int) rowMCS.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    colChoiceID = (int) rowMCS.getCell(2,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    matrixChoiceSet.add(new Pair<>(rowChoiceID, colChoiceID));
                 }
             }
 
-            qtcMap.put(matrixChoiceModel.getMatrixChoiceID(), tcSet);
-
-            if (!addMatrixChoice(matrixChoiceModel, qtcMap)) {
+            if (!addMatrixSet(matrixSetModel, matrixChoiceSet)) {
                 return false;
             }
-
-            //Gson gson = new Gson();
-            //Log.d(TAG, gson.toJson(arrayChoiceModel));
         }
 
         return true;
     }
 
     /**
-     * This function adds matrix choice data to the database.
+     * This function adds matrix set data to the database.
      *
-     * @param matrixChoiceModel matrix choice
+     * @param matrixSetModel matrix choice
      * @return bool
      */
-    public boolean addMatrixChoice(cMatrixChoiceModel matrixChoiceModel,
-                                   Map<Long, Set<Pair<Long, Long>>> qtcMap) {
+    public boolean addMatrixSet(cMatrixSetModel matrixSetModel,
+                                Set<Pair<Long, Long>> matrixChoiceSet) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -457,30 +519,25 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, matrixChoiceModel.getMatrixChoiceID());
-        cv.put(cSQLDBHelper.KEY_ROW_OPTION_FK_ID, matrixChoiceModel.getRowID());
-        cv.put(cSQLDBHelper.KEY_COL_OPTION_FK_ID, matrixChoiceModel.getColID());
+        cv.put(cSQLDBHelper.KEY_ID, matrixSetModel.getMatrixSetID());
+        cv.put(cSQLDBHelper.KEY_NAME, matrixSetModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, matrixSetModel.getDescription());
 
         // insert project details
         try {
-            if (db.insert(cSQLDBHelper.TABLE_tblMATRIXCHOICE, null, cv) < 0) {
+            if (db.insert(cSQLDBHelper.TABLE_tblMATRIXSET, null, cv) < 0) {
                 return false;
             }
 
             // add question, type and choice tuple
-            for (Map.Entry<Long, Set<Pair<Long, Long>>> qtcEntry : qtcMap.entrySet()) {
-                long choiceID = qtcEntry.getKey();
-                for (Pair<Long, Long> qcPair : qtcEntry.getValue()) {
-                    long questionID = qcPair.first;
-                    long typeID = qcPair.second;
-
-                    if (!addQuestionMatrixTypeChoice(questionID, typeID, choiceID))
-                        return false;
-                }
+            for (Pair<Long, Long> matrixChoice : matrixChoiceSet) {
+                if (!addMatrixChoiceSet(matrixSetModel.getMatrixSetID(),
+                        matrixChoice.first, matrixChoice.second))
+                    return false;
             }
 
         } catch (Exception e) {
-            Log.d(TAG, "Exception in importing MATRIX CHOICE from Excel: " + e.getMessage());
+            Log.d(TAG, "Exception in importing MATRIX SET from Excel: " + e.getMessage());
         }
 
         // close the database connection
@@ -489,24 +546,32 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         return true;
     }
 
-    public boolean addQuestionMatrixTypeChoice(long questionID, long typeID, long choiceID) {
+    public boolean addMatrixChoiceSet(long matrixSetID, long rowChoiceID, long colChoiceID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
 
-        cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, questionID);
-        cv.put(cSQLDBHelper.KEY_MATRIX_TYPE_FK_ID, typeID);
-        cv.put(cSQLDBHelper.KEY_MATRIX_CHOICE_FK_ID, choiceID);
+        cv.put(cSQLDBHelper.KEY_MATRIX_SET_FK_ID, matrixSetID);
+        cv.put(cSQLDBHelper.KEY_ROW_CHOICE_FK_ID, rowChoiceID);
+        cv.put(cSQLDBHelper.KEY_COL_CHOICE_FK_ID, colChoiceID);
 
-        return db.insert(cSQLDBHelper.TABLE_tblMATRIXCHOICESET, null, cv) >= 0;
+        try {
+            if (db.insert(cSQLDBHelper.TABLE_tblMATRIXCHOICESET, null, cv) < 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in importing MATRIX CHOICE SET from Excel: " + e.getMessage());
+        }
+
+        return true;
     }
 
-    public boolean deleteMatrixChoices() {
+    public boolean deleteMatrixSets() {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_tblMATRIXCHOICE, null, null);
+        long result = db.delete(cSQLDBHelper.TABLE_tblMATRIXSET, null, null);
 
         // close the database connection
         db.close();
@@ -526,6 +591,68 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
 
         return result > -1;
     }
+
+    /*################################ MATRIX CHOICE SET FUNCTIONS ###############################*/
+
+    /**
+     * This function extracts matrix choice data from excel and adds it to the database.
+     *
+     * @return
+     */
+//    @Override
+//    public boolean addMatrixChoiceSetFromExcel() {
+//        Workbook workbook = excelHelper.getWorkbookEVALUATION();
+//        Sheet MSSheet = workbook.getSheet(cExcelHelper.SHEET_tblMATRIXSET);
+//        Sheet MCSSheet = workbook.getSheet(cExcelHelper.SHEET_tblMATRIXCHOICESET);
+//
+//        if (MSSheet == null) {
+//            return false;
+//        }
+//
+//        for (Row cMSRow : MSSheet) {
+//            //just skip the row if row number is 0
+//            if (cMSRow.getRowNum() == 0) {
+//                continue;
+//            }
+//
+//            cMatrixSetModel matrixSetModel = new cMatrixSetModel();
+//
+//            matrixSetModel.setMatrixSetID(
+//                    (int) cMSRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            matrixSetModel.setName(
+//                    cMSRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+//            matrixSetModel.setDescription(
+//                    cMSRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+//
+//
+//            /* matrix choices */
+//            Set<Pair<Long, Long>> matrixChoiceSet = new HashSet<>();
+//            long matrixSetID, rowChoiceID, colChoiceID;
+//
+//            for (Row rowMCS : MCSSheet) {
+//                //just skip the row if row number is 0
+//                if (rowMCS.getRowNum() == 0) {
+//                    continue;
+//                }
+//
+//                matrixSetID = (int) rowMCS.getCell(0,
+//                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                if (matrixSetModel.getMatrixSetID() == matrixSetID) {
+//                    rowChoiceID = (int) rowMCS.getCell(1,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    colChoiceID = (int) rowMCS.getCell(2,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    matrixChoiceSet.add(new Pair<>(rowChoiceID, colChoiceID));
+//                }
+//            }
+//
+//            if (!addMatrixSet(matrixSetModel, matrixChoiceSet)) {
+//                return false;
+//            }
+//        }
+//
+//        return true;
+//    }
 
     /* ################################ EVALUATION TYPE FUNCTIONS ################################*/
 
@@ -617,13 +744,13 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
     @Override
     public boolean addEvaluationFromExcel() {
         Workbook workbook = excelHelper.getWorkbookEVALUATION();
-        Sheet QSheet = workbook.getSheet(cExcelHelper.SHEET_tblEVALUATION);
+        Sheet ESheet = workbook.getSheet(cExcelHelper.SHEET_tblEVALUATION);
 
-        if (QSheet == null) {
+        if (ESheet == null) {
             return false;
         }
 
-        for (Row cRow : QSheet) {
+        for (Row cRow : ESheet) {
             //just skip the row if row number is 0
             if (cRow.getRowNum() == 0) {
                 continue;
@@ -633,27 +760,30 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
 
             evaluationModel.setEvaluationID((int)
                     cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            evaluationModel.setEvaluationTypeID((int)
+            evaluationModel.setLogFrameID((int)
                     cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            evaluationModel.setEvaluationTypeID((int)
+                    cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             evaluationModel.setName(
-                    cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            evaluationModel.setDescription(
                     cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            evaluationModel.setDescription(
+                    cRow.getCell(4, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
-            /* get questions of the questionnaire*/
+            /* get questions of the view_pager_questionnaire*/
             Set<Pair<Long, Long>> questionSet = new HashSet<>();
             long eqID = -1, evaluationID = -1, questionID = -1;
-            Sheet EQSheet = workbook.getSheet(cExcelHelper.SHEET_tblEVALUATION_QUESTION);
-            for (Row rowEQ : EQSheet) {
+            Sheet QESheet = workbook.getSheet(cExcelHelper.SHEET_tblQUESTION_EVALUATION);
+
+            for (Row rowQE : QESheet) {
                 //just skip the row if row number is 0
-                if (rowEQ.getRowNum() == 0) {
+                if (rowQE.getRowNum() == 0) {
                     continue;
                 }
 
-                evaluationID = (int) rowEQ.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                evaluationID = (int) rowQE.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (evaluationModel.getEvaluationID() == evaluationID) {
-                    eqID = (int) rowEQ.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    questionID = (int) rowEQ.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    eqID = (int) rowQE.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    questionID = (int) rowQE.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     questionSet.add(new Pair<>(eqID, questionID));
                 }
             }
@@ -681,7 +811,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
                 return false;
             }
 
-            /* conditional order of the questionnaire */
+            /* conditional order of the view_pager_questionnaire */
             int coID = -1, questionOrderID = -1, rQuestionID = -1, prQuestionID = -1, nrQuestionID = -1;
             Sheet COSheet = workbook.getSheet(cExcelHelper.SHEET_tblCONDITIONAL_ORDER);
             for (Row rowCO : COSheet) {
@@ -690,7 +820,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
                     continue;
                 }
 
-                for (Pair question : questionSet) {
+                for (Pair<Long, Long> question : questionSet) {
                     questionOrderID = (int) rowCO.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                     if ((long) question.second == questionOrderID) {
                         coID = (int) rowCO.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
@@ -716,8 +846,8 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
     }
 
     public boolean addEvaluation(cEvaluationModel evaluationModel,
-                                    Set<Pair<Long, Long>> questionSet,
-                                    Set<Pair<Long, Long>> userSet) {
+                                 Set<Pair<Long, Long>> questionSet,
+                                 Set<Pair<Long, Long>> userSet) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -726,6 +856,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ID, evaluationModel.getEvaluationID());
+        cv.put(cSQLDBHelper.KEY_LOGFRAME_FK_ID, evaluationModel.getLogFrameID());
         cv.put(cSQLDBHelper.KEY_EVALUATION_TYPE_FK_ID, evaluationModel.getEvaluationTypeID());
         cv.put(cSQLDBHelper.KEY_NAME, evaluationModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, evaluationModel.getDescription());
@@ -927,7 +1058,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
             long dateResponseID;
             Date dateResponse = null;
             long arrayResponseID, arrayResponse = -1;
-            long matrixResponseID, matrixResponse = -1, rowResponse = 0, colResponse = 0;
+            long matrixResponseID, rowResponse = -1, colResponse = -1;
 
             /* get numeric responses */
 
@@ -938,10 +1069,13 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
                     continue;
                 }
 
-                responseID = (int) rowNR.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                responseID = (int) rowNR.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (eresponseModel.getEvaluationResponseID() == responseID) {
-                    numQuestionID = (int) rowNR.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    numericResponse = (int) rowNR.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    numQuestionID = (int) rowNR.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    numericResponse = (int) rowNR.getCell(2,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 }
             }
 
@@ -954,10 +1088,13 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
                     continue;
                 }
 
-                textResponseID = (int) rowTR.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                textResponseID = (int) rowTR.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (eresponseModel.getEvaluationResponseID() == textResponseID) {
-                    txtQuestionID = (int) rowTR.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    textResponse = rowTR.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue();
+                    txtQuestionID = (int) rowTR.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    textResponse = rowTR.getCell(2,
+                            Row.CREATE_NULL_AS_BLANK).getStringCellValue();
                 }
             }
 
@@ -970,10 +1107,13 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
                     continue;
                 }
 
-                dateResponseID = (int) rowDR.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                dateResponseID = (int) rowDR.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (eresponseModel.getEvaluationResponseID() == dateResponseID) {
-                    dateQuestionID = (int) rowDR.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    dateResponse = rowDR.getCell(2, Row.CREATE_NULL_AS_BLANK).getDateCellValue();
+                    dateQuestionID = (int) rowDR.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    dateResponse = rowDR.getCell(2,
+                            Row.CREATE_NULL_AS_BLANK).getDateCellValue();
                 }
             }
 
@@ -986,10 +1126,13 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
                     continue;
                 }
 
-                arrayResponseID = (int) rowAR.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                arrayResponseID = (int) rowAR.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (eresponseModel.getEvaluationResponseID() == arrayResponseID) {
-                    arrQuestionID = (int) rowAR.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    arrayResponse = (int) rowAR.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    arrQuestionID = (int) rowAR.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    arrayResponse = (int) rowAR.getCell(2,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 }
             }
 
@@ -1002,20 +1145,22 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
                     continue;
                 }
 
-                matrixResponseID = (int) rowMR.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                matrixResponseID = (int) rowMR.getCell(0,
+                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
 
                 if (eresponseModel.getEvaluationResponseID() == matrixResponseID) {
-                    matQuestionID = (int) rowMR.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    matrixResponse = (int) rowMR.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    rowResponse = (int) rowMR.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    colResponse = (int) rowMR.getCell(4, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    matQuestionID = (int) rowMR.getCell(1,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    rowResponse = (int) rowMR.getCell(2,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    colResponse = (int) rowMR.getCell(3,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 }
             }
 
             if (!addEvaluationResponse(eresponseModel, numQuestionID, numericResponse,
                     txtQuestionID, textResponse, dateQuestionID, dateResponse,
-                    arrQuestionID, arrayResponse, matQuestionID, matrixResponse,
-                    rowResponse, colResponse)) {
+                    arrQuestionID, arrayResponse, matQuestionID, rowResponse, colResponse)) {
                 return false;
             }
         }
@@ -1024,10 +1169,10 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
     }
 
     public boolean addEvaluationResponse(cEvaluationResponseModel eresponseModel, long numQuestionID,
-                                long numericResponse, long txtQuestionID, String textResponse,
-                                long dateQuestionID, Date dateResponse, long arrQuestionID,
-                                long arrayResponse, long matQuestionID, long matrixResponse,
-                                long rowResponse, long colResponse) {
+                                         long numericResponse, long txtQuestionID, String textResponse,
+                                         long dateQuestionID, Date dateResponse, long arrQuestionID,
+                                         long arrayResponse, long matQuestionID, long rowResponse,
+                                         long colResponse) {
 
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -1069,9 +1214,9 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
                     return false;
             }
 
-            if (matrixResponse != -1) {
+            if (rowResponse != -1 && rowResponse != -1) {
                 if (!addMatrixResponse(eresponseModel.getEvaluationResponseID(), matQuestionID,
-                        matrixResponse, rowResponse, colResponse))
+                        rowResponse, colResponse))
                     return false;
             }
 
@@ -1094,7 +1239,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_EVALUATION_RESPONSE_FK_ID, eresponseID);
-        cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, numQuestionID);
+        cv.put(cSQLDBHelper.KEY_PRIMITIVE_QUESTION_FK_ID, numQuestionID);
         cv.put(cSQLDBHelper.KEY_NUMERIC_RESPONSE, numericResponse);
 
         // insert evaluation type details
@@ -1121,7 +1266,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_EVALUATION_RESPONSE_FK_ID, eresponseID);
-        cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, txtQuestionID);
+        cv.put(cSQLDBHelper.KEY_PRIMITIVE_QUESTION_FK_ID, txtQuestionID);
         cv.put(cSQLDBHelper.KEY_TEXT_RESPONSE, testResponse);
 
         // insert evaluation type details
@@ -1148,7 +1293,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_EVALUATION_RESPONSE_FK_ID, eresponseID);
-        cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, dateQuestionID);
+        cv.put(cSQLDBHelper.KEY_PRIMITIVE_QUESTION_FK_ID, dateQuestionID);
         cv.put(cSQLDBHelper.KEY_DATE_RESPONSE, String.valueOf(dateResponse));
 
         // insert evaluation type details
@@ -1175,7 +1320,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_EVALUATION_RESPONSE_FK_ID, eresponseID);
-        cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, arrQuestionID);
+        cv.put(cSQLDBHelper.KEY_ARRAY_QUESTION_FK_ID, arrQuestionID);
         cv.put(cSQLDBHelper.KEY_ARRAY_RESPONSE_FK_ID, arrayResponse);
 
         // insert evaluation type details
@@ -1193,8 +1338,8 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
         return true;
     }
 
-    public boolean addMatrixResponse(long eresponseID, long matQuestionID, long matrixResponse,
-                                     long rowResponse, long colResponse) {
+    public boolean addMatrixResponse(long eresponseID, long matQuestionID, long rowResponse,
+                                     long colResponse) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -1203,8 +1348,7 @@ public class cUploadEvaluationRepositoryImpl implements iUploadEvaluationReposit
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_EVALUATION_RESPONSE_FK_ID, eresponseID);
-        cv.put(cSQLDBHelper.KEY_QUESTION_FK_ID, matQuestionID);
-        cv.put(cSQLDBHelper.KEY_MATRIX_RESPONSE_FK_ID, matrixResponse);
+        cv.put(cSQLDBHelper.KEY_MATRIX_QUESTION_FK_ID, matQuestionID);
         cv.put(cSQLDBHelper.KEY_ROW_RESPONSE_FK_ID, rowResponse);
         cv.put(cSQLDBHelper.KEY_COL_RESPONSE_FK_ID, colResponse);
 

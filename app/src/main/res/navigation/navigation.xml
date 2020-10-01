@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation"
+    app:startDestination="@id/cLoginFragment">
+
+    <fragment
+        android:id="@+id/cLoginFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cLoginFragment"
+        android:label="Login">
+        <action
+            android:id="@+id/action_cLoginFragment_to_cLogFrameFragment"
+            app:destination="@id/cLogFrameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cSettingsFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cSettingsFragment"
+        android:label="cSettingsFragment" />
+    <fragment
+        android:id="@+id/cJoinFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cJoinFragment"
+        android:label="cJoinFragment" />
+    <fragment
+        android:id="@+id/cRegisterFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cRegisterFragment"
+        android:label="cRegisterFragment" />
+    <fragment
+        android:id="@+id/cLogFrameFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cLogFrameFragment"
+        android:label="cLogFrameFragment" >
+        <action
+            android:id="@+id/action_cLogFrameFragment_to_cImpactFragment"
+            app:destination="@id/cImpactFragment" />
+        <action
+            android:id="@+id/action_cLogFrameFragment_to_cOutcomeFragment"
+            app:destination="@id/cOutcomeFragment" />
+        <action
+            android:id="@+id/action_cLogFrameFragment_to_cOutputFragment"
+            app:destination="@id/cOutputFragment" />
+        <action
+            android:id="@+id/action_cLogFrameFragment_to_cInputFragment"
+            app:destination="@id/cInputFragment" />
+        <action
+            android:id="@+id/action_cLogFrameFragment_to_cEvaluationFragment"
+            app:destination="@id/cEvaluationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cImpactFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cImpactFragment"
+        android:label="cImpactFragment" />
+    <fragment
+        android:id="@+id/cOutcomeFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cOutcomeFragment"
+        android:label="cOutcomeFragment" />
+    <fragment
+        android:id="@+id/cOutputFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cOutputFragment"
+        android:label="cOutputFragment" />
+    <fragment
+        android:id="@+id/cInputFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cInputFragment"
+        android:label="cInputFragment" />
+    <fragment
+        android:id="@+id/cEvaluationFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.evaluator.cEvaluationFragment"
+        android:label="cEvaluationFragment" >
+        <argument
+            android:name="logFrameID"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_cEvaluationFragment_to_cLogFrameFragment"
+            app:destination="@id/cLogFrameFragment" />
+        <action
+            android:id="@+id/action_cEvaluationFragment_to_cEvaluationFormFragment"
+            app:destination="@id/cEvaluationFormFragment"
+            app:popUpTo="@id/cEvaluationFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/cEvaluationFormFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.evaluator.cEvaluationFormFragment"
+        android:label="cEvaluationFormFragment" >
+        <argument
+            android:name="dbQuestionnaire"
+            app:argType="com.me.mseotsanyana.questionnairelibrary.forms.db.cDBQuestionnaire" />
+    </fragment>
+</navigation>

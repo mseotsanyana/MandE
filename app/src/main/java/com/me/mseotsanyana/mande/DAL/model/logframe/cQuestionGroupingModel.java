@@ -10,6 +10,7 @@ public class cQuestionGroupingModel {
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
+    private int label;
     private String name;
     private String description;
     private Date createdDate;
@@ -92,6 +93,14 @@ public class cQuestionGroupingModel {
 
     public void setStatusBITS(int statusBITS) {
         this.statusBITS = statusBITS;
+    }
+
+    public int getLabel() {
+        return label;
+    }
+
+    public void setLabel(int label) {
+        this.label = label;
     }
 
     public String getName() {

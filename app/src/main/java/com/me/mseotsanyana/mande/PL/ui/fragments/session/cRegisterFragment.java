@@ -23,8 +23,6 @@ import com.me.mseotsanyana.mande.UTIL.INTERFACE.iRequestInterface;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
 import com.me.mseotsanyana.mande.UTIL.cUtil;
 import com.me.mseotsanyana.mande.DAL.model.session.cUserModel;
-import com.me.mseotsanyana.mande.UTIL.DAL.cUserRequest;
-import com.me.mseotsanyana.mande.UTIL.DAL.cUserResponse;
 import com.me.mseotsanyana.mande.R;
 
 import retrofit2.Call;
@@ -96,7 +94,7 @@ public class cRegisterFragment extends Fragment implements View.OnClickListener{
                 if(!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
 
                     progress.setVisibility(View.VISIBLE);
-                    registerProcess(name,email,password);
+                    //registerProcess(name,email,password);
 
                 } else {
 
@@ -108,44 +106,44 @@ public class cRegisterFragment extends Fragment implements View.OnClickListener{
 
     }
 
-    private void registerProcess(String name, String email,String password){
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(cConstant.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        iRequestInterface iRequestInterface = retrofit.create(iRequestInterface.class);
-
-        cUserModel user = new cUserModel();
-        user.setName(name);
-        user.setEmail(email);
-        user.setPassword(password);
-        cUserRequest request = new cUserRequest();
-        request.setOperation(cConstant.REGISTER_OPERATION);
-        request.setUser(user);
-        Call<cUserResponse> response = iRequestInterface.operation(request);
-
-        response.enqueue(new Callback<cUserResponse>() {
-            @Override
-            public void onResponse(Call<cUserResponse> call, retrofit2.Response<cUserResponse> response) {
-
-                cUserResponse resp = response.body();
-                Snackbar.make(getView(), resp.getMessage(), Snackbar.LENGTH_LONG).show();
-                progress.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onFailure(Call<cUserResponse> call, Throwable t) {
-
-                progress.setVisibility(View.INVISIBLE);
-                //Log.d(cConstant.KEY_TAG,"failed");
-                Snackbar.make(getView(), t.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
-
-
-            }
-        });
-    }
+//    private void registerProcess(String name, String email,String password){
+//
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(cConstant.BASE_URL)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//
+//        iRequestInterface iRequestInterface = retrofit.create(iRequestInterface.class);
+//
+//        cUserModel user = new cUserModel();
+//        user.setName(name);
+//        user.setEmail(email);
+//        user.setPassword(password);
+//        cUserRequest request = new cUserRequest();
+//        request.setOperation(cConstant.REGISTER_OPERATION);
+//        request.setUser(user);
+//        Call<cUserResponse> response = iRequestInterface.operation(request);
+//
+//        response.enqueue(new Callback<cUserResponse>() {
+//            @Override
+//            public void onResponse(Call<cUserResponse> call, retrofit2.Response<cUserResponse> response) {
+//
+//                cUserResponse resp = response.body();
+//                Snackbar.make(getView(), resp.getMessage(), Snackbar.LENGTH_LONG).show();
+//                progress.setVisibility(View.INVISIBLE);
+//            }
+//
+//            @Override
+//            public void onFailure(Call<cUserResponse> call, Throwable t) {
+//
+//                progress.setVisibility(View.INVISIBLE);
+//                //Log.d(cConstant.KEY_TAG,"failed");
+//                Snackbar.make(getView(), t.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
+//
+//
+//            }
+//        });
+//    }
 /*
     private void setupBottomNavigation() {
 

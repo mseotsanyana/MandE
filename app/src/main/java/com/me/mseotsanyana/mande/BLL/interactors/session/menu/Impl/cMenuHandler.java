@@ -6,7 +6,6 @@ import android.content.Context;
 import com.me.mseotsanyana.mande.BLL.domain.session.cMenuDomain;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cMenuRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.session.cMenuModel;
-import com.me.mseotsanyana.mande.UTIL.BLL.cMapper;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,7 +16,7 @@ import java.util.Set;
  * Created by mseotsanyana on 2017/08/28.
  */
 
-public class cMenuHandler extends cMapper<cMenuModel, cMenuDomain> {
+public class cMenuHandler {
     private cMenuRepositoryImpl menuDBA;
     private Context context;
     //private cSessionManager session;
@@ -148,7 +147,7 @@ public class cMenuHandler extends cMapper<cMenuModel, cMenuDomain> {
 
     /* ################################### SYNC ACTIONS ################################### */
 
-    @Override
+    //@Override
     protected cMenuModel DomainToModel(cMenuDomain domain) {
         cMenuModel model = new cMenuModel();
 
@@ -170,7 +169,7 @@ public class cMenuHandler extends cMapper<cMenuModel, cMenuDomain> {
         return model;
     }
 
-    @Override
+    //@Override
     protected cMenuDomain ModelToDomain(cMenuModel model) {
         cMenuDomain domain = new cMenuDomain();
 

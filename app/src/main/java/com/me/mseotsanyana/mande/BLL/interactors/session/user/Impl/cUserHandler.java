@@ -23,7 +23,6 @@ import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cUserRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.session.cUserModel;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iMEEntityInterface;
-import com.me.mseotsanyana.mande.UTIL.BLL.cMapper;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
 
 import java.io.File;
@@ -38,7 +37,7 @@ import java.util.Set;
  * Created by mseotsanyana on 2017/08/28.
  */
 
-public class cUserHandler extends cMapper<cUserModel, cUserDomain> {
+public class cUserHandler {
     private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
     private static String TAG = cUserHandler.class.getSimpleName();
     //final static private int _id = cSessionManager.USER;
@@ -414,7 +413,7 @@ public class cUserHandler extends cMapper<cUserModel, cUserDomain> {
         return notificationDomainSet;
     }
 
-    @Override
+    //@Override
     protected cUserModel DomainToModel(cUserDomain domain) {
         cUserModel model = new cUserModel();
         //cOrganizationHandler organizationHandler = new cOrganizationHandler();
@@ -472,7 +471,7 @@ public class cUserHandler extends cMapper<cUserModel, cUserDomain> {
         return model;
     }
 
-    @Override
+    //@Override
     protected cUserDomain ModelToDomain(cUserModel model) {
         cUserDomain domain = new cUserDomain();
         //cOrganizationHandler organizationHandler = new cOrganizationHandler();

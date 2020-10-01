@@ -5,13 +5,12 @@ import android.content.Context;
 import com.me.mseotsanyana.mande.BLL.domain.session.cValueDomain;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cValueRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.session.cValueModel;
-import com.me.mseotsanyana.mande.UTIL.BLL.cMapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class cValueHandler extends cMapper<cValueModel, cValueDomain>
+public class cValueHandler
 {
     private cValueRepositoryImpl valueDBA;
     private Context context;
@@ -53,7 +52,7 @@ public class cValueHandler extends cMapper<cValueModel, cValueDomain>
         return valueDomain;
     }
 
-    @Override
+    //@Override
     protected cValueDomain ModelToDomain(cValueModel model) {
         cValueDomain domain = new cValueDomain();
 
@@ -66,7 +65,7 @@ public class cValueHandler extends cMapper<cValueModel, cValueDomain>
         return domain;
     }
 
-    @Override
+    //@Override
     protected cValueModel DomainToModel(cValueDomain domain) {
         cValueModel model = new cValueModel();
 

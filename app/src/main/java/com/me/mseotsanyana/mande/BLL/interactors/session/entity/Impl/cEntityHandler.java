@@ -5,7 +5,7 @@ import android.content.Context;
 import com.me.mseotsanyana.mande.BLL.domain.session.cEntityDomain;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cEntityRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.session.cEntityModel;
-import com.me.mseotsanyana.mande.UTIL.BLL.cMapper;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  * Created by mseotsanyana on 2017/08/28.
  */
 
-public class cEntityHandler extends cMapper<cEntityModel, cEntityDomain> {
+public class cEntityHandler  {
     private cEntityRepositoryImpl entityDBA;
 
     private Context context;
@@ -72,7 +72,7 @@ public class cEntityHandler extends cMapper<cEntityModel, cEntityDomain> {
         return domain;
     }
 
-    @Override
+    //@Override
     protected cEntityModel DomainToModel(cEntityDomain domain) {
         cEntityModel model = new cEntityModel();
 
@@ -91,7 +91,7 @@ public class cEntityHandler extends cMapper<cEntityModel, cEntityDomain> {
         return model;
     }
 
-    @Override
+    //@Override
     protected cEntityDomain ModelToDomain(cEntityModel model) {
         cEntityDomain domain = new cEntityDomain();
 

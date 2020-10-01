@@ -4,10 +4,12 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="delegatedBuild" value="false" />
+        <option name="delegatedBuild" value="true" />
         <option name="testRunner" value="PLATFORM" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleHome" value="$PROJECT_DIR$/../CleanArc/gradle" />
+        <option name="gradleJvm" value="JDK" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/../Libraries/annotations" />
@@ -16,6 +18,7 @@
             <option value="$PROJECT_DIR$/../Libraries/expandablelayoutlibrary" />
             <option value="$PROJECT_DIR$/../Libraries/multiselectspinnerlibrary" />
             <option value="$PROJECT_DIR$/../Libraries/placeholderviewlibrary" />
+            <option value="$PROJECT_DIR$/../Libraries/questionnairelibrary" />
             <option value="$PROJECT_DIR$/../Libraries/quickactionlibrary" />
             <option value="$PROJECT_DIR$/../Libraries/treeadapterlibrary" />
             <option value="$PROJECT_DIR$/../Libraries/validatorlibrary" />

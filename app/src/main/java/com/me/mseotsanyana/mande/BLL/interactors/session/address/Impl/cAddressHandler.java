@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.domain.session.cAddressDomain;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cAddressRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.session.cAddressModel;
-import com.me.mseotsanyana.mande.UTIL.BLL.cMapper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,7 +20,7 @@ import java.util.List;
  * Created by mseotsanyana on 2017/08/28.
  */
 
-public class cAddressHandler extends cMapper<cAddressModel, cAddressDomain> {
+public class cAddressHandler {
     private static String TAG = cAddressHandler.class.getSimpleName();
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -242,7 +241,7 @@ public class cAddressHandler extends cMapper<cAddressModel, cAddressDomain> {
         return addressDBA.isServerID(serverID);
     }
 
-    @Override
+    //@Override
     protected cAddressModel DomainToModel(cAddressDomain domain) {
         cAddressModel model = new cAddressModel();
         model.setAddressID(domain.getAddressID());
@@ -263,7 +262,7 @@ public class cAddressHandler extends cMapper<cAddressModel, cAddressDomain> {
         return model;
     }
 
-    @Override
+    //@Override
     protected cAddressDomain ModelToDomain(cAddressModel model) {
         cAddressDomain domain = new cAddressDomain();
         domain.setAddressID(model.getAddressID());

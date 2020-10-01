@@ -120,8 +120,9 @@ public class cMaterialRepositoryImpl extends cInputRepositoryImpl implements iMa
                     /* sets */
 
                     /* populate question components */
-                    material.setQuestionModelSet(getQuestionModelSetByID(material.getInputID(),
-                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
+                    material.setQuestionModelSet(getQuestionModelSetByID(
+                            material.getInputID(), userID, primaryRoleBITS, secondaryRoleBITS,
+                            statusBITS));
                     /* populate journal components */
                     material.setJournalModelSet(getJournalModelSetByID(material.getInputID(), userID,
                             primaryRoleBITS, secondaryRoleBITS, statusBITS));

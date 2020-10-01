@@ -2,8 +2,8 @@ package com.me.mseotsanyana.mande.BLL.interactors.logframe.activity.Impl;
 
 import android.content.Context;
 
-import com.me.mseotsanyana.mande.UTIL.BLL.cMapper;
 import com.me.mseotsanyana.mande.BLL.domain.logframe.cActivityDomain;
+import com.me.mseotsanyana.mande.DAL.storage.mapper.cMapper;
 import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cActivityRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cActivityModel;
 

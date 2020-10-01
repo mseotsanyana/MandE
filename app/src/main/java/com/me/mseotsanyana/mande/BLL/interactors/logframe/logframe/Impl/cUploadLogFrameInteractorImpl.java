@@ -52,14 +52,14 @@ public class cUploadLogFrameInteractorImpl extends cAbstractInteractor
 
         /* delete all logframe module records */
 
-        uploadLMRepository.deleteCriteria();
+        uploadLMRepository.deleteEvaluationCriteria();
 
         uploadLMRepository.deleteQuestionGroupings();
-        uploadLMRepository.deletePrimitiveTypes();
-        uploadLMRepository.deleteArrayTypes();
-        uploadLMRepository.deleteMatrixTypes();
         uploadLMRepository.deleteQuestionTypes();
         uploadLMRepository.deleteQuestions();
+        uploadLMRepository.deletePrimitiveQuestions();
+        uploadLMRepository.deleteArrayQuestions();
+        uploadLMRepository.deleteMatrixQuestions();
 
         uploadLMRepository.deleteRaids();
 
@@ -104,7 +104,7 @@ public class cUploadLogFrameInteractorImpl extends cAbstractInteractor
 
         /* upload all logframe module records */
 
-        if (uploadLMRepository.addCriteriaFromExcel()) {
+        if (uploadLMRepository.addEvaluationCriteriaFromExcel()) {
             postMessage("Criteria Entity Added Successfully!");
         } else {
             notifyError("Failed to Add Criteria Entity");

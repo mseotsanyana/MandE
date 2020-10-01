@@ -3,11 +3,14 @@ package com.me.mseotsanyana.mande.DAL.model.monitor;
 import java.util.Date;
 
 public class cIndicatorModel {
-    private int indicatorID;
-    private int logFrameID;
-    private int indicatorTypeID;
-    private int dataCollectorID;
-    private int frequencyID;
+    private long indicatorID;
+    private long logFrameID;
+    private long targetID;
+    private long indicatorTypeID;
+    private long frequencyID;
+    private long methodID;
+    private long chartID;
+    private long dataCollectorID;
     private int serverID;
     private int ownerID;
     private int orgID;
@@ -23,44 +26,68 @@ public class cIndicatorModel {
     private Date modifiedDate;
     private Date syncedDate;
 
-    public int getIndicatorID() {
+    public long getIndicatorID() {
         return indicatorID;
     }
 
-    public void setIndicatorID(int indicatorID) {
+    public void setIndicatorID(long indicatorID) {
         this.indicatorID = indicatorID;
     }
 
-    public int getLogFrameID() {
+    public long getLogFrameID() {
         return logFrameID;
     }
 
-    public void setLogFrameID(int logFrameID) {
+    public void setLogFrameID(long logFrameID) {
         this.logFrameID = logFrameID;
     }
 
-    public int getIndicatorTypeID() {
+    public long getTargetID() {
+        return targetID;
+    }
+
+    public void setTargetID(long targetID) {
+        this.targetID = targetID;
+    }
+
+    public long getIndicatorTypeID() {
         return indicatorTypeID;
     }
 
-    public void setIndicatorTypeID(int indicatorTypeID) {
+    public void setIndicatorTypeID(long indicatorTypeID) {
         this.indicatorTypeID = indicatorTypeID;
     }
 
-    public int getDataCollectorID() {
-        return dataCollectorID;
-    }
-
-    public void setDataCollectorID(int dataCollectorID) {
-        this.dataCollectorID = dataCollectorID;
-    }
-
-    public int getFrequencyID() {
+    public long getFrequencyID() {
         return frequencyID;
     }
 
-    public void setFrequencyID(int frequencyID) {
+    public void setFrequencyID(long frequencyID) {
         this.frequencyID = frequencyID;
+    }
+
+    public long getMethodID() {
+        return methodID;
+    }
+
+    public void setMethodID(long methodID) {
+        this.methodID = methodID;
+    }
+
+    public long getChartID() {
+        return chartID;
+    }
+
+    public void setChartID(long chartID) {
+        this.chartID = chartID;
+    }
+
+    public long getDataCollectorID() {
+        return dataCollectorID;
+    }
+
+    public void setDataCollectorID(long dataCollectorID) {
+        this.dataCollectorID = dataCollectorID;
     }
 
     public int getServerID() {

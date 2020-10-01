@@ -1,12 +1,11 @@
 package com.me.mseotsanyana.mande.BLL.interactors.logframe.outcome.Impl;
 import android.content.Context;
 
-import com.me.mseotsanyana.mande.UTIL.BLL.cMapper;
 import com.me.mseotsanyana.mande.BLL.domain.logframe.cOutcomeDomain;
 import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cOutcomeRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cOutcomeModel;
 
-public class cOutcomeInterator extends cMapper<cOutcomeModel, cOutcomeDomain> {
+public class cOutcomeInterator  {
     private cOutcomeRepositoryImpl outcomeDBA;
     private Context context;
 
@@ -39,7 +38,7 @@ public class cOutcomeInterator extends cMapper<cOutcomeModel, cOutcomeDomain> {
         return outcomeDomain;
     }
 */
-	@Override
+
 	protected cOutcomeModel DomainToModel(cOutcomeDomain domain) {
         cOutcomeModel model = new cOutcomeModel();
 /*
@@ -52,7 +51,7 @@ public class cOutcomeInterator extends cMapper<cOutcomeModel, cOutcomeDomain> {
         return model;
 	}
 
-	@Override
+
 	protected cOutcomeDomain ModelToDomain(cOutcomeModel model) {
 		cOutcomeDomain domain = new cOutcomeDomain();
 /*

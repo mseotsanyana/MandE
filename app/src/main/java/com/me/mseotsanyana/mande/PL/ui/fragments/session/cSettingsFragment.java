@@ -268,16 +268,15 @@ public class cSettingsFragment extends Fragment implements
 
     private void deleteAlertDialog(String title, String message) {
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                Objects.requireNonNull(getContext()));
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(requireContext());
 
         // setting icon to dialog
-        TextDrawable faIcon = new TextDrawable(getContext());
+        TextDrawable faIcon = new TextDrawable(requireContext());
         faIcon.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
         faIcon.setTextAlign(Layout.Alignment.ALIGN_CENTER);
-        faIcon.setTypeface(cFontManager.getTypeface(getContext(), cFontManager.FONTAWESOME));
-        faIcon.setText(getContext().getResources().getText(R.string.fa_delete));
-        faIcon.setTextColor(getContext().getColor(R.color.colorPrimaryDark));
+        faIcon.setTypeface(cFontManager.getTypeface(requireContext(), cFontManager.FONTAWESOME));
+        faIcon.setText(requireContext().getResources().getText(R.string.fa_delete));
+        faIcon.setTextColor(requireContext().getColor(R.color.colorPrimaryDark));
         alertDialogBuilder.setIcon(faIcon);
 
         // set title

@@ -48,11 +48,11 @@ public class cUploadEvaluationInteractorImpl extends cAbstractInteractor
     public void run() {
         /* create a new ARRAY CHOICE object and insert it in the database */
         uploadEvaluationRepository.deleteArrayChoices();
-        uploadEvaluationRepository.deleteArrayChoices();
+        uploadEvaluationRepository.deleteArraySets();
         uploadEvaluationRepository.deleteArrayChoiceSets();
-        uploadEvaluationRepository.deleteRowOptions();
-        uploadEvaluationRepository.deleteColOptions();
-        uploadEvaluationRepository.deleteMatrixChoices();
+        uploadEvaluationRepository.deleteRowChoices();
+        uploadEvaluationRepository.deleteColChoices();
+        uploadEvaluationRepository.deleteMatrixSets();
         uploadEvaluationRepository.deleteMatrixChoiceSets();
         uploadEvaluationRepository.deleteEvaluationTypes();
         uploadEvaluationRepository.deleteEvaluations();
@@ -67,33 +67,39 @@ public class cUploadEvaluationInteractorImpl extends cAbstractInteractor
         uploadEvaluationRepository.deleteMatrixResponses();
 
         if(uploadEvaluationRepository.addArrayChoiceFromExcel()){
-            postMessage("ArrayChoice Entity Added Successfully!");
+            postMessage("Array Choice Entity Added Successfully!");
         }else {
-            notifyError("Failed to Add ArrayChoice Entity");
+            notifyError("Failed to Add Array Choice Entity");
         }
 
-        if(uploadEvaluationRepository.addRowOptionFromExcel()){
-            postMessage("RowOption Entity Added Successfully!");
+        if(uploadEvaluationRepository.addRowChoiceFromExcel()){
+            postMessage("Row Choice Entity Added Successfully!");
         }else {
-            notifyError("Failed to Add RowOption Entity");
+            notifyError("Failed to Add Row Choice Entity");
         }
 
-        if(uploadEvaluationRepository.addColOptionFromExcel()){
-            postMessage("ColOption Entity Added Successfully!");
+        if(uploadEvaluationRepository.addColChoiceFromExcel()){
+            postMessage("Col Choice Entity Added Successfully!");
         }else {
-            notifyError("Failed to Add ColOption Entity");
+            notifyError("Failed to Add Col Choice Entity");
         }
 
-        if(uploadEvaluationRepository.addMatrixChoiceFromExcel()){
-            postMessage("MatrixChoice Entity Added Successfully!");
+        if(uploadEvaluationRepository.addArraySetFromExcel()){
+            postMessage("Array Set Entity Added Successfully!");
         }else {
-            notifyError("Failed to Add MatrixChoice Entity");
+            notifyError("Failed to Add Array Set Entity");
+        }
+
+        if(uploadEvaluationRepository.addMatrixSetFromExcel()){
+            postMessage("Matrix Set Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add Matrix Set Entity");
         }
 
         if(uploadEvaluationRepository.addEvaluationTypeFromExcel()){
-            postMessage("EvaluationType Entity Added Successfully!");
+            postMessage("Evaluation Type Entity Added Successfully!");
         }else {
-            notifyError("Failed to Add EvaluationType Entity");
+            notifyError("Failed to Add Evaluation Type Entity");
         }
 
         if(uploadEvaluationRepository.addEvaluationFromExcel()){

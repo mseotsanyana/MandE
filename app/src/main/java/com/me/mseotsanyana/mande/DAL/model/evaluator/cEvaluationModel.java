@@ -1,6 +1,5 @@
 package com.me.mseotsanyana.mande.DAL.model.evaluator;
 
-import com.me.mseotsanyana.mande.DAL.model.logframe.cImpactModel;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cLogFrameModel;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cQuestionModel;
 import com.me.mseotsanyana.mande.DAL.model.session.cUserModel;
@@ -26,6 +25,8 @@ public class cEvaluationModel {
     private Date createdDate;
     private Date modifiedDate;
     private Date syncedDate;
+
+    private Object questionnaireObj;
 
     /* logframe which contains the evaluation */
     private cLogFrameModel logFrameModel;
@@ -204,5 +205,13 @@ public class cEvaluationModel {
 
     public void setQuestionModelSet(Set<cQuestionModel> questionModelSet) {
         this.questionModelSet = questionModelSet;
+    }
+
+    public Object getQuestionnaireObj() {
+        return questionnaireObj;
+    }
+
+    public void setQuestionnaireObj(Object questionnaireObj) {
+        this.questionnaireObj = questionnaireObj;
     }
 }

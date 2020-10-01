@@ -6,14 +6,14 @@ public class cMatrixResponseModel extends cEvaluationResponseModel{
     private long colID;
 
     private cMatrixChoiceModel matrixChoiceModel;
-    private cRowOptionModel rowOptionModel;
-    private cColOptionModel colOptionModel;
+    private cRowChoiceModel rowOptionModel;
+    private cColChoiceModel colOptionModel;
 
     public cMatrixResponseModel(){
         super();
         matrixChoiceModel = new cMatrixChoiceModel();
-        rowOptionModel = new cRowOptionModel();
-        colOptionModel = new cColOptionModel();
+        rowOptionModel = new cRowChoiceModel();
+        colOptionModel = new cColChoiceModel();
     }
 
     public long getMatrixChoiceID() {
@@ -48,19 +48,19 @@ public class cMatrixResponseModel extends cEvaluationResponseModel{
         this.matrixChoiceModel = matrixChoiceModel;
     }
 
-    public cRowOptionModel getRowOptionModel() {
+    public cRowChoiceModel getRowOptionModel() {
         return rowOptionModel;
     }
 
-    public void setRowOptionModel(cRowOptionModel rowOptionModel) {
+    public void setRowOptionModel(cRowChoiceModel rowOptionModel) {
         this.rowOptionModel = rowOptionModel;
     }
 
-    public cColOptionModel getColOptionModel() {
+    public cColChoiceModel getColOptionModel() {
         return colOptionModel;
     }
 
-    public void setColOptionModel(cColOptionModel colOptionModel) {
+    public void setColOptionModel(cColChoiceModel colOptionModel) {
         this.colOptionModel = colOptionModel;
     }
 }

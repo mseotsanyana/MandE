@@ -1,11 +1,9 @@
 package com.me.mseotsanyana.mande.UTIL;
 
 import com.me.mseotsanyana.mande.BLL.domain.logframe.cActivityDomain;
-import com.me.mseotsanyana.mande.UTIL.BLL.cGoalDomain;
 import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
 import com.me.mseotsanyana.mande.BLL.domain.logframe.cOutcomeDomain;
 import com.me.mseotsanyana.mande.BLL.domain.logframe.cOutputDomain;
-import com.me.mseotsanyana.mande.UTIL.BLL.cProjectDomain;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cKeyPairBoolData;
 
 import java.util.ArrayList;
@@ -33,33 +31,33 @@ public class cDashboardFilter {
         return keyPairBoolOrganizationTree;
     }
 
-    public static List<cKeyPairBoolData> getKeyPairBoolGoalTree(List<cGoalDomain> goalTree){
-        List<cKeyPairBoolData> keyPairBoolGoalTree = new ArrayList<>();
-        for (int i = 0; i < goalTree.size(); i++) {
-            cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-            idNameBool.setRefId((goalTree.get(i)).getOrganizationID());
-            idNameBool.setId((goalTree.get(i)).getGoalID());
-            idNameBool.setName((goalTree.get(i)).getGoalName());
-            idNameBool.setObject(goalTree.get(i));
-            idNameBool.setSelected(false);
-            keyPairBoolGoalTree.add(idNameBool);
-        }
-        return keyPairBoolGoalTree;
-    }
+//    public static List<cKeyPairBoolData> getKeyPairBoolGoalTree(List<cGoalDomain> goalTree){
+//        List<cKeyPairBoolData> keyPairBoolGoalTree = new ArrayList<>();
+//        for (int i = 0; i < goalTree.size(); i++) {
+//            cKeyPairBoolData idNameBool = new cKeyPairBoolData();
+//            idNameBool.setRefId((goalTree.get(i)).getOrganizationID());
+//            idNameBool.setId((goalTree.get(i)).getGoalID());
+//            idNameBool.setName((goalTree.get(i)).getGoalName());
+//            idNameBool.setObject(goalTree.get(i));
+//            idNameBool.setSelected(false);
+//            keyPairBoolGoalTree.add(idNameBool);
+//        }
+//        return keyPairBoolGoalTree;
+//    }
 
-    public static List<cKeyPairBoolData> getKeyPairBoolProjectTree(List<cProjectDomain> projectTree){
-        List<cKeyPairBoolData> keyPairBoolProjectTree = new ArrayList<>();
-        for (int i = 0; i < projectTree.size(); i++) {
-            cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-            idNameBool.setRefId((projectTree.get(i)).getOverallAimID());
-            idNameBool.setId((projectTree.get(i)).getProjectID());
-            idNameBool.setName((projectTree.get(i)).getProjectName());
-            idNameBool.setObject(projectTree.get(i));
-            idNameBool.setSelected(false);
-            keyPairBoolProjectTree.add(idNameBool);
-        }
-        return keyPairBoolProjectTree;
-    }
+//    public static List<cKeyPairBoolData> getKeyPairBoolProjectTree(List<cProjectDomain> projectTree){
+//        List<cKeyPairBoolData> keyPairBoolProjectTree = new ArrayList<>();
+//        for (int i = 0; i < projectTree.size(); i++) {
+//            cKeyPairBoolData idNameBool = new cKeyPairBoolData();
+//            idNameBool.setRefId((projectTree.get(i)).getOverallAimID());
+//            idNameBool.setId((projectTree.get(i)).getProjectID());
+//            idNameBool.setName((projectTree.get(i)).getProjectName());
+//            idNameBool.setObject(projectTree.get(i));
+//            idNameBool.setSelected(false);
+//            keyPairBoolProjectTree.add(idNameBool);
+//        }
+//        return keyPairBoolProjectTree;
+//    }
 
     public static List<cKeyPairBoolData> getKeyPairBoolOutcomeTree(List<cOutcomeDomain> outcomeTree){
         List<cKeyPairBoolData> keyPairBoolOutcomeTree = new ArrayList<>();

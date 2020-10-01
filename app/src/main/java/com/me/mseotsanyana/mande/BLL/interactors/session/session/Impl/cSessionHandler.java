@@ -5,7 +5,7 @@ import android.content.Context;
 import com.me.mseotsanyana.mande.BLL.domain.session.cSessionDomain;
 //import com.me.mseotsanyana.mande.DAL.ìmpl.session.cSessionImpl;
 import com.me.mseotsanyana.mande.DAL.model.session.cSessionModel;
-import com.me.mseotsanyana.mande.UTIL.BLL.cMapper;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  * Created by mseotsanyana on 2017/08/28.
  */
 
-public class cSessionHandler extends cMapper<cSessionModel, cSessionDomain> {
+public class cSessionHandler  {
     //private cSessionImpl sessionDBA;
     private Context context;
 
@@ -83,7 +83,7 @@ public class cSessionHandler extends cMapper<cSessionModel, cSessionDomain> {
     }
 
 
-    @Override
+    //@Override
     protected cSessionModel DomainToModel(cSessionDomain domain) {
         cSessionModel model = new cSessionModel();
 
@@ -107,7 +107,7 @@ public class cSessionHandler extends cMapper<cSessionModel, cSessionDomain> {
         return model;
     }
 
-    @Override
+    //@Override
     protected cSessionDomain ModelToDomain(cSessionModel model) {
         cSessionDomain domain = new cSessionDomain();
         domain.setSessionID(model.getSessionID());

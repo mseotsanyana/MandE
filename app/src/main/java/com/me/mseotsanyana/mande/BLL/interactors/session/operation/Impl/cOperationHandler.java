@@ -6,7 +6,6 @@ import android.content.Context;
 import com.me.mseotsanyana.mande.BLL.domain.session.cOperationDomain;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cOperationRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.session.cOperationModel;
-import com.me.mseotsanyana.mande.UTIL.BLL.cMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.List;
  * Created by mseotsanyana on 2017/08/28.
  */
 
-public class cOperationHandler extends cMapper<cOperationModel, cOperationDomain> {
+public class cOperationHandler {
     private cOperationRepositoryImpl operationDBA;
     private Context context;
 
@@ -64,7 +63,7 @@ public class cOperationHandler extends cMapper<cOperationModel, cOperationDomain
         return operationDomain;
     }
 
-    @Override
+    //@Override
     protected cOperationModel DomainToModel(cOperationDomain domain) {
         cOperationModel model = new cOperationModel();
 
@@ -82,7 +81,7 @@ public class cOperationHandler extends cMapper<cOperationModel, cOperationDomain
         return model;
     }
 
-    @Override
+    //@Override
     protected cOperationDomain ModelToDomain(cOperationModel model) {
         cOperationDomain domain = new cOperationDomain();
 

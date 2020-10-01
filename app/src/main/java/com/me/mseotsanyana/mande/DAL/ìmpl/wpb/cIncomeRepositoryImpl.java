@@ -125,8 +125,9 @@ public class cIncomeRepositoryImpl extends cInputRepositoryImpl implements iInco
                     income.setFunderModelSet(getFunderModelSetByID(income.getInputID(), userID,
                             primaryRoleBITS, secondaryRoleBITS, statusBITS));
                     /* populate question components */
-                    income.setQuestionModelSet(getQuestionModelSetByID(income.getInputID(),
-                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
+                    income.setQuestionModelSet(getQuestionModelSetByID(
+                            income.getInputID(), userID, primaryRoleBITS, secondaryRoleBITS,
+                            statusBITS));
                     /* populate journal components */
                     income.setJournalModelSet(getJournalModelSetByID(income.getInputID(), userID,
                             primaryRoleBITS, secondaryRoleBITS, statusBITS));

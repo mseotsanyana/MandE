@@ -2,12 +2,12 @@ package com.me.mseotsanyana.mande.BLL.interactors.logframe.impact.Impl;
 
 import android.content.Context;
 
-import com.me.mseotsanyana.mande.UTIL.BLL.cGoalDomain;
-import com.me.mseotsanyana.mande.UTIL.BLL.cMapper;
+
+import com.me.mseotsanyana.mande.DAL.storage.mapper.cMapper;
 import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cImpactRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.logframe.cImpactModel;
 
-public class cImpactInterator extends cMapper<cImpactModel, cGoalDomain>
+public class cImpactInterator
 {
     private cImpactRepositoryImpl goalDBA;
     private Context context;
@@ -79,32 +79,33 @@ public class cImpactInterator extends cMapper<cImpactModel, cGoalDomain>
         return goalDomainTree;
     }
  ***/
-@Override
+/*@Override
 	protected cImpactModel DomainToModel(cGoalDomain domain) {
         cImpactModel model = new cImpactModel();
-/*
+
         model.setGoalID(domain.getGoalID());
         model.setOrganizationID(domain.getOrganizationID());
         model.setOwnerID(domain.getOwnerID());
         model.setGoalName(domain.getGoalName());
         model.setGoalDescription(domain.getGoalDescription());
         model.setCreateDate(domain.getCreateDate());
-*/
-		return model;
-	}
 
-	@Override
+		return model;
+	}*/
+
+
+    /*@Override
 	protected cGoalDomain ModelToDomain(cImpactModel model) {
         cGoalDomain domain = new cGoalDomain();
-/*
+
         domain.setGoalID(model.getGoalID());
         domain.setOrganizationID(model.getOrganizationID());
         domain.setOwnerID(model.getOwnerID());
         domain.setGoalName(model.getGoalName());
         domain.setGoalDescription(model.getGoalDescription());
         domain.setCreateDate(model.getCreateDate());
-*/
 		return domain;
-	}
+	}*/
 
-}
+
+    }

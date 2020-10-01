@@ -2,29 +2,47 @@ package com.me.mseotsanyana.mande.BLL.repository.monitor;
 
 public interface iUploadMonitoringRepository {
     /* delete functions */
-    boolean deleteMOVs();
     boolean deleteMethods();
-    boolean deleteUnits();
+    boolean deleteMOVs();
+    boolean deleteDataSources();
+    boolean deleteQuantitativeTypes();
     boolean deleteIndicatorTypes();
-    boolean deleteQualitativeChoices();
+    boolean deleteCriteriaScores();
+    boolean deleteQualitativeCriteria();
+    boolean deleteQualitativeSets();
+    boolean deleteQualitativeScoreSets();
+
+    boolean deleteTargets();
+    boolean deleteQualitativeTargets();
+    boolean deleteQuantitativeTargets();
+    boolean deleteArrayTargets();
+    boolean deleteMatrixTargets();
     boolean deleteDataCollectors();
     boolean deleteIndicators();
-    boolean deleteQuantitatives();
-    boolean deleteQualitatives();
-    boolean deleteQualitativeChoiceSets();
+    boolean deleteQualitativeIndicators();
+    boolean deleteQuantitativeIndicators();
+    boolean deleteArrayIndicators();
+    boolean deleteMatrixIndicators();
     boolean deleteMilestones();
     boolean deleteIndicatorMilestones();
-    boolean deleteMresponses();
-    boolean deleteQuantitativeResponses();
-    boolean deleteQualitativeResponses();
 
     /* add functions */
-    boolean addMOVFromExcel();
     boolean addMethodFromExcel();
-    boolean addUnitFromExcel();
+    boolean addMOVsFromExcel();
+    boolean addDataSourceFromExcel();
     boolean addIndicatorTypeFromExcel();
-    boolean addQualitativeChoiceFromExcel();
-    boolean addDataCollectorFromExcel();
+    boolean addQuantitativeTypeFromExcel();
+    boolean addCriteriaScoreFromExcel();
+    boolean addQualitativeSetFromExcel();
+    boolean addTargetFromExcel();
     boolean addIndicatorFromExcel();
-    boolean addMResponseFromExcel();
+    boolean addDataCollectorFromExcel();
+    //boolean addMResponseFromExcel();
+    //boolean deleteQuantitatives();
+    //boolean deleteQualitatives();
+    //boolean deleteQualitativeChoiceSets();
+    //boolean deleteMresponses();
+    //boolean deleteQuantitativeResponses();
+    //boolean deleteQualitativeResponses();
+    //boolean deleteQualitativeChoices();
 }

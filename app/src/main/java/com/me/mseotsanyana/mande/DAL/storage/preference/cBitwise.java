@@ -239,6 +239,7 @@ public class cBitwise {
 
     };
 
+
     public cBitwise() {
     }
 

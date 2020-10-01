@@ -131,8 +131,9 @@ public class cExpenseRepositoryImpl extends cInputRepositoryImpl implements iExp
                     /* sets */
 
                     /* populate question components */
-                    expense.setQuestionModelSet(getQuestionModelSetByID(expense.getInputID(),
-                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
+                    expense.setQuestionModelSet(getQuestionModelSetByID(
+                            expense.getInputID(), userID, primaryRoleBITS, secondaryRoleBITS,
+                            statusBITS));
                     /* populate journal components */
                     expense.setJournalModelSet(getJournalModelSetByID(expense.getInputID(), userID,
                             primaryRoleBITS, secondaryRoleBITS, statusBITS));

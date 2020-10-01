@@ -1,6 +1,5 @@
 package com.me.mseotsanyana.mande.BLL.domain.logframe;
 
-import com.me.mseotsanyana.mande.UTIL.BLL.cIndicatorDomain;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -30,7 +29,7 @@ public class cLogFrameDomain {
     private Set<cActivityDomain> activityDomainSet;
     //private Set<cInputDomain> inputDomainSet;
     //private Set<cQuestionDomain> questionDomainSet;
-    private Set<cIndicatorDomain> indicatorDomainSet;
+    //private Set<cIndicatorDomain> indicatorDomainSet;
    // private Set<cRaidDomain> raidDomainSet;
 
 

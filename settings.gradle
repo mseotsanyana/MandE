@@ -1,4 +1,4 @@
-include ':app', ':treeadapterlibrary', ':expandablelayoutlibrary', ':multiselectspinnerlibrary', ':quickactionlibrary', ':validatorlibrary', ':viewpagerlibrary',':bmblibrary', ':placeholderviewlibrary', ':annotations', ':compilers'
+include ':app', ':treeadapterlibrary', ':expandablelayoutlibrary', ':multiselectspinnerlibrary', ':quickactionlibrary', ':validatorlibrary', ':viewpagerlibrary',':bmblibrary', ':placeholderviewlibrary', ':annotations', ':compilers', ':questionnairelibrary'
 project(':quickactionlibrary').projectDir = new File(settingsDir, '../Libraries/quickactionlibrary')
 project(':expandablelayoutlibrary').projectDir = new File(settingsDir, '../Libraries/expandablelayoutlibrary')
 project(':treeadapterlibrary').projectDir = new File(settingsDir, '../Libraries/treeadapterlibrary')
@@ -9,3 +9,4 @@ project(':bmblibrary').projectDir = new File(settingsDir, '../Libraries/bmblibra
 project(':placeholderviewlibrary').projectDir = new File(settingsDir, '../Libraries/placeholderviewlibrary')
 project(':annotations').projectDir = new File(settingsDir, '../Libraries/annotations')
 project(':compilers').projectDir = new File(settingsDir, '../Libraries/compilers')
+project(':questionnairelibrary').projectDir = new File(settingsDir, '../Libraries/questionnairelibrary')

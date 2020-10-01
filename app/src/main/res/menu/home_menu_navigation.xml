@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/action_login"
+        android:id="@+id/cLoginFragment"
         android:icon="@drawable/ic_home_home_black_24dp"
         android:title="@string/text_login" />
 
     <item
-        android:id="@+id/action_create"
+        android:id="@+id/cRegisterFragment"
         android:icon="@drawable/ic_home_register_black_24dp"
         android:title="@string/text_create" />
 
     <item
-        android:id="@+id/action_join"
+        android:id="@+id/cJoinFragment"
         android:icon="@drawable/ic_home_join_black_24dp"
         android:title="@string/text_join" />
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/cSettingsFragment"
         android:icon="@drawable/ic_home_help_black_24dp"
         android:title="@string/text_settings" />
 </menu>

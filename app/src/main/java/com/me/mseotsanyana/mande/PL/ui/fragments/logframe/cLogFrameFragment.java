@@ -32,6 +32,8 @@ import androidx.core.util.Pair;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,14 +58,9 @@ import com.me.mseotsanyana.mande.PL.presenters.logframe.Impl.cLogFramePresenterI
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iLogFramePresenter;
 import com.me.mseotsanyana.mande.PL.ui.adapters.common.cCommonFragmentAdapter;
 import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cLogFrameAdapter;
-import com.me.mseotsanyana.mande.PL.ui.fragments.evaluator.cEvaluatingFragment;
-import com.me.mseotsanyana.mande.PL.ui.fragments.monitor.cMonitoringFragment;
-import com.me.mseotsanyana.mande.PL.ui.fragments.raid.cRiskFragment;
-import com.me.mseotsanyana.mande.PL.ui.fragments.raid.cRiskRegisterFragment;
 import com.me.mseotsanyana.mande.PL.ui.fragments.session.cPermissionFragment;
 import com.me.mseotsanyana.mande.PL.ui.fragments.session.cRoleFragment;
 import com.me.mseotsanyana.mande.PL.ui.fragments.session.cUserFragment;
-import com.me.mseotsanyana.mande.PL.ui.fragments.wpb.cAWPBFragment;
 import com.me.mseotsanyana.mande.UTIL.TextDrawable;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
 
@@ -233,7 +230,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         menuExpandableListView = view.findViewById(R.id.navigationList);
 
         // adding the header to the expandable action_list view
-        LayoutInflater inflater = Objects.requireNonNull(getActivity()).getLayoutInflater();
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
         View headerView = inflater.inflate(R.layout.dashboard_drawer_nav_header,
                 null, false);
 
@@ -258,7 +255,6 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         CollapsingToolbarLayout collapsingToolbarLayout =
                 view.findViewById(R.id.collapsingToolbarLayout);
         collapsingToolbarLayout.setContentScrimColor(Color.WHITE);
-
 
         //toolBar.setTitle(R.string.logframe_list_title);
         //toolBar.setTitleTextColor(Color.WHITE);
@@ -300,14 +296,14 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 // creates call to onPrepareOptionsMenu()
-                Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
+                requireActivity().invalidateOptionsMenu();
             }
 
             /* Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
                 // creates call to onPrepareOptionsMenu()
-                Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
+                requireActivity().invalidateOptionsMenu();
             }
         };
 
@@ -404,7 +400,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
                         .get(childPosition).toString();
                 Objects.requireNonNull(activity.getSupportActionBar()).setTitle(selectedItem);
 
-                FragmentTransaction ft = Objects.requireNonNull(getActivity()).
+                FragmentTransaction ft = requireActivity().
                         getSupportFragmentManager().beginTransaction();
 
                 switch (groupPosition) {
@@ -509,7 +505,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         MenuItem toolBarMenu = menu.findItem(R.id.searchItem);
 
         /* getting search manager from system service */
-        SearchManager searchManager = (SearchManager) Objects.requireNonNull(getActivity()).
+        SearchManager searchManager = (SearchManager) requireActivity().
                 getSystemService(Context.SEARCH_SERVICE);
         /* getting the search view */
         SearchView searchView = (SearchView) toolBarMenu.getActionView();
@@ -573,187 +569,41 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         String FLAG;
         switch (menuIndex) {
             case 0: // Impact Fragment
-                FLAG = cImpactFragment.class.getSimpleName() + logFrameID;
-                if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(
-                        Long.toString(logFrameID)) != null) {
-                    /* if the fragment exists, show it. */
-                    getFragmentManager().beginTransaction().show(
-                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(
-                                    Long.toString(logFrameID)))).commit();
-                } else {
-                    /* if the fragment does not exist, add it to fragment manager. */
-                    getFragmentManager().beginTransaction().add(
-                            R.id.fragment_frame, cImpactFragment.newInstance(logFrameID),
-                            Long.toString(logFrameID)).commit();
-                }
-                if (getFragmentManager().findFragmentByTag(TAG) != null) {
-                    /* if the other fragment is visible, hide it. */
-                    getFragmentManager().beginTransaction().hide(
-                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).
-                            commit();
-                }
+
                 break;
             case 1: // Outcome Fragment
-                FLAG = cOutcomeFragment.class.getSimpleName()+logFrameID;
-                if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(FLAG) != null) {
-                    /* if the fragment exists, show it. */
-                    getFragmentManager().beginTransaction().show(
-                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(FLAG))).commit();
-                } else {
-                    /* if the fragment does not exist, add it to fragment manager. */
-                    getFragmentManager().beginTransaction().add(
-                            R.id.fragment_frame, cOutcomeFragment.newInstance(logFrameID), FLAG).commit();
-                }
-                if (getFragmentManager().findFragmentByTag(TAG) != null) {
-                    /* if the other fragment is visible, hide it. */
-                    getFragmentManager().beginTransaction().hide(
-                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).
-                            commit();
-                }
+
                 break;
             case 2: // Output Fragment
-                FLAG = cOutputFragment.class.getSimpleName() + logFrameID;
-                if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(FLAG) != null) {
-                    /* if the fragment exists, show it. */
-                    getFragmentManager().beginTransaction().show(
-                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(FLAG))).
-                            commit();
-                } else {
-                    /* if the fragment does not exist, add it to fragment manager. */
-                    getFragmentManager().beginTransaction().add(
-                            R.id.fragment_frame, cOutputFragment.newInstance(logFrameID), FLAG).commit();
-                }
-                if (getFragmentManager().findFragmentByTag(TAG) != null) {
-                    /* if the other fragment is visible, hide it. */
-                    getFragmentManager().beginTransaction().hide(
-                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).
-                            commit();
-                }
+
                 break;
             case 3: // Activity Fragment
-                FLAG = cActivityFragment.class.getSimpleName() + logFrameID;
-                if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(FLAG) != null) {
-                    /* if the fragment exists, show it. */
-                    getFragmentManager().beginTransaction().show(
-                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(FLAG))).
-                            commit();
-                } else {
-                    /* if the fragment does not exist, add it to fragment manager. */
-                    getFragmentManager().beginTransaction().add(
-                            R.id.fragment_frame, cActivityFragment.newInstance(logFrameID),
-                            FLAG).commit();
-                }
-                if (getFragmentManager().findFragmentByTag(TAG) != null) {
-                    /* if the other fragment is visible, hide it. */
-                    getFragmentManager().beginTransaction().hide(
-                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).
-                            commit();
-                }
+
                 break;
 
             case 4: // Input Fragment
-                FLAG = cInputFragment.class.getSimpleName() + logFrameID;
-                if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(FLAG) != null) {
-                    /* if the fragment exists, show it. */
-                    getFragmentManager().beginTransaction().show(
-                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(FLAG))).
-                            commit();
-                } else {
-                    /* if the fragment does not exist, add it to fragment manager. */
-                    getFragmentManager().beginTransaction().add(
-                            R.id.fragment_frame, cInputFragment.newInstance(logFrameID),
-                            FLAG).commit();
-                }
-                if (getFragmentManager().findFragmentByTag(TAG) != null) {
-                    /* if the other fragment is visible, hide it. */
-                    getFragmentManager().beginTransaction().hide(
-                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).
-                            commit();
-                }
+
                 break;
 
             case 5: // AWPB Fragment
-                FLAG = cAWPBFragment.class.getSimpleName() + logFrameID;
-                if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(FLAG) != null) {
-                    /* if the fragment exists, show it. */
-                    getFragmentManager().beginTransaction().show(
-                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(FLAG))).
-                            commit();
-                } else {
-                    /* if the fragment does not exist, add it to fragment manager. */
-                    getFragmentManager().beginTransaction().add(
-                            R.id.fragment_frame, cAWPBFragment.newInstance(logFrameID),
-                            FLAG).commit();
-                }
-                if (getFragmentManager().findFragmentByTag(TAG) != null) {
-                    /* if the other fragment is visible, hide it. */
-                    getFragmentManager().beginTransaction().hide(
-                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).
-                            commit();
-                }
+
                 break;
 
             case 6: // Monitoring Fragment
-                FLAG = cMonitoringFragment.class.getSimpleName() + logFrameID;
-                if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(FLAG) != null) {
-                    /* if the fragment exists, show it. */
-                    getFragmentManager().beginTransaction().show(
-                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(FLAG))).
-                            commit();
-                } else {
-                    /* if the fragment does not exist, add it to fragment manager. */
-                    getFragmentManager().beginTransaction().add(
-                            R.id.fragment_frame, cMonitoringFragment.newInstance(logFrameID),
-                            FLAG).commit();
-                }
-                if (getFragmentManager().findFragmentByTag(TAG) != null) {
-                    /* if the other fragment is visible, hide it. */
-                    getFragmentManager().beginTransaction().hide(
-                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).
-                            commit();
-                }
+
                 break;
 
-            case 7: // Evaluating Fragment
-                FLAG = cEvaluatingFragment.class.getSimpleName() + logFrameID;
-                if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(FLAG) != null) {
-                    /* if the fragment exists, show it. */
-                    getFragmentManager().beginTransaction().show(
-                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(FLAG))).
-                            commit();
-                } else {
-                    /* if the fragment does not exist, add it to fragment manager. */
-                    getFragmentManager().beginTransaction().add(
-                            R.id.fragment_frame, cEvaluatingFragment.newInstance(logFrameID),
-                            FLAG).commit();
-                }
-                if (getFragmentManager().findFragmentByTag(TAG) != null) {
-                    /* if the other fragment is visible, hide it. */
-                    getFragmentManager().beginTransaction().hide(
-                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).
-                            commit();
-                }
+            case 7: // Evaluation Fragment
+
+                /* navigate from login to logframe */
+                NavDirections action = cLogFrameFragmentDirections.
+                        actionCLogFrameFragmentToCEvaluationFragment(logFrameID);
+                Navigation.findNavController(requireView()).navigate(action);
+
                 break;
 
             case 8: // Risk Register Fragment
-                FLAG = cRiskRegisterFragment.class.getSimpleName() + logFrameID;
-                if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(FLAG) != null) {
-                    /* if the fragment exists, show it. */
-                    getFragmentManager().beginTransaction().show(
-                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(FLAG))).
-                            commit();
-                } else {
-                    /* if the fragment does not exist, add it to fragment manager. */
-                    getFragmentManager().beginTransaction().add(
-                            R.id.fragment_frame, cRiskRegisterFragment.newInstance(logFrameID),
-                            FLAG).commit();
-                }
-                if (getFragmentManager().findFragmentByTag(TAG) != null) {
-                    /* if the other fragment is visible, hide it. */
-                    getFragmentManager().beginTransaction().hide(
-                            Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).
-                            commit();
-                }
+
                 break;
 
             default:
@@ -763,7 +613,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
 
     @Override
     public cCommonFragmentAdapter onGetCommonFragmentAdapter() {
-        return new cCommonFragmentAdapter(Objects.requireNonNull(getFragmentManager()),
+        return new cCommonFragmentAdapter(requireFragmentManager(),
                 new cSessionManagerImpl(getContext()));
 
     }
@@ -788,7 +638,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         menuItemTitles = new ArrayList<String>(expandableMenuItems.keySet());
         /* logframe adapters */
         cExpandableListAdapter menuExpandableListAdapter = new cExpandableListAdapter(
-                Objects.requireNonNull(getActivity()), menuItemTitles, expandableMenuItems);
+                requireActivity(), menuItemTitles, expandableMenuItems);
         menuExpandableListView.setAdapter(menuExpandableListAdapter);
 
         try {
@@ -947,7 +797,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
 
         /* 4. set start and end date */
         datePickerIcon.setTypeface(null, Typeface.NORMAL);
-        datePickerIcon.setTypeface(cFontManager.getTypeface(Objects.requireNonNull(getActivity()),
+        datePickerIcon.setTypeface(cFontManager.getTypeface(requireActivity(),
                         cFontManager.FONTAWESOME));
         datePickerIcon.setTextColor(getActivity().getColor(R.color.colorPrimaryDark));
         datePickerIcon.setText(getActivity().getResources().getString(R.string.fa_calendar));
@@ -996,7 +846,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
                     }
                 });
 
-                picker.show(Objects.requireNonNull(getFragmentManager()), picker.toString());
+                picker.show(requireFragmentManager(), picker.toString());
             }
         });
 
@@ -1093,7 +943,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
 
         /* 3. set start and end dates */
         datePickerIcon.setTypeface(null, Typeface.NORMAL);
-        datePickerIcon.setTypeface(cFontManager.getTypeface(Objects.requireNonNull(getActivity()),
+        datePickerIcon.setTypeface(cFontManager.getTypeface(requireActivity(),
                         cFontManager.FONTAWESOME));
         datePickerIcon.setTextColor(getActivity().getColor(R.color.colorPrimaryDark));
         datePickerIcon.setText(getActivity().getResources().getString(R.string.fa_calendar));
@@ -1142,7 +992,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
                     }
                 });
 
-                picker.show(Objects.requireNonNull(getFragmentManager()), picker.toString());
+                picker.show(requireFragmentManager(), picker.toString());
             }
         });
 
@@ -1178,7 +1028,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
                                    long logFrameID) {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                Objects.requireNonNull(getContext()));
+                requireContext());
 
         // setting icon to dialog
         TextDrawable faIcon = new TextDrawable(getContext());
@@ -1240,24 +1090,5 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.add(R.id.fragment_frame, fragment, flag);
         ft.commit();
-    }
-
-    private void showFragment(String selectedFrag){
-        if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(selectedFrag) != null) {
-            //if the fragment exists, show it.
-            getFragmentManager().beginTransaction().show(
-                    Objects.requireNonNull(getFragmentManager().findFragmentByTag(selectedFrag))).
-                    commit();
-        } else {
-            //if the fragment does not exist, add it to fragment manager.
-            getFragmentManager().beginTransaction().add(
-                    R.id.fragment_frame, new cImpactFragment(), selectedFrag).commit();
-        }
-
-        if (getFragmentManager().findFragmentByTag(TAG) != null) {
-            //if the other fragment is visible, hide it.
-            getFragmentManager().beginTransaction().hide(
-                    Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).commit();
-        }
     }
 }

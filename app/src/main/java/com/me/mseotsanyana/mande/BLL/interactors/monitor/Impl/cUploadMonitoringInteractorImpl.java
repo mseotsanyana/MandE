@@ -49,68 +49,102 @@ public class cUploadMonitoringInteractorImpl extends cAbstractInteractor
     @Override
     public void run() {
         /* delete all monitoring module records */
-
-        uploadMonitoringRepository.deleteMOVs();
         uploadMonitoringRepository.deleteMethods();
-        uploadMonitoringRepository.deleteUnits();
+        uploadMonitoringRepository.deleteMOVs();
+        uploadMonitoringRepository.deleteDataSources();
+        uploadMonitoringRepository.deleteQuantitativeTypes();
         uploadMonitoringRepository.deleteIndicatorTypes();
-        uploadMonitoringRepository.deleteQualitativeChoices();
+        uploadMonitoringRepository.deleteCriteriaScores();
+        uploadMonitoringRepository.deleteQualitativeCriteria();
+        uploadMonitoringRepository.deleteQualitativeSets();
+        uploadMonitoringRepository.deleteQualitativeScoreSets();
+
+        uploadMonitoringRepository.deleteTargets();
+        uploadMonitoringRepository.deleteQualitativeTargets();
+        uploadMonitoringRepository.deleteQuantitativeTargets();
+        uploadMonitoringRepository.deleteArrayTargets();
+        uploadMonitoringRepository.deleteMatrixTargets();
         uploadMonitoringRepository.deleteDataCollectors();
         uploadMonitoringRepository.deleteIndicators();
+        uploadMonitoringRepository.deleteQualitativeIndicators();
+        uploadMonitoringRepository.deleteQuantitativeIndicators();
+        uploadMonitoringRepository.deleteArrayIndicators();
+        uploadMonitoringRepository.deleteMatrixIndicators();
         uploadMonitoringRepository.deleteMilestones();
-        uploadMonitoringRepository.deleteIndicatorMilestones();
-        uploadMonitoringRepository.deleteQuantitatives();
-        uploadMonitoringRepository.deleteQualitatives();
-        uploadMonitoringRepository.deleteQualitativeChoiceSets();
 
         /* upload all monitoring module records */
-
-        if(uploadMonitoringRepository.addMOVFromExcel()){
-            postMessage("Frequency Entity Added Successfully!");
-        }else {
-            notifyError("Failed to Add Frequency Entity");
-        }
-
         if(uploadMonitoringRepository.addMethodFromExcel()){
             postMessage("Method Entity Added Successfully!");
         }else {
             notifyError("Failed to Add Method Entity");
         }
 
-        if(uploadMonitoringRepository.addUnitFromExcel()){
-            postMessage("Unit Entity Added Successfully!");
+        if(uploadMonitoringRepository.addMOVsFromExcel()){
+            postMessage("MOV Entity Added Successfully!");
         }else {
-            notifyError("Failed to Add Unit Entity");
+            notifyError("Failed to Add MOV Entity");
+        }
+
+        if(uploadMonitoringRepository.addDataSourceFromExcel()){
+            postMessage("Data Source Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add Data Source Entity");
+        }
+
+        if(uploadMonitoringRepository.addQuantitativeTypeFromExcel()){
+            postMessage("Quantitative Type Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add Quantitative Type Entity");
         }
 
         if(uploadMonitoringRepository.addIndicatorTypeFromExcel()){
-            postMessage("IndicatorType Entity Added Successfully!");
+            postMessage("Indicator Type Entity Added Successfully!");
         }else {
-            notifyError("Failed to Add IndicatorType Entity");
+            notifyError("Failed to Add Indicator Type Entity");
         }
 
-        if(uploadMonitoringRepository.addQualitativeChoiceFromExcel()){
-            postMessage("QualitativeChoice Entity Added Successfully!");
+        if(uploadMonitoringRepository.addCriteriaScoreFromExcel()){
+            postMessage("Criteria Score Entity Added Successfully!");
         }else {
-            notifyError("Failed to Add QualitativeChoice Entity");
+            notifyError("Failed to Add Criteria Score Entity");
         }
 
         if(uploadMonitoringRepository.addDataCollectorFromExcel()){
-            postMessage("DataCollector Entity Added Successfully!");
+            postMessage("Data Collector Entity Added Successfully!");
         }else {
-            notifyError("Failed to Add DataCollector Entity");
+            notifyError("Failed to Add Data Collector Entity");
         }
 
+        if(uploadMonitoringRepository.addTargetFromExcel()){
+            postMessage("Target Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add Target Entity");
+        }
+/*
         if(uploadMonitoringRepository.addIndicatorFromExcel()){
             postMessage("Indicator Entity Added Successfully!");
         }else {
             notifyError("Failed to Add Indicator Entity");
         }
 
-        if(uploadMonitoringRepository.addMResponseFromExcel()){
-            postMessage("MResponse Entity Added Successfully!");
+        if(uploadMonitoringRepository.addMilestoneFromExcel()){
+            postMessage("Milestone Entity Added Successfully!");
         }else {
-            notifyError("Failed to Add MResponse Entity");
+            notifyError("Failed to Add Milestone Entity");
         }
+
+        if(uploadMonitoringRepository.addProgressFromExcel()){
+            postMessage("Progress Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add Progress Entity");
+        }
+
+
+        if(uploadMonitoringRepository.addQualitativeCriteriaFromExcel()){
+            postMessage("Qualitative Criteria Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add Qualitative Criteria Entity");
+        }
+*/
     }
 }

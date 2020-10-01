@@ -1,14 +1,15 @@
 package com.me.mseotsanyana.mande.BLL.repository.logframe;
 
 public interface iUploadLogFrameRepository {
-    boolean deleteCriteria();
+    boolean deleteEvaluationCriteria();
 
     boolean deleteQuestionGroupings();
-    boolean deletePrimitiveTypes();
-    boolean deleteArrayTypes();
-    boolean deleteMatrixTypes();
     boolean deleteQuestionTypes();
     boolean deleteQuestions();
+
+    boolean deletePrimitiveQuestions();
+    boolean deleteArrayQuestions();
+    boolean deleteMatrixQuestions();
 
     boolean deleteRaids();
 
@@ -52,7 +53,7 @@ public interface iUploadLogFrameRepository {
     boolean deleteLogFrame();
 
     /* add (create) functions */
-    boolean addCriteriaFromExcel();
+    boolean addEvaluationCriteriaFromExcel();
     boolean addQuestionGroupingFromExcel();
     boolean addQuestionTypeFromExcel();
     boolean addQuestionFromExcel();

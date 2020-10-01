@@ -3,105 +3,116 @@
     <words>
       <w>activityassignment</w>
       <w>activitylog</w>
-      <w>activityplanning</w>
       <w>activitytask</w>
       <w>additionalcontrol</w>
+      <w>arraychart</w>
       <w>arraychoice</w>
       <w>arraychoiceset</w>
+      <w>arrayindicator</w>
+      <w>arraymilestone</w>
+      <w>arrayprogress</w>
+      <w>arrayquestion</w>
       <w>arrayresponse</w>
+      <w>arrayset</w>
+      <w>arraytarget</w>
       <w>arraytype</w>
       <w>awpb</w>
-      <w>beneficiation</w>
+      <w>barchart</w>
       <w>brbac</w>
-      <w>choiceset</w>
+      <w>bubblechart</w>
+      <w>candlestickchart</w>
+      <w>colchoice</w>
       <w>coloption</w>
-      <w>contingencyplan</w>
+      <w>combinedchart</w>
+      <w>criteriascore</w>
       <w>crowdfund</w>
       <w>currentcontrol</w>
       <w>datacollector</w>
+      <w>datasource</w>
       <w>dateresponse</w>
-      <w>dependecy</w>
-      <w>enddate</w>
-      <w>entitytype</w>
+      <w>disaggregate</w>
+      <w>equestion</w>
       <w>eresponse</w>
       <w>evaluationcriteria</w>
       <w>evaluationtype</w>
-      <w>firstname</w>
       <w>fiscalyear</w>
-      <w>fliter</w>
       <w>funder</w>
-      <w>funders</w>
-      <w>generalledger</w>
+      <w>horizontalchart</w>
       <w>humanset</w>
-      <w>imageid</w>
       <w>implementingagency</w>
       <w>indicatormilestone</w>
+      <w>indicatorprogress</w>
       <w>indicatortype</w>
       <w>interactor</w>
-      <w>lastname</w>
-      <w>likelihoodset</w>
+      <w>linechart</w>
       <w>logframe</w>
-      <w>logframes</w>
       <w>logframetree</w>
       <w>mande</w>
+      <w>matrixchart</w>
       <w>matrixchoice</w>
       <w>matrixchoiceset</w>
+      <w>matrixindicator</w>
+      <w>matrixmilestone</w>
+      <w>matrixprogress</w>
+      <w>matrixquestion</w>
       <w>matrixresponse</w>
+      <w>matrixset</w>
+      <w>matrixtarget</w>
       <w>matrixtype</w>
-      <w>mitigationaction</w>
-      <w>mitigationplan</w>
-      <w>mresponse</w>
+      <w>mquestion</w>
       <w>mseotsanyana</w>
       <w>numericresponse</w>
-      <w>opbits</w>
-      <w>orgs</w>
-      <w>placeholderview</w>
-      <w>placeholderviewlibrary</w>
-      <w>prbits</w>
+      <w>piechart</w>
       <w>precedingactivity</w>
       <w>precedingtask</w>
-      <w>preventativeplan</w>
+      <w>primitivechart</w>
+      <w>primitivequestion</w>
       <w>primitivetype</w>
       <w>qualitativechoice</w>
       <w>qualitativechoiceset</w>
+      <w>qualitativecriteria</w>
+      <w>qualitativeindicator</w>
+      <w>qualitativemilestone</w>
+      <w>qualitativeprogress</w>
       <w>qualitativeresponse</w>
+      <w>qualitativescoreset</w>
+      <w>qualitativeset</w>
+      <w>qualitativetarget</w>
+      <w>quantitativeindicator</w>
+      <w>quantitativemilestone</w>
+      <w>quantitativeprogress</w>
       <w>quantitativeresponse</w>
+      <w>quantitativetarget</w>
+      <w>quantitativetype</w>
       <w>questiongrouping</w>
+      <w>questionnairelibrary</w>
       <w>questiontype</w>
+      <w>radarchart</w>
       <w>resourcetype</w>
       <w>riskaction</w>
       <w>riskactiontype</w>
       <w>riskanalysis</w>
-      <w>riskcalculation</w>
       <w>riskconsequence</w>
       <w>riskcriteria</w>
       <w>riskcriteriaset</w>
       <w>riskimpact</w>
       <w>riskimpactset</w>
-      <w>riskissue</w>
       <w>risklikelihood</w>
       <w>risklikelihoodset</w>
-      <w>riskmap</w>
       <w>riskmilestone</w>
       <w>riskplan</w>
       <w>riskregister</w>
       <w>riskrootcause</w>
-      <w>rootcause</w>
+      <w>rowchoice</w>
       <w>rowoption</w>
-      <w>srbits</w>
-      <w>ssdf</w>
-      <w>startdate</w>
+      <w>scatterchart</w>
+      <w>scorecriteria</w>
       <w>statusset</w>
-      <w>stbits</w>
       <w>taskassignment</w>
       <w>textresponse</w>
       <w>timesheet</w>
-      <w>timesheets</w>
-      <w>tsdf</w>
       <w>usercomment</w>
-      <w>usermodel</w>
       <w>workplan</w>
-      <w>workplans</w>
     </words>
   </dictionary>
 </component>

@@ -16,8 +16,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.me.mseotsanyana.mande.UTIL.BLL.cProjectDomain;
-import com.me.mseotsanyana.mande.UTIL.BLL.cProjectHandler;
 import com.me.mseotsanyana.mande.R;
 
 import java.text.ParseException;
@@ -33,8 +31,8 @@ public class cEditProjectFragment extends DialogFragment implements AdapterView.
 
     private cEditProjectFragment.OnEditProjectListener callback;
 
-    cProjectDomain projectDomain;
-    cProjectHandler projectHandler;
+    //cProjectDomain projectDomain;
+    //cProjectHandler projectHandler;
 
     private EditText nameEdit;
     private String name;
@@ -76,8 +74,8 @@ public class cEditProjectFragment extends DialogFragment implements AdapterView.
     }
 
     public interface OnEditProjectListener{
-        void onEditProject(cProjectDomain projectDomain);
-        cProjectDomain getProjectDomain();
+        //void onEditProject(cProjectDomain projectDomain);
+        //cProjectDomain getProjectDomain();
     }
 
     void cAddProjectFragment() {
@@ -101,20 +99,21 @@ public class cEditProjectFragment extends DialogFragment implements AdapterView.
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle("Edit Project");
-        // get data from adapter
-        projectDomain = callback.getProjectDomain();
-
-        name          = projectDomain.getProjectName();
-        description   = projectDomain.getProjectDescription();
-        country       = projectDomain.getCountry();
-        region        = projectDomain.getRegion();
-        startDate     = formatter.format(projectDomain.getStartDate());
-        closeDate     = formatter.format(projectDomain.getCloseDate());
-        statusPos     = projectDomain.getProjectStatus();
-        managerPos    = projectDomain.getProjectManagerID();
-
+//        getDialog().setTitle("Edit Project");
+//        // get data from adapter
+//        projectDomain = callback.getProjectDomain();
+//
+//        name          = projectDomain.getProjectName();
+//        description   = projectDomain.getProjectDescription();
+//        country       = projectDomain.getCountry();
+//        region        = projectDomain.getRegion();
+//        startDate     = formatter.format(projectDomain.getStartDate());
+//        closeDate     = formatter.format(projectDomain.getCloseDate());
+//        statusPos     = projectDomain.getProjectStatus();
+//        managerPos    = projectDomain.getProjectManagerID();
+//
         return inflater.inflate(R.layout.fragment_add_project, container);
+
     }
 
     @Override
@@ -203,30 +202,30 @@ public class cEditProjectFragment extends DialogFragment implements AdapterView.
             public void onClick(View view) {
 
                 // update the database
-                projectDomain.setProjectName(nameEdit.getText().toString());
-                projectDomain.setProjectDescription(descriptionEdit.getText().toString());
-                projectDomain.setCountry(countryEdit.getText().toString());
-                projectDomain.setRegion(regionEdit.getText().toString());
-
-                int selectedStatus = statusSpinner.getSelectedItemPosition();
-                projectDomain.setProjectStatus(selectedStatus);
-
-                int selectedManager = managerSpinner.getSelectedItemPosition();
-                projectDomain.setProjectManagerID(selectedManager);
-
-                try {
-                    projectDomain.setStartDate(formatter.parse(startDateEdit.getText().toString()));
-                }catch (ParseException e){
-                    projectDomain.setStartDate(null);
-                }
-
-                try {
-                    projectDomain.setCloseDate(formatter.parse(closeDateEdit.getText().toString()));
-                }catch (ParseException e) {
-                    projectDomain.setCloseDate(null);
-                }
-
-                projectHandler = new cProjectHandler(getActivity());
+//                projectDomain.setProjectName(nameEdit.getText().toString());
+//                projectDomain.setProjectDescription(descriptionEdit.getText().toString());
+//                projectDomain.setCountry(countryEdit.getText().toString());
+//                projectDomain.setRegion(regionEdit.getText().toString());
+//
+//                int selectedStatus = statusSpinner.getSelectedItemPosition();
+//                projectDomain.setProjectStatus(selectedStatus);
+//
+//                int selectedManager = managerSpinner.getSelectedItemPosition();
+//                projectDomain.setProjectManagerID(selectedManager);
+//
+//                try {
+//                    projectDomain.setStartDate(formatter.parse(startDateEdit.getText().toString()));
+//                }catch (ParseException e){
+//                    projectDomain.setStartDate(null);
+//                }
+//
+//                try {
+//                    projectDomain.setCloseDate(formatter.parse(closeDateEdit.getText().toString()));
+//                }catch (ParseException e) {
+//                    projectDomain.setCloseDate(null);
+//                }
+//
+//                projectHandler = new cProjectHandler(getActivity());
                 /*--boolean result = projectHandler.updateProject(projectDomain);
 
                 if (result) {

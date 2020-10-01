@@ -258,6 +258,9 @@
     <!-- the evaluating strings -->
     <string name="evaluating_list_title">Evaluating</string>
 
+
+
+
     <!-- the monitoring strings -->
     <string name="monitoring_list_title">Monitoring</string>
 
@@ -276,6 +279,17 @@
     <string name="text_ham_button_text_normal">Ham Button Text(Normal)</string>
     <string name="text_ham_button_sub_text_normal">Ham Button Sub Text(Normal)</string>
 
+    <!-- questionnaire  -->
+    <string name="custom_npi_text_template">#i/#N"</string>
+    <string name="custom_npi_text_template_2">#i of #N"</string>
+    <string name="custom_npi_previous_button_text">Prev.</string>
+    <string name="custom_npi_next_button_text">\>></string>
+    <string name="custom_npi_start_button_text">First</string>
+    <string name="custom_npi_end_button_text">\>|</string>
+    <string name="custom_npi_previous_button_text_2">More</string>
+    <string name="custom_npi_next_button_text_2">Less</string>
+    <string name="custom_npi_start_button_text_2">1st</string>
+    <string name="custom_npi_end_button_text_2">Nth</string>
     <!-- END -->
 
     <string name="hello">Choose one of the features below.</string>

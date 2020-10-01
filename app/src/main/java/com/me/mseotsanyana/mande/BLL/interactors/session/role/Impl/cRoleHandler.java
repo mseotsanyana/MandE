@@ -9,7 +9,6 @@ import com.me.mseotsanyana.mande.BLL.interactors.session.menu.Impl.cMenuHandler;
 import com.me.mseotsanyana.mande.DAL.model.session.cMenuModel;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cRoleRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.session.cRoleModel;
-import com.me.mseotsanyana.mande.UTIL.BLL.cMapper;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,7 +20,7 @@ import java.util.Set;
  */
 
 
-public class cRoleHandler extends cMapper<cRoleModel, cRoleDomain> {
+public class cRoleHandler {
     private cRoleRepositoryImpl roleDBA;
     private Context context;
     //private cSessionManager session;
@@ -153,7 +152,7 @@ public class cRoleHandler extends cMapper<cRoleModel, cRoleDomain> {
         return roleDomain;
     }
 
-    @Override
+    //@Override
     protected cRoleModel DomainToModel(cRoleDomain domain) {
         cRoleModel model = new cRoleModel();
         //cOrganizationHandler organizationHandler = new cOrganizationHandler();
@@ -183,7 +182,7 @@ public class cRoleHandler extends cMapper<cRoleModel, cRoleDomain> {
         return model;
     }
 
-    @Override
+    //@Override
     protected cRoleDomain ModelToDomain(cRoleModel model) {
         cRoleDomain domain = new cRoleDomain();
         //cOrganizationHandler organizationHandler = new cOrganizationHandler();

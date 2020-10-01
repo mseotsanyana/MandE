@@ -1,49 +1,71 @@
 package com.me.mseotsanyana.mande.PL.ui.fragments.evaluator;
 
+import android.app.SearchManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Layout;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.me.mseotsanyana.mande.DAL.model.logframe.cQuestionModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cUserModel;
-import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cInputViewPagerAdapter;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.gson.Gson;
+import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
+import com.me.mseotsanyana.mande.DAL.model.evaluator.cEvaluationModel;
+import com.me.mseotsanyana.mande.DAL.ìmpl.evaluator.cEvaluationRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.session.cSessionManagerImpl;
+import com.me.mseotsanyana.mande.PL.presenters.evaluator.Impl.cEvaluationPresenterImpl;
+import com.me.mseotsanyana.mande.PL.presenters.evaluator.iEvaluationPresenter;
+import com.me.mseotsanyana.mande.PL.ui.adapters.evaluator.cEvaluationAdapter;
 import com.me.mseotsanyana.mande.R;
+import com.me.mseotsanyana.mande.UTIL.TextDrawable;
+import com.me.mseotsanyana.mande.UTIL.cFontManager;
+import com.me.mseotsanyana.mande.cMainThreadImpl;
+import com.me.mseotsanyana.questionnairelibrary.forms.db.cDBQuestionnaire;
+import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by mseotsanyana on 2016/12/13.
  */
 
-public class cEvaluationFragment extends Fragment {
+public class cEvaluationFragment extends Fragment implements iEvaluationPresenter.View{
+    private static String TAG = cEvaluationFragment.class.getSimpleName();
 
-    private static final int USER     = 1;
-    private static final int QUESTION = 2;
+    private Toolbar toolbar;
+    private LinearLayout evaluationProgressBar;
+    private cEvaluationAdapter evaluationAdapter;
 
-    private ArrayList<cUserModel> userModels;
-    private ArrayList<cQuestionModel> questionModels;
+    /* outcome interface */
+    private iEvaluationPresenter evaluationPresenter;
 
-    private cEvaluationFragment() {
+    private long logFrameID;
+    private TextView logFrameName;
 
-    }
+    private AppCompatActivity activity;
 
-    public static cEvaluationFragment newInstance(long logFrameID) {
-        Bundle bundle = new Bundle();
-        cEvaluationFragment fragment = new cEvaluationFragment();
-
-        bundle.putLong("LOGFRAME_ID", logFrameID);
-        fragment.setArguments(bundle);
-
-        return fragment;
-    }
-
+    Gson gson = new Gson();
     /*
     * this event fires 1st, before creation of fragment or any views
     * the onAttach method is called when the Fragment instance is
@@ -51,7 +73,7 @@ public class cEvaluationFragment extends Fragment {
     * is fully initialized.
     */
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
     }
 
@@ -64,15 +86,15 @@ public class cEvaluationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // getting a action_list with all projects in a database
-        /*-projectHandler = new cProjectHandler(getActivity());
+        setHasOptionsMenu(true);
+        this.logFrameID = cEvaluationFragmentArgs.fromBundle(requireArguments()).getLogFrameID();
+    }
 
-        projectAdapter = new cProjectAdapter_old(getActivity(), projectHandler.getListProject(),
-                cProjectFragment.this);
-
-        addProjectFragment = new cAddProjectFragment();
-        editProjectFragment = new cEditProjectFragment();
-        -*/
+    @Override
+    public void onResume() {
+        super.onResume();
+        /* get all evaluations from the database */
+        evaluationPresenter.resume();
     }
 
     /**
@@ -81,9 +103,7 @@ public class cEvaluationFragment extends Fragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        // Register the event to subscribe.
-        //-cGlobalBus.getBus().register(this);
-        return inflater.inflate(R.layout.fragment_evaluation_list, parent, false);
+        return inflater.inflate(R.layout.evaluation_list_fragment, parent, false);
     }
 
     /**
@@ -92,54 +112,179 @@ public class cEvaluationFragment extends Fragment {
      * view lookups and attaching view listeners.
      */
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        // instantiate and initialize the action_list
-        /*-recyclerView = (RecyclerView)view.findViewById(R.id.card_list);
-        recyclerView.setHasFixedSize(true);
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        init();
+        evaluationView(view);
+        initFab(view);
+        /* initialize the toolbar */
+        toolbar = view.findViewById(R.id.toolbar);
+        TextView logFrameCaption = view.findViewById(R.id.title);
+        logFrameName = view.findViewById(R.id.subtitle);
+        logFrameCaption.setText(R.string.logframe_name_caption);
+        //outcomeCaption.setText(R.string.logframe_name_caption);
+        activity.setSupportActionBar(toolbar);
+        CollapsingToolbarLayout collapsingToolbarLayout =
+                view.findViewById(R.id.collapsingToolbarLayout);
+        collapsingToolbarLayout.setContentScrimColor(Color.WHITE);
+        collapsingToolbarLayout.setTitle("List of Evaluations");
+
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+    }
+
+    private void init() {
+        // contains an evaluation tree
+        List<cTreeModel> evaluationTreeModels = new ArrayList<>();
+
+        // setup a presenter
+        evaluationPresenter = new cEvaluationPresenterImpl(
+                cThreadExecutorImpl.getInstance(),
+                cMainThreadImpl.getInstance(),
+                this,
+                new cSessionManagerImpl(getContext()),
+                new cEvaluationRepositoryImpl(getContext()),
+                logFrameID);
+
+        // setup recycler view adapter
+        evaluationAdapter = new cEvaluationAdapter(getActivity(), this,
+                evaluationTreeModels, -1);
+
+        activity = ((AppCompatActivity) getActivity());
+    }
+
+    private void evaluationView(View view) {
+        evaluationProgressBar = view.findViewById(R.id.evaluationProgressBar);
+
+        /* impact views */
+        RecyclerView evaluationRecyclerView = view.findViewById(R.id.evaluationRecyclerView);
+        evaluationRecyclerView.setHasFixedSize(true);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
 
-        // populate the action_list with data from database
-        recyclerView.setAdapter(projectAdapter);
-
-        recyclerView.setLayoutManager(llm);
-        -*/
-
-        // initialise the floating action button (FAB)
-        initFab(view);
+        evaluationRecyclerView.setAdapter(evaluationAdapter);
+        evaluationRecyclerView.setLayoutManager(llm);
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        /*evaluationViewPagerAdapter = new cEvaluationViewPagerAdapter(getFragmentManager(),
-                FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        Menu toolBarMenu = setToolBar();
 
-        evaluationViewPagerAdapter.addFrag(cUserFragment.newInstance(userModels),"user");
-        evaluationViewPagerAdapter.addFrag(cQuestionFragment.newInstance(questionModels),"question");
+        //MenuItem toolBarMenuItem = toolBarMenu.findItem(R.id.homeItem);
 
-        // use a number higher than half your fragments.
-        viewPager.setOffscreenPageLimit(3);
-        viewPager.setAdapter(evaluationViewPagerAdapter);
+        toolbar.setOnMenuItemClickListener(
+                new Toolbar.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        return onOptionsItemSelected(item);
+                    }
+                });
 
-         */
+        SearchManager searchManager = (SearchManager) requireActivity().
+                getSystemService(Context.SEARCH_SERVICE);
+
+        SearchView searchView = (SearchView) toolBarMenu.findItem(R.id.searchItem).getActionView();
+        searchView.setSearchableInfo(Objects.requireNonNull(searchManager).
+                getSearchableInfo(requireActivity().getComponentName()));
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+
+        search(searchView);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.homeItem) {
+            /* navigate from evaluation to logframe */
+            NavDirections action = cEvaluationFragmentDirections.
+                    actionCEvaluationFragmentToCLogFrameFragment();
+            Navigation.findNavController(requireView()).navigate(action);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-    // initialise the floating action button
-    private void initFab(View view) {
-        view.findViewById(R.id.evaluation_fab).setOnClickListener(new View.OnClickListener() {
+    private void search(SearchView searchView) {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = getFragmentManager();
-                /*-addProjectFragment.setStyle(DialogFragment.STYLE_NORMAL,R.style.CustomDialog);
-                addProjectFragment.setCancelable(false);
-                //addProjectFragment.show(fragmentManager,"fragment_add_project");
-                //Snackbar.make(getView(), "FAB Clicked", Snackbar.LENGTH_SHORT).show();
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
-                addProjectFragment.setTargetFragment(cProjectFragment.this, 0);
-                addProjectFragment.show(fragmentManager,"fragment_add_project");
-                -*/
+            @Override
+            public boolean onQueryTextChange(String query) {
+                //userAdapter.getFilter().filter(query);
+                return false;
             }
         });
     }
+
+    private Menu setToolBar(){
+        toolbar.inflateMenu(R.menu.me_toolbar_menu);
+        Menu toolBarMenu = toolbar.getMenu();
+
+        MenuItem homeIcon = toolBarMenu.findItem(R.id.homeItem);
+        TextDrawable faIcon = new TextDrawable(requireContext());
+        faIcon.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
+        faIcon.setTextAlign(Layout.Alignment.ALIGN_CENTER);
+        faIcon.setTypeface(cFontManager.getTypeface(getContext(), cFontManager.FONTAWESOME));
+        faIcon.setText(getContext().getResources().getText(R.string.fa_home));
+        faIcon.setTextColor(Color.WHITE);
+
+        homeIcon.setIcon(faIcon);
+        return toolBarMenu;
+    }
+
+    // initialise the floating action button
+    private void initFab(View view) {
+        view.findViewById(R.id.evaluationFAB).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+    }
+
+    @Override
+    public void onEvaluationSelected(cEvaluationModel evaluationModel) {
+        /* make a transition from evaluation to evaluation_form fragments */
+        cDBQuestionnaire dbQuestionnaire = (cDBQuestionnaire) evaluationModel.getQuestionnaireObj();
+
+        NavDirections action = cEvaluationFragmentDirections.
+                actionCEvaluationFragmentToCEvaluationFormFragment(dbQuestionnaire);
+        Navigation.findNavController(requireView()).navigate(action);
+
+        //Gson gson = new Gson();
+        //Log.d(TAG," cDBQuestionnaire = "+dbQuestionnaire);
+    }
+
+    @Override
+    public void onEvaluationModelsRetrieved(String logFrameName,
+                                            ArrayList<cTreeModel> evaluationModelSet) {
+        try {
+            /* update subtitle */
+            this.logFrameName.setText(logFrameName);
+            Log.d(TAG," SIZE =========================="+evaluationModelSet.size());
+            evaluationAdapter.setTreeModel(evaluationModelSet);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onEvaluationModelsFailed(String msg) {
+
+    }
+
+    @Override
+    public void showProgress() {
+        evaluationProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+        evaluationProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showError(String message) {
+
+    }
+
 }

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: ./../Libraries/questionnairelibrary/libs/poi-ooxml-schemas-3.12-20150511-a.jar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../Libraries/questionnairelibrary/libs/poi-ooxml-schemas-3.12-20150511-a.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

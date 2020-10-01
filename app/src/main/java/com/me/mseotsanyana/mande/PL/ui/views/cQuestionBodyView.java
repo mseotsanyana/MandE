@@ -60,7 +60,7 @@ public class cQuestionBodyView {
 
     private Context context;
 
-    private String label;
+    private int label;
     private String question;
     private String questionType;
     private String description;
@@ -71,8 +71,8 @@ public class cQuestionBodyView {
 
     public cQuestionBodyView(Context context, cQuestionModel questionModel) {
         this.context = context;
-        this.label = questionModel.getName();
-        this.question = questionModel.getDescription();
+        this.label = questionModel.getLabel();
+        this.question = questionModel.getQuestion();
         this.questionType = questionModel.getQuestionTypeModel().getName();
         this.description = questionModel.getQuestionTypeModel().getDescription();
         if(questionModel.getQuestionGroupID() != 0) {

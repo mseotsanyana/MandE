@@ -15,8 +15,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.me.mseotsanyana.mande.UTIL.BLL.cProjectDomain;
-import com.me.mseotsanyana.mande.UTIL.BLL.cProjectHandler;
+
 import com.me.mseotsanyana.mande.R;
 
 import java.text.ParseException;
@@ -31,8 +30,6 @@ public class cAddProjectFragment extends DialogFragment {
 
     private OnAddProjectListener callback;
 
-    cProjectDomain projectDomain;
-    cProjectHandler projectHandler;
 
     private EditText nameEdit;
     private EditText descriptionEdit;
@@ -54,8 +51,8 @@ public class cAddProjectFragment extends DialogFragment {
     private Button saveButton;
     private Button cancelButton;
 
-    public interface OnAddProjectListener{
-        void onAddProject(cProjectDomain projectDomain);
+    public interface OnAddProjectListener {
+        //void onAddProject(cProjectDomain projectDomain);
     }
 
     void cAddProjectFragment() {
@@ -67,41 +64,39 @@ public class cAddProjectFragment extends DialogFragment {
         //Your callback initialization here
         try {
             callback = (OnAddProjectListener) getTargetFragment();
-        }catch (ClassCastException e) {
+        } catch (ClassCastException e) {
             throw new ClassCastException("Calling Fragment must implement OnAddProjectListener");
         }
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle("Add Project");
         return inflater.inflate(R.layout.fragment_add_project, container);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
-    {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // get fields from view
-        nameEdit = (EditText)view.findViewById(R.id.project_name_id);
-        descriptionEdit = (EditText)view.findViewById(R.id.project_description_id);
-        countryEdit = (EditText)view.findViewById(R.id.project_country_id);
-        regionEdit = (EditText)view.findViewById(R.id.project_region_id);
-        startDateEdit = (EditText)view.findViewById(R.id.project_startdate_id);
-        closeDateEdit = (EditText)view.findViewById(R.id.project_closedate_id);
+        nameEdit = (EditText) view.findViewById(R.id.project_name_id);
+        descriptionEdit = (EditText) view.findViewById(R.id.project_description_id);
+        countryEdit = (EditText) view.findViewById(R.id.project_country_id);
+        regionEdit = (EditText) view.findViewById(R.id.project_region_id);
+        startDateEdit = (EditText) view.findViewById(R.id.project_startdate_id);
+        closeDateEdit = (EditText) view.findViewById(R.id.project_closedate_id);
 
-        statusSpinner = (Spinner)view.findViewById(R.id.project_status_id);
-        managerSpinner = (Spinner)view.findViewById(R.id.project_manager_id);
+        statusSpinner = (Spinner) view.findViewById(R.id.project_status_id);
+        managerSpinner = (Spinner) view.findViewById(R.id.project_manager_id);
 
-        saveButton = (Button)view.findViewById(R.id.button_save_id);
-        cancelButton = (Button)view.findViewById(R.id.button_cancel_id);
+        saveButton = (Button) view.findViewById(R.id.button_save_id);
+        cancelButton = (Button) view.findViewById(R.id.button_cancel_id);
 
         // show soft keyboard automatically and request focus to field
         nameEdit.requestFocus();
@@ -119,7 +114,7 @@ public class cAddProjectFragment extends DialogFragment {
                         newDate.set(year, monthOfYear, dayOfMonth);
                         startDateEdit.setText(formatter.format(newDate.getTime()));
                     }
-                },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+                }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
                 startDatePickerDialog.show();
             }
         });
@@ -136,63 +131,65 @@ public class cAddProjectFragment extends DialogFragment {
                         closeDateEdit.setText(formatter.format(newDate.getTime()));
                     }
 
-                },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+                }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
                 closeDatePickerDialog.show();
 
             }
         });
-
-        // event handling of the add button
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-
-                projectDomain = new cProjectDomain();
-
-                projectDomain.setProjectName(nameEdit.getText().toString());
-                projectDomain.setProjectDescription(descriptionEdit.getText().toString());
-                projectDomain.setCountry(countryEdit.getText().toString());
-                projectDomain.setRegion(regionEdit.getText().toString());
-
-                int selectedStatus = statusSpinner.getSelectedItemPosition();
-                projectDomain.setProjectStatus(selectedStatus);
-
-                int selectedManager = managerSpinner.getSelectedItemPosition();
-                projectDomain.setProjectManagerID(selectedManager);
-
-                try {
-                    projectDomain.setStartDate(formatter.parse(startDateEdit.getText().toString()));
-                }catch (ParseException e){
-                    projectDomain.setStartDate(null);
-                }
-
-                try {
-                    projectDomain.setCloseDate(formatter.parse(closeDateEdit.getText().toString()));
-                }catch (ParseException e) {
-                    projectDomain.setCloseDate(null);
-                }
-
-                projectHandler = new cProjectHandler(getActivity());
-                /*--boolean result = projectHandler.addProject(projectDomain);
-
-                if (result) {
-                    callback.onAddProject(projectDomain);
-                }else{
-                    Toast.makeText(getActivity(),
-                            "Unable to Add Project",
-                            Toast.LENGTH_SHORT).show();
-                }*/
-                dismiss();
-            }
-        });
-
-        // event handling of the add button
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                // dismiss the dialog box
-                dismiss();
-            }
-        });
     }
+}
+//
+//        // event handling of the add button
+//        saveButton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//
+//                projectDomain = new cProjectDomain();
+//
+//                projectDomain.setProjectName(nameEdit.getText().toString());
+//                projectDomain.setProjectDescription(descriptionEdit.getText().toString());
+//                projectDomain.setCountry(countryEdit.getText().toString());
+//                projectDomain.setRegion(regionEdit.getText().toString());
+//
+//                int selectedStatus = statusSpinner.getSelectedItemPosition();
+//                projectDomain.setProjectStatus(selectedStatus);
+//
+//                int selectedManager = managerSpinner.getSelectedItemPosition();
+//                projectDomain.setProjectManagerID(selectedManager);
+//
+//                try {
+//                    projectDomain.setStartDate(formatter.parse(startDateEdit.getText().toString()));
+//                }catch (ParseException e){
+//                    projectDomain.setStartDate(null);
+//                }
+//
+//                try {
+//                    projectDomain.setCloseDate(formatter.parse(closeDateEdit.getText().toString()));
+//                }catch (ParseException e) {
+//                    projectDomain.setCloseDate(null);
+//                }
+//
+//                projectHandler = new cProjectHandler(getActivity());
+//                /*--boolean result = projectHandler.addProject(projectDomain);
+//
+//                if (result) {
+//                    callback.onAddProject(projectDomain);
+//                }else{
+//                    Toast.makeText(getActivity(),
+//                            "Unable to Add Project",
+//                            Toast.LENGTH_SHORT).show();
+//                }*/
+//                dismiss();
+//            }
+//        });
+//
+//        // event handling of the add button
+//        cancelButton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                // dismiss the dialog box
+//                dismiss();
+//            }
+//        });
+//    }
 
     /*
     public void addProjectFromExcel(Row cRow){
@@ -236,14 +233,6 @@ public class cAddProjectFragment extends DialogFragment {
                     Toast.LENGTH_SHORT).show();
         }
     }
-*/
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
     }
-}
+*/

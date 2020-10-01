@@ -16,12 +16,12 @@ public class cMatrixChoiceModel {
     private Date modifiedDate;
     private Date syncedDate;
 
-    private cRowOptionModel rowOptionModel;
-    private cColOptionModel colOptionModel;
+    private cRowChoiceModel rowOptionModel;
+    private cColChoiceModel colOptionModel;
 
     public cMatrixChoiceModel(){
-        rowOptionModel = new cRowOptionModel();
-        colOptionModel = new cColOptionModel();
+        rowOptionModel = new cRowChoiceModel();
+        colOptionModel = new cColChoiceModel();
     }
 
     public long getMatrixChoiceID() {
@@ -124,19 +124,19 @@ public class cMatrixChoiceModel {
         this.syncedDate = syncedDate;
     }
 
-    public cRowOptionModel getRowOptionModel() {
+    public cRowChoiceModel getRowOptionModel() {
         return rowOptionModel;
     }
 
-    public void setRowOptionModel(cRowOptionModel rowOptionModel) {
+    public void setRowOptionModel(cRowChoiceModel rowOptionModel) {
         this.rowOptionModel = rowOptionModel;
     }
 
-    public cColOptionModel getColOptionModel() {
+    public cColChoiceModel getColOptionModel() {
         return colOptionModel;
     }
 
-    public void setColOptionModel(cColOptionModel colOptionModel) {
+    public void setColOptionModel(cColChoiceModel colOptionModel) {
         this.colOptionModel = colOptionModel;
     }
 }

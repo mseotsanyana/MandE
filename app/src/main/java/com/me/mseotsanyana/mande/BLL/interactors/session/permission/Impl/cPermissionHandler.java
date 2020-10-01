@@ -8,7 +8,6 @@ import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.domain.session.cPermissionDomain;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cPermissionRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.model.session.cPermissionModel;
-import com.me.mseotsanyana.mande.UTIL.BLL.cMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,7 @@ import java.util.List;
  * Created by mseotsanyana on 2017/08/28.
  */
 
-public class cPermissionHandler extends cMapper<cPermissionModel, cPermissionDomain> {
+public class cPermissionHandler  {
     private static final String TAG = cPermissionHandler.class.getSimpleName();
 
     //final static private int _id = cSessionManager.PRIVILEGE;
@@ -119,7 +118,7 @@ public class cPermissionHandler extends cMapper<cPermissionModel, cPermissionDom
         return privilegeDomains;
     }
 
-    @Override
+    //@Override
     protected cPermissionModel DomainToModel(cPermissionDomain domain) {
         cPermissionModel model = new cPermissionModel();
 
@@ -139,7 +138,7 @@ public class cPermissionHandler extends cMapper<cPermissionModel, cPermissionDom
         return model;
     }
 
-    @Override
+    //@Override
     protected cPermissionDomain ModelToDomain(cPermissionModel model) {
         cPermissionDomain domain = new cPermissionDomain();
 

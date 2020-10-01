@@ -32,7 +32,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 public class cLogFrameRepositoryImpl implements iLogFrameRepository {
@@ -41,22 +40,19 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
 
     /* an object of the database helper */
     private cSQLDBHelper dbHelper;
+    private Context context;
 
-    /* an object of the excel helper */
-    private cExcelHelper excelHelper;
-
-    private cOrganizationRepositoryImpl organizationRepository;
+    //private cOrganizationRepositoryImpl organizationRepository;
 
     public cLogFrameRepositoryImpl(Context context) {
+        this.context = context;
         dbHelper = new cSQLDBHelper(context);
-        excelHelper = new cExcelHelper(context);
-        organizationRepository = new cOrganizationRepositoryImpl(context);
     }
 
     /* ######################################## CREATE ACTIONS ########################################*/
 
     public boolean addLogFrameFromExcel() {
-
+        cExcelHelper excelHelper = new cExcelHelper(context);
         Workbook workbook = excelHelper.getWorkbookLOGFRAME();
         Sheet logFrameSheet = workbook.getSheet(cExcelHelper.SHEET_tblLOGFRAME);
         if (logFrameSheet == null) {
@@ -407,7 +403,8 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
 
                     long logFrameID = logFrameModel.getLogFrameID();
                     long organizationID = logFrameModel.getOrganizationID();
-
+                    cOrganizationRepositoryImpl organizationRepository =
+                            new cOrganizationRepositoryImpl(context);
                     logFrameModel.setOrganizationModel(organizationRepository.getOrganizationByID(
                             organizationID));
 
@@ -1459,8 +1456,8 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                     questionModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
                     questionModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
                     questionModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    questionModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    questionModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                    questionModel.setLabel(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LABEL)));
+                    questionModel.setQuestion(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
                     questionModel.setStartDate(
                             Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
                     questionModel.setEndDate(

@@ -53,6 +53,7 @@ public class cUploadGlobalInteractorImpl extends cAbstractInteractor
         uploadGlobalRepository.deleteFrequencies();
         uploadGlobalRepository.deletePeriods();
         uploadGlobalRepository.deleteFiscalYears();
+        uploadGlobalRepository.deleteCharts();
 
         /* upload all global module records */
 
@@ -66,6 +67,12 @@ public class cUploadGlobalInteractorImpl extends cAbstractInteractor
             postMessage("FiscalYear Entity Added Successfully!");
         }else {
             notifyError("Failed to Add FiscalYear Entity");
+        }
+
+        if(uploadGlobalRepository.addChartFromExcel()){
+            postMessage("Chart Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add Chart Entity");
         }
     }
 }

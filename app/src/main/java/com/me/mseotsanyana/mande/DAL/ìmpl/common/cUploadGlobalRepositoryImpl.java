@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.me.mseotsanyana.mande.BLL.repository.common.iUploadGlobalRepository;
+import com.me.mseotsanyana.mande.DAL.model.common.cChartModel;
 import com.me.mseotsanyana.mande.DAL.model.common.cFiscalYearModel;
 import com.me.mseotsanyana.mande.DAL.model.common.cFrequencyModel;
 import com.me.mseotsanyana.mande.DAL.model.common.cPeriodModel;
@@ -258,4 +259,80 @@ public class cUploadGlobalRepositoryImpl implements iUploadGlobalRepository {
 
         return result > -1;
     }
+
+    /*###################################### CHART FUNCTIONS #####################################*/
+
+    @Override
+    public boolean addChartFromExcel() {
+        Workbook workbook = excelHelper.getWorkbookGLOBAL();
+        Sheet CSheet = workbook.getSheet(cExcelHelper.SHEET_tblCHART);
+
+        if (CSheet == null) {
+            return false;
+        }
+
+        for (Row cRow : CSheet) {
+            //just skip the row if row number is 0
+            if (cRow.getRowNum() == 0) {
+                continue;
+            }
+
+            cChartModel chartModel = new cChartModel();
+
+            chartModel.setChartID((int)
+                    cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            chartModel.setName(
+                    cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            chartModel.setDescription(
+                    cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+
+            if (!addChart(chartModel)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean addChart(cChartModel chartModel){
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // create content object for storing data
+        ContentValues cv = new ContentValues();
+
+        // assign values to the table fields
+        cv.put(cSQLDBHelper.KEY_ID, chartModel.getChartID());
+        cv.put(cSQLDBHelper.KEY_NAME, chartModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, chartModel.getDescription());
+
+        // insert record details
+        try {
+            if (db.insert(cSQLDBHelper.TABLE_tblCHART, null, cv) < 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in importing CHART from Excel: " + e.getMessage());
+        }
+
+        // close the database connection
+        db.close();
+
+        return true;
+    }
+
+    @Override
+    public boolean deleteCharts() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblCHART, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
 }
