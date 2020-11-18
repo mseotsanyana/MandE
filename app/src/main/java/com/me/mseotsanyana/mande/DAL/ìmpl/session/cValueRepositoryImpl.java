@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.me.mseotsanyana.mande.DAL.model.session.cValueModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cValueModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
 

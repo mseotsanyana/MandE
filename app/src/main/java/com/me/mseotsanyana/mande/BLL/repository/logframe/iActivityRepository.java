@@ -1,7 +1,6 @@
 package com.me.mseotsanyana.mande.BLL.repository.logframe;
 
-import com.me.mseotsanyana.mande.DAL.model.logframe.cActivityModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cImpactModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cActivityModel;
 
 import java.util.Set;
 

@@ -1,24 +1,17 @@
 package com.me.mseotsanyana.mande.PL.presenters.logframe.Impl;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.input.Impl.cReadInputInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.input.iReadInputInteractor;
-import com.me.mseotsanyana.mande.BLL.interactors.logframe.outcome.Impl.cReadOutcomeInteractorImpl;
-import com.me.mseotsanyana.mande.BLL.interactors.logframe.outcome.iReadOutcomeInteractor;
-import com.me.mseotsanyana.mande.BLL.repository.logframe.iInputRepository;
-import com.me.mseotsanyana.mande.BLL.repository.logframe.iOutcomeRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
-import com.me.mseotsanyana.mande.BLL.repository.wpb.iExpenseRepository;
-import com.me.mseotsanyana.mande.BLL.repository.wpb.iHumanRepository;
-import com.me.mseotsanyana.mande.BLL.repository.wpb.iIncomeRepository;
-import com.me.mseotsanyana.mande.BLL.repository.wpb.iMaterialRepository;
+import com.me.mseotsanyana.mande.BLL.repository.awpb.iExpenseRepository;
+import com.me.mseotsanyana.mande.BLL.repository.awpb.iHumanRepository;
+import com.me.mseotsanyana.mande.BLL.repository.awpb.iIncomeRepository;
+import com.me.mseotsanyana.mande.BLL.repository.awpb.iMaterialRepository;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iInputPresenter;
-import com.me.mseotsanyana.mande.PL.presenters.logframe.iOutcomePresenter;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.util.ArrayList;

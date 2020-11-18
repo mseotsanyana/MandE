@@ -6,12 +6,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.me.mseotsanyana.mande.BLL.repository.evaluator.iEvaluationRepository;
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cEvaluationModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cArrayQuestionModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cMatrixQuestionModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cPrimitiveQuestionModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cQuestionModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cUserModel;
+import com.me.mseotsanyana.mande.BLL.model.evaluator.cEvaluationModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cArrayQuestionModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cMatrixQuestionModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cPrimitiveQuestionModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
 import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cLogFrameRepositoryImpl;

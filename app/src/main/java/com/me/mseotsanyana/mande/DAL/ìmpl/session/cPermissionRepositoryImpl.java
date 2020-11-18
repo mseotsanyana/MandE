@@ -6,11 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.me.mseotsanyana.mande.DAL.model.session.cEntityModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cOperationModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cPermissionModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cStatusModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cStatusSetModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cEntityModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cOperationModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cPermissionModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cStatusModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cStatusSetModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
 

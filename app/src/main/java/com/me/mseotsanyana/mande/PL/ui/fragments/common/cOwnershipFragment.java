@@ -9,9 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.me.mseotsanyana.mande.DAL.model.session.cOrganizationModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cRoleModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cUserModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cRoleModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
 import com.me.mseotsanyana.mande.PL.presenters.common.Impl.cOrganizationOwnerView;
 import com.me.mseotsanyana.mande.PL.presenters.common.cHeadingView;
 import com.me.mseotsanyana.mande.PL.presenters.common.cIndividualOwnerView;

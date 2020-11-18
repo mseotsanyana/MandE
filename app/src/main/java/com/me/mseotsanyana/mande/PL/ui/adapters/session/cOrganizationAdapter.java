@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout;
+import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
 import com.me.mseotsanyana.mande.PL.ui.fragments.session.cOrganizationFragment;
 import com.me.mseotsanyana.mande.UTIL.cOrganizationRecord;
-import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
 import com.me.mseotsanyana.mande.R;
 
 import java.text.SimpleDateFormat;
@@ -30,7 +30,7 @@ import java.util.Locale;
 public class cOrganizationAdapter extends RecyclerView.Adapter<cOrganizationAdapter.cOrganizationViewHolder> {
 
     Context context;
-    private List<cOrganizationDomain> organizationList = new ArrayList<>();
+    private List<cOrganizationModel> organizationList = new ArrayList<>();
     cOrganizationRecord itemDetail;
 
     LayoutInflater inflater;
@@ -41,7 +41,7 @@ public class cOrganizationAdapter extends RecyclerView.Adapter<cOrganizationAdap
 
     private HashSet<Integer> mExpandedPositionSet = new HashSet<>();
 
-    public cOrganizationAdapter(Context context, List<cOrganizationDomain> organizationList,
+    public cOrganizationAdapter(Context context, List<cOrganizationModel> organizationList,
                                 cOrganizationFragment organizationFragment) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
@@ -49,10 +49,10 @@ public class cOrganizationAdapter extends RecyclerView.Adapter<cOrganizationAdap
         this.organizationFragment = organizationFragment;
     }
 
-    public cOrganizationAdapter(Context context, List<cOrganizationDomain> organizationList) {
+    public cOrganizationAdapter(Context context, List<cOrganizationModel> organizationList) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
-        this.organizationList = organizationList;
+        this.organizationList = null;// organizationList;
         //this.organizationFragment = organizationFragment;
     }
 
@@ -61,24 +61,24 @@ public class cOrganizationAdapter extends RecyclerView.Adapter<cOrganizationAdap
         return organizationList.size();
     }
 
-    public cOrganizationDomain getItem(int position) {
-        return organizationList.get(position);
+    public cOrganizationModel getItem(int position) {
+        return null;//organizationList.get(position);
     }
 
     public void removeItem(int position) {
         organizationList.remove(position);
     }
 
-    public void addItem(cOrganizationDomain organizationDomain) {
-        organizationList.add(organizationDomain);
+    public void addItem(cOrganizationModel organizationDomain) {
+        //organizationList.add(organizationDomain);
     }
 
-    public void updateItem(cOrganizationDomain organizationDomain, int position) {
+    public void updateItem(cOrganizationModel organizationDomain, int position) {
         removeItem(position);
-        organizationList.add(position, organizationDomain);
+        //organizationList.add(position, organizationDomain);
     }
 
-    private List<cOrganizationRecord> organizationDetailList(cOrganizationDomain organizationDomain) {
+    private List<cOrganizationRecord> organizationDetailList(cOrganizationModel organizationDomain) {
         List<cOrganizationRecord> detailList = new ArrayList<>();
 
         itemDetail = new cOrganizationRecord();
@@ -114,7 +114,7 @@ public class cOrganizationAdapter extends RecyclerView.Adapter<cOrganizationAdap
         return detailList;
     }
 
-    private List<cOrganizationRecord> organizationMoreList(cOrganizationDomain organizationDomain) {
+    private List<cOrganizationRecord> organizationMoreList(cOrganizationModel organizationDomain) {
         List<cOrganizationRecord> moreList = new ArrayList<>();
 
         itemDetail = new cOrganizationRecord();
@@ -143,7 +143,7 @@ public class cOrganizationAdapter extends RecyclerView.Adapter<cOrganizationAdap
 
     @Override
     public void onBindViewHolder(cOrganizationViewHolder organizationViewHolder, int position) {
-        cOrganizationDomain ci = organizationList.get(position);
+        cOrganizationModel ci = organizationList.get(position);
 
         List<cOrganizationRecord> detailList = organizationDetailList(ci);
         List<cOrganizationRecord> moreList   = organizationMoreList(ci);

@@ -8,12 +8,12 @@ import android.util.Log;
 import android.util.Pair;
 
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iOutcomeRepository;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cQuestionModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cImpactModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cLogFrameModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cOutcomeModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cOutputModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cRaidModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cImpactModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cOutcomeModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cOutputModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cRaidModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
@@ -22,7 +22,6 @@ import java.lang.String;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -776,8 +775,8 @@ public class cOutcomeRepositoryImpl implements iOutcomeRepository {
 
                     raid.setRaidID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    raid.setLogFrameID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
+//                    raid.setLogFrameID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
                     raid.setServerID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
                     raid.setOwnerID(

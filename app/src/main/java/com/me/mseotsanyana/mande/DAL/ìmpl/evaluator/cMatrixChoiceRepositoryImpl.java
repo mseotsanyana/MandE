@@ -6,9 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.util.Pair;
 
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cColChoiceModel;
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cMatrixChoiceModel;
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cRowChoiceModel;
+import com.me.mseotsanyana.mande.BLL.model.evaluator.cColChoiceModel;
+import com.me.mseotsanyana.mande.BLL.model.evaluator.cMatrixChoiceModel;
+import com.me.mseotsanyana.mande.BLL.model.evaluator.cRowChoiceModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
 import com.me.mseotsanyana.mande.UTIL.cConstant;

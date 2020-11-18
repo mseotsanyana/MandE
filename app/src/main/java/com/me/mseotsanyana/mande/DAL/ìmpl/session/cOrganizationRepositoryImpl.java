@@ -7,11 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.me.mseotsanyana.mande.BLL.repository.session.iOrganizationRepository;
-import com.me.mseotsanyana.mande.DAL.model.session.cAddressModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cOrganizationModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cRoleModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cUserModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cValueModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cAddressModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cRoleModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cValueModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;

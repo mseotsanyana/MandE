@@ -3,7 +3,6 @@ package com.me.mseotsanyana.mande.PL.ui.fragments.evaluator;
 import android.os.Bundle;
 import android.os.Parcelable;
 import androidx.annotation.NonNull;
-import androidx.navigation.ActionOnlyNavDirections;
 import androidx.navigation.NavDirections;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.questionnairelibrary.forms.db.cDBQuestionnaire;
@@ -17,11 +16,6 @@ import java.util.HashMap;
 
 public class cEvaluationFragmentDirections {
   private cEvaluationFragmentDirections() {
-  }
-
-  @NonNull
-  public static NavDirections actionCEvaluationFragmentToCLogFrameFragment() {
-    return new ActionOnlyNavDirections(R.id.action_cEvaluationFragment_to_cLogFrameFragment);
   }
 
   @NonNull

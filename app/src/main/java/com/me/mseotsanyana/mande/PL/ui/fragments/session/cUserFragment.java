@@ -24,10 +24,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
 import com.me.mseotsanyana.mande.BLL.interactors.session.status.Impl.cStatusInteractorImpl;
-import com.me.mseotsanyana.mande.BLL.domain.session.cUserDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserHandler;
+import com.me.mseotsanyana.mande.BLL.model.session.cStatusModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
 import com.me.mseotsanyana.mande.PL.ui.adapters.session.cUserAdapter;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iMEEntityInterface;
 import com.me.mseotsanyana.mande.R;
@@ -44,15 +43,15 @@ import java.util.ArrayList;
 public class cUserFragment extends Fragment implements iMEEntityInterface {
     private static String TAG = cUserFragment.class.getSimpleName();
 
-    private ArrayList<cUserDomain> listUsers = new ArrayList<>();
-    private ArrayList<cStatusDomain> statusDomains = new ArrayList<cStatusDomain>();
+    private ArrayList<cUserModel> listUsers = new ArrayList<>();
+    private ArrayList<cStatusModel> statusDomains = new ArrayList<cStatusModel>();
 
     //private cSessionManager session;
 
     //set the fragment as a listener to adapter
-    private cUserDomain userDomain;
+    private cUserModel userDomain;
 
-    private cUserHandler userHandler;
+    //private cUserHandler userHandler;
     private cStatusInteractorImpl statusHandler;
 
     private cUserAdapter userAdapter;
@@ -92,9 +91,9 @@ public class cUserFragment extends Fragment implements iMEEntityInterface {
 
         //this.session = new cSessionManager(getContext());
 
-        this.userDomain = new cUserDomain();
+        this.userDomain = new cUserModel();
 
-        this.userHandler = new cUserHandler(getActivity(),  this);
+        //this.userHandler = new cUserHandler(getActivity(),  this);
         this.statusHandler = null;//new cStatusInteractorImpl(getActivity());
 
         this.userAdapter = new cUserAdapter(getActivity(),
@@ -181,13 +180,13 @@ public class cUserFragment extends Fragment implements iMEEntityInterface {
         new AsyncTask<cParam, Void, Void>() {
             @Override
             protected Void doInBackground(cParam... param) {
-                listUsers.clear();
-                listUsers.addAll(userHandler.getUserList(param[0].getUserID(),
-                        param[0].getOrgID(), param[0].getPrimaryRole(),
-                        param[0].getSecondaryRoles()));
-
-                statusDomains.clear();
-                //statusDomains.addAll(statusHandler.getStatusList());
+//                listUsers.clear();
+//                listUsers.addAll(userHandler.getUserList(param[0].getUserID(),
+//                        param[0].getOrgID(), param[0].getPrimaryRole(),
+//                        param[0].getSecondaryRoles()));
+//
+//                statusDomains.clear();
+//                //statusDomains.addAll(statusHandler.getStatusList());
                 return null;
             }
 

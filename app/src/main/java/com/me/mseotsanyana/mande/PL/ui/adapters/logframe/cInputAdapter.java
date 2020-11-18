@@ -1,40 +1,24 @@
 package com.me.mseotsanyana.mande.PL.ui.adapters.logframe;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.me.mseotsanyana.bmblibrary.BoomButtons.OnBMClickListener;
-import com.me.mseotsanyana.bmblibrary.BoomButtons.cTextOutsideCircleButton;
-import com.me.mseotsanyana.bmblibrary.cBoomMenuButton;
-import com.me.mseotsanyana.bmblibrary.cUtil;
-import com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cActivityModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cInputModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cOutcomeModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cQuestionModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cRaidModel;
-import com.me.mseotsanyana.mande.PL.presenters.logframe.iActivityPresenter;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cInputModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cRaidModel;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iInputPresenter;
-import com.me.mseotsanyana.mande.PL.ui.listeners.logframe.iViewActivityListener;
 import com.me.mseotsanyana.mande.PL.ui.listeners.logframe.iViewInputListener;
 import com.me.mseotsanyana.mande.PL.ui.views.cInputBodyView;
 import com.me.mseotsanyana.mande.PL.ui.views.cLogFrameHeaderView;
-import com.me.mseotsanyana.mande.PL.ui.views.cOutcomeBodyView;
 import com.me.mseotsanyana.mande.PL.ui.views.cQuestionBodyView;
 import com.me.mseotsanyana.mande.PL.ui.views.cRaidBodyView;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
-import com.me.mseotsanyana.mande.UTIL.cFontManager;
 import com.me.mseotsanyana.placeholderviewlibrary.cExpandablePlaceHolderView;
 import com.me.mseotsanyana.treeadapterlibrary.cNode;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeAdapter;

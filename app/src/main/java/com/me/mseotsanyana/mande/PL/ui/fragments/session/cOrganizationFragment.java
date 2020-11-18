@@ -11,7 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
+
+import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
 import com.me.mseotsanyana.mande.PL.ui.adapters.session.cOrganizationAdapter;
 import com.me.mseotsanyana.mande.R;
 
@@ -30,7 +31,7 @@ public class cOrganizationFragment extends Fragment {
     cOrganizationAdapter organizationAdapter;
 
 
-    public static cOrganizationFragment newInstance(ArrayList<cOrganizationDomain> domainList) {
+    public static cOrganizationFragment newInstance(ArrayList<cOrganizationModel> domainList) {
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("ORGANIZATION", domainList);
 
@@ -61,7 +62,7 @@ public class cOrganizationFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // getting a action_list of organization in a database
-        ArrayList<cOrganizationDomain> list = getArguments().getParcelableArrayList("ORGANIZATION");
+        ArrayList<cOrganizationModel> list = getArguments().getParcelableArrayList("ORGANIZATION");
 
         organizationAdapter = new cOrganizationAdapter(getActivity(), list,
                 cOrganizationFragment.this);
@@ -124,7 +125,7 @@ public class cOrganizationFragment extends Fragment {
         });
     }
 
-    public void setAdapter(List<cOrganizationDomain> organizationList){
+    public void setAdapter(List<cOrganizationModel> organizationList){
         organizationAdapter = new cOrganizationAdapter(getActivity(), organizationList);
     }
 }

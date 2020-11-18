@@ -7,15 +7,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.me.mseotsanyana.mande.BLL.interactors.session.address.Impl.cAddressHandler;
-import com.me.mseotsanyana.mande.BLL.interactors.session.entity.Impl.cEntityHandler;
-import com.me.mseotsanyana.mande.BLL.interactors.session.menu.Impl.cMenuHandler;
-import com.me.mseotsanyana.mande.BLL.interactors.session.operation.Impl.cOperationHandler;
-import com.me.mseotsanyana.mande.BLL.interactors.session.role.Impl.cRoleHandler;
-import com.me.mseotsanyana.mande.BLL.interactors.session.session.Impl.cSessionHandler;
 import com.me.mseotsanyana.mande.BLL.interactors.session.status.Impl.cStatusInteractorImpl;
-import com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserHandler;
-import com.me.mseotsanyana.mande.BLL.interactors.session.value.Impl.cValueHandler;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -40,16 +32,16 @@ public class cUploadSessionData extends AsyncTask<String, Integer, String> {
             "tblUSER_ROLE","tblMENU_ROLE","tblPERMISSION","tblPERM_STATUS","tblSETTING","tblNOTIFICATION",
             "tblPUBLISHER","tblSUBSCRIBER","tblNOTIFY_SETTING"};*/
 
-    private cAddressHandler addressHandler;
+    //private cAddressHandler addressHandler;
     //private cOrganizationHandler organizationHandler;
-    private cValueHandler valueHandler;
-    private cUserHandler userHandler;
-    private cSessionHandler sessionHandler;
-    private cRoleHandler roleHandler;
-    private cMenuHandler menuHandler;
+    // cValueHandler valueHandler;
+    //private cUserHandler userHandler;
+    //private cSessionHandler sessionHandler;
+    //private cRoleHandler roleHandler;
+    //private cMenuHandler menuHandler;
     //private cPrivilegeHandler privilegeHandler;
-    private cEntityHandler entityHandler;
-    private cOperationHandler operationHandler;
+    //private cEntityHandler entityHandler;
+    //private cOperationHandler operationHandler;
     private cStatusInteractorImpl statusHandler;
 
     /*
@@ -73,15 +65,15 @@ public class cUploadSessionData extends AsyncTask<String, Integer, String> {
         this.context = context;
         //this.session = session;
 
-        addressHandler = new cAddressHandler(context);
+        //addressHandler = new cAddressHandler(context);
         //organizationHandler = new cOrganizationHandler(context);
-        valueHandler = new cValueHandler(context);
-        userHandler = new cUserHandler(context);
-        menuHandler = new cMenuHandler(context);
-        roleHandler = new cRoleHandler(context);
+        //valueHandler = new cValueHandler(context);
+        //userHandler = new cUserHandler(context);
+        //menuHandler = new cMenuHandler(context);
+        //roleHandler = new cRoleHandler(context);
         //privilegeHandler = new cPrivilegeHandler(context, session);
-        entityHandler = new cEntityHandler(context);
-        operationHandler = new cOperationHandler(context);
+        //entityHandler = new cEntityHandler(context);
+        //operationHandler = new cOperationHandler(context);
         statusHandler = null;//new cStatusInteractorImpl(context);
 
         /*

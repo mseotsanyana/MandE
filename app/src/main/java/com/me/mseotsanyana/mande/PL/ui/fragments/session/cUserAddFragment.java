@@ -26,11 +26,10 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.me.mseotsanyana.mande.BLL.domain.session.cAddressDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.address.Impl.cAddressHandler;
-import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cUserDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserHandler;
+
+import com.me.mseotsanyana.mande.BLL.model.session.cAddressModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iMEEntityInterface;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.cUtil;
@@ -58,12 +57,12 @@ public class cUserAddFragment extends Fragment {
     private MenuItem toolBarMenuItem;
 
     private cValidator validator;
-    private cUserDomain userDomain;
-    private cAddressDomain addressDomain;
+    private cUserModel userDomain;
+    private cAddressModel addressDomain;
 
     //private cOrganizationHandler organizationHandler;
-    private cUserHandler userHandler;
-    private cAddressHandler addressHandler;
+    //private cUserHandler userHandler;
+    //private cAddressHandler addressHandler;
 
     // user profile views
     private ImageView imageViewPhoto;
@@ -124,10 +123,10 @@ public class cUserAddFragment extends Fragment {
 
         validator = new cValidator();
 
-        userDomain = new cUserDomain();
-        addressDomain = new cAddressDomain();
-        userHandler = new cUserHandler(getContext());
-        addressHandler = new cAddressHandler(getContext());
+        userDomain = new cUserModel();
+        addressDomain = new cAddressModel();
+        //userHandler = new cUserHandler(getContext());
+        //addressHandler = new cAddressHandler(getContext());
 
         // initialise a handler and get organization data from the database
         //organizationHandler = new cOrganizationHandler(getContext());
@@ -146,7 +145,7 @@ public class cUserAddFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // get all organization from database
-        final ArrayList<cOrganizationDomain> allOrganizations =null;
+        final ArrayList<cOrganizationModel> allOrganizations =null;
                 //organizationHandler.getOrganizationList();
 
         // create a action_list of organization ids and names
@@ -287,7 +286,7 @@ public class cUserAddFragment extends Fragment {
 
         // create address
         long userID = -1;
-        long addressID = addressHandler.createAddress(addressDomain);
+        long addressID = 0;//addressHandler.createAddress(addressDomain);
         //if (addressID < 0) {
         //    userInterface.onResponseMessage("User Entity","Error in creating address.");
             //Toast.makeText(getContext(), " Error in creating address", Toast.LENGTH_SHORT).show();
@@ -295,7 +294,7 @@ public class cUserAddFragment extends Fragment {
 
         if (addressID > 0) {
             // user details
-            cUserDomain domain = new cUserDomain();
+            cUserModel domain = new cUserModel();
             domain.setOrganizationID(organizationID);
             //domain.setAddressID((int) addressID);
             domain.setName(textInputEditTextFirstName.getText().toString());
@@ -312,7 +311,7 @@ public class cUserAddFragment extends Fragment {
             domain.setPhone(textInputEditTextPhone.getText().toString());
             domain.setPassword(textInputEditTextPassword.getText().toString());
 
-            userID = userHandler.createUser(domain);
+            userID = 0;//userHandler.createUser(domain);
             //if (userID < 0) {
             //    userInterface.onResponseMessage("User Entity", "Error in creating user.");
                 //Toast.makeText(getContext(), " Error in creating user", Toast.LENGTH_SHORT).show();
@@ -321,7 +320,7 @@ public class cUserAddFragment extends Fragment {
             // add photo to internal storage and update photo path in database
             if (userBitmap != null) {
                 imageViewPhoto.setImageBitmap(userBitmap);
-                String photoPath = userHandler.updatePhotoFromStorage((int) userID, userBitmap);
+                String photoPath = "";//userHandler.updatePhotoFromStorage((int) userID, userBitmap);
                 domain.setPhoto(photoPath);
             } else {
                 imageViewPhoto.setImageResource(R.drawable.ic_launcher);

@@ -1,7 +1,7 @@
 package com.me.mseotsanyana.mande.PL.presenters.logframe;
 
-import com.me.mseotsanyana.mande.DAL.model.logframe.cLogFrameModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cOrganizationModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
 import com.me.mseotsanyana.mande.PL.presenters.base.iPresenter;
 import com.me.mseotsanyana.mande.PL.ui.adapters.common.cCommonFragmentAdapter;
 import com.me.mseotsanyana.mande.PL.ui.iBaseView;

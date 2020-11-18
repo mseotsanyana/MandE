@@ -28,11 +28,9 @@ import android.widget.Toast;
 
 //import com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cLogFrameFragment;
 import com.google.android.material.textfield.TextInputEditText;
-import com.me.mseotsanyana.mande.BLL.domain.session.cAddressDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.address.Impl.cAddressHandler;
-import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cUserDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserHandler;
+import com.me.mseotsanyana.mande.BLL.model.session.cAddressModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iMEEntityInterface;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.cUtil;
@@ -58,12 +56,12 @@ public class cUserEditFragment extends Fragment {
     private MenuItem toolBarMenuItem;
 
     private cValidator validator;
-    private cUserDomain userDomain;
-    private cAddressDomain addressDomain;
+    private cUserModel userDomain;
+    private cAddressModel addressDomain;
 
     //private cOrganizationHandler organizationHandler;
-    private cUserHandler userHandler;
-    private cAddressHandler addressHandler;
+    //private cUserHandler userHandler;
+    //private cAddressHandler addressHandler;
 
     // user profile views
     private ImageView imageViewPhoto;
@@ -104,7 +102,7 @@ public class cUserEditFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static cUserEditFragment newInstance(cUserDomain userDomain,
+    public static cUserEditFragment newInstance(cUserModel userDomain,
                                                 iMEEntityInterface userInterface) {
         cUserEditFragment fragment = new cUserEditFragment();
         Bundle bundle = new Bundle();
@@ -128,10 +126,10 @@ public class cUserEditFragment extends Fragment {
 
         userInterface = (iMEEntityInterface) getArguments().getSerializable("IUSER");
 
-        userDomain = new cUserDomain();
-        addressDomain = new cAddressDomain();
-        userHandler = new cUserHandler(getContext());
-        addressHandler = new cAddressHandler(getContext());
+        userDomain = new cUserModel();
+        addressDomain = new cAddressModel();
+        //userHandler = new cUserHandler(getContext());
+        //addressHandler = new cAddressHandler(getContext());
 
         // initialise a handler and get organization data from the database
         //organizationHandler = new cOrganizationHandler(getContext());
@@ -147,7 +145,7 @@ public class cUserEditFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // get all organization from database
-        final ArrayList<cOrganizationDomain> allOrganizations = null;//organizationHandler.getOrganizationList();
+        final ArrayList<cOrganizationModel> allOrganizations = null;//organizationHandler.getOrganizationList();
 
         // create a action_list of organization ids and names
         final List<cKeyPairBoolData> keyPairBoolDataList = new ArrayList<>();
@@ -248,7 +246,7 @@ public class cUserEditFragment extends Fragment {
         userDomain = bundle.getParcelable("USER");
 
         if (userDomain != null) {
-            userBitmap = userHandler.getUserPhoto(userDomain.getUserID());
+            userBitmap = null;//userHandler.getUserPhoto(userDomain.getUserID());
             if (userBitmap != null) {
                 imageViewPhoto.setImageBitmap(userBitmap);
             } else {
@@ -256,7 +254,7 @@ public class cUserEditFragment extends Fragment {
             }
 
             searchSingleSpinnerOrganization.updateSingleSpinnerText(keyPairBoolDataList,
-                    userDomain.getOrganizationID());
+                    (int) userDomain.getOrganizationID());
 
             textInputEditTextFirstName.setText(userDomain.getName());
             textInputEditTextLastName.setText(userDomain.getSurname());
@@ -327,7 +325,7 @@ public class cUserEditFragment extends Fragment {
         addressDomain.setCountry(textInputEditTextCountry.getText().toString());
 
         // update user's address
-        long addressID = addressHandler.updateAddress(addressDomain);
+        long addressID = 0;//addressHandler.updateAddress(addressDomain);
         if (addressID < 0) {
             Toast.makeText(getContext(), " Error in updating user", Toast.LENGTH_SHORT).show();
         }
@@ -350,13 +348,12 @@ public class cUserEditFragment extends Fragment {
         userDomain.setPassword(textInputEditTextPassword.getText().toString());
 
         if (userBitmap != null) {
-            String photoPath = userHandler.updatePhotoFromStorage(userDomain.getUserID(),
-                    userBitmap);
+            String photoPath = "";//userHandler.updatePhotoFromStorage(userDomain.getUserID(),userBitmap);
             userDomain.setPhoto(photoPath);
         }
 
         // update user's details
-        boolean result = userHandler.updateUser(userDomain);
+        boolean result = true;//userHandler.updateUser(userDomain);
 
         return result;
     }

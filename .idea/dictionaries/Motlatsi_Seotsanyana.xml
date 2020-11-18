@@ -1,6 +1,7 @@
 <component name="ProjectDictionaryState">
   <dictionary name="Motlatsi.Seotsanyana">
     <words>
+      <w>actiontask</w>
       <w>activityassignment</w>
       <w>activitylog</w>
       <w>activitytask</w>
@@ -16,6 +17,9 @@
       <w>arrayset</w>
       <w>arraytarget</w>
       <w>arraytype</w>
+      <w>assumptionaction</w>
+      <w>assumptionregister</w>
+      <w>assumptionreview</w>
       <w>awpb</w>
       <w>barchart</w>
       <w>brbac</w>
@@ -26,11 +30,16 @@
       <w>combinedchart</w>
       <w>criteriascore</w>
       <w>crowdfund</w>
+      <w>ctor</w>
       <w>currentcontrol</w>
       <w>datacollector</w>
       <w>datasource</w>
       <w>dateresponse</w>
+      <w>dependencyaction</w>
+      <w>dependencyregister</w>
+      <w>dependencyreview</w>
       <w>disaggregate</w>
+      <w>enddate</w>
       <w>equestion</w>
       <w>eresponse</w>
       <w>evaluationcriteria</w>
@@ -39,11 +48,16 @@
       <w>funder</w>
       <w>horizontalchart</w>
       <w>humanset</w>
+      <w>imageid</w>
       <w>implementingagency</w>
       <w>indicatormilestone</w>
       <w>indicatorprogress</w>
       <w>indicatortype</w>
       <w>interactor</w>
+      <w>issueaction</w>
+      <w>issuecomment</w>
+      <w>issueregister</w>
+      <w>issuereview</w>
       <w>linechart</w>
       <w>logframe</w>
       <w>logframetree</w>
@@ -59,10 +73,12 @@
       <w>matrixset</w>
       <w>matrixtarget</w>
       <w>matrixtype</w>
+      <w>milestonereview</w>
       <w>mquestion</w>
       <w>mseotsanyana</w>
       <w>numericresponse</w>
       <w>piechart</w>
+      <w>pimset</w>
       <w>precedingactivity</w>
       <w>precedingtask</w>
       <w>primitivechart</w>
@@ -88,7 +104,14 @@
       <w>questionnairelibrary</w>
       <w>questiontype</w>
       <w>radarchart</w>
+      <w>raidcategory</w>
+      <w>raidimpact</w>
+      <w>raidlikelihood</w>
+      <w>raidlog</w>
+      <w>raidregister</w>
       <w>resourcetype</w>
+      <w>reviewcomment</w>
+      <w>reviewmilestone</w>
       <w>riskaction</w>
       <w>riskactiontype</w>
       <w>riskanalysis</w>
@@ -102,11 +125,13 @@
       <w>riskmilestone</w>
       <w>riskplan</w>
       <w>riskregister</w>
+      <w>riskreview</w>
       <w>riskrootcause</w>
       <w>rowchoice</w>
       <w>rowoption</w>
       <w>scatterchart</w>
       <w>scorecriteria</w>
+      <w>startdate</w>
       <w>statusset</w>
       <w>taskassignment</w>
       <w>textresponse</w>

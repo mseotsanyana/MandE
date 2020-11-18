@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.util.Pair;
 
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cArrayResponseModel;
+import com.me.mseotsanyana.mande.BLL.model.evaluator.cArrayResponseModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
 import com.me.mseotsanyana.mande.UTIL.cConstant;

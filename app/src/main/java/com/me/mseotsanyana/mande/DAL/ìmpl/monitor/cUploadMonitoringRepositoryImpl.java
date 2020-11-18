@@ -2,48 +2,55 @@ package com.me.mseotsanyana.mande.DAL.ìmpl.monitor;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.util.Pair;
 
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.repository.monitor.iUploadMonitoringRepository;
-import com.me.mseotsanyana.mande.DAL.model.monitor.cArrayTargetModel;
-import com.me.mseotsanyana.mande.DAL.model.monitor.cCriteriaScoreModel;
-import com.me.mseotsanyana.mande.DAL.model.monitor.cDataCollectorModel;
-import com.me.mseotsanyana.mande.DAL.model.monitor.cDataSourceModel;
-import com.me.mseotsanyana.mande.DAL.model.monitor.cIndicatorModel;
-import com.me.mseotsanyana.mande.DAL.model.monitor.cIndicatorTypeModel;
-import com.me.mseotsanyana.mande.DAL.model.monitor.cMOVModel;
-import com.me.mseotsanyana.mande.DAL.model.monitor.cMatrixTargetModel;
-import com.me.mseotsanyana.mande.DAL.model.monitor.cMethodModel;
-import com.me.mseotsanyana.mande.DAL.model.monitor.cQualitativeCriteriaModel;
-import com.me.mseotsanyana.mande.DAL.model.monitor.cQualitativeSetModel;
-import com.me.mseotsanyana.mande.DAL.model.monitor.cQuantitativeTypeModel;
-import com.me.mseotsanyana.mande.DAL.model.monitor.cTargetModel;
-import com.me.mseotsanyana.mande.DAL.model.wpb.cMilestoneModel;
+import com.me.mseotsanyana.mande.BLL.model.common.cChartModel;
+import com.me.mseotsanyana.mande.BLL.model.common.cFrequencyModel;
+import com.me.mseotsanyana.mande.BLL.model.evaluator.cArrayChoiceModel;
+import com.me.mseotsanyana.mande.BLL.model.evaluator.cArraySetModel;
+import com.me.mseotsanyana.mande.BLL.model.evaluator.cMatrixSetModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel;
+import com.me.mseotsanyana.mande.BLL.model.monitor.cArrayIndicatorModel;
+import com.me.mseotsanyana.mande.BLL.model.monitor.cArrayTargetModel;
+import com.me.mseotsanyana.mande.BLL.model.monitor.cCriteriaScoreModel;
+import com.me.mseotsanyana.mande.BLL.model.monitor.cDataCollectorModel;
+import com.me.mseotsanyana.mande.BLL.model.monitor.cDataSourceModel;
+import com.me.mseotsanyana.mande.BLL.model.monitor.cIndicatorMilestoneModel;
+import com.me.mseotsanyana.mande.BLL.model.monitor.cIndicatorModel;
+import com.me.mseotsanyana.mande.BLL.model.monitor.cIndicatorTypeModel;
+import com.me.mseotsanyana.mande.BLL.model.monitor.cMatrixIndicatorModel;
+import com.me.mseotsanyana.mande.BLL.model.monitor.cMoVModel;
+import com.me.mseotsanyana.mande.BLL.model.monitor.cMatrixTargetModel;
+import com.me.mseotsanyana.mande.BLL.model.monitor.cMethodModel;
+import com.me.mseotsanyana.mande.BLL.model.monitor.cQualitativeCriteriaModel;
+import com.me.mseotsanyana.mande.BLL.model.monitor.cQualitativeIndicatorModel;
+import com.me.mseotsanyana.mande.BLL.model.monitor.cQualitativeSetModel;
+import com.me.mseotsanyana.mande.BLL.model.monitor.cQualitativeTargetModel;
+import com.me.mseotsanyana.mande.BLL.model.monitor.cQuantitativeIndicatorModel;
+import com.me.mseotsanyana.mande.BLL.model.monitor.cQuantitativeTargetModel;
+import com.me.mseotsanyana.mande.BLL.model.monitor.cQuantitativeTypeModel;
+import com.me.mseotsanyana.mande.BLL.model.monitor.cTargetModel;
+import com.me.mseotsanyana.mande.BLL.model.wpb.cHumanSetModel;
+import com.me.mseotsanyana.mande.BLL.model.wpb.cMilestoneModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.DAL.storage.excel.cExcelHelper;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
+import com.me.mseotsanyana.mande.UTIL.cMilestoneUtils;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Set;
 
-import static com.me.mseotsanyana.mande.UTIL.cConstant.ARRAY_INDICATOR;
-import static com.me.mseotsanyana.mande.UTIL.cConstant.CONS_QUARTERLY_ID;
-import static com.me.mseotsanyana.mande.UTIL.cConstant.MATRIX_INDICATOR;
 import static com.me.mseotsanyana.mande.UTIL.cConstant.QUALITATIVE_INDICATOR;
 import static com.me.mseotsanyana.mande.UTIL.cConstant.QUANTITATIVE_INDICATOR;
 
@@ -135,7 +142,6 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
         return result > -1;
     }
 
-
     /*####################################### MOV FUNCTIONS ######################################*/
 
     @Override
@@ -153,7 +159,7 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
                 continue;
             }
 
-            cMOVModel movModel = new cMOVModel();
+            cMoVModel movModel = new cMoVModel();
 
             movModel.setMovID((int)
                     cRowMOV.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
@@ -170,7 +176,7 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
         return true;
     }
 
-    public boolean addMOV(cMOVModel movModel) {
+    public boolean addMOV(cMoVModel movModel) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -450,10 +456,11 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
             }
 
             cDataCollectorModel dataCollectorModel = new cDataCollectorModel();
+            dataCollectorModel.setHumanSetModel(new cHumanSetModel());
 
             dataCollectorModel.setDataCollectorID((int)
                     cRowDC.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            dataCollectorModel.setStaffID((int)
+            dataCollectorModel.getHumanSetModel().setHumanSetID((int)
                     cRowDC.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             dataCollectorModel.setName(
                     cRowDC.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
@@ -477,7 +484,7 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ID, dataCollectorModel.getDataCollectorID());
-        cv.put(cSQLDBHelper.KEY_STAFF_FK_ID, dataCollectorModel.getStaffID());
+        cv.put(cSQLDBHelper.KEY_STAFF_FK_ID, dataCollectorModel.getHumanSetModel().getHumanSetID());
         //cv.put(cSQLDBHelper.KEY_NAME, dataCollectorModel.getName());
         //cv.put(cSQLDBHelper.KEY_DESCRIPTION, dataCollectorModel.getDescription());
 
@@ -548,11 +555,12 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
                 if (criteriaScoreModel.getCriteriaScoreID() == criteriaCoreID) {
 
                     cQualitativeCriteriaModel criteria = new cQualitativeCriteriaModel();
+                    criteria.setCriteriaScoreModel(new cCriteriaScoreModel());
 
                     criteria.setQualitativeCriteriaID((int) cQCRow.getCell(0,
                             Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-                    criteria.setCriteriaScoreID((int) cQCRow.getCell(1,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+                    criteria.getCriteriaScoreModel().setCriteriaScoreID((int)
+                            cQCRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
                     criteria.setName(cQCRow.getCell(2,
                             Row.CREATE_NULL_AS_BLANK).getStringCellValue());
                     criteria.setDescription(cQCRow.getCell(3,
@@ -589,10 +597,10 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
                 return false;
             }
 
-            for (cQualitativeCriteriaModel criteriaModel: qualitativeCriteriaModelSet){
-                if(!addQualitativeCriteria(criteriaModel.getQualitativeCriteriaID(),
+            for (cQualitativeCriteriaModel criteriaModel : qualitativeCriteriaModelSet) {
+                if (!addQualitativeCriteria(criteriaModel.getQualitativeCriteriaID(),
                         criteriaScoreModel.getCriteriaScoreID(), criteriaModel.getName(),
-                        criteriaModel.getDescription())){
+                        criteriaModel.getDescription())) {
                     return false;
                 }
             }
@@ -737,8 +745,8 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
                 return false;
             }
 
-            for (long criteriaScoreID: criteriaScoreIDSet){
-                if(!addQualitativeScore(qualitativeSetModel.getQualitativeSetID(),criteriaScoreID)){
+            for (long criteriaScoreID : criteriaScoreIDSet) {
+                if (!addQualitativeScore(qualitativeSetModel.getQualitativeSetID(), criteriaScoreID)) {
                     return false;
                 }
             }
@@ -753,7 +761,7 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
         return true;
     }
 
-    public boolean addQualitativeScore(long qualitativeSetID, long criteriaScoreID) {
+    public boolean addQualitativeScore(long qualitativeCriteriaID, long criteriaScoreID) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -761,7 +769,7 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_QUALITATIVE_SET_FK_ID, qualitativeSetID);
+        cv.put(cSQLDBHelper.KEY_QUALITATIVE_CRITERIA_FK_ID, qualitativeCriteriaID);
         cv.put(cSQLDBHelper.KEY_CRITERIA_SCORE_FK_ID, criteriaScoreID);
 
         // insert record details
@@ -848,7 +856,7 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
                 if (targetModel.getTargetID() == qualitativeID) {
                     long baseline = (int) cQLRow.getCell(1,
                             Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    long target = (int)cQLRow.getCell(2,
+                    long target = (int) cQLRow.getCell(2,
                             Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
 
                     qualitativeModelSet.add(new Pair<>(baseline, target));
@@ -867,7 +875,7 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
                 if (targetModel.getTargetID() == quantitativeID) {
                     long baseline = (int) cQNRow.getCell(1,
                             Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    long target = (int)cQNRow.getCell(2,
+                    long target = (int) cQNRow.getCell(2,
                             Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
 
                     quantitativeModelSet.add(new Pair<>(baseline, target));
@@ -883,8 +891,8 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
     }
 
     public boolean addTarget(cTargetModel targetModel,
-                                    Set<Pair<Long, Long>> qualitativeModelSet,
-                                    Set<Pair<Long, Long>> quantitativeModelSet) {
+                             Set<Pair<Long, Long>> qualitativeModelSet,
+                             Set<Pair<Long, Long>> quantitativeModelSet) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -902,16 +910,16 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
                 return false;
             }
 
-            for (Pair<Long, Long> qualitativePair: qualitativeModelSet){
-                if(!addQualitativeTarget(targetModel.getTargetID(), qualitativePair.first,
-                        qualitativePair.second)){
+            for (Pair<Long, Long> qualitativePair : qualitativeModelSet) {
+                if (!addQualitativeTarget(targetModel.getTargetID(), qualitativePair.first,
+                        qualitativePair.second)) {
                     return false;
                 }
             }
 
-            for (Pair<Long, Long> quantitativePair: quantitativeModelSet){
-                if(!addQuantitativeTarget(targetModel.getTargetID(), quantitativePair.first,
-                        quantitativePair.second)){
+            for (Pair<Long, Long> quantitativePair : quantitativeModelSet) {
+                if (!addQuantitativeTarget(targetModel.getTargetID(), quantitativePair.first,
+                        quantitativePair.second)) {
                     return false;
                 }
             }
@@ -1035,7 +1043,7 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
                 }
             }
 
-            if(!addQuantitativeChildTarget(targetID, arrayChoiceSet, matrixChoiceSet)){
+            if (!addQuantitativeChildTarget(targetID, arrayChoiceSet, matrixChoiceSet)) {
                 return false;
             }
 
@@ -1051,8 +1059,8 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
     }
 
     public boolean addQuantitativeChildTarget(long targetID, Set<cArrayTargetModel> arrayChoiceSet,
-                                              Set<cMatrixTargetModel> matrixChoiceSet){
-        for(cArrayTargetModel arrayTarget: arrayChoiceSet) {
+                                              Set<cMatrixTargetModel> matrixChoiceSet) {
+        for (cArrayTargetModel arrayTarget : arrayChoiceSet) {
             if (!addArrayTarget(targetID,
                     arrayTarget.getArrayChoiceModel().getArrayChoiceID(),
                     arrayTarget.getDisaggregatedBaseline(),
@@ -1060,7 +1068,7 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
                 return false;
             }
         }
-        for(cMatrixTargetModel matrixTarget: matrixChoiceSet) {
+        for (cMatrixTargetModel matrixTarget : matrixChoiceSet) {
             if (!addMatrixTarget(targetID,
                     matrixTarget.getRowChoiceModel().getRowChoiceID(),
                     matrixTarget.getColChoiceModel().getColChoiceID(),
@@ -1073,7 +1081,8 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
         return true;
     }
 
-    public boolean addArrayTarget(long targetID, long arrayChoiceID, int baseline, int target) {
+    public boolean addArrayTarget(long targetID, long arrayChoiceID,
+                                  double baseline, double target) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -1102,7 +1111,7 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
     }
 
     public boolean addMatrixTarget(long targetID, long rowChoiceID, long colChoiceID,
-                                   int baseline, int target) {
+                                   double baseline, double target) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -1206,9 +1215,20 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
     @Override
     public boolean addIndicatorFromExcel() {
         Workbook workbook = excelHelper.getWorkbookMONITORING();
+
+        Sheet TSheet = workbook.getSheet(cExcelHelper.SHEET_tblTARGET);
+        Sheet QLTSheet = workbook.getSheet(cExcelHelper.SHEET_tblQUALITATIVETARGET);
+        Sheet QNTSheet = workbook.getSheet(cExcelHelper.SHEET_tblQUANTITATIVETARGET);
+
         Sheet ISheet = workbook.getSheet(cExcelHelper.SHEET_tblINDICATOR);
         Sheet QLISheet = workbook.getSheet(cExcelHelper.SHEET_tblQUALITATIVEINDICATOR);
         Sheet QNISheet = workbook.getSheet(cExcelHelper.SHEET_tblQUANTITATIVEINDICATOR);
+
+        Sheet ATSheet = workbook.getSheet(cExcelHelper.SHEET_tblARRAYTARGET);
+        Sheet MTSheet = workbook.getSheet(cExcelHelper.SHEET_tblMATRIXTARGET);
+
+        Sheet AISheet = workbook.getSheet(cExcelHelper.SHEET_tblARRAYINDICATOR);
+        Sheet MISheet = workbook.getSheet(cExcelHelper.SHEET_tblMATRIXINDICATOR);
 
         if (ISheet == null) {
             return false;
@@ -1222,21 +1242,29 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
 
             cIndicatorModel indicatorModel = new cIndicatorModel();
 
+            indicatorModel.setLogFrameModel(new cLogFrameModel());
+            indicatorModel.setTargetModel(new cTargetModel());
+            indicatorModel.setIndicatorTypeModel(new cIndicatorTypeModel());
+            indicatorModel.setFrequencyModel(new cFrequencyModel());
+            indicatorModel.setMethodModel(new cMethodModel());
+            indicatorModel.setChartModel(new cChartModel());
+            indicatorModel.setDataCollectorModel(new cDataCollectorModel());
+
             indicatorModel.setIndicatorID((int) cRow.getCell(0,
                     Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            indicatorModel.setLogFrameID((int) cRow.getCell(1,
+            indicatorModel.getLogFrameModel().setLogFrameID((int) cRow.getCell(1,
                     Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            indicatorModel.setTargetID((int) cRow.getCell(2,
+            indicatorModel.getTargetModel().setTargetID((int) cRow.getCell(2,
                     Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            indicatorModel.setIndicatorTypeID((int) cRow.getCell(3,
+            indicatorModel.getIndicatorTypeModel().setIndicatorTypeID((int) cRow.getCell(3,
                     Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            indicatorModel.setFrequencyID((int) cRow.getCell(4,
+            indicatorModel.getFrequencyModel().setFrequencyID((int) cRow.getCell(4,
                     Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            indicatorModel.setMethodID((int) cRow.getCell(5,
+            indicatorModel.getMethodModel().setMethodID((int) cRow.getCell(5,
                     Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            indicatorModel.setChartID((int) cRow.getCell(6,
+            indicatorModel.getChartModel().setChartID((int) cRow.getCell(6,
                     Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            indicatorModel.setDataCollectorID((int) cRow.getCell(7,
+            indicatorModel.getDataCollectorModel().setDataCollectorID((int) cRow.getCell(7,
                     Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             indicatorModel.setName(cRow.getCell(8,
                     Row.CREATE_NULL_AS_BLANK).getStringCellValue());
@@ -1247,59 +1275,331 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
             indicatorModel.setEndDate(cRow.getCell(11,
                     Row.CREATE_NULL_AS_BLANK).getDateCellValue());
 
-            Set<Long> qualitativeSetIDs = new HashSet<>();
-            for (Row cQLRow : QLISheet) {
-                //just skip the row if row number is 0
-                if (cQLRow.getRowNum() == 0) {
-                    continue;
-                }
+            long indicatorType = indicatorModel.getIndicatorTypeModel().getIndicatorTypeID();
 
-                long qualitativeID = (int) cQLRow.getCell(0,
-                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (indicatorModel.getIndicatorID() == qualitativeID) {
-                    long qualitativeSetID = (int) cQLRow.getCell(1,
+            cQualitativeTargetModel qualitativeTarget = null;
+            cQualitativeIndicatorModel qualitativeIndicator = null;
+
+            /* qualitative indicator type */
+            if (indicatorType == QUALITATIVE_INDICATOR) {
+
+                qualitativeTarget = new cQualitativeTargetModel();
+
+                /* target */
+                for (Row cTRow : TSheet) {
+                    //just skip the row if row number is 0
+                    if (cTRow.getRowNum() == 0) {
+                        continue;
+                    }
+
+                    long targetID = (int) cTRow.getCell(0,
                             Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    qualitativeSetIDs.add(qualitativeSetID);
-                }
-            }
+                    if (indicatorModel.getTargetModel().getTargetID() == targetID) {
 
-            Set<Long> quantitativeTypeIDs = new HashSet<>();
-            for (Row cQNRow : QNISheet) {
-                //just skip the row if row number is 0
-                if (cQNRow.getRowNum() == 0) {
-                    continue;
+                        indicatorModel.getTargetModel().setName(
+                                cTRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+                        indicatorModel.getTargetModel().setDescription(
+                                cTRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+
+                        /* qualitative target */
+                        for (Row cQLRow : QLTSheet) {
+                            //just skip the row if row number is 0
+                            if (cQLRow.getRowNum() == 0) {
+                                continue;
+                            }
+
+                            long qualitativeID = (int) cQLRow.getCell(0,
+                                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                            if (targetID == qualitativeID) {
+                                qualitativeTarget.setCriteriaBaselineScoreModel(
+                                        new cCriteriaScoreModel());
+                                qualitativeTarget.setCriteriaTargetScoreModel(
+                                        new cCriteriaScoreModel());
+
+                                qualitativeTarget.setTargetID(qualitativeID);
+                                qualitativeTarget.getCriteriaBaselineScoreModel().setScore(
+                                        cQLRow.getCell(1,
+                                                Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+                                qualitativeTarget.getCriteriaTargetScoreModel().setScore(
+                                        cQLRow.getCell(2,
+                                                Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+                                break;
+                            }
+                        }
+                        break;
+                    }
                 }
 
-                long quantitativeID = (int) cQNRow.getCell(0,
-                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (indicatorModel.getIndicatorID() == quantitativeID) {
-                    long quantitativeTypeID = (int) cQNRow.getCell(1,
+                /* qualitative indicator */
+                for (Row cQLRow : QLISheet) {
+                    //just skip the row if row number is 0
+                    if (cQLRow.getRowNum() == 0) {
+                        continue;
+                    }
+
+                    long qualitativeID = (int) cQLRow.getCell(0,
                             Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    quantitativeTypeIDs.add(quantitativeTypeID);
+                    if (indicatorModel.getIndicatorID() == qualitativeID) {
+
+                        qualitativeIndicator = new cQualitativeIndicatorModel();
+
+                        qualitativeIndicator.setQualitativeSetModel(new cQualitativeSetModel());
+
+                        qualitativeIndicator.setIndicatorID(qualitativeID);
+                        qualitativeIndicator.getQualitativeSetModel().setQualitativeSetID(
+                                (int) cQLRow.getCell(1,
+                                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+                    }
                 }
             }
 
-            ArrayList<cMilestoneModel> milestoneModels = new ArrayList<>();
-            if (indicatorModel.getFrequencyID() == CONS_QUARTERLY_ID) {
-                /* add indicator milestone */
-                LocalDate startDate = convertDate2LocalDate(indicatorModel.getStartDate());
-                LocalDate endDate = convertDate2LocalDate(indicatorModel.getEndDate());
-                milestoneModels = generateQuarterlySequence(startDate, endDate);
+            /* quantitative indicator type */
+            cQuantitativeTargetModel quantitativeTarget = null;
+            Set<cMatrixTargetModel> matrixTargetSet = new HashSet<>();
+            Set<cArrayTargetModel> arrayTargetSet = new HashSet<>();
+
+            cQuantitativeIndicatorModel quantitativeIndicator = null;
+            cArrayIndicatorModel arrayIndicator = null;
+            cMatrixIndicatorModel matrixIndicator = null;
+
+            if (indicatorType == QUANTITATIVE_INDICATOR) {
+
+                /* target */
+                for (Row cTRow : TSheet) {
+                    //just skip the row if row number is 0
+                    if (cTRow.getRowNum() == 0) {
+                        continue;
+                    }
+
+                    long targetID = (int) cTRow.getCell(0,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+
+                    if (indicatorModel.getTargetModel().getTargetID() == targetID) {
+
+                        indicatorModel.getTargetModel().setName(
+                                cTRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+                        indicatorModel.getTargetModel().setDescription(
+                                cTRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+
+                        /* quantitative target */
+                        for (Row cQNRow : QNTSheet) {
+                            //just skip the row if row number is 0
+                            if (cQNRow.getRowNum() == 0) {
+                                continue;
+                            }
+
+                            long quantitativeID = (int) cQNRow.getCell(0,
+                                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+
+                            if (targetID == quantitativeID) {
+
+                                quantitativeTarget = new cQuantitativeTargetModel();
+
+                                quantitativeTarget.setTargetID(quantitativeID);
+                                quantitativeTarget.setBaselineValue(cQNRow.getCell(1,
+                                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+                                quantitativeTarget.setTargetValue(cQNRow.getCell(2,
+                                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+
+                                /* array target */
+                                for (Row cATRow : ATSheet) {
+                                    //just skip the row if row number is 0
+                                    if (cATRow.getRowNum() == 0) {
+                                        continue;
+                                    }
+
+                                    long arrayTargetID = (int) cATRow.getCell(0,
+                                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+
+                                    if (quantitativeID == arrayTargetID) {
+
+                                        cArrayTargetModel arrayTarget = new cArrayTargetModel();
+
+                                        arrayTarget.setArrayChoiceModel(new cArrayChoiceModel());
+
+                                        arrayTarget.getArrayChoiceModel().setArrayChoiceID((int)
+                                                cATRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+                                        arrayTarget.setDisaggregatedBaseline((int)
+                                                cATRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+                                        arrayTarget.setDisaggregatedTarget((int)
+                                                cATRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+
+                                        arrayTargetSet.add(arrayTarget);
+                                    }
+                                }
+
+                                /* matrix target */
+                                for(Row cMTRow :MTSheet) {
+                                    //just skip the row if row number is 0
+                                    if (cMTRow.getRowNum() == 0) {
+                                        continue;
+                                    }
+
+                                    long quantitativeTargetID = (int) cMTRow.getCell(0,
+                                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                                    if (targetID == quantitativeTargetID) {
+
+                                        cMatrixTargetModel matrixTarget = new cMatrixTargetModel();
+
+                                        matrixTarget.getRowChoiceModel().setRowChoiceID((int)
+                                                cMTRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+                                        matrixTarget.getColChoiceModel().setColChoiceID((int)
+                                                cMTRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+                                        matrixTarget.setDisaggregatedBaseline((int)
+                                                cMTRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+                                        matrixTarget.setDisaggregatedTarget((int)
+                                                cMTRow.getCell(4, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+
+                                        matrixTargetSet.add(matrixTarget);
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+
+                /* quantitative indicator */
+                quantitativeIndicator = new cQuantitativeIndicatorModel();
+
+                for (Row cQNRow : QNISheet) {
+                    //just skip the row if row number is 0
+                    if (cQNRow.getRowNum() == 0) {
+                        continue;
+                    }
+
+                    long quantitativeIndicatorID = (int) cQNRow.getCell(0,
+                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                    if (indicatorModel.getIndicatorID() == quantitativeIndicatorID) {
+
+                        quantitativeIndicator.setQuantitativeTypeModel(new cQuantitativeTypeModel());
+
+                        quantitativeIndicator.setIndicatorID(quantitativeIndicatorID);
+                        quantitativeIndicator.getQuantitativeTypeModel().setQuantitativeTypeID(
+                                (int) cQNRow.getCell(1,
+                                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+
+                        /* array indicator */
+                        for (Row cAIRow : AISheet) {
+                            //just skip the row if row number is 0
+                            if (cAIRow.getRowNum() == 0) {
+                                continue;
+                            }
+
+                            long arrayIndicatorID = (int) cAIRow.getCell(0,
+                                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                            if (quantitativeIndicatorID == arrayIndicatorID) {
+
+                                arrayIndicator = new cArrayIndicatorModel();
+
+                                arrayIndicator.setArraySetModel(new cArraySetModel());
+
+                                arrayIndicator.setIndicatorID(arrayIndicatorID);
+                                arrayIndicator.getArraySetModel().setArraySetID((int)
+                                        cAIRow.getCell(1,
+                                                Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+                                break;
+                            }
+                        }
+
+                        /* matrix indicator */
+                        for (Row cMIRow : MISheet) {
+                            //just skip the row if row number is 0
+                            if (cMIRow.getRowNum() == 0) {
+                                continue;
+                            }
+
+                            long matrixIndicatorID = (int) cMIRow.getCell(0,
+                                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+                            if (quantitativeIndicatorID == matrixIndicatorID) {
+
+                                matrixIndicator = new cMatrixIndicatorModel();
+
+                                matrixIndicator.setMatrixSetModel(new cMatrixSetModel());
+
+                                matrixIndicator.setIndicatorID(matrixIndicatorID);
+                                matrixIndicator.getMatrixSetModel().setMatrixSetID((int) cMIRow.getCell(1,
+                                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+                            }
+                        }
+
+                        break;
+                    }
+                }
             }
 
-            if (!addIndicator(indicatorModel, qualitativeSetIDs, quantitativeTypeIDs,
-                    milestoneModels)) {
-                return false;
-            }
-
-            //if (!addIndicator(indicatorModel, milestoneModels)) {
-            //    return false;
-            // }
-            // Gson gson = new Gson();
-            //ArrayList<String> quarters = new ArrayList<>();
+            addQualitativeIndicator(qualitativeTarget,
+                    quantitativeTarget, arrayTargetSet, matrixTargetSet,
+                    indicatorModel, qualitativeIndicator,
+                    quantitativeIndicator, arrayIndicator, matrixIndicator,
+                    cMilestoneUtils.getMilestones(indicatorModel, indicatorModel.getStartDate(),
+                            indicatorModel.getEndDate()));
         }
 
         return true;
+    }
+
+    private boolean addQualitativeIndicator(cQualitativeTargetModel qualitativeTarget,
+                                            cQuantitativeTargetModel quantitativeTarget,
+                                            Set<cArrayTargetModel> arrayTargetSet,
+                                            Set<cMatrixTargetModel> matrixTargetSet,
+                                            cIndicatorModel indicatorModel,
+                                            cQualitativeIndicatorModel qualitativeIndicator,
+                                            cQuantitativeIndicatorModel quantitativeIndicator,
+                                            cArrayIndicatorModel arrayIndicator,
+                                            cMatrixIndicatorModel matrixIndicator,
+                                            ArrayList<cIndicatorMilestoneModel> milestones) {
+        Gson gson = new Gson();
+
+        /* insert target details */
+        if (qualitativeTarget != null){
+            //Log.d(TAG, " TARGET ===> "+gson.toJson(indicatorModel.getTargetModel()));
+            //Log.d(TAG, " QUALITATIVE TARGET ===> "+gson.toJson(qualitativeTarget));
+        }
+
+        if(quantitativeTarget != null){
+            //Log.d(TAG, " TARGET ===> "+gson.toJson(indicatorModel.getTargetModel()));
+            //Log.d(TAG, " QUANTITATIVE TARGET ===> "+gson.toJson(quantitativeTarget));
+        }
+
+        if(!arrayTargetSet.isEmpty()){
+            //Log.d(TAG, " QUANTITATIVE TARGET ===> "+gson.toJson(quantitativeTarget));
+            //Log.d(TAG, " ARRAY TARGET ===> "+gson.toJson(arrayTargetSet));
+        }
+
+        if(!matrixTargetSet.isEmpty()){
+            //Log.d(TAG, " QUANTITATIVE TARGET ===> "+gson.toJson(quantitativeTarget));
+            //Log.d(TAG, " MATRIX TARGET ===> "+gson.toJson(matrixTargetSet));
+        }
+
+        /*insert indicator details */
+        if(indicatorModel != null){
+            //Log.d(TAG, " INDICATOR ===> "+gson.toJson(indicatorModel));
+        }
+
+        if(qualitativeIndicator != null){
+            //Log.d(TAG, " QUALITATIVE INDICATOR ===> "+gson.toJson(qualitativeIndicator));
+        }
+
+        if(quantitativeIndicator != null){
+            //Log.d(TAG, " QUANTITATIVE INDICATOR ===> "+gson.toJson(quantitativeIndicator));
+        }
+
+        if(arrayIndicator != null){
+            //Log.d(TAG, " ARRAY INDICATOR ===> "+gson.toJson(arrayIndicator));
+        }
+
+        if(matrixIndicator != null){
+            //Log.d(TAG, " MATRIX INDICATOR ===> "+gson.toJson(matrixIndicator));
+        }
+
+        if(!milestones.isEmpty()){
+            Log.d(TAG, " MILESTONE ===> "+gson.toJson(milestones));
+        }
+
+
+        return false;
     }
 
     public boolean addIndicator(cIndicatorModel indicatorModel,
@@ -1314,16 +1614,17 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ID, indicatorModel.getIndicatorID());
-        cv.put(cSQLDBHelper.KEY_LOGFRAME_FK_ID, indicatorModel.getLogFrameID());
-        cv.put(cSQLDBHelper.KEY_TARGET_FK_ID, indicatorModel.getTargetID());
-        cv.put(cSQLDBHelper.KEY_INDICATOR_TYPE_FK_ID, indicatorModel.getIndicatorTypeID());
-        cv.put(cSQLDBHelper.KEY_FREQUENCY_FK_ID, indicatorModel.getFrequencyID());
-        cv.put(cSQLDBHelper.KEY_METHOD_FK_ID, indicatorModel.getMethodID());
-        cv.put(cSQLDBHelper.KEY_CHART_FK_ID, indicatorModel.getChartID());
-        cv.put(cSQLDBHelper.KEY_DATA_COLLECTOR_FK_ID, indicatorModel.getDataCollectorID());
+        cv.put(cSQLDBHelper.KEY_LOGFRAME_FK_ID, indicatorModel.getLogFrameModel().getLogFrameID());
+        cv.put(cSQLDBHelper.KEY_TARGET_FK_ID, indicatorModel.getTargetModel().getTargetID());
+        cv.put(cSQLDBHelper.KEY_INDICATOR_TYPE_FK_ID,
+                indicatorModel.getIndicatorTypeModel().getIndicatorTypeID());
+        cv.put(cSQLDBHelper.KEY_FREQUENCY_FK_ID, indicatorModel.getFrequencyModel().getFrequencyID());
+        cv.put(cSQLDBHelper.KEY_METHOD_FK_ID, indicatorModel.getMethodModel().getMethodID());
+        cv.put(cSQLDBHelper.KEY_CHART_FK_ID, indicatorModel.getChartModel().getChartID());
+        cv.put(cSQLDBHelper.KEY_DATA_COLLECTOR_FK_ID,
+                indicatorModel.getDataCollectorModel().getDataCollectorID());
         cv.put(cSQLDBHelper.KEY_NAME, indicatorModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, indicatorModel.getDescription());
-        //cv.put(cSQLDBHelper.KEY_QUESTION, indicatorModel.getQuestion());
         cv.put(cSQLDBHelper.KEY_START_DATE, String.valueOf(indicatorModel.getStartDate()));
         cv.put(cSQLDBHelper.KEY_END_DATE, String.valueOf(indicatorModel.getEndDate()));
 
@@ -1334,15 +1635,15 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
             }
 
             /* qualitative indicator */
-            for (long qualitativeID: qualitativeSetIDs){
-                if(!addQualitativeIndicator(indicatorModel.getIndicatorID(), qualitativeID)){
+            for (long qualitativeID : qualitativeSetIDs) {
+                if (!addQualitativeIndicator(indicatorModel.getIndicatorID(), qualitativeID)) {
                     return false;
                 }
             }
 
             /* quantitative indicator */
-            for (long quantitativeTypeID: quantitativeTypeIDs){
-                if(!addQuantitativeIndicator(indicatorModel.getIndicatorID(), quantitativeTypeID)){
+            for (long quantitativeTypeID : quantitativeTypeIDs) {
+                if (!addQuantitativeIndicator(indicatorModel.getIndicatorID(), quantitativeTypeID)) {
                     return false;
                 }
             }
@@ -1390,7 +1691,6 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
 
         return true;
     }
-
 
     public boolean addQuantitativeIndicator(long indicatorID, long quantitativeTypeID) {
         // open the connection to the database
@@ -1447,7 +1747,7 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
                 }
             }
 
-            if(!addQuantitativeChildIndicator(indicatorID, arraySetIDs, matrixSetIDs)){
+            if (!addQuantitativeChildIndicator(indicatorID, arraySetIDs, matrixSetIDs)) {
                 return false;
             }
 
@@ -1462,15 +1762,14 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
         return true;
     }
 
-
     public boolean addQuantitativeChildIndicator(long indicatorID, Set<Long> arraySetIDs,
-                                                 Set<Long> matrixSetIDs){
-        for(long arraySetID: arraySetIDs) {
+                                                 Set<Long> matrixSetIDs) {
+        for (long arraySetID : arraySetIDs) {
             if (!addArrayIndicator(indicatorID, arraySetID)) {
                 return false;
             }
         }
-        for(long matrixSetID: matrixSetIDs) {
+        for (long matrixSetID : matrixSetIDs) {
             if (!addMatrixIndicator(indicatorID, matrixSetID)) {
                 return false;
             }
@@ -1487,7 +1786,7 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_INDICATOR_FK_ID, indicatorID);
+        cv.put(cSQLDBHelper.KEY_QUANTITATIVE_INDICATOR_FK_ID, indicatorID);
         cv.put(cSQLDBHelper.KEY_ARRAY_SET_FK_ID, arraySetID);
 
         // insert evaluation type details
@@ -1513,7 +1812,7 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_INDICATOR_FK_ID, indicatorID);
+        cv.put(cSQLDBHelper.KEY_QUANTITATIVE_INDICATOR_FK_ID, indicatorID);
         cv.put(cSQLDBHelper.KEY_MATRIX_SET_FK_ID, matrixSetID);
 
         // insert evaluation type details
@@ -1530,7 +1829,6 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
 
         return true;
     }
-
 
     public boolean addMilestone(cMilestoneModel milestoneModel, cIndicatorModel indicatorModel) {
         // open the connection to the database
@@ -1552,20 +1850,11 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
                 return false;
             }
 
-            if(!addIndicatorMilestone(milestoneID, indicatorModel.getIndicatorID())){
+            milestoneModel.setMilestoneID(milestoneID);
+            if (!addIndicatorMilestone(milestoneModel, indicatorModel)) {
                 return false;
             }
-/*
-            if (indicatorModel.getIndicatorID() == QUALITATIVE_INDICATOR){
-                addQualitativeMilestone();
-            }else if (indicatorModel.getIndicatorID() == QUANTITATIVE_INDICATOR){
-                addQuantitativeMilestone();
-            }else if (indicatorModel.getIndicatorID() == ARRAY_INDICATOR){
-                addArrayMilestone();
-            }else if (indicatorModel.getIndicatorID() == MATRIX_INDICATOR){
-                addMatrixMilestone();
-            }
-*/
+
         } catch (Exception e) {
             Log.d(TAG, "Exception in importing MILESTONE from Excel: " + e.getMessage());
         }
@@ -1576,7 +1865,8 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
         return true;
     }
 
-    public boolean addIndicatorMilestone(long milestoneID, long indicatorID) {
+    public boolean addIndicatorMilestone(cMilestoneModel milestoneModel,
+                                         cIndicatorModel indicatorModel) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -1584,8 +1874,8 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_MILESTONE_FK_ID, milestoneID);
-        cv.put(cSQLDBHelper.KEY_INDICATOR_FK_ID, indicatorID);
+        cv.put(cSQLDBHelper.KEY_MILESTONE_FK_ID, milestoneModel.getMilestoneID());
+        cv.put(cSQLDBHelper.KEY_INDICATOR_FK_ID, indicatorModel.getIndicatorID());
 
         // insert project details
         try {
@@ -1593,6 +1883,19 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
                 return false;
             }
 
+
+            if (indicatorModel.getIndicatorTypeModel().getIndicatorTypeID() == QUALITATIVE_INDICATOR) {
+                //addQualitativeMilestone();
+            } else if (indicatorModel.getIndicatorTypeModel().getIndicatorTypeID() == QUANTITATIVE_INDICATOR) {
+                //addQuantitativeMilestone(milestoneModel.getMilestoneID(),
+                //         milestoneModel.get,
+                //         milestoneModel.getTargetValue());
+            }/*else if (indicatorModel.getIndicatorID() == ARRAY_INDICATOR){
+                addArrayMilestone();
+            }
+            else if (indicatorModel.getIndicatorID() == MATRIX_INDICATOR) {
+                addMatrixMilestone();
+            }*/
         } catch (Exception e) {
             Log.d(TAG, "Exception in importing INDICATOR MILESTONE from Excel: " + e.getMessage());
         }
@@ -1603,62 +1906,31 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
         return true;
     }
 
-    public ArrayList<cMilestoneModel> generateQuarterlySequence(LocalDate startDate,
-                                                                LocalDate endDate) {
-        // first truncate startDate to first day of quarter
-        int startMonth = startDate.getMonthValue();
-        startMonth -= (startMonth - 1) % 3;
-        startDate = startDate.withMonth(startMonth).withDayOfMonth(1);
+    public boolean addQuantitativeMilestone(long milestoneID, int baseline, int target) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        DateTimeFormatter nameFormatter
-                = DateTimeFormatter.ofPattern("QQQ", Locale.ENGLISH);
-        DateTimeFormatter descriptionFormatter
-                = DateTimeFormatter.ofPattern("uuuuQQQ", Locale.ENGLISH);
+        // create content object for storing data
+        ContentValues cv = new ContentValues();
 
-        //ArrayList<String> quarterSequence = new ArrayList<>();
+        // assign values to the table fields
+        cv.put(cSQLDBHelper.KEY_MILESTONE_FK_ID, milestoneID);
+        cv.put(cSQLDBHelper.KEY_BASELINE_VALUE, baseline);
+        cv.put(cSQLDBHelper.KEY_TARGET_VALUE, target);
 
-        ArrayList<cMilestoneModel> milestoneModels = new ArrayList<>();
-        cMilestoneModel milestoneModel = null;
-
-        // iterate thorough quarters
-        LocalDate currentQuarterStart = startDate;
-        while (!currentQuarterStart.isAfter(endDate)) {
-            milestoneModel = new cMilestoneModel();
-            // assign a quarter
-            if (currentQuarterStart.format(nameFormatter).equals("Q1")) {
-                milestoneModel.setName("First Quarter");
+        // insert project details
+        try {
+            if (db.insert(cSQLDBHelper.TABLE_tblQUANTITATIVEMILESTONE, null, cv) < 0) {
+                return false;
             }
-            if (currentQuarterStart.format(nameFormatter).equals("Q2")) {
-                milestoneModel.setName("Second Quarter");
-            }
-            if (currentQuarterStart.format(nameFormatter).equals("Q3")) {
-                milestoneModel.setName("Third Quarter");
-            }
-            if (currentQuarterStart.format(nameFormatter).equals("Q4")) {
-                milestoneModel.setName("Fourth Quarter");
-            }
-            milestoneModel.setDescription(currentQuarterStart.format(descriptionFormatter));
-            // assign start and end dates
-            milestoneModel.setStartDate(convertLocalDate2Date(currentQuarterStart));
-            milestoneModel.setEndDate(convertLocalDate2Date(currentQuarterStart.plusMonths(3)));
-
-            milestoneModels.add(milestoneModel);
-
-            currentQuarterStart = currentQuarterStart.plusMonths(3);
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in importing QUANTITATIVE MILESTONE from Excel: " + e.getMessage());
         }
 
-        //Gson gson = new Gson();
-        //Log.d(TAG, gson.toJson(milestoneModels));
+        // close the database connection
+        db.close();
 
-        return milestoneModels;
-    }
-
-    public LocalDate convertDate2LocalDate(Date date) {
-        return LocalDate.from(Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()));
-    }
-
-    public Date convertLocalDate2Date(LocalDate dateToConvert) {
-        return java.util.Date.from(dateToConvert.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        return true;
     }
 
     @Override
@@ -1757,6 +2029,57 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
         db.close();
 
         return result > -1;
+    }
+
+    @Override
+    public boolean deleteQuantitativeMilestone() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblQUANTITATIVEMILESTONE, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    public cQuantitativeTargetModel getQuantitativeTargetModel(long targetID) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String selectQuery = "SELECT * FROM " + cSQLDBHelper.TABLE_tblTARGET + " T INNER JOIN " +
+                cSQLDBHelper.TABLE_tblQUANTITATIVETARGET + " QT ON T." +
+                cSQLDBHelper.KEY_ID + " = QT." + cSQLDBHelper.KEY_TARGET_FK_ID +
+                " WHERE (T." + cSQLDBHelper.KEY_ID + " = ?)";
+
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(targetID)});
+
+        cQuantitativeTargetModel quantitativeTargetModel = new cQuantitativeTargetModel();
+
+        try {
+            if (cursor.moveToFirst()) {
+
+                quantitativeTargetModel.setTargetID(
+                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+                quantitativeTargetModel.setBaselineValue(cursor.getInt(
+                        cursor.getColumnIndex(cSQLDBHelper.KEY_BASELINE_VALUE)));
+                quantitativeTargetModel.setTargetValue(
+                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_TARGET_VALUE)));
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Error in reading all QUANTITATIVE TARGET entities: " + e.getMessage());
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+
+        // close the database connection
+        db.close();
+
+        return quantitativeTargetModel;
     }
 }
 
@@ -1879,7 +2202,7 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
 //Log.d(TAG, gson.toJson(oqcMap));
 //Log.d(TAG, gson.toJson(raidSet));
 
-    /* ############################### MONITORING RESPONSE FUNCTIONS #############################*/
+/* ############################### MONITORING RESPONSE FUNCTIONS #############################*/
 
 //    @Override
 //    public boolean addMResponseFromExcel() {

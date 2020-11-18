@@ -1,7 +1,7 @@
 package com.me.mseotsanyana.mande.BLL.repository.session;
 
-import com.me.mseotsanyana.mande.DAL.model.session.cPermissionModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cRoleModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cPermissionModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cRoleModel;
 
 import java.util.Set;
 

@@ -70,7 +70,11 @@ public class cUploadMonitoringInteractorImpl extends cAbstractInteractor
         uploadMonitoringRepository.deleteQuantitativeIndicators();
         uploadMonitoringRepository.deleteArrayIndicators();
         uploadMonitoringRepository.deleteMatrixIndicators();
+
         uploadMonitoringRepository.deleteMilestones();
+        uploadMonitoringRepository.deleteIndicatorMilestones();
+
+        uploadMonitoringRepository.deleteQuantitativeMilestone();
 
         /* upload all monitoring module records */
         if(uploadMonitoringRepository.addMethodFromExcel()){
@@ -109,24 +113,30 @@ public class cUploadMonitoringInteractorImpl extends cAbstractInteractor
             notifyError("Failed to Add Criteria Score Entity");
         }
 
+        if(uploadMonitoringRepository.addQualitativeSetFromExcel()){
+            postMessage("Qualitative Set Entity Added Successfully!");
+        }else {
+            notifyError("Failed to Add Qualitative Set Entity");
+        }
+
         if(uploadMonitoringRepository.addDataCollectorFromExcel()){
             postMessage("Data Collector Entity Added Successfully!");
         }else {
             notifyError("Failed to Add Data Collector Entity");
         }
 
-        if(uploadMonitoringRepository.addTargetFromExcel()){
+        /*if(uploadMonitoringRepository.addTargetFromExcel()){
             postMessage("Target Entity Added Successfully!");
         }else {
             notifyError("Failed to Add Target Entity");
-        }
-/*
+        }*/
+
         if(uploadMonitoringRepository.addIndicatorFromExcel()){
             postMessage("Indicator Entity Added Successfully!");
         }else {
             notifyError("Failed to Add Indicator Entity");
         }
-
+/*
         if(uploadMonitoringRepository.addMilestoneFromExcel()){
             postMessage("Milestone Entity Added Successfully!");
         }else {

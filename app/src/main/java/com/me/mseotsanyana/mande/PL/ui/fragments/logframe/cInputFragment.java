@@ -31,29 +31,25 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
-import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cInputModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cInputModel;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cSessionManagerImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.wpb.cExpenseRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.wpb.cHumanRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.wpb.cIncomeRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.wpb.cMaterialRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.awpb.cExpenseRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.awpb.cHumanRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.awpb.cIncomeRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.awpb.cMaterialRepositoryImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.Impl.cInputPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iInputPresenter;
-import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cInputAdapter;
 import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cInputViewPagerAdapter;
-import com.me.mseotsanyana.mande.PL.ui.fragments.wpb.cExpenseFragment;
-import com.me.mseotsanyana.mande.PL.ui.fragments.wpb.cHumanFragment;
-import com.me.mseotsanyana.mande.PL.ui.fragments.wpb.cIncomeFragment;
-import com.me.mseotsanyana.mande.PL.ui.fragments.wpb.cMaterialFragment;
+import com.me.mseotsanyana.mande.PL.ui.fragments.awpb.cExpenseFragment;
+import com.me.mseotsanyana.mande.PL.ui.fragments.awpb.cHumanFragment;
+import com.me.mseotsanyana.mande.PL.ui.fragments.awpb.cIncomeFragment;
+import com.me.mseotsanyana.mande.PL.ui.fragments.awpb.cMaterialFragment;
 import com.me.mseotsanyana.mande.PL.ui.listeners.logframe.iViewInputListener;
-import com.me.mseotsanyana.mande.PL.ui.views.cInputHeaderView;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.TextDrawable;
 import com.me.mseotsanyana.mande.UTIL.cFontManager;
 import com.me.mseotsanyana.mande.cMainThreadImpl;
-import com.me.mseotsanyana.placeholderviewlibrary.cExpandablePlaceHolderView;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.util.ArrayList;
@@ -125,7 +121,7 @@ public class cInputFragment extends Fragment implements iViewInputListener, iInp
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        this.logFrameID = Objects.requireNonNull(getArguments()).getLong("LOGFRAME_ID");
+        this.logFrameID = requireArguments().getLong("LOGFRAME_ID");
     }
 
     @Override
@@ -160,11 +156,15 @@ public class cInputFragment extends Fragment implements iViewInputListener, iInp
         TextView logFrameName = view.findViewById(R.id.subtitle);
         logFrameCaption.setText(R.string.logframe_name_caption);
         //outcomeCaption.setText(R.string.logframe_name_caption);
-        activity.setSupportActionBar(toolbar);
         CollapsingToolbarLayout collapsingToolbarLayout =
                 view.findViewById(R.id.collapsingToolbarLayout);
         collapsingToolbarLayout.setContentScrimColor(Color.WHITE);
         collapsingToolbarLayout.setTitle("List of Inputs");
+
+        /* show the back arrow button */
+        activity.setSupportActionBar(toolbar);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         try {
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.shepherds);
@@ -198,7 +198,7 @@ public class cInputFragment extends Fragment implements iViewInputListener, iInp
         toolBar.setTitle(R.string.outcome_list_title);
         toolBar.setTitleTextColor(Color.WHITE);*/
 
-        ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(toolbar);
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
     }
 
     private void init() {

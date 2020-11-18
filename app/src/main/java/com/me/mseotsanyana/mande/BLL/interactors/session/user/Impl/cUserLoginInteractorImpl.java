@@ -12,9 +12,9 @@ import com.me.mseotsanyana.mande.BLL.repository.session.iRoleRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iStatusRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iUserRepository;
-import com.me.mseotsanyana.mande.DAL.model.session.cPermissionModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cRoleModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cUserModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cPermissionModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cRoleModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
 import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
 
 import java.util.HashSet;

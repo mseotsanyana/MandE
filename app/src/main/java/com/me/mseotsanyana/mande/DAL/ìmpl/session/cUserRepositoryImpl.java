@@ -2,22 +2,19 @@ package com.me.mseotsanyana.mande.DAL.ìmpl.session;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.repository.session.iUserRepository;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cQuestionTypeModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cAddressModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cNotificationModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cOrganizationModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cRoleModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cUserModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cAddressModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cNotificationModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cRoleModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
-import com.me.mseotsanyana.mande.DAL.storage.preference.cSharedPreference;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
 
 import java.sql.Timestamp;

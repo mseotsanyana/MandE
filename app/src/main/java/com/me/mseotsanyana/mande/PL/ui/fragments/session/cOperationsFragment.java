@@ -17,11 +17,11 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout;
-import com.me.mseotsanyana.mande.BLL.domain.session.cEntityDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cOperationDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cPermissionDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.permission.Impl.cPermissionHandler;
-import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
+
+import com.me.mseotsanyana.mande.BLL.model.session.cEntityModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cOperationModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cPermissionModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cStatusModel;
 import com.me.mseotsanyana.mande.PL.ui.adapters.session.cStatusTreeAdapter;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iEntityTVHInterface;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iTreeAdapterCallback;
@@ -44,7 +44,7 @@ import static com.me.mseotsanyana.mande.UTIL.cConstant.GROUP;
 import static com.me.mseotsanyana.mande.UTIL.cConstant.OTHER;
 
 
-public class cOperationsFragment extends Fragment implements iTreeAdapterCallback {
+public class cOperationsFragment extends Fragment /*implements iTreeAdapterCallback*/ {
     private static final String TAG = cOperationsFragment.class.getSimpleName();
     private static final SimpleDateFormat formatter = new SimpleDateFormat(
             "dd MMMM, yyyy hh:mm:ss a", Locale.US);
@@ -58,28 +58,28 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
     private cStatusTreeAdapter statusOwnerTreeAdapter,
             statusGroupTreeAdapter, statusOtherTreeAdapter;
 
-    private cEntityDomain entityDomain;
+    private cEntityModel entityModel;
 
-    private cOperationDomain[] operationDomains;
-    private cStatusDomain[][] statusDomains;
+    private cOperationModel[] operationModels;
+    private cStatusModel[][] statusModels;
 
-    private cOperationDomain ownerOperationDomain;
-    private cOperationDomain groupOperationDomain;
-    private cOperationDomain otherOperationDomain;
-    private cOperationDomain[] ops = new cOperationDomain[NUM_OPS];
-    private cStatusDomain[][] sts = new cStatusDomain[NUM_OPS][NUM_STS];
+    private cOperationModel ownerOperationModel;
+    private cOperationModel groupOperationModel;
+    private cOperationModel otherOperationModel;
+    private cOperationModel[] ops = new cOperationModel[NUM_OPS];
+    private cStatusModel[][] sts = new cStatusModel[NUM_OPS][NUM_STS];
 
-    private ArrayList<cStatusDomain> statusOwnerDomains;
-    private ArrayList<cStatusDomain> statusGroupDomains;
-    private ArrayList<cStatusDomain> statusOtherDomains;
+    private ArrayList<cStatusModel> statusOwnerModels;
+    private ArrayList<cStatusModel> statusGroupModels;
+    private ArrayList<cStatusModel> statusOtherModels;
 
-    private ArrayList<cPermissionDomain> permissionDomains;
+    private ArrayList<cPermissionModel> permissionModels;
 
-    private cPermissionHandler permissionHandler;
+    //private cPermissionHandler permissionHandler;
 
-    private Set<cPermissionDomain> create_perms;
-    private Set<cPermissionDomain> update_perms;
-    private Set<cPermissionDomain> delete_perms;
+    private Set<cPermissionModel> create_perms;
+    private Set<cPermissionModel> update_perms;
+    private Set<cPermissionModel> delete_perms;
 
     /**
      * store original data from database
@@ -118,20 +118,20 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
 
     Gson gson = new Gson();
 
-    public cOperationsFragment newInstance(int privilegeID, cEntityDomain entityDomain,
-                                           cOperationDomain[] operationDomains, int operationMask,
-                                           cStatusDomain[][] statusDomains, int statusMask,
-                                           ArrayList<cPermissionDomain> permissionDomains,
+    public cOperationsFragment newInstance(int privilegeID, cEntityModel entityModel,
+                                           cOperationModel[] operationModels, int operationMask,
+                                           cStatusModel[][] statusModels, int statusMask,
+                                           ArrayList<cPermissionModel> permissionModels,
                                            iEntityTVHInterface entityTreeVHInterface) {
         Bundle bundle = new Bundle();
 
         bundle.putInt("PRIVILEDGEID", privilegeID);
-        bundle.putParcelable("ENTITY", entityDomain);
+        //bundle.putParcelable("ENTITY", entityModel);
         bundle.putInt("OPERATIONSMASK", operationMask);
-        bundle.putString("OPERATIONS", gson.toJson(operationDomains));
+        bundle.putString("OPERATIONS", gson.toJson(operationModels));
         bundle.putInt("STATUSESMASK", statusMask);
-        bundle.putString("STATUSES", gson.toJson(statusDomains));
-        bundle.putParcelableArrayList("PERMISSIONS", permissionDomains);
+        bundle.putString("STATUSES", gson.toJson(statusModels));
+        //bundle.putParcelableArrayList("PERMISSIONS", permissionModels);
         bundle.putSerializable("IPERMISSION", entityTreeVHInterface);
 
         cOperationsFragment fragment = new cOperationsFragment();
@@ -147,47 +147,47 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
         super.onCreate(savedInstanceState);
         //this.session = new cSessionManager(getContext());
 
-        this.permissionHandler = new cPermissionHandler(getContext());
+        //this.permissionHandler = new cPermissionHandler(getContext());
 
         this.privilegeID = getArguments().getInt("PRIVILEDGEID");
-        this.entityDomain = getArguments().getParcelable("ENTITY");
+        this.entityModel = getArguments().getParcelable("ENTITY");
         String operations = getArguments().getString("OPERATIONS");
-        this.operationDomains = gson.fromJson(operations, cOperationDomain[].class);
+        this.operationModels = gson.fromJson(operations, cOperationModel[].class);
         this.operationMask = getArguments().getInt("OPERATIONSMASK");
         String statuses = getArguments().getString("STATUSES");
-        this.statusDomains = gson.fromJson(statuses, cStatusDomain[][].class);
+        this.statusModels = gson.fromJson(statuses, cStatusModel[][].class);
         this.statusMask = getArguments().getInt("STATUSESMASK");
 
-        this.permissionDomains = getArguments().getParcelableArrayList("PERMISSIONS");
+        this.permissionModels = null;//getArguments().getParcelableArrayList("PERMISSIONS");
         this.entityTreeVHInterface = (iEntityTVHInterface) getArguments().getSerializable("IPERMISSION");
 
         //Log.d(TAG, "statusMask = "+statusMask);
 
         /** create a deep copy of operations **/
-        for (int i = 0; i < operationDomains.length; i++) {
+        for (int i = 0; i < operationModels.length; i++) {
             /* create operation */
             if (i == OWNER) {
-                ownerOperationDomain = new cOperationDomain(operationDomains[i]);
+                ownerOperationModel = new cOperationModel(operationModels[i]);
             }
             if (i == GROUP) {
-                groupOperationDomain = new cOperationDomain(operationDomains[i]);
+                groupOperationModel = new cOperationModel(operationModels[i]);
             }
             if (i == OTHER) {
-                otherOperationDomain = new cOperationDomain(operationDomains[i]);
+                otherOperationModel = new cOperationModel(operationModels[i]);
             }
         }
 
         /** create a deep copy of statuses **/
-        statusOwnerDomains = new ArrayList<>();
-        statusGroupDomains = new ArrayList<>();
-        statusOtherDomains = new ArrayList<>();
+        statusOwnerModels = new ArrayList<>();
+        statusGroupModels = new ArrayList<>();
+        statusOtherModels = new ArrayList<>();
 
-        for (int i = 0; i < statusDomains[OWNER].length; i++) {
-            statusOwnerDomains.add(i, new cStatusDomain(statusDomains[OWNER][i]));
-            statusGroupDomains.add(i, new cStatusDomain(statusDomains[GROUP][i]));
-            statusOtherDomains.add(i, new cStatusDomain(statusDomains[OTHER][i]));
+        for (int i = 0; i < statusModels[OWNER].length; i++) {
+            statusOwnerModels.add(i, new cStatusModel(statusModels[OWNER][i]));
+            statusGroupModels.add(i, new cStatusModel(statusModels[GROUP][i]));
+            statusOtherModels.add(i, new cStatusModel(statusModels[OTHER][i]));
         }
-        //Log.d(TAG, gson.toJson(statusOwnerDomains));
+        //Log.d(TAG, gson.toJson(statusOwnerModels));
     }
 
     @Override
@@ -241,13 +241,13 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
         recyclerViewStatusOther = (RecyclerView) view.findViewById(R.id.recyclerViewStatusOther);
 
         /** assign names and descriptions of operations **/
-        textViewNameOwner.setText(ownerOperationDomain.getName());
-        textViewNameGroup.setText(groupOperationDomain.getName());
-        textViewNameOther.setText(otherOperationDomain.getName());
+        textViewNameOwner.setText(ownerOperationModel.getName());
+        textViewNameGroup.setText(groupOperationModel.getName());
+        textViewNameOther.setText(otherOperationModel.getName());
 
-        textViewDescriptionOwner.setText(ownerOperationDomain.getDescription());
-        textViewDescriptionGroup.setText(groupOperationDomain.getDescription());
-        textViewDescriptionOther.setText(otherOperationDomain.getDescription());
+        textViewDescriptionOwner.setText(ownerOperationModel.getDescription());
+        textViewDescriptionGroup.setText(groupOperationModel.getDescription());
+        textViewDescriptionOther.setText(otherOperationModel.getDescription());
 
         /** assign icons to expand and collapse statuses for operations **/
         textViewStatusIconOwner.setTypeface(null, Typeface.NORMAL);
@@ -285,9 +285,9 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
         //appCompatCheckBoxAllOperations.setChecked(isAllOperationsChecked());
 
         /** update the owner, group and other operation checkboxes **/
-        appCompatCheckBoxOperationOwner.setChecked(ownerOperationDomain.isState());
-        appCompatCheckBoxOperationGroup.setChecked(groupOperationDomain.isState());
-        appCompatCheckBoxOperationOther.setChecked(otherOperationDomain.isState());
+        //appCompatCheckBoxOperationOwner.setChecked(ownerOperationModel.isState());
+        //appCompatCheckBoxOperationGroup.setChecked(groupOperationModel.isState());
+        //appCompatCheckBoxOperationOther.setChecked(otherOperationModel.isState());
 
         /** check whether all statuses are checked **/
         appCompatCheckBoxAllOwnerStatuses.setChecked(isAllStatusOwnerChecked());
@@ -303,93 +303,93 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
             @Override
             public void onClick(View v) {
                 if (appCompatCheckBoxAllOperations.isChecked()) {
-                    /** check whether owner operation is either modified or not **/
-                    if (!operationDomains[OWNER].isState())
-                        ownerOperationDomain.setDirty(true);
-                    else
-                        ownerOperationDomain.setDirty(false);
-                    ownerOperationDomain.setState(true);
-
-                    /** check whether group operation is either modified or not **/
-                    if (!operationDomains[GROUP].isState())
-                        groupOperationDomain.setDirty(true);
-                    else
-                        groupOperationDomain.setDirty(false);
-                    groupOperationDomain.setState(true);
-
-                    /** check whether other operation is either modified or not **/
-                    if (!operationDomains[OTHER].isState())
-                        otherOperationDomain.setDirty(true);
-                    else
-                        otherOperationDomain.setDirty(false);
-                    otherOperationDomain.setState(true);
+//                    /** check whether owner operation is either modified or not **/
+//                    if (!operationModels[OWNER].isState())
+//                        ownerOperationModel.setDirty(true);
+//                    else
+//                        ownerOperationModel.setDirty(false);
+//                    ownerOperationModel.setState(true);
+//
+//                    /** check whether group operation is either modified or not **/
+//                    if (!operationModels[GROUP].isState())
+//                        groupOperationModel.setDirty(true);
+//                    else
+//                        groupOperationModel.setDirty(false);
+//                    groupOperationModel.setState(true);
+//
+//                    /** check whether other operation is either modified or not **/
+//                    if (!operationModels[OTHER].isState())
+//                        otherOperationModel.setDirty(true);
+//                    else
+//                        otherOperationModel.setDirty(false);
+//                    otherOperationModel.setState(true);
 
                     /** update all the status checkboxes **/
-                    for (int i = 0; i < statusDomains[0].length; i++) {
+                    for (int i = 0; i < statusModels[0].length; i++) {
                         /** owner statuses **/
-                        //-statusOwnerDomains.get(i).setState(statusDomains[OWNER][i].isState());
-                        //-statusOwnerDomains.get(i).setDirty(statusDomains[OWNER][i].isDirty());
+                        //-statusOwnerModels.get(i).setState(statusModels[OWNER][i].isState());
+                        //-statusOwnerModels.get(i).setDirty(statusModels[OWNER][i].isDirty());
 
                         /** group statuses **/
-                        //-statusGroupDomains.get(i).setState(statusDomains[GROUP][i].isState());
-                        //-statusGroupDomains.get(i).setDirty(statusDomains[GROUP][i].isDirty());
+                        //-statusGroupModels.get(i).setState(statusModels[GROUP][i].isState());
+                        //-statusGroupModels.get(i).setDirty(statusModels[GROUP][i].isDirty());
 
                         /** other statuses **/
-                        //-statusOtherDomains.get(i).setState(statusDomains[OTHER][i].isState());
-                        //-statusOtherDomains.get(i).setDirty(statusDomains[OTHER][i].isDirty());
+                        //-statusOtherModels.get(i).setState(statusModels[OTHER][i].isState());
+                        //-statusOtherModels.get(i).setDirty(statusModels[OTHER][i].isDirty());
                     }
 
                 } else {
                     /** check whether owner operation is either modified or not **/
-                    if (operationDomains[OWNER].isState())
-                        ownerOperationDomain.setDirty(true);
-                    else
-                        ownerOperationDomain.setDirty(false);
-                    ownerOperationDomain.setState(false);
-
-                    /** check whether group operation is either modified or not **/
-                    if (operationDomains[GROUP].isState())
-                        groupOperationDomain.setDirty(true);
-                    else
-                        groupOperationDomain.setDirty(false);
-                    groupOperationDomain.setState(false);
-
-                    /** check whether other operation is either modified or not **/
-                    if (operationDomains[OTHER].isState())
-                        otherOperationDomain.setDirty(true);
-                    else
-                        otherOperationDomain.setDirty(false);
-                    otherOperationDomain.setState(false);
+//                    if (operationModels[OWNER].isState())
+//                        ownerOperationModel.setDirty(true);
+//                    else
+//                        ownerOperationModel.setDirty(false);
+//                    ownerOperationModel.setState(false);
+//
+//                    /** check whether group operation is either modified or not **/
+//                    if (operationModels[GROUP].isState())
+//                        groupOperationModel.setDirty(true);
+//                    else
+//                        groupOperationModel.setDirty(false);
+//                    groupOperationModel.setState(false);
+//
+//                    /** check whether other operation is either modified or not **/
+//                    if (operationModels[OTHER].isState())
+//                        otherOperationModel.setDirty(true);
+//                    else
+//                        otherOperationModel.setDirty(false);
+//                    otherOperationModel.setState(false);
 
                     /** unchecking all operations implies removing all statuses **/
-                    for (int i = 0; i < statusDomains[0].length; i++) {
+                    for (int i = 0; i < statusModels[0].length; i++) {
                         /** owner statuses **/
-                        /*if (statusDomains[OWNER][i].isState())
-                            statusOwnerDomains.get(i).setDirty(true);
+                        /*if (statusModels[OWNER][i].isState())
+                            statusOwnerModels.get(i).setDirty(true);
                         else
-                            statusOwnerDomains.get(i).setDirty(false);
-                        statusOwnerDomains.get(i).setState(false);*/
+                            statusOwnerModels.get(i).setDirty(false);
+                        statusOwnerModels.get(i).setState(false);*/
 
                         /** group statuses **/
-                        /*if (statusDomains[GROUP][i].isState())
-                            statusGroupDomains.get(i).setDirty(true);
+                        /*if (statusModels[GROUP][i].isState())
+                            statusGroupModels.get(i).setDirty(true);
                         else
-                            statusGroupDomains.get(i).setDirty(false);
-                        statusGroupDomains.get(i).setState(false);*/
+                            statusGroupModels.get(i).setDirty(false);
+                        statusGroupModels.get(i).setState(false);*/
 
                         /** other statuses **/
-                        /*if (statusDomains[OTHER][i].isState())
-                            statusOtherDomains.get(i).setDirty(true);
+                        /*if (statusModels[OTHER][i].isState())
+                            statusOtherModels.get(i).setDirty(true);
                         else
-                            statusOtherDomains.get(i).setDirty(false);
-                        statusOtherDomains.get(i).setState(false);*/
+                            statusOtherModels.get(i).setDirty(false);
+                        statusOtherModels.get(i).setState(false);*/
                     }
                 }
 
                 /** update the owner, group and other operation checkboxes **/
-                appCompatCheckBoxOperationOwner.setChecked(ownerOperationDomain.isState());
-                appCompatCheckBoxOperationGroup.setChecked(groupOperationDomain.isState());
-                appCompatCheckBoxOperationOther.setChecked(otherOperationDomain.isState());
+                //appCompatCheckBoxOperationOwner.setChecked(ownerOperationModel.isState());
+                //appCompatCheckBoxOperationGroup.setChecked(groupOperationModel.isState());
+                //appCompatCheckBoxOperationOther.setChecked(otherOperationModel.isState());
 
                 statusOwnerTreeAdapter.notifyDataSetChanged();
                 statusGroupTreeAdapter.notifyDataSetChanged();
@@ -404,52 +404,52 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
         appCompatCheckBoxOperationOwner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (((CheckBox) view).isChecked()) {
-                    if (!operationDomains[OWNER].isState())
-                        ownerOperationDomain.setDirty(true);
-                    else
-                        ownerOperationDomain.setDirty(false);
-                    ownerOperationDomain.setState(true);
-
-                    /** set the owner statuses to the database default values **/
-                    for (int i = 0; i < statusDomains[OWNER].length; i++) {
-                        //statusOwnerDomains.get(i).setState(statusDomains[OWNER][i].isState());
-                        //statusOwnerDomains.get(i).setDirty(statusDomains[OWNER][i].isDirty());
-                    }
-
-                } else {
-                    if (operationDomains[OWNER].isState())
-                        ownerOperationDomain.setDirty(true);
-                    else
-                        ownerOperationDomain.setDirty(false);
-                    ownerOperationDomain.setState(false);
-
-                    /** disable the owner statuses due to owner operation being disabled **/
-                    appCompatCheckBoxAllOwnerStatuses.setChecked(false);
-
-                    /*for (int i = 0; i < statusDomains[OWNER].length; i++) {
-                        if (statusDomains[OWNER][i].isState())
-                            statusOwnerDomains.get(i).setDirty(true);
-                        else
-                            statusOwnerDomains.get(i).setDirty(false);
-                        statusOwnerDomains.get(i).setState(false);
-                    }*/
-                }
-
-                /** refresh a owner status adapter **/
-                statusOwnerTreeAdapter.notifyDataSetChanged();
-
-                /** check the all operation checkbox if all operations are checked **/
-                if (appCompatCheckBoxAllOperations != null) {
-                    if (isAllOperationsChecked()) {
-                        appCompatCheckBoxAllOperations.setChecked(true);
-                    } else {
-                        appCompatCheckBoxAllOperations.setChecked(false);
-                    }
-                }
-
-                /** refresh permissions after the update **/
-                //onRefreshPermissions();
+//                if (((CheckBox) view).isChecked()) {
+//                    if (!operationModels[OWNER].isState())
+//                        ownerOperationModel.setDirty(true);
+//                    else
+//                        ownerOperationModel.setDirty(false);
+//                    ownerOperationModel.setState(true);
+//
+//                    /** set the owner statuses to the database default values **/
+//                    for (int i = 0; i < statusModels[OWNER].length; i++) {
+//                        //statusOwnerModels.get(i).setState(statusModels[OWNER][i].isState());
+//                        //statusOwnerModels.get(i).setDirty(statusModels[OWNER][i].isDirty());
+//                    }
+//
+//                } else {
+//                    if (operationModels[OWNER].isState())
+//                        ownerOperationModel.setDirty(true);
+//                    else
+//                        ownerOperationModel.setDirty(false);
+//                    ownerOperationModel.setState(false);
+//
+//                    /** disable the owner statuses due to owner operation being disabled **/
+//                    appCompatCheckBoxAllOwnerStatuses.setChecked(false);
+//
+//                    /*for (int i = 0; i < statusModels[OWNER].length; i++) {
+//                        if (statusModels[OWNER][i].isState())
+//                            statusOwnerModels.get(i).setDirty(true);
+//                        else
+//                            statusOwnerModels.get(i).setDirty(false);
+//                        statusOwnerModels.get(i).setState(false);
+//                    }*/
+//                }
+//
+//                /** refresh a owner status adapter **/
+//                statusOwnerTreeAdapter.notifyDataSetChanged();
+//
+//                /** check the all operation checkbox if all operations are checked **/
+//                if (appCompatCheckBoxAllOperations != null) {
+//                    if (isAllOperationsChecked()) {
+//                        appCompatCheckBoxAllOperations.setChecked(true);
+//                    } else {
+//                        appCompatCheckBoxAllOperations.setChecked(false);
+//                    }
+//                }
+//
+//                /** refresh permissions after the update **/
+//                //onRefreshPermissions();
             }
         });
 
@@ -458,32 +458,32 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
             @Override
             public void onClick(View view) {
                 if (((CheckBox) view).isChecked()) {
-                    if (!operationDomains[GROUP].isState()) {
-                        groupOperationDomain.setDirty(true);
-                    }
-                    groupOperationDomain.setState(true);
-
-                    /** set the owner statuses to the database default values **/
-                    for (int i = 0; i < statusDomains[GROUP].length; i++) {
-                        //statusGroupDomains.get(i).setState(statusDomains[GROUP][i].isState());
-                        //statusGroupDomains.get(i).setDirty(statusDomains[GROUP][i].isDirty());
-                    }
-                } else {
-                    if (operationDomains[GROUP].isState()) {
-                        groupOperationDomain.setDirty(true);
-                    }
-                    groupOperationDomain.setState(false);
-
-                    /** disable the owner statuses due to owner operation being disabled **/
-                    appCompatCheckBoxAllGroupStatuses.setChecked(false);
-
-                    for (int i = 0; i < statusDomains[GROUP].length; i++) {
-                        /*if (statusDomains[GROUP][i].isState())
-                            statusGroupDomains.get(i).setDirty(true);
-                        else
-                            statusGroupDomains.get(i).setDirty(false);
-                        statusGroupDomains.get(i).setState(false);*/
-                    }
+//                    if (!operationModels[GROUP].isState()) {
+//                        groupOperationModel.setDirty(true);
+//                    }
+//                    groupOperationModel.setState(true);
+//
+//                    /** set the owner statuses to the database default values **/
+//                    for (int i = 0; i < statusModels[GROUP].length; i++) {
+//                        //statusGroupModels.get(i).setState(statusModels[GROUP][i].isState());
+//                        //statusGroupModels.get(i).setDirty(statusModels[GROUP][i].isDirty());
+//                    }
+//                } else {
+//                    if (operationModels[GROUP].isState()) {
+//                        groupOperationModel.setDirty(true);
+//                    }
+//                    groupOperationModel.setState(false);
+//
+//                    /** disable the owner statuses due to owner operation being disabled **/
+//                    appCompatCheckBoxAllGroupStatuses.setChecked(false);
+//
+//                    for (int i = 0; i < statusModels[GROUP].length; i++) {
+//                        /*if (statusModels[GROUP][i].isState())
+//                            statusGroupModels.get(i).setDirty(true);
+//                        else
+//                            statusGroupModels.get(i).setDirty(false);
+//                        statusGroupModels.get(i).setState(false);*/
+//                    }
                 }
 
                 /** refresh a group status adapter **/
@@ -507,34 +507,34 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
         appCompatCheckBoxOperationOther.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (((CheckBox) view).isChecked()) {
-                    if (!operationDomains[OTHER].isState()) {
-                        otherOperationDomain.setDirty(true);
-                    }
-                    otherOperationDomain.setState(true);
-
-                    /** set the owner statuses to the database default values **/
-                    for (int i = 0; i < statusDomains[OTHER].length; i++) {
-                        //statusOtherDomains.get(i).setState(statusDomains[OTHER][i].isState());
-                        //statusOtherDomains.get(i).setDirty(statusDomains[OTHER][i].isDirty());
-                    }
-                } else {
-                    if (operationDomains[OTHER].isState()) {
-                        otherOperationDomain.setDirty(true);
-                    }
-                    otherOperationDomain.setState(false);
-
-                    /** disable the owner statuses due to owner operation being disabled **/
-                    appCompatCheckBoxAllOtherStatuses.setChecked(false);
-
-                    for (int i = 0; i < statusDomains[OTHER].length; i++) {
-                        /*if (statusDomains[OTHER][i].isState())
-                            statusOtherDomains.get(i).setDirty(true);
-                        else
-                            statusOtherDomains.get(i).setDirty(false);
-                        statusOtherDomains.get(i).setState(false);*/
-                    }
-                }
+//                if (((CheckBox) view).isChecked()) {
+//                    if (!operationModels[OTHER].isState()) {
+//                        otherOperationModel.setDirty(true);
+//                    }
+//                    otherOperationModel.setState(true);
+//
+//                    /** set the owner statuses to the database default values **/
+//                    for (int i = 0; i < statusModels[OTHER].length; i++) {
+//                        //statusOtherModels.get(i).setState(statusModels[OTHER][i].isState());
+//                        //statusOtherModels.get(i).setDirty(statusModels[OTHER][i].isDirty());
+//                    }
+//                } else {
+//                    if (operationModels[OTHER].isState()) {
+//                        otherOperationModel.setDirty(true);
+//                    }
+//                    otherOperationModel.setState(false);
+//
+//                    /** disable the owner statuses due to owner operation being disabled **/
+//                    appCompatCheckBoxAllOtherStatuses.setChecked(false);
+//
+//                    for (int i = 0; i < statusModels[OTHER].length; i++) {
+//                        /*if (statusModels[OTHER][i].isState())
+//                            statusOtherModels.get(i).setDirty(true);
+//                        else
+//                            statusOtherModels.get(i).setDirty(false);
+//                        statusOtherModels.get(i).setState(false);*/
+//                    }
+//                }
 
                 /** refresh a other status adapter **/
                 statusOtherTreeAdapter.notifyDataSetChanged();
@@ -558,37 +558,37 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
             @Override
             public void onClick(View v) {
                 if (appCompatCheckBoxAllOwnerStatuses.isChecked()) {
-                    for (int i = 0; i < statusDomains[OWNER].length; i++) {
-                        /*if (!statusDomains[OWNER][i].isState())
-                            statusOwnerDomains.get(i).setDirty(true);
-                        else
-                            statusOwnerDomains.get(i).setDirty(false);
-                        statusOwnerDomains.get(i).setState(true);*/
-                    }
-
-                    if (!operationDomains[OWNER].isState())
-                        ownerOperationDomain.setDirty(true);
-                    else
-                        ownerOperationDomain.setDirty(false);
-                    ownerOperationDomain.setState(true);
-                } else {
-                    for (int i = 0; i < statusDomains[OWNER].length; i++) {
-                        /*if (statusDomains[OWNER][i].isState())
-                            statusOwnerDomains.get(i).setDirty(true);
-                        else
-                            statusOwnerDomains.get(i).setDirty(false);
-                        statusOwnerDomains.get(i).setState(statusDomains[OWNER][i].isState());*/
-                    }
-
-                    if (operationDomains[OWNER].isState())
-                        ownerOperationDomain.setDirty(true);
-                    else
-                        ownerOperationDomain.setDirty(false);
-                    ownerOperationDomain.setState(operationDomains[OWNER].isState());
+//                    for (int i = 0; i < statusModels[OWNER].length; i++) {
+//                        /*if (!statusModels[OWNER][i].isState())
+//                            statusOwnerModels.get(i).setDirty(true);
+//                        else
+//                            statusOwnerModels.get(i).setDirty(false);
+//                        statusOwnerModels.get(i).setState(true);*/
+//                    }
+//
+//                    if (!operationModels[OWNER].isState())
+//                        ownerOperationModel.setDirty(true);
+//                    else
+//                        ownerOperationModel.setDirty(false);
+//                    ownerOperationModel.setState(true);
+//                } else {
+//                    for (int i = 0; i < statusModels[OWNER].length; i++) {
+//                        /*if (statusModels[OWNER][i].isState())
+//                            statusOwnerModels.get(i).setDirty(true);
+//                        else
+//                            statusOwnerModels.get(i).setDirty(false);
+//                        statusOwnerModels.get(i).setState(statusModels[OWNER][i].isState());*/
+//                    }
+//
+//                    if (operationModels[OWNER].isState())
+//                        ownerOperationModel.setDirty(true);
+//                    else
+//                        ownerOperationModel.setDirty(false);
+//                    ownerOperationModel.setState(operationModels[OWNER].isState());
                 }
 
                 /** check owner operation **/
-                appCompatCheckBoxOperationOwner.setChecked(ownerOperationDomain.isState());
+                //appCompatCheckBoxOperationOwner.setChecked(ownerOperationModel.isState());
 
                 /** check the all operation checkbox if all operations are checked **/
                 if (appCompatCheckBoxAllOperations != null) {
@@ -615,37 +615,37 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
             @Override
             public void onClick(View v) {
                 if (appCompatCheckBoxAllGroupStatuses.isChecked()) {
-                    for (int i = 0; i < statusDomains[GROUP].length; i++) {
-                        /*if (!statusDomains[GROUP][i].isState())
-                            statusGroupDomains.get(i).setDirty(true);
+                    for (int i = 0; i < statusModels[GROUP].length; i++) {
+                        /*if (!statusModels[GROUP][i].isState())
+                            statusGroupModels.get(i).setDirty(true);
                         else
-                            statusGroupDomains.get(i).setDirty(false);
-                        statusGroupDomains.get(i).setState(true);*/
+                            statusGroupModels.get(i).setDirty(false);
+                        statusGroupModels.get(i).setState(true);*/
                     }
 
-                    if (!operationDomains[GROUP].isState())
-                        groupOperationDomain.setDirty(true);
-                    else
-                        groupOperationDomain.setDirty(false);
-                    groupOperationDomain.setState(true);
+//                    if (!operationModels[GROUP].isState())
+//                        groupOperationModel.setDirty(true);
+//                    else
+//                        groupOperationModel.setDirty(false);
+//                    groupOperationModel.setState(true);
                 } else {
-                    for (int i = 0; i < statusDomains[GROUP].length; i++) {
-                        /*if (statusDomains[GROUP][i].isState())
-                            statusGroupDomains.get(i).setDirty(true);
+                    for (int i = 0; i < statusModels[GROUP].length; i++) {
+                        /*if (statusModels[GROUP][i].isState())
+                            statusGroupModels.get(i).setDirty(true);
                         else
-                            statusGroupDomains.get(i).setDirty(false);
-                        statusGroupDomains.get(i).setState(statusDomains[GROUP][i].isState());*/
+                            statusGroupModels.get(i).setDirty(false);
+                        statusGroupModels.get(i).setState(statusModels[GROUP][i].isState());*/
                     }
 
-                    if (operationDomains[GROUP].isState())
-                        groupOperationDomain.setDirty(true);
-                    else
-                        groupOperationDomain.setDirty(false);
-                    groupOperationDomain.setState(operationDomains[GROUP].isState());
+//                    if (operationModels[GROUP].isState())
+//                        groupOperationModel.setDirty(true);
+//                    else
+//                        groupOperationModel.setDirty(false);
+//                    groupOperationModel.setState(operationModels[GROUP].isState());
                 }
 
                 /** check group operation **/
-                appCompatCheckBoxOperationGroup.setChecked(groupOperationDomain.isState());
+                //appCompatCheckBoxOperationGroup.setChecked(groupOperationModel.isState());
 
                 /** check the all operation checkbox if all operations are checked **/
                 if (appCompatCheckBoxAllOperations != null) {
@@ -673,37 +673,37 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
             @Override
             public void onClick(View v) {
                 if (appCompatCheckBoxAllOtherStatuses.isChecked()) {
-                    for (int i = 0; i < statusDomains[OTHER].length; i++) {
-                        /*if (!statusDomains[OTHER][i].isState())
-                            statusOtherDomains.get(i).setDirty(true);
+                    for (int i = 0; i < statusModels[OTHER].length; i++) {
+                        /*if (!statusModels[OTHER][i].isState())
+                            statusOtherModels.get(i).setDirty(true);
                         else
-                            statusOtherDomains.get(i).setDirty(false);
-                        statusOtherDomains.get(i).setState(true);*/
+                            statusOtherModels.get(i).setDirty(false);
+                        statusOtherModels.get(i).setState(true);*/
                     }
 
-                    if (!operationDomains[OTHER].isState())
-                        otherOperationDomain.setDirty(true);
-                    else
-                        otherOperationDomain.setDirty(false);
-                    otherOperationDomain.setState(true);
+//                    if (!operationModels[OTHER].isState())
+//                        otherOperationModel.setDirty(true);
+//                    else
+//                        otherOperationModel.setDirty(false);
+//                    otherOperationModel.setState(true);
                 } else {
-                    for (int i = 0; i < statusDomains[OTHER].length; i++) {
-                        /*if (statusDomains[OTHER][i].isState())
-                            statusOtherDomains.get(i).setDirty(true);
+                    for (int i = 0; i < statusModels[OTHER].length; i++) {
+                        /*if (statusModels[OTHER][i].isState())
+                            statusOtherModels.get(i).setDirty(true);
                         else
-                            statusOtherDomains.get(i).setDirty(false);
-                        statusOtherDomains.get(i).setState(statusDomains[OTHER][i].isState());*/
+                            statusOtherModels.get(i).setDirty(false);
+                        statusOtherModels.get(i).setState(statusModels[OTHER][i].isState());*/
                     }
 
-                    if (operationDomains[OTHER].isState())
-                        otherOperationDomain.setDirty(true);
-                    else
-                        otherOperationDomain.setDirty(false);
-                    otherOperationDomain.setState(operationDomains[OTHER].isState());
+//                    if (operationModels[OTHER].isState())
+//                        otherOperationModel.setDirty(true);
+//                    else
+//                        otherOperationModel.setDirty(false);
+//                    otherOperationModel.setState(operationModels[OTHER].isState());
                 }
 
                 /** check group operation **/
-                appCompatCheckBoxOperationOther.setChecked(otherOperationDomain.isState());
+                //appCompatCheckBoxOperationOther.setChecked(otherOperationModel.isState());
 
                 /** check the all operation checkbox if all operations are checked **/
                 if (appCompatCheckBoxAllOperations != null) {
@@ -774,23 +774,26 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
         /** create adapters for owner, group and other statuses **/
         /*********************************************************/
 
-        statusOwnerTreeAdapter = new cStatusTreeAdapter(getContext(),
-                privilegeID, entityDomain, ownerOperationDomain, statusOwnerDomains,
-                permissionDomains, operationDomains[OWNER], statusDomains[OWNER],
-                appCompatCheckBoxOperationOwner, appCompatCheckBoxAllOwnerStatuses,
-                cOperationsFragment.this);
+        statusOwnerTreeAdapter = null;
+//                new cStatusTreeAdapter(getContext(),
+//                privilegeID, entityModel, ownerOperationModel, statusOwnerModels,
+//                permissionModels, operationModels[OWNER], statusModels[OWNER],
+//                appCompatCheckBoxOperationOwner, appCompatCheckBoxAllOwnerStatuses,
+//                cOperationsFragment.this);
 
-        statusGroupTreeAdapter = new cStatusTreeAdapter(getContext(),
-                privilegeID, entityDomain, groupOperationDomain, statusGroupDomains,
-                permissionDomains, operationDomains[GROUP], statusDomains[GROUP],
-                appCompatCheckBoxOperationGroup, appCompatCheckBoxAllGroupStatuses,
-                cOperationsFragment.this);
+        statusGroupTreeAdapter = null;
+//                new cStatusTreeAdapter(getContext(),
+//                privilegeID, entityModel, groupOperationModel, statusGroupModels,
+//                permissionModels, operationModels[GROUP], statusModels[GROUP],
+//                appCompatCheckBoxOperationGroup, appCompatCheckBoxAllGroupStatuses,
+//                cOperationsFragment.this);
 
-        statusOtherTreeAdapter = new cStatusTreeAdapter(getContext(),
-                privilegeID, entityDomain, otherOperationDomain, statusOtherDomains,
-                permissionDomains, operationDomains[OTHER], statusDomains[OTHER],
-                appCompatCheckBoxOperationOther, appCompatCheckBoxAllOtherStatuses,
-                cOperationsFragment.this);
+        statusOtherTreeAdapter = null;
+//                new cStatusTreeAdapter(getContext(),
+//                privilegeID, entityModel, otherOperationModel, statusOtherModels,
+//                permissionModels, operationModels[OTHER], statusModels[OTHER],
+//                appCompatCheckBoxOperationOther, appCompatCheckBoxAllOtherStatuses,
+//                cOperationsFragment.this);
 
         /***************************************************************/
         /** attach the status list to owner, group and other adapters **/
@@ -819,21 +822,22 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
      * find if all values are checked
      **/
     public boolean isAllOperationsChecked() {
-        if (ownerOperationDomain.isState() &&
-                groupOperationDomain.isState() &&
-                otherOperationDomain.isState()) {
-            return true;
-        } else {
-            return false;
-        }
+//        if (ownerOperationModel.isState() &&
+//                groupOperationModel.isState() &&
+//                otherOperationModel.isState()) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+        return true;
     }
 
     /**
      * find if all own statuses are checked
      **/
     public boolean isAllStatusOwnerChecked() {
-        for (int i = 0; i < statusOwnerDomains.size(); i++) {
-            /*if (!statusOwnerDomains.get(i).isState()) {
+        for (int i = 0; i < statusOwnerModels.size(); i++) {
+            /*if (!statusOwnerModels.get(i).isState()) {
                 return false;
             }*/
         }
@@ -844,8 +848,8 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
      * find if all group statuses are checked
      **/
     public boolean isAllStatusGroupChecked() {
-        for (int i = 0; i < statusGroupDomains.size(); i++) {
-            /*if (!statusGroupDomains.get(i).isState()) {
+        for (int i = 0; i < statusGroupModels.size(); i++) {
+            /*if (!statusGroupModels.get(i).isState()) {
                 return false;
             }*/
         }
@@ -856,8 +860,8 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
      * find if all other statuses are checked
      **/
     public boolean isAllStatusOtherChecked() {
-        for (int i = 0; i < statusOtherDomains.size(); i++) {
-            /*if (!statusOtherDomains.get(i).isState()) {
+        for (int i = 0; i < statusOtherModels.size(); i++) {
+            /*if (!statusOtherModels.get(i).isState()) {
                 return false;
             }*/
         }
@@ -867,33 +871,33 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
     /**
      * return a permission domain
      **/
-    public cPermissionDomain getPermissionByIDs(int privilegeID, int entityID, int typeID,
+    public cPermissionModel getPermissionByIDs(int privilegeID, int entityID, int typeID,
                                                 int operationID, int statusID) {
-        cPermissionDomain permissionDomain = null;
-        for (int i = 0; i < permissionDomains.size(); i++) {
-            /*if ((permissionDomains.get(i).getPrivilegeDomain().getPrivilegeID() == privilegeID) &&
-                    (permissionDomains.get(i).getEntityDomain().getEntityID() == entityID) &&
-                    (permissionDomains.get(i).getEntityDomain().getTypeID() == typeID) &&
-                    (permissionDomains.get(i).getOperationDomain().getOperationID() == operationID) &&
-                    (permissionDomains.get(i).getStatusDomain().getStatusID() == statusID))*/ {
+        cPermissionModel permissionModel = null;
+        for (int i = 0; i < permissionModels.size(); i++) {
+            /*if ((permissionModels.get(i).getPrivilegeModel().getPrivilegeID() == privilegeID) &&
+                    (permissionModels.get(i).getEntityModel().getEntityID() == entityID) &&
+                    (permissionModels.get(i).getEntityModel().getTypeID() == typeID) &&
+                    (permissionModels.get(i).getOperationModel().getOperationID() == operationID) &&
+                    (permissionModels.get(i).getStatusModel().getStatusID() == statusID))*/ {
 
-                permissionDomain = permissionDomains.get(i);
+                permissionModel = permissionModels.get(i);
 
-                return permissionDomain;
+                return permissionModel;
             }
         }
-        return permissionDomain;
+        return permissionModel;
     }
 
     /**
      * is there a change in common permission attributes
      **/
-    public boolean isPermissionDirty(cPermissionDomain originalDomain, cPermissionDomain modifiedDomain) {
-        if (((originalDomain.getOwnerID() == modifiedDomain.getOwnerID()) &&
-                (originalDomain.getOrgID() == modifiedDomain.getOrgID()) &&
-                (originalDomain.getGroupBITS() == modifiedDomain.getGroupBITS()) &&
-                (originalDomain.getPermsBITS() == modifiedDomain.getPermsBITS()) &&
-                (originalDomain.getStatusBITS() == modifiedDomain.getStatusBITS()))) {
+    public boolean isPermissionDirty(cPermissionModel originalModel, cPermissionModel modifiedModel) {
+        if (((originalModel.getOwnerID() == modifiedModel.getOwnerID()) &&
+                (originalModel.getOrgID() == modifiedModel.getOrgID()) &&
+                (originalModel.getGroupBITS() == modifiedModel.getGroupBITS()) &&
+                (originalModel.getPermsBITS() == modifiedModel.getPermsBITS()) &&
+                (originalModel.getStatusBITS() == modifiedModel.getStatusBITS()))) {
 
             return false;
         } else {
@@ -902,173 +906,169 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
     }
 
 
-    @Override
+//    @Override
     public void onRefreshTreeAdapter() {
 
     }
 
-    @Override
-    public void onRefreshPermissions() {
-        if (statusDomains != null) {
-            /** consolidate the modified operations of the permission **/
-            create_perms = new HashSet<>();
-            delete_perms = new HashSet<>();
+//    @Override
+//    public void onRefreshPermissions() {
+//        if (statusModels != null) {
+//            /** consolidate the modified operations of the permission **/
+//            create_perms = new HashSet<>();
+//            delete_perms = new HashSet<>();
+//
+//            ops[OWNER] = ownerOperationModel;
+//            ops[GROUP] = groupOperationModel;
+//            ops[OTHER] = otherOperationModel;
+//
+//            for (int i = 0; i < statusModels[OWNER].length; i++) {
+//                sts[OWNER][i] = statusOwnerModels.get(i);
+//                sts[GROUP][i] = statusGroupModels.get(i);
+//                sts[OTHER][i] = statusOtherModels.get(i);
+//            }
+//
+//            /** deal with change of part of composite key operationID and statusID **/
+//            for (int i = 0; i < ops.length; i++) {
+//                // populate privilege details
+//                cPermissionModel privilegeModel = new cPermissionModel();
+//                privilegeModel.setPrivilegeID(privilegeID);
+//
+//                // populate entity details
+//                cEntityModel tmpEntityModel = new cEntityModel();
+//                tmpEntityModel.setEntityID(entityModel.getEntityID());
+//                tmpEntityModel.setTypeID(entityModel.getTypeID());
+//
+//                // populate operation details
+//                cOperationModel operationModel = new cOperationModel();
+//                operationModel.setOperationID(ops[i].getOperationID());
+//
+//                for (int j = 0; j < sts[i].length; j++) {
+//                    /** if the state of operation or/and status are true and they are not in the
+//                     permission's table ==> CREATE (or ADD) **/
+//                    if ((((operationMask & ops[i].getOperationID()) != ops[i].getOperationID()) &&
+//                            ops[i].isState() && ops[i].isDirty()) /*||
+//                            (sts[i][j].isState() && sts[i][j].isDirty())*/) {
+//
+//                        /** keep current permission domain **/
+//                        //private cPermissionModel permissionModel;
+//
+//                        cPermissionModel permModel = new cPermissionModel();
+//
+//                        /** set the permission domain details **/
+//                        /*permModel.setPrivilegeModel(privilegeModel);
+//                        permModel.setEntityModel(tmpEntityModel);
+//                        permModel.setOperationModel(operationModel);
+//                        permModel.setStatusModel(new cStatusModel(sts[i][j]));*/
+//                        //permModel.setOwnerID(session.loadUserID());
+//                        //permModel.setOrgID(session.loadOrgID());
+//
+//                    /*Log.d(TAG, "CREATE => privilegeID = " +
+//                            permModel.getPrivilegeModel().getPrivilegeID() + ", entityID = " +
+//                            permModel.getEntityModel().getEntityID() + ", typeID = " +
+//                            permModel.getEntityModel().getTypeID() + ", operationID = " +
+//                            permModel.getOperationModel().getOperationID() + ", statusID = " +
+//                            permModel.getStatusModel().getStatusID() + ", ownerID = " +
+//                            permModel.getOwnerID() + ", organizationID = " +
+//                            permModel.getOrganizationID());*/
+//
+//                        /** add record in a create permission list to create **/
+//                        create_perms.add(permModel);
+//                    }
+//
+//                    // if the state is false and the operation is in the
+//                    // permission's table ==> DELETE => (((operationMask & opID) == opID) && !opState && isDirty)
+//                    if (((operationMask & ops[i].getOperationID()) == ops[i].getOperationID())/* &&
+//                            !sts[i][j].isState() && sts[i][j].isDirty()*/) {
+//                    /*Log.d(TAG, "DELETE => privilegeID = " +
+//                            privilegeID + ", entityID = " +
+//                            entityModel.getEntityID() + ", typeID = " +
+//                            entityModel.getTypeID() + ", operationID = " +
+//                            ops[i].getOperationID() + ", statusID = " +
+//                            sts[i][j].getStatusID());*/
+//
+//                        /** get the permission domain details to delete **/
+//                        cPermissionModel permModel = getPermissionByIDs(
+//                                privilegeID, entityModel.getEntityID(),
+//                                entityModel.getTypeID(), ops[i].getOperationID(),
+//                                sts[i][j].getStatusID());
+//
+//                        /** delete record in a delete permission list **/
+//                        delete_perms.add(permModel);
+//                    }
+//                }
+//            }
+//
+//            //Log.d(TAG, "CREATE => "+ gson.toJson(create_perms));
+//            //Log.d(TAG, "DELETE => "+ gson.toJson(delete_perms));
+//
+//            setCreate_perms(create_perms);
+//            setDelete_perms(delete_perms);
+//        }
+//    }
 
-            ops[OWNER] = ownerOperationDomain;
-            ops[GROUP] = groupOperationDomain;
-            ops[OTHER] = otherOperationDomain;
-
-            for (int i = 0; i < statusDomains[OWNER].length; i++) {
-                sts[OWNER][i] = statusOwnerDomains.get(i);
-                sts[GROUP][i] = statusGroupDomains.get(i);
-                sts[OTHER][i] = statusOtherDomains.get(i);
-            }
-
-            /** deal with change of part of composite key operationID and statusID **/
-            for (int i = 0; i < ops.length; i++) {
-                // populate privilege details
-                cPermissionDomain privilegeDomain = new cPermissionDomain();
-                privilegeDomain.setPrivilegeID(privilegeID);
-
-                // populate entity details
-                cEntityDomain tmpEntityDomain = new cEntityDomain();
-                tmpEntityDomain.setEntityID(entityDomain.getEntityID());
-                tmpEntityDomain.setTypeID(entityDomain.getTypeID());
-
-                // populate operation details
-                cOperationDomain operationDomain = new cOperationDomain();
-                operationDomain.setOperationID(ops[i].getOperationID());
-
-                for (int j = 0; j < sts[i].length; j++) {
-                    /** if the state of operation or/and status are true and they are not in the
-                     permission's table ==> CREATE (or ADD) **/
-                    if ((((operationMask & ops[i].getOperationID()) != ops[i].getOperationID()) &&
-                            ops[i].isState() && ops[i].isDirty()) /*||
-                            (sts[i][j].isState() && sts[i][j].isDirty())*/) {
-
-                        /** keep current permission domain **/
-                        //private cPermissionDomain permissionDomain;
-
-                        cPermissionDomain permDomain = new cPermissionDomain();
-
-                        /** set the permission domain details **/
-                        /*permDomain.setPrivilegeDomain(privilegeDomain);
-                        permDomain.setEntityDomain(tmpEntityDomain);
-                        permDomain.setOperationDomain(operationDomain);
-                        permDomain.setStatusDomain(new cStatusDomain(sts[i][j]));*/
-                        //permDomain.setOwnerID(session.loadUserID());
-                        //permDomain.setOrgID(session.loadOrgID());
-
-                    /*Log.d(TAG, "CREATE => privilegeID = " +
-                            permDomain.getPrivilegeDomain().getPrivilegeID() + ", entityID = " +
-                            permDomain.getEntityDomain().getEntityID() + ", typeID = " +
-                            permDomain.getEntityDomain().getTypeID() + ", operationID = " +
-                            permDomain.getOperationDomain().getOperationID() + ", statusID = " +
-                            permDomain.getStatusDomain().getStatusID() + ", ownerID = " +
-                            permDomain.getOwnerID() + ", organizationID = " +
-                            permDomain.getOrganizationID());*/
-
-                        /** add record in a create permission list to create **/
-                        create_perms.add(permDomain);
-                    }
-
-                    // if the state is false and the operation is in the
-                    // permission's table ==> DELETE => (((operationMask & opID) == opID) && !opState && isDirty)
-                    if (((operationMask & ops[i].getOperationID()) == ops[i].getOperationID())/* &&
-                            !sts[i][j].isState() && sts[i][j].isDirty()*/) {
-                    /*Log.d(TAG, "DELETE => privilegeID = " +
-                            privilegeID + ", entityID = " +
-                            entityDomain.getEntityID() + ", typeID = " +
-                            entityDomain.getTypeID() + ", operationID = " +
-                            ops[i].getOperationID() + ", statusID = " +
-                            sts[i][j].getStatusID());*/
-
-                        /** get the permission domain details to delete **/
-                        cPermissionDomain permDomain = getPermissionByIDs(
-                                privilegeID, entityDomain.getEntityID(),
-                                entityDomain.getTypeID(), ops[i].getOperationID(),
-                                sts[i][j].getStatusID());
-
-                        /** delete record in a delete permission list **/
-                        delete_perms.add(permDomain);
-                    }
-                }
-            }
-
-            //Log.d(TAG, "CREATE => "+ gson.toJson(create_perms));
-            //Log.d(TAG, "DELETE => "+ gson.toJson(delete_perms));
-
-            setCreate_perms(create_perms);
-            setDelete_perms(delete_perms);
-        }
-    }
 
 
-    @Override
-    public void onCreatePermissions(cStatusDomain statusDomain) {
-
-    }
-
-    @Override
-    public void onUpdatePermissions(cPermissionDomain originalDomain, cPermissionDomain modifiedDomain) {
+   // @Override
+    public void onUpdatePermissions(cPermissionModel originalModel, cPermissionModel modifiedModel) {
         // check whether the permission details from statuses
-        Log.d(TAG, "Owner = " + originalDomain.getOwnerID() +
-                ", Org. Owner = " + (originalDomain.getGroupBITS() & originalDomain.getOrgID()) +
-                ", Other Orgs. = " + (originalDomain.getGroupBITS() & ~originalDomain.getOrgID()) +
-                ", Permissions = " + originalDomain.getPermsBITS() +
-                ", Statuses = " + originalDomain.getStatusBITS() +
-                ", Created Date = " + originalDomain.getCreatedDate() +
-                ", Modified Date = " + originalDomain.getModifiedDate() +
-                ", Synced Date = " + originalDomain.getSyncedDate());
+        Log.d(TAG, "Owner = " + originalModel.getOwnerID() +
+                ", Org. Owner = " + (originalModel.getGroupBITS() & originalModel.getOrgID()) +
+                ", Other Orgs. = " + (originalModel.getGroupBITS() & ~originalModel.getOrgID()) +
+                ", Permissions = " + originalModel.getPermsBITS() +
+                ", Statuses = " + originalModel.getStatusBITS() +
+                ", Created Date = " + originalModel.getCreatedDate() +
+                ", Modified Date = " + originalModel.getModifiedDate() +
+                ", Synced Date = " + originalModel.getSyncedDate());
 
-        Log.d(TAG, "Owner = " + modifiedDomain.getOwnerID() +
-                ", Org. Owner = " + (modifiedDomain.getGroupBITS() & modifiedDomain.getOrgID()) +
-                ", Other Orgs. = " + (modifiedDomain.getGroupBITS() & ~modifiedDomain.getOrgID()) +
-                ", Permissions = " + modifiedDomain.getPermsBITS() +
-                ", Statuses = " + modifiedDomain.getStatusBITS() +
-                ", Created Date = " + modifiedDomain.getCreatedDate() +
-                ", Modified Date = " + modifiedDomain.getModifiedDate() +
-                ", Synced Date = " + modifiedDomain.getSyncedDate());
+        Log.d(TAG, "Owner = " + modifiedModel.getOwnerID() +
+                ", Org. Owner = " + (modifiedModel.getGroupBITS() & modifiedModel.getOrgID()) +
+                ", Other Orgs. = " + (modifiedModel.getGroupBITS() & ~modifiedModel.getOrgID()) +
+                ", Permissions = " + modifiedModel.getPermsBITS() +
+                ", Statuses = " + modifiedModel.getStatusBITS() +
+                ", Created Date = " + modifiedModel.getCreatedDate() +
+                ", Modified Date = " + modifiedModel.getModifiedDate() +
+                ", Synced Date = " + modifiedModel.getSyncedDate());
 
         update_perms = new HashSet<>();
 
-        if (isPermissionDirty(originalDomain, modifiedDomain)) {
-            update_perms.add(modifiedDomain);
+        if (isPermissionDirty(originalModel, modifiedModel)) {
+            update_perms.add(modifiedModel);
             Log.d(TAG, "UPDATE => "+ gson.toJson(update_perms));
         }
         setUpdate_perms(update_perms);
     }
 
-    public Set<cPermissionDomain> getCreate_perms() {
+    public Set<cPermissionModel> getCreate_perms() {
         return create_perms;
     }
 
-    public Set<cPermissionDomain> getUpdate_perms() {
+    public Set<cPermissionModel> getUpdate_perms() {
         return update_perms;
     }
 
-    public Set<cPermissionDomain> getDelete_perms() {
+    public Set<cPermissionModel> getDelete_perms() {
         return delete_perms;
     }
 
-    public void setCreate_perms(Set<cPermissionDomain> create_perms) {
+    public void setCreate_perms(Set<cPermissionModel> create_perms) {
         this.create_perms = create_perms;
     }
 
-    public void setUpdate_perms(Set<cPermissionDomain> update_perms) {
+    public void setUpdate_perms(Set<cPermissionModel> update_perms) {
         this.update_perms = update_perms;
     }
 
-    public void setDelete_perms(Set<cPermissionDomain> delete_perms) {
+    public void setDelete_perms(Set<cPermissionModel> delete_perms) {
         this.delete_perms = delete_perms;
     }
 
     /**
      * asynchronously create permission domains
      **/
-    public void createPermissions(ArrayList<cPermissionDomain> create_perms) {
+    public void createPermissions(ArrayList<cPermissionModel> create_perms) {
 
-        cPermParam param = new cPermParam(create_perms, null, null);
+        cPermParam param = new cPermParam(null, null, null);
 
         new AsyncTask<cPermParam, Void, Void>() {
             @Override
@@ -1092,9 +1092,9 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
     /**
      * asynchronously update permission domains
      **/
-    public void updatePermissions(ArrayList<cPermissionDomain> update_perms) {
+    public void updatePermissions(ArrayList<cPermissionModel> update_perms) {
 
-        cPermParam param = new cPermParam(null, update_perms, null);
+        cPermParam param = new cPermParam(null, null, null);
 
         new AsyncTask<cPermParam, Void, Void>() {
             @Override
@@ -1119,9 +1119,9 @@ public class cOperationsFragment extends Fragment implements iTreeAdapterCallbac
     /**
      * asynchronously delete permission domains
      **/
-    public void deletePermissions(ArrayList<cPermissionDomain> delete_perms) {
+    public void deletePermissions(ArrayList<cPermissionModel> delete_perms) {
 
-        cPermParam param = new cPermParam(null, null, delete_perms);
+        cPermParam param = new cPermParam(null, null, null);
 
         new AsyncTask<cPermParam, Void, Void>() {
             @Override

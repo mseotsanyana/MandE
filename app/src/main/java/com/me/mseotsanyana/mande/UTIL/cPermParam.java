@@ -1,6 +1,7 @@
 package com.me.mseotsanyana.mande.UTIL;
 
-import com.me.mseotsanyana.mande.BLL.domain.session.cPermissionDomain;
+
+import com.me.mseotsanyana.mande.BLL.model.session.cPermissionModel;
 
 import java.util.ArrayList;
 
@@ -9,13 +10,13 @@ import java.util.ArrayList;
  */
 
 public class cPermParam {
-    private ArrayList<cPermissionDomain> create_perms;
-    private ArrayList<cPermissionDomain> update_perms;
-    private ArrayList<cPermissionDomain> delete_perms;
+    private ArrayList<cPermissionModel> create_perms;
+    private ArrayList<cPermissionModel> update_perms;
+    private ArrayList<cPermissionModel> delete_perms;
 
-    public cPermParam(ArrayList<cPermissionDomain> create_perms,
-                      ArrayList<cPermissionDomain> update_perms,
-                      ArrayList<cPermissionDomain> delete_perms){
+    public cPermParam(ArrayList<cPermissionModel> create_perms,
+                      ArrayList<cPermissionModel> update_perms,
+                      ArrayList<cPermissionModel> delete_perms){
 
         this.setCreate_perms(create_perms);
         this.setUpdate_perms(update_perms);
@@ -23,27 +24,27 @@ public class cPermParam {
 
     }
 
-    public ArrayList<cPermissionDomain> getCreate_perms() {
+    public ArrayList<cPermissionModel> getCreate_perms() {
         return create_perms;
     }
 
-    public void setCreate_perms(ArrayList<cPermissionDomain> create_perms) {
+    public void setCreate_perms(ArrayList<cPermissionModel> create_perms) {
         this.create_perms = create_perms;
     }
 
-    public ArrayList<cPermissionDomain> getDelete_perms() {
+    public ArrayList<cPermissionModel> getDelete_perms() {
         return delete_perms;
     }
 
-    public void setDelete_perms(ArrayList<cPermissionDomain> delete_perms) {
+    public void setDelete_perms(ArrayList<cPermissionModel> delete_perms) {
         this.delete_perms = delete_perms;
     }
 
-    public ArrayList<cPermissionDomain> getUpdate_perms() {
+    public ArrayList<cPermissionModel> getUpdate_perms() {
         return update_perms;
     }
 
-    public void setUpdate_perms(ArrayList<cPermissionDomain> update_perms) {
+    public void setUpdate_perms(ArrayList<cPermissionModel> update_perms) {
         this.update_perms = update_perms;
     }
 }

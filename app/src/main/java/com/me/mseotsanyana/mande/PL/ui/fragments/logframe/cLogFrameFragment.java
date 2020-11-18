@@ -49,8 +49,8 @@ import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClic
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cLogFrameModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cOrganizationModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
 import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cLogFrameRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cMenuRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cSessionManagerImpl;
@@ -179,7 +179,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         expandableMenuItems = new LinkedHashMap<String, List<String>>();
         /* contains a tree of logframes */
         /* logframe data structures */
-        List<cTreeModel> logFrameTreeModels = new ArrayList<cTreeModel>();
+        List<cTreeModel> logFrameTreeModels = new ArrayList<>();
         /* shared preference organizations */
         sharedOrganizations = new ArrayList<>();
 
@@ -195,7 +195,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
 
         // setup recycler view adapter
         logFrameRecyclerViewAdapter = new cLogFrameAdapter(getActivity(), this,
-                logFrameTreeModels, getFragmentManager());
+                logFrameTreeModels);
     }
 
     private void navigationDrawer(View view) {
@@ -526,7 +526,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    /*=============================== REQUEST VIEW IMPLEMENTATION ================================*/
+    /******************* these functions get data from adapter to the presenter *******************/
 
     @Override
     public void onClickCreateLogFrame(cLogFrameModel logFrameModel) {
@@ -566,46 +566,80 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
 
     @Override
     public void onClickBMBLogFrame(int menuIndex, long logFrameID) {
-        String FLAG;
+        NavDirections action;
         switch (menuIndex) {
             case 0: // Impact Fragment
-
+                /* navigate from logframe to impact */
+                action = cLogFrameFragmentDirections.
+                        actionCLogFrameFragmentToCImpactFragment(logFrameID);
+                Navigation.findNavController(requireView()).navigate(action);
                 break;
             case 1: // Outcome Fragment
-
+                /* navigate from logframe to outcome */
+                action = cLogFrameFragmentDirections.
+                        actionCLogFrameFragmentToCOutcomeFragment(logFrameID);
+                Navigation.findNavController(requireView()).navigate(action);
                 break;
             case 2: // Output Fragment
-
+                /* navigate from logframe to output */
+                action = cLogFrameFragmentDirections.
+                        actionCLogFrameFragmentToCOutputFragment(logFrameID);
+                Navigation.findNavController(requireView()).navigate(action);
                 break;
             case 3: // Activity Fragment
-
+                /* navigate from logframe to activity */
+                action = cLogFrameFragmentDirections.
+                        actionCLogFrameFragmentToCActivityFragment(logFrameID);
+                Navigation.findNavController(requireView()).navigate(action);
                 break;
-
             case 4: // Input Fragment
-
+                /* navigate from logframe to input */
+                action = cLogFrameFragmentDirections.
+                        actionCLogFrameFragmentToCInputFragment(logFrameID);
+                Navigation.findNavController(requireView()).navigate(action);
                 break;
-
-            case 5: // AWPB Fragment
-
+            case 5: // Key Performance Question (KPQ) Fragment
+                /* navigate from logframe to question */
+                action = cLogFrameFragmentDirections.
+                        actionCLogFrameFragmentToCQuestionFragment(logFrameID);
+                Navigation.findNavController(requireView()).navigate(action);
                 break;
-
-            case 6: // Monitoring Fragment
-
+            case 6: // Key Performance Indicator (KPI) Fragment
+                /* navigate from logframe to indicator */
+                action = cLogFrameFragmentDirections.
+                        actionCLogFrameFragmentToCIndicatorFragment(logFrameID);
+                Navigation.findNavController(requireView()).navigate(action);
                 break;
-
-            case 7: // Evaluation Fragment
-
-                /* navigate from login to logframe */
-                NavDirections action = cLogFrameFragmentDirections.
+            case 7: // RAID Log Fragment
+                /* navigate from logframe to RAID */
+                action = cLogFrameFragmentDirections.
+                        actionCLogFrameFragmentToCRaidLogFragment(logFrameID);
+                Navigation.findNavController(requireView()).navigate(action);
+                break;
+            case 8: // AWPB Fragment
+                /* navigate from logframe to AWPB */
+                action = cLogFrameFragmentDirections.
+                        actionCLogFrameFragmentToCAWPBFragment(logFrameID);
+                Navigation.findNavController(requireView()).navigate(action);
+                break;
+            case 9: // Book Keeping Fragment
+                /* navigate from logframe to book keeping */
+                action = cLogFrameFragmentDirections.
+                        actionCLogFrameFragmentToCBookKeepingFragment(logFrameID);
+                Navigation.findNavController(requireView()).navigate(action);
+                break;
+            case 10: // Monitoring Fragment
+                /* navigate from logframe to monitoring */
+                action = cLogFrameFragmentDirections.
+                        actionCLogFrameFragmentToCMonitoringFragment(logFrameID);
+                Navigation.findNavController(requireView()).navigate(action);
+                break;
+            case 11: // Evaluation Fragment
+                /* navigate from logframe to evaluation */
+                action = cLogFrameFragmentDirections.
                         actionCLogFrameFragmentToCEvaluationFragment(logFrameID);
                 Navigation.findNavController(requireView()).navigate(action);
-
                 break;
-
-            case 8: // Risk Register Fragment
-
-                break;
-
             default:
                 break;
         }
@@ -636,21 +670,16 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
                                              ArrayList<cTreeModel> logFrameTreeModels) {
         /* populate navigation menu */
         menuItemTitles = new ArrayList<String>(expandableMenuItems.keySet());
-        /* logframe adapters */
         cExpandableListAdapter menuExpandableListAdapter = new cExpandableListAdapter(
                 requireActivity(), menuItemTitles, expandableMenuItems);
         menuExpandableListView.setAdapter(menuExpandableListAdapter);
 
+        /* logframe adapters */
         try {
-            logFrameRecyclerViewAdapter.notifyTreeModelChanged(logFrameTreeModels);
+            logFrameRecyclerViewAdapter.setTreeModel(logFrameTreeModels);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-
-        /* populate logframe list */
-        // populate the logframe list with data from database
-        //logFrameExpandableListAdapter.notifyDataSetChanged();
-        //drawerLayout.invalidate();
     }
 
     @Override

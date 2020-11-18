@@ -24,13 +24,13 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.me.mseotsanyana.mande.BLL.domain.session.cEntityDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cOperationDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cPermissionDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cUserDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserHandler;
+
+import com.me.mseotsanyana.mande.BLL.model.session.cEntityModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cOperationModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cPermissionModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cStatusModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iTreeAdapterCallback;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.cFontManager;
@@ -61,20 +61,20 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
 
     private Context context;
 
-    private ArrayList<cStatusDomain> listStatus;
-    private ArrayList<cStatusDomain> modifiedStatuses;
-    private ArrayList<cStatusDomain> filteredStatus;
-    private ArrayList<cPermissionDomain> permissionDomains;
+    private ArrayList<cStatusModel> listStatus;
+    private ArrayList<cStatusModel> modifiedStatuses;
+    private ArrayList<cStatusModel> filteredStatus;
+    private ArrayList<cPermissionModel> permissionModels;
 
-    private cOperationDomain origOperationDomain;
-    private cStatusDomain[] origStatusDomains;
+    private cOperationModel origOperationModel;
+    private cStatusModel[] origStatusModels;
 
     private int privilegeID;
-    private cEntityDomain entityDomain;
-    private cOperationDomain operationDomain;
-    private cStatusDomain statusDomain;
+    private cEntityModel entityModel;
+    private cOperationModel operationModel;
+    private cStatusModel statusModel;
 
-    private cUserHandler userHandler;
+    //private cUserHandler userHandler;
    // private cOrganizationHandler organizationHandler;
 
     private AppCompatCheckBox appCompatCheckBoxOperation;
@@ -99,12 +99,12 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
     final Gson gson = new Gson();
 
     public cStatusTreeAdapter(Context context,
-                              int privilegeID, cEntityDomain entityDomain,
-                              cOperationDomain operationDomain,
-                              ArrayList<cStatusDomain> listStatus,
-                              ArrayList<cPermissionDomain> permissionDomains,
-                              cOperationDomain origOperationDomain,
-                              cStatusDomain[] origStatusDomains,
+                              int privilegeID, cEntityModel entityModel,
+                              cOperationModel operationModel,
+                              ArrayList<cStatusModel> listStatus,
+                              ArrayList<cPermissionModel> permissionModels,
+                              cOperationModel origOperationModel,
+                              cStatusModel[] origStatusModels,
                               AppCompatCheckBox appCompatCheckBoxOperation,
                               AppCompatCheckBox appCompatCheckBoxAllStatuses,
                               iTreeAdapterCallback callback) {
@@ -116,14 +116,14 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
         this.modifiedStatuses = new ArrayList<>();
 
         this.privilegeID = privilegeID;
-        this.entityDomain = entityDomain;
-        this.permissionDomains = permissionDomains;
+        this.entityModel = entityModel;
+        this.permissionModels = permissionModels;
 
-        this.operationDomain = operationDomain;
-        this.origOperationDomain = origOperationDomain;
-        this.origStatusDomains = origStatusDomains;
+        this.operationModel = operationModel;
+        this.origOperationModel = origOperationModel;
+        this.origStatusModels = origStatusModels;
 
-        this.userHandler = null;//new cUserHandler(context, session);
+        //this.userHandler = null;//new cUserHandler(context, session);
         //this.organizationHandler = null;//new cOrganizationHandler(context, session);
 
         this.appCompatCheckBoxOperation = appCompatCheckBoxOperation;
@@ -156,31 +156,31 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
         SH.switchStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Switch sc = (Switch) buttonView;
-                statusDomain = (cStatusDomain) sc.getTag();
+                statusModel = (cStatusModel) sc.getTag();
 
-                if (isChecked) {
-                    if(origStatusDomains[position].isState() && !origStatusDomains[position].isDirty()) {
-                        statusDomain.setDirty(false);
-                    }else{
-                        statusDomain.setDirty(true);
-                    }
-                    statusDomain.setState(true);
-
-                    Log.d(TAG, "Name: "+statusDomain.getName()+
-                            ", State: "+statusDomain.isState()+
-                            ", Dirt: "+statusDomain.isDirty());
-                }else{
-                    if(!origStatusDomains[position].isState() && !origStatusDomains[position].isDirty()) {
-                        statusDomain.setDirty(false);
-                    }else{
-                        statusDomain.setDirty(true);
-                    }
-                    statusDomain.setState(false);
-
-                    Log.d(TAG, "Name: "+statusDomain.getName()+
-                            ", State: "+statusDomain.isState()+
-                            ", Dirt: "+statusDomain.isDirty());
-                }
+//                if (isChecked) {
+//                    if(origStatusModels[position].isState() && !origStatusModels[position].isDirty()) {
+//                        statusModel.setDirty(false);
+//                    }else{
+//                        statusModel.setDirty(true);
+//                    }
+//                    statusModel.setState(true);
+//
+//                    Log.d(TAG, "Name: "+statusModel.getName()+
+//                            ", State: "+statusModel.isState()+
+//                            ", Dirt: "+statusModel.isDirty());
+//                }else{
+//                    if(!origStatusModels[position].isState() && !origStatusModels[position].isDirty()) {
+//                        statusModel.setDirty(false);
+//                    }else{
+//                        statusModel.setDirty(true);
+//                    }
+//                    statusModel.setState(false);
+//
+//                    Log.d(TAG, "Name: "+statusModel.getName()+
+//                            ", State: "+statusModel.isState()+
+//                            ", Dirt: "+statusModel.isDirty());
+//                }
 
                 /** check 'all statuses' checkbox if all radio buttons are checked **/
                 if (appCompatCheckBoxAllStatuses != null) {
@@ -247,14 +247,14 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
         return listStatus.size();
     }
 
-    public ArrayList<cStatusDomain> getItems() {
+    public ArrayList<cStatusModel> getItems() {
         return listStatus;
     }
 
     /*
      * find if all values are checked.
      */
-    public boolean isAllValuesChecked(ArrayList<cStatusDomain> statuses) {
+    public boolean isAllValuesChecked(ArrayList<cStatusModel> statuses) {
         for (int i = 0; i < statuses.size(); i++) {
             if (!statuses.get(i).isState()) {
                 return false;
@@ -266,7 +266,7 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
     /*
      * find if all values are unchecked.
      */
-    public boolean isAllValuesUnChecked(ArrayList<cStatusDomain> statuses) {
+    public boolean isAllValuesUnChecked(ArrayList<cStatusModel> statuses) {
         for (int i = 0; i < statuses.size(); i++) {
             if (statuses.get(i).isState()) {
                 return false;
@@ -279,7 +279,7 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
     /*
      * find if all values are checked.
      */
-    public boolean isSomeValuesChecked(ArrayList<cStatusDomain> statuses) {
+    public boolean isSomeValuesChecked(ArrayList<cStatusModel> statuses) {
         for (int i = 0; i < statuses.size(); i++) {
             if (statuses.get(i).isState()) {
                 return true;
@@ -295,33 +295,33 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
     }
 */
 
-    public cPermissionDomain getPermissionDomain(ArrayList<cPermissionDomain> permissionDomains,
-                                                 int privilegeID, int entityID, int typeID,
-                                                 int operationID, int statusID) {
-        cPermissionDomain permissionDomain = null;
+    public cPermissionModel getPermissionModel(ArrayList<cPermissionModel> permissionModels,
+                                               int privilegeID, int entityID, int typeID,
+                                               int operationID, int statusID) {
+        cPermissionModel permissionModel = null;
 /*
         Log.d(TAG, "PRIVILEGE ID = "+privilegeID+", ENTITY ID = "+entityID+", ENTITY TYPE ID = "+
                 typeID+", OPERATION ID = "+operationID+", STATUS ID = "+statusID);
 */
-        for (int i = 0; i < permissionDomains.size(); i++) {
+        for (int i = 0; i < permissionModels.size(); i++) {
 
-            /*if ((permissionDomains.get(i).getPrivilegeDomain().getPrivilegeID() == privilegeID) &&
-                    (permissionDomains.get(i).getEntityDomain().getEntityID() == entityID) &&
-                    (permissionDomains.get(i).getEntityDomain().getTypeID() == typeID) &&
-                    (permissionDomains.get(i).getOperationDomain().getOperationID() == operationID) &&
-                    (permissionDomains.get(i).getStatusDomain().getStatusID() == statusID))*/ {
+            /*if ((permissionModels.get(i).getPrivilegeModel().getPrivilegeID() == privilegeID) &&
+                    (permissionModels.get(i).getEntityModel().getEntityID() == entityID) &&
+                    (permissionModels.get(i).getEntityModel().getTypeID() == typeID) &&
+                    (permissionModels.get(i).getOperationModel().getOperationID() == operationID) &&
+                    (permissionModels.get(i).getStatusModel().getStatusID() == statusID))*/ {
 
                 /*
-                Log.d(TAG, "PRIVILEGE ID = "+permissionDomains.get(i).getPrivilegeDomain().getPrivilegeID() +
-                        ", ENTITY ID = "+permissionDomains.get(i).getEntityDomain().getEntityID() +
-                        ", ENTITY TYPE ID = "+ permissionDomains.get(i).getEntityDomain().getTypeID() +
-                        ", OPERATION ID = "+ permissionDomains.get(i).getOperationDomain().getOperationID() +
-                        ", STATUS ID = "+permissionDomains.get(i).getStatusDomain().getStatusID());
+                Log.d(TAG, "PRIVILEGE ID = "+permissionModels.get(i).getPrivilegeModel().getPrivilegeID() +
+                        ", ENTITY ID = "+permissionModels.get(i).getEntityModel().getEntityID() +
+                        ", ENTITY TYPE ID = "+ permissionModels.get(i).getEntityModel().getTypeID() +
+                        ", OPERATION ID = "+ permissionModels.get(i).getOperationModel().getOperationID() +
+                        ", STATUS ID = "+permissionModels.get(i).getStatusModel().getStatusID());
                 */
 
-                permissionDomain = new cPermissionDomain(permissionDomains.get(i));
+                permissionModel = new cPermissionModel(permissionModels.get(i));
 
-                return permissionDomain;
+                return permissionModel;
             }
         }
 
@@ -329,9 +329,9 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
     }
 
     // call this method when required to show popup
-    public void onShowCommonAttributes(View view, final cStatusDomain statusDomain) {
+    public void onShowCommonAttributes(View view, final cStatusModel statusModel) {
         // get all users from database
-        final ArrayList<cUserDomain> users = null;/*userHandler.getUserList(
+        final ArrayList<cUserModel> users = null;/*userHandler.getUserList(
                 session.loadUserID(),        /* loggedIn user id
                 session.loadOrgID(),         /* loggedIn own org.
                 session.loadPrimaryRole(),   /* primary group bit
@@ -339,7 +339,7 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
         );*/
 
         // get all organizations from database
-        final ArrayList<cOrganizationDomain> orgs = null;/*
+        final ArrayList<cOrganizationModel> orgs = null;/*
                 organizationHandler.getOrganizationList(
                         session.loadUserID(),        /* loggedIn user id
                         session.loadOrgID(),         /* loggedIn own org.
@@ -348,14 +348,14 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
                 );*/
 
         // get a deep copy of permission domain to modify
-        final cPermissionDomain mPermissionDomain = getPermissionDomain(permissionDomains,
-                privilegeID, entityDomain.getEntityID(), entityDomain.getTypeID(),
-                operationDomain.getOperationID(), statusDomain.getStatusID());
+        final cPermissionModel mPermissionModel = getPermissionModel(permissionModels,
+                privilegeID, entityModel.getEntityID(), 0,
+                operationModel.getOperationID(), statusModel.getStatusID());
 
         /** make a deepcopy of the original permission domain **/
-        final cPermissionDomain originalDomain = new cPermissionDomain(mPermissionDomain);
+        final cPermissionModel originalModel = new cPermissionModel(mPermissionModel);
 
-        //Log.d(TAG, "PERMISSION "+gson.toJson(modifiedDomain));
+        //Log.d(TAG, "PERMISSION "+gson.toJson(modifiedModel));
 
         // create inflator for a popup layout with the views below
         LayoutInflater layoutInflater = (LayoutInflater)
@@ -366,18 +366,18 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
 
         // create a pair list of user ids and names
         final List<cKeyPairBoolData> keyPairBoolUsers = new ArrayList<>();
-        for (int i = 0; i < users.size(); i++) {
-            cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-            idNameBool.setId(users.get(i).getUserID());
-            idNameBool.setName(users.get(i).getName());
-            if ((mPermissionDomain != null) &&
-                    (mPermissionDomain.getOwnerID() == users.get(i).getUserID())) {
-                idNameBool.setSelected(true);
-            } else {
-                idNameBool.setSelected(false);
-            }
-            keyPairBoolUsers.add(idNameBool);
-        }
+//        for (int i = 0; i < users.size(); i++) {
+//            cKeyPairBoolData idNameBool = new cKeyPairBoolData();
+//            idNameBool.setId(users.get(i).getUserID());
+//            idNameBool.setName(users.get(i).getName());
+//            if ((mPermissionModel != null) &&
+//                    (mPermissionModel.getOwnerID() == users.get(i).getUserID())) {
+//                idNameBool.setSelected(true);
+//            } else {
+//                idNameBool.setSelected(false);
+//            }
+//            keyPairBoolUsers.add(idNameBool);
+//        }
         // -1 is no by default selection, 0 to length will select corresponding values
         cSingleSpinnerSearch_old singleSpinnerSearchOwner =
                 (cSingleSpinnerSearch_old) inflatedView.findViewById(R.id.appCompatSpinnerOwner);
@@ -387,90 +387,90 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
             public void onItemsSelected(List<cKeyPairBoolData> items) {
                 for (int i = 0; i < items.size(); i++) {
                     if (items.get(i).isSelected()) {
-                        mPermissionDomain.setOwnerID((int) items.get(i).getId());
+                        mPermissionModel.setOwnerID((int) items.get(i).getId());
                         break;
                     }
                 }
-                Log.d(TAG, "OWNER : " + mPermissionDomain.getOwnerID());
+                Log.d(TAG, "OWNER : " + mPermissionModel.getOwnerID());
             }
         });
 
         // create a pair list of organization ids and names
-        final List<cKeyPairBoolData> keyPairBoolOrgs = new ArrayList<>();
-        for (int i = 0; i < orgs.size(); i++) {
-            cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-            idNameBool.setId(orgs.get(i).getOrganizationID());
-            idNameBool.setName(orgs.get(i).getName());
-            if ((mPermissionDomain != null) &&
-                    (mPermissionDomain.getOrgID() == orgs.get(i).getOrganizationID())) {
-                idNameBool.setSelected(true);
-            } else {
-                idNameBool.setSelected(false);
-            }
-            keyPairBoolOrgs.add(idNameBool);
-        }
+//        final List<cKeyPairBoolData> keyPairBoolOrgs = new ArrayList<>();
+//        for (int i = 0; i < orgs.size(); i++) {
+//            cKeyPairBoolData idNameBool = new cKeyPairBoolData();
+//            idNameBool.setId(orgs.get(i).getOrganizationID());
+//            idNameBool.setName(orgs.get(i).getName());
+//            if ((mPermissionModel != null) &&
+//                    (mPermissionModel.getOrgID() == orgs.get(i).getOrganizationID())) {
+//                idNameBool.setSelected(true);
+//            } else {
+//                idNameBool.setSelected(false);
+//            }
+//            keyPairBoolOrgs.add(idNameBool);
+//        }
         // -1 is no by default selection, 0 to length will select corresponding values
         cSingleSpinnerSearch_old singleSpinnerSearchOrg =
                 (cSingleSpinnerSearch_old) inflatedView.findViewById(R.id.appCompatSpinnerOrg);
         // called when click organization single spinner search
-        singleSpinnerSearchOrg.setItems(keyPairBoolOrgs, -1, new cSpinnerListener() {
-            @Override
-            public void onItemsSelected(List<cKeyPairBoolData> items) {
-                for (int i = 0; i < items.size(); i++) {
-                    if (items.get(i).isSelected()) {
-                        mPermissionDomain.setOrgID((int) items.get(i).getId());
-                        break;
-                    }
-                }
-                Log.d(TAG, "ORGANIZATION OWNER : " + mPermissionDomain.getOrgID());
-            }
-        });
+//        singleSpinnerSearchOrg.setItems(keyPairBoolOrgs, -1, new cSpinnerListener() {
+//            @Override
+//            public void onItemsSelected(List<cKeyPairBoolData> items) {
+//                for (int i = 0; i < items.size(); i++) {
+//                    if (items.get(i).isSelected()) {
+//                        mPermissionModel.setOrgID((int) items.get(i).getId());
+//                        break;
+//                    }
+//                }
+//                Log.d(TAG, "ORGANIZATION OWNER : " + mPermissionModel.getOrgID());
+//            }
+//        });
 
         // create a pair list of other organization ids and names
-        final List<cKeyPairBoolData> keyPairBoolOtherOrgs = new ArrayList<>();
-        for (int i = 0; i < orgs.size(); i++) {
-            cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-            idNameBool.setId(orgs.get(i).getOrganizationID());
-            idNameBool.setName(orgs.get(i).getName());
-            if ((mPermissionDomain != null) &&
-                    ((mPermissionDomain.getGroupBITS() & orgs.get(i).getOrganizationID()) ==
-                            orgs.get(i).getOrganizationID())) {
-                idNameBool.setSelected(true);
-            } else {
-                idNameBool.setSelected(false);
-            }
-            keyPairBoolOtherOrgs.add(idNameBool);
-        }
+//        final List<cKeyPairBoolData> keyPairBoolOtherOrgs = new ArrayList<>();
+//        for (int i = 0; i < orgs.size(); i++) {
+//            cKeyPairBoolData idNameBool = new cKeyPairBoolData();
+//            idNameBool.setId(orgs.get(i).getOrganizationID());
+//            idNameBool.setName(orgs.get(i).getName());
+//            if ((mPermissionModel != null) &&
+//                    ((mPermissionModel.getGroupBITS() & orgs.get(i).getOrganizationID()) ==
+//                            orgs.get(i).getOrganizationID())) {
+//                idNameBool.setSelected(true);
+//            } else {
+//                idNameBool.setSelected(false);
+//            }
+//            keyPairBoolOtherOrgs.add(idNameBool);
+//        }
         // -1 is no by default selection, 0 to length will select corresponding values
         cMultiSpinnerSearch multiSpinnerSearchOtherOrg =
                 (cMultiSpinnerSearch) inflatedView.findViewById(R.id.appCompatSpinnerOtherOrg);
         // called when click other organization multi spinner search
-        multiSpinnerSearchOtherOrg.setItems(keyPairBoolOrgs, -1, new cSpinnerListener() {
-            @Override
-            public void onItemsSelected(List<cKeyPairBoolData> items) {
-                for (int i = 0; i < items.size(); i++) {
-                    int orgID = (int) items.get(i).getId();
-                    if (items.get(i).isSelected()) {
-                        if ((mPermissionDomain.getGroupBITS() & orgID) != orgID) {
-                            // add other organizations
-                            mPermissionDomain.setGroupBITS(mPermissionDomain.getGroupBITS() | orgID);
-                        }
-                    }
-                    if (!items.get(i).isSelected()) {
-                        if ((mPermissionDomain.getGroupBITS() & orgID) == orgID) {
-                            // remove other organizations
-                            mPermissionDomain.setGroupBITS(mPermissionDomain.getGroupBITS() & ~orgID);
-                        }
-                    }
-                }
-                Log.d(TAG, "OTHER ORGANIZATION : " + mPermissionDomain.getGroupBITS());
-            }
-        });
+//        multiSpinnerSearchOtherOrg.setItems(keyPairBoolOrgs, -1, new cSpinnerListener() {
+//            @Override
+//            public void onItemsSelected(List<cKeyPairBoolData> items) {
+//                for (int i = 0; i < items.size(); i++) {
+//                    int orgID = (int) items.get(i).getId();
+//                    if (items.get(i).isSelected()) {
+//                        if ((mPermissionModel.getGroupBITS() & orgID) != orgID) {
+//                            // add other organizations
+//                            mPermissionModel.setGroupBITS(mPermissionModel.getGroupBITS() | orgID);
+//                        }
+//                    }
+//                    if (!items.get(i).isSelected()) {
+//                        if ((mPermissionModel.getGroupBITS() & orgID) == orgID) {
+//                            // remove other organizations
+//                            mPermissionModel.setGroupBITS(mPermissionModel.getGroupBITS() & ~orgID);
+//                        }
+//                    }
+//                }
+//                Log.d(TAG, "OTHER ORGANIZATION : " + mPermissionModel.getGroupBITS());
+//            }
+//        });
 
         // create a pair list of permission ids and names
         final cKeyPairBoolData[] keyPairBoolPerms = new cKeyPairBoolData[NUM_PERMS];
-        if (permissionDomains.size() > 0) {
-            int opBITS = permissionDomains.get(0).getPermsBITS();
+        if (permissionModels.size() > 0) {
+            int opBITS = permissionModels.get(0).getPermsBITS();
             //keyPairBoolPerms[0].setId();keyPairBoolPerms[0].setName();
            /* for (int i = 0; i < session.permissions.length; i++) {
                 //Log.d(TAG, " "+(opBITS & session.permissions[i]));
@@ -491,19 +491,19 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
                 for (int i = 0; i < items.length; i++) {
                     int permID = (int) items[i].getId();
                     if (items[i].isSelected()) {
-                        if ((mPermissionDomain.getPermsBITS() & permID) != permID) {
+                        if ((mPermissionModel.getPermsBITS() & permID) != permID) {
                             // add operation
-                            mPermissionDomain.setPermsBITS(mPermissionDomain.getPermsBITS() | permID);
+                            mPermissionModel.setPermsBITS(mPermissionModel.getPermsBITS() | permID);
                         }
                     }
                     if (!items[i].isSelected()) {
-                        if ((mPermissionDomain.getPermsBITS() & permID) == permID) {
+                        if ((mPermissionModel.getPermsBITS() & permID) == permID) {
                             // remove operation
-                            mPermissionDomain.setPermsBITS(mPermissionDomain.getPermsBITS() & ~permID);
+                            mPermissionModel.setPermsBITS(mPermissionModel.getPermsBITS() & ~permID);
                         }
                     }
                 }
-                Log.d(TAG, "PERMS : " + mPermissionDomain.getPermsBITS());
+                Log.d(TAG, "PERMS : " + mPermissionModel.getPermsBITS());
             }
         });
 
@@ -513,8 +513,8 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
             cKeyPairBoolData idNameBool = new cKeyPairBoolData();
             idNameBool.setId(listStatus.get(i).getStatusID());
             idNameBool.setName(listStatus.get(i).getName());
-            if ((mPermissionDomain != null) &&
-                    ((mPermissionDomain.getStatusBITS() & listStatus.get(i).getStatusID()) ==
+            if ((mPermissionModel != null) &&
+                    ((mPermissionModel.getStatusBITS() & listStatus.get(i).getStatusID()) ==
                             listStatus.get(i).getStatusID())) {
                 idNameBool.setSelected(true);
             } else {
@@ -532,19 +532,19 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
                 for (int i = 0; i < items.size(); i++) {
                     int statusID = (int) items.get(i).getId();
                     if (items.get(i).isSelected()) {
-                        if ((mPermissionDomain.getStatusBITS() & statusID) != statusID) {
+                        if ((mPermissionModel.getStatusBITS() & statusID) != statusID) {
                             // add status
-                            mPermissionDomain.setStatusBITS(mPermissionDomain.getStatusBITS() | statusID);
+                            mPermissionModel.setStatusBITS(mPermissionModel.getStatusBITS() | statusID);
                         }
                     }
                     if (!items.get(i).isSelected()) {
-                        if ((mPermissionDomain.getStatusBITS() & statusID) == statusID) {
+                        if ((mPermissionModel.getStatusBITS() & statusID) == statusID) {
                             // remove status
-                            mPermissionDomain.setStatusBITS(mPermissionDomain.getStatusBITS() & ~statusID);
+                            mPermissionModel.setStatusBITS(mPermissionModel.getStatusBITS() & ~statusID);
                         }
                     }
                 }
-                Log.d(TAG, "STATUSES : " + mPermissionDomain.getStatusBITS());
+                Log.d(TAG, "STATUSES : " + mPermissionModel.getStatusBITS());
             }
         });
 
@@ -563,22 +563,22 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
                 cFontManager.FONTAWESOME));
         appCompatTextViewCancelIcon.setText(context.getResources().getString(R.string.fa_com_attr));
 
-        for (int i = 0; i < permissionDomains.size(); i++) {
-            /*if ((privilegeID == permissionDomains.get(i).getPrivilegeDomain().getPrivilegeID()) &&
-                    (entityDomain.getEntityID() == permissionDomains.get(i).getEntityDomain().getEntityID()) &&
-                    (entityDomain.getTypeID() == permissionDomains.get(i).getEntityDomain().getTypeID()) &&
-                    (operationDomain.getOperationID() == permissionDomains.get(i).getOperationDomain().getOperationID()) &&
-                    (statusDomain.getStatusID() == permissionDomains.get(i).getStatusDomain().getStatusID())) */{
+        for (int i = 0; i < permissionModels.size(); i++) {
+            /*if ((privilegeID == permissionModels.get(i).getPrivilegeModel().getPrivilegeID()) &&
+                    (entityModel.getEntityID() == permissionModels.get(i).getEntityModel().getEntityID()) &&
+                    (entityModel.getTypeID() == permissionModels.get(i).getEntityModel().getTypeID()) &&
+                    (operationModel.getOperationID() == permissionModels.get(i).getOperationModel().getOperationID()) &&
+                    (statusModel.getStatusID() == permissionModels.get(i).getStatusModel().getStatusID())) */{
 
-                createdDate = formatter.format(permissionDomains.get(i).getCreatedDate());
-                modifiedDate = formatter.format(permissionDomains.get(i).getModifiedDate());
-                syncedDate = formatter.format(permissionDomains.get(i).getSyncedDate());
+                //createdDate = formatter.format(permissionModels.get(i).getCreatedDated());
+                modifiedDate = formatter.format(permissionModels.get(i).getModifiedDate());
+                syncedDate = formatter.format(permissionModels.get(i).getSyncedDate());
 
                 textViewCreatedDate.setText(createdDate);
                 textViewModifiedDate.setText(modifiedDate);
                 textViewSyncedDate.setText(syncedDate);
 
-                //Log.d(TAG, "PERMISSION = "+gson.toJson(permissionDomains.get(i)));
+                //Log.d(TAG, "PERMISSION = "+gson.toJson(permissionModels.get(i)));
             }
         }
 
@@ -608,30 +608,30 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
         appCompatButtonComSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mPermissionDomain != null) {
+                if (mPermissionModel != null) {
                     // keep a list of modified status domains'
-                    if (statusDomain.isDirty()) {
-                        modifiedStatuses.add(statusDomain);
-                    }
+//                    if (statusModel.isDirty()) {
+//                        modifiedStatuses.add(statusModel);
+//                    }
+//
+//                    /* update part of permission domain */
+//                    Date timestamp = new Date();
+//                    textViewModifiedDate.setText(formatter.format(timestamp));
+//                    mPermissionModel.setModifiedDate(timestamp);
+//
+//                    if (callback != null) {
+//                        callback.onUpdatePermissions(originalModel, mPermissionModel);
+//                    }
 
-                    /* update part of permission domain */
-                    Date timestamp = new Date();
-                    textViewModifiedDate.setText(formatter.format(timestamp));
-                    mPermissionDomain.setModifiedDate(timestamp);
-
-                    if (callback != null) {
-                        callback.onUpdatePermissions(originalDomain, mPermissionDomain);
-                    }
-
-                    //Log.d(TAG, "UPDATE "+gson.toJson(statusDomain));
-                    //Log.d(TAG, "PERMISSION "+gson.toJson(mPermissionDomain));
+                    //Log.d(TAG, "UPDATE "+gson.toJson(statusModel));
+                    //Log.d(TAG, "PERMISSION "+gson.toJson(mPermissionModel));
                 }else{
 
                     if (callback != null) {//FIXME
-                        callback.onCreatePermissions(statusDomain);
+                        //callback.onCreatePermissions(statusModel);
                     }
-                    Log.d(TAG, "CREATE "+gson.toJson(statusDomain));
-                    Log.d(TAG, "PERMISSION "+gson.toJson(mPermissionDomain));
+                    Log.d(TAG, "CREATE "+gson.toJson(statusModel));
+                    Log.d(TAG, "PERMISSION "+gson.toJson(mPermissionModel));
                 }
                 popWindow.dismiss();
             }
@@ -663,10 +663,10 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
                 if (charString.isEmpty()) {
                     filteredStatus = listStatus;
                 } else {
-                    ArrayList<cStatusDomain> filteredList = new ArrayList<>();
-                    for (cStatusDomain statusDomain : listStatus) {
-                        if (statusDomain.getName().toLowerCase().contains(charString.toLowerCase())) {
-                            filteredList.add(statusDomain);
+                    ArrayList<cStatusModel> filteredList = new ArrayList<>();
+                    for (cStatusModel statusModel : listStatus) {
+                        if (statusModel.getName().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(statusModel);
                         }
                     }
                     filteredStatus = filteredList;
@@ -678,7 +678,7 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                filteredStatus = (ArrayList<cStatusDomain>) filterResults.values;
+                filteredStatus = (ArrayList<cStatusModel>) filterResults.values;
                 notifyDataSetChanged();
             }
         };

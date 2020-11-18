@@ -112,7 +112,7 @@ public class cBuilderManager {
                 .normalTextRes(R.string.text_outside_circle_button_text_normal);
     }
 
-    static cTextOutsideCircleButton.Builder getTextOutsideCircleButtonBuilderWithDifferentPieceColor() {
+    public static cTextOutsideCircleButton.Builder getTextOutsideCircleButtonBuilderWithDifferentPieceColor() {
         return new cTextOutsideCircleButton.Builder()
                 .normalImageRes(getImageResource())
                 .normalTextRes(R.string.text_outside_circle_button_text_normal)

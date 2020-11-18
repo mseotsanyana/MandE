@@ -39,7 +39,7 @@
         </activity>
 
         <service
-            android:name=".DAL.storage.synchronization.cSyncedJobService"
+            android:name=".DAL.ìmpl.synchronization.cSyncedJobService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <service

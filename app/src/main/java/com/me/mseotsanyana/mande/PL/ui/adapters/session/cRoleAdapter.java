@@ -21,12 +21,10 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout;
-import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cRoleDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.role.Impl.cRoleHandler;
-import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cUserDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserHandler;
+import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cRoleModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cStatusModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iPermissionInterface;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.TextDrawable;
@@ -66,15 +64,15 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
     public static final int ROLE = 0;
     public static final int USER = 1;
 
-    private ArrayList<cRoleDomain> listRoles;
-    private ArrayList<cRoleDomain> filteredRoles;
+    private ArrayList<cRoleModel> listRoles;
+    private ArrayList<cRoleModel> filteredRoles;
 
-    private cUserHandler userHandler;
+    //private cUserHandler userHandler;
 //    private cOrganizationHandler organizationHandler;
-    private cRoleHandler roleHandler;
+    //private cRoleHandler roleHandler;
 
     private cStatusAdapter statusAdapter;
-    private ArrayList<cStatusDomain> statusDomains;
+    private ArrayList<cStatusModel> statusDomains;
 
     private String createdDate;
     private String modifiedDate;
@@ -86,7 +84,7 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
 
     public cRoleAdapter(Context context,
                         List<cTreeModel> treeModels,
-                        ArrayList<cStatusDomain> statusDomains,
+                        ArrayList<cStatusModel> statusDomains,
                         int expLevel, iPermissionInterface roleInterface) {
         super(context, treeModels, expLevel);
 
@@ -100,8 +98,8 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
         // used to mask statuses
         this.statusDomains = statusDomains;
 
-        this.userHandler = null;//new cUserHandler(context, session);
-        this.roleHandler = null;//new cRoleHandler(context, session);
+        //this.userHandler = null;//new cUserHandler(context, session);
+        //this.roleHandler = null;//new cRoleHandler(context, session);
         //this.organizationHandler = null;//new cOrganizationHandler(context, session);
 
         this.roleInterface = roleInterface;
@@ -142,7 +140,7 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
         if (obj != null) {
             switch (obj.getType()) {
                 case ROLE:
-                    final cRoleDomain roleDomain = (cRoleDomain) obj.getModelObject();
+                    final cRoleModel roleDomain = (cRoleModel) obj.getModelObject();
                     final cRoleTreeViewHolder RVH = ((cRoleTreeViewHolder) viewHolder);
 
                     Log.d(TAG, gson.toJson(roleDomain));
@@ -404,7 +402,7 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                     /** common attributes **/
 
                     // get all users from database
-                    final ArrayList<cUserDomain> users = null;/*userHandler.getUserList(
+                    final ArrayList<cUserModel> users = null;/*userHandler.getUserList(
                             session.loadUserID(),         loggedIn user id
                             session.loadOrgID(),          loggedIn own org.
                             session.loadPrimaryRole(),    primary group bit
@@ -412,7 +410,7 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                     );*/
 
                     // get all organizations from database
-                    final ArrayList<cOrganizationDomain> orgs =null;/*
+                    final ArrayList<cOrganizationModel> orgs =null;/*
                             organizationHandler.getOrganizationList(
                                     session.loadUserID(),        /* loggedIn user id
                                     session.loadOrgID(),         /* loggedIn own org.
@@ -632,7 +630,7 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                                         public void onClick(DialogInterface dialog, int id) {
                                             // update user record permissions in the database
                                             roleDomain.setModifiedDate(new Date());
-                                            if(roleHandler.updateRole(roleDomain)){
+                                            if(true/*roleHandler.updateRole(roleDomain)*/){
                                                 roleInterface.onResponseMessage(1,
                                                         2);
                                             }else{
@@ -661,7 +659,7 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                     break;
 
                 case USER:
-                    cUserDomain userDomain = (cUserDomain) obj.getModelObject();
+                    cUserModel userDomain = (cUserModel) obj.getModelObject();
                     cUserTreeViewHolder UVH = ((cUserTreeViewHolder) viewHolder);
 
                     UVH.setPaddingLeft(40 * node.getLevel());
@@ -684,7 +682,7 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
         return filteredRoles.size();
     }
 */
-    public cRoleDomain getItem(int position) {
+    public cRoleModel getItem(int position) {
         return filteredRoles.get(position);
     }
 
@@ -704,9 +702,9 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                     filteredRoles = listRoles;
                 } else {
 
-                    ArrayList<cRoleDomain> filteredList = new ArrayList<>();
+                    ArrayList<cRoleModel> filteredList = new ArrayList<>();
 
-                    for (cRoleDomain roleDomain : listRoles) {
+                    for (cRoleModel roleDomain : listRoles) {
 
                         if (roleDomain.getName().toLowerCase().contains(charString.toLowerCase()) ||
                                 roleDomain.getDescription().toLowerCase().contains(charString)) {
@@ -728,7 +726,7 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                filteredRoles = (ArrayList<cRoleDomain>) filterResults.values;
+                filteredRoles = (ArrayList<cRoleModel>) filterResults.values;
                 notifyDataSetChanged();
             }
         };

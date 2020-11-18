@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cUserEvaluationModel;
+import com.me.mseotsanyana.mande.BLL.model.evaluator.cUserEvaluationModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cUserRepositoryImpl;

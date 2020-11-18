@@ -6,7 +6,7 @@ import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.logframe.iCreateSubLogFrameInteractor;
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iLogFrameRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cLogFrameModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel;
 
 import java.util.Date;
 

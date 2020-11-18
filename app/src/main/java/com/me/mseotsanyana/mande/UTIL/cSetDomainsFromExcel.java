@@ -2,21 +2,15 @@ package com.me.mseotsanyana.mande.UTIL;
 
 import android.content.Context;
 
-import com.me.mseotsanyana.mande.BLL.domain.session.cOperationDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cPermissionDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cSessionDomain;
-import com.me.mseotsanyana.mande.BLL.domain.logframe.cActivityDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cMenuDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cMenuRoleDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cRoleDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cEntityDomain;
-import com.me.mseotsanyana.mande.BLL.domain.logframe.cImpactDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
-import com.me.mseotsanyana.mande.BLL.domain.logframe.cOutcomeDomain;
-import com.me.mseotsanyana.mande.BLL.domain.logframe.cOutputDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cUserDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cValueDomain;
+
+import com.me.mseotsanyana.mande.BLL.model.session.cEntityModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cOperationModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cPermissionModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cRoleModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cSessionModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cStatusModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
 
 import org.apache.poi.ss.usermodel.Row;
 
@@ -28,18 +22,18 @@ import java.util.Date;
  */
 
 public class cSetDomainsFromExcel {
-    private cUserDomain userDomain;
-    private cSessionDomain sessionDomain;
-    private cRoleDomain roleDomain;
-    private cMenuDomain menuDomain;
-    private cOperationDomain operationDomain;
-    private cEntityDomain entityDomain;
+    private cUserModel userDomain;
+    private cSessionModel sessionDomain;
+    private cRoleModel roleDomain;
+    private cMenuModel menuDomain;
+    private cOperationModel operationDomain;
+    private cEntityModel entityDomain;
     private cTypeDomain typeDomain;
-    private cStatusDomain statusDomain;
+    private cStatusModel statusDomain;
     //private cUserRoleDomain userRoleDomain;
     //private cSessionRoleDomain sessionRoleDomain;
-    private cMenuRoleDomain menuRoleDomain;
-    private cPermissionDomain permissionDomain;
+    //private cMenuRoleModel menuRoleDomain;
+    private cPermissionModel permissionDomain;
 
 //    private cDateDomain dateDomain;
 //
@@ -94,8 +88,8 @@ public class cSetDomainsFromExcel {
 //        return valueDomain;
 //    }
 
-    public cUserDomain getUserFromExcel(Row cRow) {
-        userDomain = new cUserDomain();
+    public cUserModel getUserFromExcel(Row cRow) {
+        userDomain = new cUserModel();
 
         userDomain.setUserID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         userDomain.setOrganizationID((int)cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
@@ -110,20 +104,20 @@ public class cSetDomainsFromExcel {
         return userDomain;
     }
 
-    public cSessionDomain getSessionFromExcel(Row cRow) {
-        sessionDomain = new cSessionDomain();
+    public cSessionModel getSessionFromExcel(Row cRow) {
+        sessionDomain = new cSessionModel();
 
         sessionDomain.setSessionID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         sessionDomain.setUserID((int)cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-        sessionDomain.setName(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-        sessionDomain.setDescription(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+        //sessionDomain.setName(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+        //sessionDomain.setDescription(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
         //sessionDomain.setCreateDate(cRow.getCell(4, Row.CREATE_NULL_AS_BLANK).getDateCellValue());
 
         return sessionDomain;
     }
 
-    public cRoleDomain getRoleFromExcel(Row cRow) {
-        roleDomain = new cRoleDomain();
+    public cRoleModel getRoleFromExcel(Row cRow) {
+        roleDomain = new cRoleModel();
 
         roleDomain.setRoleID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         roleDomain.setOrganizationID((int)cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
@@ -134,8 +128,8 @@ public class cSetDomainsFromExcel {
         return roleDomain;
     }
 
-    public cMenuDomain getMenuFromExcel(Row cRow) {
-        menuDomain = new cMenuDomain();
+    public cMenuModel getMenuFromExcel(Row cRow) {
+        menuDomain = new cMenuModel();
 
         menuDomain.setMenuID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         menuDomain.setParentID((int)cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
@@ -145,8 +139,8 @@ public class cSetDomainsFromExcel {
 
         return menuDomain;
     }
-    public cOperationDomain getOperationFromExcel(Row cRow) {
-        operationDomain = new cOperationDomain();
+    public cOperationModel getOperationFromExcel(Row cRow) {
+        operationDomain = new cOperationModel();
 
         operationDomain.setOperationID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         operationDomain.setName(cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
@@ -156,8 +150,8 @@ public class cSetDomainsFromExcel {
         return operationDomain;
     }
 
-    public cEntityDomain getEntityFromExcel(Row cRow) {
-        entityDomain = new cEntityDomain();
+    public cEntityModel getEntityFromExcel(Row cRow) {
+        entityDomain = new cEntityModel();
 
         entityDomain.setEntityID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         entityDomain.setName(cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
@@ -178,8 +172,8 @@ public class cSetDomainsFromExcel {
         return typeDomain;
     }
 
-    public cStatusDomain getStatusFromExcel(Row cRow) {
-        statusDomain = new cStatusDomain();
+    public cStatusModel getStatusFromExcel(Row cRow) {
+        statusDomain = new cStatusModel();
 
         statusDomain.setStatusID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         statusDomain.setName(cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
@@ -189,8 +183,8 @@ public class cSetDomainsFromExcel {
         return statusDomain;
     }
 
-    public cPermissionDomain getPermissionFromExcel(Row cRow) {
-        permissionDomain = new cPermissionDomain();
+    public cPermissionModel getPermissionFromExcel(Row cRow) {
+        permissionDomain = new cPermissionModel();
 /*
         permissionDomain.setPrivilegeID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         permissionDomain.setEntityID((int)cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
@@ -220,7 +214,7 @@ public class cSetDomainsFromExcel {
 
         return sessionRoleDomain;
     }
-*/
+
     public cMenuRoleDomain getMenuRoleFromExcel(Row cRow) {
         menuRoleDomain = new cMenuRoleDomain();
 
@@ -229,7 +223,7 @@ public class cSetDomainsFromExcel {
         //menuRoleDomain.setCreateDate(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getDateCellValue());
 
         return menuRoleDomain;
-    }
+    }*/
 /*
     public cPermissionRoleDomain getPermissionRoleFromExcel(Row cRow) {
         permissionRoleDomain = new cPermissionRoleDomain();

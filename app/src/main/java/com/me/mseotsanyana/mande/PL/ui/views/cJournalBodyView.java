@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.widget.TextView;
 
-import com.me.mseotsanyana.mande.DAL.model.wpb.cJournalModel;
+import com.me.mseotsanyana.mande.BLL.model.wpb.cJournalModel;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
 import com.me.mseotsanyana.mande.UTIL.cFontManager;
@@ -16,9 +16,6 @@ import com.me.mseotsanyana.placeholderview.annotationlibrary.expand.ParentPositi
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.Locale;
-
-import static com.me.mseotsanyana.mande.R.color.gray;
 
 @Layout(R.layout.journal_entry_list)
 public class cJournalBodyView {

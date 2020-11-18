@@ -29,7 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cEvaluationModel;
+import com.me.mseotsanyana.mande.BLL.model.evaluator.cEvaluationModel;
 import com.me.mseotsanyana.mande.DAL.ìmpl.evaluator.cEvaluationRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cSessionManagerImpl;
 import com.me.mseotsanyana.mande.PL.presenters.evaluator.Impl.cEvaluationPresenterImpl;
@@ -193,10 +193,10 @@ public class cEvaluationFragment extends Fragment implements iEvaluationPresente
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.homeItem) {
-            /* navigate from evaluation to logframe */
+            /* navigate from evaluation to logframe
             NavDirections action = cEvaluationFragmentDirections.
                     actionCEvaluationFragmentToCLogFrameFragment();
-            Navigation.findNavController(requireView()).navigate(action);
+            Navigation.findNavController(requireView()).navigate(action);*/
         }
         return super.onOptionsItemSelected(item);
     }

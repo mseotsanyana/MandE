@@ -9,11 +9,11 @@ import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.output.iReadOutputInteractor;
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iOutputRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cActivityModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cOutcomeModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cOutputModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cQuestionModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cRaidModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cActivityModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cOutcomeModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cOutputModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cRaidModel;
 import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
@@ -137,8 +137,9 @@ public class cReadOutputInteractorImpl extends cAbstractInteractor
         if ((operationBITS & cBitwise.READ) != 0) {
 
             /* retrieve a set logFrames from the database */
-            Log.d(TAG, "LOGFRAME ID = " + logFrameID + "; USER ID = " + userID + "; PRIMARY = " + primaryRoleBITS +
-                    "; SECONDARY = " + secondaryRoleBITS + "; STATUS = " + statusBITS);
+            Log.d(TAG, "LOGFRAME ID = " + logFrameID + "; USER ID = " + userID + "; " +
+                    "PRIMARY = " + primaryRoleBITS + "; SECONDARY = " + secondaryRoleBITS + "; " +
+                    "STATUS = " + statusBITS);
 
             Set<cOutputModel> outputModelSet = outputRepository.getOutputModelSet(logFrameID,
                     userID, primaryRoleBITS, secondaryRoleBITS, statusBITS);

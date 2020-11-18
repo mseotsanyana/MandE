@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.me.mseotsanyana.mande.DAL.model.session.cStatusModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cStatusModel;
 import com.me.mseotsanyana.mande.PL.ui.adapters.common.cCommonStatusAdapter;
 import com.me.mseotsanyana.mande.R;
 

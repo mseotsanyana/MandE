@@ -1,17 +1,16 @@
 package com.me.mseotsanyana.mande.BLL.repository.logframe;
 
-import com.me.mseotsanyana.mande.DAL.model.logframe.cActivityModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cImpactModel;
-import com.me.mseotsanyana.mande.DAL.model.monitor.cIndicatorModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cInputModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cLogFrameModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cOutcomeModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cOutputModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cQuestionModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cRaidModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cActivityModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cImpactModel;
+import com.me.mseotsanyana.mande.BLL.model.monitor.cIndicatorModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cInputModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cOutcomeModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cOutputModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cRaidModel;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Set;
 
 public interface iLogFrameRepository {

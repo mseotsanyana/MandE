@@ -88,7 +88,7 @@ public class cIndicatorFragment extends Fragment {
         toolBar.setTitle(R.string.indicator_list_title);
         toolBar.setTitleTextColor(Color.WHITE);
 
-        ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(toolBar);
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolBar);
     }
 
     // initialise the floating action button
@@ -117,7 +117,7 @@ public class cIndicatorFragment extends Fragment {
                     }
                 });
 
-        SearchManager searchManager = (SearchManager) Objects.requireNonNull(getActivity()).
+        SearchManager searchManager = (SearchManager) requireActivity().
                 getSystemService(Context.SEARCH_SERVICE);
 
         SearchView searchView = (SearchView) toolBarMenu.findItem(R.id.searchItem).getActionView();
@@ -155,10 +155,10 @@ public class cIndicatorFragment extends Fragment {
     }
 
     private void showFragment(String selectedFrag){
-        if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(selectedFrag) != null) {
+        if (requireFragmentManager().findFragmentByTag(selectedFrag) != null) {
             /* if the fragment exists, show it. */
             getFragmentManager().beginTransaction().show(
-                    Objects.requireNonNull(getFragmentManager().findFragmentByTag(selectedFrag))).
+                    requireFragmentManager().findFragmentByTag(selectedFrag)).
                     commit();
         } else {
             /* if the fragment does not exist, add it to fragment manager. */
@@ -168,7 +168,7 @@ public class cIndicatorFragment extends Fragment {
         if (getFragmentManager().findFragmentByTag(TAG) != null) {
             /* if the other fragment is visible, hide it. */
             getFragmentManager().beginTransaction().hide(
-                    Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).commit();
+                    requireFragmentManager().findFragmentByTag(TAG)).commit();
         }
     }
 

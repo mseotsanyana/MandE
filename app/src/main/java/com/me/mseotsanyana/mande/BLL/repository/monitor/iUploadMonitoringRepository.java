@@ -25,6 +25,7 @@ public interface iUploadMonitoringRepository {
     boolean deleteMatrixIndicators();
     boolean deleteMilestones();
     boolean deleteIndicatorMilestones();
+    boolean deleteQuantitativeMilestone();
 
     /* add functions */
     boolean addMethodFromExcel();
@@ -37,12 +38,5 @@ public interface iUploadMonitoringRepository {
     boolean addTargetFromExcel();
     boolean addIndicatorFromExcel();
     boolean addDataCollectorFromExcel();
-    //boolean addMResponseFromExcel();
-    //boolean deleteQuantitatives();
-    //boolean deleteQualitatives();
-    //boolean deleteQualitativeChoiceSets();
-    //boolean deleteMresponses();
-    //boolean deleteQuantitativeResponses();
-    //boolean deleteQualitativeResponses();
-    //boolean deleteQualitativeChoices();
+
 }

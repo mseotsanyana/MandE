@@ -29,17 +29,14 @@ import android.widget.Toast;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout;
-import com.me.mseotsanyana.mande.BLL.domain.session.cEntityDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.entity.Impl.cEntityHandler;
-import com.me.mseotsanyana.mande.BLL.domain.session.cOperationDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.operation.Impl.cOperationHandler;
-import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cPermissionDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.permission.Impl.cPermissionHandler;
-import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
+
 import com.me.mseotsanyana.mande.BLL.interactors.session.status.Impl.cStatusInteractorImpl;
-import com.me.mseotsanyana.mande.BLL.domain.session.cUserDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserHandler;
+import com.me.mseotsanyana.mande.BLL.model.session.cEntityModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cOperationModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cPermissionModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cStatusModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
 import com.me.mseotsanyana.mande.PL.ui.fragments.session.cOperationsFragment;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iPermissionInterface;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iEntityTVHInterface;
@@ -89,29 +86,29 @@ public class cPermissionAdapter extends cTreeAdapter {
     private SparseBooleanArray checkBoxStateArray = new SparseBooleanArray();
 
     private int privilegeDomainID;
-    private cEntityDomain entityDomain;
-    private cOperationDomain[] createOperations, readOperations,
+    private cEntityModel entityModel;
+    private cOperationModel[] createOperations, readOperations,
             updateOperations, deleteOperations, syncOperations;
-    private cStatusDomain[][] createStatuses, readStatuses,
+    private cStatusModel[][] createStatuses, readStatuses,
             updateStatuses, deleteStatuses, syncStatuses;
 
-    private ArrayList<cPermissionDomain> permissionDomains;
+    private ArrayList<cPermissionModel> permissionModels;
 
-    private ArrayList<cOperationDomain> operationDomains;
-    private ArrayList<cStatusDomain> statusDomains;
+    private ArrayList<cOperationModel> operationModels;
+    private ArrayList<cStatusModel> statusModels;
 
     private Context context;
     private FragmentManager fragmentManager;
 
     //private cSessionManager session;
 
-    private cUserHandler userHandler;
+    //private cUserHandler userHandler;
     //private cOrganizationHandler organizationHandler;
-    private cPermissionHandler privilegeHandler;
-    private cEntityHandler entityHandler;
-    private cOperationHandler operationHandler;
-    private cStatusInteractorImpl statusHandler;
-    private cPermissionHandler permissionHandler;
+    //private cPermissionHandler privilegeHandler;
+    //private cEntityHandler entityHandler;
+    //private cOperationHandler operationHandler;
+    //private cStatusInteractorImpl statusHandler;
+    //private cPermissionHandler permissionHandler;
 
     //private cStatusAdapter statusAdapter;
 
@@ -119,7 +116,7 @@ public class cPermissionAdapter extends cTreeAdapter {
     private int statusMask;
 
     // contains all selected organisations
-    private ArrayList<cEntityDomain> selectedEntities;
+    private ArrayList<cEntityModel> selectedEntities;
 
 
     //private cQuickAction quickAction;
@@ -139,8 +136,8 @@ public class cPermissionAdapter extends cTreeAdapter {
 
     public cPermissionAdapter(Context context,
                               List<cTreeModel> treeModels, int expLevel,
-                              ArrayList<cOperationDomain> operationDomains,
-                              ArrayList<cStatusDomain> statusDomains,
+                              ArrayList<cOperationModel> operationModels,
+                              ArrayList<cStatusModel> statusModels,
                               FragmentManager fragmentManager,
                               iPermissionInterface permissionInterface) {
 
@@ -154,33 +151,33 @@ public class cPermissionAdapter extends cTreeAdapter {
         this.fragmentManager = fragmentManager;
 
         this.expandedPositionSet = new HashSet<>();
-        this.selectedEntities = new ArrayList<cEntityDomain>();
+        this.selectedEntities = new ArrayList<cEntityModel>();
 
         // used to mask statuses
-        this.permissionDomains = new ArrayList<>();
-        this.operationDomains = operationDomains;
-        this.statusDomains = statusDomains;
+        this.permissionModels = new ArrayList<>();
+        this.operationModels = operationModels;
+        this.statusModels = statusModels;
 
-        this.createOperations = new cOperationDomain[NUM_OPS];
-        this.readOperations = new cOperationDomain[NUM_OPS];
-        this.updateOperations = new cOperationDomain[NUM_OPS];
-        this.deleteOperations = new cOperationDomain[NUM_OPS];
-        this.syncOperations = new cOperationDomain[NUM_OPS];
+        this.createOperations = new cOperationModel[NUM_OPS];
+        this.readOperations = new cOperationModel[NUM_OPS];
+        this.updateOperations = new cOperationModel[NUM_OPS];
+        this.deleteOperations = new cOperationModel[NUM_OPS];
+        this.syncOperations = new cOperationModel[NUM_OPS];
 
-        this.createStatuses = new cStatusDomain[NUM_OPS][NUM_STS];
-        this.readStatuses = new cStatusDomain[NUM_OPS][NUM_STS];
-        this.updateStatuses = new cStatusDomain[NUM_OPS][NUM_STS];
-        this.deleteStatuses = new cStatusDomain[NUM_OPS][NUM_STS];
-        this.syncStatuses = new cStatusDomain[NUM_OPS][NUM_STS];
+        this.createStatuses = new cStatusModel[NUM_OPS][NUM_STS];
+        this.readStatuses = new cStatusModel[NUM_OPS][NUM_STS];
+        this.updateStatuses = new cStatusModel[NUM_OPS][NUM_STS];
+        this.deleteStatuses = new cStatusModel[NUM_OPS][NUM_STS];
+        this.syncStatuses = new cStatusModel[NUM_OPS][NUM_STS];
 
-        this.userHandler = new cUserHandler(context);
+        //this.userHandler = new cUserHandler(context);
         //this.organizationHandler = new cOrganizationHandler(context);
-        this.privilegeHandler = new cPermissionHandler(context);
-        this.entityHandler = new cEntityHandler(context);
-        this.operationHandler = new cOperationHandler(context);
-        this.statusHandler = null;//new cStatusInteractorImpl(context);
+        //this.privilegeHandler = new cPermissionHandler(context);
+        //this.entityHandler = new cEntityHandler(context);
+        //this.operationHandler = new cOperationHandler(context);
+        //this.statusHandler = null;//new cStatusInteractorImpl(context);
 
-        this.permissionHandler = new cPermissionHandler(context);
+        //this.permissionHandler = new cPermissionHandler(context);
 
 
         this.keyPairBoolUsers = new ArrayList<>();
@@ -218,15 +215,15 @@ public class cPermissionAdapter extends cTreeAdapter {
         if (treeModel != null) {
             switch (treeModel.getType()) {
                 case PRIVILEGE:
-                    final cPermissionDomain privilegeDomain = (cPermissionDomain) treeModel.getModelObject();
+                    final cPermissionModel privilegeModel = (cPermissionModel) treeModel.getModelObject();
                     final cPrivilegeTreeViewHolder PVH = ((cPrivilegeTreeViewHolder) viewHolder);
 
                     PVH.updateItem(position);
                     PVH.setPaddingLeft(40 * node.getLevel());
 
                     // the name and description of the privilege
-                    PVH.textViewName.setText(privilegeDomain.getName());
-                    PVH.textViewDescription.setText(privilegeDomain.getDescription());
+                    PVH.textViewName.setText(null);//privilegeModel.getName());
+                    PVH.textViewDescription.setText(null);//privilegeModel.getDescription());
 
                     // the collapse and expansion of the roles
                     if (node.isLeaf()) {
@@ -439,7 +436,7 @@ public class cPermissionAdapter extends cTreeAdapter {
                     break;
 
                 case ENTITY:
-                    //final cPermissionTreeDomain permTreeDomain = (cPermissionTreeDomain)
+                    //final cPermissionTreeModel permTreeModel = (cPermissionTreeModel)
                     //        treeModel.getModelObject();
 
                     operationMask = 0;
@@ -447,42 +444,42 @@ public class cPermissionAdapter extends cTreeAdapter {
 
                     for (int i = 0; i < NUM_OPS; i++) {
                         /** initialise operations
-                        createOperations[i] = new cOperationDomain(
-                                getOperationByID(operationDomains,ession.permissions[i]));
-                        readOperations[i] = new cOperationDomain(
-                                getOperationByID(operationDomains, session.permissions[i + 3]));
-                        updateOperations[i] = new cOperationDomain(
-                                getOperationByID(operationDomains, session.permissions[i + 6]));
-                        deleteOperations[i] = new cOperationDomain(
-                                getOperationByID(operationDomains, session.permissions[i + 9]));
-                        syncOperations[i] = new cOperationDomain(
-                                getOperationByID(operationDomains, session.permissions[i + 12]));
+                        createOperations[i] = new cOperationModel(
+                                getOperationByID(operationModels,ession.permissions[i]));
+                        readOperations[i] = new cOperationModel(
+                                getOperationByID(operationModels, session.permissions[i + 3]));
+                        updateOperations[i] = new cOperationModel(
+                                getOperationByID(operationModels, session.permissions[i + 6]));
+                        deleteOperations[i] = new cOperationModel(
+                                getOperationByID(operationModels, session.permissions[i + 9]));
+                        syncOperations[i] = new cOperationModel(
+                                getOperationByID(operationModels, session.permissions[i + 12]));
 **/
                         /** initialise statuses **/
                         for (int j = 0; j < NUM_STS; j++) {
-                            createStatuses[i][j] = new cStatusDomain(getStatusByID(statusDomains,
-                                    statusDomains.get(j).getStatusID()));
-                            readStatuses[i][j] = new cStatusDomain(getStatusByID(statusDomains,
-                                    statusDomains.get(j).getStatusID()));
-                            updateStatuses[i][j] = new cStatusDomain(getStatusByID(statusDomains,
-                                    statusDomains.get(j).getStatusID()));
-                            deleteStatuses[i][j] = new cStatusDomain(getStatusByID(statusDomains,
-                                    statusDomains.get(j).getStatusID()));
-                            syncStatuses[i][j] = new cStatusDomain(getStatusByID(statusDomains,
-                                    statusDomains.get(j).getStatusID()));
+                            createStatuses[i][j] = new cStatusModel(getStatusByID(statusModels,
+                                    statusModels.get(j).getStatusID()));
+                            readStatuses[i][j] = new cStatusModel(getStatusByID(statusModels,
+                                    statusModels.get(j).getStatusID()));
+                            updateStatuses[i][j] = new cStatusModel(getStatusByID(statusModels,
+                                    statusModels.get(j).getStatusID()));
+                            deleteStatuses[i][j] = new cStatusModel(getStatusByID(statusModels,
+                                    statusModels.get(j).getStatusID()));
+                            syncStatuses[i][j] = new cStatusModel(getStatusByID(statusModels,
+                                    statusModels.get(j).getStatusID()));
                         }
                     }
 
                     /** id of the privilege **/
-                    //privilegeDomainID = permTreeDomain.getPrivilegeID();
+                    //privilegeModelID = permTreeModel.getPrivilegeID();
 
                     /** entity domain under the privileges **/
-                    //entityDomain = permTreeDomain.getEntityDomain();
+                    //entityModel = permTreeModel.getEntityModel();
 
                     /** populate operation, status and permission domains from database **/
-                    Iterable<? extends Map.Entry<cOperationDomain, HashMap<cStatusDomain, cPermissionDomain>>> l=null;
-                    for (Map.Entry<cOperationDomain, HashMap<cStatusDomain, cPermissionDomain>> opsEntry : l)
-                            //permTreeDomain.getPermDomainDetails().entrySet())
+                    Iterable<? extends Map.Entry<cOperationModel, HashMap<cStatusModel, cPermissionModel>>> l=null;
+                    for (Map.Entry<cOperationModel, HashMap<cStatusModel, cPermissionModel>> opsEntry : l)
+                            //permTreeModel.getPermModelDetails().entrySet())
                     {
 
                         int opID = opsEntry.getKey().getOperationID();
@@ -513,7 +510,7 @@ public class cPermissionAdapter extends cTreeAdapter {
                         /** masking the operations for the entity **/
                         operationMask |= opsEntry.getKey().getOperationID();
 
-                        for (Map.Entry<cStatusDomain, cPermissionDomain> statusEntry :
+                        for (Map.Entry<cStatusModel, cPermissionModel> statusEntry :
                                 opsEntry.getValue().entrySet()) {
 
                             int stsID = statusEntry.getKey().getStatusID();
@@ -551,11 +548,11 @@ public class cPermissionAdapter extends cTreeAdapter {
                             /** masking status bits for the entity **/
                             statusMask |= statusEntry.getKey().getStatusID();
 
-                            permissionDomains.add(statusEntry.getValue());
+                            permissionModels.add(statusEntry.getValue());
                         }
                     }
 
-                    //Log.d(TAG, "==="+entityDomain.getName()+" ("+entityDomain.getEntityID()+")===");
+                    //Log.d(TAG, "==="+entityModel.getName()+" ("+entityModel.getEntityID()+")===");
                     //Log.d(TAG, gson.toJson(createOperations));
                     //Log.d(TAG, "---------------------------------");
                     //Log.d(TAG, gson.toJson(readOperations));
@@ -574,8 +571,8 @@ public class cPermissionAdapter extends cTreeAdapter {
                     EVH.updateItem(position);
                     EVH.setPaddingLeft(40 * node.getLevel());
 
-                    EVH.textViewName.setText(entityDomain.getName());
-                    EVH.textViewDescription.setText(entityDomain.getDescription());
+                    EVH.textViewName.setText(entityModel.getName());
+                    EVH.textViewDescription.setText(entityModel.getDescription());
 
                     /** collapse and expansion of the details of the role
                     EVH.textViewEntityDetailIcon.setTypeface(null, Typeface.NORMAL);
@@ -840,11 +837,11 @@ public class cPermissionAdapter extends cTreeAdapter {
                     // assign a unique id so that ViewPager is shown.
                     EVH.viewPager.setId(position);
 
-                    //cOperationDomain[] tmpOperations;
+                    //cOperationModel[] tmpOperations;
 
                     // attach fragments with a viewpager and data
-                    EVH.populateEntities(privilegeDomainID, entityDomain,
-                            operationMask, statusMask, permissionDomains);
+                    EVH.populateEntities(0, entityModel,
+                            operationMask, statusMask, permissionModels);
 
                     // attach the viewpager to the tablayout
                     EVH.tabLayout.setupWithViewPager(EVH.viewPager);
@@ -865,7 +862,7 @@ public class cPermissionAdapter extends cTreeAdapter {
     class cCommonAttributesTask extends AsyncTask<Object, Void, Object[]> {
         private cPrivilegeTreeViewHolder PVH;
         private cTreeModel treeModel;
-        private cPermissionDomain privilegeDomain;
+        private cPermissionModel privilegeModel;
 
 
         Object[] objectArrayList = new Object[5];
@@ -874,17 +871,17 @@ public class cPermissionAdapter extends cTreeAdapter {
         protected Object[] doInBackground(Object... objects) {
             PVH = (cPrivilegeTreeViewHolder) objects[0];
             treeModel = (cTreeModel) objects[1];
-            privilegeDomain = (cPermissionDomain) treeModel.getModelObject();
+            privilegeModel = (cPermissionModel) treeModel.getModelObject();
 
             // get all users from database
-            final ArrayList<cUserDomain> users = null;/*userHandler.getUserList(
+            final ArrayList<cUserModel> users = null;/*userHandler.getUserList(
                     session.loadUserID(),        /* loggedIn user id
                     session.loadOrgID(),         /* loggedIn own org.
                     session.loadPrimaryRole(),   /* primary group bit
                     session.loadSecondaryRoles() /* secondary group bits
             );
 */
-            final ArrayList<cOrganizationDomain> orgs =null;
+            final ArrayList<cOrganizationModel> orgs =null;
                     /*organizationHandler.getOrganizationList(
                             session.loadUserID(),        /* loggedIn user id
                             session.loadOrgID(),         /* loggedIn own org.
@@ -896,9 +893,9 @@ public class cPermissionAdapter extends cTreeAdapter {
             final List<cKeyPairBoolData> keyPairBoolUsers = new ArrayList<>();
             for (int i = 0; i < users.size(); i++) {
                 cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-                idNameBool.setId(users.get(i).getUserID());
-                idNameBool.setName(users.get(i).getName());
-                if (privilegeDomain.getOwnerID() == users.get(i).getUserID()) {
+                //idNameBool.setId(users.get(i).getUserID());
+                //idNameBool.setName(users.get(i).getName());
+                if (privilegeModel.getOwnerID() == 0/*users.get(i).getUserID()*/) {
                     idNameBool.setSelected(true);
                 } else {
                     idNameBool.setSelected(false);
@@ -910,9 +907,9 @@ public class cPermissionAdapter extends cTreeAdapter {
             final List<cKeyPairBoolData> keyPairBoolOrgs = new ArrayList<>();
             for (int i = 0; i < orgs.size(); i++) {
                 cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-                idNameBool.setId(orgs.get(i).getOrganizationID());
-                idNameBool.setName(orgs.get(i).getName());
-                if (privilegeDomain.getOrgID() == orgs.get(i).getOrganizationID()) {
+                //idNameBool.setId(orgs.get(i).getOrganizationID());
+               // idNameBool.setName(orgs.get(i).getName());
+                if (privilegeModel.getOrgID() == 0/*orgs.get(i).getOrganizationID()*/) {
                     idNameBool.setSelected(true);
                 } else {
                     idNameBool.setSelected(false);
@@ -922,12 +919,12 @@ public class cPermissionAdapter extends cTreeAdapter {
 
             // create a pair list of other organization ids and names
             final List<cKeyPairBoolData> keyPairBoolOtherOrgs = new ArrayList<>();
-            int gpBITS = privilegeDomain.getGroupBITS();
+            int gpBITS = privilegeModel.getGroupBITS();
             for (int i = 0; i < orgs.size(); i++) {
                 cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-                idNameBool.setId(orgs.get(i).getOrganizationID());
-                idNameBool.setName(orgs.get(i).getName());
-                if ((gpBITS & orgs.get(i).getOrganizationID()) == orgs.get(i).getOrganizationID()) {
+                //idNameBool.setId(orgs.get(i).getOrganizationID());
+                //idNameBool.setName(orgs.get(i).getName());
+                if (true /*(gpBITS & orgs.get(i).getOrganizationID()) == orgs.get(i).getOrganizationID()*/) {
                     idNameBool.setSelected(true);
                 } else {
                     idNameBool.setSelected(false);
@@ -939,7 +936,7 @@ public class cPermissionAdapter extends cTreeAdapter {
 
             // create a pair list of permission ids and names
             final cKeyPairBoolData[] keyPairBoolPerms = new cKeyPairBoolData[NUM_PERMS];
-            int opBITS = privilegeDomain.getPermsBITS();
+            int opBITS = privilegeModel.getPermsBITS();
             /*for (int i = 0; i < session.permissions.length; i++) {
                 cKeyPairBoolData idNameBool = new cKeyPairBoolData();
                 idNameBool.setId(session.permissions[i]);
@@ -950,12 +947,12 @@ public class cPermissionAdapter extends cTreeAdapter {
 
             // create a pair list of statuses ids and names
             final List<cKeyPairBoolData> keyPairBoolStatuses = new ArrayList<>();
-            for (int i = 0; i < statusDomains.size(); i++) {
+            for (int i = 0; i < statusModels.size(); i++) {
                 cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-                idNameBool.setId(statusDomains.get(i).getStatusID());
-                idNameBool.setName(statusDomains.get(i).getName());
-                if ((privilegeDomain.getStatusBITS() & statusDomains.get(i).getStatusID()) ==
-                        statusDomains.get(i).getStatusID()) {
+                idNameBool.setId(statusModels.get(i).getStatusID());
+                idNameBool.setName(statusModels.get(i).getName());
+                if ((privilegeModel.getStatusBITS() & statusModels.get(i).getStatusID()) ==
+                        statusModels.get(i).getStatusID()) {
                     idNameBool.setSelected(true);
                 } else {
                     idNameBool.setSelected(false);
@@ -984,11 +981,11 @@ public class cPermissionAdapter extends cTreeAdapter {
                         public void onItemsSelected(List<cKeyPairBoolData> items) {
                             for (int i = 0; i < items.size(); i++) {
                                 if (items.get(i).isSelected()) {
-                                    privilegeDomain.setOwnerID((int) items.get(i).getId());
+                                    privilegeModel.setOwnerID((int) items.get(i).getId());
                                     break;
                                 }
                             }
-                            Log.d(TAG, "OWNER : " + privilegeDomain.getOwnerID());
+                            Log.d(TAG, "OWNER : " + privilegeModel.getOwnerID());
                         }
                     });
 
@@ -1001,11 +998,11 @@ public class cPermissionAdapter extends cTreeAdapter {
                         public void onItemsSelected(List<cKeyPairBoolData> items) {
                             for (int i = 0; i < items.size(); i++) {
                                 if (items.get(i).isSelected()) {
-                                    privilegeDomain.setOrgID((int) items.get(i).getId());
+                                    privilegeModel.setOrgID((int) items.get(i).getId());
                                     break;
                                 }
                             }
-                            Log.d(TAG, "ORGANIZATION ID : " + privilegeDomain.getOrgID());
+                            Log.d(TAG, "ORGANIZATION ID : " + privilegeModel.getOrgID());
                         }
                     });
 
@@ -1018,19 +1015,19 @@ public class cPermissionAdapter extends cTreeAdapter {
                             for (int i = 0; i < items.size(); i++) {
                                 int orgID = (int) items.get(i).getId();
                                 if (items.get(i).isSelected()) {
-                                    if ((privilegeDomain.getGroupBITS() & orgID) != orgID) {
+                                    if ((privilegeModel.getGroupBITS() & orgID) != orgID) {
                                         // add other organizations
-                                        privilegeDomain.setGroupBITS(privilegeDomain.getGroupBITS() | orgID);
+                                        privilegeModel.setGroupBITS(privilegeModel.getGroupBITS() | orgID);
                                     }
                                 }
                                 if (!items.get(i).isSelected()) {
-                                    if ((privilegeDomain.getGroupBITS() & orgID) == orgID) {
+                                    if ((privilegeModel.getGroupBITS() & orgID) == orgID) {
                                         // remove other organizations
-                                        privilegeDomain.setGroupBITS(privilegeDomain.getGroupBITS() & ~orgID);
+                                        privilegeModel.setGroupBITS(privilegeModel.getGroupBITS() & ~orgID);
                                     }
                                 }
                             }
-                            Log.d(TAG, "OTHER ORGANIZATION : " + privilegeDomain.getGroupBITS());
+                            Log.d(TAG, "OTHER ORGANIZATION : " + privilegeModel.getGroupBITS());
                         }
                     });
 
@@ -1044,19 +1041,19 @@ public class cPermissionAdapter extends cTreeAdapter {
                             for (int i = 0; i < items.length; i++) {
                                 int permID = (int) items[i].getId();
                                 if (items[i].isSelected()) {
-                                    if ((privilegeDomain.getPermsBITS() & permID) != permID) {
+                                    if ((privilegeModel.getPermsBITS() & permID) != permID) {
                                         // add operation
-                                        privilegeDomain.setPermsBITS(privilegeDomain.getPermsBITS() | permID);
+                                        privilegeModel.setPermsBITS(privilegeModel.getPermsBITS() | permID);
                                     }
                                 }
                                 if (!items[i].isSelected()) {
-                                    if ((privilegeDomain.getPermsBITS() & permID) == permID) {
+                                    if ((privilegeModel.getPermsBITS() & permID) == permID) {
                                         // remove operation
-                                        privilegeDomain.setPermsBITS(privilegeDomain.getPermsBITS() & ~permID);
+                                        privilegeModel.setPermsBITS(privilegeModel.getPermsBITS() & ~permID);
                                     }
                                 }
                             }
-                            Log.d(TAG, "PERMS : " + privilegeDomain.getPermsBITS());
+                            Log.d(TAG, "PERMS : " + privilegeModel.getPermsBITS());
                         }
                     });
 
@@ -1069,25 +1066,25 @@ public class cPermissionAdapter extends cTreeAdapter {
                             for (int i = 0; i < items.size(); i++) {
                                 int statusID = (int) items.get(i).getId();
                                 if (items.get(i).isSelected()) {
-                                    if ((privilegeDomain.getStatusBITS() & statusID) != statusID) {
+                                    if ((privilegeModel.getStatusBITS() & statusID) != statusID) {
                                         // add status
-                                        privilegeDomain.setStatusBITS(privilegeDomain.getStatusBITS() | statusID);
+                                        privilegeModel.setStatusBITS(privilegeModel.getStatusBITS() | statusID);
                                     }
                                 }
                                 if (!items.get(i).isSelected()) {
-                                    if ((privilegeDomain.getStatusBITS() & statusID) == statusID) {
+                                    if ((privilegeModel.getStatusBITS() & statusID) == statusID) {
                                         // remove status
-                                        privilegeDomain.setStatusBITS(privilegeDomain.getStatusBITS() & ~statusID);
+                                        privilegeModel.setStatusBITS(privilegeModel.getStatusBITS() & ~statusID);
                                     }
                                 }
                             }
-                            Log.d(TAG, "STATUSES : " + privilegeDomain.getStatusBITS());
+                            Log.d(TAG, "STATUSES : " + privilegeModel.getStatusBITS());
                         }
                     });
 
-            createdDate = FORMAT_DATE.format(privilegeDomain.getCreatedDate());
+            createdDate = FORMAT_DATE.format(privilegeModel.getCreatedDate());
             modifiedDate = FORMAT_DATE.format(new Date());
-            syncedDate = FORMAT_DATE.format(privilegeDomain.getSyncedDate());
+            syncedDate = FORMAT_DATE.format(privilegeModel.getSyncedDate());
 
             PVH.textViewCreatedDate.setText(createdDate);
             PVH.textViewModifiedDate.setText(modifiedDate);
@@ -1129,7 +1126,7 @@ public class cPermissionAdapter extends cTreeAdapter {
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     // update user record permissions in the database
-                                    new cUpdatePrivilegeTask().execute(privilegeDomain, treeModel);
+                                    new cUpdatePrivilegeTask().execute(privilegeModel, treeModel);
 
                                     dialog.dismiss();
                                     //notifyItemChanged(position);
@@ -1157,16 +1154,16 @@ public class cPermissionAdapter extends cTreeAdapter {
      **/
     class cUpdatePrivilegeTask extends AsyncTask<Object, Void, Boolean> {
 
-        private cPermissionDomain privilegeDomain;
+        private cPermissionModel privilegeModel;
         private cTreeModel treeModel;
         boolean result;
 
         @Override
         protected Boolean doInBackground(Object... objects) {
-            privilegeDomain = (cPermissionDomain) objects[0];
+            privilegeModel = (cPermissionModel) objects[0];
             treeModel = (cTreeModel) objects[1];
-            treeModel.setModelObject(privilegeDomain);// update the modified privilege.
-            result = privilegeHandler.updatePrivilege(privilegeDomain);
+            treeModel.setModelObject(privilegeModel);// update the modified privilege.
+            result = true;//privilegeHandler.updatePrivilege(privilegeModel);
 
             return result;
         }
@@ -1368,32 +1365,32 @@ public class cPermissionAdapter extends cTreeAdapter {
             this.expandableLayout.setExpand(expandedPositionSet.contains(position));
         }
 
-        private void populateEntities(int privilegeDomainID, cEntityDomain entityDomain,
+        private void populateEntities(int privilegeModelID, cEntityModel entityModel,
                                       int operationMask, int statusMask,
-                                      ArrayList<cPermissionDomain> permissionDomains) {
+                                      ArrayList<cPermissionModel> permissionModels) {
 
             // initializing view pager adapter
             fragmentPagerAdapter = new cFragmentPagerAdapter(fragmentManager);
 
-            fragmentPagerAdapter.addFrag(new cOperationsFragment().newInstance(
-                    privilegeDomainID, entityDomain, createOperations, operationMask,
-                    createStatuses, statusMask, permissionDomains, this), "Add");
+            /*fragmentPagerAdapter.addFrag(new cOperationsFragment().newInstance(
+                    privilegeModelID, entityModel, createOperations, operationMask,
+                    createStatuses, statusMask, permissionModels, this), "Add");
 
             fragmentPagerAdapter.addFrag(new cOperationsFragment().newInstance(
-                    privilegeDomainID, entityDomain, readOperations, operationMask,
-                    readStatuses, statusMask, permissionDomains, this), "Read");
+                    privilegeModelID, entityModel, readOperations, operationMask,
+                    readStatuses, statusMask, permissionModels, this), "Read");
 
             fragmentPagerAdapter.addFrag(new cOperationsFragment().newInstance(
-                    privilegeDomainID, entityDomain, updateOperations, operationMask,
-                    updateStatuses, statusMask, permissionDomains, this), "Edit");
+                    privilegeModelID, entityModel, updateOperations, operationMask,
+                    updateStatuses, statusMask, permissionModels, this), "Edit");
 
             fragmentPagerAdapter.addFrag(new cOperationsFragment().newInstance(
-                    privilegeDomainID, entityDomain, deleteOperations, operationMask,
-                    deleteStatuses, statusMask, permissionDomains, this), "Del");
+                    privilegeModelID, entityModel, deleteOperations, operationMask,
+                    deleteStatuses, statusMask, permissionModels, this), "Del");
 
             fragmentPagerAdapter.addFrag(new cOperationsFragment().newInstance(
-                    privilegeDomainID, entityDomain, syncOperations, operationMask,
-                    syncStatuses, statusMask, permissionDomains, this), "Sync");
+                    privilegeModelID, entityModel, syncOperations, operationMask,
+                    syncStatuses, statusMask, permissionModels, this), "Sync");*/
 
             // adding adapter to pager
             viewPager.setAdapter(fragmentPagerAdapter);
@@ -1493,7 +1490,7 @@ public class cPermissionAdapter extends cTreeAdapter {
                             opsFrag.getCreate_perms().size() + " : " + gson.toJson(opsFrag.getCreate_perms()));
 
                     /** CREATE **/
-                    opsFrag.createPermissions(new ArrayList<>(opsFrag.getCreate_perms()));
+                    //opsFrag.createPermissions(new ArrayList<>(opsFrag.getCreate_perms()));
                 }
             }
         }
@@ -1509,7 +1506,7 @@ public class cPermissionAdapter extends cTreeAdapter {
                             gson.toJson(opsFrag.getUpdate_perms()));
 
                     /** UPDATE **/
-                    opsFrag.updatePermissions(new ArrayList<>(opsFrag.getUpdate_perms()));
+                    //opsFrag.updatePermissions(new ArrayList<>(opsFrag.getUpdate_perms()));
 
                 }
             }
@@ -1526,7 +1523,7 @@ public class cPermissionAdapter extends cTreeAdapter {
                             gson.toJson(opsFrag.getDelete_perms()));
 
                     /** DELETE **/
-                    opsFrag.deletePermissions(new ArrayList<>(opsFrag.getDelete_perms()));
+                    //opsFrag.deletePermissions(new ArrayList<>(opsFrag.getDelete_perms()));
                 }
             }
         }
@@ -1539,7 +1536,7 @@ public class cPermissionAdapter extends cTreeAdapter {
                 cOperationsFragment opsFrag = (cOperationsFragment) fragmentPagerAdapter.getItem(i);
 
                 /** refresh the permissions to be changed **/
-                opsFrag.onRefreshPermissions();
+                //opsFrag.onRefreshPermissions();
 
                 /** create the permissions **/
                 if (opsFrag.getCreate_perms() != null && !opsFrag.getCreate_perms().isEmpty()) {
@@ -1570,7 +1567,7 @@ public class cPermissionAdapter extends cTreeAdapter {
                 cOperationsFragment opsFrag = (cOperationsFragment) fragmentPagerAdapter.getItem(i);
 
                 /** refresh the permissions to be changed **/
-                opsFrag.onRefreshPermissions();
+                //opsFrag.onRefreshPermissions();
 
                 /** delete the permissions **/
                 if (opsFrag.getDelete_perms() != null && !opsFrag.getDelete_perms().isEmpty()) {
@@ -1699,28 +1696,28 @@ public class cPermissionAdapter extends cTreeAdapter {
 
     // Searches an operation ID in a list of operation IDs and return
     // the corresponding operation domain.
-    public cOperationDomain getOperationByID(ArrayList<cOperationDomain> operationDomains,
+    public cOperationModel getOperationByID(ArrayList<cOperationModel> operationModels,
                                              int operationID) {
-        cOperationDomain operationDomain = null;
-        for (int i = 0; i < operationDomains.size(); i++) {
-            if (operationDomains.get(i).getOperationID() == operationID) {
-                operationDomain = operationDomains.get(i);
-                return operationDomain;
+        cOperationModel operationModel = null;
+        for (int i = 0; i < operationModels.size(); i++) {
+            if (operationModels.get(i).getOperationID() == operationID) {
+                operationModel = operationModels.get(i);
+                return operationModel;
             }
         }
-        return operationDomain;
+        return operationModel;
     }
 
-    public cStatusDomain getStatusByID(ArrayList<cStatusDomain> statusDomains,
+    public cStatusModel getStatusByID(ArrayList<cStatusModel> statusModels,
                                        int statusID) {
-        cStatusDomain statusDomain = null;
-        for (int i = 0; i < statusDomains.size(); i++) {
-            if (statusDomains.get(i).getStatusID() == statusID) {
-                statusDomain = statusDomains.get(i);
-                return statusDomain;
+        cStatusModel statusModel = null;
+        for (int i = 0; i < statusModels.size(); i++) {
+            if (statusModels.get(i).getStatusID() == statusID) {
+                statusModel = statusModels.get(i);
+                return statusModel;
             }
         }
-        return statusDomain;
+        return statusModel;
     }
 
     private void registerExpand(int position) {
@@ -1819,7 +1816,7 @@ public class cPermissionAdapter extends cTreeAdapter {
     //Log.d(TAG, gson.toJson(keyPairBoolUsers));
 
                     /* get all users from database
-                    final ArrayList<cUserDomain> users = userHandler.getUserList(
+                    final ArrayList<cUserModel> users = userHandler.getUserList(
                             session.loadUserID(),                  /* loggedIn user id
                             session.loadOrganizationID(),          /* loggedIn own org.
                             session.loadPrimaryRole(session.loadUserID(),
@@ -1829,7 +1826,7 @@ public class cPermissionAdapter extends cTreeAdapter {
                     );
 
     // get all organizations from database
-    final ArrayList<cOrganizationDomain> orgs =
+    final ArrayList<cOrganizationModel> orgs =
             organizationHandler.getOrganizationList(
                     session.loadUserID(),                  /* loggedIn user id
                     session.loadOrganizationID(),          /* loggedIn own org.
@@ -1840,7 +1837,7 @@ public class cPermissionAdapter extends cTreeAdapter {
             );
 
 /* get the detailed of the loggedin user
-//final cUserDomain loggedInUser = session.loadCurrentUser();
+//final cUserModel loggedInUser = session.loadCurrentUser();
 
 // create a pair list of user ids and names
                     /*final List<cKeyPairBoolData> keyPairBoolUsers = new ArrayList<>();
@@ -1848,7 +1845,7 @@ public class cPermissionAdapter extends cTreeAdapter {
                         cKeyPairBoolData idNameBool = new cKeyPairBoolData();
                         idNameBool.setId(users.get(i).getUserID());
                         idNameBool.setName(users.get(i).getName());
-                        if (privilegeDomain.getOwnerID() == users.get(i).getUserID()) {
+                        if (privilegeModel.getOwnerID() == users.get(i).getUserID()) {
                             idNameBool.setSelected(true);
                         } else {
                             idNameBool.setSelected(false);
@@ -1865,11 +1862,11 @@ public class cPermissionAdapter extends cTreeAdapter {
 public void onItemsSelected(List<cKeyPairBoolData> items) {
         for (int i = 0; i < items.size(); i++) {
         if (items.get(i).isSelected()) {
-        privilegeDomain.setOwnerID((int) items.get(i).getId());
+        privilegeModel.setOwnerID((int) items.get(i).getId());
         break;
         }
         }
-        Log.d(TAG, "OWNER : " + privilegeDomain.getOwnerID());
+        Log.d(TAG, "OWNER : " + privilegeModel.getOwnerID());
         }
         });
 
@@ -1879,7 +1876,7 @@ final List<cKeyPairBoolData> keyPairBoolOrgs = new ArrayList<>();
         cKeyPairBoolData idNameBool = new cKeyPairBoolData();
         idNameBool.setId(orgs.get(i).getOrganizationID());
         idNameBool.setName(orgs.get(i).getOrganizationName());
-        if (privilegeDomain.getOrganizationID() == orgs.get(i).getOrganizationID()) {
+        if (privilegeModel.getOrganizationID() == orgs.get(i).getOrganizationID()) {
         idNameBool.setSelected(true);
         } else {
         idNameBool.setSelected(false);
@@ -1894,11 +1891,11 @@ final List<cKeyPairBoolData> keyPairBoolOrgs = new ArrayList<>();
 public void onItemsSelected(List<cKeyPairBoolData> items) {
         for (int i = 0; i < items.size(); i++) {
         if (items.get(i).isSelected()) {
-        privilegeDomain.setOrgID((int) items.get(i).getId());
+        privilegeModel.setOrgID((int) items.get(i).getId());
         break;
         }
         }
-        Log.d(TAG, "ORGANIZATION ID : " + privilegeDomain.getOrgID());
+        Log.d(TAG, "ORGANIZATION ID : " + privilegeModel.getOrgID());
         }
         });
 
@@ -1925,26 +1922,26 @@ public void onItemsSelected(List<cKeyPairBoolData> items) {
         for (int i = 0; i < items.size(); i++) {
         int orgID = (int) items.get(i).getId();
         if (items.get(i).isSelected()) {
-        if ((privilegeDomain.getGroupBITS() & orgID) != orgID) {
+        if ((privilegeModel.getGroupBITS() & orgID) != orgID) {
         // add other organizations
-        privilegeDomain.setGroupBITS(privilegeDomain.getGroupBITS() | orgID);
+        privilegeModel.setGroupBITS(privilegeModel.getGroupBITS() | orgID);
         }
         }
         if (!items.get(i).isSelected()) {
-        if ((privilegeDomain.getGroupBITS() & orgID) == orgID) {
+        if ((privilegeModel.getGroupBITS() & orgID) == orgID) {
         // remove other organizations
-        privilegeDomain.setGroupBITS(privilegeDomain.getGroupBITS() & ~orgID);
+        privilegeModel.setGroupBITS(privilegeModel.getGroupBITS() & ~orgID);
         }
         }
         }
-        Log.d(TAG, "OTHER ORGANIZATION : " + privilegeDomain.getGroupBITS());
+        Log.d(TAG, "OTHER ORGANIZATION : " + privilegeModel.getGroupBITS());
         }
         });
 
 // create a pair list of permission ids and names
 final cKeyPairBoolData[] keyPairBoolPerms = new cKeyPairBoolData[NUM_PERMS];
-        //if (permissionDomains.size() > 0) {
-        int opBITS = privilegeDomain.getPermsBITS();
+        //if (permissionModels.size() > 0) {
+        int opBITS = privilegeModel.getPermsBITS();
         //keyPairBoolPerms[0].setId();keyPairBoolPerms[0].setName();
         for (int i = 0; i < session.permissions.length; i++) {
         //Log.d(TAG, " "+(opBITS & session.permissions[i]));
@@ -1964,30 +1961,30 @@ public void onFixedItemsSelected(cKeyPairBoolData[] items) {
         for (int i = 0; i < items.length; i++) {
         int permID = (int) items[i].getId();
         if (items[i].isSelected()) {
-        if ((privilegeDomain.getPermsBITS() & permID) != permID) {
+        if ((privilegeModel.getPermsBITS() & permID) != permID) {
         // add operation
-        privilegeDomain.setPermsBITS(privilegeDomain.getPermsBITS() | permID);
+        privilegeModel.setPermsBITS(privilegeModel.getPermsBITS() | permID);
         }
         }
         if (!items[i].isSelected()) {
-        if ((privilegeDomain.getPermsBITS() & permID) == permID) {
+        if ((privilegeModel.getPermsBITS() & permID) == permID) {
         // remove operation
-        privilegeDomain.setPermsBITS(privilegeDomain.getPermsBITS() & ~permID);
+        privilegeModel.setPermsBITS(privilegeModel.getPermsBITS() & ~permID);
         }
         }
         }
-        Log.d(TAG, "PERMS : " + privilegeDomain.getPermsBITS());
+        Log.d(TAG, "PERMS : " + privilegeModel.getPermsBITS());
         }
         });
 
 // create a pair list of statuses ids and names
 final List<cKeyPairBoolData> keyPairBoolStatuses = new ArrayList<>();
-        for (int i = 0; i < statusDomains.size(); i++) {
+        for (int i = 0; i < statusModels.size(); i++) {
         cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-        idNameBool.setId(statusDomains.get(i).getStatusID());
-        idNameBool.setName(statusDomains.get(i).getName());
-        if ((privilegeDomain.getStatusBITS() & statusDomains.get(i).getStatusID()) ==
-        statusDomains.get(i).getStatusID()) {
+        idNameBool.setId(statusModels.get(i).getStatusID());
+        idNameBool.setName(statusModels.get(i).getName());
+        if ((privilegeModel.getStatusBITS() & statusModels.get(i).getStatusID()) ==
+        statusModels.get(i).getStatusID()) {
         idNameBool.setSelected(true);
         } else {
         idNameBool.setSelected(false);
@@ -2003,19 +2000,19 @@ public void onItemsSelected(List<cKeyPairBoolData> items) {
         for (int i = 0; i < items.size(); i++) {
         int statusID = (int) items.get(i).getId();
         if (items.get(i).isSelected()) {
-        if ((privilegeDomain.getStatusBITS() & statusID) != statusID) {
+        if ((privilegeModel.getStatusBITS() & statusID) != statusID) {
         // add status
-        privilegeDomain.setStatusBITS(privilegeDomain.getStatusBITS() | statusID);
+        privilegeModel.setStatusBITS(privilegeModel.getStatusBITS() | statusID);
         }
         }
         if (!items.get(i).isSelected()) {
-        if ((privilegeDomain.getStatusBITS() & statusID) == statusID) {
+        if ((privilegeModel.getStatusBITS() & statusID) == statusID) {
         // remove status
-        privilegeDomain.setStatusBITS(privilegeDomain.getStatusBITS() & ~statusID);
+        privilegeModel.setStatusBITS(privilegeModel.getStatusBITS() & ~statusID);
         }
         }
         }
-        Log.d(TAG, "STATUSES : " + privilegeDomain.getStatusBITS());
+        Log.d(TAG, "STATUSES : " + privilegeModel.getStatusBITS());
         }
         });
 */

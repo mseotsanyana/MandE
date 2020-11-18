@@ -17,7 +17,7 @@ import android.widget.PopupWindow;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
+import com.me.mseotsanyana.mande.BLL.model.session.cStatusModel;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.cFontManager;
 
@@ -31,8 +31,9 @@ public class cStatusAdapter extends RecyclerView.Adapter<cStatusAdapter.cStatusV
     private static final String TAG = cStatusAdapter.class.getSimpleName();
 
     private Context context;
-    private ArrayList<cStatusDomain> listStatus;
-    private ArrayList<cStatusDomain> filteredStatus;
+    private ArrayList<cStatusModel> listStatus;
+    private ArrayList<cStatusModel> filteredStatus;
+
     //private int permissionStatus;
     private AppCompatCheckBox appCompatCheckBoxAll;
 
@@ -40,7 +41,7 @@ public class cStatusAdapter extends RecyclerView.Adapter<cStatusAdapter.cStatusV
 
     //private cSessionManager sessionManager;
 
-    public cStatusAdapter(Context context, ArrayList<cStatusDomain> listStatus,
+    public cStatusAdapter(Context context, ArrayList<cStatusModel> listStatus,
                           int permissionStatus, AppCompatCheckBox appCompatCheckBoxAll) {
         this.context = context;
         this.listStatus = listStatus;
@@ -77,10 +78,10 @@ public class cStatusAdapter extends RecyclerView.Adapter<cStatusAdapter.cStatusV
         SH.switchStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Switch sc = (Switch) buttonView;
-                cStatusDomain statusDomain = (cStatusDomain) sc.getTag();
+                cStatusModel statusDomain = (cStatusModel) sc.getTag();
 
-                statusDomain.setDirty(true);
-                filteredStatus.get(position).setDirty(true);
+                //statusDomain.setDirty(true);
+                //filteredStatus.get(position).setDirty(true);
 
                 Log.d(TAG,"Detail Test...");
 
@@ -159,7 +160,7 @@ public class cStatusAdapter extends RecyclerView.Adapter<cStatusAdapter.cStatusV
         return filteredStatus.size();
     }
 
-    public ArrayList<cStatusDomain> getItems() {
+    public ArrayList<cStatusModel> getItems() {
         return filteredStatus;
     }
 
@@ -184,9 +185,9 @@ public class cStatusAdapter extends RecyclerView.Adapter<cStatusAdapter.cStatusV
                     filteredStatus = listStatus;
                 } else {
 
-                    ArrayList<cStatusDomain> filteredList = new ArrayList<>();
+                    ArrayList<cStatusModel> filteredList = new ArrayList<>();
 
-                    for (cStatusDomain statusDomain : listStatus) {
+                    for (cStatusModel statusDomain : listStatus) {
 
                         if (statusDomain.getName().toLowerCase().contains(charString.toLowerCase())) {
 
@@ -204,7 +205,7 @@ public class cStatusAdapter extends RecyclerView.Adapter<cStatusAdapter.cStatusV
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                filteredStatus = (ArrayList<cStatusDomain>) filterResults.values;
+                filteredStatus = (ArrayList<cStatusModel>) filterResults.values;
                 notifyDataSetChanged();
             }
         };

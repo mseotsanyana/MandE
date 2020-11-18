@@ -4,7 +4,7 @@ import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.wpb.iUploadAWPBInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
-import com.me.mseotsanyana.mande.BLL.repository.wpb.iUploadAWPBRepository;
+import com.me.mseotsanyana.mande.BLL.repository.awpb.iUploadAWPBRepository;
 
 public class cUploadAWPBInteractorImpl extends cAbstractInteractor
         implements iUploadAWPBInteractor {

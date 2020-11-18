@@ -24,13 +24,11 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout;
-import com.me.mseotsanyana.mande.BLL.domain.session.cAddressDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.address.Impl.cAddressHandler;
-import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cPermissionDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cUserDomain;
-import com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserHandler;
+import com.me.mseotsanyana.mande.BLL.model.session.cAddressModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cPermissionModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cStatusModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iMEEntityInterface;
 import com.me.mseotsanyana.mande.UTIL.TextDrawable;
 import com.me.mseotsanyana.mande.UTIL.cFontManager;
@@ -61,16 +59,16 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
 
     private Context context;
     private Bitmap bitmap;
-    private ArrayList<cUserDomain> listUsers;
-    private ArrayList<cUserDomain> filteredUsers;
+    private ArrayList<cUserModel> listUsers;
+    private ArrayList<cUserModel> filteredUsers;
 
     private cStatusAdapter statusAdapter;
-    private ArrayList<cStatusDomain> statusDomains;
+    private ArrayList<cStatusModel> statusDomains;
 
     //private cSessionManager session;
 
-    private cAddressHandler addressHandler;
-    private cUserHandler userHandler;
+    //private cAddressHandler addressHandler;
+    //private cUserHandler userHandler;
    // private cOrganizationHandler organizationHandler;
 
     private iMEEntityInterface userInterface;
@@ -81,15 +79,15 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
 
     Gson gson = new Gson();
 
-    public cUserAdapter(Context context, ArrayList<cUserDomain> userDomains,
-                        ArrayList<cStatusDomain> statusDomains, iMEEntityInterface userInterface) {
+    public cUserAdapter(Context context, ArrayList<cUserModel> userDomains,
+                        ArrayList<cStatusModel> statusDomains, iMEEntityInterface userInterface) {
         this.context        = context;
         //this.session        = session;
         this.listUsers      = userDomains;
         this.filteredUsers  = listUsers;
 
-        this.addressHandler = new cAddressHandler(context);
-        this.userHandler    = new cUserHandler(context);
+        //this.addressHandler = new cAddressHandler(context);
+        //this.userHandler    = new cUserHandler(context);
         //this.organizationHandler = new cOrganizationHandler(context);
 
         // used to mask statuses
@@ -117,11 +115,11 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
         holder.textViewUserName.setText(listUsers.get(position).getName()+" "+listUsers.get(position).getSurname());
 
         */
-        cAddressDomain addressDomain = null;//addressHandler.getAddressByID(filteredUsers.get(position).getAddressID());
-        final cUserDomain userDomain = filteredUsers.get(position);
+        cAddressModel addressDomain = null;//addressHandler.getAddressByID(filteredUsers.get(position).getAddressID());
+        final cUserModel userDomain = filteredUsers.get(position);
 
         //bitmap = cBitmap.decodeByteArray(filteredUsers.get(position).getPhoto());
-        bitmap = userHandler.getUserPhoto(filteredUsers.get(position).getUserID());
+        bitmap = null;//userHandler.getUserPhoto(filteredUsers.get(position).getUserID());
         if (bitmap != null) {
             holder.textViewUserNameIcon.setImageBitmap(bitmap);
         }else{
@@ -263,9 +261,9 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // get the user details at a card position of recycleview
-                                cUserDomain userDomain = getItem(position);
+                                //cUserModel userDomain = getItem(position);
                                 // delete the user from database
-                                boolean result = userHandler.deleteUser(userDomain.getUserID());
+                                boolean result = true;//userHandler.deleteUser(userDomain.getUserID());
                                 if (result) {
                                     // remove from the user from the adapter list
                                     removeItem(position);
@@ -352,7 +350,7 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
         /* common attributes under a hidden layer */
 
         // get all users from database
-        final ArrayList<cUserDomain> users = null;/*userHandler.getUserList(
+        final ArrayList<cUserModel> users = null;/*userHandler.getUserList(
                 session.loadUserID(),        /* loggedIn user id
                 session.loadOrgID(),         /* loggedIn own org.
                 session.loadPrimaryRole(),   /* primary group bit
@@ -360,7 +358,7 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
         );*/
 
         // get all organizations from database
-        final ArrayList<cOrganizationDomain> orgs = null;/*
+        final ArrayList<cOrganizationModel> orgs = null;/*
                 organizationHandler.getOrganizationList(
                         session.loadUserID(),        /* loggedIn user id
                         session.loadOrgID(),         /* loggedIn own org.
@@ -577,7 +575,7 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
                             public void onClick(DialogInterface dialog, int id) {
                                 // update user record permissions in the database
                                 userDomain.setModifiedDate(new Date());
-                                if(userHandler.updateUser(userDomain)){
+                                if(true/*userHandler.updateUser(userDomain)*/){
                                     userInterface.onResponseMessage("Record Permissions",
                                             "Record Permissions Successfully Changed.");
                                 }else{
@@ -606,10 +604,10 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
 
     }
 
-    public cPermissionDomain getPermissionDomain(ArrayList<cPermissionDomain> permissionDomains,
-                                                 int privilegeID, int entityID, int typeID,
-                                                 int operationID, int statusID) {
-        cPermissionDomain permissionDomain = null;
+    public cPermissionModel getPermissionDomain(ArrayList<cPermissionModel> permissionDomains,
+                                                int privilegeID, int entityID, int typeID,
+                                                int operationID, int statusID) {
+        cPermissionModel permissionDomain = null;
 /*
         Log.d(TAG, "PRIVILEGE ID = "+privilegeID+", ENTITY ID = "+entityID+", ENTITY TYPE ID = "+
                 typeID+", OPERATION ID = "+operationID+", STATUS ID = "+statusID);
@@ -630,7 +628,7 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
                         ", STATUS ID = "+permissionDomains.get(i).getStatusDomain().getStatusID());
                 */
 
-                permissionDomain = new cPermissionDomain(permissionDomains.get(i));
+                permissionDomain = new cPermissionModel(permissionDomains.get(i));
 
                 return permissionDomain;
             }
@@ -640,9 +638,9 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
     }
 
     // call this method when required to show popup
-    public void onShowCommonAttributes(View view, final cStatusDomain statusDomain) {
+    public void onShowCommonAttributes(View view, final cStatusModel statusDomain) {
         // get all users from database
-        final ArrayList<cUserDomain> users = null;/*userHandler.getUserList(
+        final ArrayList<cUserModel> users = null;/*userHandler.getUserList(
                 session.loadUserID(),        /* loggedIn user id
                 session.loadOrgID(),         /* loggedIn own org.
                 session.loadPrimaryRole(),   /* primary group bit
@@ -650,7 +648,7 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
         );*/
 
         // get all organizations from database
-        final ArrayList<cOrganizationDomain> orgs = null; /*
+        final ArrayList<cOrganizationModel> orgs = null; /*
                 organizationHandler.getOrganizationList(
                         session.loadUserID(),        /* loggedIn user id
                         session.loadOrgID(),         /* loggedIn own org.
@@ -682,7 +680,7 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
         return filteredUsers.size();
     }
 
-    public cUserDomain getItem(int position) {
+    public cUserModel getItem(int position) {
         return filteredUsers.get(position);
     }
 
@@ -711,9 +709,9 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
                     filteredUsers = listUsers;
                 } else {
 
-                    ArrayList<cUserDomain> filteredList = new ArrayList<>();
+                    ArrayList<cUserModel> filteredList = new ArrayList<>();
 
-                    for (cUserDomain userDomain : listUsers) {
+                    for (cUserModel userDomain : listUsers) {
 
                         if (userDomain.getName().toLowerCase().contains(charString.toLowerCase()) ||
                                 userDomain.getSurname().toLowerCase().contains(charString)) {
@@ -736,7 +734,7 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                filteredUsers = (ArrayList<cUserDomain>) filterResults.values;
+                filteredUsers = (ArrayList<cUserModel>) filterResults.values;
                 notifyDataSetChanged();
             }
         };

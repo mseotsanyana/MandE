@@ -4,7 +4,7 @@ import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.wpb.Impl.cUploadAWPBInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.wpb.iUploadAWPBInteractor;
-import com.me.mseotsanyana.mande.BLL.repository.wpb.iUploadAWPBRepository;
+import com.me.mseotsanyana.mande.BLL.repository.awpb.iUploadAWPBRepository;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.wpb.iUploadAWPBPresenter;
 

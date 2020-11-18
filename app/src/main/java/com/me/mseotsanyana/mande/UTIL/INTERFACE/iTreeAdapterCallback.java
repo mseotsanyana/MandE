@@ -1,12 +1,13 @@
 package com.me.mseotsanyana.mande.UTIL.INTERFACE;
 
-import com.me.mseotsanyana.mande.BLL.domain.session.cPermissionDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
+
+import com.me.mseotsanyana.mande.BLL.model.session.cPermissionModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cStatusModel;
 
 public interface iTreeAdapterCallback {
-    void onCreatePermissions(cStatusDomain statusDomain);
+    void onCreatePermissions(cStatusModel statusDomain);
 
-    void onUpdatePermissions(cPermissionDomain originalDomain, cPermissionDomain modifiesDomain);
+    void onUpdatePermissions(cPermissionModel originalDomain, cPermissionModel modifiesDomain);
 
     void onRefreshPermissions();
 

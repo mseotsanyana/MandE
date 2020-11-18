@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.gson.Gson;
-import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
+import com.me.mseotsanyana.mande.BLL.model.session.cStatusModel;
 import com.me.mseotsanyana.mande.PL.ui.adapters.session.cStatusAdapter;
 import com.me.mseotsanyana.mande.R;
 
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class cStatusesFragment extends Fragment {
     private static final String TAG = cStatusesFragment.class.getSimpleName();
 
-    private ArrayList<cStatusDomain> statusDomains;
+    private ArrayList<cStatusModel> statusDomains;
 
     private cStatusAdapter statusAdapter;
 
@@ -32,7 +32,7 @@ public class cStatusesFragment extends Fragment {
         // required empty public constructor
     }
 
-    public cStatusesFragment newInstance(ArrayList<cStatusDomain> statusDomains) {
+    public cStatusesFragment newInstance(ArrayList<cStatusModel> statusDomains) {
         Bundle bundle = new Bundle();
 
         cStatusesFragment fragment = new cStatusesFragment();
@@ -82,11 +82,11 @@ public class cStatusesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (appCompatCheckBoxAllStatus.isChecked()) {
-                    for (cStatusDomain domain : statusDomains) {
+                    for (cStatusModel domain : statusDomains) {
                         domain.setState(true);
                     }
                 } else {
-                    for (cStatusDomain domain : statusDomains) {
+                    for (cStatusModel domain : statusDomains) {
                         domain.setState(false);
                     }
                 }

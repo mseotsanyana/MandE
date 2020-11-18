@@ -20,19 +20,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cOutcomeModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cOutputModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cOutcomeModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cOutputModel;
 import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cOutcomeRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cSessionManagerImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.Impl.cOutcomePresenterImpl;
-import com.me.mseotsanyana.mande.PL.presenters.logframe.iImpactPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iOutcomePresenter;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iOutputPresenter;
 import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cOutcomeAdapter;
@@ -66,7 +64,7 @@ public class cOutcomeFragment extends Fragment implements iOutcomePresenter.View
 
     private AppCompatActivity activity;
 
-    private cOutcomeFragment(){
+    public cOutcomeFragment(){
 
     }
 
@@ -107,7 +105,7 @@ public class cOutcomeFragment extends Fragment implements iOutcomePresenter.View
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        this.logFrameID = Objects.requireNonNull(getArguments()).getLong("LOGFRAME_ID");
+        this.logFrameID = requireArguments().getLong("LOGFRAME_ID");
     }
 
     @Override
@@ -142,12 +140,15 @@ public class cOutcomeFragment extends Fragment implements iOutcomePresenter.View
         logFrameName = view.findViewById(R.id.subtitle);
         logFrameCaption.setText(R.string.logframe_name_caption);
         //outcomeCaption.setText(R.string.logframe_name_caption);
-        activity.setSupportActionBar(toolbar);
         CollapsingToolbarLayout collapsingToolbarLayout =
                 view.findViewById(R.id.collapsingToolbarLayout);
         collapsingToolbarLayout.setContentScrimColor(Color.WHITE);
         collapsingToolbarLayout.setTitle("List of Outcomes");
 
+        /* show the back arrow button */
+        activity.setSupportActionBar(toolbar);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         /*initFab(view);
 
@@ -156,7 +157,7 @@ public class cOutcomeFragment extends Fragment implements iOutcomePresenter.View
         toolBar.setTitle(R.string.outcome_list_title);
         toolBar.setTitleTextColor(Color.WHITE);*/
 
-        ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(toolbar);
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
     }
 
     private void init() {
@@ -218,7 +219,7 @@ public class cOutcomeFragment extends Fragment implements iOutcomePresenter.View
                     }
                 });
 
-        SearchManager searchManager = (SearchManager) Objects.requireNonNull(getActivity()).
+        SearchManager searchManager = (SearchManager) requireActivity().
                 getSystemService(Context.SEARCH_SERVICE);
 
         SearchView searchView = (SearchView) toolBarMenu.findItem(R.id.searchItem).getActionView();
@@ -261,7 +262,7 @@ public class cOutcomeFragment extends Fragment implements iOutcomePresenter.View
         Menu toolBarMenu = toolbar.getMenu();
 
         MenuItem homeIcon = toolBarMenu.findItem(R.id.homeItem);
-        TextDrawable faIcon = new TextDrawable(Objects.requireNonNull(getContext()));
+        TextDrawable faIcon = new TextDrawable(requireContext());
         faIcon.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
         faIcon.setTextAlign(Layout.Alignment.ALIGN_CENTER);
         faIcon.setTypeface(cFontManager.getTypeface(getContext(), cFontManager.FONTAWESOME));
@@ -273,10 +274,10 @@ public class cOutcomeFragment extends Fragment implements iOutcomePresenter.View
     }
 
     private void showFragment(String selectedFrag){
-        if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(selectedFrag) != null) {
+        if (requireFragmentManager().findFragmentByTag(selectedFrag) != null) {
             /* if the fragment exists, show it. */
             getFragmentManager().beginTransaction().show(
-                    Objects.requireNonNull(getFragmentManager().findFragmentByTag(selectedFrag))).
+                    requireFragmentManager().findFragmentByTag(selectedFrag)).
                     commit();
         } else {
             /* if the fragment does not exist, add it to fragment manager. */
@@ -286,7 +287,7 @@ public class cOutcomeFragment extends Fragment implements iOutcomePresenter.View
         if (getFragmentManager().findFragmentByTag(TAG) != null) {
             /* if the other fragment is visible, hide it. */
             getFragmentManager().beginTransaction().hide(
-                    Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).commit();
+                    requireFragmentManager().findFragmentByTag(TAG)).commit();
         }
     }
 

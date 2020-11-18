@@ -8,10 +8,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.me.mseotsanyana.mande.DAL.model.session.cOrganizationModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cRoleModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cStatusModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cUserModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cRoleModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cStatusModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cSessionManagerImpl;
 import com.me.mseotsanyana.mande.PL.ui.fragments.common.cCommonDatesFragment;
 import com.me.mseotsanyana.mande.PL.ui.fragments.common.cCustomViewPager;
@@ -20,7 +20,6 @@ import com.me.mseotsanyana.mande.PL.ui.fragments.common.cPermissionFragment;
 import com.me.mseotsanyana.mande.PL.ui.fragments.common.cStatusFragment;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class cCommonFragmentAdapter extends FragmentStatePagerAdapter {
 

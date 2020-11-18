@@ -8,20 +8,20 @@ import android.util.Pair;
 
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iUploadLogFrameRepository;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cWorkplanModel;
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cEvaluationCriteriaModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cQuestionGroupingModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cQuestionModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cQuestionTypeModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cActivityModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cImpactModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cInputModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cLogFrameModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cOutcomeModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cOutputModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cRaidModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cResourceModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cResourceTypeModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cWorkplanModel;
+import com.me.mseotsanyana.mande.BLL.model.evaluator.cEvaluationCriteriaModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionGroupingModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionTypeModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cActivityModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cImpactModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cInputModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cOutcomeModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cOutputModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cRaidModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cResourceModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cResourceTypeModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.DAL.storage.excel.cExcelHelper;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
@@ -33,7 +33,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -1159,8 +1158,8 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
             raidModel.setRaidID((int) cRow.getCell(0,
                     Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            raidModel.setLogFrameID((int) cRow.getCell(1,
-                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            raidModel.setLogFrameID((int) cRow.getCell(1,
+//                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             raidModel.setName(cRow.getCell(2,
                     Row.CREATE_NULL_AS_BLANK).getStringCellValue());
             raidModel.setDescription(cRow.getCell(3,
@@ -1189,7 +1188,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ID, raidModel.getRaidID());
-        cv.put(cSQLDBHelper.KEY_LOGFRAME_FK_ID, raidModel.getLogFrameID());
+        //cv.put(cSQLDBHelper.KEY_LOGFRAME_FK_ID, raidModel.getLogFrameID());
         cv.put(cSQLDBHelper.KEY_NAME, raidModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, raidModel.getDescription());
 

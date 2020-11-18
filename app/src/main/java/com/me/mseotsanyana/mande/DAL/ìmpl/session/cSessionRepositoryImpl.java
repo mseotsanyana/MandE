@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.repository.session.iManageSessionRepository;
-import com.me.mseotsanyana.mande.DAL.model.session.cSessionModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cSessionModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.DAL.storage.preference.cSharedPreference;
 import com.me.mseotsanyana.mande.UTIL.cConstant;

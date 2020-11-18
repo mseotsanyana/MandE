@@ -7,15 +7,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.me.mseotsanyana.mande.DAL.model.logframe.cQuestionModel;
-import com.me.mseotsanyana.mande.PL.ui.adapters.awpb.cHumanAdapter;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel;
 import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cQuestionAuxiliaryAdapter;
-import com.me.mseotsanyana.mande.PL.ui.fragments.wpb.cHumanFragment;
+import com.me.mseotsanyana.mande.PL.ui.fragments.awpb.cHumanFragment;
 import com.me.mseotsanyana.mande.R;
-import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.util.ArrayList;
 

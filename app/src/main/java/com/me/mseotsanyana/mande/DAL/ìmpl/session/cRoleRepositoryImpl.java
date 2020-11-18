@@ -7,16 +7,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.me.mseotsanyana.mande.BLL.domain.session.cMenuDomain;
 import com.me.mseotsanyana.mande.BLL.repository.session.iRoleRepository;
-import com.me.mseotsanyana.mande.DAL.model.session.cEntityModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cMenuModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cOperationModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cOrganizationModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cPermissionModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cRoleModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cStatusSetModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cUserModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cEntityModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cOperationModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cPermissionModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cRoleModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cStatusSetModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
 
@@ -389,11 +387,11 @@ public class cRoleRepositoryImpl implements iRoleRepository {
         return menuModelSet;
     }
 
-    public Set<cMenuDomain> getMenus1ByRoleID(int roleID) {
+    public Set<cMenuModel> getMenus1ByRoleID(int roleID) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Set<cMenuDomain> menuModelSet = new HashSet();
+        Set<cMenuModel> menuModelSet = new HashSet();
 
         // construct a selection query
         String selectQuery = "SELECT " + "role."+cSQLDBHelper.KEY_ID +", "+
@@ -419,7 +417,7 @@ public class cRoleRepositoryImpl implements iRoleRepository {
             if (cursor.moveToFirst()) {
                 do {
 
-                    cMenuDomain menu = new cMenuDomain();
+                    cMenuModel menu = new cMenuModel();
 
                     menu.setMenuID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                     menu.setParentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));

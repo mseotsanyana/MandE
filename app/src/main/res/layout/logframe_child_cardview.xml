@@ -2,155 +2,233 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card_view"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp"
-        card_view:cardBackgroundColor="@color/colorAccent"
+        android:layout_margin="4dp"
         card_view:cardCornerRadius="4dp">
 
-        <com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout
-            android:id="@+id/expandableLayout"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:padding="2dp">
 
-            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
+            <!-- See child logframe under the parent logframe -->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewOrgCaption"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="8dp">
-                <!-- logframe name -->
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textViewName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:textSize="@dimen/text_size_medium"
-                    android:textStyle="bold" />
+                android:layout_centerVertical="true"
+                android:layout_marginStart="2dp"
+                android:text="@string/logframe_organization_caption"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textViewOrganization" />
 
-                <!-- logframe description -->
-                <TextView
-                    android:id="@+id/textViewDescription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textViewName"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginTop="1dp"
-                    android:textSize="@dimen/text_size_small_medium" />
-
-                <!-- common attributes  -->
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textViewDetailIcon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_below="@id/textViewDescription"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginTop="15dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/text_size_very_large"
-                    android:textStyle="bold" />
-
-                <!-- number of child logframes under a parent logframe
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/textViewCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="1dp"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/text_size_small" />
-                    -->
-
-                <!-- bmb menu a logframe -->
-                <com.me.mseotsanyana.bmblibrary.cBoomMenuButton
-                    android:id="@+id/bmbMenu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textViewDescription"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    app:bmb_buttonEnum="simpleCircle"
-                    app:bmb_buttonPlaceEnum="buttonPlace_sc_9_1"
-                    app:bmb_inList="true"
-                    app:bmb_piecePlaceEnum="piecePlace_dot_9_1" />
-
-                <!-- synchronise a logframe -->
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textViewSyncIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textViewDescription"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_toLeftOf="@+id/bmbMenu"
-                    android:background="@drawable/me_btn_flexible"
-                    android:textSize="@dimen/text_size_large"
-                    android:textStyle="bold" />
-
-                <!-- delete a logframe -->
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textViewDeleteIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textViewDescription"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="2dp"
-                    android:layout_toLeftOf="@+id/textViewSyncIcon"
-                    android:background="@drawable/me_btn_flexible"
-                    android:textSize="@dimen/text_size_large"
-                    android:textStyle="bold" />
-
-                <!-- update a logframe -->
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textViewUpdateIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textViewDescription"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="2dp"
-                    android:layout_toLeftOf="@+id/textViewDeleteIcon"
-                    android:background="@drawable/me_btn_flexible"
-                    android:textSize="@dimen/text_size_large"
-                    android:textStyle="bold" />
-
-                <!-- create a logframe -->
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textViewCreateIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textViewDescription"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginRight="25dp"
-                    android:layout_marginBottom="2dp"
-                    android:layout_toLeftOf="@+id/textViewUpdateIcon"
-                    android:background="@drawable/me_btn_flexible"
-                    android:textSize="@dimen/text_size_large"
-                    android:textStyle="bold" />
-
-            </RelativeLayout>
-
-            <!-- hidden layer -->
-            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewOrganization"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:padding="8dp">
+                android:layout_centerVertical="true"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="1dp"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/textViewNameCaption"
+                app:layout_constraintTop_toBottomOf="@+id/textViewOrgCaption" />
 
-                <include layout="@layout/me_common_attributes" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewNameCaption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/logframe_name_caption"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/textViewName"
+                app:layout_constraintTop_toBottomOf="@id/textViewOrganization" />
 
-            </RelativeLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="1dp"
+                android:textSize="@dimen/text_size_small_medium"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/textViewDescriptionCaption"
+                app:layout_constraintTop_toBottomOf="@+id/textViewNameCaption" />
 
-        </com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewDescriptionCaption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/logframe_description_caption"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/textViewDescription"
+                app:layout_constraintTop_toBottomOf="@id/textViewName" />
+
+            <!-- parent logframe description -->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="9dp"
+                android:textSize="@dimen/text_size_small_medium"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/textViewStartDateCaption"
+                app:layout_constraintTop_toBottomOf="@id/textViewDescriptionCaption"  />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewStartDateCaption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="1dp"
+                android:text="@string/logframe_startdate_caption"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/bmbMenu"
+                app:layout_constraintTop_toBottomOf="@id/textViewDescription" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewStartDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="8dp"
+                android:text="value"
+                android:textSize="@dimen/text_size_small"
+                app:layout_constraintBottom_toTopOf="@id/bmbMenu"
+                app:layout_constraintStart_toEndOf="@+id/textViewStartDateCaption"
+                app:layout_constraintTop_toBottomOf="@id/textViewDescription" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewEndDateCaption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/logframe_enddate_caption"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/bmbMenu"
+                app:layout_constraintTop_toBottomOf="@id/textViewDescription"
+                app:layout_constraintEnd_toStartOf="@+id/textViewEndDate" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewEndDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="9dp"
+                android:layout_marginEnd="4dp"
+                android:textSize="@dimen/text_size_small"
+                android:text="value"
+                app:layout_constraintBottom_toTopOf="@id/bmbMenu"
+                app:layout_constraintTop_toBottomOf="@id/textViewDescription"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- bmb menu a logframe -->
+            <com.me.mseotsanyana.bmblibrary.cBoomMenuButton
+                android:id="@+id/bmbMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                app:bmb_buttonEnum="textOutsideCircle"
+                app:bmb_buttonPlaceEnum="buttonPlace_sc_12_1"
+                app:bmb_inList="true"
+                app:bmb_piecePlaceEnum="piecePlace_dot_12_1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewStartDateCaption" />
+
+            <!-- synchronise a logframe -->
+            <TextView
+                android:id="@+id/textViewSyncIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/me_btn_flexible"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/bmbMenu"
+                app:layout_constraintTop_toBottomOf="@id/textViewStartDate" />
+
+            <!-- delete a logframe -->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewDeleteIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/me_btn_flexible"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textViewSyncIcon"
+                app:layout_constraintTop_toBottomOf="@id/textViewStartDate" />
+
+            <!-- update a logframe -->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewUpdateIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/me_btn_flexible"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textViewDeleteIcon"
+                app:layout_constraintTop_toBottomOf="@id/textViewStartDate" />
+
+            <!-- create a logframe -->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewCreateIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/me_btn_flexible"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textViewUpdateIcon"
+                app:layout_constraintTop_toBottomOf="@id/textViewStartDate" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
-
 </LinearLayout>

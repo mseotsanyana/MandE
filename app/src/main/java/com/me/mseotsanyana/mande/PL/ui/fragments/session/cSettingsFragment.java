@@ -11,16 +11,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.text.Layout;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.wpb.cUploadAWPBRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.awpb.cUploadAWPBRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.evaluator.cUploadEvaluationRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.common.cUploadGlobalRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cUploadLogFrameRepositoryImpl;
@@ -45,8 +43,6 @@ import com.me.mseotsanyana.mande.UTIL.TextDrawable;
 import com.me.mseotsanyana.mande.UTIL.cFontManager;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.cMainThreadImpl;
-
-import java.util.Objects;
 
 public class cSettingsFragment extends Fragment implements
         iUploadSessionPresenter.View, iUploadGlobalPresenter.View,

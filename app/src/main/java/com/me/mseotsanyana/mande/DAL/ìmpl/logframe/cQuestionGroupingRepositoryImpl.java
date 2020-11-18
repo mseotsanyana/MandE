@@ -5,11 +5,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.me.mseotsanyana.mande.DAL.model.logframe.cQuestionGroupingModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionGroupingModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
-import com.me.mseotsanyana.mande.DAL.storage.excel.cExcelHelper;
 import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cOrganizationRepositoryImpl;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
 
 import java.sql.Timestamp;

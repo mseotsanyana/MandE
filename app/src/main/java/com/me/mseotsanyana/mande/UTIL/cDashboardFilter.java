@@ -1,9 +1,9 @@
 package com.me.mseotsanyana.mande.UTIL;
 
-import com.me.mseotsanyana.mande.BLL.domain.logframe.cActivityDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
-import com.me.mseotsanyana.mande.BLL.domain.logframe.cOutcomeDomain;
-import com.me.mseotsanyana.mande.BLL.domain.logframe.cOutputDomain;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cActivityModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cOutcomeModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cOutputModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
 import com.me.mseotsanyana.multiselectspinnerlibrary.cKeyPairBoolData;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class cDashboardFilter {
 
-    public static List<cKeyPairBoolData> getKeyPairBoolOrganizationTree(List<cOrganizationDomain> organizationTree){
+    public static List<cKeyPairBoolData> getKeyPairBoolOrganizationTree(List<cOrganizationModel> organizationTree){
         List<cKeyPairBoolData> keyPairBoolOrganizationTree = new ArrayList<>();
         for (int i = 0; i < organizationTree.size(); i++) {
             cKeyPairBoolData idNameBool = new cKeyPairBoolData();
@@ -59,12 +59,12 @@ public class cDashboardFilter {
 //        return keyPairBoolProjectTree;
 //    }
 
-    public static List<cKeyPairBoolData> getKeyPairBoolOutcomeTree(List<cOutcomeDomain> outcomeTree){
+    public static List<cKeyPairBoolData> getKeyPairBoolOutcomeTree(List<cOutcomeModel> outcomeTree){
         List<cKeyPairBoolData> keyPairBoolOutcomeTree = new ArrayList<>();
         for (int i = 0; i < outcomeTree.size(); i++) {
             cKeyPairBoolData idNameBool = new cKeyPairBoolData();
             idNameBool.setId((outcomeTree.get(i)).getOutcomeID());
-            idNameBool.setName((outcomeTree.get(i)).getOutcomeName());
+            idNameBool.setName((outcomeTree.get(i)).getName());
             idNameBool.setObject(outcomeTree.get(i));
             idNameBool.setSelected(false);
             keyPairBoolOutcomeTree.add(idNameBool);
@@ -72,12 +72,12 @@ public class cDashboardFilter {
         return keyPairBoolOutcomeTree;
     }
 
-    public static List<cKeyPairBoolData> getKeyPairBoolOutputTree(List<cOutputDomain> outputTree){
+    public static List<cKeyPairBoolData> getKeyPairBoolOutputTree(List<cOutputModel> outputTree){
         List<cKeyPairBoolData> keyPairBoolOutputTree = new ArrayList<>();
         for (int i = 0; i < outputTree.size(); i++) {
             cKeyPairBoolData idNameBool = new cKeyPairBoolData();
             idNameBool.setId((outputTree.get(i)).getOutputID());
-            idNameBool.setName((outputTree.get(i)).getOutputName());
+            idNameBool.setName((outputTree.get(i)).getName());
             idNameBool.setObject(outputTree.get(i));
             idNameBool.setSelected(false);
             keyPairBoolOutputTree.add(idNameBool);
@@ -85,12 +85,12 @@ public class cDashboardFilter {
         return keyPairBoolOutputTree;
     }
 
-    public static List<cKeyPairBoolData> getKeyPairBoolActivityTree(List<cActivityDomain> activityTree){
+    public static List<cKeyPairBoolData> getKeyPairBoolActivityTree(List<cActivityModel> activityTree){
         List<cKeyPairBoolData> keyPairBoolActivityTree = new ArrayList<>();
         for (int i = 0; i < activityTree.size(); i++) {
             cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-            idNameBool.setId((activityTree.get(i)).getActivityID());
-            idNameBool.setName((activityTree.get(i)).getActivityName());
+            //idNameBool.setId((activityTree.get(i)).getActivityID());
+            idNameBool.setName((activityTree.get(i)).getName());
             idNameBool.setObject(activityTree.get(i));
             idNameBool.setSelected(false);
             keyPairBoolActivityTree.add(idNameBool);

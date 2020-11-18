@@ -17,15 +17,13 @@ public class cConstant {
     public static final int EXPAND   = 0;
     public static final int COLLAPSE = 1;
 
-
     /* frequency constant identification */
-    public static final int CONS_DAILY_ID        = 1;
-    public static final int CONS_WEEKLY_ID       = 2;
-    public static final int CONS_FORT_NIGHTLY_ID = 3;
-    public static final int CONS_MONTHLY_ID      = 4;
-    public static final int CONS_QUARTERLY_ID    = 5;
-    public static final int CONS_ANNUALLY_ID     = 6;
-
+    public static final int DAILY_ID        = 1;
+    public static final int WEEKLY_ID       = 2;
+    public static final int FORT_NIGHTLY_ID = 3;
+    public static final int MONTHLY_ID      = 4;
+    public static final int QUARTERLY_ID    = 5;
+    public static final int ANNUALLY_ID     = 6;
 
     /* types of indicators */
     public static final int QUALITATIVE_INDICATOR  = 1;
@@ -66,7 +64,6 @@ public class cConstant {
 }
 
 /*
-
     public static final String KEY_USER_PRIMARY_ROLE    = "USER_PRIMARY_ROLE";
     public static final String KEY_USER_SECONDARY_ROLES = "USER_SECONDARY_ROLES";
     public static final String KEY_USER_BRBAC_ENTITIES  = "USER_USER_BRBAC_ENTITIES";
@@ -140,5 +137,4 @@ public class cConstant {
     public static final String KEY_STATUS_OPERATIONS   = "STATUS_OPERATIONS";
     public static final String KEY_STATUS_PERMS_STATUS = "STATUS_PERMS_STATUS";
     public static final String KEY_STATUS_STATUSES     = "STATUS_STATUSES";
-
  */

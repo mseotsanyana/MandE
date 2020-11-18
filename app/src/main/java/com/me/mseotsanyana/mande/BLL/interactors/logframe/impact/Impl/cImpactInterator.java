@@ -3,9 +3,7 @@ package com.me.mseotsanyana.mande.BLL.interactors.logframe.impact.Impl;
 import android.content.Context;
 
 
-import com.me.mseotsanyana.mande.DAL.storage.mapper.cMapper;
 import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cImpactRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cImpactModel;
 
 public class cImpactInterator
 {

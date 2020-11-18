@@ -1,6 +1,6 @@
 package com.me.mseotsanyana.mande.BLL.repository.session;
 
-import com.me.mseotsanyana.mande.DAL.model.session.cMenuModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
 
 import java.util.Set;
 

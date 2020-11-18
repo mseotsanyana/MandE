@@ -4,7 +4,7 @@ import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.util.Log;
 
-import com.me.mseotsanyana.mande.UTIL.COM.cVolleyHandler;
+import com.me.mseotsanyana.mande.DAL.ìmpl.synchronization.cVolleyHandler;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -27,7 +27,7 @@ public class cAddressJobService extends JobService {
     private Map<String, String> params = new HashMap<>();
     //private cSessionManager session;
     private cVolleyHandler volleyHandler;
-    private cAddressHandler addressHandler;
+    //private cAddressHandler addressHandler;
 
     //private Map<String, String> params;
     //Type type;
@@ -37,7 +37,7 @@ public class cAddressJobService extends JobService {
         super.onCreate();
         //session = new cSessionManager(getApplicationContext());
         volleyHandler = new cVolleyHandler(getApplicationContext());
-        addressHandler = new cAddressHandler(getApplicationContext());
+        //addressHandler = new cAddressHandler(getApplicationContext());
 
         //type = new TypeToken<Map<String, String>>(){}.getType();
     }

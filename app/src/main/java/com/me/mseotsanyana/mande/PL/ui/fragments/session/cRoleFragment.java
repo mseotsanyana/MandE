@@ -25,10 +25,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.gson.Gson;
-import com.me.mseotsanyana.mande.BLL.domain.session.cOrganizationDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cRoleDomain;
-import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
+
 import com.me.mseotsanyana.mande.BLL.interactors.session.status.Impl.cStatusInteractorImpl;
+import com.me.mseotsanyana.mande.BLL.model.session.cRoleModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cStatusModel;
 import com.me.mseotsanyana.mande.PL.ui.adapters.session.cRoleAdapter;
 import com.me.mseotsanyana.mande.UTIL.INTERFACE.iPermissionInterface;
 import com.me.mseotsanyana.mande.R;
@@ -55,7 +55,7 @@ public class cRoleFragment extends Fragment implements iPermissionInterface {
 
     private ArrayList<cTreeModel> roleUserTree;
     //private ArrayList<cRoleDomain> roleDomains;
-    private ArrayList<cStatusDomain> statusDomains;
+    private ArrayList<cStatusModel> statusModels;
 
     private Toolbar toolBar;
     private Menu toolBarMenu;
@@ -65,7 +65,7 @@ public class cRoleFragment extends Fragment implements iPermissionInterface {
     //private cUserRoleHandler userRoleHandler;
     private cStatusInteractorImpl statusHandler;
 
-    private cRoleDomain roleDomain;
+    private cRoleModel roleModel;
     private RecyclerView recyclerView;
     private cRoleAdapter roleUserTreeAdapter;
     private int cardPosition = 0;
@@ -107,16 +107,15 @@ public class cRoleFragment extends Fragment implements iPermissionInterface {
         //session = new cSessionManager(getContext());
 
         roleUserTree  = new ArrayList<>();
-        //roleDomains   = new ArrayList<>();
-        statusDomains = new ArrayList<>();
+        //roleModels   = new ArrayList<>();
+        //statusModels = new ArrayList<>();
 
         // getting a action_list with all projects in a database
         //organizationHandler = new cOrganizationHandler(getActivity());
         //userRoleHandler = new cUserRoleHandler(getActivity(), session);
         statusHandler   = null;//new cStatusInteractorImpl(getActivity());
 
-        roleUserTreeAdapter = new cRoleAdapter(getActivity(),
-                roleUserTree, statusDomains, level, this);
+        //roleUserTreeAdapter = new cRoleAdapter(getActivity(), roleUserTree, statusModels, level, this);
     }
 
     /**
@@ -176,45 +175,45 @@ public class cRoleFragment extends Fragment implements iPermissionInterface {
                 final View formElementsView = inflater.inflate(R.layout.role_add_edit_record, null, false);
 
                 // get all organizations from database
-                final ArrayList<cOrganizationDomain> orgs = null;/*
-                        organizationHandler.getOrganizationList(
-                                session.loadUserID(),        /* loggedIn user id
-                                session.loadOrgID(),         /* loggedIn own org.
-                                session.loadPrimaryRole(),   /* primary group bit
-                                session.loadSecondaryRoles() /* secondary group bits
-                        );*/
+                //final ArrayList<cOrganizationModel> orgs = null;/*
+                       // organizationHandler.getOrganizationList(
+                       //         session.loadUserID(),        /* loggedIn user id
+                       //         session.loadOrgID(),         /* loggedIn own org.
+                      //          session.loadPrimaryRole(),   /* primary group bit
+                      //          session.loadSecondaryRoles() /* secondary group bits
+                     //  );
 
                 // create a pair list of organization ids and names
-                final List<cKeyPairBoolData> keyPairBoolOrgs = new ArrayList<>();
-                for (int i = 0; i < orgs.size(); i++) {
-                    cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-                    idNameBool.setId(orgs.get(i).getOrganizationID());
-                    idNameBool.setName(orgs.get(i).getName());
-                    /*if ((mPermissionDomain != null) &&
-                            (mPermissionDomain.getOrganizationID() == orgs.get(i).getOrganizationID())) {
-                        idNameBool.setSelected(true);
-                    } else {
-                        idNameBool.setSelected(false);
-                    }*/
-                    keyPairBoolOrgs.add(idNameBool);
-                }
+//                final List<cKeyPairBoolData> keyPairBoolOrgs = new ArrayList<>();
+//                for (int i = 0; i < orgs.size(); i++) {
+//                    cKeyPairBoolData idNameBool = new cKeyPairBoolData();
+//                    idNameBool.setId(orgs.get(i).getOrganizationID());
+//                    idNameBool.setName(orgs.get(i).getName());
+//                    /*if ((mPermissionModel != null) &&
+//                            (mPermissionModel.getOrganizationID() == orgs.get(i).getOrganizationID())) {
+//                        idNameBool.setSelected(true);
+//                    } else {
+//                        idNameBool.setSelected(false);
+//                    }*/
+//                    keyPairBoolOrgs.add(idNameBool);
+//                }
 
                 // -1 is no by default selection, 0 to length will select corresponding values
                 cSingleSpinnerSearch_old singleSpinnerSearchOrg =
                         (cSingleSpinnerSearch_old) formElementsView.findViewById(R.id.appCompatSpinnerOrg);
-                // called when click organization single spinner search
-                singleSpinnerSearchOrg.setItems(keyPairBoolOrgs, -1, new cSpinnerListener() {
-                    @Override
-                    public void onItemsSelected(List<cKeyPairBoolData> items) {
-                        for (int i = 0; i < items.size(); i++) {
-                            /*if (items.get(i).isSelected()) {
-                                mPermissionDomain.setOrganizationID((int) items.get(i).getId());
-                                break;
-                            }*/
-                        }
-                        //Log.d(TAG, "ORGANIZATION OWNER : " + mPermissionDomain.getOrganizationID());
-                    }
-                });
+//                // called when click organization single spinner search
+//                singleSpinnerSearchOrg.setItems(keyPairBoolOrgs, -1, new cSpinnerListener() {
+//                    @Override
+//                    public void onItemsSelected(List<cKeyPairBoolData> items) {
+//                        for (int i = 0; i < items.size(); i++) {
+//                            /*if (items.get(i).isSelected()) {
+//                                mPermissionModel.setOrganizationID((int) items.get(i).getId());
+//                                break;
+//                            }*/
+//                        }
+//                        //Log.d(TAG, "ORGANIZATION OWNER : " + mPermissionModel.getOrganizationID());
+//                    }
+//                });
 
 
 
@@ -283,16 +282,16 @@ public class cRoleFragment extends Fragment implements iPermissionInterface {
                         param[0].getSecondaryRoles()));*/
 
                 /*
-                roleDomains.clear();
+                roleModels.clear();
                 for (int i = 0; i < roleUserTree.size(); i++) {
                     if (roleUserTree.get(i).getType() == 0) {
-                        roleDomains.add((cRoleDomain) roleUserTree.get(i).getModelObject());
+                        roleModels.add((cRoleModel) roleUserTree.get(i).getModelObject());
                     }
                 }
                 */
 
-                statusDomains.clear();
-                //statusDomains.addAll(statusHandler.getStatusList());
+                statusModels.clear();
+                //statusModels.addAll(statusHandler.getStatusList());
 
                 return null;
             }
@@ -316,8 +315,8 @@ public class cRoleFragment extends Fragment implements iPermissionInterface {
 /*
     @Override
     public void onUpdateEntity(int position) {
-        roleDomain = roleUserTreeAdapter.getItem(position);
-        //pushFragment(cUserEditFragment.newInstance(roleDomain, this));
+        roleModel = roleUserTreeAdapter.getItem(position);
+        //pushFragment(cUserEditFragment.newInstance(roleModel, this));
     }
 */
 

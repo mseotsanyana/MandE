@@ -5,12 +5,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.me.mseotsanyana.mande.BLL.repository.wpb.iExpenseRepository;
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cEvaluationResponseModel;
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cNumericResponseModel;
+import com.me.mseotsanyana.mande.BLL.model.evaluator.cNumericResponseModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
-import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cInputRepositoryImpl;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
 
 import java.sql.Timestamp;

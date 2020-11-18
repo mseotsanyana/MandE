@@ -20,7 +20,6 @@ import android.util.TypedValue;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.me.mseotsanyana.mande.BLL.domain.session.cRoleDomain;
 import com.me.mseotsanyana.mande.R;
 
 import java.lang.reflect.Field;
@@ -151,14 +150,14 @@ public class cUtil {
         }
     }
 
-    public static int sumRoleDomainIDs(ArrayList<cRoleDomain> roleDomains){
-        int sum = 0;
-        for (int i = 0; i < roleDomains.size(); i++){
-            sum = sum + roleDomains.get(i).getRoleID();
-        }
-
-        return sum;
-    }
+//    public static int sumRoleDomainIDs(ArrayList<cRoleDomain> roleDomains){
+//        int sum = 0;
+//        for (int i = 0; i < roleDomains.size(); i++){
+//            sum = sum + roleDomains.get(i).getRoleID();
+//        }
+//
+//        return sum;
+//    }
 
 
     // check permission for reading external storage

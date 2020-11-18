@@ -2,30 +2,57 @@ package com.me.mseotsanyana.mande.BLL.repository.raid;
 
 public interface iUploadRAIDRepository {
     /* delete functions */
-    boolean deleteRegisters();
-    boolean deleteRiskLikelihoods();
-    boolean deleteRiskLikelihoodSets();
-    boolean deleteRiskImpacts();
-    boolean deleteRiskImpactSets();
-    boolean deleteRiskCriteria();
-    boolean deleteRiskCriteriaSets();
-    boolean deleteRisks();
+    boolean deletePIMs();
+    boolean deleteRAIDLIKELIHOODs();
+    boolean deleteRAIDIMPACTs();
+    boolean deleteROBOTs();
+    boolean deletePIMSETs();
+
+    boolean deleteRiskRegisters();
+    boolean deleteAssumptionRegisters();
+    boolean deleteIssueRegisters();
+    boolean deleteDependencyRegisters();
+    boolean deleteRAIDRegisters();
+    boolean deleteRAIDLOGs();
     boolean deleteRiskConsequences();
     boolean deleteRiskRootCauses();
-    boolean deleteRiskAnalysis();
-    boolean deleteRiskActionTypes();
+    boolean deleteRisks();
+    boolean deleteAssumptions();
+    boolean deleteIssues();
+    boolean deleteDependencies();
+
+    boolean deleteRiskReviews();
+    boolean deleteAssumptionReviews();
+    boolean deleteIssueReviews();
+    boolean deleteDependencyReviews();
+    boolean deleteMilestoneReviews();
+
     boolean deleteRiskActions();
+    boolean deleteAssumptionActions();
+    boolean deleteIssueActions();
+    boolean deleteDependencyActions();
+    boolean deleteActions();
+
     boolean deleteRiskCurrentControls();
     boolean deleteRiskAdditionalControls();
+    boolean deleteRiskActionTypes();
 
     /* add functions */
-    boolean addRegisterFromExcel();
-    boolean addRiskLikelihoodFromExcel();
-    boolean addRiskImpactFromExcel();
-    boolean addRiskCriteriaFromExcel();
+    boolean addPIMFromExcel();
+    boolean addRAIDLikelihoodFromExcel();
+    boolean addRAIDImpactFromExcel();
+    boolean addRobotFromExcel();
+    boolean addPIMSETFromExcel();
+    boolean addRAIDRegisterFromExcel();
+    boolean addRAIDLOGFromExcel();
     boolean addRiskFromExcel();
-    boolean addRiskAnalysisFromExcel();
-    boolean addRiskActionTypeFromExcel();
-    boolean addRiskActionFromExcel();
+    boolean addAssumptionFromExcel();
+    boolean addIssueFromExcel();
+    boolean addIssueCommentFromExcel();
+    boolean addDependencyFromExcel();
 
+    boolean addMilestoneReviewFromExcel();
+
+    boolean addRiskActionTypeFromExcel();
+    boolean addActionFromExcel();
 }

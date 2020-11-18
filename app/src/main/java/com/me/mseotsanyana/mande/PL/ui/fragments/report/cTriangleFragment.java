@@ -72,7 +72,7 @@ public class cTriangleFragment extends Fragment {
 
         ArrayList<cTreeModel> triangleTreeData = getArguments().getParcelableArrayList("TRIANGLE");
 
-        triangleAdapter = new cLogFrameAdapter(getActivity(), null,triangleTreeData,null);
+//        triangleAdapter = new cLogFrameAdapter(getActivity(), null,triangleTreeData,null);
 
     }
 

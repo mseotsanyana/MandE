@@ -1,7 +1,6 @@
 package com.me.mseotsanyana.mande.BLL.interactors.evaluator.Impl;
 
 import android.util.Log;
-import android.util.Pair;
 
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
@@ -10,12 +9,9 @@ import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.evaluator.iReadEvaluationInteractor;
 import com.me.mseotsanyana.mande.BLL.repository.evaluator.iEvaluationRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cArrayChoiceModel;
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cColChoiceModel;
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cEvaluationModel;
-import com.me.mseotsanyana.mande.DAL.model.evaluator.cRowChoiceModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cQuestionModel;
-import com.me.mseotsanyana.mande.DAL.model.session.cUserModel;
+import com.me.mseotsanyana.mande.BLL.model.evaluator.cEvaluationModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
 import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
 import com.me.mseotsanyana.questionnairelibrary.forms.db.cDBQuestion;
 import com.me.mseotsanyana.questionnairelibrary.forms.db.cDBQuestionnaire;
@@ -23,7 +19,6 @@ import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;

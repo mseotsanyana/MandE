@@ -1,6 +1,6 @@
 package com.me.mseotsanyana.mande.PL.ui.listeners.logframe;
 
-import com.me.mseotsanyana.mande.DAL.model.logframe.cActivityModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cActivityModel;
 
 public interface iViewActivityListener {
     void onClickUpdateActivity(int position, cActivityModel activityModel);

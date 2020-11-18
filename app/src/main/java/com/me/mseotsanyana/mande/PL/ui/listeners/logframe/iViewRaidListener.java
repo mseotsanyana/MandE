@@ -1,6 +1,6 @@
 package com.me.mseotsanyana.mande.PL.ui.listeners.logframe;
 
-import com.me.mseotsanyana.mande.DAL.model.logframe.cRaidModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cRaidModel;
 
 public interface iViewRaidListener {
     void onClickUpdateRaid(int position, cRaidModel raidModel);

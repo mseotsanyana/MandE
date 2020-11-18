@@ -26,8 +26,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cActivityModel;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cInputModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cActivityModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cInputModel;
 import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cActivityRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cSessionManagerImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.Impl.cActivityPresenterImpl;
@@ -101,7 +101,7 @@ public class cActivityFragment extends Fragment implements iActivityPresenter.Vi
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        this.logFrameID = Objects.requireNonNull(getArguments()).getLong("LOGFRAME_ID");
+        this.logFrameID = requireArguments().getLong("LOGFRAME_ID");
     }
 
     @Override
@@ -136,11 +136,15 @@ public class cActivityFragment extends Fragment implements iActivityPresenter.Vi
         logFrameName = view.findViewById(R.id.subtitle);
         logFrameCaption.setText(R.string.logframe_name_caption);
         //outcomeCaption.setText(R.string.logframe_name_caption);
-        activity.setSupportActionBar(toolbar);
         CollapsingToolbarLayout collapsingToolbarLayout =
                 view.findViewById(R.id.collapsingToolbarLayout);
         collapsingToolbarLayout.setContentScrimColor(Color.WHITE);
         collapsingToolbarLayout.setTitle("List of Activities");
+
+        /* show the back arrow button */
+        activity.setSupportActionBar(toolbar);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         /*initFab(view);
 
@@ -149,7 +153,7 @@ public class cActivityFragment extends Fragment implements iActivityPresenter.Vi
         toolBar.setTitle(R.string.outcome_list_title);
         toolBar.setTitleTextColor(Color.WHITE);*/
 
-        ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(toolbar);
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
     }
 
     private void init() {
@@ -210,7 +214,7 @@ public class cActivityFragment extends Fragment implements iActivityPresenter.Vi
                     }
                 });
 
-        SearchManager searchManager = (SearchManager) Objects.requireNonNull(getActivity()).
+        SearchManager searchManager = (SearchManager) requireActivity().
                 getSystemService(Context.SEARCH_SERVICE);
 
         SearchView searchView = (SearchView) toolBarMenu.findItem(R.id.searchItem).getActionView();
@@ -253,7 +257,7 @@ public class cActivityFragment extends Fragment implements iActivityPresenter.Vi
         Menu toolBarMenu = toolbar.getMenu();
 
         MenuItem homeIcon = toolBarMenu.findItem(R.id.homeItem);
-        TextDrawable faIcon = new TextDrawable(Objects.requireNonNull(getContext()));
+        TextDrawable faIcon = new TextDrawable(requireContext());
         faIcon.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
         faIcon.setTextAlign(Layout.Alignment.ALIGN_CENTER);
         faIcon.setTypeface(cFontManager.getTypeface(getContext(), cFontManager.FONTAWESOME));
@@ -265,10 +269,10 @@ public class cActivityFragment extends Fragment implements iActivityPresenter.Vi
     }
 
     private void showFragment(String selectedFrag){
-        if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(selectedFrag) != null) {
+        if (requireFragmentManager().findFragmentByTag(selectedFrag) != null) {
             /* if the fragment exists, show it. */
             getFragmentManager().beginTransaction().show(
-                    Objects.requireNonNull(getFragmentManager().findFragmentByTag(selectedFrag))).
+                    requireFragmentManager().findFragmentByTag(selectedFrag)).
                     commit();
         } else {
             /* if the fragment does not exist, add it to fragment manager. */
@@ -278,7 +282,7 @@ public class cActivityFragment extends Fragment implements iActivityPresenter.Vi
         if (getFragmentManager().findFragmentByTag(TAG) != null) {
             /* if the other fragment is visible, hide it. */
             getFragmentManager().beginTransaction().hide(
-                    Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).commit();
+                    requireFragmentManager().findFragmentByTag(TAG)).commit();
         }
     }
 

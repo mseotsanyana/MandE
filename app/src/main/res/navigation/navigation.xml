@@ -30,36 +30,105 @@
         android:label="cLogFrameFragment" >
         <action
             android:id="@+id/action_cLogFrameFragment_to_cImpactFragment"
-            app:destination="@id/cImpactFragment" />
+            app:destination="@id/cImpactFragment"
+            app:enterAnim="@anim/grow_in"
+            app:exitAnim="@anim/grow_out"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/cLogFrameFragment"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_cLogFrameFragment_to_cOutcomeFragment"
-            app:destination="@id/cOutcomeFragment" />
+            app:destination="@id/cOutcomeFragment"
+            app:enterAnim="@anim/grow_in"
+            app:exitAnim="@anim/grow_out"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/cLogFrameFragment"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_cLogFrameFragment_to_cOutputFragment"
-            app:destination="@id/cOutputFragment" />
+            app:destination="@id/cOutputFragment"
+            app:popUpTo="@id/cLogFrameFragment"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_cLogFrameFragment_to_cInputFragment"
-            app:destination="@id/cInputFragment" />
+            app:destination="@id/cInputFragment"
+            app:popUpTo="@id/cLogFrameFragment"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_cLogFrameFragment_to_cEvaluationFragment"
-            app:destination="@id/cEvaluationFragment" />
+            app:destination="@id/cEvaluationFragment"
+            app:popUpTo="@id/cLogFrameFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_cLogFrameFragment_to_cActivityFragment"
+            app:destination="@id/cActivityFragment"
+            app:popUpTo="@id/cLogFrameFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_cLogFrameFragment_to_cQuestionFragment"
+            app:destination="@id/cQuestionFragment"
+            app:popUpTo="@id/cLogFrameFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_cLogFrameFragment_to_cIndicatorFragment"
+            app:destination="@id/cIndicatorFragment"
+            app:popUpTo="@id/cLogFrameFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_cLogFrameFragment_to_cRaidLogFragment"
+            app:destination="@id/cRaidLogFragment"
+            app:popUpTo="@id/cLogFrameFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_cLogFrameFragment_to_cAWPBFragment"
+            app:destination="@id/cAWPBFragment"
+            app:popUpTo="@id/cLogFrameFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_cLogFrameFragment_to_cBookKeepingFragment"
+            app:destination="@id/cBookKeepingFragment"
+            app:popUpTo="@id/cLogFrameFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_cLogFrameFragment_to_cMonitoringFragment"
+            app:destination="@id/cMonitoringFragment"
+            app:popUpTo="@id/cLogFrameFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/cImpactFragment"
         android:name="com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cImpactFragment"
-        android:label="cImpactFragment" />
+        android:label="cImpactFragment" >
+        <argument
+            android:name="logFrameID"
+            app:argType="long" />
+    </fragment>
     <fragment
         android:id="@+id/cOutcomeFragment"
         android:name="com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cOutcomeFragment"
-        android:label="cOutcomeFragment" />
+        android:label="cOutcomeFragment" >
+        <argument
+            android:name="logFrameID"
+            app:argType="long" />
+    </fragment>
     <fragment
         android:id="@+id/cOutputFragment"
         android:name="com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cOutputFragment"
-        android:label="cOutputFragment" />
+        android:label="cOutputFragment" >
+        <argument
+            android:name="logFrameID"
+            app:argType="long" />
+    </fragment>
     <fragment
         android:id="@+id/cInputFragment"
         android:name="com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cInputFragment"
-        android:label="cInputFragment" />
+        android:label="cInputFragment" >
+        <argument
+            android:name="logFrameID"
+            app:argType="long" />
+    </fragment>
     <fragment
         android:id="@+id/cEvaluationFragment"
         android:name="com.me.mseotsanyana.mande.PL.ui.fragments.evaluator.cEvaluationFragment"
@@ -67,9 +136,6 @@
         <argument
             android:name="logFrameID"
             app:argType="long" />
-        <action
-            android:id="@+id/action_cEvaluationFragment_to_cLogFrameFragment"
-            app:destination="@id/cLogFrameFragment" />
         <action
             android:id="@+id/action_cEvaluationFragment_to_cEvaluationFormFragment"
             app:destination="@id/cEvaluationFormFragment"
@@ -83,5 +149,89 @@
         <argument
             android:name="dbQuestionnaire"
             app:argType="com.me.mseotsanyana.questionnairelibrary.forms.db.cDBQuestionnaire" />
+    </fragment>
+    <fragment
+        android:id="@+id/cActivityFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cActivityFragment"
+        android:label="cActivityFragment" >
+        <argument
+            android:name="logFrameID"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/cQuestionFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cQuestionFragment"
+        android:label="cQuestionFragment" >
+        <argument
+            android:name="logFrameID"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/cIndicatorFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.monitor.cIndicatorFragment"
+        android:label="cIndicatorFragment" >
+        <argument
+            android:name="logFrameID"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/cRaidLogFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.raid.cRaidLogFragment"
+        android:label="cRaidLogFragment" >
+        <action
+            android:id="@+id/action_cRaidLogFragment_to_cRiskRegisterFragment"
+            app:destination="@id/cRiskRegisterFragment" />
+        <action
+            android:id="@+id/action_cRaidLogFragment_to_cAssumptionRegisterFragment"
+            app:destination="@id/cAssumptionRegisterFragment" />
+        <action
+            android:id="@+id/action_cRaidLogFragment_to_cIssueRegisterFragment"
+            app:destination="@id/cIssueRegisterFragment" />
+        <action
+            android:id="@+id/action_cRaidLogFragment_to_cDependencyRegisterFragment"
+            app:destination="@id/cDependencyRegisterFragment" />
+        <argument
+            android:name="logFrameID"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/cAssumptionRegisterFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.raid.cAssumptionRegisterFragment"
+        android:label="cAssumptionRegisterFragment" />
+    <fragment
+        android:id="@+id/cIssueRegisterFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.raid.cIssueRegisterFragment"
+        android:label="cIssueRegisterFragment" />
+    <fragment
+        android:id="@+id/cDependencyRegisterFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.raid.cDependencyRegisterFragment"
+        android:label="cDependencyRegisterFragment" />
+    <fragment
+        android:id="@+id/cRiskRegisterFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.raid.cRiskRegisterFragment"
+        android:label="cRiskRegisterFragment" />
+    <fragment
+        android:id="@+id/cAWPBFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.awpb.cAWPBFragment"
+        android:label="cAWPBFragment" >
+        <argument
+            android:name="logFrameID"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/cBookKeepingFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.awpb.cBookKeepingFragment"
+        android:label="cBookKeepingFragment" >
+        <argument
+            android:name="logFrameID"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/cMonitoringFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.monitor.cMonitoringFragment"
+        android:label="cMonitoringFragment" >
+        <argument
+            android:name="logFrameID"
+            app:argType="long" />
     </fragment>
 </navigation>

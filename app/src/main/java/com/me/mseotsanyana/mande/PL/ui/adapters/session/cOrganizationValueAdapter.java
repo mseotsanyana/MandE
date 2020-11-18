@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.me.mseotsanyana.mande.BLL.domain.session.cValueDomain;
+import com.me.mseotsanyana.mande.BLL.model.session.cValueModel;
 import com.me.mseotsanyana.mande.R;
 
 import java.text.SimpleDateFormat;
@@ -24,12 +24,12 @@ import java.util.Locale;
 public class cOrganizationValueAdapter extends RecyclerView.Adapter<cOrganizationValueAdapter.cOrganizationMoreViewHolder> {
 
     Context context;
-    private List<cValueDomain> valueList = new ArrayList<>();
+    private List<cValueModel> valueList = new ArrayList<>();
     LayoutInflater inflater;
 
     private static final SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
 
-    public cOrganizationValueAdapter(Context context, List<cValueDomain> detailList) {
+    public cOrganizationValueAdapter(Context context, List<cValueModel> detailList) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.valueList = detailList;
@@ -40,7 +40,7 @@ public class cOrganizationValueAdapter extends RecyclerView.Adapter<cOrganizatio
         return valueList.size();
     }
 
-    public cValueDomain getItem(int position) {
+    public cValueModel getItem(int position) {
         return valueList.get(position);
     }
 
@@ -48,11 +48,11 @@ public class cOrganizationValueAdapter extends RecyclerView.Adapter<cOrganizatio
         valueList.remove(position);
     }
 
-    public void addItem(cValueDomain item) {
+    public void addItem(cValueModel item) {
         valueList.add(item);
     }
 
-    public void updateItem(cValueDomain item, int position) {
+    public void updateItem(cValueModel item, int position) {
         removeItem(position);
         valueList.add(position, item);
     }
@@ -68,8 +68,8 @@ public class cOrganizationValueAdapter extends RecyclerView.Adapter<cOrganizatio
 
     @Override
     public void onBindViewHolder(cOrganizationMoreViewHolder organizationMoreViewHolder, int position) {
-        cValueDomain valueDomain = valueList.get(position);
-        organizationMoreViewHolder.valBodyInfo.setText(valueDomain.getValueName());
+        cValueModel valueDomain = valueList.get(position);
+        organizationMoreViewHolder.valBodyInfo.setText(valueDomain.getName());
     }
 
     public class cOrganizationMoreViewHolder extends RecyclerView.ViewHolder {

@@ -21,7 +21,7 @@ import android.widget.PopupWindow;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.me.mseotsanyana.mande.BLL.domain.session.cStatusDomain;
+import com.me.mseotsanyana.mande.BLL.model.session.cStatusModel;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.cFontManager;
 
@@ -35,8 +35,8 @@ public class cStatusTreeAdapter_OLD extends RecyclerView.Adapter<cStatusTreeAdap
     private static final String TAG = cStatusTreeAdapter_OLD.class.getSimpleName();
 
     private Context context;
-    private ArrayList<cStatusDomain> listStatus;
-    private ArrayList<cStatusDomain> filteredStatus;
+    private ArrayList<cStatusModel> listStatus;
+    private ArrayList<cStatusModel> filteredStatus;
 
     private AppCompatCheckBox appCompatCheckBoxAllStatusOwner,
             appCompatCheckBoxAllStatusGroup, appCompatCheckBoxAllStatusOther;
@@ -45,7 +45,7 @@ public class cStatusTreeAdapter_OLD extends RecyclerView.Adapter<cStatusTreeAdap
 
     //private cSessionManager session;
 
-    public cStatusTreeAdapter_OLD(Context context, ArrayList<cStatusDomain> listStatus,
+    public cStatusTreeAdapter_OLD(Context context, ArrayList<cStatusModel> listStatus,
                                   AppCompatCheckBox appCompatCheckBoxAllStatusOwner,
                                   AppCompatCheckBox appCompatCheckBoxAllStatusGroup,
                                   AppCompatCheckBox appCompatCheckBoxAllStatusOther) {
@@ -85,10 +85,10 @@ public class cStatusTreeAdapter_OLD extends RecyclerView.Adapter<cStatusTreeAdap
         SH.switchStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Switch sc = (Switch) buttonView;
-                cStatusDomain statusDomain = (cStatusDomain) sc.getTag();
+                cStatusModel statusDomain = (cStatusModel) sc.getTag();
 
-                statusDomain.setDirty(true);
-                filteredStatus.get(position).setDirty(true);
+                //statusDomain.setDirty(true);
+                //filteredStatus.get(position).setDirty(true);
 
                 Log.d(TAG,"Detail Test...");
 
@@ -167,7 +167,7 @@ public class cStatusTreeAdapter_OLD extends RecyclerView.Adapter<cStatusTreeAdap
         return filteredStatus.size();
     }
 
-    public ArrayList<cStatusDomain> getItems() {
+    public ArrayList<cStatusModel> getItems() {
         return filteredStatus;
     }
 
@@ -192,9 +192,9 @@ public class cStatusTreeAdapter_OLD extends RecyclerView.Adapter<cStatusTreeAdap
                     filteredStatus = listStatus;
                 } else {
 
-                    ArrayList<cStatusDomain> filteredList = new ArrayList<>();
+                    ArrayList<cStatusModel> filteredList = new ArrayList<>();
 
-                    for (cStatusDomain statusDomain : listStatus) {
+                    for (cStatusModel statusDomain : listStatus) {
 
                         if (statusDomain.getName().toLowerCase().contains(charString.toLowerCase())) {
 
@@ -212,7 +212,7 @@ public class cStatusTreeAdapter_OLD extends RecyclerView.Adapter<cStatusTreeAdap
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                filteredStatus = (ArrayList<cStatusDomain>) filterResults.values;
+                filteredStatus = (ArrayList<cStatusModel>) filterResults.values;
                 notifyDataSetChanged();
             }
         };

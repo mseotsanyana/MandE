@@ -1,6 +1,6 @@
 package com.me.mseotsanyana.mande.BLL.repository.logframe;
 
-import com.me.mseotsanyana.mande.DAL.model.logframe.cInputModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cInputModel;
 
 import java.util.Set;
 

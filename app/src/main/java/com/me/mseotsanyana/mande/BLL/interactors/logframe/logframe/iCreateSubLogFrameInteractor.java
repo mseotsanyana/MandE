@@ -1,7 +1,7 @@
 package com.me.mseotsanyana.mande.BLL.interactors.logframe.logframe;
 
 import com.me.mseotsanyana.mande.BLL.interactors.base.iInteractor;
-import com.me.mseotsanyana.mande.DAL.model.logframe.cLogFrameModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel;
 
 public interface iCreateSubLogFrameInteractor extends iInteractor {
     interface Callback{
