@@ -138,16 +138,16 @@ public class cUploadRAIDInteractorImpl extends cAbstractInteractor
         }
 
         if(uploadRAIDRepository.addIssueFromExcel()){
-            postMessage("RiskAction Entity Added Successfully!");
+            postMessage("Issue Entity Added Successfully!");
         }else {
-            notifyError("Failed to Add RiskAction Entity");
+            notifyError("Failed to Add Issue Entity");
         }
 
-        if(uploadRAIDRepository.addIssueCommentFromExcel()){
-            postMessage("IssueComment Entity Added Successfully!");
-        }else {
-            notifyError("Failed to Add IssueComment Entity");
-        }
+//        if(uploadRAIDRepository.addIssueCommentFromExcel()){
+//            postMessage("IssueComment Entity Added Successfully!");
+//        }else {
+//            notifyError("Failed to Add IssueComment Entity");
+//        }
 
         if(uploadRAIDRepository.addDependencyFromExcel()){
             postMessage("Dependency Entity Added Successfully!");

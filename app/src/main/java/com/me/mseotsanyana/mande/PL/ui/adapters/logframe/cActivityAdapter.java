@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
@@ -22,6 +24,7 @@ import com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cActivityModel;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cImpactModel;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cInputModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cOutcomeModel;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cOutputModel;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cRaidModel;
@@ -52,39 +55,27 @@ import java.util.List;
  */
 
 public class cActivityAdapter extends cTreeAdapter implements iViewOutputListener,
-        iViewActivityListener, iViewInputListener {
+        iViewActivityListener, iViewInputListener, Filterable {
     private static String TAG = cActivityAdapter.class.getSimpleName();
     private static SimpleDateFormat sdf = cConstant.SHORT_FORMAT_DATE;
 
     private static final int PARENT = 0;
     private static final int CHILD = 1;
 
-    private final String[] bmb_caption = {
-            "Sub-LogFrame Impacts",
-            "Child Outcomes",
-            "Outputs",
-            "Questions",
-            "Assumptions/Risks"
-    };
-
-    private int[] bmb_imageid = {
-            R.drawable.dashboard_impact,
-            R.drawable.dashboard_outcome,
-            R.drawable.dashboard_output,
-            R.drawable.dashboard_question,
-            R.drawable.dashboard_risk
-    };
-
     private final iActivityPresenter.View activityPresenterView;
     private final iInputPresenter.View inputPresenterView;
 
+    private List<cTreeModel> filteredTreeModels;
 
     public cActivityAdapter(Context context, iActivityPresenter.View activityPresenterView,
-                            iInputPresenter.View inputPresenterView, List<cTreeModel> data, int expLevel){
-        super(context, data, expLevel);
+                            iInputPresenter.View inputPresenterView, List<cTreeModel> activityTree,
+                            int expLevel){
+        super(context, activityTree, expLevel);
 
         this.activityPresenterView = activityPresenterView;
         this.inputPresenterView = inputPresenterView;
+
+        this.filteredTreeModels = activityTree;
     }
 
     public RecyclerView.ViewHolder OnCreateTreeViewHolder(ViewGroup parent, int viewType){
@@ -93,12 +84,12 @@ public class cActivityAdapter extends cTreeAdapter implements iViewOutputListene
         View view;
         switch (viewType) {
             case PARENT:
-                view = inflater.inflate(R.layout.activity_parent_cardview, parent,
+                view = inflater.inflate(R.layout.component_parent_cardview, parent,
                         false);
                 viewHolder = new cActivityAdapter.cActivityParentViewHolder(view);
                 break;
             case CHILD:
-                view = inflater.inflate(R.layout.activity_child_placeholderview, parent,
+                view = inflater.inflate(R.layout.component_child_cardview, parent,
                         false);
                 viewHolder = new cActivityAdapter.cActivityChildViewHolder(view);
                 break;
@@ -116,50 +107,31 @@ public class cActivityAdapter extends cTreeAdapter implements iViewOutputListene
         if (obj != null){
             switch (obj.getType()) {
                 case PARENT:
-                    cActivityModel activityParent = (cActivityModel) obj.getModelObject();
+                    cActivityModel parentActivity = (cActivityModel) obj.getModelObject();
                     cActivityAdapter.cActivityParentViewHolder APH =
                             ((cActivityAdapter.cActivityParentViewHolder) viewHolder);
 
-                    APH.setPaddingLeft(20 * node.getLevel());
-
-                    final int parentBackgroundColor = (position % 2 == 0) ? R.color.list_even :
-                            R.color.list_odd;
+                    //final int parentBackgroundColor = (position % 2 == 0) ? R.color.list_even :
+                    //        R.color.list_odd;
                     APH.cardView.setCardBackgroundColor(ContextCompat.getColor(context,
-                            parentBackgroundColor));
+                            R.color.parent_body_colour));
 
-                    APH.textViewNameCaption.setText("activity:");
-                    APH.textViewName.setText(activityParent.getName());
-                    APH.textViewDescription.setText(activityParent.getDescription());
-                    APH.textViewStartDate.setText(sdf.format(activityParent.getStartDate()));
-                    APH.textViewEndDate.setText(sdf.format(activityParent.getEndDate()));
+                    APH.textViewParentCaption.setText(
+                            context.getResources().getString(R.string.output_caption));
+                    APH.textViewNameCaption.setText(
+                            context.getResources().getString(R.string.activity_caption));
+                    APH.textViewDescriptionCaption.setText(
+                            context.getResources().getString(R.string.description_caption));
+                    APH.textViewStartDateCaption.setText(
+                            context.getResources().getString(R.string.startdate_caption));
+                    APH.textViewEndDateCaption.setText(
+                            context.getResources().getString(R.string.enddate_caption));
 
-                    APH.bmbMenu.clearBuilders();
-                    for (int i = 0; i < APH.bmbMenu.getPiecePlaceEnum().pieceNumber(); i++) {
-                        cTextOutsideCircleButton.Builder builder = new cTextOutsideCircleButton
-                                .Builder()
-                                .isRound(false)
-                                .shadowCornerRadius(cUtil.dp2px(20))
-                                .buttonCornerRadius(cUtil.dp2px(20))
-                                .normalColor(Color.LTGRAY)
-                                .pieceColor(context.getColor(R.color.colorPrimaryDark))
-                                .normalImageRes(bmb_imageid[i])
-                                .normalText(bmb_caption[i])
-                                .listener(new OnBMClickListener() {
-                                    @Override
-                                    public void onBoomButtonClick(int index) {
-                                        /* when the boom-button is clicked. */
-                                        //IPH.logFrameListener.onClickBoomMenu(index);
-                                    }
-                                });
-                        APH.bmbMenu.addBuilder(builder);
-                    }
-
-                    APH.bmbMenu.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            APH.bmbMenu.boom();
-                        }
-                    });
+                    APH.textViewParent.setText(parentActivity.getOutputModel().getName());
+                    APH.textViewName.setText(parentActivity.getName());
+                    APH.textViewDescription.setText(parentActivity.getDescription());
+                    APH.textViewStartDate.setText(sdf.format(parentActivity.getStartDate()));
+                    APH.textViewEndDate.setText(sdf.format(parentActivity.getEndDate()));
 
                     /* the collapse and expansion of the parent logframe */
                     if (node.isLeaf()) {
@@ -194,17 +166,11 @@ public class cActivityAdapter extends cTreeAdapter implements iViewOutputListene
                     APH.textViewDetailIcon.setTypeface(cFontManager.getTypeface(context,
                             cFontManager.FONTAWESOME));
                     APH.textViewDetailIcon.setTextColor(context.getColor(R.color.colorPrimaryDark));
-                    APH.textViewDetailIcon.setText(context.getResources().getString(R.string.fa_angle_down));
+                    APH.textViewDetailIcon.setText(context.getResources().getString(R.string.fa_details));
                     APH.textViewDetailIcon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            if (!(APH.expandableLayout.isExpanded())) {
-                                APH.textViewDetailIcon.setText(context.getResources().getString(R.string.fa_angle_up));
-                            } else {
-                                APH.textViewDetailIcon.setText(context.getResources().getString(R.string.fa_angle_down));
-                            }
 
-                            APH.expandableLayout.toggle();
                         }
                     });
 
@@ -263,94 +229,111 @@ public class cActivityAdapter extends cTreeAdapter implements iViewOutputListene
                             //       parentLogFrameModel.getLogFrameID(), new cLogFrameModel());
                         }
                     });
+
+                    APH.setPaddingLeft(20 * node.getLevel());
+
                     break;
 
                 case CHILD:
-                    ArrayList<Object> objects = (ArrayList<Object>) obj.getModelObject();
-                    cOutputAdapter.cOutputChildViewHolder COH = ((cOutputAdapter.cOutputChildViewHolder) viewHolder);
-                    COH.setPaddingLeft(20 * node.getLevel());
+                    cActivityModel childActivity = (cActivityModel) obj.getModelObject();
+                    cActivityAdapter.cActivityChildViewHolder ACH =
+                            ((cActivityAdapter.cActivityChildViewHolder) viewHolder);
 
-                    COH.outputPlaceholderView.removeAllViews();
+                    //final int childBackgroundColor = (position % 2 == 0) ? R.color.list_even :
+                    //        R.color.list_odd;
+                    ACH.cardView.setCardBackgroundColor(ContextCompat.getColor(context,
+                            R.color.child_body_colour));
 
-                    for (int i = 0; i < objects.size(); i++) {
+                    ACH.textViewParentCaption.setText(
+                            context.getResources().getString(R.string.output_caption));
+                    ACH.textViewNameCaption.setText(
+                            context.getResources().getString(R.string.activity_caption));
+                    ACH.textViewDescriptionCaption.setText(
+                            context.getResources().getString(R.string.description_caption));
+                    ACH.textViewStartDateCaption.setText(
+                            context.getResources().getString(R.string.startdate_caption));
+                    ACH.textViewEndDateCaption.setText(
+                            context.getResources().getString(R.string.enddate_caption));
 
-                        /* list of child logframe impacts */
-                        if (objects.get(i) instanceof cImpactModel) {
-                            if (i == 0) {
-                                COH.outputPlaceholderView.addView(new cLogFrameHeaderView(
-                                        context, "List of Outputs"));
-                                COH.outputPlaceholderView.addView(new cOutputBodyView(
-                                        context, this, (cOutputModel) objects.get(i)));
-                                Log.d(TAG, "1. CHILD IMPACT: " + objects.get(i));
-                            } else {
-                                COH.outputPlaceholderView.addView(new cOutputBodyView(
-                                        context, this, (cOutputModel) objects.get(i)));
-                                Log.d(TAG, "2. CHILD IMPACT: " + objects.get(i));
-                            }
+                    ACH.textViewParent.setText(childActivity.getOutputModel().getName());
+                    ACH.textViewName.setText(childActivity.getName());
+                    ACH.textViewDescription.setText(childActivity.getDescription());
+                    ACH.textViewStartDate.setText(sdf.format(childActivity.getStartDate()));
+                    ACH.textViewEndDate.setText(sdf.format(childActivity.getEndDate()));
+
+                    /* collapse and expansion of the details */
+                    ACH.textViewDetailIcon.setTypeface(null, Typeface.NORMAL);
+                    ACH.textViewDetailIcon.setTypeface(cFontManager.getTypeface(context,
+                            cFontManager.FONTAWESOME));
+                    ACH.textViewDetailIcon.setTextColor(context.getColor(R.color.colorAccent));
+                    ACH.textViewDetailIcon.setText(context.getResources().getString(R.string.fa_details));
+                    ACH.textViewDetailIcon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            /*cOutcomeModel[] outcomeModels =
+                                    new cOutcomeModel[childImpact.getOutcomeModelSet().size()];
+                            childImpact.getOutcomeModelSet().toArray(outcomeModels);
+                            cQuestionModel[] questionModels =
+                                    new cQuestionModel[childImpact.getQuestionModelSet().size()];
+                            childImpact.getQuestionModelSet().toArray(questionModels);
+
+                            ICH.impactListener.onClickDetailImpact(outcomeModels, questionModels);*/
+
+                            /* set of outcomes under the impact
+                            ArrayList<cOutcomeModel> outcomes = new ArrayList<>(childImpact.getOutcomeModelSet());*/
+
+                            /* set of questions under the impact
+                            ArrayList<cQuestionModel> questions = new ArrayList<>(childImpact.getQuestionModelSet());*/
+
+                            /* set of raids under the impact
+                            ArrayList<cRaidModel> raids = new ArrayList<>(childImpact.getRaidModelSet());*/
                         }
+                    });
 
-                        /* list of child outcomes under this outcome */
-                        if (objects.get(i) instanceof cOutputModel) {
-                            if (i == 0) {
-                                COH.outputPlaceholderView.addView(new cLogFrameHeaderView(
-                                        context, "List of Outputs"));
-                                COH.outputPlaceholderView.addView(new cOutputBodyView(
-                                        context, this, (cOutputModel) objects.get(i)));
-                                Log.d(TAG, "1. CHILD OUTCOME: " + objects.get(i));
-                            } else {
-                                COH.outputPlaceholderView.addView(new cOutputBodyView(
-                                        context, this, (cOutputModel) objects.get(i)));
-                                Log.d(TAG, "2. CHILD OUTCOME: " + objects.get(i));
-                            }
+                    /* icon for syncing a record */
+                    ACH.textViewSyncIcon.setTypeface(null, Typeface.NORMAL);
+                    ACH.textViewSyncIcon.setTypeface(
+                            cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
+                    ACH.textViewSyncIcon.setTextColor(context.getColor(R.color.colorAccent));
+                    ACH.textViewSyncIcon.setText(context.getResources().getString(R.string.fa_sync));
+                    ACH.textViewSyncIcon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            //IPH.logFrameListener.onClickSyncLogFrame(position,
+                            //       parentLogFrameModel);
                         }
+                    });
 
-                        /* list of outputs under this outcome */
-                        if (objects.get(i) instanceof cOutputModel) {
-                            if (i == 0) {
-                                COH.outputPlaceholderView.addView(new cLogFrameHeaderView(
-                                        context, "List of Outputs"));
-                                COH.outputPlaceholderView.addView(new cOutputBodyView(
-                                        context, this, (cOutputModel) objects.get(i)));
-                                Log.d(TAG, "1. OUTPUT: " + objects.get(i));
-                            } else {
-                                COH.outputPlaceholderView.addView(new cOutputBodyView(
-                                        context, this, (cOutputModel) objects.get(i)));
-                                Log.d(TAG, "2. OUTPUT: " + objects.get(i));
-                            }
+                    /* icon for deleting a record */
+                    ACH.textViewDeleteIcon.setTypeface(null, Typeface.NORMAL);
+                    ACH.textViewDeleteIcon.setTypeface(
+                            cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
+                    ACH.textViewDeleteIcon.setTextColor(context.getColor(R.color.colorAccent));
+                    ACH.textViewDeleteIcon.setText(context.getResources().getString(R.string.fa_delete));
+                    ACH.textViewDeleteIcon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            //IPH.logFrameListener.onClickDeleteLogFrame(position,
+                            //       parentLogFrameModel.getLogFrameID());
                         }
+                    });
 
-                        /* list of questions under this outcome */
-                        if (objects.get(i) instanceof cQuestionModel) {
-                            if (i == 0) {
-                                COH.outputPlaceholderView.addView(new cLogFrameHeaderView(
-                                        context, "List of Questions"));
-                                COH.outputPlaceholderView.addView(new cQuestionBodyView(
-                                        context, (cQuestionModel) objects.get(i)));
-
-                                Log.d(TAG, "1. QUESTION: " + objects.get(i));
-                            } else {
-                                COH.outputPlaceholderView.addView(new cQuestionBodyView(context,
-                                        (cQuestionModel) objects.get(i)));
-                                Log.d(TAG, "2. QUESTION: " + objects.get(i));
-                            }
+                    /* icon for saving updated record */
+                    ACH.textViewUpdateIcon.setTypeface(null, Typeface.NORMAL);
+                    ACH.textViewUpdateIcon.setTypeface(
+                            cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
+                    ACH.textViewUpdateIcon.setTextColor(context.getColor(R.color.colorAccent));
+                    ACH.textViewUpdateIcon.setText(context.getResources().getString(R.string.fa_update));
+                    ACH.textViewUpdateIcon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            //IPH.logFrameListener.onClickUpdateLogFrame(position,
+                            //        parentLogFrameModel);
                         }
+                    });
 
-                        /* list of RAIDs under this outcome */
-                        if (objects.get(i) instanceof cRaidModel) {
-                            if (i == 0) {
-                                COH.outputPlaceholderView.addView(new cLogFrameHeaderView(
-                                        context, "List of RAID"));
-                                COH.outputPlaceholderView.addView(new cRaidBodyView(
-                                        context, (cRaidModel) objects.get(i)));
+                    ACH.setPaddingLeft(20 * node.getLevel());
 
-                                Log.d(TAG, "1. RAID: " + objects.get(i));
-                            } else {
-                                COH.outputPlaceholderView.addView(new cRaidBodyView(context,
-                                        (cRaidModel) objects.get(i)));
-                                Log.d(TAG, "2. RAID: " + objects.get(i));
-                            }
-                        }
-                    }
                     break;
             }
         }
@@ -416,36 +399,86 @@ public class cActivityAdapter extends cTreeAdapter implements iViewOutputListene
 
     }
 
-    public static class cActivityParentViewHolder extends cTreeViewHolder {
-        private CardView cardView;
-        private cExpandableLayout expandableLayout;
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
 
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    filteredTreeModels = getTreeModel();
+                } else {
+
+                    ArrayList<cTreeModel> filteredList = new ArrayList<>();
+                    for (cTreeModel treeModel : getTreeModel()) {
+                        if (((cActivityModel)treeModel.getModelObject()).getName().toLowerCase().
+                                contains(charString.toLowerCase()) ||
+                                ((cActivityModel)treeModel.getModelObject()).getOutputModel().
+                                        getName().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(treeModel);
+                        }
+                    }
+
+                    filteredTreeModels = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.count = filteredTreeModels.size();
+                filterResults.values = filteredTreeModels;
+
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                //assert (ArrayList<cTreeModel>) filterResults.values != null;
+                filteredTreeModels = (ArrayList<cTreeModel>) filterResults.values;
+
+                try {
+                    notifyTreeModelChanged(filteredTreeModels);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+    }
+
+    public static class cActivityParentViewHolder extends cTreeViewHolder {
+        private View treeView;
+        private CardView cardView;
         private AppCompatTextView textViewExpandIcon;
+
+        private AppCompatTextView textViewParentCaption;
         private AppCompatTextView textViewNameCaption;
+        private AppCompatTextView textViewDescriptionCaption;
+        private AppCompatTextView textViewStartDateCaption;
+        private AppCompatTextView textViewEndDateCaption;
+
+        private AppCompatTextView textViewParent;
         private AppCompatTextView textViewName;
         private AppCompatTextView textViewDescription;
         private AppCompatTextView textViewStartDate;
         private AppCompatTextView textViewEndDate;
 
         private AppCompatTextView textViewDetailIcon;
-        private cBoomMenuButton bmbMenu;
         private AppCompatTextView textViewSyncIcon;
         private AppCompatTextView textViewDeleteIcon;
         private AppCompatTextView textViewUpdateIcon;
         private AppCompatTextView textViewCreateIcon;
-
-        private View treeView;
-
         private cActivityParentViewHolder(final View treeViewHolder) {
             super(treeViewHolder);
-            treeView = treeViewHolder;
+            this.treeView = treeViewHolder;
 
             this.cardView = treeViewHolder.findViewById(R.id.cardView);
-            this.expandableLayout = treeViewHolder.findViewById(R.id.expandableLayout);
             this.textViewExpandIcon = treeViewHolder.findViewById(R.id.textViewExpandIcon);
-            this.bmbMenu = treeViewHolder.findViewById(R.id.bmbMenu);
+
+            this.textViewParentCaption = treeViewHolder.findViewById(R.id.textViewParentCaption);
             this.textViewNameCaption = treeViewHolder.findViewById(R.id.textViewNameCaption);
-            //this.textViewOrganization = treeViewHolder.findViewById(R.id.textViewOrganization);
+            this.textViewDescriptionCaption = treeViewHolder.findViewById(R.id.textViewDescriptionCaption);
+            this.textViewStartDateCaption = treeViewHolder.findViewById(R.id.textViewStartDateCaption);
+            this.textViewEndDateCaption = treeViewHolder.findViewById(R.id.textViewEndDateCaption);
+            this.textViewParent = treeViewHolder.findViewById(R.id.textViewParent);
             this.textViewName = treeViewHolder.findViewById(R.id.textViewName);
             this.textViewDescription = treeViewHolder.findViewById(R.id.textViewDescription);
             this.textViewStartDate = treeViewHolder.findViewById(R.id.textViewStartDate);
@@ -463,14 +496,44 @@ public class cActivityAdapter extends cTreeAdapter implements iViewOutputListene
     }
 
     public static class cActivityChildViewHolder extends cTreeViewHolder {
-        cExpandablePlaceHolderView activityPlaceholderView;
-
         private View treeView;
+        private CardView cardView;
+
+        private AppCompatTextView textViewParentCaption;
+        private AppCompatTextView textViewNameCaption;
+        private AppCompatTextView textViewDescriptionCaption;
+        private AppCompatTextView textViewStartDateCaption;
+        private AppCompatTextView textViewEndDateCaption;
+
+        private AppCompatTextView textViewParent;
+        private AppCompatTextView textViewName;
+        private AppCompatTextView textViewDescription;
+        private AppCompatTextView textViewStartDate;
+        private AppCompatTextView textViewEndDate;
+
+        private AppCompatTextView textViewDetailIcon;
+        private AppCompatTextView textViewSyncIcon;
+        private AppCompatTextView textViewDeleteIcon;
+        private AppCompatTextView textViewUpdateIcon;
 
         private cActivityChildViewHolder(View treeViewHolder) {
             super(treeViewHolder);
-            treeView = treeViewHolder;
-            this.activityPlaceholderView = treeViewHolder.findViewById(R.id.activityPlaceholderView);
+            this.treeView = treeViewHolder;
+            this.cardView = treeViewHolder.findViewById(R.id.cardView);
+            this.textViewParentCaption = treeViewHolder.findViewById(R.id.textViewParentCaption);
+            this.textViewNameCaption = treeViewHolder.findViewById(R.id.textViewNameCaption);
+            this.textViewDescriptionCaption = treeViewHolder.findViewById(R.id.textViewDescriptionCaption);
+            this.textViewStartDateCaption = treeViewHolder.findViewById(R.id.textViewStartDateCaption);
+            this.textViewEndDateCaption = treeViewHolder.findViewById(R.id.textViewEndDateCaption);
+            this.textViewParent = treeViewHolder.findViewById(R.id.textViewParent);
+            this.textViewName = treeViewHolder.findViewById(R.id.textViewName);
+            this.textViewDescription = treeViewHolder.findViewById(R.id.textViewDescription);
+            this.textViewStartDate = treeViewHolder.findViewById(R.id.textViewStartDate);
+            this.textViewEndDate = treeViewHolder.findViewById(R.id.textViewEndDate);
+            this.textViewDetailIcon = treeViewHolder.findViewById(R.id.textViewDetailIcon);
+            this.textViewSyncIcon = treeViewHolder.findViewById(R.id.textViewSyncIcon);
+            this.textViewDeleteIcon = treeViewHolder.findViewById(R.id.textViewDeleteIcon);
+            this.textViewUpdateIcon = treeViewHolder.findViewById(R.id.textViewUpdateIcon);
         }
 
         public void setPaddingLeft(int paddingLeft) {
@@ -478,3 +541,89 @@ public class cActivityAdapter extends cTreeAdapter implements iViewOutputListene
         }
     }
 }
+
+//    ArrayList<Object> objects = (ArrayList<Object>) obj.getModelObject();
+//    cOutputAdapter.cOutputChildViewHolder COH = ((cOutputAdapter.cOutputChildViewHolder) viewHolder);
+//                    COH.setPaddingLeft(20 * node.getLevel());
+//
+//                    COH.outputPlaceholderView.removeAllViews();
+//
+//                    for (int i = 0; i < objects.size(); i++) {
+//
+//                        /* list of child logframe impacts */
+//                        if (objects.get(i) instanceof cImpactModel) {
+//                            if (i == 0) {
+//                                COH.outputPlaceholderView.addView(new cLogFrameHeaderView(
+//                                        context, "List of Outputs"));
+//                                COH.outputPlaceholderView.addView(new cOutputBodyView(
+//                                        context, this, (cOutputModel) objects.get(i)));
+//                                Log.d(TAG, "1. CHILD IMPACT: " + objects.get(i));
+//                            } else {
+//                                COH.outputPlaceholderView.addView(new cOutputBodyView(
+//                                        context, this, (cOutputModel) objects.get(i)));
+//                                Log.d(TAG, "2. CHILD IMPACT: " + objects.get(i));
+//                            }
+//                        }
+//
+//                        /* list of child outcomes under this outcome */
+//                        if (objects.get(i) instanceof cOutputModel) {
+//                            if (i == 0) {
+//                                COH.outputPlaceholderView.addView(new cLogFrameHeaderView(
+//                                        context, "List of Outputs"));
+//                                COH.outputPlaceholderView.addView(new cOutputBodyView(
+//                                        context, this, (cOutputModel) objects.get(i)));
+//                                Log.d(TAG, "1. CHILD OUTCOME: " + objects.get(i));
+//                            } else {
+//                                COH.outputPlaceholderView.addView(new cOutputBodyView(
+//                                        context, this, (cOutputModel) objects.get(i)));
+//                                Log.d(TAG, "2. CHILD OUTCOME: " + objects.get(i));
+//                            }
+//                        }
+//
+//                        /* list of outputs under this outcome */
+//                        if (objects.get(i) instanceof cOutputModel) {
+//                            if (i == 0) {
+//                                COH.outputPlaceholderView.addView(new cLogFrameHeaderView(
+//                                        context, "List of Outputs"));
+//                                COH.outputPlaceholderView.addView(new cOutputBodyView(
+//                                        context, this, (cOutputModel) objects.get(i)));
+//                                Log.d(TAG, "1. OUTPUT: " + objects.get(i));
+//                            } else {
+//                                COH.outputPlaceholderView.addView(new cOutputBodyView(
+//                                        context, this, (cOutputModel) objects.get(i)));
+//                                Log.d(TAG, "2. OUTPUT: " + objects.get(i));
+//                            }
+//                        }
+//
+//                        /* list of questions under this outcome */
+//                        if (objects.get(i) instanceof cQuestionModel) {
+//                            if (i == 0) {
+//                                COH.outputPlaceholderView.addView(new cLogFrameHeaderView(
+//                                        context, "List of Questions"));
+//                                COH.outputPlaceholderView.addView(new cQuestionBodyView(
+//                                        context, (cQuestionModel) objects.get(i)));
+//
+//                                Log.d(TAG, "1. QUESTION: " + objects.get(i));
+//                            } else {
+//                                COH.outputPlaceholderView.addView(new cQuestionBodyView(context,
+//                                        (cQuestionModel) objects.get(i)));
+//                                Log.d(TAG, "2. QUESTION: " + objects.get(i));
+//                            }
+//                        }
+//
+//                        /* list of RAIDs under this outcome */
+//                        if (objects.get(i) instanceof cRaidModel) {
+//                            if (i == 0) {
+//                                COH.outputPlaceholderView.addView(new cLogFrameHeaderView(
+//                                        context, "List of RAID"));
+//                                COH.outputPlaceholderView.addView(new cRaidBodyView(
+//                                        context, (cRaidModel) objects.get(i)));
+//
+//                                Log.d(TAG, "1. RAID: " + objects.get(i));
+//                            } else {
+//                                COH.outputPlaceholderView.addView(new cRaidBodyView(context,
+//                                        (cRaidModel) objects.get(i)));
+//                                Log.d(TAG, "2. RAID: " + objects.get(i));
+//                            }
+//                        }
+//                    }

@@ -70,8 +70,8 @@ public class cArrayTypeRepositoryImpl {
 
                 array = new cArrayQuestionModel();
 
-                array.setQuestionTypeID(cursor.getInt(
-                        cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID)));
+                //array.setQuestionTypeID(cursor.getInt(
+                //        cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID)));
                 array.setServerID(
                         cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
                 array.setOwnerID(

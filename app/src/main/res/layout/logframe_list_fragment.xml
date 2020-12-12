@@ -69,7 +69,7 @@
         <com.me.mseotsanyana.bmblibrary.cDraggableFAB
             android:id="@+id/logframeFAB"
             style="@style/FabStyle"
-            android:layout_gravity="bottom|end" />
+            android:layout_gravity="center|end" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

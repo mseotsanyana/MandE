@@ -44,8 +44,8 @@ import java.util.List;
  * Created by mseotsanyana on 2017/02/27.
  */
 
-public class cQuestionAuxiliaryAdapter extends cTreeAdapter {
-    private static String TAG = cQuestionAuxiliaryAdapter.class.getSimpleName();
+public class cQuestionAux1Adapter extends cTreeAdapter {
+    private static String TAG = cQuestionAux1Adapter.class.getSimpleName();
     private static SimpleDateFormat sdf = cConstant.SHORT_FORMAT_DATE;
 
     private static final int PARENT = 0;
@@ -70,7 +70,7 @@ public class cQuestionAuxiliaryAdapter extends cTreeAdapter {
 
     Context context;
 
-    public cQuestionAuxiliaryAdapter(Context context, List<cUserModel> userModels){
+    public cQuestionAux1Adapter(Context context, List<cUserModel> userModels){
         super(context,null);
 
         this.context = context;
@@ -109,7 +109,7 @@ public class cQuestionAuxiliaryAdapter extends cTreeAdapter {
                 case PARENT:
                     cMaterialModel humanModel = (cMaterialModel) obj.getModelObject();
                     cMaterialParentViewHolder HPH =
-                            ((cQuestionAuxiliaryAdapter.cMaterialParentViewHolder) viewHolder);
+                            ((cQuestionAux1Adapter.cMaterialParentViewHolder) viewHolder);
 
                     HPH.setPaddingLeft(20 * node.getLevel());
 
@@ -270,7 +270,7 @@ public class cQuestionAuxiliaryAdapter extends cTreeAdapter {
 
                 case CHILD:
                     ArrayList<Object> objects = (ArrayList<Object>) obj.getModelObject();
-                    cQuestionAuxiliaryAdapter.cHumanChildViewHolder HCH = ((cHumanChildViewHolder) viewHolder);
+                    cQuestionAux1Adapter.cHumanChildViewHolder HCH = ((cHumanChildViewHolder) viewHolder);
                     HCH.setPaddingLeft(20 * node.getLevel());
 
                     HCH.resourcesPlaceholderView.removeAllViews();

@@ -70,8 +70,8 @@ public class cMatrixTypeRepositoryImpl {
 
                 matrix = new cMatrixQuestionModel();
 
-                matrix.setQuestionTypeID(cursor.getInt(
-                        cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID)));
+                //matrix.setQuestionTypeID(cursor.getInt(
+                //        cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID)));
                 matrix.setServerID(
                         cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
                 matrix.setOwnerID(
@@ -84,10 +84,10 @@ public class cMatrixTypeRepositoryImpl {
                         cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
                 matrix.setStatusBITS(
                         cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                matrix.setName(
-                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                matrix.setDescription(
-                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                //matrix.setName(
+                //        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+                //matrix.setDescription(
+                //        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
                 matrix.setCreatedDate(Timestamp.valueOf(
                         cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
                 matrix.setModifiedDate(Timestamp.valueOf(

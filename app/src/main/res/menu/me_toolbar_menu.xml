@@ -11,9 +11,9 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
     <item
-        android:id="@+id/homeItem"
+        android:id="@+id/helpItem"
         android:orderInCategory="11"
-        android:title="Home"
-        android:icon="@drawable/ic_home_white_24dp"
+        android:title="Help"
+        android:icon="@drawable/me_info_item"
         app:showAsAction="ifRoom" />
 </menu>

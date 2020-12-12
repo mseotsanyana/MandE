@@ -4,8 +4,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Layout;
-import android.util.TypedValue;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,7 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,15 +28,15 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cImpactModel;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cOutcomeModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel;
 import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cImpactRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cSessionManagerImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.Impl.cImpactPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iImpactPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iOutcomePresenter;
 import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cImpactAdapter;
+import com.me.mseotsanyana.mande.PL.ui.fragments.evaluator.cEvaluationFragmentArgs;
 import com.me.mseotsanyana.mande.R;
-import com.me.mseotsanyana.mande.UTIL.TextDrawable;
-import com.me.mseotsanyana.mande.UTIL.cFontManager;
 import com.me.mseotsanyana.mande.cMainThreadImpl;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
@@ -70,14 +70,8 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
 
     }
 
-    public static cImpactFragment newInstance(long logFrameID) {
-        Bundle bundle = new Bundle();
-        cImpactFragment fragment = new cImpactFragment();
-
-        bundle.putLong("LOGFRAME_ID", logFrameID);
-        fragment.setArguments(bundle);
-
-        return fragment;
+    public static cImpactFragment newInstance() {
+        return new cImpactFragment();
     }
 
     /*
@@ -101,8 +95,7 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-        this.logFrameID = requireArguments().getLong("LOGFRAME_ID");
+        this.logFrameID = cImpactFragmentArgs.fromBundle(requireArguments()).getLogFrameID();
     }
 
     @Override
@@ -128,32 +121,29 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
      */
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        init();
-        impactView(view);
-        initFab(view);
-        /* initialize the toolbar */
-        toolbar = view.findViewById(R.id.toolbar);
-        TextView logFrameCaption = view.findViewById(R.id.title);
-        logFrameName = view.findViewById(R.id.subtitle);
-        logFrameCaption.setText(R.string.logframe_name_caption);
-        CollapsingToolbarLayout collapsingToolbarLayout =
-                view.findViewById(R.id.collapsingToolbarLayout);
-        collapsingToolbarLayout.setContentScrimColor(Color.WHITE);
-        collapsingToolbarLayout.setTitle("List of Impacts");
+        /* initialise data structures */
+        initDataStructures();
+
+        /* initialize appBar Layout */
+        initAppBarLayout(view);
+
+        /* initialise recycler view */
+        initRecyclerView(view);
+
+        /* initialize progress bar */
+        initProgressBarView(view);
+
+        /* initialise draggable FAB */
+        initDraggableFAB(view);
 
         /* show the back arrow button */
         activity.setSupportActionBar(toolbar);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
-        /*
-        toolbar = view.findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.impact_list_title);
-        toolbar.setTitleTextColor(Color.WHITE);*/
+        Objects.requireNonNull(activity.getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(activity.getSupportActionBar()).setDisplayShowHomeEnabled(true);
     }
 
-    private void init() {
+    private void initDataStructures() {
         /* contains a tree of impact */
-        // setup recycler view adapter
         List<cTreeModel> impactTreeModels = new ArrayList<>();
 
         impactPresenter = new cImpactPresenterImpl(
@@ -165,15 +155,23 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
 
         // setup recycler view adapter
         impactAdapter = new cImpactAdapter(getActivity(), this,
-                this, impactTreeModels, -1);
+                this, impactTreeModels,-1);
 
         activity = ((AppCompatActivity) getActivity());
     }
 
-    private void impactView(View view) {
-        impactProgressBar = view.findViewById(R.id.impactProgressBar);
+    private void initAppBarLayout(View view){
+        toolbar = view.findViewById(R.id.toolbar);
+        TextView logFrameCaption = view.findViewById(R.id.title);
+        logFrameName = view.findViewById(R.id.subtitle);
+        logFrameCaption.setText(R.string.logframe_name_caption);
+        CollapsingToolbarLayout collapsingToolbarLayout =
+                view.findViewById(R.id.collapsingToolbarLayout);
+        collapsingToolbarLayout.setContentScrimColor(Color.WHITE);
+        collapsingToolbarLayout.setTitle("List of Impacts");
+    }
 
-        /* impact views */
+    private void initRecyclerView(View view) {
         RecyclerView impactRecyclerView = view.findViewById(R.id.impactRecyclerView);
         impactRecyclerView.setHasFixedSize(true);
 
@@ -184,9 +182,13 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
         impactRecyclerView.setLayoutManager(llm);
     }
 
+    private void initProgressBarView(View view) {
+        impactProgressBar = view.findViewById(R.id.impactProgressBar);
+    }
+
     // initialise the floating action button
-    private void initFab(View view) {
-        view.findViewById(R.id.impactFAB).setOnClickListener(new View.OnClickListener() {
+    private void initDraggableFAB(View view) {
+        view.findViewById(R.id.impactDraggableFAB).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -196,10 +198,8 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
+        /* get inflated option menu */
         Menu toolBarMenu = setToolBar();
-
-        //MenuItem toolBarMenuItem = toolBarMenu.findItem(R.id.homeItem);
 
         toolbar.setOnMenuItemClickListener(
                 new Toolbar.OnMenuItemClickListener() {
@@ -214,7 +214,7 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
 
         SearchView searchView = (SearchView) toolBarMenu.findItem(R.id.searchItem).getActionView();
         searchView.setSearchableInfo(Objects.requireNonNull(searchManager).
-                getSearchableInfo(getActivity().getComponentName()));
+                getSearchableInfo(requireActivity().getComponentName()));
         searchView.setMaxWidth(Integer.MAX_VALUE);
 
         search(searchView);
@@ -222,12 +222,8 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.homeItem:
-                //showFragment(cLogFrameFragment.class.getSimpleName());
-                break;
-            default:
-                break;
+        if (item.getItemId() == R.id.helpItem) {
+            Log.d(TAG, "Stub for information button");
         }
         return super.onOptionsItemSelected(item);
     }
@@ -241,7 +237,7 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
 
             @Override
             public boolean onQueryTextChange(String query) {
-                //userAdapter.getFilter().filter(query);
+                impactAdapter.getFilter().filter(query);
                 return false;
             }
         });
@@ -249,48 +245,7 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
 
     private Menu setToolBar(){
         toolbar.inflateMenu(R.menu.me_toolbar_menu);
-        Menu toolBarMenu = toolbar.getMenu();
-
-        MenuItem homeIcon = toolBarMenu.findItem(R.id.homeItem);
-        TextDrawable faIcon = new TextDrawable(requireContext());
-        faIcon.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
-        faIcon.setTextAlign(Layout.Alignment.ALIGN_CENTER);
-        faIcon.setTypeface(cFontManager.getTypeface(getContext(), cFontManager.FONTAWESOME));
-        faIcon.setText(getContext().getResources().getText(R.string.fa_home));
-        faIcon.setTextColor(Color.WHITE);
-
-        homeIcon.setIcon(faIcon);
-        return toolBarMenu;
-    }
-
-    protected void pushFragment(Fragment fragment) {
-        if (fragment == null)
-            return;
-
-        assert getFragmentManager() != null;
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-
-        ft.replace(R.id.fragment_frame, fragment);
-        ft.commit();
-    }
-
-    private void showFragment(String selectedFrag){
-        if (requireFragmentManager().findFragmentByTag(selectedFrag) != null) {
-            /* if the fragment exists, show it. */
-            getFragmentManager().beginTransaction().show(
-                    requireFragmentManager().findFragmentByTag(selectedFrag)).
-                    commit();
-        } else {
-            /* if the fragment does not exist, add it to fragment manager. */
-            getFragmentManager().beginTransaction().add(
-                    R.id.fragment_frame, new cLogFrameFragment(), selectedFrag).commit();
-        }
-        if (getFragmentManager().findFragmentByTag(Long.toString(logFrameID)) != null) {
-            /* if the other fragment is visible, hide it. */
-            getFragmentManager().beginTransaction().hide(
-                    requireFragmentManager().findFragmentByTag(
-                            Long.toString(logFrameID))).commit();
-        }
+        return toolbar.getMenu();
     }
 
     @Override
@@ -354,6 +309,14 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
     @Override
     public void onClickSyncImpact(cImpactModel impactModel) {
 
+    }
+
+    @Override
+    public void onClickDetailImpact(cOutcomeModel[] outcomeModels, cQuestionModel[] questionModels) {
+        /* navigate from logframe to outcome */
+        NavDirections action = cImpactFragmentDirections.
+                actionCImpactFragmentToCImpactDetailFragment(outcomeModels, questionModels);
+        Navigation.findNavController(requireView()).navigate(action);
     }
 
     /* outcome events */

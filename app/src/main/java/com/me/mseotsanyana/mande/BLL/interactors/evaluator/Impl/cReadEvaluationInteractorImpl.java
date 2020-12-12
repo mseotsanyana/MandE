@@ -87,8 +87,8 @@ public class cReadEvaluationInteractorImpl extends cAbstractInteractor
         cDBQuestion dbQuestion = new cDBQuestion();
 
         dbQuestion.setQuestionID(questionModel.getQuestionID());
-        dbQuestion.setQuestionTypeID(questionModel.getQuestionTypeID());
-        dbQuestion.setQuestionGroupingID(questionModel.getQuestionGroupID());
+        dbQuestion.setQuestionTypeID(questionModel.getQuestionTypeModel().getQuestionTypeID());
+        dbQuestion.setQuestionGroupingID(questionModel.getQuestionGroupingModel().getQuestionGroupingID());
         dbQuestion.setLabel(questionModel.getLabel());
         dbQuestion.setQuestion(questionModel.getQuestion());
 
@@ -146,9 +146,9 @@ public class cReadEvaluationInteractorImpl extends cAbstractInteractor
                 evaluationTreeModels.add(new cTreeModel(childIndex, parentIndex, 2,
                         questions));
 
-                /* group questions by their sections */
+                /* FIXME group questions by their sections */
                 Map<Long, List<cQuestionModel>> questionModelMap = questions.stream()
-                        .collect(Collectors.groupingBy(cQuestionModel::getQuestionGroupID));
+                        .collect(Collectors.groupingBy(cQuestionModel::getQuestionID));
 
                 /* create a cDBQuestionnaire object and transform cQuestionModel to it */
                 Map<Long, Vector<cDBQuestion>> dbQuestionGroups = new HashMap<>();

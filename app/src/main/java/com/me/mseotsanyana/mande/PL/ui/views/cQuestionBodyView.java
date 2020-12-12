@@ -17,7 +17,7 @@ import com.me.mseotsanyana.placeholderview.annotationlibrary.expand.ParentPositi
 
 import java.text.SimpleDateFormat;
 
-@Layout(R.layout.question_less_detail_list)
+@Layout(R.layout.question_body_view)
 public class cQuestionBodyView {
     private static final String TAG = cQuestionBodyView.class.getSimpleName();
     private static SimpleDateFormat sdf = cConstant.SHORT_FORMAT_DATE;
@@ -75,7 +75,7 @@ public class cQuestionBodyView {
         this.question = questionModel.getQuestion();
         this.questionType = questionModel.getQuestionTypeModel().getName();
         this.description = questionModel.getQuestionTypeModel().getDescription();
-        if(questionModel.getQuestionGroupID() != 0) {
+        if(questionModel.getQuestionGroupingModel().getQuestionGroupingID() != 0) {
             this.group = questionModel.getQuestionGroupingModel().getName();
             this.groupDescription = questionModel.getQuestionGroupingModel().getDescription();
         }else {
@@ -88,7 +88,10 @@ public class cQuestionBodyView {
 
     @Resolve
     public void onResolved() {
-        textViewLabel.setText(label);
+        //cardViewQuestion.setCardBackgroundColor(ContextCompat.getColor(context,
+        //        R.color.parent_body_colour));
+
+        textViewLabel.setText(String.valueOf(label));
         textViewQuestion.setText(question);
         textViewQuestionType.setText(questionType);
         textViewDescription.setText(description);

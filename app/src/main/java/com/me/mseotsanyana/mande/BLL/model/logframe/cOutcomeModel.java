@@ -1,5 +1,7 @@
 package com.me.mseotsanyana.mande.BLL.model.logframe;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Pair;
 
 import java.util.Date;
@@ -8,7 +10,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class cOutcomeModel {
+public class cOutcomeModel implements Parcelable {
     private long outcomeID;
     private long parentID;
     private long logFrameID;
@@ -241,5 +243,52 @@ public class cOutcomeModel {
 
     public void setChildImpactModelMap(Map<Pair<Long, Long>, Set<cImpactModel>> childImpactModelMap) {
         this.childImpactModelMap = childImpactModelMap;
+    }
+
+    protected cOutcomeModel(Parcel in) {
+        outcomeID = in.readLong();
+        parentID = in.readLong();
+        logFrameID = in.readLong();
+        impactID = in.readLong();
+        serverID = in.readLong();
+        ownerID = in.readLong();
+        orgID = in.readLong();
+        groupBITS = in.readInt();
+        permsBITS = in.readInt();
+        statusBITS = in.readInt();
+        name = in.readString();
+        description = in.readString();
+    }
+
+    public static final Creator<cOutcomeModel> CREATOR = new Creator<cOutcomeModel>() {
+        @Override
+        public cOutcomeModel createFromParcel(Parcel in) {
+            return new cOutcomeModel(in);
+        }
+
+        @Override
+        public cOutcomeModel[] newArray(int size) {
+            return new cOutcomeModel[size];
+        }
+    };
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(outcomeID);
+        parcel.writeLong(parentID);
+        parcel.writeLong(logFrameID);
+        parcel.writeLong(impactID);
+        parcel.writeLong(serverID);
+        parcel.writeLong(ownerID);
+        parcel.writeLong(orgID);
+        parcel.writeInt(groupBITS);
+        parcel.writeInt(permsBITS);
+        parcel.writeInt(statusBITS);
+        parcel.writeString(name);
+        parcel.writeString(description);
     }
 }

@@ -19,7 +19,7 @@
             android:fitsSystemWindows="false"
             app:contentScrim="@color/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:title="@string/impact_list_title"
+            app:title="@string/output_list_title"
             app:titleEnabled="true">
 
             <ImageView
@@ -95,7 +95,7 @@
         android:visibility="visible" />
 
     <com.me.mseotsanyana.bmblibrary.cDraggableFAB
-        android:id="@+id/outputFAB"
+        android:id="@+id/outputDraggableFAB"
         style="@style/FabStyle"
         android:layout_gravity="bottom|end" />
 

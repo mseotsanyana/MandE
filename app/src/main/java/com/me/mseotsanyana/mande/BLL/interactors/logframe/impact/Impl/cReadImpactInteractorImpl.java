@@ -80,6 +80,7 @@ public class cReadImpactInteractorImpl extends cAbstractInteractor
     private ArrayList<cTreeModel> getImpactTree(Set<cImpactModel> impactModelSet) {
         ArrayList<cTreeModel> impactTreeModels = new ArrayList<>();
         int parentIndex = 0, childIndex;
+
         ArrayList<cImpactModel> impactModels = new ArrayList<>(impactModelSet);
         if (impactModels.size() > 0) {
             logFrameName = impactModels.get(0).getLogFrameModel().getName();
@@ -92,27 +93,30 @@ public class cReadImpactInteractorImpl extends cAbstractInteractor
             impactTreeModels.add(new cTreeModel(parentIndex, -1, 0, impactModel));
 
             /* set of impact children under the impact */
-            childIndex = parentIndex + 1;
+            childIndex = parentIndex;
             ArrayList<cImpactModel> impacts = new ArrayList<>(impactModel.getImpactModelSet());
-            impactTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, impacts));
-
-            /* set of outcomes under the impact */
-            childIndex = parentIndex + 2;
-            ArrayList<cOutcomeModel> outcomes = new ArrayList<>(impactModel.getOutcomeModelSet());
-            impactTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, outcomes));
-
-            /* set of questions under the impact */
-            childIndex = parentIndex + 3;
-            ArrayList<cQuestionModel> questions = new ArrayList<>(impactModel.getQuestionModelSet());
-            impactTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, questions));
-
-            /* set of raids under the impact */
-            childIndex = parentIndex + 4;
-            ArrayList<cRaidModel> raids = new ArrayList<>(impactModel.getRaidModelSet());
-            impactTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, raids));
+            for (int j = 0; j < impacts.size(); j++) {
+                childIndex = childIndex + 1;
+                impactTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, impacts.get(j)));
+            }
 
             /* next parent index */
             parentIndex = childIndex + 1;
+
+            /* set of outcomes under the impact
+            childIndex = parentIndex + 2;
+            ArrayList<cOutcomeModel> outcomes = new ArrayList<>(impactModel.getOutcomeModelSet());
+            impactTreeModels.add(new cTreeModel(childIndex, parentIndex, 2, outcomes));*/
+
+            /* set of questions under the impact
+            childIndex = parentIndex + 3;
+            ArrayList<cQuestionModel> questions = new ArrayList<>(impactModel.getQuestionModelSet());
+            impactTreeModels.add(new cTreeModel(childIndex, parentIndex, 2, questions));*/
+
+            /* set of raids under the impact
+            childIndex = parentIndex + 4;
+            ArrayList<cRaidModel> raids = new ArrayList<>(impactModel.getRaidModelSet());
+            impactTreeModels.add(new cTreeModel(childIndex, parentIndex, 2, raids));*/
         }
         return impactTreeModels;
     }

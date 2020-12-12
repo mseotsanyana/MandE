@@ -49,6 +49,7 @@
     <string name="fa_sync">&#xf021;</string>
     <string name="fa_save">&#xf0c7;</string>
     <string name="fa_actions">&#xf022;</string>
+    <string name="fa_details">&#xf1e5;</string>
 
     <!-- Permission Icons-->
     <string name="fa_groups">&#xf0c0;</string>
@@ -101,9 +102,9 @@
     <string name="logframe_create_title">ADD LOGFRAME</string>
     <string name="logframe_update_title">UPDATE LOGFRAME</string>
     <string name="logframe_delete_title">DELETE LOGFRAME</string>
-    <string name="logframe_organization_caption">organization:</string>
-    <string name="logframe_name_caption">logical framework:</string>
-    <string name="logframe_description_caption">description:</string>
+    <string name="logframe_organization_caption">organization</string>
+    <string name="logframe_name_caption">logical framework</string>
+    <string name="logframe_description_caption">description</string>
     <string name="logframe_startdate_caption">start date: </string>
     <string name="logframe_enddate_caption">end date: </string>
 
@@ -111,7 +112,7 @@
     <string name="address_list_title">Addresses</string>
     <string name="address_hint_street">Street</string>
     <string name="address_hint_city">City</string>
-    <string name="address_hint_province">Provice</string>
+    <string name="address_hint_province">Province</string>
     <string name="address_hint_postal_code">Postal Code</string>
     <string name="address_hint_country">Country</string>
 
@@ -195,23 +196,23 @@
 
     <!-- the Impact strings -->
     <string name="impact_list_title">List of Impacts</string>
-    <string name="impact_caption">impact:</string>
+    <string name="impact_caption">impact</string>
 
     <!-- the outcome strings -->
     <string name="outcome_list_title">List of Outcomes</string>
-    <string name="outcome_caption">outcome:</string>
+    <string name="outcome_caption">outcome</string>
 
     <!-- the output strings -->
     <string name="output_list_title">List of Outputs</string>
-    <string name="output_caption">output:</string>
+    <string name="output_caption">output</string>
 
     <!-- the activity strings -->
     <string name="activity_list_title">List of Activities</string>
-    <string name="activity_caption">activity:</string>
+    <string name="activity_caption">activity</string>
 
     <!-- the input strings -->
     <string name="input_list_title">Inputs</string>
-    <string name="input_caption">input:</string>
+    <string name="input_caption">input</string>
     <string name="input_number_caption">number required:</string>
     <string name="input_expense_caption">budgeted for:</string>
     <string name="input_income_caption">fund:</string>
@@ -249,8 +250,8 @@
     <string name="question_description">Description : </string>
     <string name="question_group">Group : </string>
     <string name="question_group_description">Group Desc.: </string>
-    <string name="question_valid_startdate">Valid From </string>
-    <string name="question_to_enddate"> To </string>
+    <string name="question_valid_startdate">valid from </string>
+    <string name="question_to_enddate"> to </string>
 
     <!-- the category strings -->
     <string name="category_list_title">Categories</string>
@@ -290,6 +291,14 @@
     <string name="custom_npi_next_button_text_2">Less</string>
     <string name="custom_npi_start_button_text_2">1st</string>
     <string name="custom_npi_end_button_text_2">Nth</string>
+
+    <!-- general strings  -->
+    <string name="unkown">unknown</string>
+
+    <string name="description_caption">description</string>
+    <string name="startdate_caption">start date: </string>
+    <string name="enddate_caption">end date: </string>
+
     <!-- END -->
 
     <string name="hello">Choose one of the features below.</string>

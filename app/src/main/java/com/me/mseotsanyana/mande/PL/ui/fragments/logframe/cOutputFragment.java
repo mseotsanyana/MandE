@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Layout;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,7 +33,9 @@ import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cOutputRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cSessionManagerImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.Impl.cOutputPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iActivityPresenter;
+import com.me.mseotsanyana.mande.PL.presenters.logframe.iOutcomePresenter;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iOutputPresenter;
+import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cOutcomeAdapter;
 import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cOutputAdapter;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.TextDrawable;
@@ -56,7 +59,7 @@ public class cOutputFragment extends Fragment implements iOutputPresenter.View,
     private LinearLayout outputProgressBar;
     private cOutputAdapter outputAdapter;
 
-    /* outcome interface */
+    /* output interface */
     private iOutputPresenter outputPresenter;
 
     private long logFrameID;
@@ -64,18 +67,12 @@ public class cOutputFragment extends Fragment implements iOutputPresenter.View,
 
     private AppCompatActivity activity;
 
-    cOutputFragment(){
+    public cOutputFragment(){
 
     }
 
-    public static cOutputFragment newInstance(long logFrameID) {
-        Bundle bundle = new Bundle();
-        cOutputFragment fragment = new cOutputFragment();
-
-        bundle.putLong("LOGFRAME_ID", logFrameID);
-        fragment.setArguments(bundle);
-
-        return fragment;
+    public static cOutputFragment newInstance() {
+        return new cOutputFragment();
     }
 
     /*
@@ -100,7 +97,7 @@ public class cOutputFragment extends Fragment implements iOutputPresenter.View,
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        this.logFrameID = requireArguments().getLong("LOGFRAME_ID");
+        this.logFrameID = cOutputFragmentArgs.fromBundle(requireArguments()).getLogFrameID();
     }
 
     @Override
@@ -126,38 +123,29 @@ public class cOutputFragment extends Fragment implements iOutputPresenter.View,
      */
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        init();
-        outputView(view);
-        initFab(view);
-        /* initialize the toolbar */
-        toolbar = view.findViewById(R.id.toolbar);
-        TextView logFrameCaption = view.findViewById(R.id.title);
-        logFrameName = view.findViewById(R.id.subtitle);
-        logFrameCaption.setText(R.string.logframe_name_caption);
-        //outcomeCaption.setText(R.string.logframe_name_caption);
-        CollapsingToolbarLayout collapsingToolbarLayout =
-                view.findViewById(R.id.collapsingToolbarLayout);
-        collapsingToolbarLayout.setContentScrimColor(Color.WHITE);
-        collapsingToolbarLayout.setTitle("List of Outputs");
+        /* initialise data structures */
+        initDataStructures();
+
+        /* initialize appBar Layout */
+        initAppBarLayout(view);
+
+        /* initialise recycler view */
+        initRecyclerView(view);
+
+        /* initialize progress bar */
+        initProgressBarView(view);
+
+        /* initialise draggable FAB */
+        initDraggableFAB(view);
 
         /* show the back arrow button */
         activity.setSupportActionBar(toolbar);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        /*initFab(view);
-
-        // initialize the toolbar
-        toolBar = view.findViewById(R.id.me_toolbar);
-        toolBar.setTitle(R.string.outcome_list_title);
-        toolBar.setTitleTextColor(Color.WHITE);*/
-
-        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+        Objects.requireNonNull(activity.getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(activity.getSupportActionBar()).setDisplayShowHomeEnabled(true);
     }
 
-    private void init() {
-        /* contains a tree of impact */
-        // setup recycler view adapter
+    private void initDataStructures() {
+        /* contains a tree of output */
         List<cTreeModel> outputTreeModels = new ArrayList<>();
 
         outputPresenter = new cOutputPresenterImpl(
@@ -175,10 +163,20 @@ public class cOutputFragment extends Fragment implements iOutputPresenter.View,
         activity = ((AppCompatActivity) getActivity());
     }
 
-    private void outputView(View view) {
-        outputProgressBar = view.findViewById(R.id.outputProgressBar);
 
-        /* impact views */
+    private void initAppBarLayout(View view){
+        /* initialize the toolbar */
+        toolbar = view.findViewById(R.id.toolbar);
+        TextView logFrameCaption = view.findViewById(R.id.title);
+        logFrameName = view.findViewById(R.id.subtitle);
+        logFrameCaption.setText(R.string.logframe_name_caption);
+        CollapsingToolbarLayout collapsingToolbarLayout =
+                view.findViewById(R.id.collapsingToolbarLayout);
+        collapsingToolbarLayout.setContentScrimColor(Color.WHITE);
+        collapsingToolbarLayout.setTitle("List of Outputs");
+    }
+
+    private void initRecyclerView(View view) {
         RecyclerView outputRecyclerView = view.findViewById(R.id.outputRecyclerView);
         outputRecyclerView.setHasFixedSize(true);
 
@@ -189,9 +187,13 @@ public class cOutputFragment extends Fragment implements iOutputPresenter.View,
         outputRecyclerView.setLayoutManager(llm);
     }
 
+    private void initProgressBarView(View view) {
+        outputProgressBar = view.findViewById(R.id.outputProgressBar);
+    }
+
     // initialise the floating action button
-    private void initFab(View view) {
-        view.findViewById(R.id.outputFAB).setOnClickListener(new View.OnClickListener() {
+    private void initDraggableFAB(View view) {
+        view.findViewById(R.id.outputDraggableFAB).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -219,7 +221,7 @@ public class cOutputFragment extends Fragment implements iOutputPresenter.View,
 
         SearchView searchView = (SearchView) toolBarMenu.findItem(R.id.searchItem).getActionView();
         searchView.setSearchableInfo(Objects.requireNonNull(searchManager).
-                getSearchableInfo(getActivity().getComponentName()));
+                getSearchableInfo(requireActivity().getComponentName()));
         searchView.setMaxWidth(Integer.MAX_VALUE);
 
         search(searchView);
@@ -227,12 +229,8 @@ public class cOutputFragment extends Fragment implements iOutputPresenter.View,
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.homeItem:
-                showFragment(cLogFrameFragment.class.getSimpleName());
-                break;
-            default:
-                break;
+        if (item.getItemId() == R.id.helpItem) {
+            Log.d(TAG, "Stub for output help page");
         }
         return super.onOptionsItemSelected(item);
     }
@@ -246,7 +244,7 @@ public class cOutputFragment extends Fragment implements iOutputPresenter.View,
 
             @Override
             public boolean onQueryTextChange(String query) {
-                //userAdapter.getFilter().filter(query);
+                outputAdapter.getFilter().filter(query);
                 return false;
             }
         });
@@ -254,47 +252,7 @@ public class cOutputFragment extends Fragment implements iOutputPresenter.View,
 
     private Menu setToolBar(){
         toolbar.inflateMenu(R.menu.me_toolbar_menu);
-        Menu toolBarMenu = toolbar.getMenu();
-
-        MenuItem homeIcon = toolBarMenu.findItem(R.id.homeItem);
-        TextDrawable faIcon = new TextDrawable(requireContext());
-        faIcon.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
-        faIcon.setTextAlign(Layout.Alignment.ALIGN_CENTER);
-        faIcon.setTypeface(cFontManager.getTypeface(getContext(), cFontManager.FONTAWESOME));
-        faIcon.setText(getContext().getResources().getText(R.string.fa_home));
-        faIcon.setTextColor(Color.WHITE);
-
-        homeIcon.setIcon(faIcon);
-        return toolBarMenu;
-    }
-
-
-    private void showFragment(String selectedFrag){
-        if (requireFragmentManager().findFragmentByTag(selectedFrag) != null) {
-            /* if the fragment exists, show it. */
-            getFragmentManager().beginTransaction().show(
-                    requireFragmentManager().findFragmentByTag(selectedFrag)).
-                    commit();
-        } else {
-            /* if the fragment does not exist, add it to fragment manager. */
-            getFragmentManager().beginTransaction().add(
-                    R.id.fragment_frame, new cLogFrameFragment(), selectedFrag).commit();
-        }
-        if (getFragmentManager().findFragmentByTag(TAG) != null) {
-            /* if the other fragment is visible, hide it. */
-            getFragmentManager().beginTransaction().hide(
-                    requireFragmentManager().findFragmentByTag(TAG)).commit();
-        }
-    }
-
-    protected void pushFragment(Fragment fragment) {
-        if (fragment == null)
-            return;
-
-        assert getFragmentManager() != null;
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_frame, fragment);
-        ft.commit();
+        return toolbar.getMenu();
     }
 
     @Override

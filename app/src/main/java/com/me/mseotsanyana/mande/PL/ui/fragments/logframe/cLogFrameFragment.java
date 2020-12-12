@@ -47,7 +47,6 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
@@ -56,7 +55,6 @@ import com.me.mseotsanyana.mande.DAL.ìmpl.session.cMenuRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cSessionManagerImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.Impl.cLogFramePresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iLogFramePresenter;
-import com.me.mseotsanyana.mande.PL.ui.adapters.common.cCommonFragmentAdapter;
 import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cLogFrameAdapter;
 import com.me.mseotsanyana.mande.PL.ui.fragments.session.cPermissionFragment;
 import com.me.mseotsanyana.mande.PL.ui.fragments.session.cRoleFragment;
@@ -92,40 +90,30 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
     private static SimpleDateFormat tsdf = cConstant.TIMESTAMP_FORMAT_DATE;
     private static SimpleDateFormat ssdf = cConstant.SHORT_FORMAT_DATE;
 
-    // navigation drawer declarations
+    /* logframe views */
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
-
-    private cLogFrameAdapter logFrameRecyclerViewAdapter;
-
-    /* logframe views */
     private ExpandableListView menuExpandableListView;
     private LinearLayout includeProgressBar;
 
     /* logframe interface */
     private iLogFramePresenter logFramePresenter;
 
+    /* logframe adapter */
+    private cLogFrameAdapter logFrameRecyclerViewAdapter;
+
     /* menu data structures */
     private List<String> menuItemTitles;
-    private HashMap<String, List<String>> expandableMenuItems = null;
-
+    private HashMap<String, List<String>> expandableMenuItems;
     private ArrayList<cOrganizationModel> sharedOrganizations;
 
-
     private AppCompatActivity activity;
-
-    Gson gson = new Gson();
 
     public cLogFrameFragment() {
     }
 
     public static cLogFrameFragment newInstance() {
-        /*Bundle bundle = new Bundle();
-        bundle.putInt("LOGFRAME_ID", logFrameID);
-        cLogFrameFragment fragment = new cLogFrameFragment();
-        fragment.setArguments(bundle);*/
-
         return new cLogFrameFragment();
     }
 
@@ -160,20 +148,35 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
      */
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        init();
+
+        /* create data structures */
+        initDataStructures();
 
         /* create navigation drawer menu */
-        navigationDrawer(view);
+        initNavigationDrawer(view);
 
         /* create logframe menu */
-        logframeView(view);
+        initLogframeView(view);
 
         /* draggable floating button */
         initDraggableFAB(view);
     }
 
+    private void initNavigationDrawer(View view) {
+        /* populate navigation view with relevant to the logged in user from database */
+        populateNavigationDrawer(view);
+        /* initialise the toolbar and the drawer layout for animating the menu */
+        setupDrawerToggle(view);
+        /* setup drawer navigation group and children listeners */
+        setupDrawerNavigationListener();
 
-    private void init() {
+        // put an arrow button
+        //activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //activity.getSupportActionBar().setHomeButtonEnabled(true);
+
+    }
+
+    private void initDataStructures() {
         /* contains main menu and its corresponding submenu items */
         menuItemTitles = new ArrayList<String>();
         expandableMenuItems = new LinkedHashMap<String, List<String>>();
@@ -191,28 +194,14 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
                 new cMenuRepositoryImpl(getContext()),
                 new cLogFrameRepositoryImpl(getContext()));
 
-        activity = ((AppCompatActivity) getActivity());
-
         // setup recycler view adapter
         logFrameRecyclerViewAdapter = new cLogFrameAdapter(getActivity(), this,
                 logFrameTreeModels);
+
+        activity = ((AppCompatActivity) getActivity());
     }
 
-    private void navigationDrawer(View view) {
-        /* populate navigation view with relevant to the logged in user from database */
-        populateNavigationDrawer(view);
-        /* initialise the toolbar and the drawer layout for animating the menu */
-        setupDrawerToggle(view);
-        /* setup drawer navigation group and children listeners */
-        setupDrawerNavigationListener();
-
-        // put an arrow button
-        //activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //activity.getSupportActionBar().setHomeButtonEnabled(true);
-
-    }
-
-    private void logframeView(View view) {
+    private void initLogframeView(View view) {
         includeProgressBar = view.findViewById(R.id.includeProgressBar);
 
         RecyclerView logFrameRecyclerView = view.findViewById(R.id.logframeRecyclerView);
@@ -223,6 +212,16 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
 
         logFrameRecyclerView.setAdapter(logFrameRecyclerViewAdapter);
         logFrameRecyclerView.setLayoutManager(llm);
+    }
+
+    private void initDraggableFAB(View view) {
+        view.findViewById(R.id.logframeFAB).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cLogFrameModel logFrameModel = new cLogFrameModel();
+                onClickCreateLogFrame(logFrameModel);
+            }
+        });
     }
 
     private void populateNavigationDrawer(View view) {
@@ -256,24 +255,6 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
                 view.findViewById(R.id.collapsingToolbarLayout);
         collapsingToolbarLayout.setContentScrimColor(Color.WHITE);
 
-        //toolBar.setTitle(R.string.logframe_list_title);
-        //toolBar.setTitleTextColor(Color.WHITE);
-
-        //toolBar.inflateMenu(R.menu.home_toolbar_menu);
-        //Menu toolBarMenu = toolBar.getMenu();
-
-/*
-        MenuItem homeIcon = toolBarMenu.findItem(R.id.infoItem);
-        TextDrawable faIcon = new TextDrawable(getContext());
-        faIcon.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
-        faIcon.setTextAlign(Layout.Alignment.ALIGN_CENTER);
-        faIcon.setTypeface(cFontManager.getTypeface(getContext(), cFontManager.FONTAWESOME));
-        faIcon.setText(getContext().getResources().getText(R.string.fa_information));
-        faIcon.setTextColor(Color.WHITE);
-
-        homeIcon.setIcon(faIcon);
-*/
-
         toolbar.setOnMenuItemClickListener(
                 new Toolbar.OnMenuItemClickListener() {
                     @Override
@@ -306,7 +287,6 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
                 requireActivity().invalidateOptionsMenu();
             }
         };
-
 
         // show animations
         drawerLayout.addDrawerListener(drawerToggle);
@@ -473,12 +453,8 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         // as you specify a parent activity in AndroidManifest.xml.
         //int id = item.getItemId();
 
-        switch (item.getItemId()) {
-            case R.id.homeItem:
-                //pushFragment(cLogFrameFragment.newInstance(session));
-                break;
-            default:
-                break;
+        if (item.getItemId() == R.id.homeItem) {
+            Log.d(TAG, "Stub for overflow menu");
         }
 
         // Activate the navigation drawer toggle
@@ -512,7 +488,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         /* you can put a hint for the search input field */
         searchView.setQueryHint("Search LogFrames...");
         searchView.setSearchableInfo(Objects.requireNonNull(searchManager).
-                getSearchableInfo(getActivity().getComponentName()));
+                getSearchableInfo(requireActivity().getComponentName()));
         searchView.setMaxWidth(Integer.MAX_VALUE);
         /* by setting it true we are making it iconified
            so the search input will show up after taping the search iconified
@@ -526,7 +502,22 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    /******************* these functions get data from adapter to the presenter *******************/
+    private void search(SearchView searchView) {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                logFrameRecyclerViewAdapter.getFilter().filter(query);
+                return false;
+            }
+        });
+    }
+
+    //=========== these functions are called in the adapter when clicking on the buttons ===========
 
     @Override
     public void onClickCreateLogFrame(cLogFrameModel logFrameModel) {
@@ -645,25 +636,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         }
     }
 
-    @Override
-    public cCommonFragmentAdapter onGetCommonFragmentAdapter() {
-        return new cCommonFragmentAdapter(requireFragmentManager(),
-                new cSessionManagerImpl(getContext()));
-
-    }
-
-    private void initDraggableFAB(View view) {
-        view.findViewById(R.id.logframeFAB).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cLogFrameModel logFrameModel = new cLogFrameModel();
-                onClickCreateLogFrame(logFrameModel);
-            }
-        });
-    }
-
-
-    /*=============================== RESPONSE VIEW IMPLEMENTATION ===============================*/
+    //========================== these functions give feedback to the user =========================
 
     @Override
     public void onRetrieveLogFramesCompleted(LinkedHashMap<String, List<String>> expandableMenuItems,
@@ -761,7 +734,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         sharedOrganizations = organizationModels;
     }
 
-    /*================================= BASE VIEW IMPLEMENTATION =================================*/
+    //========================= these functions show and hide progress bar =========================
 
     @Override
     public void showProgress() {
@@ -778,8 +751,15 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
 
     }
 
-    /*===================================== UTILITY FUNCTIONS ====================================*/
+    //======================= these function show the forms to capture data ========================
 
+    /**
+     *  create/add a logframe
+     *
+     * @param logFrameID logframe identification
+     * @param logFrameModel logframe model
+     * @param isLogFrame is this a parent or child logframe
+     */
     private void createAlertDialog(long logFrameID, cLogFrameModel logFrameModel, boolean isLogFrame) {
         /* inflate the logframe model */
         LayoutInflater inflater = this.getLayoutInflater();
@@ -828,8 +808,8 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         datePickerIcon.setTypeface(null, Typeface.NORMAL);
         datePickerIcon.setTypeface(cFontManager.getTypeface(requireActivity(),
                         cFontManager.FONTAWESOME));
-        datePickerIcon.setTextColor(getActivity().getColor(R.color.colorPrimaryDark));
-        datePickerIcon.setText(getActivity().getResources().getString(R.string.fa_calendar));
+        datePickerIcon.setTextColor(requireActivity().getColor(R.color.colorPrimaryDark));
+        datePickerIcon.setText(requireActivity().getResources().getString(R.string.fa_calendar));
         datePickerIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -881,7 +861,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
 
         /* create or cancel action */
         MaterialAlertDialogBuilder alertDialogBuilder =
-                new MaterialAlertDialogBuilder(getActivity(), R.style.AlertDialogTheme);
+                new MaterialAlertDialogBuilder(requireActivity(), R.style.AlertDialogTheme);
         alertDialogBuilder.setPositiveButton(getContext().getResources().getText(
                 R.string.Save), new DialogInterface.OnClickListener() {
             @Override
@@ -911,6 +891,12 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
                 .show();
     }
 
+    /**
+     * update a logframe
+     *
+     * @param position position
+     * @param logFrameModel logframe model
+     */
     private void updateAlertDialog(int position, cLogFrameModel logFrameModel) {
         /* inflates */
         LayoutInflater inflater = this.getLayoutInflater();
@@ -974,8 +960,8 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         datePickerIcon.setTypeface(null, Typeface.NORMAL);
         datePickerIcon.setTypeface(cFontManager.getTypeface(requireActivity(),
                         cFontManager.FONTAWESOME));
-        datePickerIcon.setTextColor(getActivity().getColor(R.color.colorPrimaryDark));
-        datePickerIcon.setText(getActivity().getResources().getString(R.string.fa_calendar));
+        datePickerIcon.setTextColor(requireActivity().getColor(R.color.colorPrimaryDark));
+        datePickerIcon.setText(requireActivity().getResources().getString(R.string.fa_calendar));
         datePickerIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1000,6 +986,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
                                 assert selection.second != null;
                                 Date startDate = new Date(selection.first);
                                 Date endDate = new Date(selection.second);
+
                                 /* populate start and end dates on the view */
                                 startDateEditText.setText(ssdf.format(startDate));
                                 endDateEditText.setText(ssdf.format(endDate));
@@ -1027,7 +1014,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
 
         /* save or cancel actions */
         MaterialAlertDialogBuilder alertDialogBuilder =
-                new MaterialAlertDialogBuilder(getActivity(), R.style.AlertDialogTheme);
+                new MaterialAlertDialogBuilder(requireActivity(), R.style.AlertDialogTheme);
         alertDialogBuilder.setPositiveButton(getContext().getResources().getText(
                 R.string.Save), new DialogInterface.OnClickListener() {
             @Override
@@ -1053,6 +1040,15 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
                 .show();
     }
 
+    /**
+     * delete a logframe
+     *
+     * @param resID resource identification
+     * @param title title
+     * @param message message
+     * @param position position
+     * @param logFrameID logframe identification
+     */
     private void deleteAlertDialog(int resID, String title, String message, int position,
                                    long logFrameID) {
 
@@ -1060,28 +1056,29 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
                 requireContext());
 
         // setting icon to dialog
-        TextDrawable faIcon = new TextDrawable(getContext());
+        TextDrawable faIcon = new TextDrawable(requireContext());
         faIcon.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
         faIcon.setTextAlign(Layout.Alignment.ALIGN_CENTER);
-        faIcon.setTypeface(cFontManager.getTypeface(getContext(), cFontManager.FONTAWESOME));
-        faIcon.setText(getContext().getResources().getText(resID));
-        faIcon.setTextColor(getContext().getColor(R.color.colorAccent));
+        faIcon.setTypeface(cFontManager.getTypeface(requireContext(), cFontManager.FONTAWESOME));
+        faIcon.setText(requireContext().getResources().getText(resID));
+        faIcon.setTextColor(requireContext().getColor(R.color.colorAccent));
         alertDialogBuilder.setIcon(faIcon);
 
         // set title
         alertDialogBuilder.setTitle(title);
+
         // set dialog message
         alertDialogBuilder
                 .setMessage(message)
                 .setCancelable(false)
-                .setPositiveButton(getContext().getResources().getText(
+                .setPositiveButton(requireContext().getResources().getText(
                         R.string.Yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         logFramePresenter.deleteLogFrameModel(logFrameID, position);
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton(getContext().getResources().getText(
+                .setNegativeButton(requireContext().getResources().getText(
                         R.string.No), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // if this button is clicked, just close
@@ -1094,30 +1091,5 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
 
         // show it
         alertDialog.show();
-    }
-
-    private void search(SearchView searchView) {
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String query) {
-                logFrameRecyclerViewAdapter.getFilter().filter(query);
-                return false;
-            }
-        });
-    }
-
-    protected void pushFragment(Fragment fragment, String flag) {
-        if (fragment == null)
-            return;
-
-        assert getFragmentManager() != null;
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.add(R.id.fragment_frame, fragment, flag);
-        ft.commit();
     }
 }

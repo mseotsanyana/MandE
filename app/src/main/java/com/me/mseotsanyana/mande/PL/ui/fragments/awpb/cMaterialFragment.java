@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.me.mseotsanyana.mande.BLL.model.wpb.cMaterialModel;
 import com.me.mseotsanyana.mande.PL.ui.adapters.awpb.cMaterialAdapter;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
@@ -24,9 +25,9 @@ public class cMaterialFragment extends Fragment {
     public cMaterialFragment() {
     }
 
-    public static cMaterialFragment newInstance(ArrayList<cTreeModel> materialTreeModels) {
+    public static cMaterialFragment newInstance(ArrayList<cMaterialModel> materialModels) {
         Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("MATERIAL_TREE_MODELS", materialTreeModels);
+        bundle.putParcelableArrayList("MATERIAL_MODELS", materialModels);
         cMaterialFragment fragment = new cMaterialFragment();
         fragment.setArguments(bundle);
 
@@ -48,8 +49,8 @@ public class cMaterialFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         assert getArguments() != null;
-        ArrayList<cTreeModel> materialTreeModels = getArguments().getParcelableArrayList(
-                "MATERIAL_TREE_MODELS");
+        ArrayList<cMaterialModel> materialModels = getArguments().getParcelableArrayList(
+                "MATERIAL_MODELS");
 
         RecyclerView inputRecyclerView = view.findViewById(R.id.resourcesRecyclerView);
         inputRecyclerView.setHasFixedSize(true);
@@ -57,7 +58,7 @@ public class cMaterialFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         materialAdapter = new cMaterialAdapter(getActivity(), null,
-                materialTreeModels, -1);
+                materialModels);
         inputRecyclerView.setAdapter(materialAdapter);
         inputRecyclerView.setLayoutManager(llm);
     }

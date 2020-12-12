@@ -31,8 +31,8 @@
         <action
             android:id="@+id/action_cLogFrameFragment_to_cImpactFragment"
             app:destination="@id/cImpactFragment"
-            app:enterAnim="@anim/grow_in"
-            app:exitAnim="@anim/grow_out"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/cLogFrameFragment"
@@ -40,8 +40,8 @@
         <action
             android:id="@+id/action_cLogFrameFragment_to_cOutcomeFragment"
             app:destination="@id/cOutcomeFragment"
-            app:enterAnim="@anim/grow_in"
-            app:exitAnim="@anim/grow_out"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/cLogFrameFragment"
@@ -49,11 +49,19 @@
         <action
             android:id="@+id/action_cLogFrameFragment_to_cOutputFragment"
             app:destination="@id/cOutputFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/cLogFrameFragment"
             app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_cLogFrameFragment_to_cInputFragment"
             app:destination="@id/cInputFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
             app:popUpTo="@id/cLogFrameFragment"
             app:popUpToInclusive="false" />
         <action
@@ -64,6 +72,10 @@
         <action
             android:id="@+id/action_cLogFrameFragment_to_cActivityFragment"
             app:destination="@id/cActivityFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/cLogFrameFragment"
             app:popUpToInclusive="false" />
         <action
@@ -104,6 +116,15 @@
         <argument
             android:name="logFrameID"
             app:argType="long" />
+        <action
+            android:id="@+id/action_cImpactFragment_to_cImpactDetailFragment"
+            app:destination="@id/cImpactDetailFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/cImpactFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/cOutcomeFragment"
@@ -233,5 +254,16 @@
         <argument
             android:name="logFrameID"
             app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/cImpactDetailFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cImpactDetailFragment"
+        android:label="cImpactDetailFragment" >
+        <argument
+            android:name="outcomeModels"
+            app:argType="com.me.mseotsanyana.mande.BLL.model.logframe.cOutcomeModel[]" />
+        <argument
+            android:name="questionModels"
+            app:argType="com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel[]" />
     </fragment>
 </navigation>

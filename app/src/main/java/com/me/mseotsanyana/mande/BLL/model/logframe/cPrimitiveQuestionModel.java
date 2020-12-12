@@ -16,6 +16,18 @@ public class cPrimitiveQuestionModel extends cQuestionModel{
     private Set<cNumericResponseModel> numericResponseModelSet;
     private Set<cTextResponseModel> textResponseModelSet;
 
+    public cPrimitiveQuestionModel(cQuestionModel questionModel,
+                                   cPrimitiveQuestionModel primitiveQuestionModel){
+        super(questionModel);
+        primitiveChartID = primitiveQuestionModel.getPrimitiveChartID();
+
+    }
+
+    public cPrimitiveQuestionModel() {
+
+    }
+
+
     public long getPrimitiveChartID() {
         return primitiveChartID;
     }

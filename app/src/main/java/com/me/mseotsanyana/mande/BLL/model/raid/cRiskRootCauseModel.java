@@ -18,6 +18,10 @@ public class cRiskRootCauseModel {
 
     private cRiskModel riskModel;
 
+    public cRiskRootCauseModel(){
+        riskModel = new cRiskModel();
+    }
+
     public long getRiskRootCauseID() {
         return riskRootCauseID;
     }

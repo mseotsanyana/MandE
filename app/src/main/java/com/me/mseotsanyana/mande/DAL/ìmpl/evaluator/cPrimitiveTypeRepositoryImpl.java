@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.me.mseotsanyana.mande.BLL.model.logframe.cPrimitiveQuestionModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionTypeModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
@@ -27,7 +28,7 @@ public class cPrimitiveTypeRepositoryImpl {
         chartRepository = new cChartRepositoryImpl(context);
     }
 
-    public cPrimitiveQuestionModel getPrimitiveTypeModelSet(
+    public cQuestionTypeModel getPrimitiveTypeModelSet(
             long questionTypeID, long userID, int primaryRoleBITS, int secondaryRoleBITS,
             int statusBITS) {
 
@@ -63,12 +64,12 @@ public class cPrimitiveTypeRepositoryImpl {
                 String.valueOf(secondaryRoleBITS),/* access due to membership in secondary role */
                 String.valueOf(statusBITS)});     /* access due to assigned statuses */
 
-        cPrimitiveQuestionModel primitive = null;
+        cQuestionTypeModel primitive = null;
 
         try {
             if (cursor.moveToFirst()) {
 
-                primitive = new cPrimitiveQuestionModel();
+                //primitive = new cPrimitiveQuestionModel();
 
                 primitive.setQuestionTypeID(cursor.getInt(
                         cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID)));

@@ -27,20 +27,31 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.palette.graphics.Palette;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cInputModel;
+import com.me.mseotsanyana.mande.BLL.model.wpb.cExpenseModel;
+import com.me.mseotsanyana.mande.BLL.model.wpb.cHumanModel;
+import com.me.mseotsanyana.mande.BLL.model.wpb.cIncomeModel;
+import com.me.mseotsanyana.mande.BLL.model.wpb.cMaterialModel;
+import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cOutcomeRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.session.cSessionManagerImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.awpb.cExpenseRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.awpb.cHumanRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.awpb.cIncomeRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.awpb.cMaterialRepositoryImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.Impl.cInputPresenterImpl;
+import com.me.mseotsanyana.mande.PL.presenters.logframe.Impl.cOutcomePresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iInputPresenter;
+import com.me.mseotsanyana.mande.PL.presenters.logframe.iOutcomePresenter;
 import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cInputViewPagerAdapter;
+import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cOutcomeAdapter;
 import com.me.mseotsanyana.mande.PL.ui.fragments.awpb.cExpenseFragment;
 import com.me.mseotsanyana.mande.PL.ui.fragments.awpb.cHumanFragment;
 import com.me.mseotsanyana.mande.PL.ui.fragments.awpb.cIncomeFragment;
@@ -66,12 +77,14 @@ public class cInputFragment extends Fragment implements iViewInputListener, iInp
 
     private Toolbar toolbar;
     private LinearLayout inputProgressBar;
-    cInputViewPagerAdapter inputViewPagerAdapter;
+    private ViewPager inputViewPager;
+    private cInputViewPagerAdapter inputViewPagerAdapter;
 
-    /* outcome interface */
+    /* input interface */
     private iInputPresenter inputPresenter;
 
     private long logFrameID;
+    private TextView logFrameName;
 
     private AppCompatActivity activity;
 
@@ -80,23 +93,22 @@ public class cInputFragment extends Fragment implements iViewInputListener, iInp
     private static final int INCOME = 3;
     private static final int EXPENSE = 4;
 
-    private ArrayList<cTreeModel> humanTreeModels;
-    private ArrayList<cTreeModel> materialTreeModels;
-    private ArrayList<cTreeModel> incomeTreeModels;
-    private ArrayList<cTreeModel> expenseTreeModels;
+    private ArrayList<cHumanModel> humanModels;
+    private ArrayList<cMaterialModel> materialModels;
+    private ArrayList<cIncomeModel> incomeModels;
+    private ArrayList<cExpenseModel> expenseModels;
 
-    private cInputFragment() {
+    private cHumanFragment humanFrag;
+    private cMaterialFragment materialFrag;
+    private cIncomeFragment incomeFrag;
+    private cExpenseFragment expenseFrag;
+
+    public cInputFragment() {
 
     }
 
-    public static cInputFragment newInstance(long logFrameID) {
-        Bundle bundle = new Bundle();
-        cInputFragment fragment = new cInputFragment();
-
-        bundle.putLong("LOGFRAME_ID", logFrameID);
-        fragment.setArguments(bundle);
-
-        return fragment;
+    public static cInputFragment newInstance() {
+        return new cInputFragment();
     }
 
     /*
@@ -121,7 +133,7 @@ public class cInputFragment extends Fragment implements iViewInputListener, iInp
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        this.logFrameID = requireArguments().getLong("LOGFRAME_ID");
+        this.logFrameID = cInputFragmentArgs.fromBundle(requireArguments()).getLogFrameID();
     }
 
     @Override
@@ -147,24 +159,55 @@ public class cInputFragment extends Fragment implements iViewInputListener, iInp
      */
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        init();
-        inputView(view);
-        //initFab(view);
-        /* initialize the toolbar */
-        toolbar = view.findViewById(R.id.toolbar);
-        TextView logFrameCaption = view.findViewById(R.id.title);
-        TextView logFrameName = view.findViewById(R.id.subtitle);
-        logFrameCaption.setText(R.string.logframe_name_caption);
-        //outcomeCaption.setText(R.string.logframe_name_caption);
-        CollapsingToolbarLayout collapsingToolbarLayout =
-                view.findViewById(R.id.collapsingToolbarLayout);
-        collapsingToolbarLayout.setContentScrimColor(Color.WHITE);
-        collapsingToolbarLayout.setTitle("List of Inputs");
+        /* initialise data structures */
+        initDataStructures();
+
+        /* initialize appBar Layout */
+        initAppBarLayout(view);
+
+        /* initialise view pager */
+        initViewPager(view);
+
+        /* initialize progress bar */
+        initProgressBarView(view);
 
         /* show the back arrow button */
         activity.setSupportActionBar(toolbar);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        Objects.requireNonNull(activity.getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(activity.getSupportActionBar()).setDisplayShowHomeEnabled(true);
+    }
+
+
+    private void initDataStructures() {
+        humanModels = new ArrayList<>();
+        materialModels = new ArrayList<>();
+        incomeModels = new ArrayList<>();
+        expenseModels = new ArrayList<>();
+
+        inputPresenter = new cInputPresenterImpl(
+                cThreadExecutorImpl.getInstance(),
+                cMainThreadImpl.getInstance(),
+                this,
+                new cSessionManagerImpl(getContext()),
+                new cHumanRepositoryImpl(getContext()),
+                new cMaterialRepositoryImpl(getContext()),
+                new cIncomeRepositoryImpl(getContext()),
+                new cExpenseRepositoryImpl(getContext()),
+                logFrameID);
+
+        activity = ((AppCompatActivity) getActivity());
+    }
+
+    private void initAppBarLayout(View view){
+        /* initialize the toolbar */
+        toolbar = view.findViewById(R.id.toolbar);
+        TextView logFrameCaption = view.findViewById(R.id.title);
+        logFrameName = view.findViewById(R.id.subtitle);
+        logFrameCaption.setText(R.string.logframe_name_caption);
+        CollapsingToolbarLayout collapsingToolbarLayout =
+                view.findViewById(R.id.collapsingToolbarLayout);
+        collapsingToolbarLayout.setContentScrimColor(Color.WHITE);
+        collapsingToolbarLayout.setTitle("List of Resources");
 
         try {
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.shepherds);
@@ -184,55 +227,31 @@ public class cInputFragment extends Fragment implements iViewInputListener, iInp
             // if Bitmap fetch fails, fallback to primary colors
             Log.e(TAG, "onCreate: failed to create bitmap from background", e.fillInStackTrace());
             collapsingToolbarLayout.setContentScrimColor(
-                    ContextCompat.getColor(getContext(), R.color.colorPrimary)
+                    ContextCompat.getColor(requireContext(), R.color.colorPrimary)
             );
             collapsingToolbarLayout.setStatusBarScrimColor(
-                    ContextCompat.getColor(getContext(), R.color.colorPrimaryDark)
+                    ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark)
             );
         }
-
-        /*initFab(view);
-
-        // initialize the toolbar
-        toolBar = view.findViewById(R.id.me_toolbar);
-        toolBar.setTitle(R.string.outcome_list_title);
-        toolBar.setTitleTextColor(Color.WHITE);*/
-
-        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
     }
 
-    private void init() {
-        /* contains a tree of impact */
-        // setup recycler view adapter
-        List<cTreeModel> inputTreeModels = new ArrayList<>();
-
-        humanTreeModels = new ArrayList<>();
-        materialTreeModels = new ArrayList<>();
-        incomeTreeModels = new ArrayList<>();
-        expenseTreeModels = new ArrayList<>();
-
-        inputPresenter = new cInputPresenterImpl(
-                cThreadExecutorImpl.getInstance(),
-                cMainThreadImpl.getInstance(),
-                this,
-                new cSessionManagerImpl(getContext()),
-                new cHumanRepositoryImpl(getContext()),
-                new cMaterialRepositoryImpl(getContext()),
-                new cIncomeRepositoryImpl(getContext()),
-                new cExpenseRepositoryImpl(getContext()),
-                logFrameID);
-
-        activity = ((AppCompatActivity) getActivity());
-    }
-
-    private void inputView(View view) {
-        inputProgressBar = view.findViewById(R.id.inputProgressBar);
-        //expandablePlaceHolderView = view.findViewById(R.id.inputPlaceholderView);
-
+    private void initViewPager(View view) {
         /* setup the pager views */
-        final ViewPager inputViewPager = view.findViewById(R.id.inputViewPager);
-        setupViewPager(inputViewPager);
-        /* tab layout view */
+        inputViewPager = view.findViewById(R.id.inputViewPager);
+
+        inputViewPagerAdapter = new cInputViewPagerAdapter(getChildFragmentManager(),
+                FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+
+        inputViewPagerAdapter.addFrag(cHumanFragment.newInstance(humanModels),"human");
+        inputViewPagerAdapter.addFrag(cMaterialFragment.newInstance(materialModels),"material");
+        inputViewPagerAdapter.addFrag(cIncomeFragment.newInstance(incomeModels),"income");
+        inputViewPagerAdapter.addFrag(cExpenseFragment.newInstance(expenseModels),"expense");
+
+        // use a number higher than half your fragments.
+        inputViewPager.setOffscreenPageLimit(3);
+        inputViewPager.setAdapter(inputViewPagerAdapter);
+
+        /* setup the tab layout and add tabs to the view pager */
         TabLayout inputTabLayout = view.findViewById(R.id.inputTabLayout);
         inputTabLayout.setupWithViewPager(inputViewPager);
 
@@ -265,25 +284,13 @@ public class cInputFragment extends Fragment implements iViewInputListener, iInp
         });
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        inputViewPagerAdapter = new cInputViewPagerAdapter(getFragmentManager(),
-               FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-
-        inputViewPagerAdapter.addFrag(cHumanFragment.newInstance(humanTreeModels),"human");
-        inputViewPagerAdapter.addFrag(cMaterialFragment.newInstance(materialTreeModels),"material");
-        inputViewPagerAdapter.addFrag(cIncomeFragment.newInstance(incomeTreeModels),"income");
-        inputViewPagerAdapter.addFrag(cExpenseFragment.newInstance(expenseTreeModels),"expense");
-
-        // use a number higher than half your fragments.
-        viewPager.setOffscreenPageLimit(3);
-        viewPager.setAdapter(inputViewPagerAdapter);
+    private void initProgressBarView(View view) {
+        inputProgressBar = view.findViewById(R.id.inputProgressBar);
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         Menu toolBarMenu = setToolBar();
-
-        //MenuItem toolBarMenuItem = toolBarMenu.findItem(R.id.homeItem);
 
         toolbar.setOnMenuItemClickListener(
                 new Toolbar.OnMenuItemClickListener() {
@@ -293,12 +300,12 @@ public class cInputFragment extends Fragment implements iViewInputListener, iInp
                     }
                 });
 
-        SearchManager searchManager = (SearchManager) Objects.requireNonNull(getActivity()).
+        SearchManager searchManager = (SearchManager) requireActivity().
                 getSystemService(Context.SEARCH_SERVICE);
 
         SearchView searchView = (SearchView) toolBarMenu.findItem(R.id.searchItem).getActionView();
         searchView.setSearchableInfo(Objects.requireNonNull(searchManager).
-                getSearchableInfo(getActivity().getComponentName()));
+                getSearchableInfo(requireActivity().getComponentName()));
         searchView.setMaxWidth(Integer.MAX_VALUE);
 
         search(searchView);
@@ -306,12 +313,8 @@ public class cInputFragment extends Fragment implements iViewInputListener, iInp
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.homeItem:
-                showFragment(cLogFrameFragment.class.getSimpleName());
-                break;
-            default:
-                break;
+        if (item.getItemId() == R.id.helpItem) {
+            Log.d(TAG, "Stub for displaying menu for input resources manual");
         }
         return super.onOptionsItemSelected(item);
     }
@@ -325,7 +328,10 @@ public class cInputFragment extends Fragment implements iViewInputListener, iInp
 
             @Override
             public boolean onQueryTextChange(String query) {
-                //userAdapter.getFilter().filter(query);
+                humanFrag.getHumanAdapter().getFilter().filter(query);
+                materialFrag.getMaterialAdapter().getFilter().filter(query);
+                incomeFrag.getIncomeAdapter().getFilter().filter(query);
+                expenseFrag.getExpenseAdapter().getFilter().filter(query);
                 return false;
             }
         });
@@ -333,46 +339,7 @@ public class cInputFragment extends Fragment implements iViewInputListener, iInp
 
     private Menu setToolBar() {
         toolbar.inflateMenu(R.menu.me_toolbar_menu);
-        Menu toolBarMenu = toolbar.getMenu();
-
-        MenuItem homeIcon = toolBarMenu.findItem(R.id.homeItem);
-        TextDrawable faIcon = new TextDrawable(Objects.requireNonNull(getContext()));
-        faIcon.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
-        faIcon.setTextAlign(Layout.Alignment.ALIGN_CENTER);
-        faIcon.setTypeface(cFontManager.getTypeface(getContext(), cFontManager.FONTAWESOME));
-        faIcon.setText(getContext().getResources().getText(R.string.fa_home));
-        faIcon.setTextColor(Color.WHITE);
-
-        homeIcon.setIcon(faIcon);
-        return toolBarMenu;
-    }
-
-    private void showFragment(String selectedFrag) {
-        if (Objects.requireNonNull(getFragmentManager()).findFragmentByTag(selectedFrag) != null) {
-            /* if the fragment exists, show it. */
-            getFragmentManager().beginTransaction().show(
-                    Objects.requireNonNull(getFragmentManager().findFragmentByTag(selectedFrag))).
-                    commit();
-        } else {
-            /* if the fragment does not exist, add it to fragment manager. */
-            getFragmentManager().beginTransaction().add(
-                    R.id.fragment_frame, new cLogFrameFragment(), selectedFrag).commit();
-        }
-        if (getFragmentManager().findFragmentByTag(TAG) != null) {
-            /* if the other fragment is visible, hide it. */
-            getFragmentManager().beginTransaction().hide(
-                    Objects.requireNonNull(getFragmentManager().findFragmentByTag(TAG))).commit();
-        }
-    }
-
-    protected void pushFragment(Fragment fragment) {
-        if (fragment == null)
-            return;
-
-        assert getFragmentManager() != null;
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_frame, fragment);
-        ft.commit();
+        return toolbar.getMenu();
     }
 
     @Override
@@ -416,21 +383,42 @@ public class cInputFragment extends Fragment implements iViewInputListener, iInp
     }
 
     @Override
-    public void onInputModelsRetrieved(Map<Integer, ArrayList<cTreeModel>> inputModelSet) {
+    public void onInputModelsRetrieved(ArrayList<cHumanModel> humanModels,
+                                       ArrayList<cMaterialModel> materialModels,
+                                       ArrayList<cIncomeModel> incomeModels,
+                                       ArrayList<cExpenseModel> expenseModels) {
 
-        for (Map.Entry<Integer, ArrayList<cTreeModel>> entry : inputModelSet.entrySet()) {
-            /* human resources */
+        this.humanModels = humanModels;
+        this.materialModels = materialModels;
+        this.incomeModels = incomeModels;
+        this.expenseModels = expenseModels;
+
+        humanFrag = (cHumanFragment) inputViewPagerAdapter.getItem(0);
+        materialFrag = (cMaterialFragment) inputViewPagerAdapter.getItem(1);
+        incomeFrag = (cIncomeFragment) inputViewPagerAdapter.getItem(2);
+        expenseFrag = (cExpenseFragment) inputViewPagerAdapter.getItem(3);
+
+        humanFrag.getHumanAdapter().setHumanModels(this.humanModels);
+        humanFrag.getHumanAdapter().notifyDataSetChanged();
+
+        materialFrag.getMaterialAdapter().setMaterialModels(this.materialModels);
+        materialFrag.getMaterialAdapter().notifyDataSetChanged();
+
+        incomeFrag.getIncomeAdapter().setIncomeModels(this.incomeModels);
+        incomeFrag.getIncomeAdapter().notifyDataSetChanged();
+
+        expenseFrag.getExpenseAdapter().setExpenseModels(this.expenseModels);
+        expenseFrag.getExpenseAdapter().notifyDataSetChanged();
+
+        //for (Map.Entry<Integer, ArrayList<Object>> entry : inputModelSet.entrySet()) {
+            /* human resources
             if (entry.getKey() == HUMAN){
                 cHumanFragment humanFrag;
-                humanTreeModels = entry.getValue();
+                humanModels = (cHumanModel)entry.getValue();
                 humanFrag = (cHumanFragment) inputViewPagerAdapter.getItem(0);
-                try {
-                    humanFrag.getHumanAdapter().notifyTreeModelChanged(humanTreeModels);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-            /* material & equipment resources */
+                humanFrag.getHumanAdapter().notifyDataSetChanged();
+            }*/
+            /* material & equipment resources
             if (entry.getKey() == MATERIAL){
                 cMaterialFragment materialFrag;
                 materialTreeModels = entry.getValue();
@@ -440,8 +428,9 @@ public class cInputFragment extends Fragment implements iViewInputListener, iInp
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
-            }
-            /* income resources */
+            }*/
+
+            /* income resources
             if (entry.getKey() == INCOME){
                 cIncomeFragment incomeFrag;
                 incomeTreeModels = entry.getValue();
@@ -451,8 +440,9 @@ public class cInputFragment extends Fragment implements iViewInputListener, iInp
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
-            }
-            /* budgeted expenses */
+            }*/
+
+            /* budgeted expenses
             if (entry.getKey() == EXPENSE){
                 cExpenseFragment expenseFrag;
                 expenseTreeModels = entry.getValue();
@@ -462,8 +452,8 @@ public class cInputFragment extends Fragment implements iViewInputListener, iInp
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
-            }
-        }
+            }*/
+        //}
     }
 
     @Override

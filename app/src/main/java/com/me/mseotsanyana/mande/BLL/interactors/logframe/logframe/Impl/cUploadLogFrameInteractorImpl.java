@@ -61,6 +61,7 @@ public class cUploadLogFrameInteractorImpl extends cAbstractInteractor
         uploadLMRepository.deleteArrayQuestions();
         uploadLMRepository.deleteMatrixQuestions();
 
+        uploadLMRepository.deleteRaidCategories();
         uploadLMRepository.deleteRaids();
 
         uploadLMRepository.deleteImpactQuestions();
@@ -77,7 +78,7 @@ public class cUploadLogFrameInteractorImpl extends cAbstractInteractor
         uploadLMRepository.deleteOutputRaids();
         uploadLMRepository.deleteOutputs();
 
-        uploadLMRepository.deleteWorkplans();
+        uploadLMRepository.deleteWorkPlans();
 
         uploadLMRepository.deletePrecedingActivities();
         uploadLMRepository.deleteActivityAssignments();
@@ -103,6 +104,11 @@ public class cUploadLogFrameInteractorImpl extends cAbstractInteractor
         uploadLMRepository.deleteLogFrame();
 
         /* upload all logframe module records */
+        if (uploadLMRepository.addLogFrameFromExcel()) {
+            postMessage("LogFrame Entity Added Successfully!");
+        } else {
+            notifyError("Failed to Add LogFrame Entity");
+        }
 
         if (uploadLMRepository.addEvaluationCriteriaFromExcel()) {
             postMessage("Criteria Entity Added Successfully!");
@@ -128,10 +134,10 @@ public class cUploadLogFrameInteractorImpl extends cAbstractInteractor
             notifyError("Failed to Add Question Entity");
         }
 
-        if (uploadLMRepository.addLogFrameFromExcel()) {
-            postMessage("LogFrame Entity Added Successfully!");
+        if (uploadLMRepository.addRaidCategoryFromExcel()) {
+            postMessage("Raid Category Entity Added Successfully!");
         } else {
-            notifyError("Failed to Add LogFrame Entity");
+            notifyError("Failed to Add Raid Category Entity");
         }
 
         if (uploadLMRepository.addRaidFromExcel()) {

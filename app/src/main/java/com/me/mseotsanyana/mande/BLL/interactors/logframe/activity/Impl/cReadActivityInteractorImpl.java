@@ -79,7 +79,7 @@ public class cReadActivityInteractorImpl extends cAbstractInteractor
 
     private ArrayList<cTreeModel> getActivityTree(Set<cActivityModel> activityModelSet) {
         ArrayList<cTreeModel> activityTreeModels = new ArrayList<>();
-        int parentIndex = 0, childIndex = 0;
+        int parentIndex = 0, childIndex;
 
         ArrayList<cActivityModel> activityModels = new ArrayList<>(activityModelSet);
         if (activityModelSet.size() > 0) {
@@ -91,42 +91,45 @@ public class cReadActivityInteractorImpl extends cAbstractInteractor
             cActivityModel activityModel = activityModels.get(i);
             activityTreeModels.add(new cTreeModel(parentIndex, -1, 0, activityModel));
 
-            /* set of output children under the sub-logframe of the activity logframe */
-            ArrayList<cOutputModel> outputs = new ArrayList<>(activityModel.getChildOutputModelSet());
-            if (outputs.size() > 0) {
-                childIndex = parentIndex + 1;
-                activityTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, outputs));
-            }
-
             /* set of activities children under the activity */
+            childIndex = parentIndex;
             ArrayList<cActivityModel> activities = new ArrayList<>(activityModel.getChildActivityModelSet());
-            if (outputs.size() > 0) {
-                childIndex = parentIndex + 2;
+            for (int j = 0; j < activities.size(); j++) {
+                childIndex = childIndex + 1;
                 activityTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, activities));
             }
 
-            /* set of inputs under the activity */
-            ArrayList<cActivityModel> inputs = new ArrayList<>(activityModel.getChildActivityModelSet());
-            if (activities.size() > 0) {
-                childIndex = parentIndex + 3;
-                activityTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, inputs));
-            }
-
-            /* set of questions under the activity */
-            ArrayList<cQuestionModel> questions = new ArrayList<>(activityModel.getQuestionModelSet());
-            if (questions.size() > 0) {
-                childIndex = parentIndex + 4;
-                activityTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, questions));
-            }
-
-            /* set of raids under the activity */
-            ArrayList<cRaidModel> raids = new ArrayList<>(activityModel.getRaidModelSet());
-            if (raids.size() > 0) {
-                childIndex = parentIndex + 5;
-                activityTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, raids));
-            }
             /* next parent index */
             parentIndex = childIndex + 1;
+
+//            /* set of output children under the sub-logframe of the activity logframe */
+//            ArrayList<cOutputModel> outputs = new ArrayList<>(activityModel.getChildOutputModelSet());
+//            if (outputs.size() > 0) {
+//                childIndex = parentIndex + 1;
+//                activityTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, outputs));
+//            }
+//
+//            /* set of inputs under the activity */
+//            ArrayList<cActivityModel> inputs = new ArrayList<>(activityModel.getChildActivityModelSet());
+//            if (activities.size() > 0) {
+//                childIndex = parentIndex + 3;
+//                activityTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, inputs));
+//            }
+//
+//            /* set of questions under the activity */
+//            ArrayList<cQuestionModel> questions = new ArrayList<>(activityModel.getQuestionModelSet());
+//            if (questions.size() > 0) {
+//                childIndex = parentIndex + 4;
+//                activityTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, questions));
+//            }
+//
+//            /* set of raids under the activity */
+//            ArrayList<cRaidModel> raids = new ArrayList<>(activityModel.getRaidModelSet());
+//            if (raids.size() > 0) {
+//                childIndex = parentIndex + 5;
+//                activityTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, raids));
+//            }
+
         }
         return activityTreeModels;
     }

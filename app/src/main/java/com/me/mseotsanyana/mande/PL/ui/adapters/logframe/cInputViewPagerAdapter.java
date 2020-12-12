@@ -1,5 +1,7 @@
 package com.me.mseotsanyana.mande.PL.ui.adapters.logframe;
 
+import androidx.annotation.NonNull;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -7,7 +9,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class cInputViewPagerAdapter  extends FragmentPagerAdapter {
+public class cInputViewPagerAdapter extends FragmentPagerAdapter {
     private final List<Fragment>  fragmentList = new ArrayList<>();
     private final List<String> titleList= new ArrayList<>();
 
@@ -15,6 +17,7 @@ public class cInputViewPagerAdapter  extends FragmentPagerAdapter {
         super(manager, behavior);
     }
 
+    @NonNull
     @Override
     public Fragment getItem(int position) {
         return fragmentList.get(position);

@@ -1,42 +1,29 @@
 package com.me.mseotsanyana.mande.PL.ui.adapters.logframe;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.me.mseotsanyana.bmblibrary.BoomButtons.OnBMClickListener;
-import com.me.mseotsanyana.bmblibrary.BoomButtons.cTextOutsideCircleButton;
-import com.me.mseotsanyana.bmblibrary.cBoomMenuButton;
-import com.me.mseotsanyana.bmblibrary.cUtil;
-import com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cActivityModel;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cOutcomeModel;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cOutputModel;
-import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel;
-import com.me.mseotsanyana.mande.BLL.model.logframe.cRaidModel;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iActivityPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iOutputPresenter;
 import com.me.mseotsanyana.mande.PL.ui.listeners.logframe.iViewActivityListener;
 import com.me.mseotsanyana.mande.PL.ui.listeners.logframe.iViewOutcomeListener;
 import com.me.mseotsanyana.mande.PL.ui.listeners.logframe.iViewOutputListener;
-import com.me.mseotsanyana.mande.PL.ui.views.cLogFrameHeaderView;
-import com.me.mseotsanyana.mande.PL.ui.views.cOutcomeBodyView;
-import com.me.mseotsanyana.mande.PL.ui.views.cOutputBodyView;
-import com.me.mseotsanyana.mande.PL.ui.views.cQuestionBodyView;
-import com.me.mseotsanyana.mande.PL.ui.views.cRaidBodyView;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
 import com.me.mseotsanyana.mande.UTIL.cFontManager;
-import com.me.mseotsanyana.placeholderviewlibrary.cExpandablePlaceHolderView;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 import com.me.mseotsanyana.treeadapterlibrary.cNode;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeAdapter;
@@ -51,31 +38,17 @@ import java.util.List;
  */
 
 public class cOutputAdapter extends cTreeAdapter implements iViewOutcomeListener,
-        iViewOutputListener, iViewActivityListener {
+        iViewOutputListener, iViewActivityListener, Filterable {
     private static String TAG = cOutputAdapter.class.getSimpleName();
     private static SimpleDateFormat sdf = cConstant.SHORT_FORMAT_DATE;
 
     private static final int PARENT = 0;
     private static final int CHILD = 1;
 
-    private final String[] bmb_caption = {
-            "Sub-LogFrame Outcomes",
-            "Child Outputs",
-            "Activities",
-            "Questions",
-            "Assumptions/Risks"
-    };
-
-    private int[] bmb_imageid = {
-            R.drawable.dashboard_outcome,
-            R.drawable.dashboard_output,
-            R.drawable.dashboard_activity,
-            R.drawable.dashboard_question,
-            R.drawable.dashboard_risk
-    };
-
     private final iOutputPresenter.View outputPresenterView;
     private final iActivityPresenter.View activityPresenterView;
+
+    private List<cTreeModel> filteredTreeModels;
 
     public cOutputAdapter(Context context, iOutputPresenter.View outputPresenterView,
                           iActivityPresenter.View activityPresenterView,
@@ -84,24 +57,22 @@ public class cOutputAdapter extends cTreeAdapter implements iViewOutcomeListener
 
         this.outputPresenterView = outputPresenterView;
         this.activityPresenterView = activityPresenterView;
+
+        this.filteredTreeModels = outputTree;
     }
-/*
-    public cOutputDomain getItem(int position) {
-        return (cOutputDomain)treeModels.get(position).getModelObject();
-    }
-*/
+
     public RecyclerView.ViewHolder OnCreateTreeViewHolder(ViewGroup parent, int viewType){
         RecyclerView.ViewHolder viewHolder;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view;
         switch (viewType) {
             case PARENT:
-                view = inflater.inflate(R.layout.output_parent_cardview, parent,
+                view = inflater.inflate(R.layout.component_parent_cardview, parent,
                         false);
                 viewHolder = new cOutputAdapter.cOutputParentViewHolder(view);
                 break;
             case CHILD:
-                view = inflater.inflate(R.layout.output_child_placeholderview, parent,
+                view = inflater.inflate(R.layout.component_child_cardview, parent,
                         false);
                 viewHolder = new cOutputAdapter.cOutputChildViewHolder(view);
                 break;
@@ -120,50 +91,31 @@ public class cOutputAdapter extends cTreeAdapter implements iViewOutcomeListener
         if (obj != null){
             switch (obj.getType()) {
                 case PARENT:
-                    cOutputModel outputParent = (cOutputModel) obj.getModelObject();
+                    cOutputModel parentOutput = (cOutputModel) obj.getModelObject();
                     cOutputAdapter.cOutputParentViewHolder OPH =
                             ((cOutputAdapter.cOutputParentViewHolder) viewHolder);
 
-                    OPH.setPaddingLeft(20 * node.getLevel());
-
-                    final int parentBackgroundColor = (position % 2 == 0) ? R.color.list_even :
-                            R.color.list_odd;
+                    //final int parentBackgroundColor = (position % 2 == 0) ? R.color.list_even :
+                    //        R.color.list_odd;
                     OPH.cardView.setCardBackgroundColor(ContextCompat.getColor(context,
-                            parentBackgroundColor));
+                            R.color.parent_body_colour));
 
-                    OPH.textViewNameCaption.setText("output:");
-                    OPH.textViewName.setText(outputParent.getName());
-                    OPH.textViewDescription.setText(outputParent.getDescription());
-                    OPH.textViewStartDate.setText(sdf.format(outputParent.getStartDate()));
-                    OPH.textViewEndDate.setText(sdf.format(outputParent.getEndDate()));
+                    OPH.textViewParentCaption.setText(
+                            context.getResources().getString(R.string.outcome_caption));
+                    OPH.textViewNameCaption.setText(
+                            context.getResources().getString(R.string.output_caption));
+                    OPH.textViewDescriptionCaption.setText(
+                            context.getResources().getString(R.string.description_caption));
+                    OPH.textViewStartDateCaption.setText(
+                            context.getResources().getString(R.string.startdate_caption));
+                    OPH.textViewEndDateCaption.setText(
+                            context.getResources().getString(R.string.enddate_caption));
 
-                    OPH.bmbMenu.clearBuilders();
-                    for (int i = 0; i < OPH.bmbMenu.getPiecePlaceEnum().pieceNumber(); i++) {
-                        cTextOutsideCircleButton.Builder builder = new cTextOutsideCircleButton
-                                .Builder()
-                                .isRound(false)
-                                .shadowCornerRadius(cUtil.dp2px(20))
-                                .buttonCornerRadius(cUtil.dp2px(20))
-                                .normalColor(Color.LTGRAY)
-                                .pieceColor(context.getColor(R.color.colorPrimaryDark))
-                                .normalImageRes(bmb_imageid[i])
-                                .normalText(bmb_caption[i])
-                                .listener(new OnBMClickListener() {
-                                    @Override
-                                    public void onBoomButtonClick(int index) {
-                                        /* when the boom-button is clicked. */
-                                        //IPH.logFrameListener.onClickBoomMenu(index);
-                                    }
-                                });
-                        OPH.bmbMenu.addBuilder(builder);
-                    }
-
-                    OPH.bmbMenu.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            OPH.bmbMenu.boom();
-                        }
-                    });
+                    OPH.textViewParent.setText(parentOutput.getOutcomeModel().getName());
+                    OPH.textViewName.setText(parentOutput.getName());
+                    OPH.textViewDescription.setText(parentOutput.getDescription());
+                    OPH.textViewStartDate.setText(sdf.format(parentOutput.getStartDate()));
+                    OPH.textViewEndDate.setText(sdf.format(parentOutput.getEndDate()));
 
                     /* the collapse and expansion of the parent logframe */
                     if (node.isLeaf()) {
@@ -198,17 +150,11 @@ public class cOutputAdapter extends cTreeAdapter implements iViewOutcomeListener
                     OPH.textViewDetailIcon.setTypeface(cFontManager.getTypeface(context,
                             cFontManager.FONTAWESOME));
                     OPH.textViewDetailIcon.setTextColor(context.getColor(R.color.colorPrimaryDark));
-                    OPH.textViewDetailIcon.setText(context.getResources().getString(R.string.fa_angle_down));
+                    OPH.textViewDetailIcon.setText(context.getResources().getString(R.string.fa_details));
                     OPH.textViewDetailIcon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            if (!(OPH.expandableLayout.isExpanded())) {
-                                OPH.textViewDetailIcon.setText(context.getResources().getString(R.string.fa_angle_up));
-                            } else {
-                                OPH.textViewDetailIcon.setText(context.getResources().getString(R.string.fa_angle_down));
-                            }
 
-                            OPH.expandableLayout.toggle();
                         }
                     });
 
@@ -267,94 +213,111 @@ public class cOutputAdapter extends cTreeAdapter implements iViewOutcomeListener
                             //       parentLogFrameModel.getLogFrameID(), new cLogFrameModel());
                         }
                     });
+
+                    OPH.setPaddingLeft(20 * node.getLevel());
+
                     break;
 
                 case CHILD:
-                    ArrayList<Object> objects = (ArrayList<Object>) obj.getModelObject();
-                    cOutputAdapter.cOutputChildViewHolder COH = ((cOutputAdapter.cOutputChildViewHolder) viewHolder);
-                    COH.setPaddingLeft(20 * node.getLevel());
+                    cOutputModel childOutput = (cOutputModel) obj.getModelObject();
+                    cOutputAdapter.cOutputChildViewHolder OCH =
+                            ((cOutputAdapter.cOutputChildViewHolder) viewHolder);
 
-                    COH.outputPlaceholderView.removeAllViews();
+                    //final int childBackgroundColor = (position % 2 == 0) ? R.color.list_even :
+                    //        R.color.list_odd;
+                    OCH.cardView.setCardBackgroundColor(ContextCompat.getColor(context,
+                            R.color.child_body_colour));
 
-                    for (int i = 0; i < objects.size(); i++) {
+                    OCH.textViewParentCaption.setText(
+                            context.getResources().getString(R.string.outcome_caption));
+                    OCH.textViewNameCaption.setText(
+                            context.getResources().getString(R.string.output_caption));
+                    OCH.textViewDescriptionCaption.setText(
+                            context.getResources().getString(R.string.description_caption));
+                    OCH.textViewStartDateCaption.setText(
+                            context.getResources().getString(R.string.startdate_caption));
+                    OCH.textViewEndDateCaption.setText(
+                            context.getResources().getString(R.string.enddate_caption));
 
-                        /* list of child logframe impacts */
-                        if (objects.get(i) instanceof cOutcomeModel) {
-                            if (i == 0) {
-                                COH.outputPlaceholderView.addView(new cLogFrameHeaderView(
-                                        context, "List of Impacts"));
-                                COH.outputPlaceholderView.addView(new cOutcomeBodyView(
-                                        context, this, (cOutcomeModel) objects.get(i)));
-                                Log.d(TAG, "1. CHILD IMPACT: " + objects.get(i));
-                            } else {
-                                COH.outputPlaceholderView.addView(new cOutcomeBodyView(
-                                        context, this, (cOutcomeModel) objects.get(i)));
-                                Log.d(TAG, "2. CHILD IMPACT: " + objects.get(i));
-                            }
+                    OCH.textViewParent.setText(childOutput.getOutcomeModel().getName());
+                    OCH.textViewName.setText(childOutput.getName());
+                    OCH.textViewDescription.setText(childOutput.getDescription());
+                    OCH.textViewStartDate.setText(sdf.format(childOutput.getStartDate()));
+                    OCH.textViewEndDate.setText(sdf.format(childOutput.getEndDate()));
+
+                    /* collapse and expansion of the details */
+                    OCH.textViewDetailIcon.setTypeface(null, Typeface.NORMAL);
+                    OCH.textViewDetailIcon.setTypeface(cFontManager.getTypeface(context,
+                            cFontManager.FONTAWESOME));
+                    OCH.textViewDetailIcon.setTextColor(context.getColor(R.color.colorAccent));
+                    OCH.textViewDetailIcon.setText(context.getResources().getString(R.string.fa_details));
+                    OCH.textViewDetailIcon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            /*cOutcomeModel[] outcomeModels =
+                                    new cOutcomeModel[childImpact.getOutcomeModelSet().size()];
+                            childImpact.getOutcomeModelSet().toArray(outcomeModels);
+                            cQuestionModel[] questionModels =
+                                    new cQuestionModel[childImpact.getQuestionModelSet().size()];
+                            childImpact.getQuestionModelSet().toArray(questionModels);
+
+                            ICH.impactListener.onClickDetailImpact(outcomeModels, questionModels);*/
+
+                            /* set of outcomes under the impact
+                            ArrayList<cOutcomeModel> outcomes = new ArrayList<>(childImpact.getOutcomeModelSet());*/
+
+                            /* set of questions under the impact
+                            ArrayList<cQuestionModel> questions = new ArrayList<>(childImpact.getQuestionModelSet());*/
+
+                            /* set of raids under the impact
+                            ArrayList<cRaidModel> raids = new ArrayList<>(childImpact.getRaidModelSet());*/
                         }
+                    });
 
-                        /* list of child outcomes under this outcome */
-                        if (objects.get(i) instanceof cOutcomeModel) {
-                            if (i == 0) {
-                                COH.outputPlaceholderView.addView(new cLogFrameHeaderView(
-                                        context, "List of Outputs"));
-                                COH.outputPlaceholderView.addView(new cOutcomeBodyView(
-                                        context, this, (cOutcomeModel) objects.get(i)));
-                                Log.d(TAG, "1. CHILD OUTCOME: " + objects.get(i));
-                            } else {
-                                COH.outputPlaceholderView.addView(new cOutcomeBodyView(
-                                        context, this, (cOutcomeModel) objects.get(i)));
-                                Log.d(TAG, "2. CHILD OUTCOME: " + objects.get(i));
-                            }
+                    /* icon for syncing a record */
+                    OCH.textViewSyncIcon.setTypeface(null, Typeface.NORMAL);
+                    OCH.textViewSyncIcon.setTypeface(
+                            cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
+                    OCH.textViewSyncIcon.setTextColor(context.getColor(R.color.colorAccent));
+                    OCH.textViewSyncIcon.setText(context.getResources().getString(R.string.fa_sync));
+                    OCH.textViewSyncIcon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            //IPH.logFrameListener.onClickSyncLogFrame(position,
+                            //       parentLogFrameModel);
                         }
+                    });
 
-                        /* list of outputs under this outcome */
-                        if (objects.get(i) instanceof cOutputModel) {
-                            if (i == 0) {
-                                COH.outputPlaceholderView.addView(new cLogFrameHeaderView(
-                                        context, "List of Outputs"));
-                                COH.outputPlaceholderView.addView(new cOutputBodyView(
-                                        context, this, (cOutputModel) objects.get(i)));
-                                Log.d(TAG, "1. OUTPUT: " + objects.get(i));
-                            } else {
-                                COH.outputPlaceholderView.addView(new cOutputBodyView(
-                                        context, this, (cOutputModel) objects.get(i)));
-                                Log.d(TAG, "2. OUTPUT: " + objects.get(i));
-                            }
+                    /* icon for deleting a record */
+                    OCH.textViewDeleteIcon.setTypeface(null, Typeface.NORMAL);
+                    OCH.textViewDeleteIcon.setTypeface(
+                            cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
+                    OCH.textViewDeleteIcon.setTextColor(context.getColor(R.color.colorAccent));
+                    OCH.textViewDeleteIcon.setText(context.getResources().getString(R.string.fa_delete));
+                    OCH.textViewDeleteIcon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            //IPH.logFrameListener.onClickDeleteLogFrame(position,
+                            //       parentLogFrameModel.getLogFrameID());
                         }
+                    });
 
-                        /* list of questions under this outcome */
-                        if (objects.get(i) instanceof cQuestionModel) {
-                            if (i == 0) {
-                                COH.outputPlaceholderView.addView(new cLogFrameHeaderView(
-                                        context, "List of Questions"));
-                                COH.outputPlaceholderView.addView(new cQuestionBodyView(
-                                        context, (cQuestionModel) objects.get(i)));
-
-                                Log.d(TAG, "1. QUESTION: " + objects.get(i));
-                            } else {
-                                COH.outputPlaceholderView.addView(new cQuestionBodyView(context,
-                                        (cQuestionModel) objects.get(i)));
-                                Log.d(TAG, "2. QUESTION: " + objects.get(i));
-                            }
+                    /* icon for saving updated record */
+                    OCH.textViewUpdateIcon.setTypeface(null, Typeface.NORMAL);
+                    OCH.textViewUpdateIcon.setTypeface(
+                            cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
+                    OCH.textViewUpdateIcon.setTextColor(context.getColor(R.color.colorAccent));
+                    OCH.textViewUpdateIcon.setText(context.getResources().getString(R.string.fa_update));
+                    OCH.textViewUpdateIcon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            //IPH.logFrameListener.onClickUpdateLogFrame(position,
+                            //        parentLogFrameModel);
                         }
+                    });
 
-                        /* list of RAIDs under this outcome */
-                        if (objects.get(i) instanceof cRaidModel) {
-                            if (i == 0) {
-                                COH.outputPlaceholderView.addView(new cLogFrameHeaderView(
-                                        context, "List of RAID"));
-                                COH.outputPlaceholderView.addView(new cRaidBodyView(
-                                        context, (cRaidModel) objects.get(i)));
+                    OCH.setPaddingLeft(20 * node.getLevel());
 
-                                Log.d(TAG, "1. RAID: " + objects.get(i));
-                            } else {
-                                COH.outputPlaceholderView.addView(new cRaidBodyView(context,
-                                        (cRaidModel) objects.get(i)));
-                                Log.d(TAG, "2. RAID: " + objects.get(i));
-                            }
-                        }
-                    }
                     break;
             }
         }
@@ -420,36 +383,87 @@ public class cOutputAdapter extends cTreeAdapter implements iViewOutcomeListener
 
     }
 
-    public static class cOutputParentViewHolder extends cTreeViewHolder {
-        private CardView cardView;
-        private cExpandableLayout expandableLayout;
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
 
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    filteredTreeModels = getTreeModel();
+                } else {
+
+                    ArrayList<cTreeModel> filteredList = new ArrayList<>();
+                    for (cTreeModel treeModel : getTreeModel()) {
+                        if (((cOutputModel)treeModel.getModelObject()).getName().toLowerCase().
+                                contains(charString.toLowerCase()) ||
+                                ((cOutputModel)treeModel.getModelObject()).getOutcomeModel().
+                                        getName().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(treeModel);
+                        }
+                    }
+
+                    filteredTreeModels = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.count = filteredTreeModels.size();
+                filterResults.values = filteredTreeModels;
+
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                //assert (ArrayList<cTreeModel>) filterResults.values != null;
+                filteredTreeModels = (ArrayList<cTreeModel>) filterResults.values;
+
+                try {
+                    notifyTreeModelChanged(filteredTreeModels);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+    }
+
+    public static class cOutputParentViewHolder extends cTreeViewHolder {
+        private View treeView;
+        private CardView cardView;
         private AppCompatTextView textViewExpandIcon;
+
+        private AppCompatTextView textViewParentCaption;
         private AppCompatTextView textViewNameCaption;
+        private AppCompatTextView textViewDescriptionCaption;
+        private AppCompatTextView textViewStartDateCaption;
+        private AppCompatTextView textViewEndDateCaption;
+
+        private AppCompatTextView textViewParent;
         private AppCompatTextView textViewName;
         private AppCompatTextView textViewDescription;
         private AppCompatTextView textViewStartDate;
         private AppCompatTextView textViewEndDate;
 
         private AppCompatTextView textViewDetailIcon;
-        private cBoomMenuButton bmbMenu;
         private AppCompatTextView textViewSyncIcon;
         private AppCompatTextView textViewDeleteIcon;
         private AppCompatTextView textViewUpdateIcon;
         private AppCompatTextView textViewCreateIcon;
 
-        private View treeView;
-
         private cOutputParentViewHolder(final View treeViewHolder) {
             super(treeViewHolder);
-            treeView = treeViewHolder;
+            this.treeView = treeViewHolder;
 
             this.cardView = treeViewHolder.findViewById(R.id.cardView);
-            this.expandableLayout = treeViewHolder.findViewById(R.id.expandableLayout);
             this.textViewExpandIcon = treeViewHolder.findViewById(R.id.textViewExpandIcon);
-            this.bmbMenu = treeViewHolder.findViewById(R.id.bmbMenu);
+
+            this.textViewParentCaption = treeViewHolder.findViewById(R.id.textViewParentCaption);
             this.textViewNameCaption = treeViewHolder.findViewById(R.id.textViewNameCaption);
-            //this.textViewOrganization = treeViewHolder.findViewById(R.id.textViewOrganization);
+            this.textViewDescriptionCaption = treeViewHolder.findViewById(R.id.textViewDescriptionCaption);
+            this.textViewStartDateCaption = treeViewHolder.findViewById(R.id.textViewStartDateCaption);
+            this.textViewEndDateCaption = treeViewHolder.findViewById(R.id.textViewEndDateCaption);
+            this.textViewParent = treeViewHolder.findViewById(R.id.textViewParent);
             this.textViewName = treeViewHolder.findViewById(R.id.textViewName);
             this.textViewDescription = treeViewHolder.findViewById(R.id.textViewDescription);
             this.textViewStartDate = treeViewHolder.findViewById(R.id.textViewStartDate);
@@ -467,14 +481,45 @@ public class cOutputAdapter extends cTreeAdapter implements iViewOutcomeListener
     }
 
     public static class cOutputChildViewHolder extends cTreeViewHolder {
-        cExpandablePlaceHolderView outputPlaceholderView;
-
         private View treeView;
+        private CardView cardView;
+
+        private AppCompatTextView textViewParentCaption;
+        private AppCompatTextView textViewNameCaption;
+        private AppCompatTextView textViewDescriptionCaption;
+        private AppCompatTextView textViewStartDateCaption;
+        private AppCompatTextView textViewEndDateCaption;
+
+        private AppCompatTextView textViewParent;
+        private AppCompatTextView textViewName;
+        private AppCompatTextView textViewDescription;
+        private AppCompatTextView textViewStartDate;
+        private AppCompatTextView textViewEndDate;
+
+        private AppCompatTextView textViewDetailIcon;
+        private AppCompatTextView textViewSyncIcon;
+        private AppCompatTextView textViewDeleteIcon;
+        private AppCompatTextView textViewUpdateIcon;
 
         private cOutputChildViewHolder(View treeViewHolder) {
             super(treeViewHolder);
-            treeView = treeViewHolder;
-            this.outputPlaceholderView = treeViewHolder.findViewById(R.id.outputPlaceholderView);
+            this.treeView = treeViewHolder;
+            this.cardView = treeViewHolder.findViewById(R.id.cardView);
+
+            this.textViewParentCaption = treeViewHolder.findViewById(R.id.textViewParentCaption);
+            this.textViewNameCaption = treeViewHolder.findViewById(R.id.textViewNameCaption);
+            this.textViewDescriptionCaption = treeViewHolder.findViewById(R.id.textViewDescriptionCaption);
+            this.textViewStartDateCaption = treeViewHolder.findViewById(R.id.textViewStartDateCaption);
+            this.textViewEndDateCaption = treeViewHolder.findViewById(R.id.textViewEndDateCaption);
+            this.textViewParent = treeViewHolder.findViewById(R.id.textViewParent);
+            this.textViewName = treeViewHolder.findViewById(R.id.textViewName);
+            this.textViewDescription = treeViewHolder.findViewById(R.id.textViewDescription);
+            this.textViewStartDate = treeViewHolder.findViewById(R.id.textViewStartDate);
+            this.textViewEndDate = treeViewHolder.findViewById(R.id.textViewEndDate);
+            this.textViewDetailIcon = treeViewHolder.findViewById(R.id.textViewDetailIcon);
+            this.textViewSyncIcon = treeViewHolder.findViewById(R.id.textViewSyncIcon);
+            this.textViewDeleteIcon = treeViewHolder.findViewById(R.id.textViewDeleteIcon);
+            this.textViewUpdateIcon = treeViewHolder.findViewById(R.id.textViewUpdateIcon);
         }
 
         public void setPaddingLeft(int paddingLeft) {
@@ -482,3 +527,90 @@ public class cOutputAdapter extends cTreeAdapter implements iViewOutcomeListener
         }
     }
 }
+
+
+//    ArrayList<Object> objects = (ArrayList<Object>) obj.getModelObject();
+//    cOutputAdapter.cOutputChildViewHolder COH = ((cOutputAdapter.cOutputChildViewHolder) viewHolder);
+//                    COH.setPaddingLeft(20 * node.getLevel());
+//
+//                            COH.outputPlaceholderView.removeAllViews();
+//
+//                            for (int i = 0; i < objects.size(); i++) {
+//
+//        /* list of child logframe impacts */
+//        if (objects.get(i) instanceof cOutcomeModel) {
+//        if (i == 0) {
+//        COH.outputPlaceholderView.addView(new cLogFrameHeaderView(
+//        context, "List of Impacts"));
+//        COH.outputPlaceholderView.addView(new cOutcomeBodyView(
+//        context, this, (cOutcomeModel) objects.get(i)));
+//        Log.d(TAG, "1. CHILD IMPACT: " + objects.get(i));
+//        } else {
+//        COH.outputPlaceholderView.addView(new cOutcomeBodyView(
+//        context, this, (cOutcomeModel) objects.get(i)));
+//        Log.d(TAG, "2. CHILD IMPACT: " + objects.get(i));
+//        }
+//        }
+//
+//        /* list of child outcomes under this outcome */
+//        if (objects.get(i) instanceof cOutcomeModel) {
+//        if (i == 0) {
+//        COH.outputPlaceholderView.addView(new cLogFrameHeaderView(
+//        context, "List of Outputs"));
+//        COH.outputPlaceholderView.addView(new cOutcomeBodyView(
+//        context, this, (cOutcomeModel) objects.get(i)));
+//        Log.d(TAG, "1. CHILD OUTCOME: " + objects.get(i));
+//        } else {
+//        COH.outputPlaceholderView.addView(new cOutcomeBodyView(
+//        context, this, (cOutcomeModel) objects.get(i)));
+//        Log.d(TAG, "2. CHILD OUTCOME: " + objects.get(i));
+//        }
+//        }
+//
+//        /* list of outputs under this outcome */
+//        if (objects.get(i) instanceof cOutputModel) {
+//        if (i == 0) {
+//        COH.outputPlaceholderView.addView(new cLogFrameHeaderView(
+//        context, "List of Outputs"));
+//        COH.outputPlaceholderView.addView(new cOutputBodyView(
+//        context, this, (cOutputModel) objects.get(i)));
+//        Log.d(TAG, "1. OUTPUT: " + objects.get(i));
+//        } else {
+//        COH.outputPlaceholderView.addView(new cOutputBodyView(
+//        context, this, (cOutputModel) objects.get(i)));
+//        Log.d(TAG, "2. OUTPUT: " + objects.get(i));
+//        }
+//        }
+//
+//        /* list of questions under this outcome */
+//        if (objects.get(i) instanceof cQuestionModel) {
+//        if (i == 0) {
+//        COH.outputPlaceholderView.addView(new cLogFrameHeaderView(
+//        context, "List of Questions"));
+//        COH.outputPlaceholderView.addView(new cQuestionBodyView(
+//        context, (cQuestionModel) objects.get(i)));
+//
+//        Log.d(TAG, "1. QUESTION: " + objects.get(i));
+//        } else {
+//        COH.outputPlaceholderView.addView(new cQuestionBodyView(context,
+//        (cQuestionModel) objects.get(i)));
+//        Log.d(TAG, "2. QUESTION: " + objects.get(i));
+//        }
+//        }
+//
+//        /* list of RAIDs under this outcome */
+//        if (objects.get(i) instanceof cRaidModel) {
+//        if (i == 0) {
+//        COH.outputPlaceholderView.addView(new cLogFrameHeaderView(
+//        context, "List of RAID"));
+//        COH.outputPlaceholderView.addView(new cRaidBodyView(
+//        context, (cRaidModel) objects.get(i)));
+//
+//        Log.d(TAG, "1. RAID: " + objects.get(i));
+//        } else {
+//        COH.outputPlaceholderView.addView(new cRaidBodyView(context,
+//        (cRaidModel) objects.get(i)));
+//        Log.d(TAG, "2. RAID: " + objects.get(i));
+//        }
+//        }
+//        }

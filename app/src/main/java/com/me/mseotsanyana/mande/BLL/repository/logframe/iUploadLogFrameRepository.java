@@ -11,6 +11,7 @@ public interface iUploadLogFrameRepository {
     boolean deleteArrayQuestions();
     boolean deleteMatrixQuestions();
 
+    boolean deleteRaidCategories();
     boolean deleteRaids();
 
     boolean deleteImpactQuestions();
@@ -27,7 +28,7 @@ public interface iUploadLogFrameRepository {
     boolean deleteOutputRaids();
     boolean deleteOutputs();
 
-    boolean deleteWorkplans();
+    boolean deleteWorkPlans();
 
     boolean deletePrecedingActivities();
     boolean deleteActivityAssignments();
@@ -53,11 +54,12 @@ public interface iUploadLogFrameRepository {
     boolean deleteLogFrame();
 
     /* add (create) functions */
+    boolean addLogFrameFromExcel();
     boolean addEvaluationCriteriaFromExcel();
     boolean addQuestionGroupingFromExcel();
     boolean addQuestionTypeFromExcel();
     boolean addQuestionFromExcel();
-    boolean addLogFrameFromExcel();
+    boolean addRaidCategoryFromExcel();
     boolean addRaidFromExcel();
     boolean addImpactFromExcel();
     boolean addOutcomeFromExcel();

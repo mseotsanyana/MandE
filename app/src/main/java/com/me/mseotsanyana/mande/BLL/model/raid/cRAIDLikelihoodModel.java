@@ -7,10 +7,10 @@ import java.util.Date;
  */
 
 public class cRAIDLikelihoodModel {
-    private int raidLikelihoodID;
-    private int serverID;
-    private int ownerID;
-    private int orgID;
+    private long raidLikelihoodID;
+    private long serverID;
+    private long ownerID;
+    private long orgID;
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
@@ -21,35 +21,35 @@ public class cRAIDLikelihoodModel {
     private Date modifiedDate;
     private Date syncedDate;
 
-    public int getRaidLikelihoodID() {
+    public long getRaidLikelihoodID() {
         return raidLikelihoodID;
     }
 
-    public void setRaidLikelihoodID(int raidLikelihoodID) {
+    public void setRaidLikelihoodID(long raidLikelihoodID) {
         this.raidLikelihoodID = raidLikelihoodID;
     }
 
-    public int getServerID() {
+    public long getServerID() {
         return serverID;
     }
 
-    public void setServerID(int serverID) {
+    public void setServerID(long serverID) {
         this.serverID = serverID;
     }
 
-    public int getOwnerID() {
+    public long getOwnerID() {
         return ownerID;
     }
 
-    public void setOwnerID(int ownerID) {
+    public void setOwnerID(long ownerID) {
         this.ownerID = ownerID;
     }
 
-    public int getOrgID() {
+    public long getOrgID() {
         return orgID;
     }
 
-    public void setOrgID(int orgID) {
+    public void setOrgID(long orgID) {
         this.orgID = orgID;
     }
 

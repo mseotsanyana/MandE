@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel;
-import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cQuestionAuxiliaryAdapter;
+import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cQuestionAux1Adapter;
 import com.me.mseotsanyana.mande.PL.ui.fragments.awpb.cHumanFragment;
 import com.me.mseotsanyana.mande.R;
 
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class cQuestionAuxiliaryFragment extends Fragment {
     private static String TAG = cHumanFragment.class.getSimpleName();
 
-    private cQuestionAuxiliaryAdapter questionAuxiliaryAdapter;
+    private cQuestionAux1Adapter questionAuxiliaryAdapter;
 
     public cQuestionAuxiliaryFragment() {
     }
@@ -68,7 +68,7 @@ public class cQuestionAuxiliaryFragment extends Fragment {
  */
     }
 
-    public cQuestionAuxiliaryAdapter getHumanAdapter() {
+    public cQuestionAux1Adapter getHumanAdapter() {
         return questionAuxiliaryAdapter;
     }
 }

@@ -1,41 +1,25 @@
 package com.me.mseotsanyana.mande.PL.ui.adapters.awpb;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.Filter;
+import android.widget.Filterable;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.me.mseotsanyana.bmblibrary.BoomButtons.OnBMClickListener;
-import com.me.mseotsanyana.bmblibrary.BoomButtons.cTextOutsideCircleButton;
-import com.me.mseotsanyana.bmblibrary.cBoomMenuButton;
-import com.me.mseotsanyana.bmblibrary.cUtil;
-import com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout;
-import com.me.mseotsanyana.mande.BLL.model.logframe.cActivityModel;
-import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel;
-import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
 import com.me.mseotsanyana.mande.BLL.model.wpb.cExpenseModel;
+import com.me.mseotsanyana.mande.BLL.model.wpb.cIncomeModel;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iInputPresenter;
-import com.me.mseotsanyana.mande.PL.ui.views.cActivityBodyView;
-import com.me.mseotsanyana.mande.PL.ui.views.cLogFrameHeaderView;
-import com.me.mseotsanyana.mande.PL.ui.views.cQuestionBodyView;
-import com.me.mseotsanyana.mande.PL.ui.views.cUserBodyView;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
 import com.me.mseotsanyana.mande.UTIL.cFontManager;
-import com.me.mseotsanyana.placeholderviewlibrary.cExpandablePlaceHolderView;
-import com.me.mseotsanyana.treeadapterlibrary.cNode;
-import com.me.mseotsanyana.treeadapterlibrary.cTreeAdapter;
-import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
-import com.me.mseotsanyana.treeadapterlibrary.cTreeViewHolder;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,309 +29,157 @@ import java.util.List;
  * Created by mseotsanyana on 2017/02/27.
  */
 
-public class cExpenseAdapter extends cTreeAdapter {
+public class cExpenseAdapter extends RecyclerView.Adapter<cExpenseAdapter.cExpenseParentViewHolder>
+        implements Filterable {
     private static String TAG = cExpenseAdapter.class.getSimpleName();
     private static SimpleDateFormat sdf = cConstant.SHORT_FORMAT_DATE;
-
-    private static final int PARENT = 0;
-    private static final int CHILD  = 1;
-
-    private final String[] bmb_caption = {
-            "Sub-LogFrame Activities",
-            "Human Resources",
-            "Questions",
-            "Journal Entries"
-    };
-
-    private int[] bmb_imageid = {
-            R.drawable.dashboard_activity,
-            R.drawable.dashboard_resource,
-            R.drawable.dashboard_question,
-            R.drawable.dashboard_budget
-    };
 
     //private final iActivityPresenter.View activityPresenterView;
     //private final iInputPresenter.View inputPresenterView;
 
+    private Context context;
+    private ArrayList<cExpenseModel> expenseModels;
+    private List<cExpenseModel> filteredExpenseModels;
 
     public cExpenseAdapter(Context context, iInputPresenter.View inputPresenterView,
-                           List<cTreeModel> inputTree, int expLevel){
-        super(context, inputTree, expLevel);
+                          ArrayList<cExpenseModel> expenseModels) {
+        this.context = context;
+        this.expenseModels = expenseModels;
+        this.filteredExpenseModels = expenseModels;
 
         //this.inputPresenterView = inputPresenterView;
         //this.inputPresenterView = inputPresenterView;
     }
 
-    public RecyclerView.ViewHolder OnCreateTreeViewHolder(ViewGroup parent, int viewType){
-        RecyclerView.ViewHolder viewHolder;
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view;
-        switch (viewType) {
-            case PARENT:
-                view = inflater.inflate(R.layout.resources_parent_cardview, parent,
-                        false);
-                viewHolder = new cExpenseParentViewHolder(context, view);
-                break;
-            case CHILD:
-                view = inflater.inflate(R.layout.resources_child_placeholderview, parent,
-                        false);
-                viewHolder = new cExpenseChildViewHolder(view);
-                break;
-            default:
-                viewHolder = null;
-                break;
-        }
-        return viewHolder;
+    @NonNull
+    @Override
+    public cExpenseParentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(
+                R.layout.resources_parent_cardview, parent, false);
+        return new cExpenseParentViewHolder(view);
     }
 
-    public void OnBindTreeViewHolder(RecyclerView.ViewHolder viewHolder, final int position){
-        cNode node = visibleNodes.get(position);
-        cTreeModel obj = (cTreeModel) node.getObj();
+    public void onBindViewHolder(@NonNull cExpenseParentViewHolder EH, int position) {
+        cExpenseModel expenseModel = this.expenseModels.get(position);
 
-        if (obj != null){
-            switch (obj.getType()) {
-                case PARENT:
-                    cExpenseModel expenseModel = (cExpenseModel) obj.getModelObject();
-                    cExpenseParentViewHolder HPH = ((cExpenseParentViewHolder) viewHolder);
+        EH.cardView.setCardBackgroundColor(ContextCompat.getColor(context,
+                R.color.child_body_colour));
 
-                    HPH.setPaddingLeft(20 * node.getLevel());
+        EH.textViewParentCaption.setText(R.string.activity_caption);
+        EH.textViewParent.setText(expenseModel.getActivityModel().getName());
+        EH.textViewNameCaption.setText(R.string.input_caption);
+        EH.textViewName.setText(expenseModel.getResourceModel().getName());
+        EH.textViewNumberCaption.setText(R.string.input_expense_caption);
+        EH.textViewNumber.setText(String.valueOf(expenseModel.getExpense()));
+        EH.textViewDescription.setText(expenseModel.getResourceModel().getDescription());
+        EH.textViewStartDate.setText(sdf.format(expenseModel.getStartDate()));
+        EH.textViewEndDate.setText(sdf.format(expenseModel.getEndDate()));
 
-                    final int parentBackgroundColor = R.color.list_body;
-                            //(position%2 == 0) ? R.color.list_even : R.color.list_odd;
-                    HPH.cardView.setCardBackgroundColor(ContextCompat.getColor(context,
-                            parentBackgroundColor));
+        /* collapse and expansion of the details */
+        EH.textViewDetailIcon.setTypeface(null, Typeface.NORMAL);
+        EH.textViewDetailIcon.setTypeface(cFontManager.getTypeface(context,
+                cFontManager.FONTAWESOME));
+        EH.textViewDetailIcon.setTextColor(context.getColor(R.color.colorPrimaryDark));
+        EH.textViewDetailIcon.setText(context.getResources().getString(R.string.fa_details));
+        EH.textViewDetailIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-                    HPH.textViewParentCaption.setText(R.string.activity_caption);
-                    HPH.textViewParent.setText(expenseModel.getActivityModel().getName());
-                    HPH.textViewNameCaption.setText(R.string.input_caption);
-                    HPH.textViewName.setText(expenseModel.getResourceModel().getName());
-                    HPH.textViewNumberCaption.setText(R.string.input_expense_caption);
-                    HPH.textViewNumber.setText("R"+expenseModel.getExpense());
-                    HPH.textViewDescription.setText(expenseModel.getResourceModel().getDescription());
-                    HPH.textViewStartDate.setText(sdf.format(expenseModel.getStartDate()));
-                    HPH.textViewEndDate.setText(sdf.format(expenseModel.getEndDate()));
-
-                    /* the collapse and expansion of the parent logframe */
-                    if (node.isLeaf()) {
-                        HPH.textViewExpandIcon.setVisibility(View.GONE);
-                    } else {
-                        HPH.textViewExpandIcon.setVisibility(View.VISIBLE);
-                        if (node.isExpand()) {
-                            HPH.textViewExpandIcon.setTypeface(null, Typeface.NORMAL);
-                            HPH.textViewExpandIcon.setTypeface(
-                                    cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
-                            HPH.textViewExpandIcon.setText(
-                                    context.getResources().getString(R.string.fa_minus));
-                        } else {
-                            HPH.textViewExpandIcon.setTypeface(null, Typeface.NORMAL);
-                            HPH.textViewExpandIcon.setTypeface(
-                                    cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
-                            HPH.textViewExpandIcon.setText(
-                                    context.getResources().getString(R.string.fa_plus));
-                        }
-                    }
-
-                    /* toggling with an expand icon */
-                    HPH.textViewExpandIcon.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            expandOrCollapse(position);
-                        }
-                    });
-
-                    /* toggling with a header */
-                    HPH.linearLayoutHeader.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            expandOrCollapse(position);
-                        }
-                    });
-
-                    /* collapse and expansion of the details */
-                    HPH.textViewDetailIcon.setTypeface(null, Typeface.NORMAL);
-                    HPH.textViewDetailIcon.setTypeface(cFontManager.getTypeface(context,
-                            cFontManager.FONTAWESOME));
-                    HPH.textViewDetailIcon.setTextColor(context.getColor(R.color.colorPrimaryDark));
-                    HPH.textViewDetailIcon.setText(context.getResources().getString(R.string.fa_angle_down));
-                    HPH.textViewDetailIcon.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if (!(HPH.expandableLayout.isExpanded())) {
-                                HPH.textViewDetailIcon.setText(context.getResources().getString(R.string.fa_angle_up));
-                            } else {
-                                HPH.textViewDetailIcon.setText(context.getResources().getString(R.string.fa_angle_down));
-                            }
-
-                            HPH.expandableLayout.toggle();
-                        }
-                    });
-
-                    /* icon for creating a record */
-                    HPH.textViewCreateIcon.setTypeface(null, Typeface.NORMAL);
-                    HPH.textViewCreateIcon.setTypeface(
-                            cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
-                    HPH.textViewCreateIcon.setTextColor(context.getColor(R.color.colorPrimaryDark));
-                    HPH.textViewCreateIcon.setText(context.getResources().getString(R.string.fa_create));
-                    HPH.textViewCreateIcon.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            //PVH.logFrameListener.onClickCreateSubLogFrame(parentLogFrame.getLogFrameID(), new cLogFrameModel());
-                        }
-                    });
-
-                    /* icon for saving updated record */
-                    HPH.textViewUpdateIcon.setTypeface(null, Typeface.NORMAL);
-                    HPH.textViewUpdateIcon.setTypeface(
-                            cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
-                    HPH.textViewUpdateIcon.setTextColor(context.getColor(R.color.colorPrimaryDark));
-                    HPH.textViewUpdateIcon.setText(context.getResources().getString(R.string.fa_update));
-                    HPH.textViewUpdateIcon.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            //HPH.logFrameListener.onClickUpdateLogFrame(position, parentLogFrame);
-                        }
-                    });
-
-                    /* icon for deleting a record */
-                    HPH.textViewDeleteIcon.setTypeface(null, Typeface.NORMAL);
-                    HPH.textViewDeleteIcon.setTypeface(
-                            cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
-                    HPH.textViewDeleteIcon.setTextColor(context.getColor(R.color.colorPrimaryDark));
-                    HPH.textViewDeleteIcon.setText(context.getResources().getString(R.string.fa_delete));
-                    HPH.textViewDeleteIcon.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            //PVH.logFrameListener.onClickDeleteLogFrame(position,parentLogFrame.getLogFrameID());
-                        }
-                    });
-
-                    /* icon for syncing a record */
-                    HPH.textViewSyncIcon.setTypeface(null, Typeface.NORMAL);
-                    HPH.textViewSyncIcon.setTypeface(
-                            cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
-                    HPH.textViewSyncIcon.setTextColor(context.getColor(R.color.colorPrimaryDark));
-                    HPH.textViewSyncIcon.setText(context.getResources().getString(R.string.fa_sync));
-                    HPH.textViewSyncIcon.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            //PVH.logFrameListener.onClickSyncLogFrame(position, parentLogFrame);
-                        }
-                    });
-
-                    HPH.bmbMenu.clearBuilders();
-                    for (int i = 0; i < HPH.bmbMenu.getPiecePlaceEnum().pieceNumber(); i++) {
-                        cTextOutsideCircleButton.Builder builder = new cTextOutsideCircleButton
-                                .Builder()
-                                .isRound(false)
-                                .shadowCornerRadius(cUtil.dp2px(20))
-                                .buttonCornerRadius(cUtil.dp2px(20))
-                                .normalColor(Color.LTGRAY)
-                                .pieceColor(context.getColor(R.color.colorPrimaryDark))
-                                .normalImageRes(bmb_imageid[i])
-                                .normalText(bmb_caption[i])
-                                .listener(new OnBMClickListener() {
-                                    @Override
-                                    public void onBoomButtonClick(int index) {
-                                        /* when the boom-button is clicked. */
-                                        // HPH.logFrameListener.onClickBMBLogFrame(index, parentLogFrame.getLogFrameID());
-                                    }
-                                });
-                        HPH.bmbMenu.addBuilder(builder);
-                    }
-
-                    HPH.bmbMenu.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            HPH.bmbMenu.boom();
-                        }
-                    });
-
-                    /* setup the common details */
-                    //HPH.setViewPager(parentLogFrame);
-
-                    break;
-
-                case CHILD:
-                    ArrayList<Object> objects = (ArrayList<Object>) obj.getModelObject();
-                    cExpenseChildViewHolder HCH = ((cExpenseChildViewHolder) viewHolder);
-                    HCH.setPaddingLeft(20 * node.getLevel());
-
-                    HCH.resourcesPlaceholderView.removeAllViews();
-
-                    for (int i = 0; i < objects.size(); i++) {
-                        /* list of users under human group */
-                        if (objects.get(i) instanceof cUserModel) {
-                            if (i == 0) {
-                                HCH.resourcesPlaceholderView.addView(new cLogFrameHeaderView(
-                                        context, "List of Users"));
-                                HCH.resourcesPlaceholderView.addView(new cUserBodyView(
-                                        context, null, (cUserModel) objects.get(i)));
-                                Log.d(TAG, "1. CHILD USER: " + objects.get(i));
-                            } else {
-                                HCH.resourcesPlaceholderView.addView(new cUserBodyView(
-                                        context, null, (cUserModel) objects.get(i)));
-                                Log.d(TAG, "2. CHILD USER: " + objects.get(i));
-                            }
-                        }
-
-                        /* list of sub-logframe activities under this input */
-                        if (objects.get(i) instanceof cActivityModel) {
-                            if (i == 0) {
-                                HCH.resourcesPlaceholderView.addView(new cLogFrameHeaderView(
-                                        context, "List of Activities"));
-                                HCH.resourcesPlaceholderView.addView(new cActivityBodyView(
-                                        context, (cActivityModel) objects.get(i)));
-                                Log.d(TAG, "1. CHILD ACTIVITY: " + objects.get(i));
-                            } else {
-                                HCH.resourcesPlaceholderView.addView(new cActivityBodyView(
-                                        context, (cActivityModel) objects.get(i)));
-                                Log.d(TAG, "2. CHILD ACTIVITY: " + objects.get(i));
-                            }
-                        }
-
-                        /* list of questions under this input */
-                        if (objects.get(i) instanceof cQuestionModel) {
-                            if (i == 0) {
-                                HCH.resourcesPlaceholderView.addView(new cLogFrameHeaderView(
-                                        context, "List of Questions"));
-                                HCH.resourcesPlaceholderView.addView(new cQuestionBodyView(
-                                        context, (cQuestionModel) objects.get(i)));
-
-                                Log.d(TAG, "1. QUESTION: " + objects.get(i));
-                            } else {
-                                HCH.resourcesPlaceholderView.addView(new cQuestionBodyView(context,
-                                        (cQuestionModel) objects.get(i)));
-                                Log.d(TAG, "2. QUESTION: " + objects.get(i));
-                            }
-                        }
-
-                        /* list of journal entries under this input */
-                        if (objects.get(i) instanceof cQuestionModel) {
-                            if (i == 0) {
-                                HCH.resourcesPlaceholderView.addView(new cLogFrameHeaderView(
-                                        context, "List of Journal Entries"));
-                                HCH.resourcesPlaceholderView.addView(new cQuestionBodyView(
-                                        context, (cQuestionModel) objects.get(i)));
-
-                                Log.d(TAG, "1. QUESTION: " + objects.get(i));
-                            } else {
-                                HCH.resourcesPlaceholderView.addView(new cQuestionBodyView(context,
-                                        (cQuestionModel) objects.get(i)));
-                                Log.d(TAG, "2. QUESTION: " + objects.get(i));
-                            }
-                        }
-                    }
-                    break;
             }
-        }
+        });
+
+        /* icon for syncing a record */
+        EH.textViewSyncIcon.setTypeface(null, Typeface.NORMAL);
+        EH.textViewSyncIcon.setTypeface(
+                cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
+        EH.textViewSyncIcon.setTextColor(context.getColor(R.color.colorPrimaryDark));
+        EH.textViewSyncIcon.setText(context.getResources().getString(R.string.fa_sync));
+        EH.textViewSyncIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //PVH.logFrameListener.onClickSyncLogFrame(position, parentLogFrame);
+            }
+        });
+
+        /* icon for deleting a record */
+        EH.textViewDeleteIcon.setTypeface(null, Typeface.NORMAL);
+        EH.textViewDeleteIcon.setTypeface(
+                cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
+        EH.textViewDeleteIcon.setTextColor(context.getColor(R.color.colorPrimaryDark));
+        EH.textViewDeleteIcon.setText(context.getResources().getString(R.string.fa_delete));
+        EH.textViewDeleteIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //PVH.logFrameListener.onClickDeleteLogFrame(position,parentLogFrame.getLogFrameID());
+            }
+        });
+
+        /* icon for saving updated record */
+        EH.textViewUpdateIcon.setTypeface(null, Typeface.NORMAL);
+        EH.textViewUpdateIcon.setTypeface(
+                cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
+        EH.textViewUpdateIcon.setTextColor(context.getColor(R.color.colorPrimaryDark));
+        EH.textViewUpdateIcon.setText(context.getResources().getString(R.string.fa_update));
+        EH.textViewUpdateIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //HPH.logFrameListener.onClickUpdateLogFrame(position, parentLogFrame);
+            }
+        });
     }
 
-    public static class cExpenseParentViewHolder extends cTreeViewHolder {
-        private CardView cardView;
-        private cExpandableLayout expandableLayout;
-        private LinearLayout linearLayoutHeader;
+    @Override
+    public int getItemCount() {
+        return expenseModels.size();
+    }
 
-        private AppCompatTextView textViewExpandIcon;
+    public void setExpenseModels(ArrayList<cExpenseModel> expenseModels){
+        this.expenseModels = expenseModels;
+        this.filteredExpenseModels = expenseModels;
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+
+                String charString = charSequence.toString();
+
+                if (charString.isEmpty()) {
+                    filteredExpenseModels = expenseModels;
+                } else {
+
+                    ArrayList<cExpenseModel> filteredList = new ArrayList<>();
+                    for (cExpenseModel expenseModel : expenseModels) {
+                        if (expenseModel.getResourceModel().getName().toLowerCase().
+                                contains(charString.toLowerCase())) {
+                            filteredList.add(expenseModel);
+                        }
+                    }
+
+                    filteredExpenseModels = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.count = filteredExpenseModels.size();
+                filterResults.values = filteredExpenseModels;
+
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                //assert (ArrayList<cTreeModel>) filterResults.values != null;
+                filteredExpenseModels = (ArrayList<cExpenseModel>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+    public static class cExpenseParentViewHolder extends RecyclerView.ViewHolder {
+        private CardView cardView;
+
         private AppCompatTextView textViewParentCaption;
         private AppCompatTextView textViewParent;
         private AppCompatTextView textViewName;
@@ -358,59 +190,107 @@ public class cExpenseAdapter extends cTreeAdapter {
         private AppCompatTextView textViewStartDate;
         private AppCompatTextView textViewEndDate;
 
-        private cBoomMenuButton bmbMenu;
         private AppCompatTextView textViewSyncIcon;
         private AppCompatTextView textViewDeleteIcon;
         private AppCompatTextView textViewUpdateIcon;
-        private AppCompatTextView textViewCreateIcon;
         private AppCompatTextView textViewDetailIcon;
 
-        private View treeView;
+        private View viewHolder;
 
-        private cExpenseParentViewHolder(Context context, final View treeViewHolder) {
-            super(treeViewHolder);
-            this.treeView = treeViewHolder;
+        private cExpenseParentViewHolder(final View viewHolder) {
+            super(viewHolder);
+            this.viewHolder = viewHolder;
 
-            this.cardView = treeViewHolder.findViewById(R.id.cardView);
-            this.expandableLayout = treeViewHolder.findViewById(R.id.expandableLayout);
-            this.linearLayoutHeader = treeViewHolder.findViewById(R.id.linearLayoutHeader);
+            this.cardView = viewHolder.findViewById(R.id.cardView);
 
-            this.textViewExpandIcon = treeViewHolder.findViewById(R.id.textViewExpandIcon);
-            this.textViewParentCaption = treeViewHolder.findViewById(R.id.textViewParentCaption);
-            this.textViewParent = treeViewHolder.findViewById(R.id.textViewParent);
-            this.textViewNameCaption = treeViewHolder.findViewById(R.id.textViewNameCaption);
-            this.textViewName = treeViewHolder.findViewById(R.id.textViewName);
-            this.textViewNumberCaption = treeViewHolder.findViewById(R.id.textViewNumberCaption);
-            this.textViewNumber = treeViewHolder.findViewById(R.id.textViewNumber);
-            this.textViewDescription = treeViewHolder.findViewById(R.id.textViewDescription);
-            this.textViewStartDate = treeViewHolder.findViewById(R.id.textViewStartDate);
-            this.textViewEndDate = treeViewHolder.findViewById(R.id.textViewEndDate);
-            this.textViewDetailIcon = treeViewHolder.findViewById(R.id.textViewDetailIcon);
-            this.textViewCreateIcon = treeViewHolder.findViewById(R.id.textViewCreateIcon);
-            this.textViewUpdateIcon = treeViewHolder.findViewById(R.id.textViewUpdateIcon);
-            this.textViewDeleteIcon = treeViewHolder.findViewById(R.id.textViewDeleteIcon);
-            this.textViewSyncIcon = treeViewHolder.findViewById(R.id.textViewSyncIcon);
-            this.bmbMenu = treeViewHolder.findViewById(R.id.bmbMenu);
+            this.textViewParentCaption = viewHolder.findViewById(R.id.textViewParentCaption);
+            this.textViewParent = viewHolder.findViewById(R.id.textViewParent);
+            this.textViewNameCaption = viewHolder.findViewById(R.id.textViewNameCaption);
+            this.textViewName = viewHolder.findViewById(R.id.textViewName);
+            this.textViewNumberCaption = viewHolder.findViewById(R.id.textViewNumberCaption);
+            this.textViewNumber = viewHolder.findViewById(R.id.textViewNumber);
+            this.textViewDescription = viewHolder.findViewById(R.id.textViewDescription);
+            this.textViewStartDate = viewHolder.findViewById(R.id.textViewStartDate);
+            this.textViewEndDate = viewHolder.findViewById(R.id.textViewEndDate);
+
+            this.textViewDetailIcon = viewHolder.findViewById(R.id.textViewDetailIcon);
+            this.textViewUpdateIcon = viewHolder.findViewById(R.id.textViewUpdateIcon);
+            this.textViewDeleteIcon = viewHolder.findViewById(R.id.textViewDeleteIcon);
+            this.textViewSyncIcon = viewHolder.findViewById(R.id.textViewSyncIcon);
         }
 
         public void setPaddingLeft(int paddingLeft) {
-            treeView.setPadding(paddingLeft, 0, 0, 0);
-        }
-    }
-
-    public static class cExpenseChildViewHolder extends cTreeViewHolder {
-        cExpandablePlaceHolderView resourcesPlaceholderView;
-
-        private View treeView;
-
-        private cExpenseChildViewHolder(View treeViewHolder) {
-            super(treeViewHolder);
-            treeView = treeViewHolder;
-            this.resourcesPlaceholderView = treeViewHolder.findViewById(R.id.resourcesPlaceholderView);
-        }
-
-        public void setPaddingLeft(int paddingLeft) {
-            treeView.setPadding(paddingLeft, 0, 0, 0);
+            viewHolder.setPadding(paddingLeft, 0, 0, 0);
         }
     }
 }
+
+//    ArrayList<Object> objects = (ArrayList<Object>) obj.getModelObject();
+//    cExpenseChildViewHolder HCH = ((cExpenseChildViewHolder) viewHolder);
+//                    HCH.setPaddingLeft(20 * node.getLevel());
+//
+//                            HCH.resourcesPlaceholderView.removeAllViews();
+//
+//                            for (int i = 0; i < objects.size(); i++) {
+//        /* list of users under human group */
+//        if (objects.get(i) instanceof cUserModel) {
+//        if (i == 0) {
+//        HCH.resourcesPlaceholderView.addView(new cLogFrameHeaderView(
+//        context, "List of Users"));
+//        HCH.resourcesPlaceholderView.addView(new cUserBodyView(
+//        context, null, (cUserModel) objects.get(i)));
+//        Log.d(TAG, "1. CHILD USER: " + objects.get(i));
+//        } else {
+//        HCH.resourcesPlaceholderView.addView(new cUserBodyView(
+//        context, null, (cUserModel) objects.get(i)));
+//        Log.d(TAG, "2. CHILD USER: " + objects.get(i));
+//        }
+//        }
+//
+//        /* list of sub-logframe activities under this input */
+//        if (objects.get(i) instanceof cActivityModel) {
+//        if (i == 0) {
+//        HCH.resourcesPlaceholderView.addView(new cLogFrameHeaderView(
+//        context, "List of Activities"));
+//        HCH.resourcesPlaceholderView.addView(new cActivityBodyView(
+//        context, (cActivityModel) objects.get(i)));
+//        Log.d(TAG, "1. CHILD ACTIVITY: " + objects.get(i));
+//        } else {
+//        HCH.resourcesPlaceholderView.addView(new cActivityBodyView(
+//        context, (cActivityModel) objects.get(i)));
+//        Log.d(TAG, "2. CHILD ACTIVITY: " + objects.get(i));
+//        }
+//        }
+//
+//        /* list of questions under this input */
+//        if (objects.get(i) instanceof cQuestionModel) {
+//        if (i == 0) {
+//        HCH.resourcesPlaceholderView.addView(new cLogFrameHeaderView(
+//        context, "List of Questions"));
+//        HCH.resourcesPlaceholderView.addView(new cQuestionBodyView(
+//        context, (cQuestionModel) objects.get(i)));
+//
+//        Log.d(TAG, "1. QUESTION: " + objects.get(i));
+//        } else {
+//        HCH.resourcesPlaceholderView.addView(new cQuestionBodyView(context,
+//        (cQuestionModel) objects.get(i)));
+//        Log.d(TAG, "2. QUESTION: " + objects.get(i));
+//        }
+//        }
+//
+//        /* list of journal entries under this input */
+//        if (objects.get(i) instanceof cQuestionModel) {
+//        if (i == 0) {
+//        HCH.resourcesPlaceholderView.addView(new cLogFrameHeaderView(
+//        context, "List of Journal Entries"));
+//        HCH.resourcesPlaceholderView.addView(new cQuestionBodyView(
+//        context, (cQuestionModel) objects.get(i)));
+//
+//        Log.d(TAG, "1. QUESTION: " + objects.get(i));
+//        } else {
+//        HCH.resourcesPlaceholderView.addView(new cQuestionBodyView(context,
+//        (cQuestionModel) objects.get(i)));
+//        Log.d(TAG, "2. QUESTION: " + objects.get(i));
+//        }
+//        }
+//        }

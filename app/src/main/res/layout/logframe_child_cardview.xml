@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -16,35 +17,48 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="2dp">
+            android:layout_height="match_parent">
 
-            <!-- See child logframe under the parent logframe -->
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/textViewOrgCaption"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/linearLayoutHeader"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="2dp"
-                android:text="@string/logframe_organization_caption"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/text_size_small"
-                android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/textViewOrganization" />
+                android:background="@color/child_header_colour"
+                android:gravity="top"
+                android:orientation="horizontal"
+                android:elevation="4dp"
+                app:layout_constraintBottom_toTopOf="@+id/textViewNameCaption"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/textViewOrganization"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="1dp"
-                android:textSize="@dimen/text_size_medium"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/textViewNameCaption"
-                app:layout_constraintTop_toBottomOf="@+id/textViewOrgCaption" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    tools:ignore="UselessParent">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/textViewOrganizationCaption"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:text="@string/logframe_organization_caption"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_small"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/textViewOrganization"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginTop="1dp"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_medium"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewNameCaption"
@@ -53,13 +67,15 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="2dp"
                 android:layout_marginTop="8dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
                 android:text="@string/logframe_name_caption"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorAccent"
                 android:textSize="@dimen/text_size_small"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/textViewName"
-                app:layout_constraintTop_toBottomOf="@id/textViewOrganization" />
+                app:layout_constraintTop_toBottomOf="@id/linearLayoutHeader" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewName"
@@ -68,6 +84,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="2dp"
                 android:layout_marginTop="1dp"
+                android:padding="2dp"
                 android:textSize="@dimen/text_size_small_medium"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -81,8 +98,10 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="2dp"
                 android:layout_marginTop="8dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
                 android:text="@string/logframe_description_caption"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorAccent"
                 android:textSize="@dimen/text_size_small"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -97,6 +116,8 @@
                 android:layout_marginStart="2dp"
                 android:layout_marginTop="1dp"
                 android:layout_marginBottom="9dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
                 android:textSize="@dimen/text_size_small_medium"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/textViewStartDateCaption"
@@ -108,8 +129,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="1dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
                 android:text="@string/logframe_startdate_caption"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorAccent"
                 android:textSize="@dimen/text_size_small"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -121,7 +144,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
                 android:text="value"
                 android:textSize="@dimen/text_size_small"
                 app:layout_constraintBottom_toTopOf="@id/bmbMenu"
@@ -135,8 +160,10 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
                 android:text="@string/logframe_enddate_caption"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorAccent"
                 android:textSize="@dimen/text_size_small"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/bmbMenu"
@@ -150,6 +177,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginTop="9dp"
                 android:layout_marginEnd="4dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
                 android:textSize="@dimen/text_size_small"
                 android:text="value"
                 app:layout_constraintBottom_toTopOf="@id/bmbMenu"
@@ -159,23 +188,25 @@
             <!-- bmb menu a logframe -->
             <com.me.mseotsanyana.bmblibrary.cBoomMenuButton
                 android:id="@+id/bmbMenu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="4dp"
                 app:bmb_buttonEnum="textOutsideCircle"
                 app:bmb_buttonPlaceEnum="buttonPlace_sc_12_1"
                 app:bmb_inList="true"
                 app:bmb_piecePlaceEnum="piecePlace_dot_12_1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewStartDateCaption" />
+                app:layout_constraintTop_toBottomOf="@id/textViewStartDate" />
 
             <!-- synchronise a logframe -->
             <TextView
                 android:id="@+id/textViewSyncIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="5dp"
                 android:background="@drawable/me_btn_flexible"
                 android:textSize="@dimen/text_size_large"
@@ -189,9 +220,8 @@
                 android:id="@+id/textViewDeleteIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginBottom="2dp"
                 android:background="@drawable/me_btn_flexible"
                 android:textSize="@dimen/text_size_large"
                 android:textStyle="bold"
@@ -204,29 +234,13 @@
                 android:id="@+id/textViewUpdateIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginBottom="2dp"
                 android:background="@drawable/me_btn_flexible"
                 android:textSize="@dimen/text_size_large"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/textViewDeleteIcon"
-                app:layout_constraintTop_toBottomOf="@id/textViewStartDate" />
-
-            <!-- create a logframe -->
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/textViewCreateIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="25dp"
-                android:layout_marginBottom="2dp"
-                android:background="@drawable/me_btn_flexible"
-                android:textSize="@dimen/text_size_large"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/textViewUpdateIcon"
                 app:layout_constraintTop_toBottomOf="@id/textViewStartDate" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

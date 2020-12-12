@@ -6,7 +6,7 @@ import com.me.mseotsanyana.mande.BLL.model.evaluator.cMatrixSetModel;
 
 import java.util.Set;
 
-public class cMatrixQuestionModel extends cQuestionTypeModel{
+public class cMatrixQuestionModel extends cQuestionModel{
     private long matrixSetID;
     private long matrixChartID;
 

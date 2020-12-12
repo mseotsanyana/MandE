@@ -5,6 +5,10 @@ import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.input.Impl.cReadInputInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.input.iReadInputInteractor;
+import com.me.mseotsanyana.mande.BLL.model.wpb.cExpenseModel;
+import com.me.mseotsanyana.mande.BLL.model.wpb.cHumanModel;
+import com.me.mseotsanyana.mande.BLL.model.wpb.cIncomeModel;
+import com.me.mseotsanyana.mande.BLL.model.wpb.cMaterialModel;
 import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
 import com.me.mseotsanyana.mande.BLL.repository.awpb.iExpenseRepository;
 import com.me.mseotsanyana.mande.BLL.repository.awpb.iHumanRepository;
@@ -137,10 +141,14 @@ public class cInputPresenterImpl extends cAbstractPresenter implements iInputPre
     }
 
     @Override
-    public void onInputModelsRetrieved(Map<Integer, ArrayList<cTreeModel>> inputTreeModels) {
+    public void onInputModelsRetrieved(ArrayList<cHumanModel> humanModels,
+                                       ArrayList<cMaterialModel> materialModels,
+                                       ArrayList<cIncomeModel> incomeModels,
+                                       ArrayList<cExpenseModel> expenseModels) {
         Gson gson = new Gson();
         if(this.view != null) {
-            this.view.onInputModelsRetrieved(inputTreeModels);
+            this.view.onInputModelsRetrieved(humanModels, materialModels,
+                    incomeModels, expenseModels);
             this.view.hideProgress();
         }
     }

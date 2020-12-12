@@ -90,22 +90,23 @@ public class cExcelHelper {
     public static final String SHEET_tblPRIMITIVEQUESTION  = "tblPRIMITIVEQUESTION"; /* 15 */
     public static final String SHEET_tblARRAYQUESTION      = "tblARRAYQUESTION";     /* 16 */
     public static final String SHEET_tblMATRIXQUESTION     = "tblMATRIXQUESTION";    /* 17 */
-    public static final String SHEET_tblRAID               = "tblRAID";              /* 18 */
-    public static final String SHEET_tblOUTCOME_IMPACT     = "tblOUTCOME_IMPACT";    /* 19 */
-    public static final String SHEET_tblOUTPUT_OUTCOME     = "tblOUTPUT_OUTCOME";    /* 20 */
-    public static final String SHEET_tblACTIVITY_OUTPUT    = "tblACTIVITY_OUTPUT";   /* 21 */
-    public static final String SHEET_tblINPUT_ACTIVITY     = "tblINPUT_ACTIVITY";    /* 22 */
-    public static final String SHEET_tblPRECEDINGACTIVITY  = "tblPRECEDINGACTIVITY"; /* 23 */
-    public static final String SHEET_tblACTIVITYASSIGNMENT = "tblACTIVITYASSIGNMENT";/* 24 */
-    public static final String SHEET_tblIMPACT_QUESTION    = "tblIMPACT_QUESTION";   /* 25 */
-    public static final String SHEET_tblOUTCOME_QUESTION   = "tblOUTCOME_QUESTION";  /* 26 */
-    public static final String SHEET_tblOUTPUT_QUESTION    = "tblOUTPUT_QUESTION";   /* 27 */
-    public static final String SHEET_tblACTIVITY_QUESTION  = "tblACTIVITY_QUESTION"; /* 28 */
-    public static final String SHEET_tblINPUT_QUESTION     = "tblINPUT_QUESTION";    /* 29 */
-    public static final String SHEET_tblIMPACT_RAID        = "tblIMPACT_RAID";       /* 30 */
-    public static final String SHEET_tblOUTCOME_RAID       = "tblOUTCOME_RAID";      /* 31 */
-    public static final String SHEET_tblOUTPUT_RAID        = "tblOUTPUT_RAID";       /* 32 */
-    public static final String SHEET_tblACTIVITY_RAID      = "tblACTIVITY_RAID";     /* 33 */
+    public static final String SHEET_tblRAIDCATEGORY       = "tblRAIDCATEGORY";      /* 18 */
+    public static final String SHEET_tblRAID               = "tblRAID";              /* 19 */
+    public static final String SHEET_tblOUTCOME_IMPACT     = "tblOUTCOME_IMPACT";    /* 20 */
+    public static final String SHEET_tblOUTPUT_OUTCOME     = "tblOUTPUT_OUTCOME";    /* 21 */
+    public static final String SHEET_tblACTIVITY_OUTPUT    = "tblACTIVITY_OUTPUT";   /* 22 */
+    public static final String SHEET_tblINPUT_ACTIVITY     = "tblINPUT_ACTIVITY";    /* 23 */
+    public static final String SHEET_tblPRECEDINGACTIVITY  = "tblPRECEDINGACTIVITY"; /* 24 */
+    public static final String SHEET_tblACTIVITYASSIGNMENT = "tblACTIVITYASSIGNMENT";/* 25 */
+    public static final String SHEET_tblIMPACT_QUESTION    = "tblIMPACT_QUESTION";   /* 26 */
+    public static final String SHEET_tblOUTCOME_QUESTION   = "tblOUTCOME_QUESTION";  /* 27 */
+    public static final String SHEET_tblOUTPUT_QUESTION    = "tblOUTPUT_QUESTION";   /* 28 */
+    public static final String SHEET_tblACTIVITY_QUESTION  = "tblACTIVITY_QUESTION"; /* 29 */
+    public static final String SHEET_tblINPUT_QUESTION     = "tblINPUT_QUESTION";    /* 30 */
+    public static final String SHEET_tblIMPACT_RAID        = "tblIMPACT_RAID";       /* 31 */
+    public static final String SHEET_tblOUTCOME_RAID       = "tblOUTCOME_RAID";      /* 32 */
+    public static final String SHEET_tblOUTPUT_RAID        = "tblOUTPUT_RAID";       /* 33 */
+    public static final String SHEET_tblACTIVITY_RAID      = "tblACTIVITY_RAID";     /* 34 */
 
     /*############################## START EVALUATION MODULE TABLES ##############################*/
 
@@ -207,7 +208,7 @@ public class cExcelHelper {
     /*################################ START RAID MODULE TABLES ##################################*/
 
     public static final String SHEET_tblPIM                   = "tblPIM";                  /* 1  */
-    public static final String SHEET_tblRAIDLIKELIHOOD        = "tblRISKLIKELIHOOD";       /* 2  */
+    public static final String SHEET_tblRAIDLIKELIHOOD        = "tblRAIDLIKELIHOOD";       /* 2  */
     public static final String SHEET_tblRAIDIMPACT            = "tblRAIDIMPACT";           /* 3  */
     public static final String SHEET_tblROBOT                 = "tblROBOT";                /* 4  */
     public static final String SHEET_tblPIMSET                = "tblPIMSET";               /* 5  */

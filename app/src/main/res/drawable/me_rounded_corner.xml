@@ -5,13 +5,13 @@
 
     <!-- view background color -->
     <solid
-        android:color="@color/list_odd" >
+        android:color="@color/parent_header_colour" >
     </solid>
 
     <!-- view border color and width -->
     <stroke
         android:width="3dp"
-        android:color="@color/colorAccent" >
+        android:color="@color/colorPrimary" >
     </stroke>
 
     <!-- If you want to add some padding -->

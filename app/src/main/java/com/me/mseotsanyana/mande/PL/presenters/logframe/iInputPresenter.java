@@ -1,6 +1,10 @@
 package com.me.mseotsanyana.mande.PL.presenters.logframe;
 
 import com.me.mseotsanyana.mande.BLL.model.logframe.cInputModel;
+import com.me.mseotsanyana.mande.BLL.model.wpb.cExpenseModel;
+import com.me.mseotsanyana.mande.BLL.model.wpb.cHumanModel;
+import com.me.mseotsanyana.mande.BLL.model.wpb.cIncomeModel;
+import com.me.mseotsanyana.mande.BLL.model.wpb.cMaterialModel;
 import com.me.mseotsanyana.mande.PL.presenters.base.iPresenter;
 import com.me.mseotsanyana.mande.PL.ui.iBaseView;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
@@ -18,7 +22,10 @@ public interface iInputPresenter extends iPresenter {
         void onClickSyncInput(cInputModel inputModel);
 
         /* pass data from interactor to the view */
-        void onInputModelsRetrieved(Map<Integer, ArrayList<cTreeModel>> inputModelSet);
+        void onInputModelsRetrieved(ArrayList<cHumanModel> humanModels,
+                                    ArrayList<cMaterialModel> materialModels,
+                                    ArrayList<cIncomeModel> incomeModels,
+                                    ArrayList<cExpenseModel> expenseModels);
         void onInputModelsFailed(String msg);
     }
 

@@ -11,23 +11,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.me.mseotsanyana.mande.BLL.model.wpb.cHumanModel;
 import com.me.mseotsanyana.mande.PL.ui.adapters.awpb.cHumanAdapter;
 import com.me.mseotsanyana.mande.R;
-import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.util.ArrayList;
 
 public class cHumanFragment extends Fragment {
     private static String TAG = cHumanFragment.class.getSimpleName();
 
+    ArrayList<cHumanModel> humanModels;
     private cHumanAdapter humanAdapter;
 
     public cHumanFragment() {
     }
 
-    public static cHumanFragment newInstance(ArrayList<cTreeModel> humanTreeModels) {
+    public static cHumanFragment newInstance(ArrayList<cHumanModel> humanModels) {
         Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("HUMAN_TREE_MODELS", humanTreeModels);
+        bundle.putParcelableArrayList("HUMAN_MODELS", humanModels);
         cHumanFragment fragment = new cHumanFragment();
         fragment.setArguments(bundle);
 
@@ -49,16 +50,15 @@ public class cHumanFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         assert getArguments() != null;
-        ArrayList<cTreeModel> humanTreeModels = getArguments().getParcelableArrayList(
-                "HUMAN_TREE_MODELS");
+        humanModels = getArguments().getParcelableArrayList(
+                "HUMAN_MODELS");
 
         RecyclerView inputRecyclerView = view.findViewById(R.id.resourcesRecyclerView);
         inputRecyclerView.setHasFixedSize(true);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        humanAdapter = new cHumanAdapter(getActivity(), null,
-                humanTreeModels, -1);
+        humanAdapter = new cHumanAdapter(getActivity(), null, humanModels);
         inputRecyclerView.setAdapter(humanAdapter);
         inputRecyclerView.setLayoutManager(llm);
     }

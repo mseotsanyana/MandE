@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.LinearLayout;
 
 import com.me.mseotsanyana.bmblibrary.BoomButtons.OnBMClickListener;
 import com.me.mseotsanyana.bmblibrary.BoomButtons.cTextOutsideCircleButton;
@@ -124,10 +125,10 @@ public class cLogFrameAdapter extends cTreeAdapter implements iViewLogFrameListe
 
                     PVH.setPaddingLeft(20 * node.getLevel());
 
-                    final int parentBackgroundColor = (position % 2 == 0) ? R.color.list_even :
-                            R.color.list_odd;
+                    //final int parentBackgroundColor = (position % 2 == 0) ? R.color.list_even :
+                    //        R.color.list_odd;
                     PVH.cardView.setCardBackgroundColor(ContextCompat.getColor(context,
-                            parentBackgroundColor));
+                            R.color.parent_body_colour));
 
                     PVH.textViewOrganization.setText(parentLogFrameModel.getOrganizationModel().
                             getName());
@@ -162,6 +163,15 @@ public class cLogFrameAdapter extends cTreeAdapter implements iViewLogFrameListe
                             expandOrCollapse(position);
                         }
                     });
+
+                    /* toggling with a header */
+                    PVH.linearLayoutHeader.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            expandOrCollapse(position);
+                        }
+                    });
+
 
                     /* icon for accessing the boom menu */
                     PVH.bmbMenu.clearBuilders();
@@ -253,10 +263,10 @@ public class cLogFrameAdapter extends cTreeAdapter implements iViewLogFrameListe
                     cChildLogFrameViewHolder CVH = ((cChildLogFrameViewHolder) viewHolder);
 
                     CVH.setPaddingLeft(20 * node.getLevel());
-                    final int childBackgroundColor = (position % 2 == 0) ? R.color.list_even :
-                            R.color.list_odd;
+                    //final int childBackgroundColor = (position % 2 == 0) ? R.color.list_even :
+                    //        R.color.list_odd;
                     CVH.cardView.setCardBackgroundColor(ContextCompat.getColor(context,
-                            childBackgroundColor));
+                            R.color.child_body_colour));
 
                     CVH.textViewOrganization.setText(childLogFrameModel.getOrganizationModel().
                             getName());
@@ -274,7 +284,7 @@ public class cLogFrameAdapter extends cTreeAdapter implements iViewLogFrameListe
                                 .shadowCornerRadius(cUtil.dp2px(20))
                                 .buttonCornerRadius(cUtil.dp2px(20))
                                 .normalColor(Color.LTGRAY)
-                                .pieceColor(context.getColor(R.color.colorPrimaryDark))
+                                .pieceColor(context.getColor(R.color.colorAccent))
                                 .normalImageRes(bmb_imageid[i])
                                 .normalText(bmb_caption[i])
                                 .listener(new OnBMClickListener() {
@@ -298,7 +308,7 @@ public class cLogFrameAdapter extends cTreeAdapter implements iViewLogFrameListe
                     CVH.textViewSyncIcon.setTypeface(null, Typeface.NORMAL);
                     CVH.textViewSyncIcon.setTypeface(
                             cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
-                    CVH.textViewSyncIcon.setTextColor(context.getColor(R.color.colorPrimaryDark));
+                    CVH.textViewSyncIcon.setTextColor(context.getColor(R.color.colorAccent));
                     CVH.textViewSyncIcon.setText(context.getResources().getString(R.string.fa_sync));
                     CVH.textViewSyncIcon.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -311,7 +321,7 @@ public class cLogFrameAdapter extends cTreeAdapter implements iViewLogFrameListe
                     CVH.textViewDeleteIcon.setTypeface(null, Typeface.NORMAL);
                     CVH.textViewDeleteIcon.setTypeface(
                             cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
-                    CVH.textViewDeleteIcon.setTextColor(context.getColor(R.color.colorPrimaryDark));
+                    CVH.textViewDeleteIcon.setTextColor(context.getColor(R.color.colorAccent));
                     CVH.textViewDeleteIcon.setText(context.getResources().getString(R.string.fa_delete));
                     CVH.textViewDeleteIcon.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -325,26 +335,12 @@ public class cLogFrameAdapter extends cTreeAdapter implements iViewLogFrameListe
                     CVH.textViewUpdateIcon.setTypeface(null, Typeface.NORMAL);
                     CVH.textViewUpdateIcon.setTypeface(
                             cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
-                    CVH.textViewUpdateIcon.setTextColor(context.getColor(R.color.colorPrimaryDark));
+                    CVH.textViewUpdateIcon.setTextColor(context.getColor(R.color.colorAccent));
                     CVH.textViewUpdateIcon.setText(context.getResources().getString(R.string.fa_update));
                     CVH.textViewUpdateIcon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             CVH.logFrameListener.onClickUpdateLogFrame(position, childLogFrameModel);
-                        }
-                    });
-
-                    /* icon for creating a record */
-                    CVH.textViewCreateIcon.setTypeface(null, Typeface.NORMAL);
-                    CVH.textViewCreateIcon.setTypeface(
-                            cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
-                    CVH.textViewCreateIcon.setTextColor(context.getColor(R.color.colorPrimaryDark));
-                    CVH.textViewCreateIcon.setText(context.getResources().getString(R.string.fa_create));
-                    CVH.textViewCreateIcon.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            CVH.logFrameListener.onClickCreateSubLogFrame(
-                                    childLogFrameModel.getLogFrameID(), new cLogFrameModel());
                         }
                     });
 
@@ -369,7 +365,9 @@ public class cLogFrameAdapter extends cTreeAdapter implements iViewLogFrameListe
                     ArrayList<cTreeModel> filteredList = new ArrayList<>();
                     for (cTreeModel treeModel : getTreeModel()) {
                         if (((cLogFrameModel)treeModel.getModelObject()).getName().toLowerCase().
-                                contains(charString.toLowerCase())) {
+                                contains(charString.toLowerCase()) ||
+                                ((cLogFrameModel)treeModel.getModelObject()).getOrganizationModel().
+                                        getName().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(treeModel);
                         }
                     }
@@ -427,6 +425,8 @@ public class cLogFrameAdapter extends cTreeAdapter implements iViewLogFrameListe
     public static class cParentLogFrameViewHolder extends cTreeViewHolder {
         private CardView cardView;
         private AppCompatTextView textViewExpandIcon;
+        private LinearLayout linearLayoutHeader;
+
         private AppCompatTextView textViewOrganization;
         private AppCompatTextView textViewName;
         private AppCompatTextView textViewDescription;
@@ -450,6 +450,8 @@ public class cLogFrameAdapter extends cTreeAdapter implements iViewLogFrameListe
 
             this.cardView = treeViewHolder.findViewById(R.id.cardView);
             this.textViewExpandIcon = treeViewHolder.findViewById(R.id.textViewExpandIcon);
+            this.linearLayoutHeader = treeViewHolder.findViewById(R.id.linearLayoutHeader);
+
             this.bmbMenu = treeViewHolder.findViewById(R.id.bmbMenu);
             this.textViewOrganization = treeViewHolder.findViewById(R.id.textViewOrganization);
             this.textViewName = treeViewHolder.findViewById(R.id.textViewName);
@@ -479,7 +481,7 @@ public class cLogFrameAdapter extends cTreeAdapter implements iViewLogFrameListe
         private AppCompatTextView textViewSyncIcon;
         private AppCompatTextView textViewDeleteIcon;
         private AppCompatTextView textViewUpdateIcon;
-        private AppCompatTextView textViewCreateIcon;
+        //private AppCompatTextView textViewCreateIcon;
 
         private View treeView;
         private iViewLogFrameListener logFrameListener;
@@ -499,7 +501,7 @@ public class cLogFrameAdapter extends cTreeAdapter implements iViewLogFrameListe
             this.textViewSyncIcon = treeViewHolder.findViewById(R.id.textViewSyncIcon);
             this.textViewDeleteIcon = treeViewHolder.findViewById(R.id.textViewDeleteIcon);
             this.textViewUpdateIcon = treeViewHolder.findViewById(R.id.textViewUpdateIcon);
-            this.textViewCreateIcon = treeViewHolder.findViewById(R.id.textViewCreateIcon);
+            //this.textViewCreateIcon = treeViewHolder.findViewById(R.id.textViewCreateIcon);
         }
 
         public void setPaddingLeft(int paddingLeft) {

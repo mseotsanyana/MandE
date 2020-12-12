@@ -12,9 +12,9 @@ import java.util.Set;
 
 public class cQuestionModel implements Parcelable {
     private long questionID;
-    private long logFrameID;
-    private long questionTypeID;
-    private long questionGroupID;
+    //private long logFrameID;
+    //private long questionTypeID;
+    //private long questionGroupID;
     private long serverID;
     private long ownerID;
     private long orgID;
@@ -47,10 +47,28 @@ public class cQuestionModel implements Parcelable {
     /* frequency table for array response questions */
     private Set<Pair<String, Long>> arrayResponseFreqTable;
 
+    public cQuestionModel(cQuestionModel questionModel){
+        this.questionID = questionModel.getQuestionID();
+        this.serverID = questionModel.getQuestionID();
+        this.ownerID = questionModel.getQuestionID();
+        this.orgID = questionModel.getQuestionID();
+        this.groupBITS = questionModel.getGroupBITS();
+        this.permsBITS = questionModel.getPermsBITS();
+        this.statusBITS = questionModel.getStatusBITS();
+        this.label = questionModel.getLabel();
+        this.question = questionModel.getQuestion();
+        this.defaultChart = questionModel.getDefaultChart();
+        this.startDate = questionModel.getStartDate();
+        this.endDate = questionModel.getEndDate();
+        this.createdDate = questionModel.getCreatedDate();
+        this.modifiedDate = questionModel.getModifiedDate();
+        this.syncedDate = questionModel.getSyncedDate();
+
+    }
     public cQuestionModel(){
         logFrameModel = new cLogFrameModel();
         questionGroupingModel = new cQuestionGroupingModel();
-        //questionTypeModel = new cQuestionTypeModel();
+        questionTypeModel = new cQuestionTypeModel();
 
         arrayResponseFreqTable = new HashSet<>();
         indicatorModelSet = new HashSet<>();
@@ -62,30 +80,6 @@ public class cQuestionModel implements Parcelable {
 
     public void setQuestionID(long questionID) {
         this.questionID = questionID;
-    }
-
-    public long getLogFrameID() {
-        return logFrameID;
-    }
-
-    public void setLogFrameID(long logFrameID) {
-        this.logFrameID = logFrameID;
-    }
-
-    public long getQuestionTypeID() {
-        return questionTypeID;
-    }
-
-    public void setQuestionTypeID(long questionTypeID) {
-        this.questionTypeID = questionTypeID;
-    }
-
-    public long getQuestionGroupID() {
-        return questionGroupID;
-    }
-
-    public void setQuestionGroupID(long questionGroupID) {
-        this.questionGroupID = questionGroupID;
     }
 
     public long getServerID() {
@@ -242,9 +236,6 @@ public class cQuestionModel implements Parcelable {
 
     protected cQuestionModel(Parcel in) {
         questionID = in.readInt();
-        logFrameID = in.readInt();
-        questionTypeID = in.readInt();
-        questionGroupID = in.readInt();
         serverID = in.readInt();
         ownerID = in.readInt();
         orgID = in.readInt();
@@ -275,9 +266,6 @@ public class cQuestionModel implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeLong(questionID);
-        parcel.writeLong(logFrameID);
-        parcel.writeLong(questionTypeID);
-        parcel.writeLong(questionGroupID);
         parcel.writeLong(serverID);
         parcel.writeLong(ownerID);
         parcel.writeLong(orgID);

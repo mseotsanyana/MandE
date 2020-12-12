@@ -60,6 +60,7 @@
       <w>issuereview</w>
       <w>linechart</w>
       <w>logframe</w>
+      <w>logframes</w>
       <w>logframetree</w>
       <w>mande</w>
       <w>matrixchart</w>
@@ -77,6 +78,7 @@
       <w>mquestion</w>
       <w>mseotsanyana</w>
       <w>numericresponse</w>
+      <w>orgs</w>
       <w>piechart</w>
       <w>pimset</w>
       <w>precedingactivity</w>
@@ -131,11 +133,14 @@
       <w>rowoption</w>
       <w>scatterchart</w>
       <w>scorecriteria</w>
+      <w>ssdf</w>
       <w>startdate</w>
       <w>statusset</w>
       <w>taskassignment</w>
       <w>textresponse</w>
       <w>timesheet</w>
+      <w>tsdf</w>
+      <w>unkown</w>
       <w>usercomment</w>
       <w>workplan</w>
     </words>

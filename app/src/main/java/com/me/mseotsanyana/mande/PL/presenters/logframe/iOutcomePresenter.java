@@ -15,6 +15,7 @@ public interface iOutcomePresenter extends iPresenter {
         void onClickUpdateOutcome(cOutcomeModel outcomeModel, int position);
         void onClickDeleteOutcome(long outcomeID, int position);
         void onClickSyncOutcome(cOutcomeModel outcomeModel);
+        //void onClickDetailOutcome(cOutcomeModel[] outcomeModels);
 
         /* pass data from interactor to the view */
         void onOutcomeModelsRetrieved(String logFrameName, ArrayList<cTreeModel> outcomeModelSet);

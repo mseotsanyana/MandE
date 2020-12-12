@@ -89,51 +89,70 @@ public class cReadOutcomeInteractorImpl extends cAbstractInteractor
         }
 
         for (int i = 0; i < outcomeModels.size(); i++) {
-
             /* impact parent */
             cOutcomeModel outcomeModel = outcomeModels.get(i);
             outcomeTreeModels.add(new cTreeModel(parentIndex, -1, 0, outcomeModel));
 
-            /* set of impact children under the sub-logframe of the outcome logframe */
-            Map<Pair<Long, Long>, Set<cImpactModel>> childImpactMap = outcomeModel.getChildImpactModelMap();
-            if (childImpactMap.size() > 0) {
-                for (Map.Entry<Pair<Long, Long>, Set<cImpactModel>> entry : childImpactMap.entrySet()) {
-                    childIndex = parentIndex + 1;
-                    ArrayList<cImpactModel> impacts = new ArrayList<>(entry.getValue());
-                    outcomeTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, impacts));
-                    //Log.d(TAG,entry.getKey() + " = " + entry.getValue());
-                }
-            }
-
-            /* set of outcome children under the outcome */
+            /* set of impact children under the impact */
+            childIndex = parentIndex;
             ArrayList<cOutcomeModel> outcomes = new ArrayList<>(outcomeModel.getChildOutcomeModelSet());
-            if(outcomes.size() > 0) {
-                childIndex = parentIndex + 2;
-                outcomeTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, outcomes));
+            for (int j = 0; j < outcomes.size(); j++) {
+                childIndex = childIndex + 1;
+                outcomeTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, outcomes.get(j)));
             }
 
-            /* set of outputs under the outcome */
-            ArrayList<cOutputModel> outputs = new ArrayList<>(outcomeModel.getOutputModelSet());
-            if(outputs.size() > 0) {
-                childIndex = parentIndex + 2;
-                outcomeTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, outputs));
-            }
-
-            /* set of questions under the outcome */
-            ArrayList<cQuestionModel> questions = new ArrayList<>(outcomeModel.getQuestionModelSet());
-            if(questions.size() > 0) {
-                childIndex = parentIndex + 3;
-                outcomeTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, questions));
-            }
-
-            /* set of raids under the outcome */
-            ArrayList<cRaidModel> raids = new ArrayList<>(outcomeModel.getRaidModelSet());
-            if(raids.size() > 0) {
-                childIndex = parentIndex + 4;
-                outcomeTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, raids));
-            }
             /* next parent index */
             parentIndex = childIndex + 1;
+
+
+
+
+
+
+//            /* impact parent */
+//            cOutcomeModel outcomeModel = outcomeModels.get(i);
+//            outcomeTreeModels.add(new cTreeModel(parentIndex, -1, 0, outcomeModel));
+//
+//            /* set of impact children under the sub-logframe of the outcome logframe */
+//            Map<Pair<Long, Long>, Set<cImpactModel>> childImpactMap = outcomeModel.getChildImpactModelMap();
+//            if (childImpactMap.size() > 0) {
+//                for (Map.Entry<Pair<Long, Long>, Set<cImpactModel>> entry : childImpactMap.entrySet()) {
+//                    childIndex = parentIndex + 1;
+//                    ArrayList<cImpactModel> impacts = new ArrayList<>(entry.getValue());
+//                    outcomeTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, impacts));
+//                    //Log.d(TAG,entry.getKey() + " = " + entry.getValue());
+//                }
+//            }
+//
+//            /* set of outcome children under the outcome */
+//            ArrayList<cOutcomeModel> outcomes = new ArrayList<>(outcomeModel.getChildOutcomeModelSet());
+//            if(outcomes.size() > 0) {
+//                childIndex = parentIndex + 2;
+//                outcomeTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, outcomes));
+//            }
+//
+//            /* set of outputs under the outcome */
+//            ArrayList<cOutputModel> outputs = new ArrayList<>(outcomeModel.getOutputModelSet());
+//            if(outputs.size() > 0) {
+//                childIndex = parentIndex + 2;
+//                outcomeTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, outputs));
+//            }
+//
+//            /* set of questions under the outcome */
+//            ArrayList<cQuestionModel> questions = new ArrayList<>(outcomeModel.getQuestionModelSet());
+//            if(questions.size() > 0) {
+//                childIndex = parentIndex + 3;
+//                outcomeTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, questions));
+//            }
+//
+//            /* set of raids under the outcome */
+//            ArrayList<cRaidModel> raids = new ArrayList<>(outcomeModel.getRaidModelSet());
+//            if(raids.size() > 0) {
+//                childIndex = parentIndex + 4;
+//                outcomeTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, raids));
+//            }
+//            /* next parent index */
+//            parentIndex = childIndex + 1;
         }
         return outcomeTreeModels;
     }

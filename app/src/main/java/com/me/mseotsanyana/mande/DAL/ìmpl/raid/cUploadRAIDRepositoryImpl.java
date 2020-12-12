@@ -157,6 +157,8 @@ public class cUploadRAIDRepositoryImpl implements iUploadRAIDRepository {
                     rowRL.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
             raidLikelihoodModel.setDescription(
                     rowRL.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            raidLikelihoodModel.setValue((int)
+                    rowRL.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
 
             if (!addRAIDLikelihood(raidLikelihoodModel)) {
                 return false;
@@ -177,6 +179,7 @@ public class cUploadRAIDRepositoryImpl implements iUploadRAIDRepository {
         cv.put(cSQLDBHelper.KEY_ID, raidLikelihoodModel.getRaidLikelihoodID());
         cv.put(cSQLDBHelper.KEY_NAME, raidLikelihoodModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, raidLikelihoodModel.getDescription());
+        cv.put(cSQLDBHelper.KEY_RAIDLIKELIHOOD_VALUE, raidLikelihoodModel.getValue());
 
         // insert record details
         try {
@@ -233,6 +236,8 @@ public class cUploadRAIDRepositoryImpl implements iUploadRAIDRepository {
                     rowRI.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
             raidImpactModel.setDescription(
                     rowRI.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            raidImpactModel.setValue((int)
+                    rowRI.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
 
             if (!addRAIDImpact(raidImpactModel)) {
                 return false;
@@ -253,6 +258,7 @@ public class cUploadRAIDRepositoryImpl implements iUploadRAIDRepository {
         cv.put(cSQLDBHelper.KEY_ID, raidImpactModel.getRaidImpactID());
         cv.put(cSQLDBHelper.KEY_NAME, raidImpactModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, raidImpactModel.getDescription());
+        cv.put(cSQLDBHelper.KEY_RAIDIMPACT_VALUE, raidImpactModel.getValue());
 
         // insert record details
         try {
@@ -304,7 +310,7 @@ public class cUploadRAIDRepositoryImpl implements iUploadRAIDRepository {
 
             robotModel.setRobotID((int)
                     rowR.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            robotModel.setName(
+            robotModel.setColour(
                     rowR.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
             robotModel.setLowerLimit((int)
                     rowR.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
@@ -328,7 +334,7 @@ public class cUploadRAIDRepositoryImpl implements iUploadRAIDRepository {
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ID, robotModel.getRobotID());
-        cv.put(cSQLDBHelper.KEY_NAME, robotModel.getName());
+        cv.put(cSQLDBHelper.KEY_COLOUR_NAME, robotModel.getColour());
         cv.put(cSQLDBHelper.KEY_LOWER_LIMIT, robotModel.getLowerLimit());
         cv.put(cSQLDBHelper.KEY_UPPER_LIMIT, robotModel.getUpperLimit());
 
@@ -796,17 +802,22 @@ public class cUploadRAIDRepositoryImpl implements iUploadRAIDRepository {
 
             cRAIDLOGModel raidlogModel = new cRAIDLOGModel();
 
-            raidlogModel.getRiskRegisterModel().setRaidRegisterID((int)
+            raidlogModel.setRaidLogID((int)
                     rowRL.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             raidlogModel.getLogFrameModel().setLogFrameID((int)
                     rowRL.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            raidlogModel.getAssRegisterModel().setRaidRegisterID((int)
+            raidlogModel.getRiskRegisterModel().setRaidRegisterID((int)
                     rowRL.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            raidlogModel.getIssueRegisterModel().setRaidRegisterID((int)
+            raidlogModel.getAssRegisterModel().setRaidRegisterID((int)
                     rowRL.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            raidlogModel.getDepRegisterModel().setRaidRegisterID((int)
+            raidlogModel.getIssueRegisterModel().setRaidRegisterID((int)
                     rowRL.getCell(4, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-
+            raidlogModel.getDepRegisterModel().setRaidRegisterID((int)
+                    rowRL.getCell(5, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            raidlogModel.setName(
+                    rowRL.getCell(6, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            raidlogModel.setDescription(
+                    rowRL.getCell(7, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
             if (!addRAIDLOG(raidlogModel)) {
                 return false;
             }
@@ -834,6 +845,8 @@ public class cUploadRAIDRepositoryImpl implements iUploadRAIDRepository {
                 raidlogModel.getIssueRegisterModel().getRaidRegisterID());
         cv.put(cSQLDBHelper.KEY_DEP_REGISTER_FK_ID,
                 raidlogModel.getDepRegisterModel().getRaidRegisterID());
+        cv.put(cSQLDBHelper.KEY_NAME, raidlogModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, raidlogModel.getDescription());
 
         // insert record details
         try {
@@ -1327,6 +1340,10 @@ public class cUploadRAIDRepositoryImpl implements iUploadRAIDRepository {
                     rowD.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             dependencyModel.getDependencyRegisterModel().setRaidRegisterID((int)
                     rowD.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            dependencyModel.setHowValidated(
+                    rowD.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            dependencyModel.setValidated((int)
+                    rowD.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
 
             if (!addDependency(dependencyModel)) {
                 return false;
@@ -1347,6 +1364,8 @@ public class cUploadRAIDRepositoryImpl implements iUploadRAIDRepository {
         cv.put(cSQLDBHelper.KEY_RAID_FK_ID, dependencyModel.getRaidID());
         cv.put(cSQLDBHelper.KEY_DEP_REGISTER_FK_ID,
                 dependencyModel.getDependencyRegisterModel().getRaidRegisterID());
+        cv.put(cSQLDBHelper.KEY_HOW_VALIDATE, dependencyModel.getHowValidated());
+        cv.put(cSQLDBHelper.KEY_VALIDATED, dependencyModel.getValidated());
 
         // insert record details
         try {

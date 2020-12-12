@@ -14,7 +14,7 @@ public class cRobotModel {
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
-    private String name;
+    private String colour;
     private String description;
     private int lowerLimit;
     private int upperLimit;
@@ -78,12 +78,12 @@ public class cRobotModel {
         this.statusBITS = statusBITS;
     }
 
-    public String getName() {
-        return name;
+    public String getColour() {
+        return colour;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setColour(String colour) {
+        this.colour = colour;
     }
 
     public String getDescription() {

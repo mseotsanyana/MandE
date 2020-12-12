@@ -1,6 +1,8 @@
 package com.me.mseotsanyana.mande.PL.presenters.logframe;
 
 import com.me.mseotsanyana.mande.BLL.model.logframe.cImpactModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cOutcomeModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel;
 import com.me.mseotsanyana.mande.PL.presenters.base.iPresenter;
 import com.me.mseotsanyana.mande.PL.ui.iBaseView;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
@@ -17,6 +19,7 @@ public interface iImpactPresenter extends iPresenter {
         void onClickDeleteImpact(int position, long impactID);
         void onClickDeleteSubImpact(int position, long impactID);
         void onClickSyncImpact(cImpactModel impactModel);
+        void onClickDetailImpact(cOutcomeModel[] outcomeModels, cQuestionModel[] questionModels);
 
         /* pass data from interactor to the view */
         void onRetrieveImpactsCompleted(String logFrameName, ArrayList<cTreeModel> impactModelSet);

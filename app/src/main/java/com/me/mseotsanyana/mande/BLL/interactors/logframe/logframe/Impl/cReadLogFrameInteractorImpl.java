@@ -16,6 +16,7 @@ import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -142,6 +143,10 @@ public class cReadLogFrameInteractorImpl extends cAbstractInteractor
                 parentIndex = childIndex + 1;
             }
         }
+
+        /* sort the tree models */
+        Collections.sort(logFrameTreeModels, cTreeModel.childTreeModel);
+
         return logFrameTreeModels;
     }
 

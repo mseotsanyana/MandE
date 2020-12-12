@@ -862,11 +862,11 @@ public class cActivityRepositoryImpl implements iActivityRepository {
 
                     question.setQuestionID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    question.setLogFrameID(
+                    question.getLogFrameModel().setLogFrameID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
-                    question.setQuestionTypeID(
+                    question.getQuestionTypeModel().setQuestionTypeID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID)));
-                    question.setQuestionGroupID(
+                    question.getQuestionGroupingModel().setQuestionGroupingID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_GROUPING_FK_ID)));
                     question.setServerID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));

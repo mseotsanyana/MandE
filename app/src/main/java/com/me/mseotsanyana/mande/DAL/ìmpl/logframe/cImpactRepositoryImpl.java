@@ -248,8 +248,6 @@ public class cImpactRepositoryImpl implements iImpactRepository {
 
                 logFrame.setLogFrameID(
                         cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                //logFrame.setLogFrameParentID(
-                //        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
                 logFrame.setOrganizationID(
                         cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
                 logFrame.setServerID(
@@ -542,11 +540,11 @@ public class cImpactRepositoryImpl implements iImpactRepository {
 
                     question.setQuestionID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    question.setLogFrameID(
+                    question.getLogFrameModel().setLogFrameID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
-                    question.setQuestionGroupID(
+                    question.getQuestionGroupingModel().setQuestionGroupingID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_GROUPING_FK_ID)));
-                    question.setQuestionTypeID(
+                    question.getQuestionTypeModel().setQuestionTypeID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID)));
                     question.setServerID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
@@ -563,7 +561,7 @@ public class cImpactRepositoryImpl implements iImpactRepository {
                     question.setLabel(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LABEL)));
                     question.setQuestion(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION)));
                     question.setStartDate(Timestamp.valueOf(
                             cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
                     question.setEndDate(Timestamp.valueOf(

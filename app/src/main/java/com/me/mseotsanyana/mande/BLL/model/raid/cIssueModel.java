@@ -6,6 +6,10 @@ import com.me.mseotsanyana.mande.BLL.model.raid.cIssueRegisterModel;
 public class cIssueModel extends cRaidModel {
     private cIssueRegisterModel issueRegisterModel;
 
+    public cIssueModel(){
+        issueRegisterModel = new cIssueRegisterModel();
+    }
+
     public cIssueRegisterModel getIssueRegisterModel() {
         return issueRegisterModel;
     }

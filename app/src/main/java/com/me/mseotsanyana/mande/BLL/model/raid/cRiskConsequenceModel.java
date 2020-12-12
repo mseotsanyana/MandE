@@ -18,6 +18,10 @@ public class cRiskConsequenceModel {
 
     private cRiskModel riskModel;
 
+    public cRiskConsequenceModel(){
+        riskModel = new cRiskModel();
+    }
+
     public long getRiskConsequenceID() {
         return riskConsequenceID;
     }

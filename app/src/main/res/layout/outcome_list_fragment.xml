@@ -95,7 +95,7 @@
         android:visibility="visible" />
 
     <com.me.mseotsanyana.bmblibrary.cDraggableFAB
-        android:id="@+id/outcomeFAB"
+        android:id="@+id/outcomeDraggableFAB"
         style="@style/FabStyle"
         android:layout_gravity="bottom|end" />
 

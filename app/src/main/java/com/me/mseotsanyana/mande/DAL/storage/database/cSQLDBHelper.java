@@ -17,7 +17,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     // Database Name
     private static final String DATABASE_NAME = "MEDB.db";
     // Database Version
-    private static final int DATABASE_VERSION = 121;
+    private static final int DATABASE_VERSION = 127;
 
     /*################################ START GLOBAL MODULE TABLES ################################*/
 
@@ -66,38 +66,43 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_tblLOGFRAME              = "tblLOGFRAME";             /* 1  */
     public static final String TABLE_tblLOGFRAMETREE          = "tblLOGFRAMETREE";         /* 2  */
-    public static final String TABLE_tblIMPACT                = "tblIMPACT";               /* 3  */
-    public static final String TABLE_tblOUTCOME               = "tblOUTCOME";              /* 4  */
-    public static final String TABLE_tblOUTPUT                = "tblOUTPUT";               /* 5  */
-    public static final String TABLE_tblWORKPLAN              = "tblWORKPLAN";             /* 6  */
+    public static final String TABLE_tblCOMPONENT             = "tblCOMPONENT";            /* 3  */
+    public static final String TABLE_tblIMPACT                = "tblIMPACT";               /* 4  */
+    public static final String TABLE_tblOUTCOME               = "tblOUTCOME";              /* 5  */
+    public static final String TABLE_tblOUTPUT                = "tblOUTPUT";               /* 6  */
     public static final String TABLE_tblACTIVITY              = "tblACTIVITY";             /* 7  */
     public static final String TABLE_tblINPUT                 = "tblINPUT";                /* 8  */
-    public static final String TABLE_tblRESOURCETYPE          = "tblRESOURCETYPE";         /* 9  */
-    public static final String TABLE_tblRESOURCE              = "tblRESOURCE";             /* 10 */
-    public static final String TABLE_tblEVALUATIONCRITERIA    = "tblEVALUATIONCRITERIA";   /* 11 */
-    public static final String TABLE_tblQUESTIONGROUPING      = "tblQUESTIONGROUPING";     /* 12 */
-    public static final String TABLE_tblQUESTIONTYPE          = "tblQUESTIONTYPE";         /* 13 */
-    public static final String TABLE_tblQUESTION              = "tblQUESTION";             /* 14 */
-    public static final String TABLE_tblPRIMITIVEQUESTION     = "tblPRIMITIVEQUESTION";    /* 15 */
-    public static final String TABLE_tblARRAYQUESTION         = "tblARRAYQUESTION";        /* 16 */
-    public static final String TABLE_tblMATRIXQUESTION        = "tblMATRIXQUESTION";       /* 17 */
-    public static final String TABLE_tblRAIDCATEGORY          = "tblRAIDCATEGORY";         /* 18 */
-    public static final String TABLE_tblRAID                  = "tblRAID";                 /* 19 */
-    public static final String TABLE_tblOUTCOME_IMPACT        = "tblOUTCOME_IMPACT";       /* 20 */
-    public static final String TABLE_tblOUTPUT_OUTCOME        = "tblOUTPUT_OUTCOME";       /* 21 */
-    public static final String TABLE_tblACTIVITY_OUTPUT       = "tblACTIVITY_OUTPUT";      /* 22 */
-    public static final String TABLE_tblINPUT_ACTIVITY        = "tblINPUT_ACTIVITY";       /* 23 */
-    public static final String TABLE_tblPRECEDINGACTIVITY     = "tblPRECEDINGACTIVITY";    /* 24 */
-    public static final String TABLE_tblACTIVITYASSIGNMENT    = "tblACTIVITYASSIGNMENT";   /* 25 */
-    public static final String TABLE_tblIMPACT_QUESTION       = "tblIMPACT_QUESTION";      /* 26 */
-    public static final String TABLE_tblOUTCOME_QUESTION      = "tblOUTCOME_QUESTION";     /* 27 */
-    public static final String TABLE_tblOUTPUT_QUESTION       = "tblOUTPUT_QUESTION";      /* 28 */
-    public static final String TABLE_tblACTIVITY_QUESTION     = "tblACTIVITY_QUESTION";    /* 29 */
-    public static final String TABLE_tblINPUT_QUESTION        = "tblINPUT_QUESTION";       /* 30 */
-    public static final String TABLE_tblIMPACT_RAID           = "tblIMPACT_RAID";          /* 31 */
-    public static final String TABLE_tblOUTCOME_RAID          = "tblOUTCOME_RAID";         /* 32 */
-    public static final String TABLE_tblOUTPUT_RAID           = "tblOUTPUT_RAID";          /* 33 */
-    public static final String TABLE_tblACTIVITY_RAID         = "tblACTIVITY_RAID";        /* 34 */
+    public static final String TABLE_tblPRECEDINGACTIVITY     = "tblPRECEDINGACTIVITY";    /* 9  */
+    public static final String TABLE_tblACTIVITYASSIGNMENT    = "tblACTIVITYASSIGNMENT";   /* 10 */
+    public static final String TABLE_tblRESOURCETYPE          = "tblRESOURCETYPE";         /* 11 */
+    public static final String TABLE_tblOUTCOME_IMPACT        = "tblOUTCOME_IMPACT";       /* 12 */
+    public static final String TABLE_tblOUTPUT_OUTCOME        = "tblOUTPUT_OUTCOME";       /* 13 */
+    public static final String TABLE_tblACTIVITY_OUTPUT       = "tblACTIVITY_OUTPUT";      /* 14 */
+    public static final String TABLE_tblINPUT_ACTIVITY        = "tblINPUT_ACTIVITY";       /* 15 */
+    public static final String TABLE_tblCRITERIA              = "tblCRITERIA";             /* 16 */
+    public static final String TABLE_tblQUESTIONGROUPING      = "tblQUESTIONGROUPING";     /* 17 */
+    public static final String TABLE_tblQUESTIONTYPE          = "tblQUESTIONTYPE";         /* 18 */
+    public static final String TABLE_tblQUESTION              = "tblQUESTION";             /* 19 */
+    public static final String TABLE_tblPRIMITIVEQUESTION     = "tblPRIMITIVEQUESTION";    /* 20 */
+    public static final String TABLE_tblARRAYQUESTION         = "tblARRAYQUESTION";        /* 21 */
+    public static final String TABLE_tblMATRIXQUESTION        = "tblMATRIXQUESTION";       /* 22 */
+    public static final String TABLE_tblQUESTION_CRITERIA     = "tblQUESTION_CRITERIA";    /* 23 */
+    public static final String TABLE_tblRAIDCATEGORY          = "tblRAIDCATEGORY";         /* 24 */
+    public static final String TABLE_tblRAID                  = "tblRAID";                 /* 25 */
+    public static final String TABLE_tblCOMPONENT_RAID         = "tblCOMPONENT_RAID";      /* 26 */
+
+    //public static final String TABLE_tblWORKPLAN              = "tblWORKPLAN";           /* 7  */
+    //public static final String TABLE_tblRESOURCE              = "tblRESOURCE";           /* 11 */
+
+    //public static final String TABLE_tblIMPACT_QUESTION       = "tblIMPACT_QUESTION";      /* 26 */
+    //public static final String TABLE_tblOUTCOME_QUESTION      = "tblOUTCOME_QUESTION";     /* 27 */
+    //public static final String TABLE_tblOUTPUT_QUESTION       = "tblOUTPUT_QUESTION";      /* 28 */
+    //public static final String TABLE_tblACTIVITY_QUESTION     = "tblACTIVITY_QUESTION";    /* 29 */
+    //public static final String TABLE_tblINPUT_QUESTION        = "tblINPUT_QUESTION";       /* 30 */
+    //public static final String TABLE_tblIMPACT_RAID           = "tblIMPACT_RAID";          /* 31 */
+    //public static final String TABLE_tblOUTCOME_RAID          = "tblOUTCOME_RAID";         /* 32 */
+    //public static final String TABLE_tblOUTPUT_RAID           = "tblOUTPUT_RAID";          /* 33 */
+    //public static final String TABLE_tblACTIVITY_RAID         = "tblACTIVITY_RAID";        /* 34 */
 
     /*############################### END LOGFRAME MODULE TABLES #################################*/
 
@@ -168,7 +173,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     /*################################ START RAID MODULE TABLES ##################################*/
 
     public static final String TABLE_tblPIM                   = "tblPIM";                  /* 1  */
-    public static final String TABLE_tblRAIDLIKELIHOOD        = "tblRISKLIKELIHOOD";       /* 2  */
+    public static final String TABLE_tblRAIDLIKELIHOOD        = "tblRAIDLIKELIHOOD";       /* 2  */
     public static final String TABLE_tblRAIDIMPACT            = "tblRAIDIMPACT";           /* 3  */
     public static final String TABLE_tblROBOT                 = "tblROBOT";                /* 4  */
     public static final String TABLE_tblPIMSET                = "tblPIMSET";               /* 5  */
@@ -187,7 +192,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     public static final String TABLE_tblMILESTONEREVIEW       = "tblMILESTONEREVIEW";      /* 18 */
     public static final String TABLE_tblREVIEWCOMMENT         = "tblREVIEWCOMMENT";        /* 19 */
     public static final String TABLE_tblRISKREVIEW            = "tblRISKREVIEW";           /* 20 */
-    public static final String TABLE_tblASSUMPTIONREVIEW      = "ASSUMPTIONREVIEW";        /* 21 */
+    public static final String TABLE_tblASSUMPTIONREVIEW      = "tblASSUMPTIONREVIEW";     /* 21 */
     public static final String TABLE_tblISSUEREVIEW           = "tblISSUEREVIEW";          /* 22 */
     public static final String TABLE_tblDEPENDENCYREVIEW      = "tblDEPENDENCYREVIEW";     /* 23 */
     public static final String TABLE_tblACTION                = "tblACTION";               /* 24 */
@@ -405,8 +410,8 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     public static final String KEY_RISK_PLAN_FK_ID = "_id_risk_plan_fk";
     public static final String KEY_RISK_INDEX = "_id_risk_index_fk";
     public static final String KEY_RISK_MILESTONE_FK_ID = "_id_risk_milestone_fk";
-    public static final String KEY_RISKLIKELIHOOD_VALUE = "value";
-    public static final String KEY_RISKIMPACT_VALUE = "value";
+    public static final String KEY_RAIDLIKELIHOOD_VALUE = "value";
+    public static final String KEY_RAIDIMPACT_VALUE = "value";
 
     public static final String KEY_RISK_ANALYSIS_FK_ID = "_id_risk_analysis_fk";
 
@@ -457,6 +462,9 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
     public static final String KEY_DEPENDENCY_REVIEW_FK_ID = "_id_dependency_review_fk";
     public static final String KEY_ACTION_TASK_FK_ID = "_id_action_task_fk";
     public static final String KEY_RISK_ACTION_FK_ID = "_id_risk_action_fk";
+
+    public static final String KEY_ORIGINATOR_FK_ID = "_id_originator_fk";
+    public static final String KEY_OWNER_FK_ID = "_id_owner_fk";
 
     public static final String KEY_HOW_VALIDATE = "_id_how_validate";
     public static final String KEY_VALIDATED = "_id_validated";
@@ -1542,12 +1550,19 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + KEY_LOGFRAME_FK_ID + " INTEGER NOT NULL, "
             + KEY_RAID_CATEGORY_FK_ID + " INTEGER NOT NULL, "
+            + KEY_ORIGINATOR_FK_ID + " INTEGER NOT NULL, "
+            + KEY_OWNER_FK_ID + " INTEGER NOT NULL, "
+            + KEY_FREQUENCY_FK_ID + " INTEGER NOT NULL, "
+            + KEY_RAID_LIKELIHOOD_FK_ID + " INTEGER NOT NULL, "
+            + KEY_RAID_IMPACT_FK_ID + " INTEGER NOT NULL, "
+            + KEY_ROBOT_FK_ID + " INTEGER NOT NULL, "
             + KEY_SERVER_ID + " INTEGER DEFAULT NULL, "
             + KEY_OWNER_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_ORG_ID + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_GROUP_BITS + " INTEGER NOT NULL DEFAULT 1, "
             + KEY_PERMS_BITS + " INTEGER NOT NULL DEFAULT 4729, "
             + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
+            + KEY_SCORE + " DOUBLE NOT NULL, "
             + KEY_NAME + " TEXT NOT NULL, "
             + KEY_DESCRIPTION + " TEXT NULL, "
             + KEY_START_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
@@ -1555,11 +1570,29 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
+            + " FOREIGN KEY (" + KEY_LOGFRAME_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblLOGFRAME + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
             + " FOREIGN KEY (" + KEY_RAID_CATEGORY_FK_ID + ") "
             + " REFERENCES " + TABLE_tblRAIDCATEGORY + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
-            + " FOREIGN KEY (" + KEY_LOGFRAME_FK_ID + ")"
-            + " REFERENCES " + TABLE_tblLOGFRAME + " (" + KEY_ID + ") "
+            + " FOREIGN KEY (" + KEY_ORIGINATOR_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblHUMANSET + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_OWNER_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblHUMANSET + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_FREQUENCY_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblFREQUENCY + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_RAID_LIKELIHOOD_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblRAIDLIKELIHOOD + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_RAID_IMPACT_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblRAIDIMPACT + " (" + KEY_ID + ") "
+            + " ON DELETE CASCADE ON UPDATE CASCADE, "
+            + " FOREIGN KEY (" + KEY_ROBOT_FK_ID + ")"
+            + " REFERENCES " + TABLE_tblROBOT + " (" + KEY_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE);";
 
     //-- -------------------------------------------------------------------------------------------
@@ -2903,7 +2936,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_NAME + " TEXT NOT NULL, "
             + KEY_DESCRIPTION + " TEXT NULL, "
-            + KEY_RISKLIKELIHOOD_VALUE + " INTEGER, "
+            + KEY_RAIDLIKELIHOOD_VALUE + " INTEGER, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP " + ");";
@@ -2922,7 +2955,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_STATUS_BITS + " INTEGER NOT NULL DEFAULT 0, "
             + KEY_NAME + " TEXT NOT NULL, "
             + KEY_DESCRIPTION + " TEXT NULL, "
-            + KEY_RISKIMPACT_VALUE + " INTEGER, "
+            + KEY_RAIDIMPACT_VALUE + " INTEGER, "
             + KEY_CREATED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP " + ");";
@@ -3175,7 +3208,7 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_RAID_FK_ID + " INTEGER NOT NULL, "
             + KEY_DEP_REGISTER_FK_ID + " INTEGER NOT NULL, "
             + KEY_HOW_VALIDATE + " TEXT NOT NULL, "
-            + KEY_VALIDATED + " BOOLEAN NOT NULL, "
+            + KEY_VALIDATED + " INTEGER NOT NULL, "
             + " PRIMARY KEY (" + KEY_RAID_FK_ID + "),"
             + " FOREIGN KEY (" + KEY_RAID_FK_ID + ") "
             + " REFERENCES " + TABLE_tblRAID + " (" + KEY_ID + ") "
@@ -3234,8 +3267,8 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
             + KEY_MODIFIED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + KEY_SYNCED_DATE + " DATE DEFAULT CURRENT_TIMESTAMP, "
             + " PRIMARY KEY (" + KEY_ID + " ), "
-            + " FOREIGN KEY (" + KEY_ISSUE_FK_ID + ") "
-            + " REFERENCES " + TABLE_tblISSUE + " (" + KEY_RAID_FK_ID + ") "
+            + " FOREIGN KEY (" + KEY_MILESTONE_REVIEW_FK_ID + ") "
+            + " REFERENCES " + TABLE_tblMILESTONEREVIEW + " (" + KEY_MILESTONE_FK_ID + ") "
             + " ON DELETE CASCADE ON UPDATE CASCADE, "
             + " FOREIGN KEY (" + KEY_STAFF_FK_ID + ") "
             + " REFERENCES " + TABLE_tblHUMANSET + " (" + KEY_ID + ") "
@@ -3940,7 +3973,12 @@ public class cSQLDBHelper extends SQLiteOpenHelper {
         /* drop all tables */
         dropTables(db);
 
-        db.execSQL("DROP TABLE IF EXISTS " + "tblMRESPONSE");
+        db.execSQL("DROP TABLE IF EXISTS " + "tblRISKANALYSIS");
+        db.execSQL("DROP TABLE IF EXISTS " + "tblRISKCRITERIA");
+        db.execSQL("DROP TABLE IF EXISTS " + "tblRISKCRITERIASET");
+        db.execSQL("DROP TABLE IF EXISTS " + "tblRISKIMPACT");
+        db.execSQL("DROP TABLE IF EXISTS " + "tblRISKLIKELIHOOD");
+        db.execSQL("DROP TABLE IF EXISTS " + "tblLIKELIHOODSET");
 
         /* create all tables */
         createTables(db);

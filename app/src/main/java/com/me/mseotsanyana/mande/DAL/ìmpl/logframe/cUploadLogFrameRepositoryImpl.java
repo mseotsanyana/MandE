@@ -7,6 +7,7 @@ import android.util.Log;
 import android.util.Pair;
 
 import com.google.gson.Gson;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cRaidCategoryModel;
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iUploadLogFrameRepository;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cWorkplanModel;
 import com.me.mseotsanyana.mande.BLL.model.evaluator.cEvaluationCriteriaModel;
@@ -82,7 +83,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             logFrame.setDescription(
                     cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
-            Set<Long> subLogFrameDomainSet = new HashSet<>();
+            Set<Long> subLogFrameModelSet = new HashSet<>();
             long parentID, childID;
 
             Sheet logFrameTreeSheet = workbook.getSheet(cExcelHelper.SHEET_tblLOGFRAMETREE);
@@ -95,11 +96,11 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
                 parentID = (int) rowLogFrameTree.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 if (logFrame.getLogFrameID() == parentID) {
                     childID = (int) rowLogFrameTree.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    subLogFrameDomainSet.add(childID);
+                    subLogFrameModelSet.add(childID);
                 }
             }
 
-            if (!addLogFrameFromExcel(logFrame, subLogFrameDomainSet)) {
+            if (!addLogFrameFromExcel(logFrame, subLogFrameModelSet)) {
                 return false;
             }
         }
@@ -403,7 +404,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             questionTypeModel.setDescription(
                     cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
-            if (!addQuestionTypeFromExcel(questionTypeModel)) {
+            if (!addQuestionType(questionTypeModel)) {
                 return false;
             }
         }
@@ -417,7 +418,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
      * @param questionTypeModel question grouping model
      * @return boolean
      */
-    public boolean addQuestionTypeFromExcel(cQuestionTypeModel questionTypeModel) {
+    public boolean addQuestionType(cQuestionTypeModel questionTypeModel) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -459,375 +460,6 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         return result > -1;
     }
 
-//    @Override
-//    public boolean addQuestionTypeFromExcel() {
-//        Workbook workbook = excelHelper.getWorkbookLOGFRAME();
-//        Sheet QTSheet = workbook.getSheet(cExcelHelper.SHEET_tblQUESTIONTYPE);
-//        Sheet PSheet = workbook.getSheet(cExcelHelper.SHEET_tblPRIMITIVE_CHART);
-//        Sheet ASheet = workbook.getSheet(cExcelHelper.SHEET_tblARRAY_CHART);
-//        Sheet MSheet = workbook.getSheet(cExcelHelper.SHEET_tblMATRIX_CHART);
-//
-//        if (QTSheet == null) {
-//            return false;
-//        }
-//
-//        for (Row cRow : QTSheet) {
-//            //just skip the row if row number is 0
-//            if (cRow.getRowNum() == 0) {
-//                continue;
-//            }
-//
-//            cQuestionTypeModel questionTypeModel = new cQuestionTypeModel();
-//
-//            questionTypeModel.setQuestionTypeID(
-//                    (int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-//            questionTypeModel.setName(
-//                    cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-//            questionTypeModel.setDescription(
-//                    cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-//
-//
-//            /* get primitive type */
-//            Sheet primitiveSheet = workbook.getSheet(cExcelHelper.SHEET_tblPRIMITIVETYPE);
-//            int questionTypeID, primitiveTypeID = -1;
-//
-//            for (Row rowPrimitive : primitiveSheet) {
-//                //just skip the row if row number is 0
-//                if (rowPrimitive.getRowNum() == 0) {
-//                    continue;
-//                }
-//
-//                questionTypeID = (int) rowPrimitive.getCell(0,
-//                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-//                if (questionTypeModel.getQuestionTypeID() == questionTypeID) {
-//                    primitiveTypeID = questionTypeID;
-//                    break;
-//                }
-//            }
-//
-//            /* get array type */
-//            Sheet arraySheet = workbook.getSheet(cExcelHelper.SHEET_tblARRAYTYPE);
-//            int arrayTypeID = -1;//Pair<Integer, Integer> customTypePair = null;
-//            //int customID, optionID;
-//            for (Row rowArrayType : arraySheet) {
-//                //just skip the row if row number is 0
-//                if (rowArrayType.getRowNum() == 0) {
-//                    continue;
-//                }
-//
-//                questionTypeID = (int) rowArrayType.getCell(0,
-//                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-//                if (questionTypeModel.getQuestionTypeID() == questionTypeID) {
-//                    //optionID = (int) rowCustom.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-//                    //customTypePair = new Pair<>(customID, optionID);
-//                    arrayTypeID = questionTypeID;
-//                    break;
-//                }
-//            }
-//
-//            /* get matrix type */
-//            Sheet matrixSheet = workbook.getSheet(cExcelHelper.SHEET_tblMATRIXTYPE);
-//            int matrixTypeID = -1;//Pair<Integer, Integer> customTypePair = null;
-//            //int customID, optionID;
-//            for (Row rowMatrixType : matrixSheet) {
-//                //just skip the row if row number is 0
-//                if (rowMatrixType.getRowNum() == 0) {
-//                    continue;
-//                }
-//
-//                questionTypeID = (int) rowMatrixType.getCell(0,
-//                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-//                if (questionTypeModel.getQuestionTypeID() == questionTypeID) {
-//                    //optionID = (int) rowCustom.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-//                    //customTypePair = new Pair<>(customID, optionID);
-//                    matrixTypeID = questionTypeID;
-//                    break;
-//                }
-//            }
-//
-//            /* get choice of the question type
-//            Set<Pair<Integer, Integer>> choiceSet = new HashSet<>();
-//            int choiceID;
-//            Sheet choiceSetSheet = workbook.getSheet(cExcelHelper.SHEET_tblCHOICESET);
-//            for (Iterator<Row> ritChoiceSet = choiceSetSheet.iterator(); ritChoiceSet.hasNext(); ) {
-//                Row rowChoiceSet = ritChoiceSet.next();
-//
-//                //just skip the row if row number is 0
-//                if (rowChoiceSet.getRowNum() == 0) {
-//                    continue;
-//                }
-//
-//                questionTypeID = (int) rowChoiceSet.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-//                if (questionTypeModel.getQuestionTypeID() == questionTypeID) {
-//                    choiceID = (int) rowChoiceSet.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-//                    choiceSet.add(new Pair<>(questionTypeID, choiceID));
-//                }
-//            }*/
-//
-//            if (!addQuestionTypeFromExcel(questionTypeModel, primitiveTypeID, arrayTypeID,
-//                    matrixTypeID, PSheet, ASheet, MSheet)) {
-//                return false;
-//            }
-//        }
-//
-//        return true;
-//    }
-//
-//    /**
-//     * This function adds question type to the database.
-//     *
-//     * @param questionTypeModel question type model
-//     * @param primitiveTypeID   primitive type identification
-//     * @param arrayTypeID       array type identification
-//     * @param matrixTypeID      matrix type identification
-//     * @return boolean
-//     */
-//    public boolean addQuestionTypeFromExcel(
-//            cQuestionTypeModel questionTypeModel, int primitiveTypeID, int arrayTypeID,
-//            int matrixTypeID, Sheet PSheet, Sheet ASheet, Sheet MSheet) {
-//
-//        // open the connection to the database
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//
-//        // create content object for storing data
-//        ContentValues cv = new ContentValues();
-//
-//        // assign values to the table fields
-//        cv.put(cSQLDBHelper.KEY_ID, questionTypeModel.getQuestionTypeID());
-//        cv.put(cSQLDBHelper.KEY_NAME, questionTypeModel.getName());
-//        cv.put(cSQLDBHelper.KEY_DESCRIPTION, questionTypeModel.getDescription());
-//
-//        // insert question type details
-//        try {
-//            if (db.insert(cSQLDBHelper.TABLE_tblQUESTIONTYPE, null, cv) < 0) {
-//                return false;
-//            }
-//
-//            /* insert primitive type in the database */
-//            if (primitiveTypeID > -1) {
-//                ContentValues cvPrimitive = new ContentValues();
-//
-//                cvPrimitive.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID, primitiveTypeID);
-//
-//                if (db.insert(cSQLDBHelper.TABLE_tblPRIMITIVETYPE, null,
-//                        cvPrimitive) > 0) {
-//
-//                    for (Row pRow : PSheet){
-//                        if (pRow.getRowNum() == 0) {
-//                            continue;
-//                        }
-//                        long chartID = (int) pRow.getCell(0,
-//                                Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-//                        if (primitiveTypeID == questionTypeModel.getQuestionTypeID()){
-//                            if (!addPrimitiveChart(arrayTypeID, chartID))
-//                                return false;
-//                        }
-//                    }
-//                    return true;
-//                }else{
-//                    return false;
-//                }
-//            }
-//
-//            /* insert array type in the database */
-//            if (arrayTypeID > -1) {
-//                ContentValues cvArrayType = new ContentValues();
-//
-//                cvArrayType.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID, arrayTypeID);
-//
-//                if (db.insert(cSQLDBHelper.TABLE_tblARRAYTYPE, null,
-//                        cvArrayType) > 0) {
-//                    for (Row aRow : ASheet){
-//                        if (aRow.getRowNum() == 0) {
-//                            continue;
-//                        }
-//                        long chartID = (int) aRow.getCell(0,
-//                                Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-//                        if (arrayTypeID == questionTypeModel.getQuestionTypeID()){
-//                            if (!addArrayChart(arrayTypeID, chartID))
-//                                return false;
-//                        }
-//                    }
-//                    return true;
-//                } else {
-//                    return false;
-//                }
-//            }
-//
-//            /* insert matrix type in the database */
-//            if (matrixTypeID > -1) {
-//                ContentValues cvMatrixType = new ContentValues();
-//
-//                cvMatrixType.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID, matrixTypeID);
-//
-//                if (db.insert(cSQLDBHelper.TABLE_tblMATRIXTYPE, null,
-//                        cvMatrixType) > 0) {
-//                    for (Row mRow : MSheet){
-//                        if (mRow.getRowNum() == 0) {
-//                            continue;
-//                        }
-//                        long chartID = (int) mRow.getCell(0,
-//                                Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-//                        if (matrixTypeID == chartID){
-//                            if (!addMatrixChart(matrixTypeID, chartID))
-//                                return false;
-//                        }
-//                    }
-//                    return true;
-//                }else{
-//                    return false;
-//                }
-//            }
-//
-//        } catch (Exception e) {
-//            Log.d(TAG, "Exception in importing QUESTION TYPE from Excel: " + e.getMessage());
-//        }
-//
-//        // close the database connection
-//        db.close();
-//
-//        return true;
-//    }
-//
-//    public boolean addPrimitiveChart(long primitiveTypeID, long chartID) {
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//
-//        ContentValues cv = new ContentValues();
-//
-//        cv.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID, primitiveTypeID);
-//        cv.put(cSQLDBHelper.KEY_CHART_FK_ID, chartID);
-//
-//        return db.insert(cSQLDBHelper.TABLE_tblPRIMITIVE_CHART, null, cv) >= 0;
-//    }
-//
-//    public boolean addArrayChart(long arrayTypeID, long chartID) {
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//
-//        ContentValues cv = new ContentValues();
-//
-//        cv.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID, arrayTypeID);
-//        cv.put(cSQLDBHelper.KEY_CHART_FK_ID, chartID);
-//
-//        return db.insert(cSQLDBHelper.TABLE_tblARRAY_CHART, null, cv) >= 0;
-//    }
-//
-//    public boolean addMatrixChart(long matrixTypeID, long chartID) {
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//
-//        ContentValues cv = new ContentValues();
-//
-//        cv.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID, matrixTypeID);
-//        cv.put(cSQLDBHelper.KEY_CHART_FK_ID, chartID);
-//
-//        return db.insert(cSQLDBHelper.TABLE_tblMATRIX_CHART, null, cv) >= 0;
-//    }
-//
-//    @Override
-//    public boolean deletePrimitiveTypes() {
-//        // open the connection to the database
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//
-//        // delete all records
-//        long result = db.delete(cSQLDBHelper.TABLE_tblPRIMITIVETYPE, null,
-//                null);
-//
-//        // close the database connection
-//        db.close();
-//
-//        return result > -1;
-//    }
-//
-//    @Override
-//    public boolean deletePrimitiveCharts() {
-//        // open the connection to the database
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//
-//        // delete all records
-//        long result = db.delete(cSQLDBHelper.TABLE_tblPRIMITIVE_CHART, null,
-//                null);
-//
-//        // close the database connection
-//        db.close();
-//
-//        return result > -1;
-//    }
-//
-//    @Override
-//    public boolean deleteArrayTypes() {
-//        // open the connection to the database
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//
-//        // delete all records
-//        long result = db.delete(cSQLDBHelper.TABLE_tblARRAYTYPE, null,
-//                null);
-//
-//        // close the database connection
-//        db.close();
-//
-//        return result > -1;
-//    }
-//
-//    @Override
-//    public boolean deleteArrayCharts() {
-//        // open the connection to the database
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//
-//        // delete all records
-//        long result = db.delete(cSQLDBHelper.TABLE_tblARRAY_CHART, null,
-//                null);
-//
-//        // close the database connection
-//        db.close();
-//
-//        return result > -1;
-//    }
-//
-//    @Override
-//    public boolean deleteMatrixTypes() {
-//        // open the connection to the database
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//
-//        // delete all records
-//        long result = db.delete(cSQLDBHelper.TABLE_tblMATRIXTYPE, null,
-//                null);
-//
-//        // close the database connection
-//        db.close();
-//
-//        return result > -1;
-//    }
-//
-//    @Override
-//    public boolean deleteMatrixCharts() {
-//        // open the connection to the database
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//
-//        // delete all records
-//        long result = db.delete(cSQLDBHelper.TABLE_tblMATRIX_CHART, null,
-//                null);
-//
-//        // close the database connection
-//        db.close();
-//
-//        return result > -1;
-//    }
-
-//    @Override
-//    public boolean deleteQuestionTypes() {
-//        // open the connection to the database
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//
-//        // delete all records
-//        long result = db.delete(cSQLDBHelper.TABLE_tblQUESTIONTYPE, null,
-//                null);
-//
-//        // close the database connection
-//        db.close();
-//
-//        return result > -1;
-//    }
-
-
     /* #################################### QUESTION FUNCTIONS ###################################*/
 
     /**
@@ -857,11 +489,11 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
             questionModel.setQuestionID((int) cRow.getCell(0,
                     Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            questionModel.setLogFrameID((int) cRow.getCell(1,
+            questionModel.getLogFrameModel().setLogFrameID((int) cRow.getCell(1,
                     Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            questionModel.setQuestionTypeID((int) cRow.getCell(2,
+            questionModel.getQuestionTypeModel().setQuestionTypeID((int) cRow.getCell(2,
                     Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            questionModel.setQuestionGroupID((int) cRow.getCell(3,
+            questionModel.getQuestionGroupingModel().setQuestionGroupingID((int) cRow.getCell(3,
                     Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             questionModel.setLabel((int) cRow.getCell(4,
                     Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
@@ -952,9 +584,9 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ID, questionModel.getQuestionID());
-        cv.put(cSQLDBHelper.KEY_LOGFRAME_FK_ID, questionModel.getLogFrameID());
-        cv.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID, questionModel.getQuestionTypeID());
-        cv.put(cSQLDBHelper.KEY_QUESTION_GROUPING_FK_ID, questionModel.getQuestionGroupID());
+        cv.put(cSQLDBHelper.KEY_LOGFRAME_FK_ID, questionModel.getLogFrameModel().getLogFrameID());
+        cv.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID, questionModel.getQuestionTypeModel().getQuestionTypeID());
+        cv.put(cSQLDBHelper.KEY_QUESTION_GROUPING_FK_ID, questionModel.getQuestionGroupingModel().getQuestionGroupingID());
         cv.put(cSQLDBHelper.KEY_LABEL, questionModel.getLabel());
         cv.put(cSQLDBHelper.KEY_QUESTION, questionModel.getQuestion());
         cv.put(cSQLDBHelper.KEY_DEFAULT_CHART, questionModel.getDefaultChart());
@@ -1124,96 +756,6 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
         // delete all records
         long result = db.delete(cSQLDBHelper.TABLE_tblMATRIXQUESTION, null,
-                null);
-
-        // close the database connection
-        db.close();
-
-        return result > -1;
-    }
-
-    /* ######################################## RAID FUNCTIONS ########################################*/
-
-    /**
-     * This function extracts raid data from excel and adds it to the database.
-     *
-     * @return boolean
-     */
-    @Override
-    public boolean addRaidFromExcel() {
-        Workbook workbook = excelHelper.getWorkbookLOGFRAME();
-        Sheet RSheet = workbook.getSheet(cExcelHelper.SHEET_tblRAID);
-
-        if (RSheet == null) {
-            return false;
-        }
-
-        for (Row cRow : RSheet) {
-            //just skip the row if row number is 0
-            if (cRow.getRowNum() == 0) {
-                continue;
-            }
-
-            cRaidModel raidModel = new cRaidModel();
-
-            raidModel.setRaidID((int) cRow.getCell(0,
-                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-//            raidModel.setLogFrameID((int) cRow.getCell(1,
-//                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            raidModel.setName(cRow.getCell(2,
-                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            raidModel.setDescription(cRow.getCell(3,
-                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-
-            if (!addRaidFromExcel(raidModel)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * This function adds raid data to the database.
-     *
-     * @param raidModel raid model
-     * @return boolean
-     */
-    public boolean addRaidFromExcel(cRaidModel raidModel) {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // create content object for storing data
-        ContentValues cv = new ContentValues();
-
-        // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, raidModel.getRaidID());
-        //cv.put(cSQLDBHelper.KEY_LOGFRAME_FK_ID, raidModel.getLogFrameID());
-        cv.put(cSQLDBHelper.KEY_NAME, raidModel.getName());
-        cv.put(cSQLDBHelper.KEY_DESCRIPTION, raidModel.getDescription());
-
-        // insert project details
-        try {
-            if (db.insert(cSQLDBHelper.TABLE_tblRAID, null, cv) < 0) {
-                return false;
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Exception in importing RAID from Excel: " + e.getMessage());
-        }
-
-        // close the database connection
-        db.close();
-
-        return true;
-    }
-
-    @Override
-    public boolean deleteRaids() {
-        // open the connection to the database
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // delete all records
-        long result = db.delete(cSQLDBHelper.TABLE_tblRAID, null,
                 null);
 
         // close the database connection
@@ -2142,7 +1684,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
     }
 
     @Override
-    public boolean deleteWorkplans() {
+    public boolean deleteWorkPlans() {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -2614,6 +2156,211 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
         // delete all records
         long result = db.delete(cSQLDBHelper.TABLE_tblACTIVITY, null, null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+    /* ################################## RAID CATEGORY FUNCTIONS ################################*/
+
+    /**
+     * This function extracts RAID category data from excel and adds it to the database.
+     *
+     * @return boolean
+     */
+
+    @Override
+    public boolean addRaidCategoryFromExcel() {
+        Workbook workbook = excelHelper.getWorkbookLOGFRAME();
+        Sheet QTSheet = workbook.getSheet(cExcelHelper.SHEET_tblRAIDCATEGORY);
+
+        if (QTSheet == null) {
+            return false;
+        }
+
+        for (Row cRow : QTSheet) {
+            //just skip the row if row number is 0
+            if (cRow.getRowNum() == 0) {
+                continue;
+            }
+
+            cRaidCategoryModel raidCategoryModel = new cRaidCategoryModel();
+
+            raidCategoryModel.setRaidCategoryID(
+                    (int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            raidCategoryModel.setName(
+                    cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            raidCategoryModel.setDescription(
+                    cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+
+            if (!addRaidCategory(raidCategoryModel)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * This function adds raid category data to the database.
+     *
+     * @param raidCategoryModel raid category model
+     * @return boolean
+     */
+    public boolean addRaidCategory(cRaidCategoryModel raidCategoryModel) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // create content object for storing data
+        ContentValues cv = new ContentValues();
+
+        // assign values to the table fields
+        cv.put(cSQLDBHelper.KEY_ID, raidCategoryModel.getRaidCategoryID());
+        cv.put(cSQLDBHelper.KEY_NAME, raidCategoryModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, raidCategoryModel.getDescription());
+
+        // insert project details
+        try {
+            if (db.insert(cSQLDBHelper.TABLE_tblRAIDCATEGORY, null, cv) < 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in importing RAID CATEGORY from Excel: " + e.getMessage());
+        }
+
+        // close the database connection
+        db.close();
+
+        return true;
+    }
+
+    @Override
+    public boolean deleteRaidCategories() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblRAIDCATEGORY, null,
+                null);
+
+        // close the database connection
+        db.close();
+
+        return result > -1;
+    }
+
+
+    /* ######################################## RAID FUNCTIONS ########################################*/
+
+    /**
+     * This function extracts raid data from excel and adds it to the database.
+     *
+     * @return boolean
+     */
+    @Override
+    public boolean addRaidFromExcel() {
+        Workbook workbook = excelHelper.getWorkbookLOGFRAME();
+        Sheet RSheet = workbook.getSheet(cExcelHelper.SHEET_tblRAID);
+
+        if (RSheet == null) {
+            return false;
+        }
+
+        for (Row cRow : RSheet) {
+            //just skip the row if row number is 0
+            if (cRow.getRowNum() == 0) {
+                continue;
+            }
+
+            cRaidModel raidModel = new cRaidModel();
+
+            raidModel.setRaidID((int) cRow.getCell(0,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            raidModel.getLogFrameModel().setLogFrameID((int) cRow.getCell(1,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            raidModel.getRaidCategoryModel().setRaidCategoryID((int) cRow.getCell(2,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            raidModel.getOriginatorModel().setHumanSetID((int) cRow.getCell(3,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            raidModel.getOwnerModel().setHumanSetID((int) cRow.getCell(4,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            raidModel.getFrequencyModel().setFrequencyID((int) cRow.getCell(5,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            raidModel.getRaidLikelihoodModel().setRaidLikelihoodID((int) cRow.getCell(6,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            raidModel.getRaidImpactModel().setRaidImpactID((int) cRow.getCell(7,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            raidModel.getRobotModel().setRobotID((int) cRow.getCell(8,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            raidModel.setScore((int) cRow.getCell(9,
+                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            raidModel.setName(cRow.getCell(10,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+            raidModel.setDescription(cRow.getCell(11,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+
+            if (!addRaidFromExcel(raidModel)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * This function adds raid data to the database.
+     *
+     * @param raidModel raid model
+     * @return boolean
+     */
+    public boolean addRaidFromExcel(cRaidModel raidModel) {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // create content object for storing data
+        ContentValues cv = new ContentValues();
+
+        // assign values to the table fields
+        cv.put(cSQLDBHelper.KEY_ID, raidModel.getRaidID());
+        cv.put(cSQLDBHelper.KEY_LOGFRAME_FK_ID, raidModel.getLogFrameModel().getLogFrameID());
+        cv.put(cSQLDBHelper.KEY_RAID_CATEGORY_FK_ID,
+                raidModel.getRaidCategoryModel().getRaidCategoryID());
+        cv.put(cSQLDBHelper.KEY_ORIGINATOR_FK_ID, raidModel.getOriginatorModel().getHumanSetID());
+        cv.put(cSQLDBHelper.KEY_OWNER_FK_ID, raidModel.getOwnerModel().getHumanSetID());
+        cv.put(cSQLDBHelper.KEY_FREQUENCY_FK_ID, raidModel.getFrequencyModel().getFrequencyID());
+        cv.put(cSQLDBHelper.KEY_RAID_LIKELIHOOD_FK_ID,
+                raidModel.getRaidLikelihoodModel().getRaidLikelihoodID());
+        cv.put(cSQLDBHelper.KEY_RAID_IMPACT_FK_ID, raidModel.getRaidImpactModel().getRaidImpactID());
+        cv.put(cSQLDBHelper.KEY_ROBOT_FK_ID, raidModel.getRobotModel().getRobotID());
+        cv.put(cSQLDBHelper.KEY_SCORE, raidModel.getScore());
+        cv.put(cSQLDBHelper.KEY_NAME, raidModel.getName());
+        cv.put(cSQLDBHelper.KEY_DESCRIPTION, raidModel.getDescription());
+
+        // insert project details
+        try {
+            if (db.insert(cSQLDBHelper.TABLE_tblRAID, null, cv) < 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Exception in importing RAID from Excel: " + e.getMessage());
+        }
+
+        // close the database connection
+        db.close();
+
+        return true;
+    }
+
+    @Override
+    public boolean deleteRaids() {
+        // open the connection to the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete all records
+        long result = db.delete(cSQLDBHelper.TABLE_tblRAID, null,
+                null);
 
         // close the database connection
         db.close();
@@ -3460,3 +3207,371 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         return result > -1;
     }
 }
+
+//    @Override
+//    public boolean addQuestionTypeFromExcel() {
+//        Workbook workbook = excelHelper.getWorkbookLOGFRAME();
+//        Sheet QTSheet = workbook.getSheet(cExcelHelper.SHEET_tblQUESTIONTYPE);
+//        Sheet PSheet = workbook.getSheet(cExcelHelper.SHEET_tblPRIMITIVE_CHART);
+//        Sheet ASheet = workbook.getSheet(cExcelHelper.SHEET_tblARRAY_CHART);
+//        Sheet MSheet = workbook.getSheet(cExcelHelper.SHEET_tblMATRIX_CHART);
+//
+//        if (QTSheet == null) {
+//            return false;
+//        }
+//
+//        for (Row cRow : QTSheet) {
+//            //just skip the row if row number is 0
+//            if (cRow.getRowNum() == 0) {
+//                continue;
+//            }
+//
+//            cQuestionTypeModel questionTypeModel = new cQuestionTypeModel();
+//
+//            questionTypeModel.setQuestionTypeID(
+//                    (int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            questionTypeModel.setName(
+//                    cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+//            questionTypeModel.setDescription(
+//                    cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+//
+//
+//            /* get primitive type */
+//            Sheet primitiveSheet = workbook.getSheet(cExcelHelper.SHEET_tblPRIMITIVETYPE);
+//            int questionTypeID, primitiveTypeID = -1;
+//
+//            for (Row rowPrimitive : primitiveSheet) {
+//                //just skip the row if row number is 0
+//                if (rowPrimitive.getRowNum() == 0) {
+//                    continue;
+//                }
+//
+//                questionTypeID = (int) rowPrimitive.getCell(0,
+//                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                if (questionTypeModel.getQuestionTypeID() == questionTypeID) {
+//                    primitiveTypeID = questionTypeID;
+//                    break;
+//                }
+//            }
+//
+//            /* get array type */
+//            Sheet arraySheet = workbook.getSheet(cExcelHelper.SHEET_tblARRAYTYPE);
+//            int arrayTypeID = -1;//Pair<Integer, Integer> customTypePair = null;
+//            //int customID, optionID;
+//            for (Row rowArrayType : arraySheet) {
+//                //just skip the row if row number is 0
+//                if (rowArrayType.getRowNum() == 0) {
+//                    continue;
+//                }
+//
+//                questionTypeID = (int) rowArrayType.getCell(0,
+//                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                if (questionTypeModel.getQuestionTypeID() == questionTypeID) {
+//                    //optionID = (int) rowCustom.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    //customTypePair = new Pair<>(customID, optionID);
+//                    arrayTypeID = questionTypeID;
+//                    break;
+//                }
+//            }
+//
+//            /* get matrix type */
+//            Sheet matrixSheet = workbook.getSheet(cExcelHelper.SHEET_tblMATRIXTYPE);
+//            int matrixTypeID = -1;//Pair<Integer, Integer> customTypePair = null;
+//            //int customID, optionID;
+//            for (Row rowMatrixType : matrixSheet) {
+//                //just skip the row if row number is 0
+//                if (rowMatrixType.getRowNum() == 0) {
+//                    continue;
+//                }
+//
+//                questionTypeID = (int) rowMatrixType.getCell(0,
+//                        Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                if (questionTypeModel.getQuestionTypeID() == questionTypeID) {
+//                    //optionID = (int) rowCustom.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    //customTypePair = new Pair<>(customID, optionID);
+//                    matrixTypeID = questionTypeID;
+//                    break;
+//                }
+//            }
+//
+//            /* get choice of the question type
+//            Set<Pair<Integer, Integer>> choiceSet = new HashSet<>();
+//            int choiceID;
+//            Sheet choiceSetSheet = workbook.getSheet(cExcelHelper.SHEET_tblCHOICESET);
+//            for (Iterator<Row> ritChoiceSet = choiceSetSheet.iterator(); ritChoiceSet.hasNext(); ) {
+//                Row rowChoiceSet = ritChoiceSet.next();
+//
+//                //just skip the row if row number is 0
+//                if (rowChoiceSet.getRowNum() == 0) {
+//                    continue;
+//                }
+//
+//                questionTypeID = (int) rowChoiceSet.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                if (questionTypeModel.getQuestionTypeID() == questionTypeID) {
+//                    choiceID = (int) rowChoiceSet.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    choiceSet.add(new Pair<>(questionTypeID, choiceID));
+//                }
+//            }*/
+//
+//            if (!addQuestionTypeFromExcel(questionTypeModel, primitiveTypeID, arrayTypeID,
+//                    matrixTypeID, PSheet, ASheet, MSheet)) {
+//                return false;
+//            }
+//        }
+//
+//        return true;
+//    }
+//
+//    /**
+//     * This function adds question type to the database.
+//     *
+//     * @param questionTypeModel question type model
+//     * @param primitiveTypeID   primitive type identification
+//     * @param arrayTypeID       array type identification
+//     * @param matrixTypeID      matrix type identification
+//     * @return boolean
+//     */
+//    public boolean addQuestionTypeFromExcel(
+//            cQuestionTypeModel questionTypeModel, int primitiveTypeID, int arrayTypeID,
+//            int matrixTypeID, Sheet PSheet, Sheet ASheet, Sheet MSheet) {
+//
+//        // open the connection to the database
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        // create content object for storing data
+//        ContentValues cv = new ContentValues();
+//
+//        // assign values to the table fields
+//        cv.put(cSQLDBHelper.KEY_ID, questionTypeModel.getQuestionTypeID());
+//        cv.put(cSQLDBHelper.KEY_NAME, questionTypeModel.getName());
+//        cv.put(cSQLDBHelper.KEY_DESCRIPTION, questionTypeModel.getDescription());
+//
+//        // insert question type details
+//        try {
+//            if (db.insert(cSQLDBHelper.TABLE_tblQUESTIONTYPE, null, cv) < 0) {
+//                return false;
+//            }
+//
+//            /* insert primitive type in the database */
+//            if (primitiveTypeID > -1) {
+//                ContentValues cvPrimitive = new ContentValues();
+//
+//                cvPrimitive.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID, primitiveTypeID);
+//
+//                if (db.insert(cSQLDBHelper.TABLE_tblPRIMITIVETYPE, null,
+//                        cvPrimitive) > 0) {
+//
+//                    for (Row pRow : PSheet){
+//                        if (pRow.getRowNum() == 0) {
+//                            continue;
+//                        }
+//                        long chartID = (int) pRow.getCell(0,
+//                                Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                        if (primitiveTypeID == questionTypeModel.getQuestionTypeID()){
+//                            if (!addPrimitiveChart(arrayTypeID, chartID))
+//                                return false;
+//                        }
+//                    }
+//                    return true;
+//                }else{
+//                    return false;
+//                }
+//            }
+//
+//            /* insert array type in the database */
+//            if (arrayTypeID > -1) {
+//                ContentValues cvArrayType = new ContentValues();
+//
+//                cvArrayType.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID, arrayTypeID);
+//
+//                if (db.insert(cSQLDBHelper.TABLE_tblARRAYTYPE, null,
+//                        cvArrayType) > 0) {
+//                    for (Row aRow : ASheet){
+//                        if (aRow.getRowNum() == 0) {
+//                            continue;
+//                        }
+//                        long chartID = (int) aRow.getCell(0,
+//                                Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                        if (arrayTypeID == questionTypeModel.getQuestionTypeID()){
+//                            if (!addArrayChart(arrayTypeID, chartID))
+//                                return false;
+//                        }
+//                    }
+//                    return true;
+//                } else {
+//                    return false;
+//                }
+//            }
+//
+//            /* insert matrix type in the database */
+//            if (matrixTypeID > -1) {
+//                ContentValues cvMatrixType = new ContentValues();
+//
+//                cvMatrixType.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID, matrixTypeID);
+//
+//                if (db.insert(cSQLDBHelper.TABLE_tblMATRIXTYPE, null,
+//                        cvMatrixType) > 0) {
+//                    for (Row mRow : MSheet){
+//                        if (mRow.getRowNum() == 0) {
+//                            continue;
+//                        }
+//                        long chartID = (int) mRow.getCell(0,
+//                                Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                        if (matrixTypeID == chartID){
+//                            if (!addMatrixChart(matrixTypeID, chartID))
+//                                return false;
+//                        }
+//                    }
+//                    return true;
+//                }else{
+//                    return false;
+//                }
+//            }
+//
+//        } catch (Exception e) {
+//            Log.d(TAG, "Exception in importing QUESTION TYPE from Excel: " + e.getMessage());
+//        }
+//
+//        // close the database connection
+//        db.close();
+//
+//        return true;
+//    }
+//
+//    public boolean addPrimitiveChart(long primitiveTypeID, long chartID) {
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        ContentValues cv = new ContentValues();
+//
+//        cv.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID, primitiveTypeID);
+//        cv.put(cSQLDBHelper.KEY_CHART_FK_ID, chartID);
+//
+//        return db.insert(cSQLDBHelper.TABLE_tblPRIMITIVE_CHART, null, cv) >= 0;
+//    }
+//
+//    public boolean addArrayChart(long arrayTypeID, long chartID) {
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        ContentValues cv = new ContentValues();
+//
+//        cv.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID, arrayTypeID);
+//        cv.put(cSQLDBHelper.KEY_CHART_FK_ID, chartID);
+//
+//        return db.insert(cSQLDBHelper.TABLE_tblARRAY_CHART, null, cv) >= 0;
+//    }
+//
+//    public boolean addMatrixChart(long matrixTypeID, long chartID) {
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        ContentValues cv = new ContentValues();
+//
+//        cv.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID, matrixTypeID);
+//        cv.put(cSQLDBHelper.KEY_CHART_FK_ID, chartID);
+//
+//        return db.insert(cSQLDBHelper.TABLE_tblMATRIX_CHART, null, cv) >= 0;
+//    }
+//
+//    @Override
+//    public boolean deletePrimitiveTypes() {
+//        // open the connection to the database
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        // delete all records
+//        long result = db.delete(cSQLDBHelper.TABLE_tblPRIMITIVETYPE, null,
+//                null);
+//
+//        // close the database connection
+//        db.close();
+//
+//        return result > -1;
+//    }
+//
+//    @Override
+//    public boolean deletePrimitiveCharts() {
+//        // open the connection to the database
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        // delete all records
+//        long result = db.delete(cSQLDBHelper.TABLE_tblPRIMITIVE_CHART, null,
+//                null);
+//
+//        // close the database connection
+//        db.close();
+//
+//        return result > -1;
+//    }
+//
+//    @Override
+//    public boolean deleteArrayTypes() {
+//        // open the connection to the database
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        // delete all records
+//        long result = db.delete(cSQLDBHelper.TABLE_tblARRAYTYPE, null,
+//                null);
+//
+//        // close the database connection
+//        db.close();
+//
+//        return result > -1;
+//    }
+//
+//    @Override
+//    public boolean deleteArrayCharts() {
+//        // open the connection to the database
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        // delete all records
+//        long result = db.delete(cSQLDBHelper.TABLE_tblARRAY_CHART, null,
+//                null);
+//
+//        // close the database connection
+//        db.close();
+//
+//        return result > -1;
+//    }
+//
+//    @Override
+//    public boolean deleteMatrixTypes() {
+//        // open the connection to the database
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        // delete all records
+//        long result = db.delete(cSQLDBHelper.TABLE_tblMATRIXTYPE, null,
+//                null);
+//
+//        // close the database connection
+//        db.close();
+//
+//        return result > -1;
+//    }
+//
+//    @Override
+//    public boolean deleteMatrixCharts() {
+//        // open the connection to the database
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        // delete all records
+//        long result = db.delete(cSQLDBHelper.TABLE_tblMATRIX_CHART, null,
+//                null);
+//
+//        // close the database connection
+//        db.close();
+//
+//        return result > -1;
+//    }
+
+//    @Override
+//    public boolean deleteQuestionTypes() {
+//        // open the connection to the database
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        // delete all records
+//        long result = db.delete(cSQLDBHelper.TABLE_tblQUESTIONTYPE, null,
+//                null);
+//
+//        // close the database connection
+//        db.close();
+//
+//        return result > -1;
+//    }

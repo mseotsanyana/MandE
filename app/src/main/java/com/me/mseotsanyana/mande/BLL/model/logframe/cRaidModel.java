@@ -3,6 +3,7 @@ package com.me.mseotsanyana.mande.BLL.model.logframe;
 import com.me.mseotsanyana.mande.BLL.model.common.cFrequencyModel;
 import com.me.mseotsanyana.mande.BLL.model.raid.cRAIDImpactModel;
 import com.me.mseotsanyana.mande.BLL.model.raid.cRAIDLikelihoodModel;
+import com.me.mseotsanyana.mande.BLL.model.raid.cRobotModel;
 import com.me.mseotsanyana.mande.BLL.model.wpb.cHumanSetModel;
 
 import java.util.Date;
@@ -15,6 +16,7 @@ public class cRaidModel {
     private int groupBITS;
     private int permsBITS;
     private int statusBITS;
+    private int score;
     private String name;
     private String description;
     private String status;
@@ -25,11 +27,24 @@ public class cRaidModel {
     private Date syncedDate;
 
     private cLogFrameModel logFrameModel;
+    private cRaidCategoryModel raidCategoryModel;
     private cHumanSetModel originatorModel;
     private cHumanSetModel ownerModel;
     private cFrequencyModel frequencyModel;
     private cRAIDLikelihoodModel raidLikelihoodModel;
     private cRAIDImpactModel raidImpactModel;
+    private cRobotModel robotModel;
+
+    public cRaidModel(){
+        logFrameModel = new cLogFrameModel();
+        raidCategoryModel = new cRaidCategoryModel();
+        originatorModel = new cHumanSetModel();
+        ownerModel = new cHumanSetModel();
+        frequencyModel = new cFrequencyModel();
+        raidLikelihoodModel = new cRAIDLikelihoodModel();
+        raidImpactModel = new cRAIDImpactModel();
+        robotModel = new cRobotModel();
+    }
 
     public long getRaidID() {
         return raidID;
@@ -85,6 +100,14 @@ public class cRaidModel {
 
     public void setStatusBITS(int statusBITS) {
         this.statusBITS = statusBITS;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public String getName() {
@@ -151,6 +174,14 @@ public class cRaidModel {
         this.syncedDate = syncedDate;
     }
 
+    public cRaidCategoryModel getRaidCategoryModel() {
+        return raidCategoryModel;
+    }
+
+    public void setRaidCategoryModel(cRaidCategoryModel raidCategoryModel) {
+        this.raidCategoryModel = raidCategoryModel;
+    }
+
     public cLogFrameModel getLogFrameModel() {
         return logFrameModel;
     }
@@ -197,5 +228,13 @@ public class cRaidModel {
 
     public void setRaidImpactModel(cRAIDImpactModel raidImpactModel) {
         this.raidImpactModel = raidImpactModel;
+    }
+
+    public cRobotModel getRobotModel() {
+        return robotModel;
+    }
+
+    public void setRobotModel(cRobotModel robotModel) {
+        this.robotModel = robotModel;
     }
 }

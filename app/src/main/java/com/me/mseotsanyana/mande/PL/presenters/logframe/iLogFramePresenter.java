@@ -43,9 +43,6 @@ public interface iLogFramePresenter extends iPresenter {
 
         /* shared preferences */
         void onRetrieveSharedOrgsCompleted(ArrayList<cOrganizationModel> organizationModels);
-
-        /* common details */
-        cCommonFragmentAdapter onGetCommonFragmentAdapter();
     }
 
     /* pass data from view to the interactor */

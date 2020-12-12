@@ -10,9 +10,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.me.mseotsanyana.mande.BLL.model.wpb.cExpenseModel;
 import com.me.mseotsanyana.mande.PL.ui.adapters.awpb.cExpenseAdapter;
 import com.me.mseotsanyana.mande.R;
-import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.util.ArrayList;
 
@@ -24,9 +24,9 @@ public class cExpenseFragment extends Fragment {
     public cExpenseFragment() {
     }
 
-    public static cExpenseFragment newInstance(ArrayList<cTreeModel> expenseTreeModels) {
+    public static cExpenseFragment newInstance(ArrayList<cExpenseModel> expenseModels) {
         Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("EXPENSE_TREE_MODELS", expenseTreeModels);
+        bundle.putParcelableArrayList("EXPENSE_MODELS", expenseModels);
         cExpenseFragment fragment = new cExpenseFragment();
         fragment.setArguments(bundle);
 
@@ -48,16 +48,15 @@ public class cExpenseFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         assert getArguments() != null;
-        ArrayList<cTreeModel> expenseTreeModels = getArguments().getParcelableArrayList(
-                "EXPENSE_TREE_MODELS");
+        ArrayList<cExpenseModel> expenseModels = getArguments().getParcelableArrayList(
+                "EXPENSE_MODELS");
 
         RecyclerView inputRecyclerView = view.findViewById(R.id.resourcesRecyclerView);
         inputRecyclerView.setHasFixedSize(true);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        expenseAdapter = new cExpenseAdapter(getActivity(), null,
-                expenseTreeModels, -1);
+        expenseAdapter = new cExpenseAdapter(getActivity(), null, expenseModels);
         inputRecyclerView.setAdapter(expenseAdapter);
         inputRecyclerView.setLayoutManager(llm);
     }

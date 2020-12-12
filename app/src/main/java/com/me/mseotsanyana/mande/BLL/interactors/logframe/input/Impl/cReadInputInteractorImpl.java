@@ -87,11 +87,15 @@ public class cReadInputInteractorImpl extends cAbstractInteractor
     }
 
     /* */
-    private void postMessage(Map<Integer, ArrayList<cTreeModel>> inputTreeMap) {
+    private void postMessage(ArrayList<cHumanModel> humanModels,
+                             ArrayList<cMaterialModel> materialModels,
+                             ArrayList<cIncomeModel> incomeModels,
+                             ArrayList<cExpenseModel> expenseModels) {
         mainThread.post(new Runnable() {
             @Override
             public void run() {
-                callback.onInputModelsRetrieved(inputTreeMap);
+                callback.onInputModelsRetrieved(humanModels, materialModels, incomeModels,
+                        expenseModels);
             }
         });
     }
@@ -319,22 +323,24 @@ public class cReadInputInteractorImpl extends cAbstractInteractor
                 Log.d(TAG, "INCOME SIZE = " + gson.toJson(incomeModelSet.size()));
                 Log.d(TAG, "EXPENSE SIZE = " + gson.toJson(expenseModelSet.size()));
 
-                /* get the tree resources */
+                /* get the tree resources
                 ArrayList<cTreeModel> humanModelTree = getHumanModelTree(humanModelSet);
                 ArrayList<cTreeModel> materialModelTree = getMaterialModelTree(materialModelSet);
                 ArrayList<cTreeModel> incomeModelTree = getIncomeModelTree(incomeModelSet);
                 ArrayList<cTreeModel> expenseModelTree = getExpenseModelTree(expenseModelSet);
+                */
 
-                /* update the resources map */
-                Map<Integer, ArrayList<cTreeModel>> inputTreeMap = new HashMap<>();
-                inputTreeMap.put(1, humanModelTree);
-                inputTreeMap.put(2, materialModelTree);
-                inputTreeMap.put(3, incomeModelTree);
-                inputTreeMap.put(4, expenseModelTree);
+                /* update the resources map
+                Map<Integer, ArrayList<Object>> inputTreeMap = new HashMap<>();
+                inputTreeMap.put(1, );
+                inputTreeMap.put(2, );
+                inputTreeMap.put(3, );
+                inputTreeMap.put(4, );
 
-                Log.d(TAG, "INPUT TREE SIZE = " + gson.toJson(inputTreeMap.size()));
+                Log.d(TAG, "INPUT TREE SIZE = " + gson.toJson(inputTreeMap.size()));*/
 
-                postMessage(inputTreeMap);
+                postMessage(new ArrayList<>(humanModelSet), new ArrayList<>(materialModelSet),
+                        new ArrayList<>(incomeModelSet), new ArrayList<>(expenseModelSet));
             } else {
                 notifyError("Failed to read inputs !!");
             }
