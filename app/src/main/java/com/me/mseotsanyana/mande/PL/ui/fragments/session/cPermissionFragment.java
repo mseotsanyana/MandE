@@ -345,9 +345,9 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
             final List<cKeyPairBoolData> keyPairBoolRoles = new ArrayList<>();
             for (int i = 0; i < roleModels.size(); i++) {
                 cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-                idNameBool.setId(roleModels.get(i).getRoleID());
+                //idNameBool.setId(roleModels.get(i).getRoleID());
                 idNameBool.setName(roleModels.get(i).getName());
-                if (0 == roleModels.get(i).getRoleID()) {
+                if (true/*0 == roleModels.get(i).getRoleID()*/) {
                     idNameBool.setSelected(true);
                     Log.d(TAG, "PRIVILEGE ID : " + 0);
 
@@ -364,7 +364,7 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
                     for (int i = 0; i < items.size(); i++) {
                         if (items.get(i).isSelected()) {
                             for (int j = 0; j < roleModels.size(); j++) {
-                                if (items.get(i).getId() == roleModels.get(j).getRoleID()) {
+                                if (true/*items.get(i).getId() == roleModels.get(j).getRoleID()*/) {
                                     //privilege.setPrivilegeID((int) items.get(i).getId());
                                     //privilege.setOrganizationID(roleModels.get(j).getOrganizationID());
                                     //Log.d(TAG, "PRIVILEGE ID : " + privilege.getPrivilegeID());

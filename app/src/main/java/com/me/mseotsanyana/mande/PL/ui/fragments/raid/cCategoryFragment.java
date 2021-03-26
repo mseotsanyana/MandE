@@ -84,10 +84,10 @@ public class cCategoryFragment extends Fragment {
 
     // initialise the floating action button
     private void initFab(View view) {
-        view.findViewById(R.id.category_fab).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = getFragmentManager();
+        //view.findViewById(R.id.category_fab).setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View v) {
+        //        FragmentManager fragmentManager = getFragmentManager();
                 /*-addProjectFragment.setStyle(DialogFragment.STYLE_NORMAL,R.style.CustomDialog);
                 addProjectFragment.setCancelable(false);
                 //addProjectFragment.show(fragmentManager,"fragment_add_project");
@@ -96,7 +96,7 @@ public class cCategoryFragment extends Fragment {
                 addProjectFragment.setTargetFragment(cProjectFragment.this, 0);
                 addProjectFragment.show(fragmentManager,"fragment_add_project");
                 -*/
-            }
-        });
+            //}
+        //});
     }
 }

@@ -68,10 +68,10 @@ public class cExpenseAdapter extends RecyclerView.Adapter<cExpenseAdapter.cExpen
         EH.textViewParentCaption.setText(R.string.activity_caption);
         EH.textViewParent.setText(expenseModel.getActivityModel().getName());
         EH.textViewNameCaption.setText(R.string.input_caption);
-        EH.textViewName.setText(expenseModel.getResourceModel().getName());
+        //--EH.textViewName.setText(expenseModel.getResourceModel().getName());
         EH.textViewNumberCaption.setText(R.string.input_expense_caption);
         EH.textViewNumber.setText(String.valueOf(expenseModel.getExpense()));
-        EH.textViewDescription.setText(expenseModel.getResourceModel().getDescription());
+        //--EH.textViewDescription.setText(expenseModel.getResourceModel().getDescription());
         EH.textViewStartDate.setText(sdf.format(expenseModel.getStartDate()));
         EH.textViewEndDate.setText(sdf.format(expenseModel.getEndDate()));
 
@@ -152,10 +152,10 @@ public class cExpenseAdapter extends RecyclerView.Adapter<cExpenseAdapter.cExpen
 
                     ArrayList<cExpenseModel> filteredList = new ArrayList<>();
                     for (cExpenseModel expenseModel : expenseModels) {
-                        if (expenseModel.getResourceModel().getName().toLowerCase().
-                                contains(charString.toLowerCase())) {
-                            filteredList.add(expenseModel);
-                        }
+//--                        if (expenseModel.getResourceModel().getName().toLowerCase().
+//                                contains(charString.toLowerCase())) {
+//                            filteredList.add(expenseModel);
+//                        }
                     }
 
                     filteredExpenseModels = filteredList;

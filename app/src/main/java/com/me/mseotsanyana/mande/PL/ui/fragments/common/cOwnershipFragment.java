@@ -96,19 +96,17 @@ public class cOwnershipFragment extends Fragment {
         /* primary roles */
         expandablePlaceholderView.addView(new cHeadingView(getContext(), "Primary Role"));
         for (int i = 0; i < roleModels.size(); i++){
-            expandablePlaceholderView.addView(new cRolesView(getContext(),
+            /*expandablePlaceholderView.addView(new cRolesView(getContext(),
                     roleModels.get(i).getName(), roleModels.get(i).getDescription(),
-                    (groupBITS & primaryRoles &
-                            roleModels.get(i).getRoleID()) == roleModels.get(i).getRoleID()));
+                    (groupBITS & primaryRoles & roleModels.get(i).getRoleID()) == roleModels.get(i).getRoleID()));*/
         }
 
         /* secondary roles */
         expandablePlaceholderView.addView(new cHeadingView(getContext(), "Secondary Role"));
         for (int i = 0; i < roleModels.size(); i++){
-            expandablePlaceholderView.addView(new cRolesView(getContext(),
+            /*expandablePlaceholderView.addView(new cRolesView(getContext(),
                     roleModels.get(i).getName(), roleModels.get(i).getDescription(),
-                    (groupBITS & secondaryRoles &
-                            roleModels.get(i).getRoleID()) == roleModels.get(i).getRoleID()));
+                    (groupBITS & secondaryRoles & roleModels.get(i).getRoleID()) == roleModels.get(i).getRoleID()));*/
         }
 
     }
@@ -128,10 +126,10 @@ public class cOwnershipFragment extends Fragment {
     cOrganizationModel getOrganizationOwner(){
         cOrganizationModel organizationModel = null;
         for (int i = 0; i < organizationModels.size(); i++){
-            if (organizationModels.get(i).getOrganizationID() == ownOrgID){
+            /*--if (organizationModels.get(i).getOrganizationID() == ownOrgID){
                 organizationModel = organizationModels.get(i);
                 break;
-            }
+            }*/
         }
 
         return organizationModel;

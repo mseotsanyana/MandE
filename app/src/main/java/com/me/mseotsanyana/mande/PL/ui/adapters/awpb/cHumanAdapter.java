@@ -68,10 +68,10 @@ public class cHumanAdapter extends RecyclerView.Adapter<cHumanAdapter.cHumanPare
         HH.textViewParentCaption.setText(R.string.activity_caption);
         HH.textViewParent.setText(humanModel.getActivityModel().getName());
         HH.textViewNameCaption.setText(R.string.input_caption);
-        HH.textViewName.setText(humanModel.getResourceModel().getName());
+        //--HH.textViewName.setText(humanModel.getResourceModel().getName());
         HH.textViewNumberCaption.setText(R.string.input_number_caption);
         HH.textViewNumber.setText(String.valueOf(humanModel.getQuantity()));
-        HH.textViewDescription.setText(humanModel.getResourceModel().getDescription());
+        //--HH.textViewDescription.setText(humanModel.getResourceModel().getDescription());
         HH.textViewStartDate.setText(sdf.format(humanModel.getStartDate()));
         HH.textViewEndDate.setText(sdf.format(humanModel.getEndDate()));
 
@@ -152,10 +152,10 @@ public class cHumanAdapter extends RecyclerView.Adapter<cHumanAdapter.cHumanPare
 
                     ArrayList<cHumanModel> filteredList = new ArrayList<>();
                     for (cHumanModel humanModel : humanModels) {
-                        if (humanModel.getResourceModel().getName().toLowerCase().
-                                contains(charString.toLowerCase())) {
-                            filteredList.add(humanModel);
-                        }
+//--                        if (humanModel.getResourceModel().getName().toLowerCase().
+//                                contains(charString.toLowerCase())) {
+//                            filteredList.add(humanModel);
+//                        }
                     }
 
                     filteredHumanModels = filteredList;

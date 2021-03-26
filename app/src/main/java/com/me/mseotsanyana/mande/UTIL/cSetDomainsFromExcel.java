@@ -119,8 +119,8 @@ public class cSetDomainsFromExcel {
     public cRoleModel getRoleFromExcel(Row cRow) {
         roleDomain = new cRoleModel();
 
-        roleDomain.setRoleID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-        roleDomain.setOrganizationID((int)cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+        //roleDomain.setRoleID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+        //roleDomain.setOrganizationID((int)cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         roleDomain.setName(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
         roleDomain.setDescription(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
         //roleDomain.setCreateDate(cRow.getCell(4, Row.CREATE_NULL_AS_BLANK).getDateCellValue());
@@ -131,8 +131,8 @@ public class cSetDomainsFromExcel {
     public cMenuModel getMenuFromExcel(Row cRow) {
         menuDomain = new cMenuModel();
 
-        menuDomain.setMenuID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-        menuDomain.setParentID((int)cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+        menuDomain.setMenuServerID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+        menuDomain.setParentServerID((int)cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         menuDomain.setName(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
         menuDomain.setDescription(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
         //menuDomain.setCreateDate(cRow.getCell(4, Row.CREATE_NULL_AS_BLANK).getDateCellValue());

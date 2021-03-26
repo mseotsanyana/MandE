@@ -121,10 +121,10 @@ public class cQuestionAux1Adapter extends cTreeAdapter {
                     HPH.textViewParentCaption.setText(R.string.activity_caption);
                     HPH.textViewParent.setText(humanModel.getActivityModel().getName());
                     HPH.textViewNameCaption.setText(R.string.input_caption);
-                    HPH.textViewName.setText(humanModel.getResourceModel().getName());
+                    //--HPH.textViewName.setText(humanModel.getResourceModel().getName());
                     HPH.textViewNumberCaption.setText(R.string.input_number_caption);
                     HPH.textViewNumber.setText(String.valueOf(humanModel.getQuantity()));
-                    HPH.textViewDescription.setText(humanModel.getResourceModel().getDescription());
+                    //--HPH.textViewDescription.setText(humanModel.getResourceModel().getDescription());
                     HPH.textViewStartDate.setText(sdf.format(humanModel.getStartDate()));
                     HPH.textViewEndDate.setText(sdf.format(humanModel.getEndDate()));
 

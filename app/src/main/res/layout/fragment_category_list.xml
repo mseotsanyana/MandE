@@ -4,42 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <!-- the toolbar layout -->
-    <LinearLayout style="@style/TitleBar">
-        <ImageButton style="@style/TitleBarAction"
-            android:contentDescription="@string/description_home"
-            android:src="@drawable/home_icon"
-            android:onClick="onClickHome" />
 
-        <ImageView style="@style/TitleBarSeparator" />
 
-        <TextView style="@style/TitleBarText"
-            android:text="@string/category_list_title"/>
-
-        <ImageButton style="@style/TitleBarAction"
-            android:contentDescription="@string/description_about"
-            android:src="@drawable/title_about"
-            android:onClick="onClickAbout" />
-        <ImageButton style="@style/TitleBarAction"
-            android:contentDescription="@string/description_search"
-            android:src="@drawable/me_search_item"
-            android:onClick="onClickSearch" />
-    </LinearLayout>
-
-    <android.support.design.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <!-- action_listlist layout -->
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/category_card_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-        <!-- the FAB layout -->
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/category_fab"
-            android:layout_gravity="bottom|end"
-            style="@style/FabStyle"/>
-
-    </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>

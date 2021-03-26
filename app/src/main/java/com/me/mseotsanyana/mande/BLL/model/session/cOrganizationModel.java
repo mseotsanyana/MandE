@@ -2,24 +2,23 @@ package com.me.mseotsanyana.mande.BLL.model.session;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.ContactsContract;
 
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 
 public class cOrganizationModel implements Parcelable {
-    private long organizationID;
-    private int serverID;
-    private int ownerID;
-    private int orgID;
-    private int groupBITS;
-    private int permsBITS;
-    private int statusBITS;
+    private String orgServerID;
+
+    private String ownerID;
+    private String orgOwnerID;
+    private int teamOwnerBIT;
+    private int unixpermsBITS;
+    private int statusesBITS;
+
+    private int orgType;
     private String name;
-    private String phone;
-    private String fax;
-    private String vision;
-    private String mission;
     private String email;
     private String website;
     private Date createdDate;
@@ -33,19 +32,21 @@ public class cOrganizationModel implements Parcelable {
 
     public cOrganizationModel(){}
 
+    public cOrganizationModel(int orgType, String name, String email, String website){
+        this.orgType = orgType;
+        this.name = name;
+        this.email = email;
+        this.website = website;
+    }
+
     public cOrganizationModel(cOrganizationModel organizationModel){
-        this.setOrganizationID(organizationModel.getOrganizationID());
-        this.setServerID(organizationModel.getServerID());
+        this.setOrgServerID(organizationModel.getOrgServerID());
         this.setOwnerID(organizationModel.getOwnerID());
-        this.setOrgID(organizationModel.getOwnerID());
-        this.setGroupBITS(organizationModel.getGroupBITS());
-        this.setPermsBITS(organizationModel.getPermsBITS());
-        this.setStatusBITS(organizationModel.getStatusBITS());
+        this.setOrgOwnerID(organizationModel.getOrgOwnerID());
+        this.setTeamOwnerBIT(organizationModel.getTeamOwnerBIT());
+        this.setUnixpermsBITS(organizationModel.getUnixpermsBITS());
+        this.setStatusesBITS(organizationModel.getStatusesBITS());
         this.setName(organizationModel.getName());
-        this.setPhone(organizationModel.getPhone());
-        this.setFax(organizationModel.getFax());
-        this.setVision(organizationModel.getVision());
-        this.setMission(organizationModel.getMission());
         this.setEmail(organizationModel.getEmail());
         this.setWebsite(organizationModel.getWebsite());
         this.setCreatedDate(organizationModel.getCreatedDate());
@@ -54,88 +55,85 @@ public class cOrganizationModel implements Parcelable {
     }
 
     protected cOrganizationModel(Parcel in) {
-        organizationID = in.readInt();
-        serverID = in.readInt();
-        ownerID = in.readInt();
-        orgID = in.readInt();
-        groupBITS = in.readInt();
-        permsBITS = in.readInt();
-        statusBITS = in.readInt();
+        orgServerID = in.readString();
+        ownerID = in.readString();
+        orgOwnerID = in.readString();
+        teamOwnerBIT = in.readInt();
+        unixpermsBITS = in.readInt();
+        statusesBITS = in.readInt();
         name = in.readString();
-        phone = in.readString();
-        fax = in.readString();
-        vision = in.readString();
-        mission = in.readString();
         email = in.readString();
         website = in.readString();
     }
 
-    public static final Creator<cOrganizationModel> CREATOR = new Creator<cOrganizationModel>() {
-        @Override
-        public cOrganizationModel createFromParcel(Parcel in) {
-            return new cOrganizationModel(in);
-        }
-
-        @Override
-        public cOrganizationModel[] newArray(int size) {
-            return new cOrganizationModel[size];
-        }
-    };
-
-    public long getOrganizationID() {
-        return organizationID;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(orgServerID);
+        dest.writeString(ownerID);
+        dest.writeString(orgOwnerID);
+        dest.writeInt(teamOwnerBIT);
+        dest.writeInt(unixpermsBITS);
+        dest.writeInt(statusesBITS);
+        dest.writeInt(orgType);
+        dest.writeString(name);
+        dest.writeString(email);
+        dest.writeString(website);
     }
 
-    public void setOrganizationID(long organizationID) {
-        this.organizationID = organizationID;
+    public String getOrgServerID() {
+        return orgServerID;
     }
 
-    public int getServerID() {
-        return serverID;
+    public void setOrgServerID(String orgServerID) {
+        this.orgServerID = orgServerID;
     }
 
-    public void setServerID(int serverID) {
-        this.serverID = serverID;
-    }
-
-    public int getOwnerID() {
+    public String getOwnerID() {
         return ownerID;
     }
 
-    public void setOwnerID(int ownerID) {
+    public void setOwnerID(String ownerID) {
         this.ownerID = ownerID;
     }
 
-    public int getOrgID() {
-        return orgID;
+    public String getOrgOwnerID() {
+        return orgOwnerID;
     }
 
-    public void setOrgID(int orgID) {
-        this.orgID = orgID;
+    public void setOrgOwnerID(String orgOwnerID) {
+        this.orgOwnerID = orgOwnerID;
     }
 
-    public int getGroupBITS() {
-        return groupBITS;
+    public int getTeamOwnerBIT() {
+        return teamOwnerBIT;
     }
 
-    public void setGroupBITS(int groupBITS) {
-        this.groupBITS = groupBITS;
+    public void setTeamOwnerBIT(int teamOwnerBIT) {
+        this.teamOwnerBIT = teamOwnerBIT;
     }
 
-    public int getPermsBITS() {
-        return permsBITS;
+    public int getUnixpermsBITS() {
+        return unixpermsBITS;
     }
 
-    public void setPermsBITS(int permsBITS) {
-        this.permsBITS = permsBITS;
+    public void setUnixpermsBITS(int unixpermsBITS) {
+        this.unixpermsBITS = unixpermsBITS;
     }
 
-    public int getStatusBITS() {
-        return statusBITS;
+    public int getStatusesBITS() {
+        return statusesBITS;
     }
 
-    public void setStatusBITS(int statusBITS) {
-        this.statusBITS = statusBITS;
+    public void setStatusesBITS(int statusesBITS) {
+        this.statusesBITS = statusesBITS;
+    }
+
+    public int getOrgType() {
+        return orgType;
+    }
+
+    public void setOrgType(int orgType) {
+        this.orgType = orgType;
     }
 
     public String getName() {
@@ -144,38 +142,6 @@ public class cOrganizationModel implements Parcelable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getFax() {
-        return fax;
-    }
-
-    public void setFax(String fax) {
-        this.fax = fax;
-    }
-
-    public String getVision() {
-        return vision;
-    }
-
-    public void setVision(String vision) {
-        this.vision = vision;
-    }
-
-    public String getMission() {
-        return mission;
-    }
-
-    public void setMission(String mission) {
-        this.mission = mission;
     }
 
     public String getEmail() {
@@ -251,62 +217,21 @@ public class cOrganizationModel implements Parcelable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof cOrganizationModel)) return false;
-        cOrganizationModel that = (cOrganizationModel) o;
-        return getOrganizationID() == that.getOrganizationID() &&
-                getServerID() == that.getServerID() &&
-                getOwnerID() == that.getOwnerID() &&
-                getOrgID() == that.getOrgID() &&
-                getGroupBITS() == that.getGroupBITS() &&
-                getPermsBITS() == that.getPermsBITS() &&
-                getStatusBITS() == that.getStatusBITS() &&
-                Objects.equals(getName(), that.getName()) &&
-                Objects.equals(getPhone(), that.getPhone()) &&
-                Objects.equals(getFax(), that.getFax()) &&
-                Objects.equals(getVision(), that.getVision()) &&
-                Objects.equals(getMission(), that.getMission()) &&
-                Objects.equals(getEmail(), that.getEmail()) &&
-                Objects.equals(getWebsite(), that.getWebsite()) &&
-                Objects.equals(getCreatedDate(), that.getCreatedDate()) &&
-                Objects.equals(getModifiedDate(), that.getModifiedDate()) &&
-                Objects.equals(getSyncedDate(), that.getSyncedDate()) &&
-                Objects.equals(getUserModelSet(), that.getUserModelSet()) &&
-                Objects.equals(getRoleModelSet(), that.getRoleModelSet()) &&
-                Objects.equals(getValueModelSet(), that.getValueModelSet()) &&
-                Objects.equals(getAddressModelSet(), that.getAddressModelSet());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getOrganizationID(), getServerID(), getOwnerID(), getOrgID(),
-                getGroupBITS(), getPermsBITS(), getStatusBITS(), getName(), getPhone(),
-                getFax(), getVision(), getMission(), getEmail(), getWebsite(),
-                getCreatedDate(), getModifiedDate(), getSyncedDate(), getUserModelSet(),
-                getRoleModelSet(), getValueModelSet(), getAddressModelSet());
-    }
-
-    @Override
     public int describeContents() {
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeLong(organizationID);
-        parcel.writeInt(serverID);
-        parcel.writeInt(ownerID);
-        parcel.writeInt(orgID);
-        parcel.writeInt(groupBITS);
-        parcel.writeInt(permsBITS);
-        parcel.writeInt(statusBITS);
-        parcel.writeString(name);
-        parcel.writeString(phone);
-        parcel.writeString(fax);
-        parcel.writeString(vision);
-        parcel.writeString(mission);
-        parcel.writeString(email);
-        parcel.writeString(website);
-    }
+    public static final Creator<cOrganizationModel> CREATOR = new Creator<cOrganizationModel>() {
+        @Override
+        public cOrganizationModel createFromParcel(Parcel in) {
+            return new cOrganizationModel(in);
+        }
+
+        @Override
+        public cOrganizationModel[] newArray(int size) {
+            return new cOrganizationModel[size];
+        }
+    };
+
+
 }

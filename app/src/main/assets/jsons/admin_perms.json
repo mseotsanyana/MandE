@@ -1,0 +1,240 @@
+{
+  "permissions": [
+    {
+      "id": 1,
+      "entity": "USER",
+      "operations": [
+        {
+          "action": 1,
+          "status": 0
+        },
+        {
+          "action": 2,
+          "status": 0
+        },
+        {
+          "action": 4,
+          "status": 0
+        },
+        {
+          "action": 8,
+          "status": 2
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "entity": "SESSION",
+      "operations": [
+        {
+          "action": 1,
+          "status": 0
+        },
+        {
+          "action": 2,
+          "status": 0
+        },
+        {
+          "action": 4,
+          "status": 0
+        },
+        {
+          "action": 8,
+          "status": 0
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "entity": "ORGANIZATION",
+      "operations": [
+        {
+          "action": 1,
+          "status": 0
+        },
+        {
+          "action": 2,
+          "status": 0
+        },
+        {
+          "action": 4,
+          "status": 0
+        },
+        {
+          "action": 8,
+          "status": 0
+        },
+        {
+          "action": 16,
+          "status": 2
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "entity": "ADDRESS",
+      "operations": [
+        {
+          "action": 1,
+          "status": 0
+        },
+        {
+          "action": 2,
+          "status": 0
+        },
+        {
+          "action": 4,
+          "status": 0
+        },
+        {
+          "action": 8,
+          "status": 0
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "entity": "EMAIL",
+      "operations": [
+        {
+          "action": 1,
+          "status": 0
+        },
+        {
+          "action": 2,
+          "status": 0
+        },
+        {
+          "action": 4,
+          "status": 0
+        },
+        {
+          "action": 8,
+          "status": 0
+        },
+        {
+          "action": 16,
+          "status": 2
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "entity": "TEAM",
+      "operations": [
+        {
+          "action": 1,
+          "status": 0
+        },
+        {
+          "action": 2,
+          "status": 0
+        },
+        {
+          "action": 4,
+          "status": 0
+        },
+        {
+          "action": 8,
+          "status": 0
+        },
+        {
+          "action": 16,
+          "status": 2
+        }
+      ]
+    },
+    {
+      "id": 64,
+      "entity": "ROLE",
+      "operations": [
+        {
+          "action": 1,
+          "status": 0
+        },
+        {
+          "action": 2,
+          "status": 0
+        },
+        {
+          "action": 4,
+          "status": 0
+        },
+        {
+          "action": 8,
+          "status": 0
+        },
+        {
+          "action": 16,
+          "status": 2
+        }
+      ]
+    },
+    {
+      "id": 128,
+      "entity": "PLAN",
+      "operations": [
+        {
+          "action": 1,
+          "status": 0
+        },
+        {
+          "action": 2,
+          "status": 0
+        },
+        {
+          "action": 4,
+          "status": 0
+        },
+        {
+          "action": 8,
+          "status": 0
+        }
+      ]
+    },
+    {
+      "id": 256,
+      "entity": "FEATURE",
+      "operations": [
+        {
+          "action": 1,
+          "status": 0
+        },
+        {
+          "action": 2,
+          "status": 0
+        },
+        {
+          "action": 4,
+          "status": 0
+        },
+        {
+          "action": 8,
+          "status": 0
+        }
+      ]
+    },
+    {
+      "id": 512,
+      "entity": "MENU",
+      "operations": [
+        {
+          "action": 1,
+          "status": 0
+        },
+        {
+          "action": 2,
+          "status": 0
+        },
+        {
+          "action": 4,
+          "status": 0
+        },
+        {
+          "action": 8,
+          "status": 0
+        }
+      ]
+    }
+  ]
+}

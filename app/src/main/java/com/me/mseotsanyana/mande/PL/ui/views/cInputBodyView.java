@@ -114,8 +114,8 @@ public class cInputBodyView extends cTreeAdapter {
         this.listener = listener;
         this.inputModel = inputModel;
         this.activity = inputModel.getActivityModel().getName();
-        this.input = inputModel.getResourceModel().getName();
-        this.description = inputModel.getResourceModel().getDescription();
+        this.input = inputModel.getResourceTypeModel().getName();
+        this.description = inputModel.getResourceTypeModel().getDescription();
         this.startDate = sdf.format(inputModel.getStartDate());
         this.endDate = sdf.format(inputModel.getEndDate());
     }
@@ -205,7 +205,7 @@ public class cInputBodyView extends cTreeAdapter {
 
     @Click(R.id.textViewDeleteIcon)
     void onDeleteIconClick(){
-        listener.onClickDeleteInput(childPosition, inputModel.getInputID());
+        listener.onClickDeleteInput(childPosition, inputModel.getComponentID());
     }
 
     @Click(R.id.textViewSyncIcon)

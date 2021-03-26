@@ -56,6 +56,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="cDashboardFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-2505" />
+                            <option name="y" value="-1063" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="cDependencyRegisterFragment">
                     <value>
                       <LayoutPositions>
@@ -101,6 +113,27 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="cHomeFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-2606" />
+                            <option name="y" value="-616" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_cHomeFragment_to_cLoginFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="cImpactDetailFragment">
                     <value>
                       <LayoutPositions>
@@ -121,6 +154,15 @@
                             <option name="x" value="-1843" />
                             <option name="y" value="-1069" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_cImpactFragment_to_cImpactDetailFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -156,18 +198,6 @@
                           <Point>
                             <option name="x" value="-1020" />
                             <option name="y" value="-305" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="cJoinFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="-2322" />
-                            <option name="y" value="-1404" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -254,13 +284,18 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-2543" />
-                            <option name="y" value="-616" />
+                            <option name="x" value="-2852" />
+                            <option name="y" value="-617" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_cLoginFragment_to_cLogFrameFragment">
+                            <entry key="action_cLoginFragment_to_cHomeFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_cLoginFragment_to_cSignUpFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -277,6 +312,30 @@
                           <Point>
                             <option name="x" value="-1553" />
                             <option name="y" value="-178" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="cNotificationFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-2518" />
+                            <option name="y" value="-1788" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="cOrganizationFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-2288" />
+                            <option name="y" value="-1072" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -354,18 +413,6 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="cRegisterFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="-2078" />
-                            <option name="y" value="-1404" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
                   <entry key="cRiskRegisterFragment">
                     <value>
                       <LayoutPositions>
@@ -383,9 +430,35 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-2566" />
-                            <option name="y" value="-1404" />
+                            <option name="x" value="-2331" />
+                            <option name="y" value="-1793" />
                           </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="cSignUpFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-2756" />
+                            <option name="y" value="-1034" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_cSignUpFragment_to_cHomeFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_cSignUpFragment_to_cLoginFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

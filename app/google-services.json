@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "226479659517",
+    "firebase_url": "https://imonitorperformance-default-rtdb.firebaseio.com",
+    "project_id": "imonitorperformance",
+    "storage_bucket": "imonitorperformance.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226479659517:android:4397455d5a787fabbbe194",
+        "android_client_info": {
+          "package_name": "com.me.mseotsanyana.mande"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "226479659517-qaouu6o0mutsrofboqig3776qedl777i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9gpCi-_57Xh4apftUrRbNVYi6_bJDSfo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "226479659517-qaouu6o0mutsrofboqig3776qedl777i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

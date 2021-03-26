@@ -106,7 +106,7 @@ public class cUploadSessionData extends AsyncTask<String, Integer, String> {
     protected String doInBackground(String... params) {
         try {
             AssetManager assetManager = context.getAssets();
-            InputStream excelFile = assetManager.open("SESSION.xlsx");
+            InputStream excelFile = assetManager.open("excels/SESSION.xlsx");
             Workbook workbook = new XSSFWorkbook(excelFile);
 
             int allRows = 0;

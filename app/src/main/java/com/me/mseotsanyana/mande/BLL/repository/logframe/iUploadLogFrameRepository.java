@@ -1,46 +1,24 @@
 package com.me.mseotsanyana.mande.BLL.repository.logframe;
 
 public interface iUploadLogFrameRepository {
-    boolean deleteEvaluationCriteria();
+    boolean deleteLogFrame();
+    boolean deleteLogFrameTree();
 
-    boolean deleteQuestionGroupings();
-    boolean deleteQuestionTypes();
-    boolean deleteQuestions();
+    boolean deleteResourceTypes();
 
-    boolean deletePrimitiveQuestions();
-    boolean deleteArrayQuestions();
-    boolean deleteMatrixQuestions();
-
-    boolean deleteRaidCategories();
-    boolean deleteRaids();
-
-    boolean deleteImpactQuestions();
-    boolean deleteImpactRaids();
+    boolean deleteComponents();
     boolean deleteImpacts();
-
     boolean deleteOutcomeImpacts();
-    boolean deleteOutcomeQuestions();
-    boolean deleteOutcomeRaids();
     boolean deleteOutcomes();
-
     boolean deleteOutputOutcomes();
-    boolean deleteOutputQuestions();
-    boolean deleteOutputRaids();
     boolean deleteOutputs();
 
-    boolean deleteWorkPlans();
-
+    boolean deleteActivities();
     boolean deletePrecedingActivities();
     boolean deleteActivityAssignments();
     boolean deleteActivityOutputs();
-    boolean deleteActivityQuestions();
-    boolean deleteActivityRaids();
-    boolean deleteActivities();
 
-    boolean deleteResourceTypes();
-    boolean deleteResources();
-
-    boolean deleteInputQuestions();
+    boolean deleteInputs();
     boolean deleteInputActivities();
     boolean deleteHumans();
     boolean deleteHumanSets();
@@ -48,25 +26,50 @@ public interface iUploadLogFrameRepository {
     boolean deleteIncomes();
     boolean deleteFunds();
     boolean deleteExpenses();
-    boolean deleteInputs();
 
-    boolean deleteLogFrameTree();
-    boolean deleteLogFrame();
+    boolean deleteCriteria();
+    boolean deleteQuestionGroupings();
+    boolean deleteQuestionTypes();
+    boolean deleteQuestions();
+    boolean deleteQuestionCriteria();
+
+    boolean deletePrimitiveQuestions();
+    boolean deleteArrayQuestions();
+    boolean deleteMatrixQuestions();
+
+    boolean deleteRaidCategories();
+    boolean deleteRaids();
+    boolean deleteComponentRaids();
 
     /* add (create) functions */
     boolean addLogFrameFromExcel();
-    boolean addEvaluationCriteriaFromExcel();
+    boolean addResourceTypeFromExcel();
+    boolean addComponentFromExcel();
+
+    boolean addCriteriaFromExcel();
     boolean addQuestionGroupingFromExcel();
     boolean addQuestionTypeFromExcel();
     boolean addQuestionFromExcel();
+
     boolean addRaidCategoryFromExcel();
     boolean addRaidFromExcel();
-    boolean addImpactFromExcel();
+
+    /*boolean addImpactFromExcel();
     boolean addOutcomeFromExcel();
     boolean addOutputFromExcel();
     boolean addWorkplanFromExcel();
-    boolean addActivityFromExcel();
-    boolean addResourceTypeFromExcel();
-    boolean addResourceFromExcel();
-    boolean addInputFromExcel();
+    boolean addActivityFromExcel();*/
+    //boolean addResourceFromExcel();
+    //boolean addInputFromExcel();
+    //boolean deleteImpactQuestions();
+    //boolean deleteImpactRaids();
+    //boolean deleteOutcomeQuestions();
+    //boolean deleteOutcomeRaids();
+    //boolean deleteOutputQuestions();
+    //boolean deleteOutputRaids();
+    //boolean deleteWorkPlans();
+    //boolean deleteActivityQuestions();
+    //boolean deleteActivityRaids()
+    //boolean deleteResources();
+    //boolean deleteInputQuestions();
 }

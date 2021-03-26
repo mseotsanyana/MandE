@@ -12,9 +12,6 @@ import java.util.Set;
 
 public class cQuestionModel implements Parcelable {
     private long questionID;
-    //private long logFrameID;
-    //private long questionTypeID;
-    //private long questionGroupID;
     private long serverID;
     private long ownerID;
     private long orgID;
@@ -32,6 +29,8 @@ public class cQuestionModel implements Parcelable {
 
     /* logframe */
     private cLogFrameModel logFrameModel;
+    /* component */
+    private cComponentModel componentModel;
     /* questions on the same page */
     private cQuestionGroupingModel questionGroupingModel;
     /* link to primitive type, array type and matrix type */
@@ -67,6 +66,7 @@ public class cQuestionModel implements Parcelable {
     }
     public cQuestionModel(){
         logFrameModel = new cLogFrameModel();
+        componentModel = new cComponentModel();
         questionGroupingModel = new cQuestionGroupingModel();
         questionTypeModel = new cQuestionTypeModel();
 
@@ -200,6 +200,14 @@ public class cQuestionModel implements Parcelable {
 
     public void setLogFrameModel(cLogFrameModel logFrameModel) {
         this.logFrameModel = logFrameModel;
+    }
+
+    public cComponentModel getComponentModel() {
+        return componentModel;
+    }
+
+    public void setComponentModel(cComponentModel componentModel) {
+        this.componentModel = componentModel;
     }
 
     public cQuestionGroupingModel getQuestionGroupingModel() {

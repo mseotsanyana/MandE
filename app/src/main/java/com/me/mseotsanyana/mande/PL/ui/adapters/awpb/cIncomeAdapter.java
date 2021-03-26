@@ -69,10 +69,10 @@ public class cIncomeAdapter extends RecyclerView.Adapter<cIncomeAdapter.cIncomeP
         IH.textViewParentCaption.setText(R.string.activity_caption);
         IH.textViewParent.setText(incomeModel.getActivityModel().getName());
         IH.textViewNameCaption.setText(R.string.input_caption);
-        IH.textViewName.setText(incomeModel.getResourceModel().getName());
+        //--IH.textViewName.setText(incomeModel.getResourceModel().getName());
         IH.textViewNumberCaption.setText(R.string.input_income_caption);
         //IH.textViewNumber.setText(String.valueOf(incomeModel.);
-        IH.textViewDescription.setText(incomeModel.getResourceModel().getDescription());
+        //--IH.textViewDescription.setText(incomeModel.getResourceModel().getDescription());
         IH.textViewStartDate.setText(sdf.format(incomeModel.getStartDate()));
         IH.textViewEndDate.setText(sdf.format(incomeModel.getEndDate()));
 
@@ -153,10 +153,10 @@ public class cIncomeAdapter extends RecyclerView.Adapter<cIncomeAdapter.cIncomeP
 
                     ArrayList<cIncomeModel> filteredList = new ArrayList<>();
                     for (cIncomeModel incomeModel : incomeModels) {
-                        if (incomeModel.getResourceModel().getName().toLowerCase().
-                                contains(charString.toLowerCase())) {
-                            filteredList.add(incomeModel);
-                        }
+//--                        if (incomeModel.getResourceModel().getName().toLowerCase().
+//                                contains(charString.toLowerCase())) {
+//                            filteredList.add(incomeModel);
+//                        }
                     }
 
                     filteredIncomeModels = filteredList;

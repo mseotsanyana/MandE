@@ -13,16 +13,19 @@ import java.util.Set;
  */
 
 public class cRoleModel implements Parcelable {
-    private int roleID;
-    private int organizationID;
-    private int serverID;
-    private int ownerID;
-    private int orgID;
-    private int groupBITS;
-    private int permsBITS;
-    private int statusBITS;
+    private String roleServerID;
+    private int planServerID;
+    private String orgServerID;
+
+    private String ownerID;
+    private String orgOwnerID;
+    private int teamOwnerBIT;
+    private int unixpermsBITS;
+    private int statusesBITS;
+
     private String name;
     private String description;
+
     private Date createdDate;
     private Date modifiedDate;
     private Date syncedDate;
@@ -35,73 +38,73 @@ public class cRoleModel implements Parcelable {
     private Set<cMenuModel> menuModelSet;
 
     public cRoleModel(){
-        userModelSet    = new HashSet<>();
-        sessionModelSet = new HashSet<>();
-        menuModelSet    = new HashSet<>();
+        //userModelSet    = new HashSet<>();
+        //sessionModelSet = new HashSet<>();
+        //menuModelSet    = new HashSet<>();
     }
 
-    public int getRoleID() {
-        return roleID;
+    public String getRoleServerID() {
+        return roleServerID;
     }
 
-    public void setRoleID(int roleID) {
-        this.roleID = roleID;
+    public void setRoleServerID(String roleServerID) {
+        this.roleServerID = roleServerID;
     }
 
-    public int getOrganizationID() {
-        return organizationID;
+    public int getPlanServerID() {
+        return planServerID;
     }
 
-    public void setOrganizationID(int organizationID) {
-        this.organizationID = organizationID;
+    public void setPlanServerID(int planServerID) {
+        this.planServerID = planServerID;
     }
 
-    public int getServerID() {
-        return serverID;
+    public String getOrgServerID() {
+        return orgServerID;
     }
 
-    public void setServerID(int serverID) {
-        this.serverID = serverID;
+    public void setOrgServerID(String orgServerID) {
+        this.orgServerID = orgServerID;
     }
 
-    public int getOwnerID() {
+    public String getOwnerID() {
         return ownerID;
     }
 
-    public void setOwnerID(int ownerID) {
+    public void setOwnerID(String ownerID) {
         this.ownerID = ownerID;
     }
 
-    public int getOrgID() {
-        return orgID;
+    public String getOrgOwnerID() {
+        return orgOwnerID;
     }
 
-    public void setOrgID(int orgID) {
-        this.orgID = orgID;
+    public void setOrgOwnerID(String orgOwnerID) {
+        this.orgOwnerID = orgOwnerID;
     }
 
-    public int getGroupBITS() {
-        return groupBITS;
+    public int getTeamOwnerBIT() {
+        return teamOwnerBIT;
     }
 
-    public void setGroupBITS(int groupBITS) {
-        this.groupBITS = groupBITS;
+    public void setTeamOwnerBIT(int teamOwnerBIT) {
+        this.teamOwnerBIT = teamOwnerBIT;
     }
 
-    public int getPermsBITS() {
-        return permsBITS;
+    public int getUnixpermsBITS() {
+        return unixpermsBITS;
     }
 
-    public void setPermsBITS(int permsBITS) {
-        this.permsBITS = permsBITS;
+    public void setUnixpermsBITS(int unixpermsBITS) {
+        this.unixpermsBITS = unixpermsBITS;
     }
 
-    public int getStatusBITS() {
-        return statusBITS;
+    public int getStatusesBITS() {
+        return statusesBITS;
     }
 
-    public void setStatusBITS(int statusBITS) {
-        this.statusBITS = statusBITS;
+    public void setStatusesBITS(int statusesBITS) {
+        this.statusesBITS = statusesBITS;
     }
 
     public String getName() {
@@ -168,14 +171,6 @@ public class cRoleModel implements Parcelable {
         this.sessionModelSet = sessionModelSet;
     }
 
-    public Set<cMenuModel> getMenuModelSet() {
-        return menuModelSet;
-    }
-
-    public void setMenuModelSet(Set<cMenuModel> menuModelSet) {
-        this.menuModelSet = menuModelSet;
-    }
-
     public Set<cPermissionModel> getPermissionModelSet() {
         return permissionModelSet;
     }
@@ -184,64 +179,41 @@ public class cRoleModel implements Parcelable {
         this.permissionModelSet = permissionModelSet;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof cRoleModel)) return false;
-        cRoleModel roleModel = (cRoleModel) o;
-        return getRoleID() == roleModel.getRoleID() &&
-                getOrganizationID() == roleModel.getOrganizationID() &&
-                getServerID() == roleModel.getServerID() &&
-                getOwnerID() == roleModel.getOwnerID() &&
-                getOrgID() == roleModel.getOrgID() &&
-                getGroupBITS() == roleModel.getGroupBITS() &&
-                getPermsBITS() == roleModel.getPermsBITS() &&
-                getStatusBITS() == roleModel.getStatusBITS() &&
-                Objects.equals(getName(), roleModel.getName()) &&
-                Objects.equals(getDescription(), roleModel.getDescription()) &&
-                Objects.equals(getCreatedDate(), roleModel.getCreatedDate()) &&
-                Objects.equals(getModifiedDate(), roleModel.getModifiedDate()) &&
-                Objects.equals(getSyncedDate(), roleModel.getSyncedDate()) &&
-                Objects.equals(getOrganizationModel(), roleModel.getOrganizationModel()) &&
-                Objects.equals(getUserModelSet(), roleModel.getUserModelSet()) &&
-                Objects.equals(getSessionModelSet(), roleModel.getSessionModelSet()) &&
-                Objects.equals(getMenuModelSet(), roleModel.getMenuModelSet());
+    public Set<cMenuModel> getMenuModelSet() {
+        return menuModelSet;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getRoleID(), getOrganizationID(), getServerID(),
-                getOwnerID(), getOrgID(), getGroupBITS(), getPermsBITS(),
-                getStatusBITS(), getName(), getDescription(), getCreatedDate(),
-                getModifiedDate(), getSyncedDate(), getOrganizationModel(),
-                getUserModelSet(), getSessionModelSet(), getMenuModelSet());
+    public void setMenuModelSet(Set<cMenuModel> menuModelSet) {
+        this.menuModelSet = menuModelSet;
     }
 
     protected cRoleModel(Parcel in) {
-        roleID = in.readInt();
-        organizationID = in.readInt();
-        serverID = in.readInt();
-        ownerID = in.readInt();
-        orgID = in.readInt();
-        groupBITS = in.readInt();
-        permsBITS = in.readInt();
-        statusBITS = in.readInt();
+        roleServerID = in.readString();
+        planServerID = in.readInt();
+        orgServerID = in.readString();
+        ownerID = in.readString();
+        orgOwnerID = in.readString();
+        teamOwnerBIT = in.readInt();
+        unixpermsBITS = in.readInt();
+        statusesBITS = in.readInt();
         name = in.readString();
         description = in.readString();
+        organizationModel = in.readParcelable(cOrganizationModel.class.getClassLoader());
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(roleID);
-        dest.writeInt(organizationID);
-        dest.writeInt(serverID);
-        dest.writeInt(ownerID);
-        dest.writeInt(orgID);
-        dest.writeInt(groupBITS);
-        dest.writeInt(permsBITS);
-        dest.writeInt(statusBITS);
+        dest.writeString(roleServerID);
+        dest.writeInt(planServerID);
+        dest.writeString(orgServerID);
+        dest.writeString(ownerID);
+        dest.writeString(orgOwnerID);
+        dest.writeInt(teamOwnerBIT);
+        dest.writeInt(unixpermsBITS);
+        dest.writeInt(statusesBITS);
         dest.writeString(name);
         dest.writeString(description);
+        dest.writeParcelable(organizationModel, flags);
     }
 
     @Override
@@ -260,4 +232,5 @@ public class cRoleModel implements Parcelable {
             return new cRoleModel[size];
         }
     };
+
 }

@@ -69,10 +69,10 @@ public class cMaterialAdapter extends RecyclerView.Adapter<cMaterialAdapter.cMat
         MH.textViewParentCaption.setText(R.string.activity_caption);
         MH.textViewParent.setText(materialModel.getActivityModel().getName());
         MH.textViewNameCaption.setText(R.string.input_caption);
-        MH.textViewName.setText(materialModel.getResourceModel().getName());
+        //--MH.textViewName.setText(materialModel.getResourceModel().getName());
         MH.textViewNumberCaption.setText(R.string.input_number_caption);
         MH.textViewNumber.setText(String.valueOf(materialModel.getQuantity()));
-        MH.textViewDescription.setText(materialModel.getResourceModel().getDescription());
+        //--MH.textViewDescription.setText(materialModel.getResourceModel().getDescription());
         MH.textViewStartDate.setText(sdf.format(materialModel.getStartDate()));
         MH.textViewEndDate.setText(sdf.format(materialModel.getEndDate()));
 
@@ -153,10 +153,10 @@ public class cMaterialAdapter extends RecyclerView.Adapter<cMaterialAdapter.cMat
 
                     ArrayList<cMaterialModel> filteredList = new ArrayList<>();
                     for (cMaterialModel materialModel : materialModels) {
-                        if (materialModel.getResourceModel().getName().toLowerCase().
-                                contains(charString.toLowerCase())) {
-                            filteredList.add(materialModel);
-                        }
+//---                        if (materialModel.getResourceModel().getName().toLowerCase().
+//                                contains(charString.toLowerCase())) {
+//                            filteredList.add(materialModel);
+//                        }
                     }
 
                     filteredMaterialModels = filteredList;

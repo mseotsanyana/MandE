@@ -73,25 +73,32 @@ public class cExcelHelper {
 
     /*############################## START LOGFRAME MODULE TABLES ################################*/
 
-    public static final String SHEET_tblLOGFRAME           = "tblLOGFRAME";          /* 1  */
-    public static final String SHEET_tblLOGFRAMETREE       = "tblLOGFRAMETREE";      /* 2  */
-    public static final String SHEET_tblIMPACT             = "tblIMPACT";            /* 3  */
-    public static final String SHEET_tblOUTCOME            = "tblOUTCOME";           /* 4  */
-    public static final String SHEET_tblOUTPUT             = "tblOUTPUT";            /* 5  */
-    public static final String SHEET_tblWORKPLAN           = "tblWORKPLAN";          /* 6  */
-    public static final String SHEET_tblACTIVITY           = "tblACTIVITY";          /* 7  */
-    public static final String SHEET_tblINPUT              = "tblINPUT";             /* 8  */
+    public static final String SHEET_tblLOGFRAME           = "tblLOGFRAME";                  /* 1 */
+    public static final String SHEET_tblLOGFRAMETREE       = "tblLOGFRAMETREE";              /* 2 */
+    public static final String SHEET_tblCOMPONENT          = "tblCOMPONENT";                 /* 3 */
+
+    public static final String SHEET_tblIMPACT             = "tblIMPACT";                    /* 3 */
+    public static final String SHEET_tblOUTCOME            = "tblOUTCOME";                   /* 4 */
+    public static final String SHEET_tblOUTPUT             = "tblOUTPUT";                    /* 5 */
+    public static final String SHEET_tblACTIVITY           = "tblACTIVITY";                  /* 7 */
+    public static final String SHEET_tblINPUT              = "tblINPUT";                    /* 8  */
+
+    //public static final String SHEET_tblWORKPLAN           = "tblWORKPLAN";                /* 6 */
     public static final String SHEET_tblRESOURCETYPE       = "tblRESOURCETYPE";      /* 9  */
-    public static final String SHEET_tblRESOURCE           = "tblRESOURCE";          /* 10 */
-    public static final String SHEET_tblEVALUATIONCRITERIA = "tblEVALUATIONCRITERIA";/* 11 */
+    //public static final String SHEET_tblRESOURCE           = "tblRESOURCE";        /* 10 */
+    public static final String SHEET_tblCRITERIA           = "tblCRITERIA";          /* 11 */
     public static final String SHEET_tblQUESTIONGROUPING   = "tblQUESTIONGROUPING";  /* 12 */
     public static final String SHEET_tblQUESTIONTYPE       = "tblQUESTIONTYPE";      /* 13 */
     public static final String SHEET_tblQUESTION           = "tblQUESTION";          /* 14 */
     public static final String SHEET_tblPRIMITIVEQUESTION  = "tblPRIMITIVEQUESTION"; /* 15 */
     public static final String SHEET_tblARRAYQUESTION      = "tblARRAYQUESTION";     /* 16 */
     public static final String SHEET_tblMATRIXQUESTION     = "tblMATRIXQUESTION";    /* 17 */
+    public static final String SHEET_tblQUESTION_CRITERIA  = "tblQUESTION_CRITERIA";          /* 14 */
+
     public static final String SHEET_tblRAIDCATEGORY       = "tblRAIDCATEGORY";      /* 18 */
     public static final String SHEET_tblRAID               = "tblRAID";              /* 19 */
+    public static final String SHEET_tblCOMPONENT_RAID     = "tblCOMPONENT_RAID";    /* 3 */
+
     public static final String SHEET_tblOUTCOME_IMPACT     = "tblOUTCOME_IMPACT";    /* 20 */
     public static final String SHEET_tblOUTPUT_OUTCOME     = "tblOUTPUT_OUTCOME";    /* 21 */
     public static final String SHEET_tblACTIVITY_OUTPUT    = "tblACTIVITY_OUTPUT";   /* 22 */
@@ -267,7 +274,7 @@ public class cExcelHelper {
             AssetManager assetManager = context.getAssets();
 
             setExcelGLOBAL(assetManager.open("GLOBAL.xlsx"));
-            setExcelSESSION(assetManager.open("SESSION.xlsx"));
+            setExcelSESSION(assetManager.open("excels/SESSION.xlsx"));
             setExcelLOGFRAME(assetManager.open("LOGFRAME.xlsx"));
             setExcelEVALUATION(assetManager.open("EVALUATION.xlsx"));
             setExcelMONITORING(assetManager.open("MONITORING.xlsx"));

@@ -108,19 +108,19 @@ public class cInputAdapter extends cTreeAdapter implements iViewInputListener{
 
                     //IPH.inputPlaceholderView.removeAllViews();
 
-                    if (inputParent.getResourceModel().getResourceTypeID() == HUMAN) {
-                        if(!humanIndex){
-                            IPH.inputPlaceholderView.addView(new cLogFrameHeaderView(
-                                    context, "Human Resources"));
-                            IPH.inputPlaceholderView.addView(new cInputBodyView(context,this, inputParent));
-                            humanIndex = true;
-                        }else {
-                            IPH.inputPlaceholderView.addView(new cInputBodyView(
-                                    context,this, inputParent));
-                        }
-                        Log.d(TAG, "HUMAN RESOURCES: " +
-                                inputParent.getResourceModel().getName());
-                    }
+//---                    if (inputParent.getResourceModel().getResourceTypeID() == HUMAN) {
+//                        if(!humanIndex){
+//                            IPH.inputPlaceholderView.addView(new cLogFrameHeaderView(
+//                                    context, "Human Resources"));
+//                            IPH.inputPlaceholderView.addView(new cInputBodyView(context,this, inputParent));
+//                            humanIndex = true;
+//                        }else {
+//                            IPH.inputPlaceholderView.addView(new cInputBodyView(
+//                                    context,this, inputParent));
+//                        }
+//                        Log.d(TAG, "HUMAN RESOURCES: " +
+//                                inputParent.getResourceModel().getName());
+//                    }
 /*
                     if (inputParent.getResourceModel().getResourceTypeID() == MATERIAL) {
                         IPH.inputPlaceholderView.addChildView(IPH.materialView, new cInputBodyView(

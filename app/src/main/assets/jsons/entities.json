@@ -1,0 +1,79 @@
+{
+  "entity": [
+    {
+      "id": 1,
+      "name": "USER",
+      "description": "Users"
+    },
+    {
+      "id": 2,
+      "name": "PROFILE",
+      "description": "Profiles"
+    },
+    {
+      "id": 4,
+      "name": "SESSION",
+      "description": "Sessions"
+    },
+    {
+      "id": 8,
+      "name": "ORGANIZATION",
+      "description": "Organizations"
+    },
+    {
+      "id": 16,
+      "name": "TEAM",
+      "description": "Teams"
+    },
+    {
+      "id": 32,
+      "name": "ROLE",
+      "description": "Roles"
+    },
+    {
+      "id": 64,
+      "name": "MENU",
+      "description": "Menu Items"
+    },
+    {
+      "id": 128,
+      "name": "PERMISSION",
+      "description": "Permissions"
+    },
+    {
+      "id": 256,
+      "name": "OPERATION",
+      "description": "Operations"
+    },
+    {
+      "id": 512,
+      "name": "STATUS",
+      "description": "Statuses"
+    },
+    {
+      "id": 1024,
+      "name": "BILATERALAGREEMENT",
+      "description": "Bilateral Agreements"
+    },
+    {
+      "id": 2048,
+      "name": "BENEFACTORAGREEMENT",
+      "description": "Benefactor Agreements"
+    },
+    {
+      "id": 4096,
+      "name": "IMPLEMENTATIONAGREEMENT",
+      "description": "Implementation Agreements"
+    },
+    {
+      "id": 4096,
+      "name": "PLAN",
+      "description": "Plans"
+    },
+    {
+      "id": 4096,
+      "name": "FEATURE",
+      "description": "Features"
+    }
+  ]
+}

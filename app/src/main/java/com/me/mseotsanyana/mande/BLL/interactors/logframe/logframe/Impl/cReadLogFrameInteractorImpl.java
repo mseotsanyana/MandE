@@ -96,17 +96,17 @@ public class cReadLogFrameInteractorImpl extends cAbstractInteractor
         LinkedHashMap<String, List<String>> expandableMenuItems = new LinkedHashMap<>();
         /* sort the menu model set */
         SortedSet<cMenuModel> sortedMenuModelSet = new TreeSet<>(Comparator.comparing(
-                cMenuModel::getMenuID));
+                cMenuModel::getMenuServerID));
         sortedMenuModelSet.addAll(menuModelSet);
 
         for (cMenuModel menuModel : sortedMenuModelSet) {
-            if (menuModel.getParentID() == 0) { /* FIXME: the parent ID should default
+            if (menuModel.getParentServerID() == 0) { /* FIXME: the parent ID should default
                                                    to zero in a database! */
                 List<String> subMenu = new ArrayList<String>();
 
                 SortedSet<cMenuModel> subMenuModelSet = new TreeSet<>(Comparator.comparing(
-                        cMenuModel::getMenuID));
-                subMenuModelSet.addAll(menuModel.getMenuModelSet());
+                        cMenuModel::getMenuServerID));
+                //subMenuModelSet.addAll(menuModel.getMenuModelSet());
 
                 for (cMenuModel subMenuModel : subMenuModelSet) {
                     subMenu.add(subMenuModel.getName());
@@ -152,12 +152,12 @@ public class cReadLogFrameInteractorImpl extends cAbstractInteractor
 
     @Override
     public void run() {
-        if (((operationMenuBITS & operationLogFrameBITS & cBitwise.READ) != 0)) {
-            /* retrieve a set menu items from the database */
+        /*if (((operationMenuBITS & operationLogFrameBITS & cBitwise.READ) != 0)) {
+            /* retrieve a set menu items from the database
             Set<cMenuModel> menuModelSet = menuRepository.getMenuModelSet(
                     userID, primaryRoleBITS, secondaryRoleBITS, statusMenuBITS);
 
-            /* retrieve a set logFrames from the database */
+            /* retrieve a set logFrames from the database
             Log.d(TAG, "USER ID = "+userID+" PRIMARY = "+primaryRoleBITS+
                     " SECONDARY = "+secondaryRoleBITS+" STATUS = "+statusLogFrameBITS);
             Set<cLogFrameModel> logFrameModelSet = logFrameRepository.getLogFrameModelSet(
@@ -171,7 +171,7 @@ public class cReadLogFrameInteractorImpl extends cAbstractInteractor
                         menuModelSet);
                 ArrayList<cTreeModel> logFrameTreeModels = getLogFrameTree(logFrameModelSet);
 
-                /* used to search for individual and\or organization owners */
+                /* used to search for individual and\or organization owners
                 // indOwners = getIndividualOwners();
                 // orgOwners = getOrganizationOwners();
 
@@ -181,6 +181,6 @@ public class cReadLogFrameInteractorImpl extends cAbstractInteractor
             }
         } else {
             notifyError("Failed due to access rights to main menu items and Logframes !!");
-        }
+        }*/
     }
 }

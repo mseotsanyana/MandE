@@ -14,7 +14,6 @@
         android:background="@color/colorPrimary"
         android:elevation="1dp"
         android:minHeight="65dp"
-        android:textColor="@color/title_text"
         app:layout_collapseMode="pin"
         app:popupTheme="@style/PopupTheme" />
 

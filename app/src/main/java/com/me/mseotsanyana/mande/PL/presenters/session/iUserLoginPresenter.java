@@ -1,7 +1,6 @@
 package com.me.mseotsanyana.mande.PL.presenters.session;
 
-//import android.support.design.widget.TextInputEditText;
-//import android.support.design.widget.TextInputLayout;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -16,16 +15,14 @@ public interface iUserLoginPresenter extends iPresenter {
         void onUserLoginFailed(String msg);
         void onUserLoginSucceeded(cUserModel userDomain);
 
-        TextInputLayout getEmailTextInputLayout();
-        TextInputLayout getPasswordTextInputLayout();
-        TextInputEditText getEmailTextInputEditText();
-        TextInputEditText getPasswordTextInputEditText();
+        EditText getEmailEditText();
+        EditText getPasswordEditText();
         TextView getForgotPasswordTextView();
 
         String getResourceString(int resourceID);
     }
 
     /* implemented in PresenterImpl to link ui with InteractorImpl */
-    void userLogin(String email, String password);
+    void signInWithEmailAndPassword(String email, String password);
 }
 

@@ -40,8 +40,9 @@
         android:id="@+id/singleSpinnerSearchOrg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/textViewOrganization"
         app:layout_constraintBottom_toBottomOf="@+id/textViewOrganization"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewOrganization"
         app:layout_constraintTop_toTopOf="@+id/textViewOrganization"
         app:layout_constraintVertical_bias="0.5" />
 

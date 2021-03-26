@@ -1,7 +1,9 @@
 package com.me.mseotsanyana.mande.BLL.model.session;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -10,88 +12,89 @@ import java.util.Set;
  */
 
 public class cMenuModel {
-    private int menuID;
-    private int parentID;
-    private int serverID;
-    private int ownerID;
-    private int orgID;
-    private int groupBITS;
-    private int permsBITS;
-    private int statusBITS;
+    private int menuServerID;
+    private int parentServerID;
+
+    private String ownerID;
+    private String orgOwnerID;
+    private int teamOwnerBIT;
+    private int unixpermsBITS;
+    private int statusesBITS;
+
     private String name;
     private String description;
     private Date createdDate;
     private Date modifiedDate;
     private Date syncedDate;
 
-    private Set<cMenuModel> menuModelSet;
+    public boolean hasChildren, isGroup;
+
+    private ArrayList<cMenuModel> menuModels;
 
     public cMenuModel(){
-        menuModelSet = new HashSet<>();
+        //menuModelSet = new HashSet<>();
     }
 
-    public int getMenuID() {
-        return menuID;
+    public cMenuModel(String name, boolean isGroup, boolean hasChildren) {
+        this.name = name;
+        this.isGroup = isGroup;
+        this.hasChildren = hasChildren;
     }
 
-    public void setMenuID(int menuID) {
-        this.menuID = menuID;
+    public int getMenuServerID() {
+        return menuServerID;
     }
 
-    public int getParentID() {
-        return parentID;
+    public void setMenuServerID(int menuServerID) {
+        this.menuServerID = menuServerID;
     }
 
-    public void setParentID(int parentID) {
-        this.parentID = parentID;
+    public int getParentServerID() {
+        return parentServerID;
     }
 
-    public int getServerID() {
-        return serverID;
+    public void setParentServerID(int parentServerID) {
+        this.parentServerID = parentServerID;
     }
 
-    public void setServerID(int serverID) {
-        this.serverID = serverID;
-    }
-
-    public int getOwnerID() {
+    public String getOwnerID() {
         return ownerID;
     }
 
-    public void setOwnerID(int ownerID) {
+    public void setOwnerID(String ownerID) {
         this.ownerID = ownerID;
     }
 
-    public int getOrgID() {
-        return orgID;
+    public String getOrgOwnerID() {
+        return orgOwnerID;
     }
 
-    public void setOrgID(int orgID) {
-        this.orgID = orgID;
+    public void setOrgOwnerID(String orgOwnerID) {
+        this.orgOwnerID = orgOwnerID;
     }
 
-    public int getGroupBITS() {
-        return groupBITS;
+    public int getTeamOwnerBIT() {
+        return teamOwnerBIT;
     }
 
-    public void setGroupBITS(int groupBITS) {
-        this.groupBITS = groupBITS;
+    public void setTeamOwnerBIT(int teamOwnerBIT) {
+        this.teamOwnerBIT = teamOwnerBIT;
     }
 
-    public int getPermsBITS() {
-        return permsBITS;
+    public int getUnixpermsBITS() {
+        return unixpermsBITS;
     }
 
-    public void setPermsBITS(int permsBITS) {
-        this.permsBITS = permsBITS;
+    public void setUnixpermsBITS(int unixpermsBITS) {
+        this.unixpermsBITS = unixpermsBITS;
     }
 
-    public int getStatusBITS() {
-        return statusBITS;
+    public int getStatusesBITS() {
+        return statusesBITS;
     }
 
-    public void setStatusBITS(int statusBITS) {
-        this.statusBITS = statusBITS;
+    public void setStatusesBITS(int statusesBITS) {
+        this.statusesBITS = statusesBITS;
     }
 
     public String getName() {
@@ -134,12 +137,28 @@ public class cMenuModel {
         this.syncedDate = syncedDate;
     }
 
-    public Set<cMenuModel> getMenuModelSet() {
-        return menuModelSet;
+    public ArrayList<cMenuModel> getMenuModels() {
+        return menuModels;
     }
 
-    public void setMenuModelSet(Set<cMenuModel> menuModelSet) {
-        this.menuModelSet = menuModelSet;
+    public void setMenuModels(ArrayList<cMenuModel> menuModels) {
+        this.menuModels = menuModels;
+    }
+
+    public boolean isHasChildren() {
+        return hasChildren;
+    }
+
+    public void setHasChildren(boolean hasChildren) {
+        this.hasChildren = hasChildren;
+    }
+
+    public boolean isGroup() {
+        return isGroup;
+    }
+
+    public void setGroup(boolean group) {
+        isGroup = group;
     }
 
     @Override
@@ -147,27 +166,26 @@ public class cMenuModel {
         if (this == o) return true;
         if (!(o instanceof cMenuModel)) return false;
         cMenuModel menuModel = (cMenuModel) o;
-        return getMenuID() == menuModel.getMenuID() &&
-                getParentID() == menuModel.getParentID() &&
-                getServerID() == menuModel.getServerID() &&
+        return getMenuServerID() == menuModel.getMenuServerID() &&
+                getParentServerID() == menuModel.getParentServerID() &&
                 getOwnerID() == menuModel.getOwnerID() &&
-                getOrgID() == menuModel.getOrgID() &&
-                getGroupBITS() == menuModel.getGroupBITS() &&
-                getPermsBITS() == menuModel.getPermsBITS() &&
-                getStatusBITS() == menuModel.getStatusBITS() &&
+                getOrgOwnerID() == menuModel.getOrgOwnerID() &&
+                getTeamOwnerBIT() == menuModel.getTeamOwnerBIT() &&
+                getUnixpermsBITS() == menuModel.getUnixpermsBITS() &&
+                getStatusesBITS() == menuModel.getStatusesBITS() &&
                 Objects.equals(getName(), menuModel.getName()) &&
                 Objects.equals(getDescription(), menuModel.getDescription()) &&
                 Objects.equals(getCreatedDate(), menuModel.getCreatedDate()) &&
                 Objects.equals(getModifiedDate(), menuModel.getModifiedDate()) &&
                 Objects.equals(getSyncedDate(), menuModel.getSyncedDate()) &&
-                Objects.equals(getMenuModelSet(), menuModel.getMenuModelSet());
+                Objects.equals(getMenuModels(), menuModel.getMenuModels());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getMenuID(), getParentID(), getServerID(), getOwnerID(),
-                getOrgID(), getGroupBITS(), getPermsBITS(), getStatusBITS(), getName(),
-                getDescription(), getCreatedDate(), getModifiedDate(), getSyncedDate(),
-                getMenuModelSet());
+        return Objects.hash(getMenuServerID(), getParentServerID(), getOwnerID(),
+                getOrgOwnerID(), getTeamOwnerBIT(), getUnixpermsBITS(), getStatusesBITS(),
+                getName(), getDescription(), getCreatedDate(), getModifiedDate(),
+                getSyncedDate(), getMenuModels());
     }
 }

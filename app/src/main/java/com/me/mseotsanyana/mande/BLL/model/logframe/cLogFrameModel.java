@@ -1,5 +1,8 @@
 package com.me.mseotsanyana.mande.BLL.model.logframe;
 
+import com.me.mseotsanyana.mande.BLL.model.evaluator.cEvaluationModel;
+import com.me.mseotsanyana.mande.BLL.model.raid.cRAIDLOGModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cCrowdFundModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
 import com.me.mseotsanyana.mande.BLL.model.monitor.cIndicatorModel;
 
@@ -28,28 +31,25 @@ public class cLogFrameModel {
     private cOrganizationModel organizationModel;
 
     private Set<cLogFrameModel> logFrameModelSet;
-
-    private Set<cImpactModel> impactModelSet;
-    private Set<cOutcomeModel> outcomeModelSet;
-    private Set<cOutputModel> outputModelSet;
-    private Set<cActivityModel> activityModelSet;
-    private Set<cInputModel> inputModelSet;
+    private Set<cComponentModel> componentModelSet;
     private Set<cQuestionModel> questionModelSet;
-    private Set<cIndicatorModel> indicatorModelSet;
     private Set<cRaidModel> raidModelSet;
+    private Set<cRAIDLOGModel> raidlogModelSet;
+    private Set<cEvaluationModel> evaluationModelSet;
+    private Set<cIndicatorModel> indicatorModelSet;
+    private Set<cCrowdFundModel> crowdFundModelSet;
 
     public cLogFrameModel(){
         organizationModel = new cOrganizationModel();
 
         logFrameModelSet = new HashSet<>();
-        impactModelSet = new HashSet<>();
-        outcomeModelSet = new HashSet<>();
-        outputModelSet = new HashSet<>();
-        activityModelSet = new HashSet<>();
-        inputModelSet = new HashSet<>();
+        componentModelSet = new HashSet<>();
         questionModelSet = new HashSet<>();
-        indicatorModelSet = new HashSet<>();
         raidModelSet = new HashSet<>();
+        raidlogModelSet = new HashSet<>();
+        evaluationModelSet = new HashSet<>();
+        indicatorModelSet = new HashSet<>();
+        crowdFundModelSet = new HashSet<>();
     }
 
     public long getLogFrameID() {
@@ -180,7 +180,6 @@ public class cLogFrameModel {
         this.syncedDate = syncedDate;
     }
 
-
     public cOrganizationModel getOrganizationModel() {
         return organizationModel;
     }
@@ -197,44 +196,12 @@ public class cLogFrameModel {
         this.logFrameModelSet = logFrameModelSet;
     }
 
-    public Set<cImpactModel> getImpactModelSet() {
-        return impactModelSet;
+    public Set<cComponentModel> getComponentModelSet() {
+        return componentModelSet;
     }
 
-    public void setImpactModelSet(Set<cImpactModel> impactModelSet) {
-        this.impactModelSet = impactModelSet;
-    }
-
-    public Set<cOutcomeModel> getOutcomeModelSet() {
-        return outcomeModelSet;
-    }
-
-    public void setOutcomeModelSet(Set<cOutcomeModel> outcomeModelSet) {
-        this.outcomeModelSet = outcomeModelSet;
-    }
-
-    public Set<cOutputModel> getOutputModelSet() {
-        return outputModelSet;
-    }
-
-    public void setOutputModelSet(Set<cOutputModel> outputModelSet) {
-        this.outputModelSet = outputModelSet;
-    }
-
-    public Set<cActivityModel> getActivityModelSet() {
-        return activityModelSet;
-    }
-
-    public void setActivityModelSet(Set<cActivityModel> activityModelSet) {
-        this.activityModelSet = activityModelSet;
-    }
-
-    public Set<cInputModel> getInputModelSet() {
-        return inputModelSet;
-    }
-
-    public void setInputModelSet(Set<cInputModel> inputModelSet) {
-        this.inputModelSet = inputModelSet;
+    public void setComponentModelSet(Set<cComponentModel> componentModelSet) {
+        this.componentModelSet = componentModelSet;
     }
 
     public Set<cQuestionModel> getQuestionModelSet() {
@@ -245,6 +212,30 @@ public class cLogFrameModel {
         this.questionModelSet = questionModelSet;
     }
 
+    public Set<cRaidModel> getRaidModelSet() {
+        return raidModelSet;
+    }
+
+    public void setRaidModelSet(Set<cRaidModel> raidModelSet) {
+        this.raidModelSet = raidModelSet;
+    }
+
+    public Set<cRAIDLOGModel> getRaidlogModelSet() {
+        return raidlogModelSet;
+    }
+
+    public void setRaidlogModelSet(Set<cRAIDLOGModel> raidlogModelSet) {
+        this.raidlogModelSet = raidlogModelSet;
+    }
+
+    public Set<cEvaluationModel> getEvaluationModelSet() {
+        return evaluationModelSet;
+    }
+
+    public void setEvaluationModelSet(Set<cEvaluationModel> evaluationModelSet) {
+        this.evaluationModelSet = evaluationModelSet;
+    }
+
     public Set<cIndicatorModel> getIndicatorModelSet() {
         return indicatorModelSet;
     }
@@ -253,11 +244,11 @@ public class cLogFrameModel {
         this.indicatorModelSet = indicatorModelSet;
     }
 
-    public Set<cRaidModel> getRaidModelSet() {
-        return raidModelSet;
+    public Set<cCrowdFundModel> getCrowdFundModelSet() {
+        return crowdFundModelSet;
     }
 
-    public void setRaidModelSet(Set<cRaidModel> raidModelSet) {
-        this.raidModelSet = raidModelSet;
+    public void setCrowdFundModelSet(Set<cCrowdFundModel> crowdFundModelSet) {
+        this.crowdFundModelSet = crowdFundModelSet;
     }
 }

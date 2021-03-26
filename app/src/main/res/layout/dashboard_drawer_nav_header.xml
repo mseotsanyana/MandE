@@ -18,31 +18,41 @@
             android:id="@+id/userIcon"
             android:layout_width="@dimen/header_img_size"
             android:layout_height="@dimen/header_img_size"
-            android:src="@drawable/ic_user"/>
-
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_user" />
         <TextView
             android:id="@+id/currentDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|end"
+            android:layout_marginTop="5dp"
             android:layout_weight="1"
-            android:gravity="right|end"
+            android:gravity="end"
             android:paddingTop="@dimen/layout_padding_default"
+            android:textSize="@dimen/header_font_size"
             android:text="@string/date"
-            android:textColor="@color/white"
-            android:textSize="@dimen/header_font_size"/>
+            android:textColor="@color/white" />
 
     </LinearLayout>
 
     <TextView
-        android:id="@+id/website"
+        android:id="@+id/displayName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/layout_padding_default"
+        android:gravity="start"
+        android:text="@string/displayName"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_medium"/>
+
+    <TextView
+        android:id="@+id/displayEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/layout_margin_default"
-        android:gravity="left|start"
+        android:gravity="start"
         android:paddingLeft="@dimen/layout_padding_default"
         android:text="@string/website"
         android:textColor="@color/white"
         android:textSize="@dimen/header_font_size"/>
-
 </LinearLayout>

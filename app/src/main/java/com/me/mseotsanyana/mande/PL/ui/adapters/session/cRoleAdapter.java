@@ -427,7 +427,7 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                         cKeyPairBoolData idNameBool = new cKeyPairBoolData();
                         idNameBool.setId(users.get(i).getUserID());
                         idNameBool.setName(users.get(i).getName());
-                        if (roleDomain.getOwnerID() == users.get(i).getUserID()) {
+                        if (true/*roleDomain.getOwnerID() == users.get(i).getUserID()*/) {
                             idNameBool.setSelected(true);
                         } else {
                             idNameBool.setSelected(false);
@@ -443,7 +443,7 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                                 public void onItemsSelected(List<cKeyPairBoolData> items) {
                                     for (int i = 0; i < items.size(); i++) {
                                         if (items.get(i).isSelected()) {
-                                            roleDomain.setOwnerID((int) items.get(i).getId());
+                                            roleDomain.setOwnerID(""/*(int) items.get(i).getId()*/);
                                             break;
                                         }
                                     }
@@ -455,9 +455,9 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                     final List<cKeyPairBoolData> keyPairBoolOrgs = new ArrayList<>();
                     for (int i = 0; i < orgs.size(); i++) {
                         cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-                        idNameBool.setId(orgs.get(i).getOrganizationID());
+                        //-idNameBool.setId(orgs.get(i).getOrganizationID());
                         idNameBool.setName(orgs.get(i).getName());
-                        if (roleDomain.getOrganizationID() == orgs.get(i).getOrganizationID()) {
+                        if (true/*roleDomain.getOrganizationID() == orgs.get(i).getOrganizationID()*/) {
                             idNameBool.setSelected(true);
                         } else {
                             idNameBool.setSelected(false);
@@ -471,11 +471,11 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                         public void onItemsSelected(List<cKeyPairBoolData> items) {
                             for (int i = 0; i < items.size(); i++) {
                                 if (items.get(i).isSelected()) {
-                                    roleDomain.setOrganizationID((int) items.get(i).getId());
+                                    //roleDomain.setOrganizationID((int) items.get(i).getId());
                                     break;
                                 }
                             }
-                            Log.d(TAG, "ORGANIZATION ID : " + roleDomain.getOrganizationID());
+                            //Log.d(TAG, "ORGANIZATION ID : " + roleDomain.getOrganizationID());
                         }
                     });
 
@@ -483,10 +483,9 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                     final List<cKeyPairBoolData> keyPairBoolOtherOrgs = new ArrayList<>();
                     for (int i = 0; i < orgs.size(); i++) {
                         cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-                        idNameBool.setId(orgs.get(i).getOrganizationID());
+                        //-idNameBool.setId(orgs.get(i).getOrganizationID());
                         idNameBool.setName(orgs.get(i).getName());
-                        if ((/*(session.loadSecondaryRoles() &*/
-                                orgs.get(i).getOrganizationID()) == orgs.get(i).getOrganizationID()) {
+                        if (true){//(session.loadSecondaryRoles() & orgs.get(i).getOrganizationID()) == orgs.get(i).getOrganizationID()*/) {
                             idNameBool.setSelected(true);
                         } else {
                             idNameBool.setSelected(false);
@@ -501,26 +500,26 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                             for (int i = 0; i < items.size(); i++) {
                                 int orgID = (int) items.get(i).getId();
                                 if (items.get(i).isSelected()) {
-                                    if ((roleDomain.getGroupBITS() & orgID) != orgID) {
+                                    /*if ((roleDomain.getGroupBITS() & orgID) != orgID) {
                                         // add other organizations
                                         roleDomain.setGroupBITS(roleDomain.getGroupBITS() | orgID);
-                                    }
+                                    }*/
                                 }
                                 if (!items.get(i).isSelected()) {
-                                    if ((roleDomain.getGroupBITS() & orgID) == orgID) {
+                                    /*if ((roleDomain.getGroupBITS() & orgID) == orgID) {
                                         // remove other organizations
                                         roleDomain.setGroupBITS(roleDomain.getGroupBITS() & ~orgID);
-                                    }
+                                    }*/
                                 }
                             }
-                            Log.d(TAG, "OTHER ORGANIZATION : " + roleDomain.getGroupBITS());
+                            //Log.d(TAG, "OTHER ORGANIZATION : " + roleDomain.getGroupBITS());
                         }
                     });
 
                     // create a pair list of permission ids and names
                     final cKeyPairBoolData[] keyPairBoolPerms = new cKeyPairBoolData[NUM_PERMS];
                     //if (permissionDomains.size() > 0) {
-                    int opBITS = roleDomain.getPermsBITS();
+                    //int opBITS = roleDomain.getPermsBITS();
                     //keyPairBoolPerms[0].setId();keyPairBoolPerms[0].setName();
                     /*for (int i = 0; i < session.permissions.length; i++) {
                         //Log.d(TAG, " "+(opBITS & session.permissions[i]));
@@ -538,7 +537,7 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                         public void onFixedItemsSelected(cKeyPairBoolData[] items) {
                             for (int i = 0; i < items.length; i++) {
                                 int permID = (int) items[i].getId();
-                                if (items[i].isSelected()) {
+                                /*if (items[i].isSelected()) {
                                     if ((roleDomain.getPermsBITS() & permID) != permID) {
                                         // add operation
                                         roleDomain.setPermsBITS(roleDomain.getPermsBITS() | permID);
@@ -549,9 +548,9 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                                         // remove operation
                                         roleDomain.setPermsBITS(roleDomain.getPermsBITS() & ~permID);
                                     }
-                                }
+                                }*/
                             }
-                            Log.d(TAG, "PERMS : " + roleDomain.getPermsBITS());
+                            //Log.d(TAG, "PERMS : " + roleDomain.getPermsBITS());
                         }
                     });
 
@@ -561,8 +560,8 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                         cKeyPairBoolData idNameBool = new cKeyPairBoolData();
                         idNameBool.setId(statusDomains.get(i).getStatusID());
                         idNameBool.setName(statusDomains.get(i).getName());
-                        if ((roleDomain.getStatusBITS() & statusDomains.get(i).getStatusID()) ==
-                                statusDomains.get(i).getStatusID()) {
+                        if (true/*(roleDomain.getStatusBITS() & statusDomains.get(i).getStatusID()) ==
+                                statusDomains.get(i).getStatusID()*/) {
                             idNameBool.setSelected(true);
                         } else {
                             idNameBool.setSelected(false);
@@ -576,7 +575,7 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                         public void onItemsSelected(List<cKeyPairBoolData> items) {
                             for (int i = 0; i < items.size(); i++) {
                                 int statusID = (int) items.get(i).getId();
-                                if (items.get(i).isSelected()) {
+                                /*if (items.get(i).isSelected()) {
                                     if ((roleDomain.getStatusBITS() & statusID) != statusID) {
                                         // add status
                                         roleDomain.setStatusBITS(roleDomain.getStatusBITS() | statusID);
@@ -587,9 +586,9 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                                         // remove status
                                         roleDomain.setStatusBITS(roleDomain.getStatusBITS() & ~statusID);
                                     }
-                                }
+                                }*/
                             }
-                            Log.d(TAG, "STATUSES : " + roleDomain.getStatusBITS());
+                           // Log.d(TAG, "STATUSES : " + roleDomain.getStatusBITS());
                         }
                     });
 

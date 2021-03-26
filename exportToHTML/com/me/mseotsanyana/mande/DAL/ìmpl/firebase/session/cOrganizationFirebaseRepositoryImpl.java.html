@@ -1,0 +1,543 @@
+<html>
+<head>
+<title>cOrganizationFirebaseRepositoryImpl.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #0033b3;}
+.s1 { color: #080808;}
+.s2 { color: #8c8c8c; font-style: italic;}
+.s3 { color: #067d17;}
+.s4 { color: #1750eb;}
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+cOrganizationFirebaseRepositoryImpl.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.me.mseotsanyana.mande.DAL.ìmpl.firebase.session;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Context;</span>
+<span class="s0">import </span><span class="s1">android.util.Log;</span>
+
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseAuth;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseUser;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DataSnapshot;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseError;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseReference;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.FirebaseDatabase;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.ValueEventListener;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cPermissionModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cPlanModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cPrivilegeModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cRoleModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cTeamModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.utils.cColumnModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.repository.session.iOrganizationRepository;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.DAL.storage.database.cRealtimeHelper;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.DAL.ìmpl.cDatabaseUtils;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.UTIL.cConstant;</span>
+
+<span class="s0">import </span><span class="s1">org.json.JSONArray;</span>
+<span class="s0">import </span><span class="s1">org.json.JSONException;</span>
+<span class="s0">import </span><span class="s1">org.json.JSONObject;</span>
+
+<span class="s0">import </span><span class="s1">java.text.SimpleDateFormat;</span>
+<span class="s0">import </span><span class="s1">java.util.ArrayList;</span>
+<span class="s0">import </span><span class="s1">java.util.Calendar;</span>
+<span class="s0">import </span><span class="s1">java.util.Date;</span>
+<span class="s0">import </span><span class="s1">java.util.HashMap;</span>
+<span class="s0">import </span><span class="s1">java.util.List;</span>
+<span class="s0">import </span><span class="s1">java.util.Map;</span>
+<span class="s0">import </span><span class="s1">java.util.Set;</span>
+
+<span class="s2">/**</span>
+ <span class="s2">* Created by mseotsanyana on 2016/10/23.</span>
+ <span class="s2">*/</span>
+<span class="s0">public class </span><span class="s1">cOrganizationFirebaseRepositoryImpl </span><span class="s0">implements </span><span class="s1">iOrganizationRepository {</span>
+    <span class="s0">private static </span><span class="s1">SimpleDateFormat sdf = cConstant.FORMAT_DATE;</span>
+    <span class="s0">private static </span><span class="s1">String TAG = cOrganizationFirebaseRepositoryImpl.</span><span class="s0">class</span><span class="s1">.getSimpleName();</span>
+
+    <span class="s2">// an object of the database helper</span>
+    <span class="s0">private final </span><span class="s1">FirebaseDatabase database;</span>
+    <span class="s0">private </span><span class="s1">DatabaseReference dbReference;</span>
+    <span class="s0">private final </span><span class="s1">Context context;</span>
+
+    <span class="s0">public </span><span class="s1">cOrganizationFirebaseRepositoryImpl(Context context) {</span>
+        <span class="s2">//FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();</span>
+        <span class="s1">database = FirebaseDatabase.getInstance();</span>
+        <span class="s0">this</span><span class="s1">.context = context;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/* ############################################# CREATE ACTIONS ############################################# */</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">createOrganization(cOrganizationModel organizationModel,</span>
+                                   <span class="s1">iOrganizationRepositoryCallback callback) {</span>
+        <span class="s2">// get current logged in user</span>
+        <span class="s1">FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();</span>
+        <span class="s0">assert </span><span class="s1">currentUser != </span><span class="s0">null</span><span class="s1">;</span>
+        <span class="s1">String userID = currentUser.getUid();</span>
+        <span class="s2">// get new organization id</span>
+        <span class="s1">dbReference = database.getReference(cRealtimeHelper.KEY_ORGANIZATIONS);</span>
+        <span class="s1">String organizationID = dbReference.push().getKey();</span>
+        <span class="s0">assert </span><span class="s1">organizationID != </span><span class="s0">null</span><span class="s1">;</span>
+        <span class="s2">// get common columns' default values</span>
+        <span class="s1">cColumnModel columnModel = getColumnModel(organizationID, userID);</span>
+        <span class="s2">// update organization model with auto generated id</span>
+        <span class="s1">organizationModel.setOrgServerID(organizationID);</span>
+        <span class="s2">// update organization model with default values</span>
+        <span class="s1">organizationModel.setOwnerID(userID);</span>
+        <span class="s1">organizationModel.setOrgOwnerID(columnModel.getCorgOwnerID());</span>
+        <span class="s1">organizationModel.setTeamOwnerBIT(columnModel.getCteamOwnerBIT());</span>
+        <span class="s1">organizationModel.setUnixpermsBITS(columnModel.getCunixpermsBITS());</span>
+        <span class="s1">organizationModel.setStatusesBITS(columnModel.getCstatusesBITS());</span>
+
+        <span class="s1">dbReference.child(organizationID).setValue(organizationModel, (dbError, dbReference) -&gt; {</span>
+            <span class="s0">if </span><span class="s1">(dbError == </span><span class="s0">null</span><span class="s1">) {</span>
+
+                <span class="s1">cTeamModel teamModel = getDefaultTeamModel(organizationID);</span>
+                <span class="s1">cPlanModel planModel = getPremiumPlanModel();</span>
+                <span class="s1">cRoleModel roleModel = getAdminRoleModel(organizationID);</span>
+                <span class="s1">createOrganizationLinks(organizationID, userID, columnModel,</span>
+                        <span class="s1">teamModel, planModel, roleModel);</span>
+
+                <span class="s1">cPrivilegeModel privilegeModel = getAdminPrivilegeModel(columnModel);</span>
+                <span class="s1">List&lt;cPermissionModel&gt; permissions = getAdminPermissions(columnModel);</span>
+                <span class="s1">createAdminPermissions(organizationID, roleModel.getRoleServerID(),</span>
+                        <span class="s1">privilegeModel, permissions);</span>
+
+                <span class="s1">callback.onCreateOrganizationSucceeded(</span><span class="s3">&quot;Organization saved successfully.&quot;</span><span class="s1">);</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">callback.onCreateOrganizationFailed(</span><span class="s3">&quot;Organization could not be saved &quot; </span><span class="s1">+</span>
+                        <span class="s1">dbError.getMessage());</span>
+            <span class="s1">}</span>
+        <span class="s1">});</span>
+    <span class="s1">}</span>
+
+   <span class="s2">/* public void createAdminMenuItems() { 
+        dbReference = database.getReference(cRealtimeHelper.KEY_MENU_ITEMS); 
+        List&lt;cMenuModel&gt; menuModels = getAdminMenuModelSet(); 
+ 
+        for (cMenuModel menuModel: menuModels){ 
+            dbReference.child(menuModel.getServerID()).setValue(menuModel); 
+        } 
+    }*/</span>
+
+    <span class="s0">public void </span><span class="s1">createOrganizationLinks(String organizationID, String userID, cColumnModel columnModel,</span>
+                                        <span class="s1">cTeamModel teamModel, cPlanModel planModel, cRoleModel roleModel) {</span>
+        <span class="s1">DatabaseReference dbTeamRef, dbPlanRef, dbRoleRef, dbOrgMemberRef, dbTeamMemberRef,</span>
+                <span class="s1">dbMenuItemRef, dbOrgRoleMenuRef;</span>
+
+        <span class="s2">// add the current user to the organization</span>
+        <span class="s1">dbOrgMemberRef = database.getReference(cRealtimeHelper.KEY_ORG_MEMBERS);</span>
+        <span class="s1">String orgMemberID = dbOrgMemberRef.push().getKey();</span>
+        <span class="s0">assert </span><span class="s1">orgMemberID != </span><span class="s0">null</span><span class="s1">;</span>
+        <span class="s1">dbOrgMemberRef.child(orgMemberID).child(</span><span class="s3">&quot;orgServerID&quot;</span><span class="s1">).setValue(organizationID);</span>
+        <span class="s1">dbOrgMemberRef.child(orgMemberID).child(</span><span class="s3">&quot;userServerID&quot;</span><span class="s1">).setValue(userID);</span>
+
+        <span class="s2">//== create default team of the organization</span>
+        <span class="s1">dbTeamRef = database.getReference(cRealtimeHelper.KEY_TEAMS);</span>
+        <span class="s1">String teamID = teamModel.getTeamServerID();</span>
+        <span class="s2">// update team's common columns</span>
+        <span class="s1">teamModel.setOwnerID(columnModel.getCownerID());</span>
+        <span class="s1">teamModel.setOrgOwnerID(columnModel.getCorgOwnerID());</span>
+        <span class="s1">teamModel.setTeamOwnerBIT(columnModel.getCteamOwnerBIT());</span>
+        <span class="s1">teamModel.setUnixpermsBITS(columnModel.getCunixpermsBITS());</span>
+        <span class="s1">teamModel.setStatusesBITS(columnModel.getCstatusesBITS());</span>
+
+        <span class="s1">dbTeamRef.child(organizationID + </span><span class="s3">&quot;_&quot; </span><span class="s1">+ teamID).setValue(teamModel);</span>
+
+        <span class="s2">// add the current user to the team of the organization</span>
+        <span class="s1">dbTeamMemberRef = database.getReference(cRealtimeHelper.KEY_TEAM_MEMBERS);</span>
+        <span class="s1">dbTeamMemberRef.child(organizationID + </span><span class="s3">&quot;_&quot; </span><span class="s1">+ teamID + </span><span class="s3">&quot;_&quot; </span><span class="s1">+ userID).setValue(</span><span class="s0">true</span><span class="s1">);</span>
+
+        <span class="s2">//== create premium plan for the admin role</span>
+        <span class="s1">dbPlanRef = database.getReference(cRealtimeHelper.KEY_PLANS);</span>
+        <span class="s1">dbPlanRef.child(String.valueOf(planModel.getPlanServerID())).setValue(planModel);</span>
+
+        <span class="s2">//== create role of the organization</span>
+        <span class="s1">dbRoleRef = database.getReference(cRealtimeHelper.KEY_ROLES);</span>
+        <span class="s1">String roleID = dbRoleRef.push().getKey();</span>
+        <span class="s0">assert </span><span class="s1">roleID != </span><span class="s0">null</span><span class="s1">;</span>
+        <span class="s1">roleModel.setRoleServerID(roleID);</span>
+        <span class="s1">roleModel.setOrgServerID(organizationID);</span>
+        <span class="s1">roleModel.setPlanServerID(planModel.getPlanServerID());</span>
+        <span class="s2">// update role's common columns</span>
+        <span class="s1">roleModel.setOwnerID(columnModel.getCownerID());</span>
+        <span class="s1">roleModel.setOrgOwnerID(columnModel.getCorgOwnerID());</span>
+        <span class="s1">roleModel.setTeamOwnerBIT(columnModel.getCteamOwnerBIT());</span>
+        <span class="s1">roleModel.setUnixpermsBITS(columnModel.getCunixpermsBITS());</span>
+        <span class="s1">roleModel.setStatusesBITS(columnModel.getCstatusesBITS());</span>
+
+        <span class="s1">dbRoleRef.child(roleID).setValue(roleModel);</span>
+
+        <span class="s2">// create menu items</span>
+        <span class="s1">dbMenuItemRef = database.getReference(cRealtimeHelper.KEY_MENU_ITEMS);</span>
+
+        <span class="s2">// add menu items related to admin role of the organization</span>
+        <span class="s1">dbOrgRoleMenuRef = database.getReference(cRealtimeHelper.KEY_ROLE_MENU_ITEMS);</span>
+
+        <span class="s1">HashMap&lt;cMenuModel, Map&lt;String, cMenuModel&gt;&gt; modelMapHashMap = getAdminMenuModelSet(columnModel);</span>
+
+        <span class="s0">for</span><span class="s1">(Map.Entry&lt;cMenuModel, Map&lt;String, cMenuModel&gt;&gt; entry: modelMapHashMap.entrySet()){</span>
+           <span class="s1">cMenuModel menuModel = entry.getKey();</span>
+           <span class="s1">Map&lt;String, cMenuModel&gt; subMenuModelMap = entry.getValue();</span>
+           <span class="s2">// create main menu</span>
+           <span class="s1">dbMenuItemRef.child(String.valueOf(menuModel.getMenuServerID())).setValue(menuModel);</span>
+           <span class="s2">// create sub menu items</span>
+           <span class="s0">if</span><span class="s1">(subMenuModelMap.size() &gt; </span><span class="s4">0</span><span class="s1">){</span>
+               <span class="s1">dbMenuItemRef.child(String.valueOf(menuModel.getMenuServerID())).</span>
+                       <span class="s1">child(cRealtimeHelper.KEY_SUB_MENU_ITEMS).setValue(subMenuModelMap);</span>
+           <span class="s1">}</span>
+
+           <span class="s2">// add menu items related to admin role of the organization</span>
+           <span class="s1">dbOrgRoleMenuRef.child(roleModel.getRoleServerID()+</span><span class="s3">&quot;_&quot;</span><span class="s1">+</span>
+                   <span class="s1">menuModel.getMenuServerID()).setValue(</span><span class="s0">true</span><span class="s1">);</span>
+
+        <span class="s1">}</span>
+
+        <span class="s2">/*for(cMenuModel menuModel: menuModels){ 
+            String roleID = roleModel.getServerID(); 
+            String menuID = menuModel.getServerID(); 
+            dbReference.child(organizationID+&quot;_&quot;+roleID+&quot;_&quot;+menuID).setValue(true); 
+        }*/</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">createAdminPermissions(String organizationID, String roleID,</span>
+                                       <span class="s1">cPrivilegeModel privilegeModel,</span>
+                                       <span class="s1">List&lt;cPermissionModel&gt; permissions) {</span>
+        <span class="s1">DatabaseReference dbPermsRef, dbPrivilegeRef, dbRolePrivRef, dbPrivPermsRef;</span>
+        <span class="s1">dbPrivilegeRef = database.getReference(cRealtimeHelper.KEY_PRIVILEGES);</span>
+        <span class="s1">dbPermsRef = database.getReference(cRealtimeHelper.KEY_PERMISSIONS);</span>
+        <span class="s1">dbRolePrivRef = database.getReference(cRealtimeHelper.KEY_ROLE_PRIVILEGES);</span>
+        <span class="s1">dbPrivPermsRef = database.getReference(cRealtimeHelper.KEY_PRIVILEGE_PERMS);</span>
+
+        <span class="s2">// creating admin privilege</span>
+        <span class="s1">String privilegeID = dbPrivilegeRef.push().getKey();</span>
+        <span class="s0">assert </span><span class="s1">privilegeID != </span><span class="s0">null</span><span class="s1">;</span>
+        <span class="s1">privilegeModel.setPrivilegeServerID(privilegeID);</span>
+        <span class="s1">dbPrivilegeRef.child(privilegeID).setValue(privilegeModel);</span>
+
+        <span class="s2">// creating admin role privileges</span>
+        <span class="s1">dbRolePrivRef.child(organizationID + </span><span class="s3">&quot;_&quot; </span><span class="s1">+ roleID + </span><span class="s3">&quot;_&quot; </span><span class="s1">+ privilegeID).setValue(</span><span class="s0">true</span><span class="s1">);</span>
+
+        <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s4">0</span><span class="s1">; i &lt; permissions.size(); i++) {</span>
+            <span class="s2">// creating permissions</span>
+            <span class="s1">String permissionID = dbPermsRef.push().getKey();</span>
+            <span class="s0">assert </span><span class="s1">permissionID != </span><span class="s0">null</span><span class="s1">;</span>
+
+            <span class="s1">String entityID = permissions.get(i).getEntityServerID();</span>
+            <span class="s1">String operationID = permissions.get(i).getOperationServerID();</span>
+            <span class="s1">String statusID = permissions.get(i).getStatusServerID();</span>
+            <span class="s2">//dbPermsRef.child(permissionID + &quot;_&quot; + entityID + &quot;_&quot; + operationID + &quot;_&quot; + statusID).setValue(true);</span>
+
+            <span class="s1">dbPermsRef.child(permissionID).child(</span><span class="s3">&quot;entityServerID&quot;</span><span class="s1">).setValue(entityID);</span>
+            <span class="s1">dbPermsRef.child(permissionID).child(</span><span class="s3">&quot;operationServerID&quot;</span><span class="s1">).setValue(operationID);</span>
+            <span class="s1">dbPermsRef.child(permissionID).child(</span><span class="s3">&quot;statusServerID&quot;</span><span class="s1">).setValue(statusID);</span>
+
+            <span class="s2">// creating admin privilege permissions</span>
+            <span class="s1">dbPrivPermsRef.child(privilegeID + </span><span class="s3">&quot;_&quot; </span><span class="s1">+ permissionID).setValue(</span><span class="s0">true</span><span class="s1">);</span>
+        <span class="s1">}</span>
+
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">cTeamModel getDefaultTeamModel(String organizationID) {</span>
+        <span class="s1">cTeamModel teamModel = </span><span class="s0">new </span><span class="s1">cTeamModel();</span>
+
+        <span class="s2">// read json file</span>
+        <span class="s1">String team = </span><span class="s3">&quot;jsons/org_team.json&quot;</span><span class="s1">;</span>
+        <span class="s1">String teamJSONString = cDatabaseUtils.loadJSONFromAsset(team, context.getAssets());</span>
+
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s1">teamModel.setOrgServerID(organizationID);</span>
+
+            <span class="s0">assert </span><span class="s1">teamJSONString != </span><span class="s0">null</span><span class="s1">;</span>
+            <span class="s1">JSONObject jsonObjectTeam = </span><span class="s0">new </span><span class="s1">JSONObject(teamJSONString);</span>
+            <span class="s1">JSONObject jsonTeam = jsonObjectTeam.getJSONObject(</span><span class="s3">&quot;team&quot;</span><span class="s1">);</span>
+
+            <span class="s1">teamModel.setOrgServerID(organizationID);</span>
+            <span class="s1">teamModel.setTeamServerID(jsonTeam.getString(</span><span class="s3">&quot;id&quot;</span><span class="s1">));</span>
+            <span class="s1">teamModel.setName(jsonTeam.getString(</span><span class="s3">&quot;name&quot;</span><span class="s1">));</span>
+            <span class="s1">teamModel.setDescription(jsonTeam.getString(</span><span class="s3">&quot;description&quot;</span><span class="s1">));</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(JSONException e) {</span>
+            <span class="s1">e.printStackTrace();</span>
+        <span class="s1">}</span>
+
+        <span class="s0">return </span><span class="s1">teamModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">cPlanModel getPremiumPlanModel() {</span>
+        <span class="s1">cPlanModel planModel = </span><span class="s0">new </span><span class="s1">cPlanModel();</span>
+        <span class="s2">// read json file</span>
+        <span class="s1">String plans = </span><span class="s3">&quot;jsons/app_plans.json&quot;</span><span class="s1">;</span>
+        <span class="s1">String planJSONString = cDatabaseUtils.loadJSONFromAsset(plans, context.getAssets());</span>
+
+        <span class="s2">//Log.d(TAG, roleJSONString);</span>
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s0">assert </span><span class="s1">planJSONString != </span><span class="s0">null</span><span class="s1">;</span>
+            <span class="s1">JSONObject jsonObjectPlan = </span><span class="s0">new </span><span class="s1">JSONObject(planJSONString);</span>
+            <span class="s1">JSONArray jsonPlans = jsonObjectPlan.getJSONArray(</span><span class="s3">&quot;plans&quot;</span><span class="s1">);</span>
+
+            <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s4">0</span><span class="s1">; i &lt; jsonPlans.length(); i++) {</span>
+                <span class="s1">JSONObject jsonPlan = jsonPlans.getJSONObject(i);</span>
+                <span class="s0">int </span><span class="s1">premium_plan = jsonPlan.getInt(</span><span class="s3">&quot;id&quot;</span><span class="s1">);</span>
+
+                <span class="s0">if </span><span class="s1">(premium_plan == </span><span class="s4">4</span><span class="s1">) {</span>
+                    <span class="s1">planModel.setPlanServerID(jsonPlan.getInt(</span><span class="s3">&quot;id&quot;</span><span class="s1">));</span>
+                    <span class="s1">planModel.setName(jsonPlan.getString(</span><span class="s3">&quot;name&quot;</span><span class="s1">));</span>
+                    <span class="s1">planModel.setDescription(jsonPlan.getString(</span><span class="s3">&quot;description&quot;</span><span class="s1">));</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(JSONException e) {</span>
+            <span class="s1">e.printStackTrace();</span>
+        <span class="s1">}</span>
+
+        <span class="s0">return </span><span class="s1">planModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">cRoleModel getAdminRoleModel(String organizationID) {</span>
+        <span class="s1">cRoleModel roleModel = </span><span class="s0">new </span><span class="s1">cRoleModel();</span>
+
+        <span class="s2">// read json file</span>
+        <span class="s1">String role = </span><span class="s3">&quot;jsons/admin_role.json&quot;</span><span class="s1">;</span>
+        <span class="s1">String roleJSONString = cDatabaseUtils.loadJSONFromAsset(role, context.getAssets());</span>
+
+        <span class="s2">//Log.d(TAG, roleJSONString);</span>
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s1">roleModel.setOrgServerID(organizationID);</span>
+
+            <span class="s0">assert </span><span class="s1">roleJSONString != </span><span class="s0">null</span><span class="s1">;</span>
+            <span class="s1">JSONObject jsonObjectRole = </span><span class="s0">new </span><span class="s1">JSONObject(roleJSONString);</span>
+            <span class="s1">JSONObject jsonRole = jsonObjectRole.getJSONObject(</span><span class="s3">&quot;role&quot;</span><span class="s1">);</span>
+
+            <span class="s1">roleModel.setOrgServerID(jsonRole.getString(</span><span class="s3">&quot;role_id&quot;</span><span class="s1">));</span>
+            <span class="s1">roleModel.setPlanServerID(jsonRole.getInt(</span><span class="s3">&quot;plan_id&quot;</span><span class="s1">));</span>
+            <span class="s1">roleModel.setName(jsonRole.getString(</span><span class="s3">&quot;name&quot;</span><span class="s1">));</span>
+            <span class="s1">roleModel.setDescription(jsonRole.getString(</span><span class="s3">&quot;description&quot;</span><span class="s1">));</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(JSONException e) {</span>
+            <span class="s1">e.printStackTrace();</span>
+        <span class="s1">}</span>
+
+        <span class="s0">return </span><span class="s1">roleModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/* 
+        public cPermissionModel getAdminPermissionModel() { 
+            cPermissionModel permissionModel = new cPermissionModel(); 
+ 
+            // read json file 
+            String perm = &quot;jsons/admin_perms.json&quot;; 
+            String permJSONString = cDatabaseUtils.loadJSONFromAsset(perm, context.getAssets()); 
+ 
+            //Log.d(TAG, roleJSONString); 
+            try { 
+                assert permJSONString != null; 
+                JSONObject jsonObjectPerm = new JSONObject(permJSONString); 
+                JSONObject jsonPermission = jsonObjectPerm.getJSONObject(&quot;permission&quot;); 
+                permissionModel.setName(jsonPermission.getString(&quot;name&quot;)); 
+                permissionModel.setDescription(jsonPermission.getString(&quot;description&quot;)); 
+            } catch (JSONException e) { 
+                e.printStackTrace(); 
+            } 
+ 
+            return permissionModel; 
+        } 
+    */</span>
+    <span class="s0">public </span><span class="s1">HashMap&lt;cMenuModel, Map&lt;String, cMenuModel&gt;&gt; getAdminMenuModelSet(cColumnModel columnModel) {</span>
+        <span class="s1">HashMap&lt;cMenuModel, Map&lt;String, cMenuModel&gt;&gt; menuModels = </span><span class="s0">new </span><span class="s1">HashMap&lt;&gt;();</span>
+
+        <span class="s1">String menu = </span><span class="s3">&quot;jsons/admin_menu.json&quot;</span><span class="s1">;</span>
+        <span class="s1">String menuJSONString = cDatabaseUtils.loadJSONFromAsset(menu, context.getAssets());</span>
+
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s0">assert </span><span class="s1">menuJSONString != </span><span class="s0">null</span><span class="s1">;</span>
+            <span class="s1">JSONObject jsonObjectMenu = </span><span class="s0">new </span><span class="s1">JSONObject(menuJSONString);</span>
+            <span class="s1">JSONArray jsonArrayMenu = jsonObjectMenu.getJSONArray(</span><span class="s3">&quot;menu&quot;</span><span class="s1">);</span>
+            <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s4">0</span><span class="s1">; i &lt; jsonArrayMenu.length(); i++) {</span>
+                <span class="s2">//ArrayList&lt;cMenuModel&gt; subMenuModels = new ArrayList&lt;&gt;();</span>
+                <span class="s1">JSONObject jsonObject = jsonArrayMenu.getJSONObject(i);</span>
+                <span class="s1">JSONArray jsonArraySubMenu = jsonObject.getJSONArray(</span><span class="s3">&quot;sub_menu&quot;</span><span class="s1">);</span>
+
+                <span class="s1">Map&lt;String, cMenuModel&gt; subMenuMap = </span><span class="s0">new </span><span class="s1">HashMap&lt;&gt;();</span>
+                <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">j = </span><span class="s4">0</span><span class="s1">; j &lt; jsonArraySubMenu.length(); j++) {</span>
+                    <span class="s1">cMenuModel subMenuModel = </span><span class="s0">new </span><span class="s1">cMenuModel();</span>
+                    <span class="s2">// update submenu's common columns</span>
+                    <span class="s1">subMenuModel.setOwnerID(columnModel.getCownerID());</span>
+                    <span class="s1">subMenuModel.setOrgOwnerID(columnModel.getCorgOwnerID());</span>
+                    <span class="s1">subMenuModel.setTeamOwnerBIT(columnModel.getCteamOwnerBIT());</span>
+                    <span class="s1">subMenuModel.setUnixpermsBITS(columnModel.getCunixpermsBITS());</span>
+                    <span class="s1">subMenuModel.setStatusesBITS(columnModel.getCstatusesBITS());</span>
+
+                    <span class="s1">JSONObject jsonObjectSubItem = jsonArraySubMenu.getJSONObject(j);</span>
+                    <span class="s1">subMenuModel.setMenuServerID(jsonObjectSubItem.getInt(</span><span class="s3">&quot;sub_id&quot;</span><span class="s1">));</span>
+                    <span class="s1">subMenuModel.setName(jsonObjectSubItem.getString(</span><span class="s3">&quot;sub_item&quot;</span><span class="s1">));</span>
+                    <span class="s1">subMenuModel.setDescription(jsonObjectSubItem.getString(</span><span class="s3">&quot;sub_description&quot;</span><span class="s1">));</span>
+
+                    <span class="s1">subMenuMap.put(jsonObjectSubItem.getString(</span><span class="s3">&quot;sub_id&quot;</span><span class="s1">), subMenuModel);</span>
+                <span class="s1">}</span>
+
+                <span class="s1">cMenuModel menuModel = </span><span class="s0">new </span><span class="s1">cMenuModel();</span>
+                <span class="s2">// update menu's common columns</span>
+                <span class="s1">menuModel.setOwnerID(columnModel.getCownerID());</span>
+                <span class="s1">menuModel.setOrgOwnerID(columnModel.getCorgOwnerID());</span>
+                <span class="s1">menuModel.setTeamOwnerBIT(columnModel.getCteamOwnerBIT());</span>
+                <span class="s1">menuModel.setUnixpermsBITS(columnModel.getCunixpermsBITS());</span>
+                <span class="s1">menuModel.setStatusesBITS(columnModel.getCstatusesBITS());</span>
+                <span class="s2">// set the main menu item</span>
+                <span class="s1">menuModel.setMenuServerID(jsonObject.getInt(</span><span class="s3">&quot;id&quot;</span><span class="s1">));</span>
+                <span class="s1">menuModel.setName(jsonObject.getString(</span><span class="s3">&quot;item&quot;</span><span class="s1">));</span>
+                <span class="s1">menuModel.setDescription(jsonObject.getString(</span><span class="s3">&quot;description&quot;</span><span class="s1">));</span>
+
+                <span class="s2">// sub menu items to the main menu item</span>
+                <span class="s1">menuModels.put(menuModel, subMenuMap);</span>
+            <span class="s1">}</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(JSONException e) {</span>
+            <span class="s1">e.printStackTrace();</span>
+        <span class="s1">}</span>
+
+        <span class="s0">return </span><span class="s1">menuModels;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">cPrivilegeModel getAdminPrivilegeModel(cColumnModel columnModel) {</span>
+        <span class="s1">cPrivilegeModel privilegeModel = </span><span class="s0">new </span><span class="s1">cPrivilegeModel();</span>
+
+        <span class="s2">// read json file</span>
+        <span class="s1">String privilege = </span><span class="s3">&quot;jsons/admin_privilege.json&quot;</span><span class="s1">;</span>
+        <span class="s1">String privilegeJSONString = cDatabaseUtils.loadJSONFromAsset(privilege,</span>
+                <span class="s1">context.getAssets());</span>
+
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s0">assert </span><span class="s1">privilegeJSONString != </span><span class="s0">null</span><span class="s1">;</span>
+            <span class="s1">JSONObject jsonObjectPrivilege = </span><span class="s0">new </span><span class="s1">JSONObject(privilegeJSONString);</span>
+            <span class="s1">JSONObject jsonPrivilege = jsonObjectPrivilege.getJSONObject(</span><span class="s3">&quot;privilege&quot;</span><span class="s1">);</span>
+            <span class="s1">privilegeModel.setName(jsonPrivilege.getString(</span><span class="s3">&quot;name&quot;</span><span class="s1">));</span>
+            <span class="s1">privilegeModel.setDescription(jsonPrivilege.getString(</span><span class="s3">&quot;description&quot;</span><span class="s1">));</span>
+
+            <span class="s2">// update privilege's common columns</span>
+            <span class="s1">privilegeModel.setOwnerID(columnModel.getCownerID());</span>
+            <span class="s1">privilegeModel.setOrgOwnerID(columnModel.getCorgOwnerID());</span>
+            <span class="s1">privilegeModel.setTeamOwnerBIT(columnModel.getCteamOwnerBIT());</span>
+            <span class="s1">privilegeModel.setUnixpermsBITS(columnModel.getCunixpermsBITS());</span>
+            <span class="s1">privilegeModel.setStatusesBITS(columnModel.getCstatusesBITS());</span>
+
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(JSONException e) {</span>
+            <span class="s1">e.printStackTrace();</span>
+        <span class="s1">}</span>
+
+        <span class="s0">return </span><span class="s1">privilegeModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">List&lt;cPermissionModel&gt; getAdminPermissions(cColumnModel columnModel) {</span>
+        <span class="s1">List&lt;cPermissionModel&gt; permissionModels = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;();</span>
+
+        <span class="s1">String perms = </span><span class="s3">&quot;jsons/admin_perms.json&quot;</span><span class="s1">;</span>
+        <span class="s1">String permsJSONString = cDatabaseUtils.loadJSONFromAsset(perms, context.getAssets());</span>
+
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s0">assert </span><span class="s1">permsJSONString != </span><span class="s0">null</span><span class="s1">;</span>
+            <span class="s1">JSONObject jsonObjectPerm = </span><span class="s0">new </span><span class="s1">JSONObject(permsJSONString);</span>
+            <span class="s1">JSONArray jsonArrayPerm = jsonObjectPerm.getJSONArray(</span><span class="s3">&quot;permissions&quot;</span><span class="s1">);</span>
+            <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s4">0</span><span class="s1">; i &lt; jsonArrayPerm.length(); i++) {</span>
+
+                <span class="s1">JSONObject jsonObject = jsonArrayPerm.getJSONObject(i);</span>
+                <span class="s1">JSONArray jsonArrayOps = jsonObject.getJSONArray(</span><span class="s3">&quot;operations&quot;</span><span class="s1">);</span>
+
+
+                <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">j = </span><span class="s4">0</span><span class="s1">; j &lt; jsonArrayOps.length(); j++) {</span>
+                    <span class="s1">JSONObject jsonObjectEntity = jsonArrayOps.getJSONObject(j);</span>
+
+                    <span class="s1">cPermissionModel permission = </span><span class="s0">new </span><span class="s1">cPermissionModel();</span>
+                    <span class="s2">// entity identification bit</span>
+                    <span class="s1">permission.setEntityServerID(jsonObject.getString(</span><span class="s3">&quot;id&quot;</span><span class="s1">));</span>
+                    <span class="s2">// operation identification bit</span>
+                    <span class="s1">permission.setOperationServerID(jsonObjectEntity.getString(</span><span class="s3">&quot;action&quot;</span><span class="s1">));</span>
+                    <span class="s2">// status identification bit</span>
+                    <span class="s1">permission.setStatusServerID(jsonObjectEntity.getString(</span><span class="s3">&quot;status&quot;</span><span class="s1">));</span>
+
+                    <span class="s1">permissionModels.add(permission);</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(JSONException e) {</span>
+            <span class="s1">e.printStackTrace();</span>
+        <span class="s1">}</span>
+
+        <span class="s0">return </span><span class="s1">permissionModels;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">cColumnModel getColumnModel(String organizationID, String userID) {</span>
+        <span class="s1">cColumnModel columnModel = </span><span class="s0">new </span><span class="s1">cColumnModel();</span>
+
+        <span class="s2">// read json file</span>
+        <span class="s1">String ccolumns = </span><span class="s3">&quot;jsons/default_columns.json&quot;</span><span class="s1">;</span>
+        <span class="s1">String ccolumnsJSONString = cDatabaseUtils.loadJSONFromAsset(ccolumns,</span>
+                <span class="s1">context.getAssets());</span>
+
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s0">assert </span><span class="s1">ccolumnsJSONString != </span><span class="s0">null</span><span class="s1">;</span>
+            <span class="s1">JSONObject jsonObjectColumn = </span><span class="s0">new </span><span class="s1">JSONObject(ccolumnsJSONString);</span>
+            <span class="s1">JSONObject jsonColumn = jsonObjectColumn.getJSONObject(</span><span class="s3">&quot;ccolumns&quot;</span><span class="s1">);</span>
+
+            <span class="s1">columnModel.setCownerID(userID);</span>
+            <span class="s1">columnModel.setCorgOwnerID(organizationID);</span>
+            <span class="s1">columnModel.setCteamOwnerBIT(jsonColumn.getInt(</span><span class="s3">&quot;cteam&quot;</span><span class="s1">));</span>
+            <span class="s1">columnModel.setCunixpermsBITS(jsonColumn.getInt(</span><span class="s3">&quot;cunixperms&quot;</span><span class="s1">));</span>
+            <span class="s1">columnModel.setCstatusesBITS(jsonColumn.getInt(</span><span class="s3">&quot;cstatuses&quot;</span><span class="s1">));</span>
+
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(JSONException e) {</span>
+            <span class="s1">e.printStackTrace();</span>
+        <span class="s1">}</span>
+
+        <span class="s0">return </span><span class="s1">columnModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/* ############################################# READ ACTIONS ############################################# */</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">readOrganizations(</span><span class="s0">long </span><span class="s1">userID, </span><span class="s0">int </span><span class="s1">primaryRole, </span><span class="s0">int </span><span class="s1">secondaryRoles, </span><span class="s0">int </span><span class="s1">statusBITS,</span>
+                                  <span class="s1">iReadOrganizationsModelSetCallback callback) {</span>
+        <span class="s1">DatabaseReference dbReference = database.getReference(cRealtimeHelper.KEY_ORGANIZATIONS);</span>
+        <span class="s1">dbReference.addValueEventListener(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot dataSnapshot) {</span>
+
+                <span class="s1">ArrayList&lt;cOrganizationModel&gt; organizationModels = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;();</span>
+                <span class="s0">for </span><span class="s1">(DataSnapshot ds : dataSnapshot.getChildren()) {</span>
+                    <span class="s1">cOrganizationModel organizationModel = ds.getValue(cOrganizationModel.</span><span class="s0">class</span><span class="s1">);</span>
+                    <span class="s1">organizationModels.add(organizationModel);</span>
+
+                    <span class="s0">assert </span><span class="s1">organizationModel != </span><span class="s0">null</span><span class="s1">;</span>
+                    <span class="s1">Log.d(TAG, </span><span class="s3">&quot;Organization name: &quot; </span><span class="s1">+ organizationModel.getName() + </span><span class="s3">&quot;, email &quot; </span><span class="s1">+</span>
+                            <span class="s1">organizationModel.getEmail() + </span><span class="s3">&quot;, website &quot; </span><span class="s1">+ organizationModel.getEmail());</span>
+                <span class="s1">}</span>
+
+                <span class="s1">callback.onReadOrganizationsSucceeded(organizationModels);</span>
+            <span class="s1">}</span>
+
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+                <span class="s1">callback.onReadOrganizationsFailed(</span><span class="s3">&quot;Failed to read Organization.&quot; </span><span class="s1">+ error.toException());</span>
+                <span class="s1">Log.w(TAG, </span><span class="s3">&quot;Failed to read value.&quot;</span><span class="s1">, error.toException());</span>
+            <span class="s1">}</span>
+        <span class="s1">});</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">Set&lt;cOrganizationModel&gt; getOrganizationSet() {</span>
+        <span class="s0">return null</span><span class="s1">;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/* ############################################# UPDATE ACTIONS ############################################# */</span>
+
+
+    <span class="s2">/* ############################################# DELETE ACTIONS ############################################# */</span>
+
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

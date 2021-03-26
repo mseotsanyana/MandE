@@ -153,7 +153,7 @@ public class cUserAddFragment extends Fragment {
 
         for (int i = 0; i < allOrganizations.size(); i++) {
             cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-            idNameBool.setId(allOrganizations.get(i).getOrganizationID());
+            //idNameBool.setId(allOrganizations.get(i).getOrganizationID());
             idNameBool.setName(allOrganizations.get(i).getName());
             idNameBool.setSelected(false);
             keyPairBoolDataList.add(idNameBool);

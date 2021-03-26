@@ -95,7 +95,7 @@ public class cTriangleFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // instantiate and initialize the action_list
-        recyclerView = (RecyclerView)view.findViewById(R.id.triangle_card_list);
+        recyclerView = null;//(RecyclerView)view.findViewById(R.id.triangle_card_list);
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
@@ -112,7 +112,7 @@ public class cTriangleFragment extends Fragment {
 
     // initialise the floating action button
     private void initFab(View view) {
-        view.findViewById(R.id.triangle_fab).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentManager fragmentManager = getFragmentManager();
@@ -258,7 +258,7 @@ public class cTriangleFragment extends Fragment {
 
             cCustomActionItemText item = (cCustomActionItemText) getItem( position );
 
-            ImageView image = (ImageView) view.findViewById( R.id.image );
+            ImageView image = null;//(ImageView) view.findViewById( R.id.image );
             TextView text = (TextView) view.findViewById( R.id.title );
 
             image.setImageDrawable( item.getIcon() );

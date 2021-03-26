@@ -68,14 +68,14 @@ public class cOrganizationOwnerView {
         keyPairBoolOwners = new ArrayList<>();
         for (int i = 0; i < owners.size(); i++) {
             cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-            idNameBool.setId(owners.get(i).getOrganizationID());
+            //idNameBool.setId(owners.get(i).getOrganizationID());
             idNameBool.setName(owners.get(i).getName());
             idNameBool.setObject(owners.get(i));
-            if (owners.get(i).getOrganizationID() == ownerModel.getOrganizationID()){
+            //if (owners.get(i).getOrganizationID() == ownerModel.getOrganizationID()){
                 idNameBool.setSelected(true);
-            }else {
+            //-}else {
                 idNameBool.setSelected(false);
-            }
+            //-}
 
             keyPairBoolOwners.add(idNameBool);
         }

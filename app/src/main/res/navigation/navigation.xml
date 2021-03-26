@@ -2,28 +2,54 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/navigation"
-    app:startDestination="@id/cLoginFragment">
+    app:startDestination="@id/cHomeFragment">
 
     <fragment
         android:id="@+id/cLoginFragment"
         android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cLoginFragment"
         android:label="Login">
         <action
-            android:id="@+id/action_cLoginFragment_to_cLogFrameFragment"
-            app:destination="@id/cLogFrameFragment" />
+            android:id="@+id/action_cLoginFragment_to_cHomeFragment"
+            app:destination="@id/cHomeFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_cLoginFragment_to_cSignUpFragment"
+            app:destination="@id/cSignUpFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/cSignUpFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cSignUpFragment"
+        android:label="cSignUpFragment">
+        <action
+            android:id="@+id/action_cSignUpFragment_to_cLoginFragment"
+            app:destination="@id/cLoginFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="false"/>
+        <action
+            android:id="@+id/action_cSignUpFragment_to_cHomeFragment"
+            app:destination="@id/cHomeFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="false"/>
     </fragment>
     <fragment
         android:id="@+id/cSettingsFragment"
         android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cSettingsFragment"
         android:label="cSettingsFragment" />
-    <fragment
-        android:id="@+id/cJoinFragment"
-        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cJoinFragment"
-        android:label="cJoinFragment" />
-    <fragment
-        android:id="@+id/cRegisterFragment"
-        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cRegisterFragment"
-        android:label="cRegisterFragment" />
     <fragment
         android:id="@+id/cLogFrameFragment"
         android:name="com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cLogFrameFragment"
@@ -266,4 +292,40 @@
             android:name="questionModels"
             app:argType="com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel[]" />
     </fragment>
+    <fragment
+        android:id="@+id/cHomeFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cHomeFragment"
+        android:label="cHomeFragment" >
+        <argument
+            android:name="userEmail"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_cHomeFragment_to_cLoginFragment"
+            app:destination="@id/cLoginFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="false"/>
+        <action
+            android:id="@+id/action_cHomeFragment_to_cOrganizationDetailFragment"
+            app:destination="@id/cOrganizationDetailFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/cNotificationFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cMessagesFragment"
+        android:label="cNotificationFragment" />
+    <fragment
+        android:id="@+id/cOrganizationDetailFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cOrganizationDetailFragment"
+        android:label="cOrganizationFragment" />
+    <fragment
+        android:id="@+id/cDashboardFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cDashboardFragment"
+        android:label="cDashboardFragment" />
 </navigation>

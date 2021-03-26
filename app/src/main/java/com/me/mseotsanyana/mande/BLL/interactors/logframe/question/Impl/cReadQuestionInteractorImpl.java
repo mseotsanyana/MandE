@@ -93,7 +93,7 @@ public class cReadQuestionInteractorImpl extends cAbstractInteractor
 
             /* set of output children under the output */
             childIndex = parentIndex;
-            ArrayList<cOutputModel> outputs = new ArrayList<>(outputModel.getChildrenOutputModelSet());
+            ArrayList<cOutputModel> outputs = null;//--new ArrayList<>(outputModel.getChildrenOutputModelSet());
             for (int j = 0; j < outputs.size(); j++) {
                 childIndex = childIndex + 1;
                 outputTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, outputs));

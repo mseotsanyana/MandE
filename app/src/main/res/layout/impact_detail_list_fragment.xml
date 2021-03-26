@@ -77,7 +77,6 @@
                 android:layout_gravity="top"
                 android:layout_marginBottom="48dp"
                 android:background="@color/colorPrimaryDark"
-                android:textColor="@color/title_text"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/PopupTheme" />
 

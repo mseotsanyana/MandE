@@ -3,7 +3,7 @@ package com.me.mseotsanyana.mande.BLL.interactors.logframe.impact.Impl;
 import android.content.Context;
 
 
-import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cImpactRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.logframe.cImpactRepositoryImpl;
 
 public class cImpactInterator
 {

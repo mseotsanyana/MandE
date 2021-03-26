@@ -195,7 +195,7 @@ public class cOutputBodyView {
 
     @Click(R.id.textViewDeleteIcon)
     void onDeleteIconClick(){
-        listener.onClickDeleteOutput(childPosition, outputModel.getOutputID());
+        listener.onClickDeleteOutput(childPosition, outputModel.getComponentID());
     }
 
     @Click(R.id.textViewSyncIcon)

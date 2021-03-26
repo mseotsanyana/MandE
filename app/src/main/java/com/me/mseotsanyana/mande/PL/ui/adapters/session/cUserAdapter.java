@@ -400,9 +400,9 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
         final List<cKeyPairBoolData> keyPairBoolOrgs = new ArrayList<>();
         for (int i = 0; i < orgs.size(); i++) {
             cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-            idNameBool.setId(orgs.get(i).getOrganizationID());
+            //-idNameBool.setId(orgs.get(i).getOrganizationID());
             idNameBool.setName(orgs.get(i).getName());
-            if (userDomain.getOrganizationID() == orgs.get(i).getOrganizationID()) {
+            if (userDomain.getOrganizationID() == 0/*orgs.get(i).getOrganizationID()*/) {
                 idNameBool.setSelected(true);
             } else {
                 idNameBool.setSelected(false);
@@ -428,10 +428,9 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
         final List<cKeyPairBoolData> keyPairBoolOtherOrgs = new ArrayList<>();
         for (int i = 0; i < orgs.size(); i++) {
             cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-            idNameBool.setId(orgs.get(i).getOrganizationID());
+            //-idNameBool.setId(orgs.get(i).getOrganizationID());
             idNameBool.setName(orgs.get(i).getName());
-            if ((userDomain.getGroupBITS() & orgs.get(i).getOrganizationID()) ==
-                            orgs.get(i).getOrganizationID()) {
+            if (true){//userDomain.getGroupBITS() & orgs.get(i).getOrganizationID()) == orgs.get(i).getOrganizationID()) {
                 idNameBool.setSelected(true);
             } else {
                 idNameBool.setSelected(false);

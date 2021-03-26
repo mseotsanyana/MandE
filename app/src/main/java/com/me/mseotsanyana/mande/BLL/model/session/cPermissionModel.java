@@ -12,7 +12,12 @@ public class cPermissionModel {
     private int entityTypeID;
     private int operationID;
     private int statusSetID;
-    private int serverID;
+
+    private String serverID;
+    private String entityServerID;
+    private String operationServerID;
+    private String statusServerID;
+
     private int ownerID;
     private int orgID;
     private int groupBITS;
@@ -85,12 +90,36 @@ public class cPermissionModel {
         this.statusSetID = statusSetID;
     }
 
-    public int getServerID() {
+    public String getServerID() {
         return serverID;
     }
 
-    public void setServerID(int serverID) {
+    public void setServerID(String serverID) {
         this.serverID = serverID;
+    }
+
+    public String getEntityServerID() {
+        return entityServerID;
+    }
+
+    public void setEntityServerID(String entityServerID) {
+        this.entityServerID = entityServerID;
+    }
+
+    public String getOperationServerID() {
+        return operationServerID;
+    }
+
+    public void setOperationServerID(String operationServerID) {
+        this.operationServerID = operationServerID;
+    }
+
+    public String getStatusServerID() {
+        return statusServerID;
+    }
+
+    public void setStatusServerID(String statusServerID) {
+        this.statusServerID = statusServerID;
     }
 
     public int getOwnerID() {

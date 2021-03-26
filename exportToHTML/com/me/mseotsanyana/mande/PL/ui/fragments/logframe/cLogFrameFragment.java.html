@@ -1,0 +1,1116 @@
+<html>
+<head>
+<title>cLogFrameFragment.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #0033b3;}
+.s1 { color: #080808;}
+.s2 { color: #8c8c8c; font-style: italic;}
+.s3 { color: #8c8c8c; font-style: italic;}
+.s4 { color: #1750eb;}
+.s5 { color: #067d17;}
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+cLogFrameFragment.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.me.mseotsanyana.mande.PL.ui.fragments.logframe;</span>
+
+<span class="s0">import </span><span class="s1">android.app.SearchManager;</span>
+<span class="s0">import </span><span class="s1">android.content.Context;</span>
+<span class="s0">import </span><span class="s1">android.content.DialogInterface;</span>
+<span class="s0">import </span><span class="s1">android.content.Intent;</span>
+<span class="s0">import </span><span class="s1">android.content.res.Configuration;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull;</span>
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AlertDialog;</span>
+<span class="s0">import </span><span class="s1">androidx.appcompat.widget.AppCompatEditText;</span>
+
+<span class="s0">import </span><span class="s1">android.graphics.Color;</span>
+<span class="s0">import </span><span class="s1">android.graphics.Typeface;</span>
+<span class="s0">import </span><span class="s1">android.text.Layout;</span>
+<span class="s0">import </span><span class="s1">android.util.Log;</span>
+<span class="s0">import </span><span class="s1">android.util.TypedValue;</span>
+<span class="s0">import </span><span class="s1">android.view.LayoutInflater;</span>
+<span class="s0">import </span><span class="s1">android.view.Menu;</span>
+<span class="s0">import </span><span class="s1">android.view.MenuInflater;</span>
+<span class="s0">import </span><span class="s1">android.view.View;</span>
+<span class="s0">import </span><span class="s1">android.view.ViewGroup;</span>
+<span class="s0">import </span><span class="s1">android.widget.ExpandableListView;</span>
+
+<span class="s0">import </span><span class="s1">android.os.Bundle;</span>
+
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.ActionBarDrawerToggle;</span>
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AppCompatActivity;</span>
+<span class="s0">import </span><span class="s1">androidx.appcompat.widget.SearchView;</span>
+<span class="s0">import </span><span class="s1">androidx.appcompat.widget.Toolbar;</span>
+<span class="s0">import </span><span class="s1">androidx.core.util.Pair;</span>
+<span class="s0">import </span><span class="s1">androidx.drawerlayout.widget.DrawerLayout;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.Fragment;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.FragmentTransaction;</span>
+<span class="s0">import </span><span class="s1">androidx.navigation.NavDirections;</span>
+<span class="s0">import </span><span class="s1">androidx.navigation.Navigation;</span>
+<span class="s0">import </span><span class="s1">androidx.recyclerview.widget.LinearLayoutManager;</span>
+<span class="s0">import </span><span class="s1">androidx.recyclerview.widget.RecyclerView;</span>
+
+<span class="s0">import </span><span class="s1">android.view.MenuItem;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView;</span>
+<span class="s0">import </span><span class="s1">android.widget.LinearLayout;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast;</span>
+
+<span class="s0">import </span><span class="s1">com.google.android.material.appbar.CollapsingToolbarLayout;</span>
+<span class="s0">import </span><span class="s1">com.google.android.material.datepicker.MaterialDatePicker;</span>
+<span class="s0">import </span><span class="s1">com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;</span>
+<span class="s0">import </span><span class="s1">com.google.android.material.dialog.MaterialAlertDialogBuilder;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.logframe.cLogFrameRepositoryImpl;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cMenuRepositoryImpl;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cSessionManagerImpl;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.PL.presenters.logframe.Impl.cLogFramePresenterImpl;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.PL.presenters.logframe.iLogFramePresenter;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cLogFrameAdapter;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.PL.ui.fragments.session.cPermissionFragment;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.PL.ui.fragments.session.cRoleFragment;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.PL.ui.fragments.session.cUserFragment;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.UTIL.TextDrawable;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.UTIL.cConstant;</span>
+
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.UTIL.cExpandableListAdapter;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.R;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.UTIL.cFontManager;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.cMainThreadImpl;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.cSettingsActivity;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.multiselectspinnerlibrary.cKeyPairBoolData;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerListener;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.treeadapterlibrary.cTreeModel;</span>
+
+<span class="s0">import </span><span class="s1">java.sql.Timestamp;</span>
+<span class="s0">import </span><span class="s1">java.text.SimpleDateFormat;</span>
+<span class="s0">import </span><span class="s1">java.util.ArrayList;</span>
+<span class="s0">import </span><span class="s1">java.util.Calendar;</span>
+<span class="s0">import </span><span class="s1">java.util.Date;</span>
+<span class="s0">import </span><span class="s1">java.util.HashMap;</span>
+<span class="s0">import </span><span class="s1">java.util.LinkedHashMap;</span>
+<span class="s0">import </span><span class="s1">java.util.List;</span>
+<span class="s0">import </span><span class="s1">java.util.Objects;</span>
+
+<span class="s2">/**</span>
+ <span class="s2">* Created by mseotsanyana on 2016/11/02.</span>
+ <span class="s2">*/</span>
+<span class="s0">public class </span><span class="s1">cLogFrameFragment </span><span class="s0">extends </span><span class="s1">Fragment </span><span class="s0">implements </span><span class="s1">iLogFramePresenter.View {</span>
+    <span class="s0">private static </span><span class="s1">String TAG = cLogFrameFragment.</span><span class="s0">class</span><span class="s1">.getSimpleName();</span>
+    <span class="s0">private static </span><span class="s1">SimpleDateFormat tsdf = cConstant.TIMESTAMP_FORMAT_DATE;</span>
+    <span class="s0">private static </span><span class="s1">SimpleDateFormat ssdf = cConstant.SHORT_FORMAT_DATE;</span>
+
+    <span class="s2">/* logframe views */</span>
+    <span class="s0">private </span><span class="s1">Toolbar toolbar;</span>
+    <span class="s0">private </span><span class="s1">DrawerLayout drawerLayout;</span>
+    <span class="s0">private </span><span class="s1">ActionBarDrawerToggle drawerToggle;</span>
+    <span class="s0">private </span><span class="s1">ExpandableListView menuExpandableListView;</span>
+    <span class="s0">private </span><span class="s1">LinearLayout includeProgressBar;</span>
+
+    <span class="s2">/* logframe interface */</span>
+    <span class="s0">private </span><span class="s1">iLogFramePresenter logFramePresenter;</span>
+
+    <span class="s2">/* logframe adapter */</span>
+    <span class="s0">private </span><span class="s1">cLogFrameAdapter logFrameRecyclerViewAdapter;</span>
+
+    <span class="s2">/* menu data structures */</span>
+    <span class="s0">private </span><span class="s1">List&lt;String&gt; menuItemTitles;</span>
+    <span class="s0">private </span><span class="s1">HashMap&lt;String, List&lt;String&gt;&gt; expandableMenuItems;</span>
+    <span class="s0">private </span><span class="s1">ArrayList&lt;cOrganizationModel&gt; sharedOrganizations;</span>
+
+    <span class="s0">private </span><span class="s1">AppCompatActivity activity;</span>
+
+    <span class="s0">public </span><span class="s1">cLogFrameFragment() {</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static </span><span class="s1">cLogFrameFragment newInstance() {</span>
+        <span class="s0">return new </span><span class="s1">cLogFrameFragment();</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState);</span>
+        <span class="s1">setHasOptionsMenu(</span><span class="s0">true</span><span class="s1">);</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onResume() {</span>
+        <span class="s0">super</span><span class="s1">.onResume();</span>
+        <span class="s2">/* get all logframes from the database */</span>
+        <span class="s1">logFramePresenter.readAllLogFrames();</span>
+        <span class="s1">logFramePresenter.readSharedOrganizations();</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* the onCreateView method is called when fragment should create its View object</span>
+     <span class="s2">* hierarchy either dynamically or via XML Layout inflation.</span>
+     <span class="s2">*/</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">View onCreateView(LayoutInflater inflater, ViewGroup container,</span>
+                             <span class="s1">Bundle savedInstanceState) {</span>
+        <span class="s0">return </span><span class="s1">inflater.inflate(R.layout.logframe_list_fragment, container, </span><span class="s0">false</span><span class="s1">);</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* this event is triggered soon after on CreateView(). onViewCreated is called if the</span>
+     <span class="s2">* view is returned from onCreateView() is non-null. Any view setup should occur here. e.g.</span>
+     <span class="s2">* view lookups and attaching view listeners.</span>
+     <span class="s2">*/</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onViewCreated(@NonNull View view, Bundle savedInstanceState) {</span>
+
+        <span class="s2">/* create data structures */</span>
+        <span class="s1">initDataStructures();</span>
+
+        <span class="s2">/* create navigation drawer menu */</span>
+        <span class="s1">initNavigationDrawer(view);</span>
+
+        <span class="s2">/* create logframe menu */</span>
+        <span class="s1">initLogframeView(view);</span>
+
+        <span class="s2">/* draggable floating button */</span>
+        <span class="s1">initDraggableFAB(view);</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">initNavigationDrawer(View view) {</span>
+        <span class="s2">/* populate navigation view with relevant to the logged in user from database */</span>
+        <span class="s1">populateNavigationDrawer(view);</span>
+        <span class="s2">/* initialise the toolbar and the drawer layout for animating the menu */</span>
+        <span class="s1">setupDrawerToggle(view);</span>
+        <span class="s2">/* setup drawer navigation group and children listeners */</span>
+        <span class="s1">setupDrawerNavigationListener();</span>
+
+        <span class="s2">// put an arrow button</span>
+        <span class="s2">//activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);</span>
+        <span class="s2">//activity.getSupportActionBar().setHomeButtonEnabled(true);</span>
+
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">initDataStructures() {</span>
+        <span class="s2">/* contains main menu and its corresponding submenu items */</span>
+        <span class="s1">menuItemTitles = </span><span class="s0">new </span><span class="s1">ArrayList&lt;String&gt;();</span>
+        <span class="s1">expandableMenuItems = </span><span class="s0">new </span><span class="s1">LinkedHashMap&lt;String, List&lt;String&gt;&gt;();</span>
+        <span class="s2">/* contains a tree of logframes */</span>
+        <span class="s2">/* logframe data structures */</span>
+        <span class="s1">List&lt;cTreeModel&gt; logFrameTreeModels = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;();</span>
+        <span class="s2">/* shared preference organizations */</span>
+        <span class="s1">sharedOrganizations = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;();</span>
+
+        <span class="s1">logFramePresenter = </span><span class="s0">new </span><span class="s1">cLogFramePresenterImpl(</span>
+                <span class="s1">cThreadExecutorImpl.getInstance(),</span>
+                <span class="s1">cMainThreadImpl.getInstance(),</span>
+                <span class="s0">this</span><span class="s1">,</span>
+                <span class="s0">new </span><span class="s1">cSessionManagerImpl(getContext()),</span>
+                <span class="s0">new </span><span class="s1">cMenuRepositoryImpl(getContext()),</span>
+                <span class="s0">new </span><span class="s1">cLogFrameRepositoryImpl(getContext()));</span>
+
+        <span class="s2">// setup recycler view adapter</span>
+        <span class="s1">logFrameRecyclerViewAdapter = </span><span class="s0">new </span><span class="s1">cLogFrameAdapter(getActivity(), </span><span class="s0">this</span><span class="s1">,</span>
+                <span class="s1">logFrameTreeModels);</span>
+
+        <span class="s1">activity = ((AppCompatActivity) getActivity());</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">initLogframeView(View view) {</span>
+        <span class="s1">includeProgressBar = view.findViewById(R.id.includeProgressBar);</span>
+
+        <span class="s1">RecyclerView logFrameRecyclerView = view.findViewById(R.id.logframeRecyclerView);</span>
+        <span class="s1">logFrameRecyclerView.setHasFixedSize(</span><span class="s0">true</span><span class="s1">);</span>
+
+        <span class="s1">LinearLayoutManager llm = </span><span class="s0">new </span><span class="s1">LinearLayoutManager(getActivity());</span>
+        <span class="s1">llm.setOrientation(LinearLayoutManager.VERTICAL);</span>
+
+        <span class="s1">logFrameRecyclerView.setAdapter(logFrameRecyclerViewAdapter);</span>
+        <span class="s1">logFrameRecyclerView.setLayoutManager(llm);</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">initDraggableFAB(View view) {</span>
+        <span class="s1">view.findViewById(R.id.logframeFAB).setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">cLogFrameModel logFrameModel = </span><span class="s0">new </span><span class="s1">cLogFrameModel();</span>
+                <span class="s1">onClickCreateLogFrame(logFrameModel);</span>
+            <span class="s1">}</span>
+        <span class="s1">});</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">populateNavigationDrawer(View view) {</span>
+        <span class="s2">// instantiating the expandable action_list view under the DrawerLayout</span>
+        <span class="s1">menuExpandableListView = view.findViewById(R.id.navigationList);</span>
+
+        <span class="s2">// adding the header to the expandable action_list view</span>
+        <span class="s1">LayoutInflater inflater = requireActivity().getLayoutInflater();</span>
+        <span class="s1">View headerView = inflater.inflate(R.layout.dashboard_drawer_nav_header,</span>
+                <span class="s0">null</span><span class="s1">, </span><span class="s0">false</span><span class="s1">);</span>
+
+        <span class="s2">// instantiate header view objects</span>
+        <span class="s1">ImageView userIcon = headerView.findViewById(R.id.userIcon);</span>
+        <span class="s1">TextView currentDate = headerView.findViewById(R.id.currentDate);</span>
+        <span class="s2">//TextView website = headerView.findViewById(R.id.website);</span>
+
+        <span class="s2">// set header view objects</span>
+        <span class="s2">//userIcon.setImageResource(...);</span>
+        <span class="s1">currentDate.setText(ssdf.format(Calendar.getInstance().getTime()));</span>
+        <span class="s2">//website.setText(sessionManager.getCurrentUser().getName()+&quot; &quot;+</span>
+        <span class="s2">// sessionManager.getCurrentUser().getSurname());</span>
+
+        <span class="s1">menuExpandableListView.addHeaderView(headerView);</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">setupDrawerToggle(View view) {</span>
+        <span class="s2">/* initialize the toolbar */</span>
+        <span class="s1">toolbar = view.findViewById(R.id.toolbar);</span>
+        <span class="s1">activity.setSupportActionBar(toolbar);</span>
+        <span class="s1">CollapsingToolbarLayout collapsingToolbarLayout =</span>
+                <span class="s1">view.findViewById(R.id.collapsingToolbarLayout);</span>
+        <span class="s1">collapsingToolbarLayout.setContentScrimColor(Color.WHITE);</span>
+
+        <span class="s1">toolbar.setOnMenuItemClickListener(</span>
+                <span class="s0">new </span><span class="s1">Toolbar.OnMenuItemClickListener() {</span>
+                    <span class="s1">@Override</span>
+                    <span class="s0">public boolean </span><span class="s1">onMenuItemClick(MenuItem item) {</span>
+                        <span class="s0">return </span><span class="s1">onOptionsItemSelected(item);</span>
+                    <span class="s1">}</span>
+                <span class="s1">});</span>
+
+        <span class="s1">drawerLayout = view.findViewById(R.id.drawer_layout);</span>
+
+        <span class="s1">drawerToggle = </span><span class="s0">new </span><span class="s1">ActionBarDrawerToggle(</span>
+                <span class="s1">getActivity(),            </span><span class="s2">// host activity</span>
+                <span class="s1">drawerLayout,             </span><span class="s2">// drawer layout</span>
+                <span class="s1">toolbar,                  </span><span class="s2">// custom toolbar</span>
+                <span class="s1">R.string.drawer_open, </span><span class="s2">// open drawer description</span>
+                <span class="s1">R.string.drawer_close </span><span class="s2">// close drawer description</span>
+        <span class="s1">) {</span>
+
+            <span class="s2">/* Called when a drawer has settled in a completely open state. */</span>
+            <span class="s0">public void </span><span class="s1">onDrawerOpened(View drawerView) {</span>
+                <span class="s0">super</span><span class="s1">.onDrawerOpened(drawerView);</span>
+                <span class="s2">// creates call to onPrepareOptionsMenu()</span>
+                <span class="s1">requireActivity().invalidateOptionsMenu();</span>
+            <span class="s1">}</span>
+
+            <span class="s2">/* Called when a drawer has settled in a completely closed state. */</span>
+            <span class="s0">public void </span><span class="s1">onDrawerClosed(View view) {</span>
+                <span class="s0">super</span><span class="s1">.onDrawerClosed(view);</span>
+                <span class="s2">// creates call to onPrepareOptionsMenu()</span>
+                <span class="s1">requireActivity().invalidateOptionsMenu();</span>
+            <span class="s1">}</span>
+        <span class="s1">};</span>
+
+        <span class="s2">// show animations</span>
+        <span class="s1">drawerLayout.addDrawerListener(drawerToggle);</span>
+        <span class="s2">//</span>
+        <span class="s1">drawerToggle.setDrawerIndicatorEnabled(</span><span class="s0">true</span><span class="s1">);</span>
+        <span class="s2">// Sync the toggle state after onRestoreInstanceState has occured</span>
+        <span class="s2">// and show the display menu icon</span>
+        <span class="s1">drawerToggle.syncState();</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">setupDrawerNavigationListener() {</span>
+        <span class="s2">// called when expanding...</span>
+        <span class="s1">menuExpandableListView.setOnGroupExpandListener(</span><span class="s0">new </span><span class="s1">ExpandableListView.OnGroupExpandListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onGroupExpand(</span><span class="s0">int </span><span class="s1">groupPosition) {</span>
+                <span class="s1">Objects.requireNonNull(activity.getSupportActionBar()).setTitle(</span>
+                        <span class="s1">menuItemTitles.get(groupPosition));</span>
+            <span class="s1">}</span>
+        <span class="s1">});</span>
+
+        <span class="s2">// called when collapsing...</span>
+        <span class="s1">menuExpandableListView.setOnGroupCollapseListener(</span><span class="s0">new </span><span class="s1">ExpandableListView.OnGroupCollapseListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onGroupCollapse(</span><span class="s0">int </span><span class="s1">groupPosition) {</span>
+                <span class="s1">Objects.requireNonNull(activity.getSupportActionBar()).setTitle(R.string.app_name);</span>
+            <span class="s1">}</span>
+        <span class="s1">});</span>
+
+        <span class="s2">// called when clicking on parent menu item...</span>
+        <span class="s1">menuExpandableListView.setOnGroupClickListener(</span><span class="s0">new </span><span class="s1">ExpandableListView.OnGroupClickListener() {</span>
+            <span class="s2">/**</span>
+             <span class="s2">* Callback method to be invoked when a group in this expandable action_list has</span>
+             <span class="s2">* been clicked.</span>
+             <span class="s2">*</span>
+             <span class="s2">* </span><span class="s3">@param </span><span class="s2">parent        The ExpandableListConnector where the click happened</span>
+             <span class="s2">* </span><span class="s3">@param </span><span class="s2">v             The view within the expandable action_list/ListView that was clicked</span>
+             <span class="s2">* </span><span class="s3">@param </span><span class="s2">groupPosition The group position that was clicked</span>
+             <span class="s2">* </span><span class="s3">@param </span><span class="s2">id            The row id of the group that was clicked</span>
+             <span class="s2">* </span><span class="s3">@return </span><span class="s2">True if the click was handled</span>
+             <span class="s2">*/</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public boolean </span><span class="s1">onGroupClick(ExpandableListView parent, View v, </span><span class="s0">int </span><span class="s1">groupPosition, </span><span class="s0">long </span><span class="s1">id) {</span>
+                <span class="s0">boolean </span><span class="s1">retVal = </span><span class="s0">true</span><span class="s1">;</span>
+                <span class="s0">int </span><span class="s1">position = </span><span class="s4">0</span><span class="s1">;</span>
+
+                <span class="s0">switch </span><span class="s1">(groupPosition) {</span>
+                    <span class="s0">case </span><span class="s4">0</span><span class="s1">: </span><span class="s2">// Admin</span>
+                        <span class="s1">retVal = </span><span class="s0">false</span><span class="s1">;</span>
+                        <span class="s0">break</span><span class="s1">;</span>
+                    <span class="s0">case </span><span class="s4">1</span><span class="s1">: </span><span class="s2">// Profile</span>
+                        <span class="s1">Toast.makeText(getActivity(), </span><span class="s5">&quot;Profile Fragment&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show();</span>
+                        <span class="s0">break</span><span class="s1">;</span>
+                    <span class="s0">case </span><span class="s4">2</span><span class="s1">: </span><span class="s2">// Notification</span>
+                        <span class="s1">Toast.makeText(getActivity(), </span><span class="s5">&quot;Notification Fragment&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show();</span>
+                        <span class="s0">break</span><span class="s1">;</span>
+                    <span class="s0">case </span><span class="s4">3</span><span class="s1">: </span><span class="s2">// Settings</span>
+                        <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(activity, cSettingsActivity.</span><span class="s0">class</span><span class="s1">);</span>
+                        <span class="s1">startActivity(intent);</span>
+                        <span class="s0">break</span><span class="s1">;</span>
+                    <span class="s0">case </span><span class="s4">4</span><span class="s1">: </span><span class="s2">// Uploading</span>
+                        <span class="s1">retVal = </span><span class="s0">false</span><span class="s1">;</span>
+                        <span class="s1">Toast.makeText(getActivity(), </span><span class="s5">&quot;Uploading Fragment&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show();</span>
+                        <span class="s0">break</span><span class="s1">;</span>
+                    <span class="s0">case </span><span class="s4">5</span><span class="s1">: </span><span class="s2">// Downloading</span>
+                        <span class="s1">retVal = </span><span class="s0">false</span><span class="s1">;</span>
+                        <span class="s1">Toast.makeText(getActivity(), </span><span class="s5">&quot;Downloading Fragment&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show();</span>
+                        <span class="s0">break</span><span class="s1">;</span>
+                    <span class="s0">case </span><span class="s4">6</span><span class="s1">: </span><span class="s2">// Logout</span>
+                        <span class="s2">//session.logoutUser();</span>
+                        <span class="s2">//session.deleteSettings();</span>
+                        <span class="s2">//session.commitSettings();</span>
+                        <span class="s1">Toast.makeText(getActivity(), </span><span class="s5">&quot;Logout&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show();</span>
+                        <span class="s0">break</span><span class="s1">;</span>
+
+                    <span class="s0">default</span><span class="s1">:</span>
+                        <span class="s0">break</span><span class="s1">;</span>
+                <span class="s1">}</span>
+
+                <span class="s0">return </span><span class="s1">retVal;</span>
+            <span class="s1">}</span>
+        <span class="s1">});</span>
+
+        <span class="s2">// called when clicking on child menu item...</span>
+        <span class="s1">menuExpandableListView.setOnChildClickListener(</span><span class="s0">new </span><span class="s1">ExpandableListView.OnChildClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public boolean </span><span class="s1">onChildClick(ExpandableListView parent, View v,</span>
+                                        <span class="s0">int </span><span class="s1">groupPosition, </span><span class="s0">int </span><span class="s1">childPosition, </span><span class="s0">long </span><span class="s1">id) {</span>
+
+                <span class="s1">String selectedItem = ((List) (Objects.requireNonNull(</span>
+                        <span class="s1">expandableMenuItems.get(menuItemTitles.get(groupPosition)))))</span>
+                        <span class="s1">.get(childPosition).toString();</span>
+                <span class="s1">Objects.requireNonNull(activity.getSupportActionBar()).setTitle(selectedItem);</span>
+
+                <span class="s1">FragmentTransaction ft = requireActivity().</span>
+                        <span class="s1">getSupportFragmentManager().beginTransaction();</span>
+
+                <span class="s0">switch </span><span class="s1">(groupPosition) {</span>
+                    <span class="s0">case </span><span class="s4">0</span><span class="s1">: </span><span class="s2">// Admin</span>
+                        <span class="s0">switch </span><span class="s1">(childPosition) {</span>
+                            <span class="s0">case </span><span class="s4">0</span><span class="s1">: </span><span class="s2">// Users</span>
+                                <span class="s1">cUserFragment userFragment = cUserFragment.newInstance();</span>
+                                <span class="s1">ft.replace(R.id.fragment_frame, userFragment);</span>
+                                <span class="s1">ft.addToBackStack(</span><span class="s5">&quot;USER&quot;</span><span class="s1">);</span>
+                                <span class="s1">ft.commit();</span>
+                                <span class="s0">break</span><span class="s1">;</span>
+
+                            <span class="s0">case </span><span class="s4">1</span><span class="s1">: </span><span class="s2">// User Groups</span>
+                                <span class="s1">cRoleFragment roleFragment = cRoleFragment.newInstance();</span>
+                                <span class="s1">ft.replace(R.id.fragment_frame, roleFragment);</span>
+                                <span class="s1">ft.addToBackStack(</span><span class="s5">&quot;ROLE&quot;</span><span class="s1">);</span>
+                                <span class="s1">ft.commit();</span>
+                                <span class="s0">break</span><span class="s1">;</span>
+
+                            <span class="s0">case </span><span class="s4">2</span><span class="s1">: </span><span class="s2">// Permissions Mgmt.</span>
+                                <span class="s1">cPermissionFragment permissionFragment = cPermissionFragment.newInstance();</span>
+                                <span class="s1">ft.replace(R.id.fragment_frame, permissionFragment);</span>
+                                <span class="s1">ft.addToBackStack(</span><span class="s5">&quot;PERMISSION&quot;</span><span class="s1">);</span>
+                                <span class="s1">ft.commit();</span>
+                                <span class="s0">break</span><span class="s1">;</span>
+
+                            <span class="s0">default</span><span class="s1">:</span>
+                                <span class="s0">break</span><span class="s1">;</span>
+                        <span class="s1">}</span>
+                        <span class="s0">break</span><span class="s1">;</span>
+                    <span class="s0">case </span><span class="s4">4</span><span class="s1">:</span>
+                        <span class="s0">switch </span><span class="s1">(childPosition) {</span>
+                            <span class="s0">case </span><span class="s4">0</span><span class="s1">:</span>
+                                <span class="s1">Toast.makeText(getActivity(), </span><span class="s5">&quot;RBAC Upload Fragment&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show();</span>
+                                <span class="s0">break</span><span class="s1">;</span>
+                            <span class="s0">case </span><span class="s4">1</span><span class="s1">:</span>
+                                <span class="s1">Toast.makeText(getActivity(), </span><span class="s5">&quot;ME Upload Fragment&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show();</span>
+                                <span class="s0">break</span><span class="s1">;</span>
+                            <span class="s0">default</span><span class="s1">:</span>
+                                <span class="s0">break</span><span class="s1">;</span>
+                        <span class="s1">}</span>
+                        <span class="s0">break</span><span class="s1">;</span>
+
+                    <span class="s0">case </span><span class="s4">5</span><span class="s1">:</span>
+                        <span class="s0">switch </span><span class="s1">(childPosition) {</span>
+                            <span class="s0">case </span><span class="s4">0</span><span class="s1">:</span>
+                                <span class="s1">Toast.makeText(getActivity(), </span><span class="s5">&quot;RBAC Download Fragment&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show();</span>
+                                <span class="s0">break</span><span class="s1">;</span>
+                            <span class="s0">case </span><span class="s4">1</span><span class="s1">:</span>
+                                <span class="s1">Toast.makeText(getActivity(), </span><span class="s5">&quot;ME Download Fragment&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show();</span>
+                                <span class="s0">break</span><span class="s1">;</span>
+                            <span class="s0">default</span><span class="s1">:</span>
+                                <span class="s0">break</span><span class="s1">;</span>
+                        <span class="s1">}</span>
+                        <span class="s0">break</span><span class="s1">;</span>
+
+                    <span class="s0">default</span><span class="s1">:</span>
+                        <span class="s0">break</span><span class="s1">;</span>
+                <span class="s1">}</span>
+
+                <span class="s0">return true</span><span class="s1">;</span>
+            <span class="s1">}</span>
+        <span class="s1">});</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public boolean </span><span class="s1">onOptionsItemSelected(MenuItem item) {</span>
+        <span class="s2">// Handle action bar item clicks here. The action bar will</span>
+        <span class="s2">// automatically handle clicks on the Home/Up button, so long</span>
+        <span class="s2">// as you specify a parent activity in AndroidManifest.xml.</span>
+        <span class="s2">//int id = item.getItemId();</span>
+
+        <span class="s0">if </span><span class="s1">(item.getItemId() == R.id.homeItem) {</span>
+            <span class="s1">Log.d(TAG, </span><span class="s5">&quot;Stub for overflow menu&quot;</span><span class="s1">);</span>
+        <span class="s1">}</span>
+
+        <span class="s2">// Activate the navigation drawer toggle</span>
+        <span class="s0">if </span><span class="s1">(drawerToggle.onOptionsItemSelected(item)) {</span>
+            <span class="s0">return true</span><span class="s1">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">return super</span><span class="s1">.onOptionsItemSelected(item);</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onConfigurationChanged(@NonNull Configuration newConfig) {</span>
+        <span class="s0">super</span><span class="s1">.onConfigurationChanged(newConfig);</span>
+        <span class="s1">drawerToggle.onConfigurationChanged(newConfig);</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {</span>
+        <span class="s2">// Inflate the menu; this adds items to the action bar if it is present.</span>
+        <span class="s2">//getActivity().getMenuInflater().inflate(R.menu.drawer_menu_main, menu);</span>
+        <span class="s1">inflater.inflate(R.menu.home_toolbar_menu, menu);</span>
+
+        <span class="s2">//getting the search view from the menu</span>
+        <span class="s1">MenuItem toolBarMenu = menu.findItem(R.id.searchItem);</span>
+
+        <span class="s2">/* getting search manager from system service */</span>
+        <span class="s1">SearchManager searchManager = (SearchManager) requireActivity().</span>
+                <span class="s1">getSystemService(Context.SEARCH_SERVICE);</span>
+        <span class="s2">/* getting the search view */</span>
+        <span class="s1">SearchView searchView = (SearchView) toolBarMenu.getActionView();</span>
+        <span class="s2">/* you can put a hint for the search input field */</span>
+        <span class="s1">searchView.setQueryHint(</span><span class="s5">&quot;Search LogFrames...&quot;</span><span class="s1">);</span>
+        <span class="s1">searchView.setSearchableInfo(Objects.requireNonNull(searchManager).</span>
+                <span class="s1">getSearchableInfo(requireActivity().getComponentName()));</span>
+        <span class="s1">searchView.setMaxWidth(Integer.MAX_VALUE);</span>
+        <span class="s2">/* by setting it true we are making it iconified 
+           so the search input will show up after taping the search iconified 
+           if you want to make it visible all the time make it false 
+         */</span>
+        <span class="s2">//searchView.setIconifiedByDefault(true);</span>
+        <span class="s1">search(searchView);</span>
+
+        <span class="s2">/* end */</span>
+
+        <span class="s0">super</span><span class="s1">.onCreateOptionsMenu(menu, inflater);</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">search(SearchView searchView) {</span>
+        <span class="s1">searchView.setOnQueryTextListener(</span><span class="s0">new </span><span class="s1">SearchView.OnQueryTextListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public boolean </span><span class="s1">onQueryTextSubmit(String query) {</span>
+                <span class="s0">return false</span><span class="s1">;</span>
+            <span class="s1">}</span>
+
+            <span class="s1">@Override</span>
+            <span class="s0">public boolean </span><span class="s1">onQueryTextChange(String query) {</span>
+                <span class="s1">logFrameRecyclerViewAdapter.getFilter().filter(query);</span>
+                <span class="s0">return false</span><span class="s1">;</span>
+            <span class="s1">}</span>
+        <span class="s1">});</span>
+    <span class="s1">}</span>
+
+    <span class="s2">//=========== these functions are called in the adapter when clicking on the buttons ===========</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onClickCreateLogFrame(cLogFrameModel logFrameModel) {</span>
+        <span class="s1">createAlertDialog(-</span><span class="s4">1</span><span class="s1">, logFrameModel, </span><span class="s0">true</span><span class="s1">);</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onClickCreateSubLogFrame(</span><span class="s0">long </span><span class="s1">logFrameID, cLogFrameModel logFrameModel) {</span>
+        <span class="s1">createAlertDialog(logFrameID, logFrameModel, </span><span class="s0">false</span><span class="s1">);</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onClickUpdateLogFrame(</span><span class="s0">int </span><span class="s1">position, cLogFrameModel logFrameModel) {</span>
+        <span class="s1">updateAlertDialog(position, logFrameModel);</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onClickDeleteLogFrame(</span><span class="s0">int </span><span class="s1">position, </span><span class="s0">long </span><span class="s1">logframeID) {</span>
+        <span class="s0">int </span><span class="s1">resID = R.string.fa_delete;</span>
+        <span class="s1">String title = </span><span class="s5">&quot;Delete Logframe.&quot;</span><span class="s1">;</span>
+        <span class="s1">String message = </span><span class="s5">&quot;Are you sure you want to delete this logframe ?&quot;</span><span class="s1">;</span>
+
+        <span class="s1">deleteAlertDialog(resID, title, message, position, logframeID);</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onClickDeleteSubLogFrame(</span><span class="s0">int </span><span class="s1">position, </span><span class="s0">long </span><span class="s1">logframeID) {</span>
+
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onClickSyncLogFrame(cLogFrameModel logFrameModel) {</span>
+        <span class="s2">/* change the colour of a sync button */</span>
+        <span class="s2">//logFrameRecyclerViewAdapter.onClickLogframeSync(logFrameModel);</span>
+        <span class="s1">logFramePresenter.syncLogFrameModel(logFrameModel);</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onClickBMBLogFrame(</span><span class="s0">int </span><span class="s1">menuIndex, </span><span class="s0">long </span><span class="s1">logFrameID) {</span>
+        <span class="s1">NavDirections action;</span>
+        <span class="s0">switch </span><span class="s1">(menuIndex) {</span>
+            <span class="s0">case </span><span class="s4">0</span><span class="s1">: </span><span class="s2">// Impact Fragment</span>
+                <span class="s2">/* navigate from logframe to impact */</span>
+                <span class="s1">action = cLogFrameFragmentDirections.</span>
+                        <span class="s1">actionCLogFrameFragmentToCImpactFragment(logFrameID);</span>
+                <span class="s1">Navigation.findNavController(requireView()).navigate(action);</span>
+                <span class="s0">break</span><span class="s1">;</span>
+            <span class="s0">case </span><span class="s4">1</span><span class="s1">: </span><span class="s2">// Outcome Fragment</span>
+                <span class="s2">/* navigate from logframe to outcome */</span>
+                <span class="s1">action = cLogFrameFragmentDirections.</span>
+                        <span class="s1">actionCLogFrameFragmentToCOutcomeFragment(logFrameID);</span>
+                <span class="s1">Navigation.findNavController(requireView()).navigate(action);</span>
+                <span class="s0">break</span><span class="s1">;</span>
+            <span class="s0">case </span><span class="s4">2</span><span class="s1">: </span><span class="s2">// Output Fragment</span>
+                <span class="s2">/* navigate from logframe to output */</span>
+                <span class="s1">action = cLogFrameFragmentDirections.</span>
+                        <span class="s1">actionCLogFrameFragmentToCOutputFragment(logFrameID);</span>
+                <span class="s1">Navigation.findNavController(requireView()).navigate(action);</span>
+                <span class="s0">break</span><span class="s1">;</span>
+            <span class="s0">case </span><span class="s4">3</span><span class="s1">: </span><span class="s2">// Activity Fragment</span>
+                <span class="s2">/* navigate from logframe to activity */</span>
+                <span class="s1">action = cLogFrameFragmentDirections.</span>
+                        <span class="s1">actionCLogFrameFragmentToCActivityFragment(logFrameID);</span>
+                <span class="s1">Navigation.findNavController(requireView()).navigate(action);</span>
+                <span class="s0">break</span><span class="s1">;</span>
+            <span class="s0">case </span><span class="s4">4</span><span class="s1">: </span><span class="s2">// Input Fragment</span>
+                <span class="s2">/* navigate from logframe to input */</span>
+                <span class="s1">action = cLogFrameFragmentDirections.</span>
+                        <span class="s1">actionCLogFrameFragmentToCInputFragment(logFrameID);</span>
+                <span class="s1">Navigation.findNavController(requireView()).navigate(action);</span>
+                <span class="s0">break</span><span class="s1">;</span>
+            <span class="s0">case </span><span class="s4">5</span><span class="s1">: </span><span class="s2">// Key Performance Question (KPQ) Fragment</span>
+                <span class="s2">/* navigate from logframe to question */</span>
+                <span class="s1">action = cLogFrameFragmentDirections.</span>
+                        <span class="s1">actionCLogFrameFragmentToCQuestionFragment(logFrameID);</span>
+                <span class="s1">Navigation.findNavController(requireView()).navigate(action);</span>
+                <span class="s0">break</span><span class="s1">;</span>
+            <span class="s0">case </span><span class="s4">6</span><span class="s1">: </span><span class="s2">// Key Performance Indicator (KPI) Fragment</span>
+                <span class="s2">/* navigate from logframe to indicator */</span>
+                <span class="s1">action = cLogFrameFragmentDirections.</span>
+                        <span class="s1">actionCLogFrameFragmentToCIndicatorFragment(logFrameID);</span>
+                <span class="s1">Navigation.findNavController(requireView()).navigate(action);</span>
+                <span class="s0">break</span><span class="s1">;</span>
+            <span class="s0">case </span><span class="s4">7</span><span class="s1">: </span><span class="s2">// RAID Log Fragment</span>
+                <span class="s2">/* navigate from logframe to RAID */</span>
+                <span class="s1">action = cLogFrameFragmentDirections.</span>
+                        <span class="s1">actionCLogFrameFragmentToCRaidLogFragment(logFrameID);</span>
+                <span class="s1">Navigation.findNavController(requireView()).navigate(action);</span>
+                <span class="s0">break</span><span class="s1">;</span>
+            <span class="s0">case </span><span class="s4">8</span><span class="s1">: </span><span class="s2">// AWPB Fragment</span>
+                <span class="s2">/* navigate from logframe to AWPB */</span>
+                <span class="s1">action = cLogFrameFragmentDirections.</span>
+                        <span class="s1">actionCLogFrameFragmentToCAWPBFragment(logFrameID);</span>
+                <span class="s1">Navigation.findNavController(requireView()).navigate(action);</span>
+                <span class="s0">break</span><span class="s1">;</span>
+            <span class="s0">case </span><span class="s4">9</span><span class="s1">: </span><span class="s2">// Book Keeping Fragment</span>
+                <span class="s2">/* navigate from logframe to book keeping */</span>
+                <span class="s1">action = cLogFrameFragmentDirections.</span>
+                        <span class="s1">actionCLogFrameFragmentToCBookKeepingFragment(logFrameID);</span>
+                <span class="s1">Navigation.findNavController(requireView()).navigate(action);</span>
+                <span class="s0">break</span><span class="s1">;</span>
+            <span class="s0">case </span><span class="s4">10</span><span class="s1">: </span><span class="s2">// Monitoring Fragment</span>
+                <span class="s2">/* navigate from logframe to monitoring */</span>
+                <span class="s1">action = cLogFrameFragmentDirections.</span>
+                        <span class="s1">actionCLogFrameFragmentToCMonitoringFragment(logFrameID);</span>
+                <span class="s1">Navigation.findNavController(requireView()).navigate(action);</span>
+                <span class="s0">break</span><span class="s1">;</span>
+            <span class="s0">case </span><span class="s4">11</span><span class="s1">: </span><span class="s2">// Evaluation Fragment</span>
+                <span class="s2">/* navigate from logframe to evaluation */</span>
+                <span class="s1">action = cLogFrameFragmentDirections.</span>
+                        <span class="s1">actionCLogFrameFragmentToCEvaluationFragment(logFrameID);</span>
+                <span class="s1">Navigation.findNavController(requireView()).navigate(action);</span>
+                <span class="s0">break</span><span class="s1">;</span>
+            <span class="s0">default</span><span class="s1">:</span>
+                <span class="s0">break</span><span class="s1">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s2">//========================== these functions give feedback to the user =========================</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onRetrieveLogFramesCompleted(LinkedHashMap&lt;String, List&lt;String&gt;&gt; expandableMenuItems,</span>
+                                             <span class="s1">ArrayList&lt;cTreeModel&gt; logFrameTreeModels) {</span>
+        <span class="s2">/* populate navigation menu */</span>
+        <span class="s1">menuItemTitles = </span><span class="s0">new </span><span class="s1">ArrayList&lt;String&gt;(expandableMenuItems.keySet());</span>
+        <span class="s1">cExpandableListAdapter menuExpandableListAdapter = </span><span class="s0">new </span><span class="s1">cExpandableListAdapter(</span>
+                <span class="s1">requireActivity(), menuItemTitles, expandableMenuItems);</span>
+        <span class="s1">menuExpandableListView.setAdapter(menuExpandableListAdapter);</span>
+
+        <span class="s2">/* logframe adapters */</span>
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s1">logFrameRecyclerViewAdapter.setTreeModel(logFrameTreeModels);</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(IllegalAccessException e) {</span>
+            <span class="s1">e.printStackTrace();</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onLogFrameCreated(cLogFrameModel frameModel, String msg) {</span>
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s0">int </span><span class="s1">parentIndex = logFrameRecyclerViewAdapter.getMaxParentIndex();</span>
+            <span class="s1">cTreeModel treeModel = </span><span class="s0">new </span><span class="s1">cTreeModel(parentIndex, -</span><span class="s4">1</span><span class="s1">, </span><span class="s4">0</span><span class="s1">, frameModel);</span>
+            <span class="s1">logFrameRecyclerViewAdapter.addData(treeModel);</span>
+            <span class="s1">Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(IllegalAccessException e) {</span>
+            <span class="s1">e.printStackTrace();</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onSubLogFrameCreated(cLogFrameModel logFrameModel, String msg) {</span>
+
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onLogFrameCreateFailed(String msg) {</span>
+        <span class="s1">Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onSubLogFrameCreateFailed(String msg) {</span>
+        <span class="s1">Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onLogFrameUpdated(cLogFrameModel frameModel, </span><span class="s0">int </span><span class="s1">position, String msg) {</span>
+        <span class="s1">cTreeModel treeModel = </span><span class="s0">new </span><span class="s1">cTreeModel(frameModel);</span>
+        <span class="s1">logFrameRecyclerViewAdapter.notifyTreeModelUpdated(treeModel, position);</span>
+        <span class="s1">Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onLogFrameUpdateFailed(String msg) {</span>
+        <span class="s1">Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onLogFrameDeleted(</span><span class="s0">int </span><span class="s1">position, String msg) {</span>
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s1">logFrameRecyclerViewAdapter.notifyTreeModelDeleted(position);</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(IllegalAccessException e) {</span>
+            <span class="s1">e.printStackTrace();</span>
+        <span class="s1">}</span>
+        <span class="s1">Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onSubLogFrameDeleted(</span><span class="s0">int </span><span class="s1">position, String msg) {</span>
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s1">logFrameRecyclerViewAdapter.notifyTreeModelDeleted(position);</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(IllegalAccessException e) {</span>
+            <span class="s1">e.printStackTrace();</span>
+        <span class="s1">}</span>
+        <span class="s1">Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onLogFrameDeleteFailed(String msg) {</span>
+        <span class="s1">Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onLogFrameSynced(cLogFrameModel logFrameModel) {</span>
+
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onSubLogFrameDeleteFailed(String msg) {</span>
+
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onRetrieveSharedOrgsCompleted(ArrayList&lt;cOrganizationModel&gt; organizationModels) {</span>
+        <span class="s1">sharedOrganizations = organizationModels;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">//========================= these functions show and hide progress bar =========================</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">showProgress() {</span>
+        <span class="s1">includeProgressBar.setVisibility(View.VISIBLE);</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">hideProgress() {</span>
+        <span class="s1">includeProgressBar.setVisibility(View.GONE);</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">showError(String message) {</span>
+
+    <span class="s1">}</span>
+
+    <span class="s2">//======================= these function show the forms to capture data ========================</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">*  create/add a logframe</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">logFrameID logframe identification</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">logFrameModel logframe model</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">isLogFrame is this a parent or child logframe</span>
+     <span class="s2">*/</span>
+    <span class="s0">private void </span><span class="s1">createAlertDialog(</span><span class="s0">long </span><span class="s1">logFrameID, cLogFrameModel logFrameModel, </span><span class="s0">boolean </span><span class="s1">isLogFrame) {</span>
+        <span class="s2">/* inflate the logframe model */</span>
+        <span class="s1">LayoutInflater inflater = </span><span class="s0">this</span><span class="s1">.getLayoutInflater();</span>
+        <span class="s1">View createView = inflater.inflate(R.layout.logframe_update, </span><span class="s0">null</span><span class="s1">);</span>
+        <span class="s2">/* instantiates create views */</span>
+        <span class="s1">TextView textViewTitle = createView.findViewById(R.id.textViewTitle);</span>
+        <span class="s1">TextView textViewOrganization = createView.findViewById(R.id.textViewOrganization);</span>
+        <span class="s1">cSingleSpinnerSearch singleSpinnerSearchOrg = createView.findViewById(R.id.singleSpinnerSearchOrg);</span>
+        <span class="s1">AppCompatEditText editTextName = createView.findViewById(R.id.editTextName);</span>
+        <span class="s1">AppCompatEditText editTextDescription = createView.findViewById(R.id.editTextDescription);</span>
+        <span class="s1">AppCompatEditText startDateEditText = createView.findViewById(R.id.editTextStartDate);</span>
+        <span class="s1">AppCompatEditText endDateEditText = createView.findViewById(R.id.editTextEndDate);</span>
+        <span class="s1">TextView datePickerIcon = createView.findViewById(R.id.textViewDatePicker);</span>
+
+        <span class="s2">/* set a title of the create view */</span>
+        <span class="s1">textViewTitle.setText(getContext().getResources().getText(</span>
+                <span class="s1">R.string.logframe_create_title));</span>
+
+        <span class="s2">/* populate the logical model with the create views */</span>
+        <span class="s2">/* 1. create selection dialog box for organizations */</span>
+        <span class="s1">List&lt;cKeyPairBoolData&gt; keyPairBoolOrgs = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;();</span>
+        <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s4">0</span><span class="s1">; i &lt; sharedOrganizations.size(); i++) {</span>
+            <span class="s1">cKeyPairBoolData idNameBool = </span><span class="s0">new </span><span class="s1">cKeyPairBoolData();</span>
+            <span class="s1">idNameBool.setId(sharedOrganizations.get(i).getOrganizationID());</span>
+            <span class="s1">idNameBool.setName(sharedOrganizations.get(i).getName());</span>
+            <span class="s1">idNameBool.setObject(sharedOrganizations.get(i));</span>
+            <span class="s1">idNameBool.setSelected(</span><span class="s0">false</span><span class="s1">);</span>
+
+            <span class="s1">keyPairBoolOrgs.add(idNameBool);</span>
+        <span class="s1">}</span>
+
+        <span class="s2">// called when click spinner</span>
+        <span class="s1">singleSpinnerSearchOrg.setItem(keyPairBoolOrgs, -</span><span class="s4">1</span><span class="s1">, </span><span class="s0">new </span><span class="s1">cSingleSpinnerListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onItemSelected(cKeyPairBoolData item) {</span>
+                <span class="s2">/* assign selected organization name to the view */</span>
+                <span class="s1">textViewOrganization.setText(item.getName());</span>
+                <span class="s2">/* modify the organization ID for the logframe model */</span>
+
+                <span class="s1">logFrameModel.setOrganizationID((</span><span class="s0">int</span><span class="s1">) item.getId());</span>
+                <span class="s1">logFrameModel.getOrganizationModel().setName(item.getName());</span>
+            <span class="s1">}</span>
+        <span class="s1">});</span>
+
+        <span class="s2">/* 4. set start and end date */</span>
+        <span class="s1">datePickerIcon.setTypeface(</span><span class="s0">null</span><span class="s1">, Typeface.NORMAL);</span>
+        <span class="s1">datePickerIcon.setTypeface(cFontManager.getTypeface(requireActivity(),</span>
+                        <span class="s1">cFontManager.FONTAWESOME));</span>
+        <span class="s1">datePickerIcon.setTextColor(requireActivity().getColor(R.color.colorPrimaryDark));</span>
+        <span class="s1">datePickerIcon.setText(requireActivity().getResources().getString(R.string.fa_calendar));</span>
+        <span class="s1">datePickerIcon.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View view) {</span>
+                <span class="s2">// date range picker</span>
+                <span class="s1">MaterialDatePicker.Builder&lt;Pair&lt;Long, Long&gt;&gt; builder = MaterialDatePicker.Builder.</span>
+                        <span class="s1">dateRangePicker();</span>
+                <span class="s1">MaterialDatePicker&lt;Pair&lt;Long, Long&gt;&gt; picker = builder.build();</span>
+
+                <span class="s1">picker.addOnCancelListener(</span><span class="s0">new </span><span class="s1">DialogInterface.OnCancelListener() {</span>
+                    <span class="s1">@Override</span>
+                    <span class="s0">public void </span><span class="s1">onCancel(DialogInterface dialogInterface) {</span>
+                        <span class="s1">Log.d(TAG, </span><span class="s5">&quot;DatePicker Activity Dialog was cancelled&quot;</span><span class="s1">);</span>
+                    <span class="s1">}</span>
+                <span class="s1">});</span>
+
+                <span class="s1">picker.addOnPositiveButtonClickListener(</span>
+                        <span class="s0">new </span><span class="s1">MaterialPickerOnPositiveButtonClickListener&lt;Pair&lt;Long, Long&gt;&gt;() {</span>
+                            <span class="s1">@Override</span>
+                            <span class="s0">public void </span><span class="s1">onPositiveButtonClick(Pair&lt;Long, Long&gt; selection) {</span>
+                                <span class="s2">/* get start and end date from picker */</span>
+                                <span class="s0">assert </span><span class="s1">selection.first != </span><span class="s0">null</span><span class="s1">;</span>
+                                <span class="s0">assert </span><span class="s1">selection.second != </span><span class="s0">null</span><span class="s1">;</span>
+                                <span class="s1">Date startDate = </span><span class="s0">new </span><span class="s1">Date(selection.first);</span>
+                                <span class="s1">Date endDate = </span><span class="s0">new </span><span class="s1">Date(selection.second);</span>
+                                <span class="s2">/* populate start and end dates on the view */</span>
+                                <span class="s1">startDateEditText.setText(ssdf.format(startDate));</span>
+                                <span class="s1">endDateEditText.setText(ssdf.format(endDate));</span>
+
+                                <span class="s2">/* modify start and end dates of logframe model */</span>
+                                <span class="s1">logFrameModel.setStartDate(Timestamp.valueOf(tsdf.format(startDate)));</span>
+                                <span class="s1">logFrameModel.setEndDate(Timestamp.valueOf(tsdf.format(endDate)));</span>
+
+                                <span class="s1">Log.d(TAG, </span><span class="s5">&quot;DatePicker Activity Date String =&quot; </span><span class="s1">+</span>
+                                        <span class="s1">picker.getHeaderText() + </span><span class="s5">&quot; Date epoch values :: &quot; </span><span class="s1">+</span>
+                                        <span class="s1">selection.first + </span><span class="s5">&quot; :: to :: &quot; </span><span class="s1">+ selection.second);</span>
+                            <span class="s1">}</span>
+                        <span class="s1">});</span>
+
+                <span class="s1">picker.addOnNegativeButtonClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+                    <span class="s1">@Override</span>
+                    <span class="s0">public void </span><span class="s1">onClick(View view) {</span>
+                        <span class="s1">Log.d(TAG, </span><span class="s5">&quot;DatePicker Activity Dialog Negative Button was clicked&quot;</span><span class="s1">);</span>
+                    <span class="s1">}</span>
+                <span class="s1">});</span>
+
+                <span class="s1">picker.show(requireFragmentManager(), picker.toString());</span>
+            <span class="s1">}</span>
+        <span class="s1">});</span>
+
+        <span class="s2">/* create or cancel action */</span>
+        <span class="s1">MaterialAlertDialogBuilder alertDialogBuilder =</span>
+                <span class="s0">new </span><span class="s1">MaterialAlertDialogBuilder(requireActivity(), R.style.AlertDialogTheme);</span>
+        <span class="s1">alertDialogBuilder.setPositiveButton(getContext().getResources().getText(</span>
+                <span class="s1">R.string.Save), </span><span class="s0">new </span><span class="s1">DialogInterface.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(DialogInterface dialogInterface, </span><span class="s0">int </span><span class="s1">i) {</span>
+                <span class="s2">/* 2. set name of the logframe */</span>
+                <span class="s1">logFrameModel.setName(Objects.requireNonNull(editTextName.getText()).toString());</span>
+                <span class="s2">/* 3. set description of the logframe */</span>
+                <span class="s1">logFrameModel.setDescription(Objects.requireNonNull(editTextDescription.getText()).</span>
+                        <span class="s1">toString());</span>
+
+                <span class="s0">if</span><span class="s1">(isLogFrame) {</span>
+                    <span class="s1">logFramePresenter.createLogFrameModel(logFrameModel);</span>
+                <span class="s1">}</span><span class="s0">else </span><span class="s1">{</span>
+                    <span class="s1">logFramePresenter.createSubLogFrameModel(logFrameID, logFrameModel);</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">});</span>
+
+        <span class="s1">alertDialogBuilder.setNegativeButton(getContext().getResources().getText(</span>
+                <span class="s1">R.string.Cancel), </span><span class="s0">new </span><span class="s1">DialogInterface.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(DialogInterface dialogInterface, </span><span class="s0">int </span><span class="s1">i) {</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span>
+                <span class="s1">.setView(createView)</span>
+                <span class="s1">.show();</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* update a logframe</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">position position</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">logFrameModel logframe model</span>
+     <span class="s2">*/</span>
+    <span class="s0">private void </span><span class="s1">updateAlertDialog(</span><span class="s0">int </span><span class="s1">position, cLogFrameModel logFrameModel) {</span>
+        <span class="s2">/* inflates */</span>
+        <span class="s1">LayoutInflater inflater = </span><span class="s0">this</span><span class="s1">.getLayoutInflater();</span>
+        <span class="s1">View dialogView = inflater.inflate(R.layout.logframe_update, </span><span class="s0">null</span><span class="s1">);</span>
+
+        <span class="s2">/* instantiate update views */</span>
+        <span class="s1">TextView textViewTitle = dialogView.findViewById(R.id.textViewTitle);</span>
+        <span class="s1">TextView textViewOrganization = dialogView.findViewById(R.id.textViewOrganization);</span>
+        <span class="s1">cSingleSpinnerSearch singleSpinnerSearchOrg = dialogView.findViewById(</span>
+                <span class="s1">R.id.singleSpinnerSearchOrg);</span>
+        <span class="s1">AppCompatEditText editTextName = dialogView.findViewById(R.id.editTextName);</span>
+        <span class="s1">AppCompatEditText editTextDescription = dialogView.findViewById(R.id.editTextDescription);</span>
+        <span class="s1">AppCompatEditText startDateEditText = dialogView.findViewById(R.id.editTextStartDate);</span>
+        <span class="s1">AppCompatEditText endDateEditText = dialogView.findViewById(R.id.editTextEndDate);</span>
+        <span class="s1">TextView datePickerIcon = dialogView.findViewById(R.id.textViewDatePicker);</span>
+
+        <span class="s2">/* populate the fields to be updated */</span>
+        <span class="s1">textViewTitle.setText(getContext().getResources().getText(</span>
+                <span class="s1">R.string.logframe_update_title));</span>
+        <span class="s1">textViewOrganization.setText(logFrameModel.getOrganizationModel().getName());</span>
+        <span class="s1">editTextName.setText(logFrameModel.getName());</span>
+        <span class="s1">editTextDescription.setText(logFrameModel.getDescription());</span>
+        <span class="s1">startDateEditText.setText(ssdf.format(logFrameModel.getStartDate()));</span>
+        <span class="s1">endDateEditText.setText(ssdf.format(logFrameModel.getEndDate()));</span>
+
+        <span class="s2">/* 1. set own organization */</span>
+        <span class="s1">List&lt;cKeyPairBoolData&gt; keyPairBoolOrgs = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;();</span>
+        <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s4">0</span><span class="s1">; i &lt; sharedOrganizations.size(); i++) {</span>
+            <span class="s1">cKeyPairBoolData idNameBool = </span><span class="s0">new </span><span class="s1">cKeyPairBoolData();</span>
+            <span class="s1">idNameBool.setId(sharedOrganizations.get(i).getOrganizationID());</span>
+            <span class="s1">idNameBool.setName(sharedOrganizations.get(i).getName());</span>
+            <span class="s1">idNameBool.setObject(sharedOrganizations.get(i));</span>
+
+            <span class="s2">/* get the current organization ID */</span>
+            <span class="s0">long </span><span class="s1">organizationID = logFrameModel.getOrganizationModel().getOrganizationID();</span>
+
+            <span class="s0">if </span><span class="s1">((sharedOrganizations.get(i).getOrganizationID() == organizationID)) {</span>
+                <span class="s1">idNameBool.setSelected(</span><span class="s0">true</span><span class="s1">);</span>
+                <span class="s2">/* initialize organization ID for the logframe model */</span>
+                <span class="s1">logFrameModel.setOrganizationID(organizationID);</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">idNameBool.setSelected(</span><span class="s0">false</span><span class="s1">);</span>
+            <span class="s1">}</span>
+
+            <span class="s1">keyPairBoolOrgs.add(idNameBool);</span>
+        <span class="s1">}</span>
+
+        <span class="s2">// called when click spinner</span>
+        <span class="s1">singleSpinnerSearchOrg.setItem(keyPairBoolOrgs, -</span><span class="s4">1</span><span class="s1">, </span><span class="s0">new </span><span class="s1">cSingleSpinnerListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onItemSelected(cKeyPairBoolData item) {</span>
+                <span class="s2">/* assign selected organization name to the view */</span>
+                <span class="s1">textViewOrganization.setText(item.getName());</span>
+                <span class="s2">/* modify the organization ID for the logframe model */</span>
+                <span class="s1">logFrameModel.setOrganizationID((</span><span class="s0">int</span><span class="s1">) item.getId());</span>
+                <span class="s1">logFrameModel.getOrganizationModel().setName(item.getName());</span>
+            <span class="s1">}</span>
+        <span class="s1">});</span>
+
+        <span class="s2">/* 3. set start and end dates */</span>
+        <span class="s1">datePickerIcon.setTypeface(</span><span class="s0">null</span><span class="s1">, Typeface.NORMAL);</span>
+        <span class="s1">datePickerIcon.setTypeface(cFontManager.getTypeface(requireActivity(),</span>
+                        <span class="s1">cFontManager.FONTAWESOME));</span>
+        <span class="s1">datePickerIcon.setTextColor(requireActivity().getColor(R.color.colorPrimaryDark));</span>
+        <span class="s1">datePickerIcon.setText(requireActivity().getResources().getString(R.string.fa_calendar));</span>
+        <span class="s1">datePickerIcon.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View view) {</span>
+                <span class="s2">// date range picker</span>
+                <span class="s1">MaterialDatePicker.Builder&lt;Pair&lt;Long, Long&gt;&gt; builder = MaterialDatePicker.Builder.</span>
+                        <span class="s1">dateRangePicker();</span>
+                <span class="s1">MaterialDatePicker&lt;Pair&lt;Long, Long&gt;&gt; picker = builder.build();</span>
+
+                <span class="s1">picker.addOnCancelListener(</span><span class="s0">new </span><span class="s1">DialogInterface.OnCancelListener() {</span>
+                    <span class="s1">@Override</span>
+                    <span class="s0">public void </span><span class="s1">onCancel(DialogInterface dialogInterface) {</span>
+                        <span class="s1">Log.d(TAG, </span><span class="s5">&quot;DatePicker Activity Dialog was cancelled&quot;</span><span class="s1">);</span>
+                    <span class="s1">}</span>
+                <span class="s1">});</span>
+
+                <span class="s1">picker.addOnPositiveButtonClickListener(</span>
+                        <span class="s0">new </span><span class="s1">MaterialPickerOnPositiveButtonClickListener&lt;Pair&lt;Long, Long&gt;&gt;() {</span>
+                            <span class="s1">@Override</span>
+                            <span class="s0">public void </span><span class="s1">onPositiveButtonClick(Pair&lt;Long, Long&gt; selection) {</span>
+                                <span class="s2">/* get start and end date from picker */</span>
+                                <span class="s0">assert </span><span class="s1">selection.first != </span><span class="s0">null</span><span class="s1">;</span>
+                                <span class="s0">assert </span><span class="s1">selection.second != </span><span class="s0">null</span><span class="s1">;</span>
+                                <span class="s1">Date startDate = </span><span class="s0">new </span><span class="s1">Date(selection.first);</span>
+                                <span class="s1">Date endDate = </span><span class="s0">new </span><span class="s1">Date(selection.second);</span>
+
+                                <span class="s2">/* populate start and end dates on the view */</span>
+                                <span class="s1">startDateEditText.setText(ssdf.format(startDate));</span>
+                                <span class="s1">endDateEditText.setText(ssdf.format(endDate));</span>
+
+                                <span class="s2">/* modify start and end dates of logframe model */</span>
+                                <span class="s1">logFrameModel.setStartDate(Timestamp.valueOf(tsdf.format(startDate)));</span>
+                                <span class="s1">logFrameModel.setEndDate(Timestamp.valueOf(tsdf.format(endDate)));</span>
+
+                                <span class="s1">Log.d(TAG, </span><span class="s5">&quot;DatePicker Activity Date String =&quot; </span><span class="s1">+</span>
+                                        <span class="s1">picker.getHeaderText() + </span><span class="s5">&quot; Date epoch values :: &quot; </span><span class="s1">+</span>
+                                        <span class="s1">selection.first + </span><span class="s5">&quot; :: to :: &quot; </span><span class="s1">+ selection.second);</span>
+                            <span class="s1">}</span>
+                        <span class="s1">});</span>
+
+                <span class="s1">picker.addOnNegativeButtonClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+                    <span class="s1">@Override</span>
+                    <span class="s0">public void </span><span class="s1">onClick(View view) {</span>
+                        <span class="s1">Log.d(TAG, </span><span class="s5">&quot;DatePicker Activity Dialog Negative Button was clicked&quot;</span><span class="s1">);</span>
+                    <span class="s1">}</span>
+                <span class="s1">});</span>
+
+                <span class="s1">picker.show(requireFragmentManager(), picker.toString());</span>
+            <span class="s1">}</span>
+        <span class="s1">});</span>
+
+        <span class="s2">/* save or cancel actions */</span>
+        <span class="s1">MaterialAlertDialogBuilder alertDialogBuilder =</span>
+                <span class="s0">new </span><span class="s1">MaterialAlertDialogBuilder(requireActivity(), R.style.AlertDialogTheme);</span>
+        <span class="s1">alertDialogBuilder.setPositiveButton(getContext().getResources().getText(</span>
+                <span class="s1">R.string.Save), </span><span class="s0">new </span><span class="s1">DialogInterface.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(DialogInterface dialogInterface, </span><span class="s0">int </span><span class="s1">i) {</span>
+                <span class="s2">/* 2. update the remaining view attributes to the logical model */</span>
+                <span class="s1">logFrameModel.setName(Objects.requireNonNull(editTextName.getText()).toString());</span>
+                <span class="s1">logFrameModel.setDescription(Objects.requireNonNull(editTextDescription.getText()).</span>
+                        <span class="s1">toString());</span>
+
+                <span class="s1">logFramePresenter.updateLogFrame(logFrameModel, position);</span>
+
+            <span class="s1">}</span>
+        <span class="s1">});</span>
+
+        <span class="s1">alertDialogBuilder.setNegativeButton(getContext().getResources().getText(</span>
+                <span class="s1">R.string.Cancel), </span><span class="s0">new </span><span class="s1">DialogInterface.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(DialogInterface dialogInterface, </span><span class="s0">int </span><span class="s1">i) {</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span>
+                <span class="s1">.setView(dialogView)</span>
+                <span class="s1">.show();</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* delete a logframe</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">resID resource identification</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">title title</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">message message</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">position position</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">logFrameID logframe identification</span>
+     <span class="s2">*/</span>
+    <span class="s0">private void </span><span class="s1">deleteAlertDialog(</span><span class="s0">int </span><span class="s1">resID, String title, String message, </span><span class="s0">int </span><span class="s1">position,</span>
+                                   <span class="s0">long </span><span class="s1">logFrameID) {</span>
+
+        <span class="s1">AlertDialog.Builder alertDialogBuilder = </span><span class="s0">new </span><span class="s1">AlertDialog.Builder(</span>
+                <span class="s1">requireContext());</span>
+
+        <span class="s2">// setting icon to dialog</span>
+        <span class="s1">TextDrawable faIcon = </span><span class="s0">new </span><span class="s1">TextDrawable(requireContext());</span>
+        <span class="s1">faIcon.setTextSize(TypedValue.COMPLEX_UNIT_DIP, </span><span class="s4">10</span><span class="s1">);</span>
+        <span class="s1">faIcon.setTextAlign(Layout.Alignment.ALIGN_CENTER);</span>
+        <span class="s1">faIcon.setTypeface(cFontManager.getTypeface(requireContext(), cFontManager.FONTAWESOME));</span>
+        <span class="s1">faIcon.setText(requireContext().getResources().getText(resID));</span>
+        <span class="s1">faIcon.setTextColor(requireContext().getColor(R.color.colorAccent));</span>
+        <span class="s1">alertDialogBuilder.setIcon(faIcon);</span>
+
+        <span class="s2">// set title</span>
+        <span class="s1">alertDialogBuilder.setTitle(title);</span>
+
+        <span class="s2">// set dialog message</span>
+        <span class="s1">alertDialogBuilder</span>
+                <span class="s1">.setMessage(message)</span>
+                <span class="s1">.setCancelable(</span><span class="s0">false</span><span class="s1">)</span>
+                <span class="s1">.setPositiveButton(requireContext().getResources().getText(</span>
+                        <span class="s1">R.string.Yes), </span><span class="s0">new </span><span class="s1">DialogInterface.OnClickListener() {</span>
+                    <span class="s0">public void </span><span class="s1">onClick(DialogInterface dialog, </span><span class="s0">int </span><span class="s1">id) {</span>
+                        <span class="s1">logFramePresenter.deleteLogFrameModel(logFrameID, position);</span>
+                        <span class="s1">dialog.dismiss();</span>
+                    <span class="s1">}</span>
+                <span class="s1">})</span>
+                <span class="s1">.setNegativeButton(requireContext().getResources().getText(</span>
+                        <span class="s1">R.string.No), </span><span class="s0">new </span><span class="s1">DialogInterface.OnClickListener() {</span>
+                    <span class="s0">public void </span><span class="s1">onClick(DialogInterface dialog, </span><span class="s0">int </span><span class="s1">id) {</span>
+                        <span class="s2">// if this button is clicked, just close</span>
+                        <span class="s1">dialog.cancel();</span>
+                    <span class="s1">}</span>
+                <span class="s1">});</span>
+
+        <span class="s2">// create alert dialog</span>
+        <span class="s1">AlertDialog alertDialog = alertDialogBuilder.create();</span>
+
+        <span class="s2">// show it</span>
+        <span class="s1">alertDialog.show();</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

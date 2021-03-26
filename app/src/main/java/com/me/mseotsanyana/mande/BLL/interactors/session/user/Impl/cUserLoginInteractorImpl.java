@@ -23,14 +23,15 @@ import java.util.Set;
 public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUserLoginInteractor {
     private static String TAG = cUserLoginInteractorImpl.class.getSimpleName();
 
-    private Callback callback;
-    private iUserRepository userRepository;
-    private iOrganizationRepository organizationRepository;
-    private iRoleRepository roleRepository;
-    private iStatusRepository statusRepository;
-    private iSessionManagerRepository sessionManagerRepository;
+    private final Callback callback;
+    private final iUserRepository userRepository;
+    private final iOrganizationRepository organizationRepository;
+    private final iRoleRepository roleRepository;
+    private final iStatusRepository statusRepository;
+    private final iSessionManagerRepository sessionManagerRepository;
 
-    private String email, password;
+    private final String email;
+    private final String password;
 
     Gson gson = new Gson();
 
@@ -47,6 +48,7 @@ public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUs
         if (userRepository == null || callback == null) {
             throw new IllegalArgumentException("Arguments can not be null!");
         }
+
         this.sessionManagerRepository = sessionManagerRepository;
         this.userRepository = userRepository;
         this.organizationRepository = organizationRepository;
@@ -80,10 +82,28 @@ public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUs
 
     @Override
     public void run() {
+        userRepository.signInWithEmailAndPassword(email, password, new iUserRepository.iSignInRepositoryCallback() {
+            @Override
+            public void onSignInSucceeded(cUserModel userModel) {
+                if (userModel == null) {
+                    postMessage(userModel);
+                }else {
+                    notifyError("Login failed since there are no privileges assigned !!");
+                }
+            }
+
+            @Override
+            public void onSignInFailed(String msg) {
+                notifyError(msg);
+            }
+        });
+
+
 
         /* get the logged in user */
         cUserModel userModel = userRepository.getUserByEmailPassword(email, password);
 
+        //userRepository.createUserByEmailAndPassword(email, password,null);
         Gson gson = new Gson();
         Log.d(TAG,"USER MODEL: "+gson.toJson(userModel));
 
@@ -109,8 +129,7 @@ public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUs
                 /* compute and save entity, operation and statuses bits for the user */
                 Set<cPermissionModel> permissionModelSet = new HashSet<>();
                 for (cRoleModel roleModel : userModel.getRoleModelSet()) {
-                    Set<cPermissionModel> permissionSet = roleRepository.getPermissionSetByRoleID(
-                            roleModel.getRoleID(), roleModel.getOrganizationID());
+                    Set<cPermissionModel> permissionSet = null;//roleRepository.getPermissionSetByRoleID(roleModel.getRoleID(), 0/*roleModel.getOrganizationID()*/);
                     permissionModelSet.addAll(permissionSet);
                 }
 

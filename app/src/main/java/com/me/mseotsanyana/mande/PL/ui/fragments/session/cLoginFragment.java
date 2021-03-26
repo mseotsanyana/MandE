@@ -2,29 +2,26 @@ package com.me.mseotsanyana.mande.PL.ui.fragments.session;
 
 import android.os.Bundle;
 
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.ProgressBar;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cOrganizationRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cRoleRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cSessionManagerImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cStatusRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cUserRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.firebase.session.cUserFirebaseRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cOrganizationRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cRoleRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cSessionManagerImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cStatusRepositoryImpl;
 import com.me.mseotsanyana.mande.PL.presenters.session.Impl.cUserLoginPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.session.iUserLoginPresenter;
 import com.me.mseotsanyana.mande.R;
@@ -35,24 +32,17 @@ import java.util.Objects;
 public class cLoginFragment extends Fragment implements iUserLoginPresenter.View {
     private static String TAG = cLoginFragment.class.getSimpleName();
 
-    private TextInputLayout emailTextInputLayout, passwordTextInputLayout;
-    private TextInputEditText emailTextInputEditText, passwordTextInputEditText;
-    private TextView forgotPasswordTextView;
-    private ProgressBar progressBar;
+    private EditText emailEditText, passwordEditText;
+    private TextView loginTextView, forgotPasswordTextView, signUpTextView;
+    private View progressBar;
 
     private iUserLoginPresenter userLoginPresenter;
 
-    // Required empty public constructor
     public cLoginFragment() {
-        //inputValidation = new cInputValidation(getContext());
     }
 
-    public static cLoginFragment newInstance(View view) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("SESSION", (Parcelable) view);
-        cLoginFragment fragment = new cLoginFragment();
-        fragment.setArguments(bundle);
-        return fragment;
+    public static cLoginFragment newInstance() {
+        return new cLoginFragment();
     }
 
     @Override
@@ -63,7 +53,7 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
                 cThreadExecutorImpl.getInstance(),
                 cMainThreadImpl.getInstance(),
                 this,
-                new cUserRepositoryImpl(getContext()),
+                new cUserFirebaseRepositoryImpl(getContext()),
                 new cOrganizationRepositoryImpl(getContext()),
                 new cRoleRepositoryImpl(getContext()),
                 new cStatusRepositoryImpl(getContext()),
@@ -74,11 +64,21 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.home_login_fragment, container, false);
+        View view = inflater.inflate(R.layout.session_login_fragment, container, false);
 
         initViews(view);
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            NavDirections action = cLoginFragmentDirections.actionCLoginFragmentToCHomeFragment("");
+            Navigation.findNavController(requireView()).navigate(action);
+        }
     }
 
     @Override
@@ -87,52 +87,55 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
     }
 
     private void initViews(View view) {
-        AppCompatButton loginButton = view.findViewById(R.id.loginButton);
+        emailEditText = view.findViewById(R.id.emailEditText);
+        passwordEditText = view.findViewById(R.id.passwordEditText);
+
         forgotPasswordTextView = view.findViewById(R.id.forgotPasswordTextView);
-        emailTextInputLayout = view.findViewById(R.id.emailTextInputLayout);
-        emailTextInputEditText = view.findViewById(R.id.emailTextInputEditText);
-        passwordTextInputLayout = view.findViewById(R.id.passwordTextInputLayout);
-        passwordTextInputEditText = view.findViewById(R.id.passwordTextInputEditText);
+        loginTextView = view.findViewById(R.id.loginTextView);
+        signUpTextView = view.findViewById(R.id.signTextView);
         progressBar = view.findViewById(R.id.progressBar);
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        /* initial hide progress bar */
+        hideProgress();
+
+        /* forget password listener */
+        forgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = Objects.requireNonNull(emailTextInputEditText.getText()).toString();
-                String password = Objects.requireNonNull(passwordTextInputEditText.getText()).toString();
+
+            }
+        });
+
+        /* login listener */
+        loginTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = Objects.requireNonNull(emailEditText.getText()).toString();
+                String password = Objects.requireNonNull(passwordEditText.getText()).toString();
 
                 if (!email.isEmpty() && !password.isEmpty()) {
-                    userLoginPresenter.userLogin(email, password);
+                    userLoginPresenter.signInWithEmailAndPassword(email, password);
                 } else {
                     Snackbar.make(requireView(), "Fields are empty !", Snackbar.LENGTH_LONG).show();
                 }
             }
         });
 
-        forgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
+        /* sign up listener */
+        signUpTextView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                //FIXME
-                //loadForgotPasswordFragment();
+            public void onClick(View view) {
+                NavDirections action = cLoginFragmentDirections.actionCLoginFragmentToCSignUpFragment();
+                Navigation.findNavController(requireView()).navigate(action);
             }
         });
     }
 
-    /**
-     * This method is to empty all input edit text
-     */
-    private void emptyInputEditText() {
-        emailTextInputEditText.setText(null);
-        passwordTextInputEditText.setText(null);
-    }
-
     @Override
     public void onUserLoginSucceeded(cUserModel userModel) {
-        /* navigate from login to logframe */
-        NavDirections action = cLoginFragmentDirections.actionCLoginFragmentToCLogFrameFragment();
+        String email = Objects.requireNonNull(emailEditText.getText()).toString();
+        NavDirections action = cLoginFragmentDirections.actionCLoginFragmentToCHomeFragment(email);
         Navigation.findNavController(requireView()).navigate(action);
-        /* remove the bottom navigation from view */
-        (requireActivity().findViewById(R.id.bottom_navigation)).setVisibility(View.GONE);
     }
 
     @Override
@@ -156,25 +159,14 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
     }
 
     /* getters and setters */
-
     @Override
-    public TextInputLayout getEmailTextInputLayout() {
-        return emailTextInputLayout;
+    public EditText getEmailEditText() {
+        return emailEditText;
     }
 
     @Override
-    public TextInputLayout getPasswordTextInputLayout() {
-        return passwordTextInputLayout;
-    }
-
-    @Override
-    public TextInputEditText getEmailTextInputEditText() {
-        return emailTextInputEditText;
-    }
-
-    @Override
-    public TextInputEditText getPasswordTextInputEditText() {
-        return passwordTextInputEditText;
+    public EditText getPasswordEditText() {
+        return passwordEditText;
     }
 
     @Override

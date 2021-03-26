@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!-- the toolbar layout -->
+    <!-- the toolbar layout
     <LinearLayout style="@style/TitleBar">
         <ImageButton style="@style/TitleBarAction"
             android:contentDescription="@string/description_home"
@@ -29,17 +29,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- action_listlist layout -->
+        <action_listlist layout
         <android.support.v7.widget.RecyclerView
             android:id="@+id/alert_card_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <!-- the FAB layout -->
+         the FAB layout
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/alert_fab"
             android:layout_gravity="bottom|end"
             style="@style/FabStyle"/>
-
-    </android.support.design.widget.CoordinatorLayout>
-</LinearLayout>
+    -->
+    </LinearLayout>

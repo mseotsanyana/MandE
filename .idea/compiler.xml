@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="1.7">
       <module name="annotations" target="1.7" />
       <module name="compilers" target="1.7" />
+      <module name="MandE.app" target="1.8" />
+      <module name="MandE.bmblibrary" target="1.8" />
+      <module name="MandE.expandablelayoutlibrary" target="1.8" />
+      <module name="MandE.multiselectspinnerlibrary" target="1.8" />
+      <module name="MandE.placeholderviewlibrary" target="1.8" />
+      <module name="MandE.questionnairelibrary" target="1.8" />
+      <module name="MandE.quickactionlibrary" target="1.8" />
+      <module name="MandE.treeadapterlibrary" target="1.8" />
+      <module name="MandE.validatorlibrary" target="1.8" />
+      <module name="MandE.viewpagerlibrary" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

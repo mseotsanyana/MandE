@@ -22,15 +22,26 @@
       <w>assumptionreview</w>
       <w>awpb</w>
       <w>barchart</w>
+      <w>benefactoragreement</w>
+      <w>bilateralagreement</w>
       <w>brbac</w>
       <w>bubblechart</w>
       <w>candlestickchart</w>
+      <w>cardview</w>
+      <w>ccolumns</w>
       <w>colchoice</w>
       <w>coloption</w>
       <w>combinedchart</w>
+      <w>corg</w>
+      <w>cowner</w>
       <w>criteriascore</w>
       <w>crowdfund</w>
+      <w>cstatus</w>
+      <w>cstatuses</w>
+      <w>cteam</w>
+      <w>cteams</w>
       <w>ctor</w>
+      <w>cunixperms</w>
       <w>currentcontrol</w>
       <w>datacollector</w>
       <w>datasource</w>
@@ -49,6 +60,7 @@
       <w>horizontalchart</w>
       <w>humanset</w>
       <w>imageid</w>
+      <w>implementationagreement</w>
       <w>implementingagency</w>
       <w>indicatormilestone</w>
       <w>indicatorprogress</w>
@@ -58,6 +70,7 @@
       <w>issuecomment</w>
       <w>issueregister</w>
       <w>issuereview</w>
+      <w>jsons</w>
       <w>linechart</w>
       <w>logframe</w>
       <w>logframes</w>
@@ -86,6 +99,7 @@
       <w>primitivechart</w>
       <w>primitivequestion</w>
       <w>primitivetype</w>
+      <w>priv</w>
       <w>qualitativechoice</w>
       <w>qualitativechoiceset</w>
       <w>qualitativecriteria</w>
@@ -140,6 +154,7 @@
       <w>textresponse</w>
       <w>timesheet</w>
       <w>tsdf</w>
+      <w>unixperms</w>
       <w>unkown</w>
       <w>usercomment</w>
       <w>workplan</w>

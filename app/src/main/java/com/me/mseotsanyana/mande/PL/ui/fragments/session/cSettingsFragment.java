@@ -18,13 +18,13 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.awpb.cUploadAWPBRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.evaluator.cUploadEvaluationRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.common.cUploadGlobalRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cUploadLogFrameRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.monitor.cUploadMonitoringRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.raid.cUploadRAIDRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cUploadSessionRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.awpb.cUploadAWPBRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.evaluator.cUploadEvaluationRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.common.cUploadGlobalRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.logframe.cUploadLogFrameRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.monitor.cUploadMonitoringRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.raid.cUploadRAIDRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cUploadSessionRepositoryImpl;
 import com.me.mseotsanyana.mande.PL.presenters.wpb.Impl.cUploadAWPBPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.evaluator.Impl.cUploadEvaluationPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.common.Impl.cUploadGlobalPresenterImpl;
@@ -82,7 +82,7 @@ public class cSettingsFragment extends Fragment implements
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.home_settings_fragment, container, false);
+        View view = inflater.inflate(R.layout.session_settings_fragment, container, false);
 
         return view;
     }

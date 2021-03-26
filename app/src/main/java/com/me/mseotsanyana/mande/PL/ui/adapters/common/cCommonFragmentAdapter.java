@@ -12,7 +12,7 @@ import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cRoleModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cStatusModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cSessionManagerImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cSessionManagerImpl;
 import com.me.mseotsanyana.mande.PL.ui.fragments.common.cCommonDatesFragment;
 import com.me.mseotsanyana.mande.PL.ui.fragments.common.cCustomViewPager;
 import com.me.mseotsanyana.mande.PL.ui.fragments.common.cOwnershipFragment;

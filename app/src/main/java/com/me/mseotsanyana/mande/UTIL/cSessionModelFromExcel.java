@@ -3,28 +3,28 @@ package com.me.mseotsanyana.mande.UTIL;
 import android.content.Context;
 
 import com.google.gson.Gson;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cAddressRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cAddressRepositoryImpl;
 import com.me.mseotsanyana.mande.BLL.model.session.cAddressModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cEntityRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cEntityRepositoryImpl;
 import com.me.mseotsanyana.mande.BLL.model.session.cEntityModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cMenuRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cMenuRepositoryImpl;
 import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cNotificationRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cNotificationRepositoryImpl;
 import com.me.mseotsanyana.mande.BLL.model.session.cNotificationModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cOperationRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cOperationRepositoryImpl;
 import com.me.mseotsanyana.mande.BLL.model.session.cOperationModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cOrganizationRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cOrganizationRepositoryImpl;
 import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cPermissionModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cRoleRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cRoleRepositoryImpl;
 import com.me.mseotsanyana.mande.BLL.model.session.cRoleModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cSettingRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cSettingRepositoryImpl;
 import com.me.mseotsanyana.mande.BLL.model.session.cSettingModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cStatusRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cStatusRepositoryImpl;
 import com.me.mseotsanyana.mande.BLL.model.session.cStatusModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cUserRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cUserSQLiteRepositoryImpl;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cValueRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cValueRepositoryImpl;
 import com.me.mseotsanyana.mande.BLL.model.session.cValueModel;
 
 import org.apache.poi.ss.usermodel.Row;
@@ -59,7 +59,7 @@ public class cSessionModelFromExcel {
     private cAddressRepositoryImpl addressDBA;
     private cOrganizationRepositoryImpl organizationDBA;
     private cValueRepositoryImpl valueDBA;
-    private cUserRepositoryImpl userDBA;
+    private cUserSQLiteRepositoryImpl userDBA;
     private cRoleRepositoryImpl roleDBA;
     private cMenuRepositoryImpl menuDBA;
     //private cPrivilegeRepositoryImpl privilegeDBA;
@@ -79,7 +79,7 @@ public class cSessionModelFromExcel {
         addressDBA      = new cAddressRepositoryImpl(context);
         organizationDBA = new cOrganizationRepositoryImpl(context);
         valueDBA        = new cValueRepositoryImpl(context);
-        userDBA         = new cUserRepositoryImpl(context);
+        userDBA         = new cUserSQLiteRepositoryImpl(context);
         roleDBA         = new cRoleRepositoryImpl(context);
         menuDBA         = new cMenuRepositoryImpl(context);
         //privilegeDBA    = new cPrivilegeRepositoryImpl(context);
@@ -113,12 +113,12 @@ public class cSessionModelFromExcel {
                                          Sheet org_beneficiaries, Sheet org_funders,Sheet org_agencies){
         organizationModel = new cOrganizationModel();
 
-        organizationModel.setOrganizationID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+        //organizationModel.setOrganizationID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         organizationModel.setName(cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-        organizationModel.setPhone(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-        organizationModel.setFax(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-        organizationModel.setVision(cRow.getCell(4, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-        organizationModel.setMission(cRow.getCell(5, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+        //organizationModel.setPhone(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+        //organizationModel.setFax(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+        //organizationModel.setVision(cRow.getCell(4, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+        //organizationModel.setMission(cRow.getCell(5, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
         organizationModel.setEmail(cRow.getCell(6, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
         organizationModel.setWebsite(cRow.getCell(7, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
@@ -137,7 +137,7 @@ public class cSessionModelFromExcel {
             }
 
             organizationID = (int)cOrgAddressRow.getCell (0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-            if (organizationModel.getOrganizationID() == organizationID){
+            if (true/*organizationModel.getOrganizationID() == organizationID*/){
                 addressID = (int)cOrgAddressRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 addresses.add(addressID);
             }
@@ -152,7 +152,7 @@ public class cSessionModelFromExcel {
             }
 
             beneficiaryID = (int)cOrgBeneficiaryRow.getCell (0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-            if (organizationModel.getOrganizationID() == beneficiaryID){
+            if (true/*organizationModel.getOrganizationID() == beneficiaryID*/){
                 beneficiaries.add(beneficiaryID);
             }
         }
@@ -166,7 +166,7 @@ public class cSessionModelFromExcel {
             }
 
             funderID = (int)cOrgFunderRow.getCell (0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-            if (organizationModel.getOrganizationID() == funderID){
+            if (true/*organizationModel.getOrganizationID() == funderID*/){
                 funders.add(funderID);
             }
         }
@@ -180,7 +180,7 @@ public class cSessionModelFromExcel {
             }
 
             agencyID = (int)cOrgAgencyRow.getCell (0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-            if (organizationModel.getOrganizationID() == agencyID){
+            if (true/*organizationModel.getOrganizationID() == agencyID*/){
                 agencies.add(agencyID);
             }
         }
@@ -250,8 +250,8 @@ public class cSessionModelFromExcel {
     public void addMenuFromExcel(Row cRow) {
         menuModel = new cMenuModel();
 
-        menuModel.setMenuID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-        menuModel.setParentID((int)cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+        menuModel.setMenuServerID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+        menuModel.setParentServerID((int)cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         menuModel.setName(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
         menuModel.setDescription(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
@@ -264,8 +264,8 @@ public class cSessionModelFromExcel {
     public void addRoleFromExcel(Row cRow, Sheet role_users, Sheet role_menus) {
         roleModel = new cRoleModel();
 
-        roleModel.setRoleID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-        roleModel.setOrganizationID((int)cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+        //roleModel.setRoleID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+        //roleModel.setOrganizationID((int)cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         roleModel.setName(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
         roleModel.setDescription(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
@@ -284,10 +284,10 @@ public class cSessionModelFromExcel {
 
             roleID = (int)cRoleUsersRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
             organizationID = (int)cRoleUsersRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-            if (roleModel.getRoleID() == roleID && roleModel.getOrganizationID() == organizationID){
+            /*if (roleModel.getRoleID() == roleID && roleModel.getOrganizationID() == organizationID){
                 userID = (int)cRoleUsersRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 users.add(userID);
-            }
+            }*/
         }
 
         // construct list of menus
@@ -301,10 +301,10 @@ public class cSessionModelFromExcel {
 
             roleID = (int)cRoleMenusRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
             organizationID = (int)cRoleMenusRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-            if (roleModel.getRoleID() == roleID && roleModel.getOrganizationID() == organizationID){
+            /*if (roleModel.getRoleID() == roleID && roleModel.getOrganizationID() == organizationID){
                 menuID = (int)cRoleMenusRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
                 menus.add(menuID);
-            }
+            }*/
         }
 
         //Log.d(TAG, "=========================================================");

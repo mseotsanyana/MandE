@@ -94,7 +94,7 @@ public class cReadImpactInteractorImpl extends cAbstractInteractor
 
             /* set of impact children under the impact */
             childIndex = parentIndex;
-            ArrayList<cImpactModel> impacts = new ArrayList<>(impactModel.getImpactModelSet());
+            ArrayList<cImpactModel> impacts = new ArrayList<>(impactModel.getChildImpactModelSet());
             for (int j = 0; j < impacts.size(); j++) {
                 childIndex = childIndex + 1;
                 impactTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, impacts.get(j)));

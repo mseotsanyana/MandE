@@ -50,9 +50,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cLogFrameRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cMenuRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cSessionManagerImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.logframe.cLogFrameRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cMenuRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cSessionManagerImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.Impl.cLogFramePresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iLogFramePresenter;
 import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cLogFrameAdapter;
@@ -236,7 +236,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         // instantiate header view objects
         ImageView userIcon = headerView.findViewById(R.id.userIcon);
         TextView currentDate = headerView.findViewById(R.id.currentDate);
-        TextView website = headerView.findViewById(R.id.website);
+        //TextView website = headerView.findViewById(R.id.website);
 
         // set header view objects
         //userIcon.setImageResource(...);
@@ -783,7 +783,7 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         List<cKeyPairBoolData> keyPairBoolOrgs = new ArrayList<>();
         for (int i = 0; i < sharedOrganizations.size(); i++) {
             cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-            idNameBool.setId(sharedOrganizations.get(i).getOrganizationID());
+            //--idNameBool.setId(sharedOrganizations.get(i).getOrganizationID());
             idNameBool.setName(sharedOrganizations.get(i).getName());
             idNameBool.setObject(sharedOrganizations.get(i));
             idNameBool.setSelected(false);
@@ -926,14 +926,14 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         List<cKeyPairBoolData> keyPairBoolOrgs = new ArrayList<>();
         for (int i = 0; i < sharedOrganizations.size(); i++) {
             cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-            idNameBool.setId(sharedOrganizations.get(i).getOrganizationID());
+            //--idNameBool.setId(sharedOrganizations.get(i).getOrganizationID());
             idNameBool.setName(sharedOrganizations.get(i).getName());
             idNameBool.setObject(sharedOrganizations.get(i));
 
             /* get the current organization ID */
-            long organizationID = logFrameModel.getOrganizationModel().getOrganizationID();
+            long organizationID = 0;//logFrameModel.getOrganizationModel().getOrganizationID();
 
-            if ((sharedOrganizations.get(i).getOrganizationID() == organizationID)) {
+            if (true/*(sharedOrganizations.get(i).getOrganizationID() == organizationID)*/) {
                 idNameBool.setSelected(true);
                 /* initialize organization ID for the logframe model */
                 logFrameModel.setOrganizationID(organizationID);

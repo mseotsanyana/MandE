@@ -3,17 +3,55 @@
     parent="Theme.AppCompat.Light.DarkActionBar">
     style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar"-->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">#4CAF50</item>
-        <item name="colorPrimaryDark">#228B22</item>
-        <item name="colorAccent">#FF5722</item>
-        <!--do this for changing the color-->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="alertDialogTheme">@style/DialogStyle</item>
+
+        <!-- Background Color
+        <item name="android:windowBackground">@color/backgroundColor</item>-->
+        <item name="backgroundColor">@color/backgroundColor</item>
+
+        <!-- Text Color -->
+        <item name="android:textColor">@android:color/white</item>
+
+        <!-- Edit Text Hint color -->
+        <item name="android:textColorHint">@color/faintWhite</item>
+
+        <!-- Edit Text Color -->
+        <item name="android:editTextColor">@android:color/white</item>
+
         <item name="drawerArrowStyle">@style/DrawerHamburgerStyle</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+    <style name="DialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+
+        <item name="android:textColor">@android:color/black</item>
+        <item name="colorAccent">@android:color/black</item>
     </style>
+
+    <style name="styleEditText">
+        <item name="android:background">@drawable/me_background_edittext</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!--
+            <item name="colorPrimary">@color/colorPrimary</item>
+            <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+            <item name="colorAccent">@color/colorAccent</item>
+
+            <item name="colorPrimary">#4CAF50</item>
+            <item name="colorPrimaryDark">#228B22</item>
+            <item name="colorAccent">#FF5722</item>
+            do this for changing the color-->
+
 
     <style name="DrawerHamburgerStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
@@ -25,20 +63,14 @@
         <item name="android:background">@android:color/white</item>
     </style>
 
-
-
-
-
     <!-- size of the tabs-->
     <style name="TabTestSize" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">11sp</item>
     </style>
 
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
     <!-- fab style -->
@@ -54,11 +86,6 @@
         <item name="backgroundTint">@color/colorPrimaryDark</item>
     </style>
 
-    <style name="SettingsTheme" parent="Theme.AppCompat.Light">
-        <item name="android:windowNoTitle">false</item>
-        <item name="android:windowActionBar">true</item>
-    </style>
-
     <!-- user entity -->
     <style name="formSubHeader">
         <item name="android:background">@drawable/customshape</item>
@@ -70,28 +97,41 @@
         <item name="android:textStyle">bold|italic</item>
     </style>
 
+    <!-- Material Design for Buttons -->
+    <style name="AlertDialogTheme">
+        <item name="buttonBarPositiveButtonStyle">@style/Alert.Button.Positive</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Alert.Button.Neutral</item>
+    </style>
+
+    <style name="Alert.Button.Positive" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="backgroundTint">@color/colorPrimaryDark</item>
+        <item name="rippleColor">@color/colorAccent</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="Alert.Button.Neutral" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="rippleColor">@color/colorAccent</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- animations -->
+    <style name="AnimateLeftRight">
+        <item name="android:windowEnterAnimation">@anim/slide_left</item>
+        <item name="android:windowExitAnimation">@anim/slide_right</item>
+    </style>
+
+    <!-- Start of Final Style? -->
+
+
+    <!-- End of Final Style? -->
+
+
     <!-- Base application theme is the default theme. -->
-    <style name="Theme" parent="android:Theme"></style>
-    <!-- Variation on the Light theme that turns off the title -->
-    <style name="Theme.D1t" parent="android:style/Theme.Holo.Light">
-        <item name="android:windowNoTitle">false</item>
-        <item name="android:windowContentOverlay">@null</item>
-    </style>
-
-    <style name="Theme.D1" parent="android:style/Theme.Light">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-    </style>
-
-    <style name="Theme.D1dialog" parent="android:style/Theme.Dialog">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-    </style>
-
-    <style name="Theme.D1tranlucent" parent="android:style/Theme.Translucent">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-    </style>
+    <!-- Variation on the Light theme that turns off the title
 
     <style name="HomeButton">
         <item name="android:layout_gravity">center_vertical</item>
@@ -116,36 +156,14 @@
     <style name="TitleBarAction">
         <item name="android:layout_width">@dimen/title_height</item>
         <item name="android:layout_height">fill_parent</item>
-        <!--- <item name="android:background">@null</item> -->
+        <!- <item name="android:background">@null</item>
         <item name="android:background">@drawable/title_button</item>
-    </style>
-
-    <style name="TitleBarProgressIndicator" parent="@android:style/Widget.ProgressBar.Small">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">14dip</item>
-        <item name="android:layout_marginRight">15dip</item>
-        <item name="android:layout_marginTop">14dip</item>
-        <item name="android:indeterminate">true</item>
     </style>
 
     <style name="TitleBarSeparator">
         <item name="android:layout_width">1px</item>
         <item name="android:layout_height">fill_parent</item>
         <item name="android:background">@color/title_separator</item>
-    </style>
-
-    <style name="TitleBarLogo">
-        <item name="android:id">@id/title_logo</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">fill_parent</item>
-        <item name="android:clickable">true</item>
-    </style>
-
-    <style name="TitleBarSpring">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">fill_parent</item>
-        <item name="android:layout_weight">1</item>
     </style>
 
     <style name="TitleBarText">
@@ -163,34 +181,7 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="TextBody">
-        <item name="android:textSize">15sp</item>
-        <item name="android:lineSpacingMultiplier">1.1</item>
-        <item name="android:textColor">@android:color/secondary_text_light</item>
-    </style>
-
-
-    <!-- Material Design for Buttons -->
-    <style name="AlertDialogTheme">
-        <item name="buttonBarPositiveButtonStyle">@style/Alert.Button.Positive</item>
-        <item name="buttonBarNeutralButtonStyle">@style/Alert.Button.Neutral</item>
-    </style>
-
-    <style name="Alert.Button.Positive" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="backgroundTint">@color/colorPrimaryDark</item>
-        <item name="rippleColor">@color/colorAccent</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:textAllCaps">false</item>
-    </style>
-
-    <style name="Alert.Button.Neutral" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="backgroundTint">@android:color/transparent</item>
-        <item name="rippleColor">@color/colorAccent</item>
-        <item name="android:textColor">@android:color/darker_gray</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-
+    -->
 
     <!-- Base application theme. -->
     <!--
@@ -215,49 +206,16 @@
     </style>
     -->
 
-    <style name="CustomDialog" parent="@style/Theme.AppCompat.Light.Dialog">
-        <item name="android:windowNoTitle">false</item>
-    </style>
-<!--
-    <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <!--
+        <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
--->
-    <!-- animations -->
-    <style name="AnimateLeftRight">
-        <item name="android:windowEnterAnimation">@anim/slide_left</item>
-        <item name="android:windowExitAnimation">@anim/slide_right</item>
-    </style>
-
-    <style name="AnimateInOut">
-        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
-        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
-    </style>
-
-    <style name="AnimateUpBottom">
-        <item name="android:windowEnterAnimation">@anim/slide_up</item>
-        <item name="android:windowExitAnimation">@anim/slide_bottom</item>
-    </style>
-
-    <style name="CustomAnimations"/>
+        <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    -->
 
     <!-- Sliding animation -->
-    <style name="CustomAnimations.slide">
-        <item name="android:windowEnterAnimation">@anim/slide_in_left</item>
-        <item name="android:windowExitAnimation">@anim/slide_out_right</item>
-    </style>
 
     <!-- Grow animation -->
-    <style name="CustomAnimations.grow">
-        <item name="android:windowEnterAnimation">@anim/grow_in</item>
-        <item name="android:windowExitAnimation">@anim/grow_out</item>
-    </style>
 
     <!-- devides Views -->
-    <style name="Divider">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">2dp</item>
-        <item name="android:background">?android:attr/listDivider</item>
-    </style>
 
 </resources>

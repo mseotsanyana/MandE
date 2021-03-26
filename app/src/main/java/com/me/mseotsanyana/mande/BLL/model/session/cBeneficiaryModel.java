@@ -1,14 +1,13 @@
 package com.me.mseotsanyana.mande.BLL.model.session;
 
 public class cBeneficiaryModel extends cOrganizationModel {
-    private long organizationID;
+    private String orgServerID;
 
-    @Override
-    public long getOrganizationID() {
-        return organizationID;
+    public String getOrgServerID() {
+        return orgServerID;
     }
 
-    public void setOrganizationID(long organizationID) {
-        this.organizationID = organizationID;
+    public void setOrgServerID(String orgServerID) {
+        this.orgServerID = orgServerID;
     }
 }

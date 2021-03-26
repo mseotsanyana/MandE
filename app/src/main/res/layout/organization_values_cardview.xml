@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.CardView
+<androidx.recyclerview.widget.RecyclerView
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/organization_more_cardview_id"
@@ -33,4 +33,4 @@
         </LinearLayout>
 
     </RelativeLayout>
-</androidx.appcompat.widget.CardView>
+</androidx.recyclerview.widget.RecyclerView>

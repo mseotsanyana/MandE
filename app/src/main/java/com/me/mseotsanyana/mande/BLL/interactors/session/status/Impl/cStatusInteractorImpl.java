@@ -8,11 +8,7 @@ import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.session.status.iStatusInteractor;
 import com.me.mseotsanyana.mande.BLL.repository.session.iStatusRepository;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cStatusRepositoryImpl;
-
-
-import java.util.ArrayList;
-import java.util.List;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cStatusRepositoryImpl;
 
 /**
  * Created by mseotsanyana on 2017/08/28.

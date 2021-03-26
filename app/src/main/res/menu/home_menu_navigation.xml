@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/cLoginFragment"
-        android:icon="@drawable/ic_home_home_black_24dp"
-        android:title="@string/text_login" />
+        android:id="@+id/cDashboardFragment"
+        android:icon="@drawable/ic_session_dashboard_black_24dp"
+        android:enabled="true"
+        android:title="@string/text_dashboard"
+        app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/cRegisterFragment"
-        android:icon="@drawable/ic_home_register_black_24dp"
-        android:title="@string/text_create" />
-
-    <item
-        android:id="@+id/cJoinFragment"
-        android:icon="@drawable/ic_home_join_black_24dp"
-        android:title="@string/text_join" />
+        android:id="@+id/cMessagesFragment"
+        android:icon="@drawable/ic_session_messages_black_24dp"
+        android:enabled="true"
+        android:title="@string/text_messages"
+        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/cSettingsFragment"
-        android:icon="@drawable/ic_home_help_black_24dp"
-        android:title="@string/text_settings" />
+        android:icon="@drawable/ic_session_settings_black_24dp"
+        android:enabled="true"
+        android:title="@string/text_settings"
+        app:showAsAction="ifRoom"/>
 </menu>

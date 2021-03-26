@@ -50,7 +50,7 @@ public class cGridAdapter extends BaseAdapter{
             grid = convertView;
         }
 
-        ImageView imageView = (ImageView)grid.findViewById(R.id.grid_image);
+        ImageView imageView = null;//(ImageView)grid.findViewById(R.id.grid_image);
         TextView textView = (TextView) grid.findViewById(R.id.grid_text);
         textView.setText(mText[position]);
         imageView.setImageResource(mImageid[position]);

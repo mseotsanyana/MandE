@@ -20,13 +20,14 @@ public class cUserLoginPresenterImpl extends cAbstractPresenter implements iUser
     private static String TAG = cUserLoginPresenterImpl.class.getSimpleName();
 
     private View view;
-    private iUserRepository userRepository;
-    private iOrganizationRepository organizationRepository;
-    private iRoleRepository roleRepository;
-    private iStatusRepository statusRepository;
-    private iSessionManagerRepository sessionManagerRepository;
+    private final iUserRepository userRepository;
+    private final iOrganizationRepository organizationRepository;
 
-    private cInputValidation inputValidation;
+    private final iRoleRepository roleRepository;
+    private final iStatusRepository statusRepository;
+    private final iSessionManagerRepository sessionManagerRepository;
+
+    private final cInputValidation inputValidation;
 
     public cUserLoginPresenterImpl(iExecutor executor, iMainThread mainThread,
                                    View view,
@@ -48,30 +49,24 @@ public class cUserLoginPresenterImpl extends cAbstractPresenter implements iUser
     }
 
     @Override
-    public void userLogin(String email, String password) {
-        //progressBar.setVisibility(View.VISIBLE);
-
-        if (!inputValidation.isInputEditTextFilled(
-                view.getEmailTextInputEditText(), view.getEmailTextInputLayout(),
+    public void signInWithEmailAndPassword(String email, String password) {
+        if (!inputValidation.isEditTextFilled(view.getEmailEditText(),
                 view.getResourceString(R.string.error_message_email))) {
             return;
         }
 
-        if (!inputValidation.isInputEditTextEmail(
-                view.getEmailTextInputEditText(), view.getEmailTextInputLayout(),
+        if (!inputValidation.isEditTextFilled(view.getPasswordEditText(),
                 view.getResourceString(R.string.error_message_email))) {
             return;
         }
 
-        if (!inputValidation.isInputEditTextFilled(
-                view.getPasswordTextInputEditText(), view.getPasswordTextInputLayout(),
+        if (!inputValidation.isEditTextEmail(view.getEmailEditText(),
                 view.getResourceString(R.string.error_message_email))) {
             return;
         }
 
         iUserLoginInteractor userLoginInteractor = new cUserLoginInteractorImpl(
-                executor,
-                mainThread,
+                executor, mainThread,
                 userRepository,
                 organizationRepository,
                 roleRepository,
@@ -101,6 +96,8 @@ public class cUserLoginPresenterImpl extends cAbstractPresenter implements iUser
         }
     }
 
+    /*============================= General Presenter methods ============================= */
+
     @Override
     public void resume() {
 
@@ -127,45 +124,4 @@ public class cUserLoginPresenterImpl extends cAbstractPresenter implements iUser
     public void onError(String message) {
 
     }
-
-    /**
-     * This method is to validate the input text fields and verify login credentials from SQLite
-     *
-    private void localLogin() {
-        if (!inputValidation.isInputEditTextFilled(view.getEmailTextInputEditText(),
-                view.getEmailTextInputLayout(), getString(R.string.error_message_email))) {
-            return;
-        }
-        if (!inputValidation.isInputEditTextEmail(view.getEmailTextInputEditText(),
-                view.getEmailTextInputLayout(), getString(R.string.error_message_email))) {
-            return;
-        }
-        if (!inputValidation.isInputEditTextFilled(view.getPasswordTextInputEditText(),
-                view.getPasswordTextInputLayout(), getString(R.string.error_message_email))) {
-            return;
-        }
-
-        userLoginPresenter.userLogin();
-
-        // check whether the user is in the database
-        cUserDomain userDomain = userHandler.getUserByEmailPassword(emailTextInputEditText.getText().toString().trim(),
-                passwordTextInputEditText.getText().toString().trim());
-
-        //boolean isUser = userHandler.checkUser(emailTextInputEditText.getText().toString().trim());
-
-        if (userDomain != null) {
-
-            emptyInputEditText();
-
-            session.setUserSession(getActivity(), userDomain);
-            //Toast.makeText(getActivity(), "MEMBERSHIPS = "+sessionManager.getMemberships(), Toast.LENGTH_SHORT).show();
-            //Toast.makeText(getActivity(), "ROLES = "+sessionManager.getLoggedInUserRoles().get(0).getName(), Toast.LENGTH_SHORT).show();
-
-            pushFragment(cLogFrameFragment.newInstance(session));
-
-        } else {
-            // Snack Bar to show success message that record is wrong
-            Snackbar.make(getView(), getString(R.string.error_valid_email_password), Snackbar.LENGTH_LONG).show();
-        }
-    }*/
 }

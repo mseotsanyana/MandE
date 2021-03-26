@@ -4,9 +4,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,21 +30,18 @@ import com.me.mseotsanyana.mande.BLL.model.wpb.cExpenseModel;
 import com.me.mseotsanyana.mande.BLL.model.wpb.cHumanModel;
 import com.me.mseotsanyana.mande.BLL.model.wpb.cIncomeModel;
 import com.me.mseotsanyana.mande.BLL.model.wpb.cMaterialModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.logframe.cActivityRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.session.cSessionManagerImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.logframe.cActivityRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cSessionManagerImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.Impl.cActivityPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iActivityPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iInputPresenter;
 import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cActivityAdapter;
 import com.me.mseotsanyana.mande.R;
-import com.me.mseotsanyana.mande.UTIL.TextDrawable;
-import com.me.mseotsanyana.mande.UTIL.cFontManager;
 import com.me.mseotsanyana.mande.cMainThreadImpl;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**

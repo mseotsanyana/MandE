@@ -1,233 +1,256 @@
 package com.me.mseotsanyana.mande.PL.ui.adapters.session;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Filter;
+import android.widget.Filterable;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout;
 import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
-import com.me.mseotsanyana.mande.PL.ui.fragments.session.cOrganizationFragment;
-import com.me.mseotsanyana.mande.UTIL.cOrganizationRecord;
 import com.me.mseotsanyana.mande.R;
+import com.me.mseotsanyana.mande.UTIL.cConstant;
+import com.me.mseotsanyana.mande.UTIL.cFontManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
-
 
 /**
- * Created by mseotsanyana on 2016/08/02.
+ * Created by mseotsanyana on 2017/02/27.
  */
 
-public class cOrganizationAdapter extends RecyclerView.Adapter<cOrganizationAdapter.cOrganizationViewHolder> {
+public class cOrganizationAdapter extends RecyclerView.Adapter<cOrganizationAdapter.cOrganizationViewHolder>
+        implements Filterable {
+    private static String TAG = cOrganizationAdapter.class.getSimpleName();
+    private static SimpleDateFormat sdf = cConstant.SHORT_FORMAT_DATE;
 
-    Context context;
-    private List<cOrganizationModel> organizationList = new ArrayList<>();
-    cOrganizationRecord itemDetail;
+    private final Context context;
+    private ArrayList<cOrganizationModel> organizationModels;
+    private List<cOrganizationModel> filteredOrganizationModels;
 
-    LayoutInflater inflater;
-
-    private cOrganizationFragment organizationFragment;
-
-    private static final SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-
-    private HashSet<Integer> mExpandedPositionSet = new HashSet<>();
-
-    public cOrganizationAdapter(Context context, List<cOrganizationModel> organizationList,
-                                cOrganizationFragment organizationFragment) {
+    public cOrganizationAdapter(Context context, ArrayList<cOrganizationModel> organizationModels) {
         this.context = context;
-        this.inflater = LayoutInflater.from(context);
-        this.organizationList = organizationList;
-        this.organizationFragment = organizationFragment;
+        this.organizationModels = organizationModels;
+        this.filteredOrganizationModels = organizationModels;
     }
 
-    public cOrganizationAdapter(Context context, List<cOrganizationModel> organizationList) {
-        this.context = context;
-        this.inflater = LayoutInflater.from(context);
-        this.organizationList = null;// organizationList;
-        //this.organizationFragment = organizationFragment;
+    public void setOrganizationModels(ArrayList<cOrganizationModel> organizationModels) {
+        this.organizationModels = organizationModels;
+        this.filteredOrganizationModels = organizationModels;
     }
 
     @Override
     public int getItemCount() {
-        return organizationList.size();
+        return filteredOrganizationModels.size();
     }
 
-    public cOrganizationModel getItem(int position) {
-        return null;//organizationList.get(position);
-    }
-
-    public void removeItem(int position) {
-        organizationList.remove(position);
-    }
-
-    public void addItem(cOrganizationModel organizationDomain) {
-        //organizationList.add(organizationDomain);
-    }
-
-    public void updateItem(cOrganizationModel organizationDomain, int position) {
-        removeItem(position);
-        //organizationList.add(position, organizationDomain);
-    }
-
-    private List<cOrganizationRecord> organizationDetailList(cOrganizationModel organizationDomain) {
-        List<cOrganizationRecord> detailList = new ArrayList<>();
-
-        itemDetail = new cOrganizationRecord();
-        itemDetail.identifier = 0;
-        itemDetail.itemTitle = "Address";
-        //itemDetail.itemValue = organizationDomain.getPhysicalAddress();
-        detailList.add(itemDetail);
-
-        itemDetail = new cOrganizationRecord();
-        itemDetail.identifier = 1;
-        itemDetail.itemTitle = "Contact";
-        itemDetail.itemValue = organizationDomain.getPhone();
-        detailList.add(itemDetail);
-
-        itemDetail = new cOrganizationRecord();
-        itemDetail.identifier = 2;
-        itemDetail.itemTitle = "Fax";
-        itemDetail.itemValue = organizationDomain.getFax();
-        detailList.add(itemDetail);
-
-        itemDetail = new cOrganizationRecord();
-        itemDetail.identifier = 3;
-        itemDetail.itemTitle = "Email";
-        itemDetail.itemValue = organizationDomain.getEmail();
-        detailList.add(itemDetail);
-
-        itemDetail = new cOrganizationRecord();
-        itemDetail.identifier = 4;
-        itemDetail.itemTitle = "Official Website";
-        itemDetail.itemValue = organizationDomain.getWebsite();
-        detailList.add(itemDetail);
-
-        return detailList;
-    }
-
-    private List<cOrganizationRecord> organizationMoreList(cOrganizationModel organizationDomain) {
-        List<cOrganizationRecord> moreList = new ArrayList<>();
-
-        itemDetail = new cOrganizationRecord();
-        itemDetail.identifier = 5;
-        itemDetail.itemTitle = "Vision";
-        itemDetail.itemValue = organizationDomain.getVision();
-        moreList.add(itemDetail);
-
-        itemDetail = new cOrganizationRecord();
-        itemDetail.identifier = 6;
-        itemDetail.itemTitle = "Mission";
-        itemDetail.itemValue = organizationDomain.getMission();
-        moreList.add(itemDetail);
-
-        return moreList;
-    }
-
+    @NonNull
     @Override
-    public cOrganizationViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View itemView = LayoutInflater.
-                from(viewGroup.getContext()).
-                inflate(R.layout.organization_cardview, viewGroup, false);
-
-        return new cOrganizationViewHolder(itemView);
+    public cOrganizationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(
+                R.layout.session_organization_cardview, parent, false);
+        return new cOrganizationViewHolder(view);
     }
 
-    @Override
-    public void onBindViewHolder(cOrganizationViewHolder organizationViewHolder, int position) {
-        cOrganizationModel ci = organizationList.get(position);
+    public void onBindViewHolder(@NonNull cOrganizationViewHolder OH, int position) {
+        cOrganizationModel organizationModel = this.filteredOrganizationModels.get(position);
 
-        List<cOrganizationRecord> detailList = organizationDetailList(ci);
-        List<cOrganizationRecord> moreList   = organizationMoreList(ci);
+        //HH.cardView.setCardBackgroundColor(ContextCompat.getColor(context,
+        //        R.color.child_body_colour));
 
-        organizationViewHolder.txtOrganization.setText(ci.getName());
+        /* icon for name of an organization */
+        OH.textViewOrganizationIcon.setTypeface(null, Typeface.NORMAL);
+        OH.textViewOrganizationIcon.setTypeface(
+                cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
 
-        // first level
-        organizationViewHolder.detailRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager llm_detail = new LinearLayoutManager(context);
-        llm_detail.setOrientation(LinearLayoutManager.VERTICAL);
-        cOrganizationDetailAdapter adapter_detail = new cOrganizationDetailAdapter(context, detailList);
-        organizationViewHolder.detailRecyclerView.setAdapter(adapter_detail);
-        organizationViewHolder.detailRecyclerView.setLayoutManager(llm_detail);
-
-        // second level
-        organizationViewHolder.moreRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager llm_more = new LinearLayoutManager(context);
-        llm_more.setOrientation(LinearLayoutManager.VERTICAL);
-        cOrganizationMoreAdapter adapter_more = new cOrganizationMoreAdapter(context, moreList);
-        organizationViewHolder.moreRecyclerView.setAdapter(adapter_more);
-        organizationViewHolder.moreRecyclerView.setLayoutManager(llm_more);
-
-        // second level - values
-        organizationViewHolder.valValueHeader.setText("Values");
-
-        organizationViewHolder.valuesRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager llm_values = new LinearLayoutManager(context);
-        llm_more.setOrientation(LinearLayoutManager.VERTICAL);
-//--        cOrganizationValueAdapter adapter_values = new cOrganizationValueAdapter(context, ci.getValues());
-//--        organizationViewHolder.valuesRecyclerView.setAdapter(adapter_values);
-        organizationViewHolder.valuesRecyclerView.setLayoutManager(llm_values);
-        organizationViewHolder.updateItem(position);
-    }
-
-    public class cOrganizationViewHolder extends RecyclerView.ViewHolder {
-        protected TextView txtOrganization;
-        protected RecyclerView detailRecyclerView;
-        protected RecyclerView moreRecyclerView;
-        protected RecyclerView valuesRecyclerView;
-        protected CardView valuesCardView;
-        protected TextView valValueHeader;
-
-        private cExpandableLayout expandableLayout;
-
-        public cOrganizationViewHolder(final View itemView) {
-            super(itemView);
-
-            txtOrganization =  (TextView) itemView.findViewById(R.id.organization_id);
-            detailRecyclerView = (RecyclerView) itemView.findViewById(R.id.organization_detail_recyclerview_id);
-            moreRecyclerView = (RecyclerView) itemView.findViewById(R.id.organization_more_recyclerview_id);
-            valuesRecyclerView = (RecyclerView) itemView.findViewById(R.id.organization_values_recyclerview_id);
-
-            valuesCardView = (CardView) itemView.findViewById(R.id.card_view_values);
-            valValueHeader = (TextView) itemView.findViewById(R.id.valValueHeader);
-
-            expandableLayout = (cExpandableLayout) itemView.findViewById(R.id.organization_expandable_layout);
-
+        if (organizationModel.getOrgType() == 0) {
+            OH.textViewOrganizationIcon.setTextColor(Color.RED);
+        } else if (organizationModel.getOrgType() == 1) {
+            OH.textViewOrganizationIcon.setTextColor(Color.GREEN);
+        } else if (organizationModel.getOrgType() == 2) {
+            OH.textViewOrganizationIcon.setTextColor(Color.BLUE);
+        } else {
+            OH.textViewOrganizationIcon.setTextColor(Color.MAGENTA);
         }
 
-        private void updateItem(final int position) {
-            expandableLayout.setOnExpandListener(new cExpandableLayout.OnExpandListener() {
-                @Override
-                public void onExpand(boolean expanded) {
-                    registerExpand(position);
+        OH.textViewOrganizationIcon.setText(context.getResources().getString(R.string.fa_organization));
+        OH.textViewName.setText(organizationModel.getName());
+
+        OH.textViewEmailIcon.setTypeface(null, Typeface.NORMAL);
+        OH.textViewEmailIcon.setTypeface(
+                cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
+        OH.textViewEmailIcon.setTextColor(context.getColor(R.color.black));
+        OH.textViewEmailIcon.setText(context.getResources().getString(R.string.fa_email));
+        OH.textViewEmail.setText(organizationModel.getEmail());
+
+        OH.textViewWebsiteIcon.setTypeface(null, Typeface.NORMAL);
+        OH.textViewWebsiteIcon.setTypeface(
+                cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
+        OH.textViewWebsiteIcon.setTextColor(context.getColor(R.color.black));
+        OH.textViewWebsiteIcon.setText(context.getResources().getString(R.string.fa_website));
+        OH.textViewWebsite.setText(organizationModel.getWebsite());
+
+        /* icon for deleting a record */
+        OH.textViewDeleteIcon.setTypeface(null, Typeface.NORMAL);
+        OH.textViewDeleteIcon.setTypeface(
+                cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
+        OH.textViewDeleteIcon.setTextColor(context.getColor(R.color.colorPrimary));
+        OH.textViewDeleteIcon.setText(context.getResources().getString(R.string.fa_delete));
+        OH.textViewDeleteIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //PVH.logFrameListener.onClickDeleteLogFrame(position,parentLogFrame.getLogFrameID());
+            }
+        });
+
+        /* icon for saving updated record */
+        OH.textViewUpdateIcon.setTypeface(null, Typeface.NORMAL);
+        OH.textViewUpdateIcon.setTypeface(
+                cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
+        OH.textViewUpdateIcon.setTextColor(context.getColor(R.color.colorPrimary));
+        OH.textViewUpdateIcon.setText(context.getResources().getString(R.string.fa_update));
+        OH.textViewUpdateIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //HPH.logFrameListener.onClickUpdateLogFrame(position, parentLogFrame);
+            }
+        });
+
+        /* icon for joining a record */
+        OH.textViewJoinIcon.setTypeface(null, Typeface.NORMAL);
+        OH.textViewJoinIcon.setTypeface(
+                cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
+        OH.textViewJoinIcon.setTextColor(context.getColor(R.color.colorPrimary));
+        OH.textViewJoinIcon.setText(context.getResources().getString(R.string.fa_join));
+        OH.textViewJoinIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //PVH.logFrameListener.onClickSyncLogFrame(position, parentLogFrame);
+            }
+        });
+
+        /* icon for creating a record */
+        OH.textViewCreateIcon.setTypeface(null, Typeface.NORMAL);
+        OH.textViewCreateIcon.setTypeface(
+                cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
+        OH.textViewCreateIcon.setTextColor(context.getColor(R.color.colorPrimary));
+        OH.textViewCreateIcon.setText(context.getResources().getString(R.string.fa_create));
+        OH.textViewCreateIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //PVH.logFrameListener.onClickSyncLogFrame(position, parentLogFrame);
+            }
+        });
+
+        // collapse and expansion of the details of the role
+        OH.textViewDetailIcon.setTypeface(null, Typeface.NORMAL);
+        OH.textViewDetailIcon.setTypeface(cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
+        OH.textViewDetailIcon.setTextColor(context.getColor(R.color.colorPrimaryDark));
+        OH.textViewDetailIcon.setText(context.getResources().getString(R.string.fa_angle_down));
+        OH.textViewDetailIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!(OH.expandableLayout.isExpanded())) {
+                    OH.textViewDetailIcon.setText(context.getResources().getString(R.string.fa_angle_up));
+                } else {
+                    OH.textViewDetailIcon.setText(context.getResources().getString(R.string.fa_angle_down));
                 }
-            });
-            expandableLayout.setExpand(mExpandedPositionSet.contains(position));
 
+                OH.expandableLayout.toggle();
+            }
+        });
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+
+                String charString = charSequence.toString();
+
+                if (charString.isEmpty()) {
+                    filteredOrganizationModels = organizationModels;
+                } else {
+
+                    ArrayList<cOrganizationModel> filteredList = new ArrayList<>();
+                    for (cOrganizationModel organizationModel : organizationModels) {
+                        if (organizationModel.getName().toLowerCase().
+                                contains(charString.toLowerCase())) {
+                            filteredList.add(organizationModel);
+                        }
+                    }
+
+                    filteredOrganizationModels = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.count = filteredOrganizationModels.size();
+                filterResults.values = filteredOrganizationModels;
+
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                filteredOrganizationModels = (ArrayList<cOrganizationModel>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+    public static class cOrganizationViewHolder extends RecyclerView.ViewHolder {
+        private final cExpandableLayout expandableLayout;
+
+        private final AppCompatTextView textViewName;
+        private final AppCompatTextView textViewEmail;
+        private final AppCompatTextView textViewWebsite;
+
+        private final AppCompatTextView textViewOrganizationIcon;
+        private final AppCompatTextView textViewEmailIcon;
+        private final AppCompatTextView textViewWebsiteIcon;
+
+        private final AppCompatTextView textViewDeleteIcon;
+        private final AppCompatTextView textViewUpdateIcon;
+        private final AppCompatTextView textViewJoinIcon;
+        private final AppCompatTextView textViewCreateIcon;
+        private final AppCompatTextView textViewDetailIcon;
+
+        private final View viewHolder;
+
+        private cOrganizationViewHolder(final View viewHolder) {
+            super(viewHolder);
+            this.viewHolder = viewHolder;
+
+            CardView cardView = viewHolder.findViewById(R.id.cardView);
+            this.expandableLayout = viewHolder.findViewById(R.id.expandableLayout);
+
+            this.textViewName = viewHolder.findViewById(R.id.textViewName);
+            this.textViewEmail = viewHolder.findViewById(R.id.textViewEmail);
+            this.textViewWebsite = viewHolder.findViewById(R.id.textViewWebsite);
+
+            this.textViewOrganizationIcon = viewHolder.findViewById(R.id.textViewOrganizationIcon);
+            this.textViewEmailIcon = viewHolder.findViewById(R.id.textViewEmailIcon);
+            this.textViewWebsiteIcon = viewHolder.findViewById(R.id.textViewWebsiteIcon);
+
+            this.textViewDeleteIcon = viewHolder.findViewById(R.id.textViewDeleteIcon);
+            this.textViewUpdateIcon = viewHolder.findViewById(R.id.textViewUpdateIcon);
+            this.textViewJoinIcon = viewHolder.findViewById(R.id.textViewJoinIcon);
+            this.textViewCreateIcon = viewHolder.findViewById(R.id.textViewCreateIcon);
+            this.textViewDetailIcon = viewHolder.findViewById(R.id.textViewDetailIcon);
         }
-    }
 
-    private void registerExpand(int position) {
-        if (mExpandedPositionSet.contains(position)) {
-            removeExpand(position);
-        }else {
-            addExpand(position);
+        public void setPaddingLeft(int paddingLeft) {
+            viewHolder.setPadding(paddingLeft, 0, 0, 0);
         }
-    }
-
-    private void removeExpand(int position) {
-        mExpandedPositionSet.remove(position);
-    }
-
-    private void addExpand(int position) {
-        mExpandedPositionSet.add(position);
     }
 }

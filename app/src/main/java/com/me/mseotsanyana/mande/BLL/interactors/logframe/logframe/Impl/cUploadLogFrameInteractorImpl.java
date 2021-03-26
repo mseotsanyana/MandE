@@ -8,6 +8,7 @@ import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.logframe.iUploadLogFrameInteractor;
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iUploadLogFrameRepository;
+import com.me.mseotsanyana.mande.BuildConfig;
 
 public class cUploadLogFrameInteractorImpl extends cAbstractInteractor
         implements iUploadLogFrameInteractor {
@@ -51,46 +52,25 @@ public class cUploadLogFrameInteractorImpl extends cAbstractInteractor
     public void run() {
 
         /* delete all logframe module records */
+        uploadLMRepository.deleteLogFrame();
 
-        uploadLMRepository.deleteEvaluationCriteria();
+        uploadLMRepository.deleteLogFrameTree();
 
-        uploadLMRepository.deleteQuestionGroupings();
-        uploadLMRepository.deleteQuestionTypes();
-        uploadLMRepository.deleteQuestions();
-        uploadLMRepository.deletePrimitiveQuestions();
-        uploadLMRepository.deleteArrayQuestions();
-        uploadLMRepository.deleteMatrixQuestions();
+        uploadLMRepository.deleteResourceTypes();
 
-        uploadLMRepository.deleteRaidCategories();
-        uploadLMRepository.deleteRaids();
-
-        uploadLMRepository.deleteImpactQuestions();
-        uploadLMRepository.deleteImpactRaids();
+        uploadLMRepository.deleteComponents();
         uploadLMRepository.deleteImpacts();
-
         uploadLMRepository.deleteOutcomeImpacts();
-        uploadLMRepository.deleteOutcomeQuestions();
-        uploadLMRepository.deleteOutcomeRaids();
         uploadLMRepository.deleteOutcomes();
-
         uploadLMRepository.deleteOutputOutcomes();
-        uploadLMRepository.deleteOutputQuestions();
-        uploadLMRepository.deleteOutputRaids();
         uploadLMRepository.deleteOutputs();
 
-        uploadLMRepository.deleteWorkPlans();
-
+        uploadLMRepository.deleteActivities();
         uploadLMRepository.deletePrecedingActivities();
         uploadLMRepository.deleteActivityAssignments();
         uploadLMRepository.deleteActivityOutputs();
-        uploadLMRepository.deleteActivityQuestions();
-        uploadLMRepository.deleteActivityRaids();
-        uploadLMRepository.deleteActivities();
 
-        uploadLMRepository.deleteResourceTypes();
-        uploadLMRepository.deleteResources();
-
-        uploadLMRepository.deleteInputQuestions();
+        uploadLMRepository.deleteInputs();
         uploadLMRepository.deleteInputActivities();
         uploadLMRepository.deleteHumans();
         uploadLMRepository.deleteHumanSets();
@@ -98,10 +78,20 @@ public class cUploadLogFrameInteractorImpl extends cAbstractInteractor
         uploadLMRepository.deleteIncomes();
         uploadLMRepository.deleteFunds();
         uploadLMRepository.deleteExpenses();
-        uploadLMRepository.deleteInputs();
 
-        uploadLMRepository.deleteLogFrameTree();
-        uploadLMRepository.deleteLogFrame();
+        uploadLMRepository.deleteCriteria();
+        uploadLMRepository.deleteQuestionGroupings();
+        uploadLMRepository.deleteQuestionTypes();
+        uploadLMRepository.deleteQuestions();
+        uploadLMRepository.deleteQuestionCriteria();
+
+        uploadLMRepository.deletePrimitiveQuestions();
+        uploadLMRepository.deleteArrayQuestions();
+        uploadLMRepository.deleteMatrixQuestions();
+
+        uploadLMRepository.deleteRaidCategories();
+        uploadLMRepository.deleteRaids();
+        uploadLMRepository.deleteComponentRaids();
 
         /* upload all logframe module records */
         if (uploadLMRepository.addLogFrameFromExcel()) {
@@ -110,24 +100,33 @@ public class cUploadLogFrameInteractorImpl extends cAbstractInteractor
             notifyError("Failed to Add LogFrame Entity");
         }
 
-        if (uploadLMRepository.addEvaluationCriteriaFromExcel()) {
+        if (uploadLMRepository.addResourceTypeFromExcel()) {
+            postMessage("ResourceType Entity Added Successfully!");
+        } else {
+            notifyError("Failed to Add ResourceType Entity");
+        }
+
+        if (uploadLMRepository.addComponentFromExcel()) {
+            postMessage("Component Entity Added Successfully!");
+        } else {
+            notifyError("Failed to Add Component Entity");
+        }
+
+        if (uploadLMRepository.addCriteriaFromExcel()) {
             postMessage("Criteria Entity Added Successfully!");
         } else {
             notifyError("Failed to Add Criteria Entity");
         }
-
         if (uploadLMRepository.addQuestionGroupingFromExcel()) {
             postMessage("QuestionGrouping Entity Added Successfully!");
         } else {
             notifyError("Failed to Add QuestionGrouping Entity");
         }
-
         if (uploadLMRepository.addQuestionTypeFromExcel()) {
             postMessage("QuestionType Entity Added Successfully!");
         } else {
             notifyError("Failed to Add QuestionType Entity");
         }
-
         if (uploadLMRepository.addQuestionFromExcel()) {
             postMessage("Question Entity Added Successfully!");
         } else {
@@ -139,59 +138,10 @@ public class cUploadLogFrameInteractorImpl extends cAbstractInteractor
         } else {
             notifyError("Failed to Add Raid Category Entity");
         }
-
         if (uploadLMRepository.addRaidFromExcel()) {
             postMessage("Raid Entity Added Successfully!");
         } else {
             notifyError("Failed to Add Raid Entity");
-        }
-
-        if (uploadLMRepository.addImpactFromExcel()) {
-            postMessage("Impact Entity Added Successfully!");
-        } else {
-            notifyError("Failed to Add Impact Entity");
-        }
-
-        if (uploadLMRepository.addOutcomeFromExcel()) {
-            postMessage("Outcome Entity Added Successfully!");
-        } else {
-            notifyError("Failed to Add Outcome Entity");
-        }
-
-        if (uploadLMRepository.addOutputFromExcel()) {
-            postMessage("Output Entity Added Successfully!");
-        } else {
-            notifyError("Failed to Add Output Entity");
-        }
-
-        if (uploadLMRepository.addWorkplanFromExcel()) {
-            postMessage("Workplan Entity Added Successfully!");
-        } else {
-            notifyError("Failed to Add Workplan Entity");
-        }
-
-        if (uploadLMRepository.addActivityFromExcel()) {
-            postMessage("Activity Entity Added Successfully!");
-        } else {
-            notifyError("Failed to Add Activity Entity");
-        }
-
-        if (uploadLMRepository.addResourceTypeFromExcel()) {
-            postMessage("ResourceType Entity Added Successfully!");
-        } else {
-            notifyError("Failed to Add ResourceType Entity");
-        }
-
-        if (uploadLMRepository.addResourceFromExcel()) {
-            postMessage("Resource Entity Added Successfully!");
-        } else {
-            notifyError("Failed to Add Resource Entity");
-        }
-
-        if (uploadLMRepository.addInputFromExcel()) {
-            postMessage("Input Entity Added Successfully!");
-        } else {
-            notifyError("Failed to Add Input Entity");
         }
     }
 }
