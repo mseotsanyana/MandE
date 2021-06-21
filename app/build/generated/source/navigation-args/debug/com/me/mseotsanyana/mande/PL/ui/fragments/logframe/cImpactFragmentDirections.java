@@ -26,6 +26,7 @@ public class cImpactFragmentDirections {
   public static class ActionCImpactFragmentToCImpactDetailFragment implements NavDirections {
     private final HashMap arguments = new HashMap();
 
+    @SuppressWarnings("unchecked")
     private ActionCImpactFragmentToCImpactDetailFragment(@NonNull cOutcomeModel[] outcomeModels,
         @NonNull cQuestionModel[] questionModels) {
       if (outcomeModels == null) {
@@ -39,6 +40,7 @@ public class cImpactFragmentDirections {
     }
 
     @NonNull
+    @SuppressWarnings("unchecked")
     public ActionCImpactFragmentToCImpactDetailFragment setOutcomeModels(
         @NonNull cOutcomeModel[] outcomeModels) {
       if (outcomeModels == null) {
@@ -49,6 +51,7 @@ public class cImpactFragmentDirections {
     }
 
     @NonNull
+    @SuppressWarnings("unchecked")
     public ActionCImpactFragmentToCImpactDetailFragment setQuestionModels(
         @NonNull cQuestionModel[] questionModels) {
       if (questionModels == null) {

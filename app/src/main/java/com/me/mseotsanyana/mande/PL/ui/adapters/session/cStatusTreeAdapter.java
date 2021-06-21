@@ -319,7 +319,7 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
                         ", STATUS ID = "+permissionModels.get(i).getStatusModel().getStatusID());
                 */
 
-                permissionModel = new cPermissionModel(permissionModels.get(i));
+//                permissionModel = new cPermissionModel(permissionModels.get(i));
 
                 return permissionModel;
             }
@@ -348,12 +348,12 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
                 );*/
 
         // get a deep copy of permission domain to modify
-        final cPermissionModel mPermissionModel = getPermissionModel(permissionModels,
-                privilegeID, entityModel.getEntityID(), 0,
-                operationModel.getOperationID(), statusModel.getStatusID());
+//        final cPermissionModel mPermissionModel = getPermissionModel(permissionModels,
+//                privilegeID, entityModel.getEntityID(), 0,
+//                operationModel.getOperationID(), statusModel.getStatusID());
 
         /** make a deepcopy of the original permission domain **/
-        final cPermissionModel originalModel = new cPermissionModel(mPermissionModel);
+//        final cPermissionModel originalModel = new cPermissionModel(mPermissionModel);
 
         //Log.d(TAG, "PERMISSION "+gson.toJson(modifiedModel));
 
@@ -385,13 +385,13 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
         singleSpinnerSearchOwner.setItems(keyPairBoolUsers, -1, new cSpinnerListener() {
             @Override
             public void onItemsSelected(List<cKeyPairBoolData> items) {
-                for (int i = 0; i < items.size(); i++) {
-                    if (items.get(i).isSelected()) {
-                        mPermissionModel.setOwnerID((int) items.get(i).getId());
-                        break;
-                    }
-                }
-                Log.d(TAG, "OWNER : " + mPermissionModel.getOwnerID());
+//                for (int i = 0; i < items.size(); i++) {
+//                    if (items.get(i).isSelected()) {
+//                        mPermissionModel.setOwnerID((int) items.get(i).getId());
+//                        break;
+//                    }
+//                }
+//                Log.d(TAG, "OWNER : " + mPermissionModel.getOwnerID());
             }
         });
 
@@ -470,7 +470,7 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
         // create a pair list of permission ids and names
         final cKeyPairBoolData[] keyPairBoolPerms = new cKeyPairBoolData[NUM_PERMS];
         if (permissionModels.size() > 0) {
-            int opBITS = permissionModels.get(0).getPermsBITS();
+//            int opBITS = permissionModels.get(0).getPermsBITS();
             //keyPairBoolPerms[0].setId();keyPairBoolPerms[0].setName();
            /* for (int i = 0; i < session.permissions.length; i++) {
                 //Log.d(TAG, " "+(opBITS & session.permissions[i]));
@@ -488,22 +488,22 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
         tableSpinner.setItems(keyPairBoolPerms, -1, new cTableSpinnerListener() {
             @Override
             public void onFixedItemsSelected(cKeyPairBoolData[] items) {
-                for (int i = 0; i < items.length; i++) {
-                    int permID = (int) items[i].getId();
-                    if (items[i].isSelected()) {
-                        if ((mPermissionModel.getPermsBITS() & permID) != permID) {
-                            // add operation
-                            mPermissionModel.setPermsBITS(mPermissionModel.getPermsBITS() | permID);
-                        }
-                    }
-                    if (!items[i].isSelected()) {
-                        if ((mPermissionModel.getPermsBITS() & permID) == permID) {
-                            // remove operation
-                            mPermissionModel.setPermsBITS(mPermissionModel.getPermsBITS() & ~permID);
-                        }
-                    }
-                }
-                Log.d(TAG, "PERMS : " + mPermissionModel.getPermsBITS());
+//                for (int i = 0; i < items.length; i++) {
+//                    int permID = (int) items[i].getId();
+//                    if (items[i].isSelected()) {
+//                        if ((mPermissionModel.getPermsBITS() & permID) != permID) {
+//                            // add operation
+//                            mPermissionModel.setPermsBITS(mPermissionModel.getPermsBITS() | permID);
+//                        }
+//                    }
+//                    if (!items[i].isSelected()) {
+//                        if ((mPermissionModel.getPermsBITS() & permID) == permID) {
+//                            // remove operation
+//                            mPermissionModel.setPermsBITS(mPermissionModel.getPermsBITS() & ~permID);
+//                        }
+//                    }
+//                }
+//                Log.d(TAG, "PERMS : " + mPermissionModel.getPermsBITS());
             }
         });
 
@@ -513,13 +513,13 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
             cKeyPairBoolData idNameBool = new cKeyPairBoolData();
             idNameBool.setId(listStatus.get(i).getStatusID());
             idNameBool.setName(listStatus.get(i).getName());
-            if ((mPermissionModel != null) &&
-                    ((mPermissionModel.getStatusBITS() & listStatus.get(i).getStatusID()) ==
-                            listStatus.get(i).getStatusID())) {
-                idNameBool.setSelected(true);
-            } else {
-                idNameBool.setSelected(false);
-            }
+//            if ((mPermissionModel != null) &&
+//                    ((mPermissionModel.getStatusBITS() & listStatus.get(i).getStatusID()) ==
+//                            listStatus.get(i).getStatusID())) {
+//                idNameBool.setSelected(true);
+//            } else {
+//                idNameBool.setSelected(false);
+//            }
             keyPairBoolStatuses.add(idNameBool);
         }
         // -1 is no by default selection, 0 to length will select corresponding values
@@ -529,22 +529,22 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
         multiSpinnerSearchStatuses.setItems(keyPairBoolStatuses, -1, new cSpinnerListener() {
             @Override
             public void onItemsSelected(List<cKeyPairBoolData> items) {
-                for (int i = 0; i < items.size(); i++) {
-                    int statusID = (int) items.get(i).getId();
-                    if (items.get(i).isSelected()) {
-                        if ((mPermissionModel.getStatusBITS() & statusID) != statusID) {
-                            // add status
-                            mPermissionModel.setStatusBITS(mPermissionModel.getStatusBITS() | statusID);
-                        }
-                    }
-                    if (!items.get(i).isSelected()) {
-                        if ((mPermissionModel.getStatusBITS() & statusID) == statusID) {
-                            // remove status
-                            mPermissionModel.setStatusBITS(mPermissionModel.getStatusBITS() & ~statusID);
-                        }
-                    }
-                }
-                Log.d(TAG, "STATUSES : " + mPermissionModel.getStatusBITS());
+//                for (int i = 0; i < items.size(); i++) {
+//                    int statusID = (int) items.get(i).getId();
+//                    if (items.get(i).isSelected()) {
+//                        if ((mPermissionModel.getStatusBITS() & statusID) != statusID) {
+//                            // add status
+//                            mPermissionModel.setStatusBITS(mPermissionModel.getStatusBITS() | statusID);
+//                        }
+//                    }
+//                    if (!items.get(i).isSelected()) {
+//                        if ((mPermissionModel.getStatusBITS() & statusID) == statusID) {
+//                            // remove status
+//                            mPermissionModel.setStatusBITS(mPermissionModel.getStatusBITS() & ~statusID);
+//                        }
+//                    }
+//                }
+//                Log.d(TAG, "STATUSES : " + mPermissionModel.getStatusBITS());
             }
         });
 
@@ -571,8 +571,8 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
                     (statusModel.getStatusID() == permissionModels.get(i).getStatusModel().getStatusID())) */{
 
                 //createdDate = formatter.format(permissionModels.get(i).getCreatedDated());
-                modifiedDate = formatter.format(permissionModels.get(i).getModifiedDate());
-                syncedDate = formatter.format(permissionModels.get(i).getSyncedDate());
+//                modifiedDate = formatter.format(permissionModels.get(i).getModifiedDate());
+//                syncedDate = formatter.format(permissionModels.get(i).getSyncedDate());
 
                 textViewCreatedDate.setText(createdDate);
                 textViewModifiedDate.setText(modifiedDate);
@@ -608,8 +608,8 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
         appCompatButtonComSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mPermissionModel != null) {
-                    // keep a list of modified status domains'
+//                if (mPermissionModel != null) {
+//                    // keep a list of modified status domains'
 //                    if (statusModel.isDirty()) {
 //                        modifiedStatuses.add(statusModel);
 //                    }
@@ -622,17 +622,17 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
 //                    if (callback != null) {
 //                        callback.onUpdatePermissions(originalModel, mPermissionModel);
 //                    }
-
-                    //Log.d(TAG, "UPDATE "+gson.toJson(statusModel));
-                    //Log.d(TAG, "PERMISSION "+gson.toJson(mPermissionModel));
-                }else{
-
-                    if (callback != null) {//FIXME
-                        //callback.onCreatePermissions(statusModel);
-                    }
-                    Log.d(TAG, "CREATE "+gson.toJson(statusModel));
-                    Log.d(TAG, "PERMISSION "+gson.toJson(mPermissionModel));
-                }
+//
+//                    //Log.d(TAG, "UPDATE "+gson.toJson(statusModel));
+//                    //Log.d(TAG, "PERMISSION "+gson.toJson(mPermissionModel));
+//                }else{
+//
+//                    if (callback != null) {//FIXME
+//                        //callback.onCreatePermissions(statusModel);
+//                    }
+//                    Log.d(TAG, "CREATE "+gson.toJson(statusModel));
+//                    Log.d(TAG, "PERMISSION "+gson.toJson(mPermissionModel));
+//                }
                 popWindow.dismiss();
             }
         });

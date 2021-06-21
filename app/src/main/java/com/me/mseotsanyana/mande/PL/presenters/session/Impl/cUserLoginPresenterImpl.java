@@ -4,12 +4,9 @@ import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserLoginInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.session.user.iUserLoginInteractor;
-import com.me.mseotsanyana.mande.BLL.repository.session.iOrganizationRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iRoleRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iStatusRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iUserRepository;
-import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
+import com.me.mseotsanyana.mande.BLL.repository.session.iPrivilegeRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iUserProfileRepository;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.session.iUserLoginPresenter;
 import com.me.mseotsanyana.mande.R;
@@ -17,33 +14,24 @@ import com.me.mseotsanyana.mande.UTIL.cInputValidation;
 
 public class cUserLoginPresenterImpl extends cAbstractPresenter implements iUserLoginPresenter,
         iUserLoginInteractor.Callback {
-    private static String TAG = cUserLoginPresenterImpl.class.getSimpleName();
 
     private View view;
-    private final iUserRepository userRepository;
-    private final iOrganizationRepository organizationRepository;
-
-    private final iRoleRepository roleRepository;
-    private final iStatusRepository statusRepository;
-    private final iSessionManagerRepository sessionManagerRepository;
+    private final iSharedPreferenceRepository sharedPreferenceRepository;
+    private final iPrivilegeRepository privilegeRepository;
+    private final iUserProfileRepository userProfileRepository;
 
     private final cInputValidation inputValidation;
 
-    public cUserLoginPresenterImpl(iExecutor executor, iMainThread mainThread,
-                                   View view,
-                                   iUserRepository userRepository,
-                                   iOrganizationRepository organizationRepository,
-                                   iRoleRepository roleRepository,
-                                   iStatusRepository statusRepository,
-                                   iSessionManagerRepository sessionManagerRepository) {
+    public cUserLoginPresenterImpl(iExecutor executor, iMainThread mainThread, View view,
+                                   iSharedPreferenceRepository sharedPreferenceRepository,
+                                   iPrivilegeRepository privilegeRepository,
+                                   iUserProfileRepository userProfileRepository) {
         super(executor, mainThread);
 
         this.view = view;
-        this.userRepository = userRepository;
-        this.organizationRepository = organizationRepository;
-        this.roleRepository = roleRepository;
-        this.statusRepository = statusRepository;
-        this.sessionManagerRepository = sessionManagerRepository;
+        this.sharedPreferenceRepository = sharedPreferenceRepository;
+        this.privilegeRepository = privilegeRepository;
+        this.userProfileRepository = userProfileRepository;
 
         this.inputValidation = new cInputValidation();
     }
@@ -66,13 +54,10 @@ public class cUserLoginPresenterImpl extends cAbstractPresenter implements iUser
         }
 
         iUserLoginInteractor userLoginInteractor = new cUserLoginInteractorImpl(
-                executor, mainThread,
-                userRepository,
-                organizationRepository,
-                roleRepository,
-                statusRepository,
-                sessionManagerRepository,
-                this,
+                executor, mainThread,this,
+                sharedPreferenceRepository,
+                privilegeRepository,
+                userProfileRepository,
                 email, password);
 
         view.showProgress();
@@ -89,14 +74,14 @@ public class cUserLoginPresenterImpl extends cAbstractPresenter implements iUser
     }
 
     @Override
-    public void onUserLoginSucceeded(cUserModel userModel) {
+    public void onUserLoginSucceeded(String msg) {
         if(this.view != null) {
-            this.view.onUserLoginSucceeded(userModel);
+            this.view.onUserLoginSucceeded(msg);
             this.view.hideProgress();
         }
     }
 
-    /*============================= General Presenter methods ============================= */
+    // general presentation methods
 
     @Override
     public void resume() {

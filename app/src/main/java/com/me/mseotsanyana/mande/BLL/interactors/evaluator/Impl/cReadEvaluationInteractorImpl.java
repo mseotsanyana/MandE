@@ -8,10 +8,10 @@ import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.evaluator.iReadEvaluationInteractor;
 import com.me.mseotsanyana.mande.BLL.repository.evaluator.iEvaluationRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
 import com.me.mseotsanyana.mande.BLL.model.evaluator.cEvaluationModel;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
+import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
 import com.me.mseotsanyana.questionnairelibrary.forms.db.cDBQuestion;
 import com.me.mseotsanyana.questionnairelibrary.forms.db.cDBQuestionnaire;
@@ -37,7 +37,7 @@ public class cReadEvaluationInteractorImpl extends cAbstractInteractor
     private String logFrameName;
 
     public cReadEvaluationInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,
-                                         iSessionManagerRepository sessionManagerRepository,
+                                         iSharedPreferenceRepository sessionManagerRepository,
                                          iEvaluationRepository evaluationRepository,
                                          Callback callback, long logFrameID) {
         super(threadExecutor, mainThread);
@@ -52,15 +52,15 @@ public class cReadEvaluationInteractorImpl extends cAbstractInteractor
         this.logFrameID = logFrameID;
 
         /* common attributes */
-        this.userID = sessionManagerRepository.loadUserID();
-        this.primaryRoleBITS = sessionManagerRepository.loadPrimaryRoleBITS();
-        this.secondaryRoleBITS = sessionManagerRepository.loadSecondaryRoleBITS();
-
-        /* attributes related to OUTCOME entity:Fixme */
-        this.operationBITS = sessionManagerRepository.loadOperationBITS(
-                cBitwise.EVALUATION, cBitwise.EVALUATION_MODULE);
-        this.statusBITS = sessionManagerRepository.loadStatusBITS(
-                cBitwise.EVALUATION, cBitwise.EVALUATION_MODULE, cBitwise.READ);
+//        this.userID = sessionManagerRepository.loadUserID();
+//        this.primaryRoleBITS = sessionManagerRepository.loadPrimaryRoleBITS();
+//        this.secondaryRoleBITS = sessionManagerRepository.loadSecondaryRoleBITS();
+//
+//        /* attributes related to OUTCOME entity:Fixme */
+//        this.operationBITS = sessionManagerRepository.loadOperationBITS(
+//                cBitwise.EVALUATION, cBitwise.EVALUATION_MODULE);
+//        this.statusBITS = sessionManagerRepository.loadStatusBITS(
+//                cBitwise.EVALUATION, cBitwise.EVALUATION_MODULE, cBitwise.READ);
     }
 
     /* */

@@ -1,0 +1,624 @@
+<html>
+<head>
+<title>cSharedPreferencesFirebaseRepositoryImpl.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #0033b3;}
+.s1 { color: #080808;}
+.s2 { color: #8c8c8c; font-style: italic;}
+.s3 { color: #067d17;}
+.s4 { color: #8c8c8c; font-style: italic;}
+.s5 { color: #1750eb;}
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+cSharedPreferencesFirebaseRepositoryImpl.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.me.mseotsanyana.mande.DAL.ìmpl.realtime.session;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Context;</span>
+<span class="s0">import </span><span class="s1">android.content.SharedPreferences;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull;</span>
+
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseAuth;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseUser;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DataSnapshot;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseError;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.DatabaseReference;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.FirebaseDatabase;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.Query;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.ValueEventListener;</span>
+<span class="s0">import </span><span class="s1">com.google.gson.Gson;</span>
+<span class="s0">import </span><span class="s1">com.google.gson.reflect.TypeToken;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cPermissionModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cRoleModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cStatusModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cStatusSetModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cTeamModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cUserAccountModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cUserModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferencesRepository;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.DAL.storage.database.cRealtimeHelper;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.DAL.storage.preference.cSharedPreference;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.UTIL.cConstant;</span>
+
+<span class="s0">import </span><span class="s1">java.text.SimpleDateFormat;</span>
+<span class="s0">import </span><span class="s1">java.util.ArrayList;</span>
+<span class="s0">import </span><span class="s1">java.util.Set;</span>
+
+<span class="s0">import static </span><span class="s1">com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise.types;</span>
+
+<span class="s0">public class </span><span class="s1">cSharedPreferencesFirebaseRepositoryImpl </span><span class="s0">implements </span><span class="s1">iSharedPreferencesRepository {</span>
+    <span class="s0">private static </span><span class="s1">SimpleDateFormat sdf = cConstant.FORMAT_DATE;</span>
+    <span class="s0">private static </span><span class="s1">String TAG = cSharedPreferencesFirebaseRepositoryImpl.</span><span class="s0">class</span><span class="s1">.getSimpleName();</span>
+
+    <span class="s0">private final </span><span class="s1">FirebaseDatabase database;</span>
+    <span class="s0">private final </span><span class="s1">SharedPreferences preferences;</span>
+    <span class="s0">private final </span><span class="s1">cSharedPreference sharedPreference;</span>
+    <span class="s0">private final </span><span class="s1">SharedPreferences.Editor editor;</span>
+    <span class="s0">private </span><span class="s1">Gson gson;</span>
+
+    <span class="s0">public </span><span class="s1">cSharedPreferencesFirebaseRepositoryImpl(Context context) {</span>
+        <span class="s0">this</span><span class="s1">.database = FirebaseDatabase.getInstance();</span>
+        <span class="s0">this</span><span class="s1">.sharedPreference = </span><span class="s0">new </span><span class="s1">cSharedPreference(context);</span>
+        <span class="s0">this</span><span class="s1">.preferences = sharedPreference.getSettings();</span>
+        <span class="s0">this</span><span class="s1">.editor = sharedPreference.getEditor();</span>
+
+        <span class="s1">gson = </span><span class="s0">new </span><span class="s1">Gson();</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/*################################# SHARED PREFERENCE ACTIONS ################################*/</span>
+
+    <span class="s2">/* #################### FUNCTIONS FOR SAVING AND LOADING CURRENT SETTINGS ####################*/</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* This method can be called to check whether there is any logged in user.</span>
+     <span class="s2">* If no user is loggedIn, it returns false otherwise true</span>
+     <span class="s2">*/</span>
+    <span class="s0">public boolean </span><span class="s1">isLoggedIn() {</span>
+        <span class="s0">return </span><span class="s1">preferences.getBoolean(cSharedPreference.KEY_IS_LOGGEDIN, </span><span class="s0">false</span><span class="s1">);</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* This sets the loggedIn variable to true</span>
+     <span class="s2">*/</span>
+    <span class="s0">public void </span><span class="s1">loginUser() {</span>
+        <span class="s1">editor.putBoolean(cSharedPreference.KEY_IS_LOGGEDIN, </span><span class="s0">true</span><span class="s1">);</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* This sets the loggedIn variable to true</span>
+     <span class="s2">*/</span>
+    <span class="s0">public void </span><span class="s1">logoutUser() {</span>
+        <span class="s1">editor.putBoolean(cSharedPreference.KEY_IS_LOGGEDIN, </span><span class="s0">false</span><span class="s1">);</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* This sets user ID (which is used as owner ID) for records and saves it.</span>
+     <span class="s2">*/</span>
+    <span class="s0">public void </span><span class="s1">saveUserID() {</span>
+        <span class="s1">FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();</span>
+        <span class="s1">editor.putString(cSharedPreference.KEY_USER_ID, firebaseUser.getUid());</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* This sets user organization identification, primary and secondary bits.</span>
+     <span class="s2">*/</span>
+    <span class="s0">public void </span><span class="s1">saveCurrentOrganizationAndTeams() {</span>
+        <span class="s1">DatabaseReference dbUserAccountsRef = database.getReference(cRealtimeHelper.KEY_USERACCOUNTS);</span>
+        <span class="s1">Query userAccountQuery = dbUserAccountsRef.orderByChild(</span><span class="s3">&quot;currentOrganization&quot;</span><span class="s1">).equalTo(</span><span class="s0">true</span><span class="s1">);</span>
+        <span class="s1">userAccountQuery.addListenerForSingleValueEvent(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+                <span class="s1">cUserAccountModel userAccountModel = snapshot.getValue(cUserAccountModel.</span><span class="s0">class</span><span class="s1">);</span>
+                <span class="s1">String organizationID = userAccountModel.getOrganizationServerID();</span>
+                <span class="s1">String primaryTeamID = userAccountModel.getTeamServerID();</span>
+
+                <span class="s1">saveOrganizationID(organizationID);</span>
+                <span class="s1">savePrimaryTeamBIT(primaryTeamID);</span>
+                <span class="s1">saveSecondaryTeamsBITS(primaryTeamID);</span>
+            <span class="s1">}</span>
+
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+
+            <span class="s1">}</span>
+        <span class="s1">});</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* This saves the identification of the current organization.</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s4">@param </span><span class="s2">organizationServerID organization identification</span>
+     <span class="s2">*/</span>
+    <span class="s0">public void </span><span class="s1">saveOrganizationID(String organizationServerID) {</span>
+        <span class="s1">editor.putString(cSharedPreference.KEY_ORG_ID, organizationServerID);</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* This sets primary team bits of the loggedIn user and saves it.</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s4">@param </span><span class="s2">teamServerID primary team identification</span>
+     <span class="s2">*/</span>
+    <span class="s0">public void </span><span class="s1">savePrimaryTeamBIT(String teamServerID) {</span>
+        <span class="s1">editor.putInt(cSharedPreference.KEY_PRIMARY_TEAM_BIT, Integer.parseInt(teamServerID));</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* This sets secondary teams bits of the loggedIn user and saves it.</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s4">@param </span><span class="s2">primaryTeamID primary team identification</span>
+     <span class="s2">*/</span>
+    <span class="s0">public void </span><span class="s1">saveSecondaryTeamsBITS(String primaryTeamID) {</span>
+        <span class="s1">DatabaseReference dbUserAccountsRef = database.getReference(cRealtimeHelper.KEY_USERACCOUNTS);</span>
+        <span class="s1">Query userAccountQuery = dbUserAccountsRef.orderByChild(</span><span class="s3">&quot;currentOrganization&quot;</span><span class="s1">).equalTo(</span><span class="s0">true</span><span class="s1">);</span>
+        <span class="s1">userAccountQuery.addListenerForSingleValueEvent(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+                <span class="s1">String accountServerID = snapshot.getKey();</span>
+                <span class="s1">DatabaseReference dbMemberTeamsRef = database.getReference(cRealtimeHelper.KEY_MEMBER_TEAMS);</span>
+                <span class="s1">dbMemberTeamsRef.child(accountServerID).addListenerForSingleValueEvent(</span><span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+                    <span class="s1">@Override</span>
+                    <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+                        <span class="s0">int </span><span class="s1">secondaryTeamBITS = </span><span class="s5">0</span><span class="s1">;</span>
+                        <span class="s0">for </span><span class="s1">(DataSnapshot team : snapshot.getChildren()) {</span>
+                            <span class="s1">String teamID = team.getValue(String.</span><span class="s0">class</span><span class="s1">);</span>
+                            <span class="s1">secondaryTeamBITS |= Integer.parseInt(teamID);</span>
+                        <span class="s1">}</span>
+                        <span class="s1">editor.putInt(cSharedPreference.KEY_SECONDARY_TEAM_BITS, secondaryTeamBITS);</span>
+                    <span class="s1">}</span>
+
+                    <span class="s1">@Override</span>
+                    <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+
+                    <span class="s1">}</span>
+                <span class="s1">});</span>
+            <span class="s1">}</span>
+
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+
+            <span class="s1">}</span>
+        <span class="s1">});</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">savePrivilegeBITS() {</span>
+        <span class="s1">FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();</span>
+        <span class="s1">DatabaseReference dbUserAccountTeamsRef;</span>
+        <span class="s1">dbUserAccountTeamsRef = database.getReference(cRealtimeHelper.KEY_MEMBER_TEAMS);</span>
+        <span class="s1">dbUserAccountTeamsRef.child(firebaseUser.getUid()).addListenerForSingleValueEvent(</span>
+                <span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+                    <span class="s1">@Override</span>
+                    <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+                        <span class="s0">for </span><span class="s1">(DataSnapshot team : snapshot.getChildren()) {</span>
+                            <span class="s1">String teamID = team.getValue(String.</span><span class="s0">class</span><span class="s1">);</span>
+
+                            <span class="s1">DatabaseReference dbTeamRolesRef;</span>
+                            <span class="s1">dbTeamRolesRef = database.getReference(cRealtimeHelper.KEY_TEAM_ROLES);</span>
+                            <span class="s1">dbTeamRolesRef.child(teamID).addListenerForSingleValueEvent(</span>
+                                    <span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+                                        <span class="s1">@Override</span>
+                                        <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+                                            <span class="s0">for </span><span class="s1">(DataSnapshot role : snapshot.getChildren()) {</span>
+                                                <span class="s1">String roleID = role.getValue(String.</span><span class="s0">class</span><span class="s1">);</span>
+
+                                                <span class="s1">DatabaseReference dbRolePrivilegesRef;</span>
+                                                <span class="s1">dbRolePrivilegesRef = database.getReference(cRealtimeHelper.KEY_ROLE_PRIVILEGES);</span>
+                                                <span class="s1">dbRolePrivilegesRef.child(roleID).addListenerForSingleValueEvent(</span>
+                                                        <span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+                                                            <span class="s1">@Override</span>
+                                                            <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+                                                                <span class="s0">for </span><span class="s1">(DataSnapshot privilege : snapshot.getChildren()) {</span>
+                                                                    <span class="s1">String privilegeID = privilege.getValue(String.</span><span class="s0">class</span><span class="s1">);</span>
+
+                                                                    <span class="s1">StringBuilder entityModuleKey, entityOperationKey, entityStatusKey;</span>
+                                                                    <span class="s1">entityModuleKey = </span><span class="s0">new </span><span class="s1">StringBuilder(cSharedPreference.KEY_ENTITY_MODULE_BITS);</span>
+                                                                    <span class="s1">entityOperationKey = </span><span class="s0">new </span><span class="s1">StringBuilder(cSharedPreference.KEY_ENTITY_OPERATION_BITS);</span>
+                                                                    <span class="s1">entityStatusKey = </span><span class="s0">new </span><span class="s1">StringBuilder(cSharedPreference.KEY_OPERATION_STATUS_BITS);</span>
+
+                                                                    <span class="s2">/* save permissions - for table access control */</span>
+                                                                    <span class="s1">DatabaseReference dbPrivilegePermissionsRef;</span>
+                                                                    <span class="s1">dbPrivilegePermissionsRef = database.getReference(cRealtimeHelper.KEY_PRIVILEGE_PERMISSIONS);</span>
+                                                                    <span class="s1">dbPrivilegePermissionsRef.child(privilegeID).addListenerForSingleValueEvent(</span>
+                                                                            <span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+                                                                                <span class="s1">@Override</span>
+                                                                                <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+                                                                                    <span class="s0">for </span><span class="s1">(DataSnapshot module : snapshot.getChildren()) {</span>
+                                                                                        <span class="s1">String moduleID = module.getKey();</span>
+
+                                                                                        <span class="s0">int </span><span class="s1">entityBITS = </span><span class="s5">0</span><span class="s1">;</span>
+                                                                                        <span class="s0">for </span><span class="s1">(DataSnapshot entity : module.getChildren()) {</span>
+                                                                                            <span class="s1">String entityID = entity.getKey();</span>
+                                                                                            <span class="s0">int </span><span class="s1">operationBITS = </span><span class="s5">0</span><span class="s1">;</span>
+                                                                                            <span class="s0">for </span><span class="s1">(DataSnapshot operation : entity.getChildren()) {</span>
+                                                                                                <span class="s2">/* save status bits for each operation in the entity */</span>
+                                                                                                <span class="s1">entityStatusKey.append(</span><span class="s3">&quot;-&quot;</span><span class="s1">);</span>
+                                                                                                <span class="s1">entityStatusKey.append(operation.getKey());</span>
+                                                                                                <span class="s1">editor.putInt(String.valueOf(entityStatusKey), operation.getValue(Integer.</span><span class="s0">class</span><span class="s1">));</span>
+                                                                                                <span class="s2">/* calculate operation bits for the entity */</span>
+                                                                                                <span class="s1">operationBITS |= Integer.parseInt(operation.getKey());</span>
+                                                                                            <span class="s1">}</span>
+                                                                                            <span class="s2">/* save operation bits for the entity */</span>
+                                                                                            <span class="s1">entityOperationKey.append(</span><span class="s3">&quot;-&quot;</span><span class="s1">);</span>
+                                                                                            <span class="s1">entityOperationKey.append(entityID);</span>
+                                                                                            <span class="s1">editor.putInt(String.valueOf(entityOperationKey), operationBITS);</span>
+                                                                                            <span class="s2">/* calculate entity bits for the module */</span>
+                                                                                            <span class="s1">entityBITS |= Integer.parseInt(entity.getKey());</span>
+                                                                                        <span class="s1">}</span>
+                                                                                        <span class="s2">/* save entity bits for the module */</span>
+                                                                                        <span class="s1">entityModuleKey.append(</span><span class="s3">&quot;-&quot;</span><span class="s1">);</span>
+                                                                                        <span class="s1">entityModuleKey.append(moduleID);</span>
+                                                                                        <span class="s1">editor.putInt(String.valueOf(entityModuleKey), entityBITS);</span>
+                                                                                    <span class="s1">}</span>
+                                                                                <span class="s1">}</span>
+
+                                                                                <span class="s1">@Override</span>
+                                                                                <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+
+                                                                                <span class="s1">}</span>
+                                                                            <span class="s1">});</span>
+
+                                                                    <span class="s2">/* save unix permissions - for row access control */</span>
+                                                                    <span class="s1">DatabaseReference dbPrivilegeUnixPermissionsRef;</span>
+                                                                    <span class="s1">dbPrivilegeUnixPermissionsRef = database.getReference(cRealtimeHelper.KEY_PRIVILEGE_UNIXPERMS);</span>
+                                                                    <span class="s1">dbPrivilegeUnixPermissionsRef.child(privilegeID).addListenerForSingleValueEvent(</span>
+                                                                            <span class="s0">new </span><span class="s1">ValueEventListener() {</span>
+                                                                                <span class="s1">@Override</span>
+                                                                                <span class="s0">public void </span><span class="s1">onDataChange(@NonNull DataSnapshot snapshot) {</span>
+
+                                                                                <span class="s1">}</span>
+
+                                                                                <span class="s1">@Override</span>
+                                                                                <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+
+                                                                                <span class="s1">}</span>
+                                                                            <span class="s1">});</span>
+
+                                                                <span class="s1">}</span>
+
+                                                            <span class="s1">}</span>
+
+                                                            <span class="s1">@Override</span>
+                                                            <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+
+                                                            <span class="s1">}</span>
+                                                        <span class="s1">});</span>
+
+                                            <span class="s1">}</span>
+                                        <span class="s1">}</span>
+
+                                        <span class="s1">@Override</span>
+                                        <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+
+                                        <span class="s1">}</span>
+                                    <span class="s1">});</span>
+
+                        <span class="s1">}</span>
+                    <span class="s1">}</span>
+
+                    <span class="s1">@Override</span>
+                    <span class="s0">public void </span><span class="s1">onCancelled(@NonNull DatabaseError error) {</span>
+
+                    <span class="s1">}</span>
+                <span class="s1">});</span>
+
+    <span class="s1">}</span>
+
+
+    <span class="s2">/**</span>
+     <span class="s2">* </span><span class="s4">@param </span><span class="s2">permissionModelSet</span>
+     <span class="s2">*/</span>
+    <span class="s0">public void </span><span class="s1">savePermissionBITS(Set&lt;cPermissionModel&gt; permissionModelSet) {</span>
+        <span class="s1">ArrayList&lt;cPermissionModel&gt; perm = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;(permissionModelSet);</span>
+        <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s5">0</span><span class="s1">; i &lt; perm.size(); i++) {</span>
+            <span class="s2">/* save operation BITS for an entity : ENTITY-TYPE-&gt;OPS_BITS*/</span>
+            <span class="s0">int </span><span class="s1">operationBITS = </span><span class="s5">0</span><span class="s1">;</span>
+            <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">j = </span><span class="s5">0</span><span class="s1">; j &lt; perm.size(); j++) {</span>
+                <span class="s0">if </span><span class="s1">(perm.get(i).getEntityServerID() == perm.get(j).getEntityServerID() &amp;&amp;</span>
+                        <span class="s1">(perm.get(i).getEntityTypeServerID() == perm.get(j).getEntityTypeServerID())) {</span>
+                    <span class="s1">operationBITS |= Integer.parseInt(perm.get(j).getOperationServerID());</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+            <span class="s1">StringBuilder opsKey = </span><span class="s0">new </span><span class="s1">StringBuilder(cSharedPreference.KEY_ENTITY_OPERATION_BITS);</span>
+            <span class="s1">opsKey.append(</span><span class="s3">&quot;-&quot;</span><span class="s1">);</span>
+            <span class="s1">opsKey.append(perm.get(i).getEntityServerID());</span>
+            <span class="s1">opsKey.append(</span><span class="s3">&quot;-&quot;</span><span class="s1">);</span>
+            <span class="s1">opsKey.append(perm.get(i).getEntityTypeServerID());</span>
+            <span class="s1">editor.putInt(String.valueOf(opsKey), operationBITS);</span>
+
+            <span class="s2">/* save status BITS for a privilege: ENTITY-TYPE-OPERATION-&gt;STATUS_BITS*/</span>
+            <span class="s1">cStatusSetModel statusSetModel = </span><span class="s0">null</span><span class="s1">;</span><span class="s2">//perm.get(i).getStatusSetModel();</span>
+            <span class="s1">ArrayList&lt;cStatusModel&gt; status = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;(statusSetModel.getStatusModelSet());</span>
+
+            <span class="s0">int </span><span class="s1">statusBITS = </span><span class="s5">0</span><span class="s1">;</span>
+            <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">k = </span><span class="s5">0</span><span class="s1">; k &lt; status.size(); k++) {</span>
+                <span class="s1">statusBITS |= status.get(k).getStatusID();</span>
+            <span class="s1">}</span>
+            <span class="s1">StringBuilder statusKey = </span><span class="s0">new </span><span class="s1">StringBuilder(cSharedPreference.KEY_OPERATION_STATUS_BITS);</span>
+            <span class="s1">statusKey.append(</span><span class="s3">&quot;-&quot;</span><span class="s1">);</span>
+            <span class="s1">statusKey.append(perm.get(i).getEntityServerID());</span>
+            <span class="s1">statusKey.append(</span><span class="s3">&quot;-&quot;</span><span class="s1">);</span>
+            <span class="s1">statusKey.append(perm.get(i).getEntityTypeServerID());</span>
+            <span class="s1">statusKey.append(</span><span class="s3">&quot;-&quot;</span><span class="s1">);</span>
+            <span class="s1">statusKey.append(perm.get(i).getOperationServerID());</span>
+            <span class="s1">editor.putInt(String.valueOf(statusKey), (Integer) statusBITS);</span>
+        <span class="s1">}</span>
+
+        <span class="s2">/* save entity BITS for an entity : ENTITY-TYPE-&gt;BITS */</span>
+        <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s5">0</span><span class="s1">; i &lt; types.length; i++) {</span>
+            <span class="s0">int </span><span class="s1">entityBITS = </span><span class="s5">0</span><span class="s1">;</span>
+            <span class="s0">for </span><span class="s1">(cPermissionModel entityModel : permissionModelSet) {</span>
+                <span class="s0">if </span><span class="s1">(Integer.parseInt(entityModel.getEntityTypeServerID()) == types[i]) {</span>
+                    <span class="s1">entityBITS |= Integer.parseInt(entityModel.getEntityServerID());</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+            <span class="s1">StringBuilder entityKey = </span><span class="s0">null</span><span class="s1">;</span><span class="s2">//new StringBuilder(cSharedPreference.KEY_ENTITY_TYPE_BITS);</span>
+            <span class="s1">entityKey.append(</span><span class="s3">&quot;-&quot;</span><span class="s1">);</span>
+            <span class="s1">entityKey.append(types[i]);</span>
+            <span class="s1">editor.putInt(String.valueOf(entityKey), (Integer) entityBITS);</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+
+    <span class="s2">/**</span>
+     <span class="s2">* This returns user ID of the loggedIn user. If no user, it returns -1.</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s4">@return </span><span class="s2">userID user identification</span>
+     <span class="s2">*/</span>
+    <span class="s0">public </span><span class="s1">String loadUserID() {</span>
+        <span class="s0">return </span><span class="s1">preferences.getString(cSharedPreference.KEY_USER_ID, </span><span class="s0">null</span><span class="s1">);</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* This returns organization ID of the loggedIn user. If no organization,</span>
+     <span class="s2">* it returns null.</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s4">@return </span><span class="s2">organizationID organization identification</span>
+     <span class="s2">*/</span>
+    <span class="s0">public </span><span class="s1">String loadOrganizationID() {</span>
+        <span class="s0">return </span><span class="s1">preferences.getString(cSharedPreference.KEY_ORG_ID, </span><span class="s0">null</span><span class="s1">);</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* This returns a primary role bits of the loggedIn user. If no primary role,</span>
+     <span class="s2">* it returns -1.</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s4">@return </span><span class="s2">primary team bit/identification</span>
+     <span class="s2">*/</span>
+    <span class="s0">public int </span><span class="s1">loadPrimaryTeamBIT() {</span>
+        <span class="s0">return </span><span class="s1">preferences.getInt(cSharedPreference.KEY_PRIMARY_TEAM_BIT, -</span><span class="s5">1</span><span class="s1">);</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* This returns a secondary roles of the loggedIn user. If no secondary roles,</span>
+     <span class="s2">* it returns -1.</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s4">@return </span><span class="s2">secondary teams</span>
+     <span class="s2">*/</span>
+    <span class="s0">public int </span><span class="s1">loadSecondaryTeamBITS() {</span>
+        <span class="s0">return </span><span class="s1">preferences.getInt(cSharedPreference.KEY_SECONDARY_TEAM_BITS, -</span><span class="s5">1</span><span class="s1">);</span>
+    <span class="s1">}</span>
+
+
+    <span class="s0">public void </span><span class="s1">saveDefaultPermsBITS(</span><span class="s0">int </span><span class="s1">bitNumber) {</span>
+        <span class="s1">editor.putInt(cSharedPreference.KEY_PERMS_BITS, bitNumber);</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public int </span><span class="s1">loadDefaultPermsBITS() {</span>
+        <span class="s0">return </span><span class="s1">preferences.getInt(cSharedPreference.KEY_PERMS_BITS, -</span><span class="s5">1</span><span class="s1">);</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">saveDefaultStatusBITS(</span><span class="s0">int </span><span class="s1">bitNumber) {</span>
+        <span class="s1">editor.putInt(cSharedPreference.KEY_STATUS_BITS, bitNumber);</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public int </span><span class="s1">loadDefaultStatusBITS() {</span>
+        <span class="s0">return </span><span class="s1">preferences.getInt(cSharedPreference.KEY_STATUS_BITS, -</span><span class="s5">1</span><span class="s1">);</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* This sets the user model json string of the loggedIn user and saves it.</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s4">@param </span><span class="s2">userModel</span>
+     <span class="s2">*/</span>
+    <span class="s0">public void </span><span class="s1">saveUserProfile(cUserModel userModel) {</span>
+        <span class="s1">String userProfile = gson.toJson(userModel);</span>
+        <span class="s1">editor.putString(cSharedPreference.KEY_USER_PROFILE, userProfile);</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* This returns the json string of the loggedIn user domain. If no user is</span>
+     <span class="s2">* loggedIn it returns null</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s4">@return </span><span class="s2">json string</span>
+     <span class="s2">*/</span>
+    <span class="s0">public </span><span class="s1">String loadUserProfile() {</span>
+        <span class="s0">return </span><span class="s1">preferences.getString(cSharedPreference.KEY_USER_PROFILE, </span><span class="s0">null</span><span class="s1">);</span>
+    <span class="s1">}</span>
+
+
+    <span class="s2">/**</span>
+     <span class="s2">* This returns entity BITS that belong to an entity type.</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s4">@param </span><span class="s2">entityTypeID</span>
+     <span class="s2">* </span><span class="s4">@return</span>
+     <span class="s2">*/</span>
+    <span class="s0">public int </span><span class="s1">loadEntityBITS(</span><span class="s0">long </span><span class="s1">entityTypeID) {</span>
+        <span class="s1">StringBuilder entityTypeKey = </span><span class="s0">new </span><span class="s1">StringBuilder(cSharedPreference.KEY_ENTITY_MODULE_BITS);</span>
+        <span class="s1">entityTypeKey.append(</span><span class="s3">&quot;-&quot;</span><span class="s1">);</span>
+        <span class="s1">entityTypeKey.append(entityTypeID);</span>
+        <span class="s0">return </span><span class="s1">preferences.getInt(String.valueOf(entityTypeKey), </span><span class="s5">0</span><span class="s1">);</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* This returns operation BITS that belong to an entity with the specified</span>
+     <span class="s2">* entityID and entityTypeID.</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s4">@param </span><span class="s2">entityID</span>
+     <span class="s2">* </span><span class="s4">@param </span><span class="s2">entityTypeID</span>
+     <span class="s2">* </span><span class="s4">@return</span>
+     <span class="s2">*/</span>
+    <span class="s0">public int </span><span class="s1">loadOperationBITS(</span><span class="s0">long </span><span class="s1">entityID, </span><span class="s0">long </span><span class="s1">entityTypeID) {</span>
+        <span class="s1">StringBuilder operationKey = </span><span class="s0">new </span><span class="s1">StringBuilder(cSharedPreference.KEY_ENTITY_OPERATION_BITS);</span>
+        <span class="s1">operationKey.append(</span><span class="s3">&quot;-&quot;</span><span class="s1">);</span>
+        <span class="s1">operationKey.append(entityID);</span>
+        <span class="s1">operationKey.append(</span><span class="s3">&quot;-&quot;</span><span class="s1">);</span>
+        <span class="s1">operationKey.append(entityTypeID);</span>
+        <span class="s0">return </span><span class="s1">preferences.getInt(String.valueOf(operationKey), </span><span class="s5">0</span><span class="s1">);</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* This returns status BITS that apply to operations that belong to an permission</span>
+     <span class="s2">* with the specified permissionID</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s4">@param </span><span class="s2">entityID</span>
+     <span class="s2">* </span><span class="s4">@param </span><span class="s2">entityTypeID</span>
+     <span class="s2">* </span><span class="s4">@param </span><span class="s2">operationID</span>
+     <span class="s2">* </span><span class="s4">@return</span>
+     <span class="s2">*/</span>
+    <span class="s0">public int </span><span class="s1">loadStatusBITS(</span><span class="s0">long </span><span class="s1">entityID, </span><span class="s0">long </span><span class="s1">entityTypeID, </span><span class="s0">long </span><span class="s1">operationID) {</span>
+        <span class="s1">StringBuilder statusKey = </span><span class="s0">new </span><span class="s1">StringBuilder(cSharedPreference.KEY_OPERATION_STATUS_BITS);</span>
+        <span class="s1">statusKey.append(</span><span class="s3">&quot;-&quot;</span><span class="s1">);</span>
+        <span class="s1">statusKey.append(entityID);</span>
+        <span class="s1">statusKey.append(</span><span class="s3">&quot;-&quot;</span><span class="s1">);</span>
+        <span class="s1">statusKey.append(entityTypeID);</span>
+        <span class="s1">statusKey.append(</span><span class="s3">&quot;-&quot;</span><span class="s1">);</span>
+        <span class="s1">statusKey.append(operationID);</span>
+        <span class="s0">return </span><span class="s1">preferences.getInt(String.valueOf(statusKey), </span><span class="s5">0</span><span class="s1">);</span>
+    <span class="s1">}</span>
+
+<span class="s2">//    @Override</span>
+<span class="s2">//    public void saveStatusSet(Set&lt;cStatusModel&gt; statusModelSet) {</span>
+<span class="s2">//        String statusSet = gson.toJson(statusModelSet);</span>
+<span class="s2">//        editor.putString(cSharedPreference.KEY_STATUS_SET, statusSet);</span>
+<span class="s2">//    }</span>
+<span class="s2">//</span>
+<span class="s2">//    @Override</span>
+<span class="s2">//    public void saveRoleSet(Set&lt;cRoleModel&gt; roleModelSet) {</span>
+<span class="s2">//        String roleSet = gson.toJson(roleModelSet);</span>
+<span class="s2">//        editor.putString(cSharedPreference.KEY_ROLE_SET, roleSet);</span>
+<span class="s2">//    }</span>
+<span class="s2">//</span>
+<span class="s2">//    @Override</span>
+<span class="s2">//    public Set loadStatusSet() {</span>
+<span class="s2">//        String statusString = preferences.getString(cSharedPreference.KEY_STATUS_SET,&quot;&quot;);</span>
+<span class="s2">//</span>
+<span class="s2">//        Set&lt;cStatusModel&gt; statusModelSet = gson.fromJson(statusString,</span>
+<span class="s2">//                new TypeToken&lt;Set&lt;cStatusModel&gt;&gt;(){}.getType());</span>
+<span class="s2">//</span>
+<span class="s2">//        return statusModelSet;</span>
+<span class="s2">//    }</span>
+<span class="s2">//</span>
+<span class="s2">//    @Override</span>
+<span class="s2">//    public Set loadRoleSet() {</span>
+<span class="s2">//        String roleString = preferences.getString(cSharedPreference.KEY_ROLE_SET,&quot;&quot;);</span>
+<span class="s2">//</span>
+<span class="s2">//        Set&lt;cRoleModel&gt; statusModelSet = gson.fromJson(roleString,</span>
+<span class="s2">//                new TypeToken&lt;Set&lt;cRoleModel&gt;&gt;(){}.getType());</span>
+<span class="s2">//</span>
+<span class="s2">//        return statusModelSet;</span>
+<span class="s2">//    }</span>
+<span class="s2">//</span>
+<span class="s2">//    @Override</span>
+<span class="s2">//    public void saveIndividualOwners(Set&lt;cUserModel&gt; userModels) {</span>
+<span class="s2">//        String userSet = gson.toJson(userModels);</span>
+<span class="s2">//        editor.putString(cSharedPreference.KEY_INDIVIDUAL_OWNER_SET, userSet);</span>
+<span class="s2">//    }</span>
+<span class="s2">//</span>
+<span class="s2">//    @Override</span>
+<span class="s2">//    public void saveOrganizationOwners(Set&lt;cOrganizationModel&gt; organizationModels) {</span>
+<span class="s2">//        String organizationSet = gson.toJson(organizationModels);</span>
+<span class="s2">//        editor.putString(cSharedPreference.KEY_ORGANIZATION_OWNER_SET, organizationSet);</span>
+<span class="s2">//    }</span>
+<span class="s2">//</span>
+<span class="s2">//    @Override</span>
+<span class="s2">//    public Set loadIndividualOwners() {</span>
+<span class="s2">//        String ownerString = preferences.getString(</span>
+<span class="s2">//                cSharedPreference.KEY_INDIVIDUAL_OWNER_SET,&quot;&quot;);</span>
+<span class="s2">//</span>
+<span class="s2">//        Set&lt;cUserModel&gt; userModels = gson.fromJson(ownerString,</span>
+<span class="s2">//                new TypeToken&lt;Set&lt;cUserModel&gt;&gt;(){}.getType());</span>
+<span class="s2">//</span>
+<span class="s2">//        return userModels;</span>
+<span class="s2">//    }</span>
+<span class="s2">//</span>
+<span class="s2">//    @Override</span>
+<span class="s2">//    public Set loadOrganizationOwners() {</span>
+<span class="s2">//        String organizationString = preferences.getString(</span>
+<span class="s2">//                cSharedPreference.KEY_ORGANIZATION_OWNER_SET,&quot;&quot;);</span>
+<span class="s2">//</span>
+<span class="s2">//        Set&lt;cOrganizationModel&gt; organizationModels = gson.fromJson(organizationString,</span>
+<span class="s2">//                new TypeToken&lt;Set&lt;cOrganizationModel&gt;&gt;(){}.getType());</span>
+<span class="s2">//</span>
+<span class="s2">//        return organizationModels;</span>
+<span class="s2">//    }</span>
+
+    <span class="s2">/* ###################### FUNCTIONS FOR CRUD AND LOG IN/OUT OPERATIONS ###################### */</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* This saves the preference of the loggedIn user. Should be called</span>
+     <span class="s2">* after every preference setting function.</span>
+     <span class="s2">*/</span>
+    <span class="s0">public void </span><span class="s1">commitSettings() {</span>
+        <span class="s1">editor.commit();</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* This deletes all the saved settings of the loggedIn user.</span>
+     <span class="s2">*/</span>
+    <span class="s0">public void </span><span class="s1">deleteSettings() {</span>
+        <span class="s1">editor.clear();</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* This takes a key parameter and removes the corresponding preference.</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s4">@param </span><span class="s2">key</span>
+     <span class="s2">*/</span>
+    <span class="s0">public void </span><span class="s1">removeSetting(String key) {</span>
+        <span class="s1">editor.remove(key);</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* This takes the key and value parameters of an integer setting and</span>
+     <span class="s2">* updates the corresponding preference.</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s4">@param </span><span class="s2">key</span>
+     <span class="s2">* </span><span class="s4">@param </span><span class="s2">value</span>
+     <span class="s2">*/</span>
+    <span class="s0">public void </span><span class="s1">updateIntSetting(String key, </span><span class="s0">int </span><span class="s1">value) {</span>
+        <span class="s1">editor.putInt(key, value);</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* This takes the key and value parameters of an string setting and</span>
+     <span class="s2">* updates the corresponding preference.</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s4">@param </span><span class="s2">key</span>
+     <span class="s2">* </span><span class="s4">@param </span><span class="s2">value</span>
+     <span class="s2">*/</span>
+    <span class="s0">public void </span><span class="s1">updateStringSetting(String key, String value) {</span>
+        <span class="s1">editor.putString(key, value);</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* This takes the key and value parameters of an boolean setting and</span>
+     <span class="s2">* updates the corresponding preference.</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s4">@param </span><span class="s2">key</span>
+     <span class="s2">* </span><span class="s4">@param </span><span class="s2">value</span>
+     <span class="s2">*/</span>
+    <span class="s0">public void </span><span class="s1">updateBooleanSetting(String key, Boolean value) {</span>
+        <span class="s1">editor.putBoolean(key, value);</span>
+    <span class="s1">}</span>
+
+
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

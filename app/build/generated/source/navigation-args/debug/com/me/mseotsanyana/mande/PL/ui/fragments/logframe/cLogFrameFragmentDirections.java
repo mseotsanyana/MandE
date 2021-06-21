@@ -89,11 +89,13 @@ public class cLogFrameFragmentDirections {
   public static class ActionCLogFrameFragmentToCImpactFragment implements NavDirections {
     private final HashMap arguments = new HashMap();
 
+    @SuppressWarnings("unchecked")
     private ActionCLogFrameFragmentToCImpactFragment(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
     }
 
     @NonNull
+    @SuppressWarnings("unchecked")
     public ActionCLogFrameFragmentToCImpactFragment setLogFrameID(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
       return this;
@@ -161,11 +163,13 @@ public class cLogFrameFragmentDirections {
   public static class ActionCLogFrameFragmentToCOutcomeFragment implements NavDirections {
     private final HashMap arguments = new HashMap();
 
+    @SuppressWarnings("unchecked")
     private ActionCLogFrameFragmentToCOutcomeFragment(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
     }
 
     @NonNull
+    @SuppressWarnings("unchecked")
     public ActionCLogFrameFragmentToCOutcomeFragment setLogFrameID(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
       return this;
@@ -233,11 +237,13 @@ public class cLogFrameFragmentDirections {
   public static class ActionCLogFrameFragmentToCOutputFragment implements NavDirections {
     private final HashMap arguments = new HashMap();
 
+    @SuppressWarnings("unchecked")
     private ActionCLogFrameFragmentToCOutputFragment(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
     }
 
     @NonNull
+    @SuppressWarnings("unchecked")
     public ActionCLogFrameFragmentToCOutputFragment setLogFrameID(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
       return this;
@@ -305,11 +311,13 @@ public class cLogFrameFragmentDirections {
   public static class ActionCLogFrameFragmentToCInputFragment implements NavDirections {
     private final HashMap arguments = new HashMap();
 
+    @SuppressWarnings("unchecked")
     private ActionCLogFrameFragmentToCInputFragment(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
     }
 
     @NonNull
+    @SuppressWarnings("unchecked")
     public ActionCLogFrameFragmentToCInputFragment setLogFrameID(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
       return this;
@@ -377,11 +385,13 @@ public class cLogFrameFragmentDirections {
   public static class ActionCLogFrameFragmentToCEvaluationFragment implements NavDirections {
     private final HashMap arguments = new HashMap();
 
+    @SuppressWarnings("unchecked")
     private ActionCLogFrameFragmentToCEvaluationFragment(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
     }
 
     @NonNull
+    @SuppressWarnings("unchecked")
     public ActionCLogFrameFragmentToCEvaluationFragment setLogFrameID(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
       return this;
@@ -449,11 +459,13 @@ public class cLogFrameFragmentDirections {
   public static class ActionCLogFrameFragmentToCActivityFragment implements NavDirections {
     private final HashMap arguments = new HashMap();
 
+    @SuppressWarnings("unchecked")
     private ActionCLogFrameFragmentToCActivityFragment(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
     }
 
     @NonNull
+    @SuppressWarnings("unchecked")
     public ActionCLogFrameFragmentToCActivityFragment setLogFrameID(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
       return this;
@@ -521,11 +533,13 @@ public class cLogFrameFragmentDirections {
   public static class ActionCLogFrameFragmentToCQuestionFragment implements NavDirections {
     private final HashMap arguments = new HashMap();
 
+    @SuppressWarnings("unchecked")
     private ActionCLogFrameFragmentToCQuestionFragment(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
     }
 
     @NonNull
+    @SuppressWarnings("unchecked")
     public ActionCLogFrameFragmentToCQuestionFragment setLogFrameID(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
       return this;
@@ -593,11 +607,13 @@ public class cLogFrameFragmentDirections {
   public static class ActionCLogFrameFragmentToCIndicatorFragment implements NavDirections {
     private final HashMap arguments = new HashMap();
 
+    @SuppressWarnings("unchecked")
     private ActionCLogFrameFragmentToCIndicatorFragment(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
     }
 
     @NonNull
+    @SuppressWarnings("unchecked")
     public ActionCLogFrameFragmentToCIndicatorFragment setLogFrameID(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
       return this;
@@ -665,11 +681,13 @@ public class cLogFrameFragmentDirections {
   public static class ActionCLogFrameFragmentToCRaidLogFragment implements NavDirections {
     private final HashMap arguments = new HashMap();
 
+    @SuppressWarnings("unchecked")
     private ActionCLogFrameFragmentToCRaidLogFragment(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
     }
 
     @NonNull
+    @SuppressWarnings("unchecked")
     public ActionCLogFrameFragmentToCRaidLogFragment setLogFrameID(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
       return this;
@@ -737,11 +755,13 @@ public class cLogFrameFragmentDirections {
   public static class ActionCLogFrameFragmentToCAWPBFragment implements NavDirections {
     private final HashMap arguments = new HashMap();
 
+    @SuppressWarnings("unchecked")
     private ActionCLogFrameFragmentToCAWPBFragment(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
     }
 
     @NonNull
+    @SuppressWarnings("unchecked")
     public ActionCLogFrameFragmentToCAWPBFragment setLogFrameID(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
       return this;
@@ -809,11 +829,13 @@ public class cLogFrameFragmentDirections {
   public static class ActionCLogFrameFragmentToCBookKeepingFragment implements NavDirections {
     private final HashMap arguments = new HashMap();
 
+    @SuppressWarnings("unchecked")
     private ActionCLogFrameFragmentToCBookKeepingFragment(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
     }
 
     @NonNull
+    @SuppressWarnings("unchecked")
     public ActionCLogFrameFragmentToCBookKeepingFragment setLogFrameID(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
       return this;
@@ -881,11 +903,13 @@ public class cLogFrameFragmentDirections {
   public static class ActionCLogFrameFragmentToCMonitoringFragment implements NavDirections {
     private final HashMap arguments = new HashMap();
 
+    @SuppressWarnings("unchecked")
     private ActionCLogFrameFragmentToCMonitoringFragment(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
     }
 
     @NonNull
+    @SuppressWarnings("unchecked")
     public ActionCLogFrameFragmentToCMonitoringFragment setLogFrameID(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
       return this;

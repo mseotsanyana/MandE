@@ -4,7 +4,7 @@ import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserSignOutInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.session.user.iUserSignOutInteractor;
-import com.me.mseotsanyana.mande.BLL.repository.session.iUserRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iUserProfileRepository;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.session.iUserSignOutPresenter;
 
@@ -13,14 +13,14 @@ public class cUserSignOutPresenterImpl extends cAbstractPresenter implements iUs
     private static String TAG = cUserSignOutPresenterImpl.class.getSimpleName();
 
     private View view;
-    private iUserRepository userRepository;
+    private iUserProfileRepository userProfileRepository;
 
     public cUserSignOutPresenterImpl(iExecutor executor, iMainThread mainThread,
-                                     View view, iUserRepository userRepository) {
+                                     View view, iUserProfileRepository userProfileRepository) {
         super(executor, mainThread);
 
         this.view = view;
-        this.userRepository = userRepository;
+        this.userProfileRepository = userProfileRepository;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class cUserSignOutPresenterImpl extends cAbstractPresenter implements iUs
         iUserSignOutInteractor userSignOutInteractor = new cUserSignOutInteractorImpl(
                 executor,
                 mainThread,
-                userRepository,
+                userProfileRepository,
                 this);
 
         view.showProgress();

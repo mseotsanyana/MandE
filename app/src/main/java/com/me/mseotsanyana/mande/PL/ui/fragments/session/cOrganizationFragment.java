@@ -22,7 +22,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
 import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.firebase.session.cOrganizationFirebaseRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cOrganizationFirestoreRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cSharedPreferenceFirestoreRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.realtime.session.cOrganizationFirebaseRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cSessionManagerImpl;
 import com.me.mseotsanyana.mande.PL.presenters.session.Impl.cOrganizationPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.session.iOrganizationPresenter;
@@ -103,8 +105,8 @@ public class cOrganizationFragment extends Fragment implements iOrganizationPres
                 cThreadExecutorImpl.getInstance(),
                 cMainThreadImpl.getInstance(),
                 this,
-                new cSessionManagerImpl(getContext()),
-                new cOrganizationFirebaseRepositoryImpl(getContext()));
+                new cSharedPreferenceFirestoreRepositoryImpl(getContext()),
+                new cOrganizationFirestoreRepositoryImpl(getContext()));
 
 
         //activity = ((AppCompatActivity) getActivity());
@@ -142,9 +144,6 @@ public class cOrganizationFragment extends Fragment implements iOrganizationPres
     public void onReadOrganizationsSucceeded(ArrayList<cOrganizationModel> organizationModels) {
         this.organizationAdapter.setOrganizationModels(organizationModels);
         this.organizationAdapter.notifyDataSetChanged();
-
-        Gson gson = new Gson();
-        Log.d(TAG, "===================== "+gson.toJson(organizationModels));
     }
 
     // CREATE

@@ -1,6 +1,9 @@
 package com.me.mseotsanyana.mande.BLL.model.session;
 
+import com.google.firebase.firestore.Exclude;
+
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -13,13 +16,14 @@ public class cPrivilegeModel {
     private String ownerID;
     private String orgOwnerID;
     private int teamOwnerBIT;
-    private int unixpermsBITS;
+    private List<Integer> unixpermsBITS;
     private int statusesBITS;
 
     private String name;
     private String description;
     private Date createdDate;
     private Date modifiedDate;
+
     private Date syncedDate;
 
     public cPrivilegeModel(){}
@@ -38,6 +42,7 @@ public class cPrivilegeModel {
         this.setSyncedDate(operationModel.getSyncedDate());
     }
 
+    @Exclude
     public String getPrivilegeServerID() {
         return privilegeServerID;
     }
@@ -70,11 +75,11 @@ public class cPrivilegeModel {
         this.teamOwnerBIT = teamOwnerBIT;
     }
 
-    public int getUnixpermsBITS() {
+    public List<Integer> getUnixpermsBITS() {
         return unixpermsBITS;
     }
 
-    public void setUnixpermsBITS(int unixpermsBITS) {
+    public void setUnixpermsBITS(List<Integer> unixpermsBITS) {
         this.unixpermsBITS = unixpermsBITS;
     }
 
@@ -118,6 +123,7 @@ public class cPrivilegeModel {
         this.modifiedDate = modifiedDate;
     }
 
+    @Exclude
     public Date getSyncedDate() {
         return syncedDate;
     }

@@ -72,11 +72,11 @@ public class cOrganizationAdapter extends RecyclerView.Adapter<cOrganizationAdap
         OH.textViewOrganizationIcon.setTypeface(
                 cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
 
-        if (organizationModel.getOrgType() == 0) {
+        if (organizationModel.getOrganizationType() == 0) {
             OH.textViewOrganizationIcon.setTextColor(Color.RED);
-        } else if (organizationModel.getOrgType() == 1) {
+        } else if (organizationModel.getOrganizationType() == 1) {
             OH.textViewOrganizationIcon.setTextColor(Color.GREEN);
-        } else if (organizationModel.getOrgType() == 2) {
+        } else if (organizationModel.getOrganizationType() == 2) {
             OH.textViewOrganizationIcon.setTextColor(Color.BLUE);
         } else {
             OH.textViewOrganizationIcon.setTextColor(Color.MAGENTA);

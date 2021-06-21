@@ -415,6 +415,7 @@ public class cMenuRepositoryImpl implements iMenuRepository {
 
     @Override
     public void getMenuModels(long userID, int primaryRole, int secondaryRoles, int statusBITS,
+                              String organizationID, String currentUserID,
                               iReadMenuModelSetCallback callback) {
 
     }

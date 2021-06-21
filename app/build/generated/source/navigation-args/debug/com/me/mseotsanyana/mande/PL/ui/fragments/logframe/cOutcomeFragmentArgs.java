@@ -16,6 +16,7 @@ public class cOutcomeFragmentArgs implements NavArgs {
   private cOutcomeFragmentArgs() {
   }
 
+  @SuppressWarnings("unchecked")
   private cOutcomeFragmentArgs(HashMap argumentsMap) {
     this.arguments.putAll(argumentsMap);
   }
@@ -86,10 +87,12 @@ public class cOutcomeFragmentArgs implements NavArgs {
   public static class Builder {
     private final HashMap arguments = new HashMap();
 
+    @SuppressWarnings("unchecked")
     public Builder(cOutcomeFragmentArgs original) {
       this.arguments.putAll(original.arguments);
     }
 
+    @SuppressWarnings("unchecked")
     public Builder(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
     }
@@ -101,6 +104,7 @@ public class cOutcomeFragmentArgs implements NavArgs {
     }
 
     @NonNull
+    @SuppressWarnings("unchecked")
     public Builder setLogFrameID(long logFrameID) {
       this.arguments.put("logFrameID", logFrameID);
       return this;

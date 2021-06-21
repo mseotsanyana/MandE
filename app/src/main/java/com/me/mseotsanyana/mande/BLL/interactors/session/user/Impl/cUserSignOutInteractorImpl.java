@@ -4,24 +4,25 @@ import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.session.user.iUserSignOutInteractor;
+import com.me.mseotsanyana.mande.BLL.repository.session.iUserProfileRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iUserRepository;
 
 public class cUserSignOutInteractorImpl extends cAbstractInteractor implements iUserSignOutInteractor {
     private static String TAG = cUserSignOutInteractorImpl.class.getSimpleName();
 
     private final Callback callback;
-    private final iUserRepository userRepository;
+    private final iUserProfileRepository userProfileRepository;
 
     public cUserSignOutInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,
-                                      iUserRepository userRepository,
+                                      iUserProfileRepository userProfileRepository,
                                       Callback callback) {
         super(threadExecutor, mainThread);
 
-        if (userRepository == null || callback == null) {
+        if (userProfileRepository == null || callback == null) {
             throw new IllegalArgumentException("Arguments can not be null!");
         }
 
-        this.userRepository = userRepository;
+        this.userProfileRepository = userProfileRepository;
         this.callback = callback;
     }
 
@@ -48,7 +49,7 @@ public class cUserSignOutInteractorImpl extends cAbstractInteractor implements i
     /* sign up a new user */
     @Override
     public void run() {
-        this.userRepository.signOutWithEmailAndPassword(new iUserRepository.iSignOutRepositoryCallback() {
+        this.userProfileRepository.signOutWithEmailAndPassword(new iUserProfileRepository.iSignOutRepositoryCallback() {
             /* logged user successfully sign out with firebase */
             @Override
             public void onSignOutSucceeded(String msg) {

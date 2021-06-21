@@ -2,26 +2,27 @@ package com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
-import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
+import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.BLL.model.session.cPermissionModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cRoleModel;
-import com.me.mseotsanyana.mande.BLL.model.session.cStatusModel;
-import com.me.mseotsanyana.mande.BLL.model.session.cStatusSetModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
 import com.me.mseotsanyana.mande.DAL.storage.preference.cSharedPreference;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
 
 import static com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise.types;
 
-public class cSessionManagerImpl implements iSessionManagerRepository {
+public class cSessionManagerImpl implements iSharedPreferenceRepository {
     private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
     private static String TAG = cSessionManagerImpl.class.getSimpleName();
 
@@ -64,8 +65,14 @@ public class cSessionManagerImpl implements iSessionManagerRepository {
      *
      * @return userID
      */
-    public long loadUserID() {
-        return preferences.getLong(cSharedPreference.KEY_USER_ID, -1);
+    //public long loadUserID() {
+    //    return preferences.getLong(cSharedPreference.KEY_USER_ID, -1);
+    //}
+
+
+    @Override
+    public String loadUserID() {
+        return null;
     }
 
     /**
@@ -77,30 +84,40 @@ public class cSessionManagerImpl implements iSessionManagerRepository {
         editor.putLong(cSharedPreference.KEY_ORG_ID, organizationID);
     }
 
+
+    @Override
+    public String loadOrganizationID() {
+        return null;
+    }
+
     /**
      * This returns organization ID of the loggedIn user. If no organization,
      * it returns -1.
      *
      * @return organizationID
      */
-    public long loadOrganizationID() {
-        return preferences.getLong(cSharedPreference.KEY_ORG_ID, -1);
-    }
+//    public long loadOrganizationID() {
+//        return preferences.getLong(cSharedPreference.KEY_ORG_ID, -1);
+//    }
+
+
 
     public void saveDefaultPermsBITS(int bitNumber) {
-        editor.putInt(cSharedPreference.KEY_PERMS_BITS, bitNumber);
+        //editor.putInt(cSharedPreference.KEY_PERMS_BITS, bitNumber);
     }
 
     public int loadDefaultPermsBITS() {
-        return preferences.getInt(cSharedPreference.KEY_PERMS_BITS, -1);
+        //return preferences.getInt(cSharedPreference.KEY_PERMS_BITS, -1);
+        return 0;
     }
 
     public void saveDefaultStatusBITS(int bitNumber) {
-        editor.putInt(cSharedPreference.KEY_STATUS_BITS, bitNumber);
+        //editor.putInt(cSharedPreference.KEY_STATUS_BITS, bitNumber);
     }
 
     public int loadDefaultStatusBITS() {
-        return preferences.getInt(cSharedPreference.KEY_STATUS_BITS, -1);
+        //return preferences.getInt(cSharedPreference.KEY_STATUS_BITS, -1);
+        return 0;
     }
 
     /**
@@ -136,7 +153,7 @@ public class cSessionManagerImpl implements iSessionManagerRepository {
                 break;
             }*/
         }
-        StringBuilder key = new StringBuilder(cSharedPreference.KEY_PRIMARY_ROLE_BITS);
+        StringBuilder key = new StringBuilder(cSharedPreference.KEY_PRIMARY_TEAM_BIT);
         editor.putInt(String.valueOf(key), primaryRoleBITS);
     }
 
@@ -147,7 +164,7 @@ public class cSessionManagerImpl implements iSessionManagerRepository {
      * @return
      */
     public int loadPrimaryRoleBITS() {
-        StringBuilder key = new StringBuilder(cSharedPreference.KEY_PRIMARY_ROLE_BITS);
+        StringBuilder key = new StringBuilder(cSharedPreference.KEY_PRIMARY_TEAM_BIT);
         return preferences.getInt(String.valueOf(key), -1);
     }
 
@@ -163,7 +180,7 @@ public class cSessionManagerImpl implements iSessionManagerRepository {
                 secondaryRoleBITS |= model.getRoleID();
             }*/
         }
-        StringBuilder key = new StringBuilder(cSharedPreference.KEY_SECONDARY_ROLE_BITS);
+        StringBuilder key = new StringBuilder(cSharedPreference.KEY_SECONDARY_TEAM_BITS);
         editor.putInt(String.valueOf(key), secondaryRoleBITS);
     }
 
@@ -174,7 +191,7 @@ public class cSessionManagerImpl implements iSessionManagerRepository {
      * @return
      */
     public int loadSecondaryRoleBITS() {
-        StringBuilder key = new StringBuilder(cSharedPreference.KEY_SECONDARY_ROLE_BITS);
+        StringBuilder key = new StringBuilder(cSharedPreference.KEY_SECONDARY_TEAM_BITS);
         return preferences.getInt(String.valueOf(key), -1);
     }
 
@@ -183,49 +200,49 @@ public class cSessionManagerImpl implements iSessionManagerRepository {
      */
     public void savePermissionBITS(Set<cPermissionModel> permissionModelSet) {
         ArrayList<cPermissionModel> perm = new ArrayList<>(permissionModelSet);
-        for (int i = 0; i < perm.size(); i++) {
-            /* save operation BITS for an entity : ENTITY-TYPE->OPS_BITS*/
-            int operationBITS = 0;
-            for (int j = 0; j < perm.size(); j++) {
-                if (perm.get(i).getEntityID() == perm.get(j).getEntityID() &&
-                        (perm.get(i).getEntityTypeID() == perm.get(j).getEntityTypeID())) {
-                    operationBITS |= perm.get(j).getOperationID();
-                }
-            }
-            StringBuilder opsKey = new StringBuilder(cSharedPreference.KEY_ENTITY_OPERATION_BITS);
-            opsKey.append("-");
-            opsKey.append(perm.get(i).getEntityID());
-            opsKey.append("-");
-            opsKey.append(perm.get(i).getEntityTypeID());
-            editor.putInt(String.valueOf(opsKey), operationBITS);
-
-            /* save status BITS for a privilege: ENTITY-TYPE-OPERATION->STATUS_BITS*/
-            cStatusSetModel statusSetModel = perm.get(i).getStatusSetModel();
-            ArrayList<cStatusModel> status = new ArrayList<>(statusSetModel.getStatusModelSet());
-
-            int statusBITS =0;
-            for (int k = 0; k < status.size(); k++) {
-                statusBITS |= status.get(k).getStatusID();
-            }
-            StringBuilder statusKey = new StringBuilder(cSharedPreference.KEY_OPERATION_STATUS_BITS);
-            statusKey.append("-");
-            statusKey.append(perm.get(i).getEntityID());
-            statusKey.append("-");
-            statusKey.append(perm.get(i).getEntityTypeID());
-            statusKey.append("-");
-            statusKey.append(perm.get(i).getOperationID());
-            editor.putInt(String.valueOf(statusKey), (Integer) statusBITS);
-        }
+//        for (int i = 0; i < perm.size(); i++) {
+//            /* save operation BITS for an entity : ENTITY-TYPE->OPS_BITS*/
+//            int operationBITS = 0;
+//            for (int j = 0; j < perm.size(); j++) {
+//                if (perm.get(i).getEntityID() == perm.get(j).getEntityID() &&
+//                        (perm.get(i).getEntityTypeID() == perm.get(j).getEntityTypeID())) {
+//                    operationBITS |= perm.get(j).getOperationID();
+//                }
+//            }
+//            StringBuilder opsKey = new StringBuilder(cSharedPreference.KEY_ENTITY_OPERATION_BITS);
+//            opsKey.append("-");
+//            opsKey.append(perm.get(i).getEntityID());
+//            opsKey.append("-");
+//            opsKey.append(perm.get(i).getEntityTypeID());
+//            editor.putInt(String.valueOf(opsKey), operationBITS);
+//
+//            /* save status BITS for a privilege: ENTITY-TYPE-OPERATION->STATUS_BITS*/
+//            cStatusSetModel statusSetModel = perm.get(i).getStatusSetModel();
+//            ArrayList<cStatusModel> status = new ArrayList<>(statusSetModel.getStatusModelSet());
+//
+//            int statusBITS =0;
+//            for (int k = 0; k < status.size(); k++) {
+//                statusBITS |= status.get(k).getStatusID();
+//            }
+//            StringBuilder statusKey = new StringBuilder(cSharedPreference.KEY_OPERATION_STATUS_BITS);
+//            statusKey.append("-");
+//            statusKey.append(perm.get(i).getEntityID());
+//            statusKey.append("-");
+//            statusKey.append(perm.get(i).getEntityTypeID());
+//            statusKey.append("-");
+//            statusKey.append(perm.get(i).getOperationID());
+//            editor.putInt(String.valueOf(statusKey), (Integer) statusBITS);
+//        }
 
         /* save entity BITS for an entity : ENTITY-TYPE->BITS */
         for (int i = 0; i < types.length; i++) {
             int entityBITS = 0;
             for (cPermissionModel entityModel : permissionModelSet) {
-                if (entityModel.getEntityTypeID() == types[i]) {
-                    entityBITS |= entityModel.getEntityID();
-                }
+//                if (entityModel.getEntityTypeID() == types[i]) {
+//                    entityBITS |= entityModel.getEntityID();
+//                }
             }
-            StringBuilder entityKey = new StringBuilder(cSharedPreference.KEY_ENTITY_TYPE_BITS);
+            StringBuilder entityKey = new StringBuilder(cSharedPreference.KEY_MODULE_ENTITY_BITS);
             entityKey.append("-");
             entityKey.append(types[i]);
             editor.putInt(String.valueOf(entityKey), (Integer) entityBITS);
@@ -239,7 +256,7 @@ public class cSessionManagerImpl implements iSessionManagerRepository {
      * @return
      */
     public int loadEntityBITS(long entityTypeID) {
-        StringBuilder entityTypeKey = new StringBuilder(cSharedPreference.KEY_ENTITY_TYPE_BITS);
+        StringBuilder entityTypeKey = new StringBuilder(cSharedPreference.KEY_MODULE_ENTITY_BITS);
         entityTypeKey.append("-");
         entityTypeKey.append(entityTypeID);
         return preferences.getInt(String.valueOf(entityTypeKey), 0);
@@ -282,71 +299,71 @@ public class cSessionManagerImpl implements iSessionManagerRepository {
         return preferences.getInt(String.valueOf(statusKey), 0);
     }
 
-    @Override
-    public void saveStatusSet(Set<cStatusModel> statusModelSet) {
-        String statusSet = gson.toJson(statusModelSet);
-        editor.putString(cSharedPreference.KEY_STATUS_SET, statusSet);
-    }
-
-    @Override
-    public void saveRoleSet(Set<cRoleModel> roleModelSet) {
-        String roleSet = gson.toJson(roleModelSet);
-        editor.putString(cSharedPreference.KEY_ROLE_SET, roleSet);
-    }
-
-    @Override
-    public Set loadStatusSet() {
-        String statusString = preferences.getString(cSharedPreference.KEY_STATUS_SET,"");
-
-        Set<cStatusModel> statusModelSet = gson.fromJson(statusString,
-                new TypeToken<Set<cStatusModel>>(){}.getType());
-
-        return statusModelSet;
-    }
-
-    @Override
-    public Set loadRoleSet() {
-        String roleString = preferences.getString(cSharedPreference.KEY_ROLE_SET,"");
-
-        Set<cRoleModel> statusModelSet = gson.fromJson(roleString,
-                new TypeToken<Set<cRoleModel>>(){}.getType());
-
-        return statusModelSet;
-    }
-
-    @Override
-    public void saveIndividualOwners(Set<cUserModel> userModels) {
-        String userSet = gson.toJson(userModels);
-        editor.putString(cSharedPreference.KEY_INDIVIDUAL_OWNER_SET, userSet);
-    }
-
-    @Override
-    public void saveOrganizationOwners(Set<cOrganizationModel> organizationModels) {
-        String organizationSet = gson.toJson(organizationModels);
-        editor.putString(cSharedPreference.KEY_ORGANIZATION_OWNER_SET, organizationSet);
-    }
-
-    @Override
-    public Set loadIndividualOwners() {
-        String ownerString = preferences.getString(
-                cSharedPreference.KEY_INDIVIDUAL_OWNER_SET,"");
-
-        Set<cUserModel> userModels = gson.fromJson(ownerString,
-                new TypeToken<Set<cUserModel>>(){}.getType());
-
-        return userModels;
-    }
-
-    @Override
-    public Set loadOrganizationOwners() {
-        String organizationString = preferences.getString(
-                cSharedPreference.KEY_ORGANIZATION_OWNER_SET,"");
-
-        Set<cOrganizationModel> organizationModels = gson.fromJson(organizationString,
-                new TypeToken<Set<cOrganizationModel>>(){}.getType());
-
-        return organizationModels;
-    }
+//    @Override
+//    public void saveStatusSet(Set<cStatusModel> statusModelSet) {
+//        String statusSet = gson.toJson(statusModelSet);
+//        editor.putString(cSharedPreference.KEY_STATUS_SET, statusSet);
+//    }
+//
+//    @Override
+//    public void saveRoleSet(Set<cRoleModel> roleModelSet) {
+//        String roleSet = gson.toJson(roleModelSet);
+//        editor.putString(cSharedPreference.KEY_ROLE_SET, roleSet);
+//    }
+//
+//    @Override
+//    public Set loadStatusSet() {
+//        String statusString = preferences.getString(cSharedPreference.KEY_STATUS_SET,"");
+//
+//        Set<cStatusModel> statusModelSet = gson.fromJson(statusString,
+//                new TypeToken<Set<cStatusModel>>(){}.getType());
+//
+//        return statusModelSet;
+//    }
+//
+//    @Override
+//    public Set loadRoleSet() {
+//        String roleString = preferences.getString(cSharedPreference.KEY_ROLE_SET,"");
+//
+//        Set<cRoleModel> statusModelSet = gson.fromJson(roleString,
+//                new TypeToken<Set<cRoleModel>>(){}.getType());
+//
+//        return statusModelSet;
+//    }
+//
+//    @Override
+//    public void saveIndividualOwners(Set<cUserModel> userModels) {
+//        String userSet = gson.toJson(userModels);
+//        editor.putString(cSharedPreference.KEY_INDIVIDUAL_OWNER_SET, userSet);
+//    }
+//
+//    @Override
+//    public void saveOrganizationOwners(Set<cOrganizationModel> organizationModels) {
+//        String organizationSet = gson.toJson(organizationModels);
+//        editor.putString(cSharedPreference.KEY_ORGANIZATION_OWNER_SET, organizationSet);
+//    }
+//
+//    @Override
+//    public Set loadIndividualOwners() {
+//        String ownerString = preferences.getString(
+//                cSharedPreference.KEY_INDIVIDUAL_OWNER_SET,"");
+//
+//        Set<cUserModel> userModels = gson.fromJson(ownerString,
+//                new TypeToken<Set<cUserModel>>(){}.getType());
+//
+//        return userModels;
+//    }
+//
+//    @Override
+//    public Set loadOrganizationOwners() {
+//        String organizationString = preferences.getString(
+//                cSharedPreference.KEY_ORGANIZATION_OWNER_SET,"");
+//
+//        Set<cOrganizationModel> organizationModels = gson.fromJson(organizationString,
+//                new TypeToken<Set<cOrganizationModel>>(){}.getType());
+//
+//        return organizationModels;
+//    }
 
     /* ###################### FUNCTIONS FOR CRUD AND LOG IN/OUT OPERATIONS ###################### */
 
@@ -419,5 +436,46 @@ public class cSessionManagerImpl implements iSessionManagerRepository {
      */
     public void logoutUser() {
         editor.putBoolean(cSharedPreference.KEY_IS_LOGGEDIN, false);
+    }
+
+
+    @Override
+    public void updateListIntegerSetting(String key, List<Integer> value) {
+        Log.d("T","=================Session Manager=====================");
+    }
+
+    @Override
+    public List<Integer> loadOperationStatuses(int moduleKey, int entityKey, int operationKey) {
+        return null;
+    }
+
+    @Override
+    public int loadPrimaryTeamBIT() {
+        return 0;
+    }
+
+    @Override
+    public int loadSecondaryTeamBITS() {
+        return 0;
+    }
+
+    @Override
+    public int loadEntityPermissionBITS(int moduleKey, int entityKey) {
+        return 0;
+    }
+
+    @Override
+    public int loadUnixPermissionBITS(int moduleKey, int entityKey) {
+        return 0;
+    }
+
+    @Override
+    public void updateMenuItems(String key, List<cMenuModel> value) {
+
+    }
+
+    @Override
+    public List<cMenuModel> loadMenuItems() {
+        return null;
     }
 }

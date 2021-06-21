@@ -2,45 +2,47 @@ package com.me.mseotsanyana.mande.BLL.model.session;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.provider.ContactsContract;
+
+import com.google.firebase.firestore.Exclude;
 
 import java.util.Date;
-import java.util.Objects;
+import java.util.List;
 import java.util.Set;
 
 public class cOrganizationModel implements Parcelable {
-    private String orgServerID;
+    private String organizationServerID;
+    private int organizationType;
 
     private String ownerID;
     private String orgOwnerID;
     private int teamOwnerBIT;
-    private int unixpermsBITS;
+    private List<Integer> unixpermsBITS;
     private int statusesBITS;
 
-    private int orgType;
+    private int numOrganizations;
+
     private String name;
     private String email;
     private String website;
     private Date createdDate;
     private Date modifiedDate;
+
     private Date syncedDate;
 
     Set<cUserModel> userModelSet;
     Set<cRoleModel> roleModelSet;
-    Set<cValueModel> valueModelSet;
-    Set<cAddressModel> addressModelSet;
 
     public cOrganizationModel(){}
 
-    public cOrganizationModel(int orgType, String name, String email, String website){
-        this.orgType = orgType;
+    public cOrganizationModel(int organizationType, String name, String email, String website){
+        this.organizationType = organizationType;
         this.name = name;
         this.email = email;
         this.website = website;
     }
 
     public cOrganizationModel(cOrganizationModel organizationModel){
-        this.setOrgServerID(organizationModel.getOrgServerID());
+        this.setOrganizationServerID(organizationModel.getOrganizationServerID());
         this.setOwnerID(organizationModel.getOwnerID());
         this.setOrgOwnerID(organizationModel.getOrgOwnerID());
         this.setTeamOwnerBIT(organizationModel.getTeamOwnerBIT());
@@ -55,11 +57,11 @@ public class cOrganizationModel implements Parcelable {
     }
 
     protected cOrganizationModel(Parcel in) {
-        orgServerID = in.readString();
+        organizationServerID = in.readString();
         ownerID = in.readString();
         orgOwnerID = in.readString();
         teamOwnerBIT = in.readInt();
-        unixpermsBITS = in.readInt();
+        //unixpermsBITS = in.readInt();
         statusesBITS = in.readInt();
         name = in.readString();
         email = in.readString();
@@ -68,24 +70,34 @@ public class cOrganizationModel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(orgServerID);
+        dest.writeString(organizationServerID);
         dest.writeString(ownerID);
         dest.writeString(orgOwnerID);
         dest.writeInt(teamOwnerBIT);
-        dest.writeInt(unixpermsBITS);
+        //dest.writeInt(unixpermsBITS);
         dest.writeInt(statusesBITS);
-        dest.writeInt(orgType);
+        dest.writeInt(organizationType);
         dest.writeString(name);
         dest.writeString(email);
         dest.writeString(website);
     }
 
-    public String getOrgServerID() {
-        return orgServerID;
+    @Exclude
+    public String getOrganizationServerID() {
+        return organizationServerID;
     }
 
-    public void setOrgServerID(String orgServerID) {
-        this.orgServerID = orgServerID;
+    public void setOrganizationServerID(String organizationServerID) {
+        this.organizationServerID = organizationServerID;
+    }
+
+    @Exclude
+    public int getOrganizationType() {
+        return organizationType;
+    }
+
+    public void setOrganizationType(int organizationType) {
+        this.organizationType = organizationType;
     }
 
     public String getOwnerID() {
@@ -112,11 +124,11 @@ public class cOrganizationModel implements Parcelable {
         this.teamOwnerBIT = teamOwnerBIT;
     }
 
-    public int getUnixpermsBITS() {
+    public List<Integer> getUnixpermsBITS() {
         return unixpermsBITS;
     }
 
-    public void setUnixpermsBITS(int unixpermsBITS) {
+    public void setUnixpermsBITS(List<Integer> unixpermsBITS) {
         this.unixpermsBITS = unixpermsBITS;
     }
 
@@ -128,12 +140,13 @@ public class cOrganizationModel implements Parcelable {
         this.statusesBITS = statusesBITS;
     }
 
-    public int getOrgType() {
-        return orgType;
+
+    public int getNumOrganizations() {
+        return numOrganizations;
     }
 
-    public void setOrgType(int orgType) {
-        this.orgType = orgType;
+    public void setNumOrganizations(int numOrganizations) {
+        this.numOrganizations = numOrganizations;
     }
 
     public String getName() {
@@ -176,6 +189,7 @@ public class cOrganizationModel implements Parcelable {
         this.modifiedDate = modifiedDate;
     }
 
+    @Exclude
     public Date getSyncedDate() {
         return syncedDate;
     }
@@ -184,6 +198,7 @@ public class cOrganizationModel implements Parcelable {
         this.syncedDate = syncedDate;
     }
 
+    @Exclude
     public Set<cUserModel> getUserModelSet() {
         return userModelSet;
     }
@@ -192,28 +207,13 @@ public class cOrganizationModel implements Parcelable {
         this.userModelSet = userModelSet;
     }
 
+    @Exclude
     public Set<cRoleModel> getRoleModelSet() {
         return roleModelSet;
     }
 
     public void setRoleModelSet(Set<cRoleModel> roleModelSet) {
         this.roleModelSet = roleModelSet;
-    }
-
-    public Set<cValueModel> getValueModelSet() {
-        return valueModelSet;
-    }
-
-    public void setValueModelSet(Set<cValueModel> valueModelSet) {
-        this.valueModelSet = valueModelSet;
-    }
-
-    public Set<cAddressModel> getAddressModelSet() {
-        return addressModelSet;
-    }
-
-    public void setAddressModelSet(Set<cAddressModel> addressModelSet) {
-        this.addressModelSet = addressModelSet;
     }
 
     @Override
@@ -232,6 +232,4 @@ public class cOrganizationModel implements Parcelable {
             return new cOrganizationModel[size];
         }
     };
-
-
 }

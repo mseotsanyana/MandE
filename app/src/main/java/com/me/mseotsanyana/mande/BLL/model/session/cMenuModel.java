@@ -2,16 +2,14 @@ package com.me.mseotsanyana.mande.BLL.model.session;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Created by mseotsanyana on 2017/08/24.
  */
 
-public class cMenuModel {
+public class cMenuModel implements Comparable<cMenuModel>{
     private int menuServerID;
     private int parentServerID;
 
@@ -29,7 +27,7 @@ public class cMenuModel {
 
     public boolean hasChildren, isGroup;
 
-    private ArrayList<cMenuModel> menuModels;
+    private List<cMenuModel> subMenuModels;
 
     public cMenuModel(){
         //menuModelSet = new HashSet<>();
@@ -137,12 +135,12 @@ public class cMenuModel {
         this.syncedDate = syncedDate;
     }
 
-    public ArrayList<cMenuModel> getMenuModels() {
-        return menuModels;
+    public List<cMenuModel> getSubMenuModels() {
+        return subMenuModels;
     }
 
-    public void setMenuModels(ArrayList<cMenuModel> menuModels) {
-        this.menuModels = menuModels;
+    public void setSubMenuModels(ArrayList<cMenuModel> subMenuModels) {
+        this.subMenuModels = subMenuModels;
     }
 
     public boolean isHasChildren() {
@@ -178,7 +176,7 @@ public class cMenuModel {
                 Objects.equals(getCreatedDate(), menuModel.getCreatedDate()) &&
                 Objects.equals(getModifiedDate(), menuModel.getModifiedDate()) &&
                 Objects.equals(getSyncedDate(), menuModel.getSyncedDate()) &&
-                Objects.equals(getMenuModels(), menuModel.getMenuModels());
+                Objects.equals(getSubMenuModels(), menuModel.getSubMenuModels());
     }
 
     @Override
@@ -186,6 +184,13 @@ public class cMenuModel {
         return Objects.hash(getMenuServerID(), getParentServerID(), getOwnerID(),
                 getOrgOwnerID(), getTeamOwnerBIT(), getUnixpermsBITS(), getStatusesBITS(),
                 getName(), getDescription(), getCreatedDate(), getModifiedDate(),
-                getSyncedDate(), getMenuModels());
+                getSyncedDate(), getSubMenuModels());
+    }
+
+    @Override
+    public int compareTo(cMenuModel menuModel) {
+        int compareID=menuModel.getMenuServerID();
+        /* For Ascending order*/
+        return this.getMenuServerID() - compareID;
     }
 }

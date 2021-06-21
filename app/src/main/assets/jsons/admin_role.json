@@ -1,8 +1,6 @@
 {
   "role":
     {
-      "role_id": 0,
-      "plan_id": 0,
       "name": "Administrator",
       "description": "Default admin role for an organization"
     }

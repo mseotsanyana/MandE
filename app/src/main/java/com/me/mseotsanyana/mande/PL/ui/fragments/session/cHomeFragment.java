@@ -31,14 +31,16 @@ import androidx.navigation.Navigation;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
 import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.firebase.session.cMenuFirebaseRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.firebase.session.cUserFirebaseRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cSessionManagerImpl;
-import com.me.mseotsanyana.mande.PL.presenters.session.Impl.cMenuItemsPresenterImpl;
+import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
+import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cHomePageFirestoreRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cSharedPreferenceFirestoreRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.realtime.session.cUserProfileFirebaseRepositoryImpl;
+import com.me.mseotsanyana.mande.PL.presenters.session.Impl.cHomePagePresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.session.Impl.cUserSignOutPresenterImpl;
-import com.me.mseotsanyana.mande.PL.presenters.session.iMenuItemsPresenter;
+import com.me.mseotsanyana.mande.PL.presenters.session.iHomePagePresenter;
 import com.me.mseotsanyana.mande.PL.presenters.session.iUserSignOutPresenter;
 import com.me.mseotsanyana.mande.PL.ui.adapters.session.cExpandableListAdapter;
 import com.me.mseotsanyana.mande.R;
@@ -52,8 +54,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
-public class cHomeFragment extends Fragment implements iMenuItemsPresenter.View,
-        iUserSignOutPresenter.View{
+public class cHomeFragment extends Fragment implements iHomePagePresenter.View,
+        iUserSignOutPresenter.View {
     private static String TAG = cHomeFragment.class.getSimpleName();
     private static SimpleDateFormat tsdf = cConstant.TIMESTAMP_FORMAT_DATE;
     //private static SimpleDateFormat ssdf = cConstant.SHORT_FORMAT_DATE;
@@ -61,19 +63,20 @@ public class cHomeFragment extends Fragment implements iMenuItemsPresenter.View,
     private Toolbar toolbar;
     private View progressbar;
 
+    private ImageView userIcon;
+    private TextView currentDate, displayName, displayEmail;
+
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private View headerView;
     private ExpandableListView expandableListView;
-    private BottomNavigationView bottomNavigationView;
     private cExpandableListAdapter expandableListAdapter;
 
     /* menu data structures */
-    List<cMenuModel> menuModels = new ArrayList<>();
+    private final List<cMenuModel> menuModels = new ArrayList<>();
 
-
-    private iMenuItemsPresenter menuItemsPresenter;
     private iUserSignOutPresenter userSignOutPresenter;
+    private iHomePagePresenter homePagePresenter;
 
     private AppCompatActivity activity;
 
@@ -91,10 +94,25 @@ public class cHomeFragment extends Fragment implements iMenuItemsPresenter.View,
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        //FirebaseAuth.getInstance().signOut();
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            NavDirections action = cHomeFragmentDirections.actionCHomeFragmentToCLoginFragment();
+            Navigation.findNavController(requireView()).navigate(action);
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         /* read menu items from the asset */
-        menuItemsPresenter.resume();
+        homePagePresenter.resume();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
@@ -134,14 +152,13 @@ public class cHomeFragment extends Fragment implements iMenuItemsPresenter.View,
                 cThreadExecutorImpl.getInstance(),
                 cMainThreadImpl.getInstance(),
                 this,
-                new cUserFirebaseRepositoryImpl(getContext()));
+                new cUserProfileFirebaseRepositoryImpl(getContext()));
 
-        menuItemsPresenter = new cMenuItemsPresenterImpl(
+        homePagePresenter = new cHomePagePresenterImpl(
                 cThreadExecutorImpl.getInstance(),
-                cMainThreadImpl.getInstance(),
-                this,
-                new cSessionManagerImpl(getContext()),
-                new cMenuFirebaseRepositoryImpl(getContext()));
+                cMainThreadImpl.getInstance(),this,
+                new cSharedPreferenceFirestoreRepositoryImpl(getContext()),
+                new cHomePageFirestoreRepositoryImpl(getContext()));
 
         /* initialize the toolbar */
         toolbar = view.findViewById(R.id.toolbar);
@@ -200,8 +217,8 @@ public class cHomeFragment extends Fragment implements iMenuItemsPresenter.View,
     private void drawerNavigationListener() {
         // called when expanding...
         expandableListView.setOnGroupExpandListener(groupPosition -> {
-                //Objects.requireNonNull(activity.getSupportActionBar()).setTitle(
-                //        (CharSequence) menuModels.get(groupPosition));
+            //Objects.requireNonNull(activity.getSupportActionBar()).setTitle(
+            //        (CharSequence) menuModels.get(groupPosition));
             Log.d(TAG, "I AM EXPANDING!!!!!!!!!!!!!!!");
         });
 
@@ -229,7 +246,7 @@ public class cHomeFragment extends Fragment implements iMenuItemsPresenter.View,
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 boolean retVal = true; // used to enable expanding to child menu items
-                cMenuModel menuModel = (cMenuModel) expandableListAdapter.getGroup(groupPosition);
+                cMenuModel menuModel = expandableListAdapter.getGroup(groupPosition);
                 switch (menuModel.getMenuServerID()) {
                     case 0: // My Profile
                         Toast.makeText(getActivity(), "My Profile Fragment", Toast.LENGTH_SHORT).show();
@@ -254,7 +271,6 @@ public class cHomeFragment extends Fragment implements iMenuItemsPresenter.View,
                     default:
                         break;
                 }
-
                 return retVal;
             }
         });
@@ -262,12 +278,14 @@ public class cHomeFragment extends Fragment implements iMenuItemsPresenter.View,
         // called when clicking on child menu item...
         expandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
             cMenuModel parentModel = expandableListAdapter.getGroup(groupPosition);
-            cMenuModel childModel  = expandableListAdapter.getChild(groupPosition, childPosition);
+            cMenuModel childModel = expandableListAdapter.getChild(groupPosition, childPosition);
 
             switch (parentModel.getMenuServerID()) {
                 case 0: // Admin
                     switch (childModel.getMenuServerID()) {
                         case 1: // Profile
+                            NavDirections action = cHomeFragmentDirections.actionCHomeFragmentToCUserProfileFragment();
+                            Navigation.findNavController(requireView()).navigate(action);
                             Toast.makeText(getActivity(), "Profile Fragment", Toast.LENGTH_SHORT).show();
                             break;
 
@@ -311,17 +329,9 @@ public class cHomeFragment extends Fragment implements iMenuItemsPresenter.View,
 
     /* bottom navigation views */
     private void initBottomNavigationViews(View view) {
-        bottomNavigationView = view.findViewById(R.id.bottomNavigationView);
+        BottomNavigationView bottomNavigationView = view.findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         openFragment(cDashboardFragment.newInstance());
-    }
-
-    public void hideBottomNavigationView(){
-        bottomNavigationView.setVisibility(View.GONE);
-    }
-
-    public void showBottomNavigationView(){
-        bottomNavigationView.setVisibility(View.VISIBLE);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -343,42 +353,13 @@ public class cHomeFragment extends Fragment implements iMenuItemsPresenter.View,
                 return false;
             };
 
+    @SuppressLint("SetTextI18n")
     private void populateHeaderViews() {
         // instantiate header view objects
-        ImageView userIcon = headerView.findViewById(R.id.userIcon);
-        TextView currentDate = headerView.findViewById(R.id.currentDate);
-        TextView displayName = headerView.findViewById(R.id.displayName);
-        TextView displayEmail = headerView.findViewById(R.id.displayEmail);
-
-        currentDate.setText(tsdf.format(Calendar.getInstance().getTime()));
-        displayName.setText("Motlatsi Seotsanyana");
-        displayEmail.setText("mseotsanyana@gmail.com");
-
-        /* contains main menu and its corresponding submenu items */
-        //menuItemTitles = new ArrayList<>();
-        //expandableMenuItems = new LinkedHashMap<>();
-
-        //navigationView.
-
-        /* contains a tree of logframes */
-        /* logframe data structures */
-        //List<cTreeModel> organizationTreeModels = new ArrayList<>();
-        /* shared preference organizations */
-        //sharedOrganizations = new ArrayList<>();
-
-        /*logFramePresenter = new cLogFramePresenterImpl(
-                cThreadExecutorImpl.getInstance(),
-                cMainThreadImpl.getInstance(),
-                this,
-                new cSessionManagerImpl(getContext()),
-                new cMenuRepositoryImpl(getContext()),
-                new cLogFrameRepositoryImpl(getContext()));*/
-
-        // setup recycler view adapter
-        /*logFrameRecyclerViewAdapter = new cLogFrameAdapter(getActivity(), this,
-                logFrameTreeModels);*/
-
-
+        userIcon = headerView.findViewById(R.id.userIcon);
+        currentDate = headerView.findViewById(R.id.currentDate);
+        displayName = headerView.findViewById(R.id.displayName);
+        displayEmail = headerView.findViewById(R.id.displayEmail);
     }
 
     @Override
@@ -452,11 +433,6 @@ public class cHomeFragment extends Fragment implements iMenuItemsPresenter.View,
         });
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
     public void openFragment(Fragment fragment) {
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.sessionFrameLayout, fragment);
@@ -465,8 +441,23 @@ public class cHomeFragment extends Fragment implements iMenuItemsPresenter.View,
     }
 
     @Override
-    public void onReadMenuItemsFailed(String msg) {
-        hideProgress();
+    public void onUserSignOutFailed(String msg) {
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onUserSignOutSucceeded(String msg) {
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+
+    @SuppressLint("SetTextI18n")
+    @Override
+    public void onReadUserProfileSucceeded(cUserProfileModel userProfileModel) {
+        /* update the user profile */
+        currentDate.setText(tsdf.format(Calendar.getInstance().getTime()));
+        displayName.setText(userProfileModel.getName() + " " + userProfileModel.getSurname());
+        displayEmail.setText(userProfileModel.getEmail());
     }
 
     @Override
@@ -476,6 +467,25 @@ public class cHomeFragment extends Fragment implements iMenuItemsPresenter.View,
         this.expandableListAdapter.notifyDataSetChanged();
         hideProgress();
     }
+
+    @Override
+    public void onReadHomePageFailed(String msg) {
+        hideProgress();
+    }
+
+    @SuppressLint("SetTextI18n")
+    @Override
+    public void onDefaultHomePageSucceeded(cUserProfileModel userProfileModel, List<cMenuModel> menuModels) {
+        /* update the user profile */
+        currentDate.setText(tsdf.format(Calendar.getInstance().getTime()));
+        displayName.setText(userProfileModel.getName() + " " + userProfileModel.getSurname());
+        displayEmail.setText(userProfileModel.getEmail());
+        // update the menu when there is a change
+        this.expandableListAdapter.setMenuModels(menuModels);
+        this.expandableListAdapter.notifyDataSetChanged();
+        hideProgress();
+    }
+
 
     @Override
     public void showProgress() {
@@ -490,15 +500,5 @@ public class cHomeFragment extends Fragment implements iMenuItemsPresenter.View,
     @Override
     public void showError(String message) {
 
-    }
-
-    @Override
-    public void onUserSignOutFailed(String msg) {
-        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onUserSignOutSucceeded(String msg) {
-        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
     }
 }

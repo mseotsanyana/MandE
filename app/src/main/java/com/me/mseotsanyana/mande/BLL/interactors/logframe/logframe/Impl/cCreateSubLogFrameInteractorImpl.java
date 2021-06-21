@@ -5,8 +5,8 @@ import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.logframe.iCreateSubLogFrameInteractor;
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iLogFrameRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel;
+import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 
 import java.util.Date;
 
@@ -20,7 +20,7 @@ public class cCreateSubLogFrameInteractorImpl extends cAbstractInteractor
     private cLogFrameModel logSubFrameModel;
 
     public cCreateSubLogFrameInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,
-                                            iSessionManagerRepository sessionManagerRepository,
+                                            iSharedPreferenceRepository sessionManagerRepository,
                                             iLogFrameRepository logSubFrameRepository, Callback callback,
                                             long logFrameID, cLogFrameModel logSubFrameModel) {
         super(threadExecutor, mainThread);
@@ -35,12 +35,12 @@ public class cCreateSubLogFrameInteractorImpl extends cAbstractInteractor
         this.logSubFrameModel = logSubFrameModel;
 
         /* add common attributes */
-        this.logSubFrameModel.setOwnerID(sessionManagerRepository.loadUserID());
-        this.logSubFrameModel.setOrgID(sessionManagerRepository.loadOrganizationID());
-        this.logSubFrameModel.setGroupBITS(sessionManagerRepository.loadPrimaryRoleBITS()|
-                sessionManagerRepository.loadSecondaryRoleBITS());
-        this.logSubFrameModel.setPermsBITS(sessionManagerRepository.loadDefaultPermsBITS());
-        this.logSubFrameModel.setStatusBITS(sessionManagerRepository.loadDefaultStatusBITS());
+//        this.logSubFrameModel.setOwnerID(sessionManagerRepository.loadUserID());
+//        this.logSubFrameModel.setOrgID(sessionManagerRepository.loadOrganizationID());
+//        this.logSubFrameModel.setGroupBITS(sessionManagerRepository.loadPrimaryRoleBITS()|
+//                sessionManagerRepository.loadSecondaryRoleBITS());
+//        this.logSubFrameModel.setPermsBITS(sessionManagerRepository.loadDefaultPermsBITS());
+//        this.logSubFrameModel.setStatusBITS(sessionManagerRepository.loadDefaultStatusBITS());
         this.logSubFrameModel.setCreatedDate(new Date());
         this.logSubFrameModel.setModifiedDate(new Date());
         this.logSubFrameModel.setSyncedDate(new Date());

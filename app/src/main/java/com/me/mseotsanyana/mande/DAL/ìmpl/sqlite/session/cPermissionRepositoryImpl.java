@@ -56,9 +56,9 @@ public class cPermissionRepositoryImpl {
 
         // assign values to the table fields
         //cv.put(cSQLDBHelper.KEY_PRIVILEGE_FK_ID, permissionModel.getPrivilegeID());
-        cv.put(cSQLDBHelper.KEY_ENTITY_FK_ID, permissionModel.getEntityID());
-        cv.put(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID, permissionModel.getEntityTypeID());
-        cv.put(cSQLDBHelper.KEY_OPERATION_FK_ID, permissionModel.getOperationID());
+//        cv.put(cSQLDBHelper.KEY_ENTITY_FK_ID, permissionModel.getEntityServerID());
+//        cv.put(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID, permissionModel.getModuleServerID());
+        cv.put(cSQLDBHelper.KEY_OPERATION_FK_ID, ""/*permissionModel.getOperationServerID()*/);
 
         // insert outcome record
         try {
@@ -68,11 +68,11 @@ public class cPermissionRepositoryImpl {
 
             // add permission statuses
             for(int status: statuses) {
-                if (addPermissionStatus(permissionModel.getPermissionID(), permissionModel.getEntityID(),
-                        permissionModel.getEntityTypeID(), permissionModel.getOperationID(), status))
-                    continue;
-                else
-                    return false;
+//                if (addPermissionStatus(permissionModel.getPermissionID(), permissionModel.getEntityID(),
+//                        permissionModel.getEntityTypeID(), permissionModel.getOperationID(), status))
+//                    continue;
+//                else
+//                    return false;
             }
         } catch (Exception e) {
             Log.d(TAG,"Exception in reading: "+e.getMessage());
@@ -92,16 +92,16 @@ public class cPermissionRepositoryImpl {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_PRIVILEGE_FK_ID, permissionModel.getPermissionID());
-        cv.put(cSQLDBHelper.KEY_ENTITY_FK_ID, permissionModel.getEntityID());
-        cv.put(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID, permissionModel.getEntityTypeID());
-        cv.put(cSQLDBHelper.KEY_OPERATION_FK_ID, permissionModel.getOperationID());
-        cv.put(cSQLDBHelper.KEY_SERVER_ID, permissionModel.getServerID());
-        cv.put(cSQLDBHelper.KEY_ORG_ID, permissionModel.getOrgID());
-        cv.put(cSQLDBHelper.KEY_OWNER_ID, permissionModel.getOwnerID());
-        cv.put(cSQLDBHelper.KEY_GROUP_BITS, permissionModel.getGroupBITS());
-        cv.put(cSQLDBHelper.KEY_PERMS_BITS, permissionModel.getPermsBITS());
-        cv.put(cSQLDBHelper.KEY_STATUS_BITS, permissionModel.getStatusBITS());
+//        cv.put(cSQLDBHelper.KEY_PRIVILEGE_FK_ID, permissionModel.getPermissionID());
+//        cv.put(cSQLDBHelper.KEY_ENTITY_FK_ID, permissionModel.getEntityID());
+//        cv.put(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID, permissionModel.getEntityTypeID());
+//        cv.put(cSQLDBHelper.KEY_OPERATION_FK_ID, permissionModel.getOperationID());
+//        cv.put(cSQLDBHelper.KEY_SERVER_ID, permissionModel.getServerID());
+//        cv.put(cSQLDBHelper.KEY_ORG_ID, permissionModel.getOrgID());
+//        cv.put(cSQLDBHelper.KEY_OWNER_ID, permissionModel.getOwnerID());
+//        cv.put(cSQLDBHelper.KEY_GROUP_BITS, permissionModel.getGroupBITS());
+//        cv.put(cSQLDBHelper.KEY_PERMS_BITS, permissionModel.getPermsBITS());
+//        cv.put(cSQLDBHelper.KEY_STATUS_BITS, permissionModel.getStatusBITS());
 
         // insert outcome record
         try {
@@ -164,46 +164,46 @@ public class cPermissionRepositoryImpl {
                 do {
                     cPermissionModel permission = new cPermissionModel();
 
-                    permission.setPermissionID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_FK_ID)));
-                    permission.setEntityID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_FK_ID)));
-                    permission.setEntityTypeID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID)));
-                    permission.setOperationID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_FK_ID)));
-                    permission.setStatusSetID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUSSET_FK_ID)));
-                    //permission.setServerID(
-                    //        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    permission.setOwnerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    permission.setOrgID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    permission.setGroupBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    permission.setPermsBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    permission.setStatusBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    permission.setCreatedDate(sdf.parse(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    permission.setModifiedDate(sdf.parse(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    permission.setSyncedDate(sdf.parse(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
-
-                    // construct an entity object
-                    permission.setEntityModel(new cEntityModel(entityRepository.getEntityByID(
-                            permission.getEntityID(), permission.getEntityTypeID())));
-
-                    // construct an operation object
-                    permission.setOperationModel(new cOperationModel(
-                            operationRepository.getOperationByID(permission.getOperationID())));
-
-                    // populate permission statuses
-                    permission.setStatusSetModel(new cStatusSetModel(
-                            statusSetRepository.getStatusSetByID(permission.getStatusSetID())));
+//                    permission.setPermissionID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_FK_ID)));
+//                    permission.setEntityID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_FK_ID)));
+//                    permission.setEntityTypeID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID)));
+//                    permission.setOperationID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_FK_ID)));
+//                    permission.setStatusSetID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUSSET_FK_ID)));
+//                    //permission.setServerID(
+//                    //        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    permission.setOwnerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    permission.setOrgID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    permission.setGroupBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    permission.setPermsBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    permission.setStatusBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    permission.setCreatedDate(sdf.parse(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    permission.setModifiedDate(sdf.parse(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    permission.setSyncedDate(sdf.parse(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//
+//                    // construct an entity object
+//                    permission.setEntityModel(new cEntityModel(entityRepository.getEntityByID(
+//                            permission.getEntityID(), permission.getEntityTypeID())));
+//
+//                    // construct an operation object
+//                    permission.setOperationModel(new cOperationModel(
+//                            operationRepository.getOperationByID(permission.getOperationID())));
+//
+//                    // populate permission statuses
+//                    permission.setStatusSetModel(new cStatusSetModel(
+//                            statusSetRepository.getStatusSetByID(permission.getStatusSetID())));
 
                     permissionModelSet.add(permission);
 
@@ -260,35 +260,35 @@ public class cPermissionRepositoryImpl {
                 do {
                     cPermissionModel permission = new cPermissionModel();
 
-                    permission.setPermissionID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_FK_ID)));
-                    permission.setEntityID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_FK_ID)));
-                    permission.setEntityTypeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID)));
-                    permission.setOperationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_FK_ID)));
-                    //permission.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    permission.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    permission.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    permission.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    permission.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    permission.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    permission.setCreatedDate(
-                            sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    permission.setModifiedDate(
-                            sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    permission.setSyncedDate(
-                            sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
-
-                    // construct an entity object
-                    permission.setEntityModel(new cEntityModel(
-                            entityRepository.getEntityByID(permission.getEntityID(), permission.getEntityTypeID())));
-
-                    // construct an operation object
-                    permission.setOperationModel(new cOperationModel(
-                            operationRepository.getOperationByID(permission.getOperationID())));
-
-                    // populate permission statuses
-                    //permission.setStatusModelSet(getStatusesByPermissionID(
-                            //permission.getPrivilegeID(), permission.getEntityID(),
-                            //permission.getEntityTypeID(), permission.getOperationID()));
+//                    permission.setPermissionID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_FK_ID)));
+//                    permission.setEntityID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_FK_ID)));
+//                    permission.setEntityTypeID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID)));
+//                    permission.setOperationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_FK_ID)));
+//                    //permission.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    permission.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    permission.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    permission.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    permission.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    permission.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    permission.setCreatedDate(
+//                            sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    permission.setModifiedDate(
+//                            sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    permission.setSyncedDate(
+//                            sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//
+//                    // construct an entity object
+//                    permission.setEntityModel(new cEntityModel(
+//                            entityRepository.getEntityByID(permission.getEntityID(), permission.getEntityTypeID())));
+//
+//                    // construct an operation object
+//                    permission.setOperationModel(new cOperationModel(
+//                            operationRepository.getOperationByID(permission.getOperationID())));
+//
+//                    // populate permission statuses
+//                    //permission.setStatusModelSet(getStatusesByPermissionID(
+//                            //permission.getPrivilegeID(), permission.getEntityID(),
+//                            //permission.getEntityTypeID(), permission.getOperationID()));
 
                     permissionModels.add(permission);
 
@@ -399,23 +399,24 @@ public class cPermissionRepositoryImpl {
 
         // assign values to the table fields
         //cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, model.getOrganizationID());
-        cv.put(cSQLDBHelper.KEY_ROLE_FK_ID, model.getPermissionID());
-        cv.put(cSQLDBHelper.KEY_OWNER_ID, model.getOwnerID());
-        cv.put(cSQLDBHelper.KEY_ORG_ID, model.getOrgID());
-        cv.put(cSQLDBHelper.KEY_GROUP_BITS, model.getGroupBITS());
-        cv.put(cSQLDBHelper.KEY_PERMS_BITS, model.getPermsBITS());
-        cv.put(cSQLDBHelper.KEY_STATUS_BITS, model.getStatusBITS());
+//        cv.put(cSQLDBHelper.KEY_ROLE_FK_ID, model.getPermissionID());
+//        cv.put(cSQLDBHelper.KEY_OWNER_ID, model.getOwnerID());
+//        cv.put(cSQLDBHelper.KEY_ORG_ID, model.getOrgID());
+//        cv.put(cSQLDBHelper.KEY_GROUP_BITS, model.getGroupBITS());
+//        cv.put(cSQLDBHelper.KEY_PERMS_BITS, model.getPermsBITS());
+//        cv.put(cSQLDBHelper.KEY_STATUS_BITS, model.getStatusBITS());
         //cv.put(cSQLDBHelper.KEY_NAME, model.getName());
         //cv.put(cSQLDBHelper.KEY_DESCRIPTION, model.getDescription());
         cv.put(cSQLDBHelper.KEY_MODIFIED_DATE, sdf.format(timestamp));
 
         // update a specific record
-        long result = db.update(cSQLDBHelper.TABLE_tblPERMISSION, cv,
-                cSQLDBHelper.KEY_ORGANIZATION_FK_ID +" = ? AND "+
-                        cSQLDBHelper.KEY_ROLE_FK_ID + "= ?"
-                ,
-                new String[]{String.valueOf(model.getPermissionID()),
-                        String.valueOf(model.getEntityID())});
+        long result = 0;
+//        long result = db.update(cSQLDBHelper.TABLE_tblPERMISSION, cv,
+//                cSQLDBHelper.KEY_ORGANIZATION_FK_ID +" = ? AND "+
+//                        cSQLDBHelper.KEY_ROLE_FK_ID + "= ?"
+//                ,
+//                new String[]{String.valueOf(model.getPermissionID()),
+//                        String.valueOf(model.getEntityID())});
 
         // close the database connection
         db.close();
@@ -457,9 +458,9 @@ public class cPermissionRepositoryImpl {
         if (permissionModel != null) {
 
             // delete a specific record
-            result = db.delete(cSQLDBHelper.TABLE_tblPERMISSION,
-                    cSQLDBHelper.KEY_ROLE_FK_ID + " = ?",
-                    new String[]{String.valueOf(permissionModel.getPermissionID())});
+//            result = db.delete(cSQLDBHelper.TABLE_tblPERMISSION,
+//                    cSQLDBHelper.KEY_ROLE_FK_ID + " = ?",
+//                    new String[]{String.valueOf(permissionModel.getPermissionID())});
         }
 
         // close the database connection

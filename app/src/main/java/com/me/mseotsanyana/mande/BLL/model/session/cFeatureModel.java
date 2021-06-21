@@ -11,6 +11,12 @@ public class cFeatureModel {
     private Date createdDate;
     private Date modifiedDate;
 
+    public cFeatureModel(int featureServerID, String name, String description){
+        this.featureServerID = featureServerID;
+        this.name = name;
+        this.description = description;
+    }
+
     public cFeatureModel(){
     }
 

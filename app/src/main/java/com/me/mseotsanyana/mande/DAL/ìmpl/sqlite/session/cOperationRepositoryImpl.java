@@ -40,7 +40,7 @@ public class cOperationRepositoryImpl {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, operationModel.getOperationID());
+//        cv.put(cSQLDBHelper.KEY_ID, operationModel.getOperationID());
         cv.put(cSQLDBHelper.KEY_NAME, operationModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, operationModel.getDescription());
 
@@ -67,7 +67,7 @@ public class cOperationRepositoryImpl {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, actionModel.getOperationID());
+//        cv.put(cSQLDBHelper.KEY_ID, actionModel.getOperationID());
         cv.put(cSQLDBHelper.KEY_OWNER_ID, actionModel.getOwnerID());
         cv.put(cSQLDBHelper.KEY_ORG_ID, actionModel.getOrgID());
         cv.put(cSQLDBHelper.KEY_GROUP_BITS, actionModel.getGroupBITS());
@@ -107,8 +107,8 @@ public class cOperationRepositoryImpl {
 
         try {
             if (cursor.moveToFirst()) {
-                operation.setOperationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                operation.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                operation.setOperationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+//                operation.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
                 operation.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
                 operation.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
                 operation.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
@@ -149,7 +149,7 @@ public class cOperationRepositoryImpl {
                 do {
                     cOperationModel type = new cOperationModel();
 
-                    type.setOperationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+//                    type.setOperationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                     type.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
                     type.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
                     type.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));

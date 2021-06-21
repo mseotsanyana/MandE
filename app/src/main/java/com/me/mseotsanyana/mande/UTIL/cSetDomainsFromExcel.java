@@ -142,7 +142,7 @@ public class cSetDomainsFromExcel {
     public cOperationModel getOperationFromExcel(Row cRow) {
         operationDomain = new cOperationModel();
 
-        operationDomain.setOperationID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//        operationDomain.setOperationID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         operationDomain.setName(cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
         operationDomain.setDescription(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
         //operationDomain.setCreateDate(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getDateCellValue());

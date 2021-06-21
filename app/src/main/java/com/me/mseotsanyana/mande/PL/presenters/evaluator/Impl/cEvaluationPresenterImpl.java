@@ -5,7 +5,7 @@ import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.evaluator.Impl.cReadEvaluationInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.evaluator.iReadEvaluationInteractor;
 import com.me.mseotsanyana.mande.BLL.repository.evaluator.iEvaluationRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.evaluator.iEvaluationPresenter;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
@@ -17,13 +17,13 @@ public class cEvaluationPresenterImpl extends cAbstractPresenter implements iEva
     private static String TAG = cEvaluationPresenterImpl.class.getSimpleName();
 
     private View view;
-    private iSessionManagerRepository sessionManagerRepository;
+    private iSharedPreferenceRepository sessionManagerRepository;
     private iEvaluationRepository evaluationRepository;
     private long logFrameID;
 
     public cEvaluationPresenterImpl(iExecutor executor, iMainThread mainThread,
                                     View view,
-                                    iSessionManagerRepository sessionManagerRepository,
+                                    iSharedPreferenceRepository sessionManagerRepository,
                                     iEvaluationRepository evaluationRepository, long logFrameID) {
         super(executor, mainThread);
 

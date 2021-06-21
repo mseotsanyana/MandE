@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +15,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
-import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.firebase.session.cUserFirebaseRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cOrganizationRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cRoleRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cSessionManagerImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cStatusRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cPrivilegeFirestoreRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cSharedPreferenceFirestoreRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.realtime.session.cUserProfileFirebaseRepositoryImpl;
 import com.me.mseotsanyana.mande.PL.presenters.session.Impl.cUserLoginPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.session.iUserLoginPresenter;
 import com.me.mseotsanyana.mande.R;
@@ -51,13 +48,17 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
 
         userLoginPresenter = new cUserLoginPresenterImpl(
                 cThreadExecutorImpl.getInstance(),
-                cMainThreadImpl.getInstance(),
-                this,
-                new cUserFirebaseRepositoryImpl(getContext()),
-                new cOrganizationRepositoryImpl(getContext()),
-                new cRoleRepositoryImpl(getContext()),
-                new cStatusRepositoryImpl(getContext()),
-                new cSessionManagerImpl(getContext()));
+                cMainThreadImpl.getInstance(), this,
+                new cSharedPreferenceFirestoreRepositoryImpl(getContext()),
+                new cPrivilegeFirestoreRepositoryImpl(getContext()),
+                new cUserProfileFirebaseRepositoryImpl(getContext()));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        //fixme: remove -> userLoginPresenter.readUserProfile();
     }
 
     @Override
@@ -69,16 +70,6 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
         initViews(view);
 
         return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            NavDirections action = cLoginFragmentDirections.actionCLoginFragmentToCHomeFragment("");
-            Navigation.findNavController(requireView()).navigate(action);
-        }
     }
 
     @Override
@@ -127,20 +118,21 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
             public void onClick(View view) {
                 NavDirections action = cLoginFragmentDirections.actionCLoginFragmentToCSignUpFragment();
                 Navigation.findNavController(requireView()).navigate(action);
+
             }
         });
     }
 
     @Override
-    public void onUserLoginSucceeded(cUserModel userModel) {
-        String email = Objects.requireNonNull(emailEditText.getText()).toString();
-        NavDirections action = cLoginFragmentDirections.actionCLoginFragmentToCHomeFragment(email);
+    public void onUserLoginSucceeded(String msg) {
+        NavDirections action = cLoginFragmentDirections.
+                actionCLoginFragmentToCHomeFragment();
         Navigation.findNavController(requireView()).navigate(action);
     }
 
     @Override
     public void onUserLoginFailed(String msg) {
-
+        Log.d(TAG, msg);
     }
 
     @Override
@@ -154,8 +146,8 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
     }
 
     @Override
-    public void showError(String message) {
-
+    public void showError(String msg) {
+        Log.d(TAG, msg);
     }
 
     /* getters and setters */

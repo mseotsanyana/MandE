@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface iMenuRepository {
     void getMenuModels(long userID, int primaryRole, int secondaryRoles, int statusBITS,
+                         String organizationID, String currentUserID,
                          iMenuRepository.iReadMenuModelSetCallback callback);
 
     interface iReadMenuModelSetCallback{

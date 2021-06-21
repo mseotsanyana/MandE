@@ -3,7 +3,7 @@ package com.me.mseotsanyana.mande.BLL.model.session;
 import java.util.Date;
 
 public class cPlanModel {
-    private int planServerID;
+    private String planServerID;
 
     private String name;
     private String description;
@@ -19,11 +19,11 @@ public class cPlanModel {
     public cPlanModel(){
     }
 
-    public int getPlanServerID() {
+    public String getPlanServerID() {
         return planServerID;
     }
 
-    public void setPlanServerID(int planServerID) {
+    public void setPlanServerID(String planServerID) {
         this.planServerID = planServerID;
     }
 

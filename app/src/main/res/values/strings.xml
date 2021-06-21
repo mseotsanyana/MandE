@@ -88,6 +88,9 @@
 
     <!-- start common attributes -->
 
+
+
+
     <!-- the notification strings -->
     <string name="notification_name_caption">notification</string>
 
@@ -114,10 +117,15 @@
     <string name="user_sign_in">Sign In</string>
     <string name="user_forgot_password">Forgot Password?</string>
 
+    <string name="user_profile_image">Profile Image</string>
+    <string name="user_edit_profile">Edit Profile</string>
+    <string name="user_location">Location</string>
+
     <string name="user_list_title">Users</string>
-    <string name="user_profile">Profile : </string>
+    <string name="user_profile">Profile </string>
     <string name="user_hint_firstname">First Name</string>
     <string name="user_hint_lastname">Last Name</string>
+    <string name="user_hint_location">Location</string>
     <string name="user_hint_gender">I am</string>
     <string name="user_male">Male</string>
     <string name="user_female">Female</string>
@@ -184,6 +192,10 @@
 
     <!-- the organization strings -->
     <string name="organization_create_title">CREATE ORGANIZATION</string>
+
+    <!-- the team strings -->
+    <string name="team_name">team</string>
+    <string name="team_description">description</string>
 
     <!-- the Impact strings -->
     <string name="impact_list_title">List of Impacts</string>

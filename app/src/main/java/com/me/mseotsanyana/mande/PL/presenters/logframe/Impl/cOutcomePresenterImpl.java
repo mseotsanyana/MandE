@@ -5,7 +5,7 @@ import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.outcome.Impl.cReadOutcomeInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.outcome.iReadOutcomeInteractor;
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iOutcomeRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iOutcomePresenter;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
@@ -20,13 +20,13 @@ public class cOutcomePresenterImpl extends cAbstractPresenter implements iOutcom
     private static String TAG = cOutcomePresenterImpl.class.getSimpleName();
 
     private View view;
-    private iSessionManagerRepository sessionManagerRepository;
+    private iSharedPreferenceRepository sessionManagerRepository;
     private iOutcomeRepository outcomeRepository;
     private long logFrameID;
 
     public cOutcomePresenterImpl(iExecutor executor, iMainThread mainThread,
                                  View view,
-                                 iSessionManagerRepository sessionManagerRepository,
+                                 iSharedPreferenceRepository sessionManagerRepository,
                                  iOutcomeRepository outcomeRepository, long logFrameID) {
         super(executor, mainThread);
 

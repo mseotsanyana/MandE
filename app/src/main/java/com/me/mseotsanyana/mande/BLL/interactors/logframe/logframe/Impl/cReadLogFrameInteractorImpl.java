@@ -1,18 +1,14 @@
 package com.me.mseotsanyana.mande.BLL.interactors.logframe.logframe.Impl;
 
-import android.util.Log;
-
-import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.logframe.iReadLogFrameInteractor;
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iLogFrameRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iMenuRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
-import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
+import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.util.ArrayList;
@@ -29,7 +25,7 @@ public class cReadLogFrameInteractorImpl extends cAbstractInteractor
     private static String TAG = cReadLogFrameInteractorImpl.class.getSimpleName();
 
     private Callback callback;
-    private iSessionManagerRepository sessionManagerRepository;
+    private iSharedPreferenceRepository sessionManagerRepository;
     private iMenuRepository menuRepository;
     private iLogFrameRepository logFrameRepository;
     private long userID;
@@ -37,7 +33,7 @@ public class cReadLogFrameInteractorImpl extends cAbstractInteractor
             operationMenuBITS, statusMenuBITS, operationLogFrameBITS, statusLogFrameBITS;
 
     public cReadLogFrameInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,
-                                       iSessionManagerRepository sessionManagerRepository,
+                                       iSharedPreferenceRepository sessionManagerRepository,
                                        iMenuRepository menuRepository,
                                        iLogFrameRepository logFrameRepository,
                                        Callback callback) {
@@ -53,22 +49,22 @@ public class cReadLogFrameInteractorImpl extends cAbstractInteractor
         this.logFrameRepository = logFrameRepository;
         this.callback = callback;
 
-        /* common attributes */
-        this.userID = this.sessionManagerRepository.loadUserID();
-        this.primaryRoleBITS = this.sessionManagerRepository.loadPrimaryRoleBITS();
-        this.secondaryRoleBITS = this.sessionManagerRepository.loadSecondaryRoleBITS();
-
-        /* attributes related to MENU entity */
-        this.operationMenuBITS = this.sessionManagerRepository.loadOperationBITS(
-                cBitwise.MENU, cBitwise.SESSION_MODULE);
-        this.statusMenuBITS = this.sessionManagerRepository.loadStatusBITS(
-                cBitwise.MENU, cBitwise.SESSION_MODULE, cBitwise.READ);
-
-        /* attributes related to LOGFRAME entity */
-        this.operationLogFrameBITS = this.sessionManagerRepository.loadOperationBITS(
-                cBitwise.LOGFRAME, cBitwise.LOGFRAME_MODULE);
-        this.statusLogFrameBITS = this.sessionManagerRepository.loadStatusBITS(
-                cBitwise.LOGFRAME, cBitwise.LOGFRAME_MODULE, cBitwise.READ);
+//        /* common attributes */
+//        this.userID = this.sessionManagerRepository.loadUserID();
+//        this.primaryRoleBITS = this.sessionManagerRepository.loadPrimaryRoleBITS();
+//        this.secondaryRoleBITS = this.sessionManagerRepository.loadSecondaryRoleBITS();
+//
+//        /* attributes related to MENU entity */
+//        this.operationMenuBITS = this.sessionManagerRepository.loadOperationBITS(
+//                cBitwise.MENU, cBitwise.SESSION_MODULE);
+//        this.statusMenuBITS = this.sessionManagerRepository.loadStatusBITS(
+//                cBitwise.MENU, cBitwise.SESSION_MODULE, cBitwise.READ);
+//
+//        /* attributes related to LOGFRAME entity */
+//        this.operationLogFrameBITS = this.sessionManagerRepository.loadOperationBITS(
+//                cBitwise.LOGFRAME, cBitwise.LOGFRAME_MODULE);
+//        this.statusLogFrameBITS = this.sessionManagerRepository.loadStatusBITS(
+//                cBitwise.LOGFRAME, cBitwise.LOGFRAME_MODULE, cBitwise.READ);
     }
 
     /* */

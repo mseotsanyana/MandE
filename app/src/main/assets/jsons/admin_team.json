@@ -1,0 +1,8 @@
+{
+  "team":
+    {
+      "id": 1,
+      "name": "Default team",
+      "description": "Team of with all admin privileges of an organization"
+    }
+}

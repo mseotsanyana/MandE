@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.widget.TextView;
 
 import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
 import com.me.mseotsanyana.mande.PL.ui.listeners.logframe.iViewInputListener;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
@@ -48,7 +49,7 @@ public class cUserBodyView {
 
     private Context context;
     private iViewInputListener listener;
-    private cUserModel userModel;
+    private cUserProfileModel userProfileModel;
 
     private String name;
     private String surname;
@@ -57,14 +58,14 @@ public class cUserBodyView {
 
 
     public cUserBodyView(Context context, iViewInputListener listener,
-                         cUserModel userModel) {
+                         cUserProfileModel userProfileModel) {
         this.context = context;
         this.listener = listener;
-        this.userModel = userModel;
-        this.name = userModel.getName();
-        this.surname = userModel.getSurname();
-        this.phone = userModel.getPhone();
-        this.email = userModel.getEmail();
+        this.userProfileModel = userProfileModel;
+        this.name = userProfileModel.getName();
+        this.surname = userProfileModel.getSurname();
+        this.phone = userProfileModel.getPhone();
+        this.email = userProfileModel.getEmail();
     }
 
     @Resolve

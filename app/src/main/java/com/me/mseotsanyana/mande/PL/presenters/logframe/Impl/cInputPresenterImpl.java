@@ -9,17 +9,15 @@ import com.me.mseotsanyana.mande.BLL.model.wpb.cExpenseModel;
 import com.me.mseotsanyana.mande.BLL.model.wpb.cHumanModel;
 import com.me.mseotsanyana.mande.BLL.model.wpb.cIncomeModel;
 import com.me.mseotsanyana.mande.BLL.model.wpb.cMaterialModel;
-import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.BLL.repository.awpb.iExpenseRepository;
 import com.me.mseotsanyana.mande.BLL.repository.awpb.iHumanRepository;
 import com.me.mseotsanyana.mande.BLL.repository.awpb.iIncomeRepository;
 import com.me.mseotsanyana.mande.BLL.repository.awpb.iMaterialRepository;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iInputPresenter;
-import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class cInputPresenterImpl extends cAbstractPresenter implements iInputPresenter,
         iReadInputInteractor.Callback/*, iReadSharedOrgsInteractor.Callback,
@@ -29,7 +27,7 @@ public class cInputPresenterImpl extends cAbstractPresenter implements iInputPre
     private static String TAG = cInputPresenterImpl.class.getSimpleName();
 
     private View view;
-    private iSessionManagerRepository sessionManagerRepository;
+    private iSharedPreferenceRepository sessionManagerRepository;
     private iHumanRepository humanRepository;
     private iMaterialRepository materialRepository;
     private iIncomeRepository incomeRepository;
@@ -38,7 +36,7 @@ public class cInputPresenterImpl extends cAbstractPresenter implements iInputPre
 
     public cInputPresenterImpl(iExecutor executor, iMainThread mainThread,
                                View view,
-                               iSessionManagerRepository sessionManagerRepository,
+                               iSharedPreferenceRepository sessionManagerRepository,
                                iHumanRepository humanRepository,
                                iMaterialRepository materialRepository,
                                iIncomeRepository incomeRepository,

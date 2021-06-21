@@ -7,7 +7,6 @@ import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.input.iReadInputInteractor;
-import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
 import com.me.mseotsanyana.mande.BLL.repository.awpb.iExpenseRepository;
 import com.me.mseotsanyana.mande.BLL.repository.awpb.iHumanRepository;
 import com.me.mseotsanyana.mande.BLL.repository.awpb.iIncomeRepository;
@@ -20,12 +19,11 @@ import com.me.mseotsanyana.mande.BLL.model.wpb.cHumanModel;
 import com.me.mseotsanyana.mande.BLL.model.wpb.cIncomeModel;
 import com.me.mseotsanyana.mande.BLL.model.wpb.cJournalModel;
 import com.me.mseotsanyana.mande.BLL.model.wpb.cMaterialModel;
+import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 public class cReadInputInteractorImpl extends cAbstractInteractor
@@ -42,7 +40,7 @@ public class cReadInputInteractorImpl extends cAbstractInteractor
     private int primaryRoleBITS, secondaryRoleBITS, operationBITS, statusBITS;
 
     public cReadInputInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,
-                                    iSessionManagerRepository sessionManagerRepository,
+                                    iSharedPreferenceRepository sessionManagerRepository,
                                     iHumanRepository humanRepository,
                                     iMaterialRepository materialRepository,
                                     iIncomeRepository incomeRepository,
@@ -64,16 +62,16 @@ public class cReadInputInteractorImpl extends cAbstractInteractor
 
         this.logFrameID = logFrameID;
 
-        /* common attributes */
-        this.userID = sessionManagerRepository.loadUserID();
-        this.primaryRoleBITS = sessionManagerRepository.loadPrimaryRoleBITS();
-        this.secondaryRoleBITS = sessionManagerRepository.loadSecondaryRoleBITS();
-
-        /* attributes related to INPUT entity */
-        this.operationBITS = sessionManagerRepository.loadOperationBITS(
-                cBitwise.INPUT, cBitwise.LOGFRAME_MODULE);
-        this.statusBITS = sessionManagerRepository.loadStatusBITS(
-                cBitwise.INPUT, cBitwise.LOGFRAME_MODULE, cBitwise.READ);
+//        /* common attributes */
+//        this.userID = sessionManagerRepository.loadUserID();
+//        this.primaryRoleBITS = sessionManagerRepository.loadPrimaryRoleBITS();
+//        this.secondaryRoleBITS = sessionManagerRepository.loadSecondaryRoleBITS();
+//
+//        /* attributes related to INPUT entity */
+//        this.operationBITS = sessionManagerRepository.loadOperationBITS(
+//                cBitwise.INPUT, cBitwise.LOGFRAME_MODULE);
+//        this.statusBITS = sessionManagerRepository.loadStatusBITS(
+//                cBitwise.INPUT, cBitwise.LOGFRAME_MODULE, cBitwise.READ);
     }
 
     /* */

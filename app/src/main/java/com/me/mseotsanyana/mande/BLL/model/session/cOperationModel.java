@@ -8,8 +8,8 @@ import java.util.Objects;
  */
 
 public class cOperationModel {
-    private int operationID;
-    private int serverID;
+    private int operationServerID;
+
     private int ownerID;
     private int orgID;
     private int groupBITS;
@@ -24,8 +24,8 @@ public class cOperationModel {
     public cOperationModel(){}
 
     public cOperationModel(cOperationModel operationModel){
-        this.setOperationID(operationModel.getOperationID());
-        this.setServerID(operationModel.getServerID());
+        this.setOperationServerID(operationModel.getOperationServerID());
+        //this.setServerID(operationModel.getServerID());
         this.setOwnerID(operationModel.getOwnerID());
         this.setOrgID(operationModel.getOrgID());
         this.setGroupBITS(operationModel.getGroupBITS());
@@ -38,20 +38,12 @@ public class cOperationModel {
         this.setSyncedDate(operationModel.getSyncedDate());
     }
 
-    public int getOperationID() {
-        return operationID;
+    public int getOperationServerID() {
+        return operationServerID;
     }
 
-    public void setOperationID(int operationID) {
-        this.operationID = operationID;
-    }
-
-    public int getServerID() {
-        return serverID;
-    }
-
-    public void setServerID(int serverID) {
-        this.serverID = serverID;
+    public void setOperationServerID(int operationServerID) {
+        this.operationServerID = operationServerID;
     }
 
     public int getOwnerID() {
@@ -139,8 +131,7 @@ public class cOperationModel {
         if (this == o) return true;
         if (!(o instanceof cOperationModel)) return false;
         cOperationModel that = (cOperationModel) o;
-        return getOperationID() == that.getOperationID() &&
-                getServerID() == that.getServerID() &&
+        return getOperationServerID() == that.getOperationServerID() &&
                 getOwnerID() == that.getOwnerID() &&
                 getOrgID() == that.getOrgID() &&
                 getGroupBITS() == that.getGroupBITS() &&
@@ -155,7 +146,7 @@ public class cOperationModel {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getOperationID(), getServerID(), getOwnerID(),
+        return Objects.hash(getOperationServerID(), getOwnerID(),
                 getOrgID(), getGroupBITS(), getPermsBITS(), getStatusBITS(),
                 getName(), getDescription(), getCreatedDate(), getModifiedDate(),
                 getSyncedDate());

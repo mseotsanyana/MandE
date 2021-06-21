@@ -1,0 +1,84 @@
+{
+  "unixperms": [
+    {
+      "entity": "USER",
+      "entity_id": 1,
+      "module_id": 1,
+      "unixoperations": [
+        {"ops_id": 256}, {"ops_id": 128 }, {"ops_id": 64}, {"ops_id": 32}, {"ops_id": 16 }, {"ops_id": 8}, {"ops_id": 4}, {"ops_id": 2}, {"ops_id": 1}
+      ]
+    },
+    {
+      "entity": "SESSION",
+      "entity_id": 2,
+      "module_id": 1,
+      "unixoperations": [
+        {"ops_id": 256}, {"ops_id": 128 }, {"ops_id": 64}, {"ops_id": 32}, {"ops_id": 16 }, {"ops_id": 8}, {"ops_id": 4}, {"ops_id": 2}, {"ops_id": 1}
+      ]
+    },
+    {
+      "entity": "ORGANIZATION",
+      "entity_id": 4,
+      "module_id": 1,
+      "unixoperations": [
+        {"ops_id": 256}, {"ops_id": 128 }, {"ops_id": 64}, {"ops_id": 32}, {"ops_id": 16 }, {"ops_id": 8}, {"ops_id": 4}, {"ops_id": 2}, {"ops_id": 1}
+      ]
+    },
+    {
+      "entity": "ADDRESS",
+      "entity_id": 8,
+      "module_id": 1,
+      "unixoperations": [
+        {"ops_id": 256}, {"ops_id": 128 }, {"ops_id": 64}, {"ops_id": 32}, {"ops_id": 16 }, {"ops_id": 8}, {"ops_id": 4}, {"ops_id": 2}, {"ops_id": 1}
+      ]
+    },
+    {
+      "entity": "EMAIL",
+      "entity_id": 16,
+      "module_id": 1,
+      "unixoperations": [
+        {"ops_id": 256}, {"ops_id": 128 }, {"ops_id": 64}, {"ops_id": 32}, {"ops_id": 16 }, {"ops_id": 8}, {"ops_id": 4}, {"ops_id": 2}, {"ops_id": 1}
+      ]
+    },
+    {
+      "entity": "TEAM",
+      "entity_id": 32,
+      "module_id": 1,
+      "unixoperations": [
+        {"ops_id": 256}, {"ops_id": 128 }, {"ops_id": 64}, {"ops_id": 32}, {"ops_id": 16 }, {"ops_id": 8}, {"ops_id": 4}, {"ops_id": 2}, {"ops_id": 1}
+      ]
+    },
+    {
+      "entity": "ROLE",
+      "entity_id": 64,
+      "module_id": 1,
+      "unixoperations": [
+        {"ops_id": 256}, {"ops_id": 128 }, {"ops_id": 64}, {"ops_id": 32}, {"ops_id": 16 }, {"ops_id": 8}, {"ops_id": 4}, {"ops_id": 2}, {"ops_id": 1}
+      ]
+    },
+    {
+      "entity": "PLAN",
+      "entity_id": 128,
+      "module_id": 1,
+      "unixoperations": [
+        {"ops_id": 256}, {"ops_id": 128 }, {"ops_id": 64}, {"ops_id": 32}, {"ops_id": 16 }, {"ops_id": 8}, {"ops_id": 4}, {"ops_id": 2}, {"ops_id": 1}
+      ]
+    },
+    {
+      "module_id": 1,
+      "entity_id": 256,
+      "entity": "FEATURE",
+      "unixoperations": [
+        {"ops_id": 256}, {"ops_id": 128 }, {"ops_id": 64}, {"ops_id": 32}, {"ops_id": 16 }, {"ops_id": 8}, {"ops_id": 4}, {"ops_id": 2}, {"ops_id": 1}
+      ]
+    },
+    {
+      "module_id": 1,
+      "entity_id": 512,
+      "entity": "MENU",
+      "unixoperations": [
+        {"ops_id": 256}, {"ops_id": 128 }, {"ops_id": 64}, {"ops_id": 32}, {"ops_id": 16 }, {"ops_id": 8}, {"ops_id": 4}, {"ops_id": 2}, {"ops_id": 1}
+      ]
+    }
+  ]
+}

@@ -627,7 +627,7 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
                         ", STATUS ID = "+permissionDomains.get(i).getStatusDomain().getStatusID());
                 */
 
-                permissionDomain = new cPermissionModel(permissionDomains.get(i));
+//                permissionDomain = new cPermissionModel(permissionDomains.get(i));
 
                 return permissionDomain;
             }

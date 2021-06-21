@@ -1,66 +1,57 @@
 package com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl;
 
-import android.util.Log;
-
-import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.session.user.iUserLoginInteractor;
-import com.me.mseotsanyana.mande.BLL.repository.session.iOrganizationRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iRoleRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iStatusRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iUserRepository;
-import com.me.mseotsanyana.mande.BLL.model.session.cPermissionModel;
-import com.me.mseotsanyana.mande.BLL.model.session.cRoleModel;
-import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
-import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
+import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
+import com.me.mseotsanyana.mande.BLL.repository.session.iPrivilegeRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iUserProfileRepository;
+import com.me.mseotsanyana.mande.DAL.storage.preference.cSharedPreference;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUserLoginInteractor {
-    private static String TAG = cUserLoginInteractorImpl.class.getSimpleName();
-
     private final Callback callback;
-    private final iUserRepository userRepository;
-    private final iOrganizationRepository organizationRepository;
-    private final iRoleRepository roleRepository;
-    private final iStatusRepository statusRepository;
-    private final iSessionManagerRepository sessionManagerRepository;
+    private final iSharedPreferenceRepository sharedPreferenceRepository;
+    private final iPrivilegeRepository privilegeRepository;
+    private final iUserProfileRepository userProfileRepository;
+
 
     private final String email;
     private final String password;
 
-    Gson gson = new Gson();
-
-    public cUserLoginInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,
-                                    iUserRepository userRepository,
-                                    iOrganizationRepository organizationRepository,
-                                    iRoleRepository roleRepository,
-                                    iStatusRepository statusRepository,
-                                    iSessionManagerRepository sessionManagerRepository,
-                                    Callback callback,
+    public cUserLoginInteractorImpl(iExecutor threadExecutor, iMainThread mainThread, Callback callback,
+                                    iSharedPreferenceRepository sharedPreferenceRepository,
+                                    iPrivilegeRepository privilegeRepository,
+                                    iUserProfileRepository userProfileRepository,
                                     String email, String password) {
         super(threadExecutor, mainThread);
 
-        if (userRepository == null || callback == null) {
+        if (privilegeRepository == null || sharedPreferenceRepository == null ||
+                userProfileRepository == null || callback == null) {
             throw new IllegalArgumentException("Arguments can not be null!");
         }
 
-        this.sessionManagerRepository = sessionManagerRepository;
-        this.userRepository = userRepository;
-        this.organizationRepository = organizationRepository;
-        this.roleRepository = roleRepository;
-        this.statusRepository = statusRepository;
+        // callback to send data messages to the presentation layer
         this.callback = callback;
+        // repository interface for shared preferences
+        this.sharedPreferenceRepository = sharedPreferenceRepository;
+        // repository interface for loggedIn privileges
+        this.privilegeRepository = privilegeRepository;
+        // repository interface for user profile - menu, user account
+        this.userProfileRepository = userProfileRepository;
 
         this.email = email;
         this.password = password;
     }
 
-    /* */
+    /**
+     * communicate error message to the presentation layer
+     *
+     * @param msg error message
+     */
     private void notifyError(String msg) {
         mainThread.post(new Runnable() {
             @Override
@@ -70,91 +61,125 @@ public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUs
         });
     }
 
-    /* */
-    private void postMessage(cUserModel userModel) {
+    /**
+     * communicate login communication message to the
+     * presentation layer
+     *
+     * @param msg success message
+     */
+    private void postMessage(String msg) {
         mainThread.post(new Runnable() {
             @Override
             public void run() {
-                callback.onUserLoginSucceeded(userModel);
+                callback.onUserLoginSucceeded(msg);
+            }
+        });
+    }
+
+    /**
+     * delete old and save new user privileges of the loggedIn user
+     */
+    private void saveUserPrivileges(String msg) {
+        this.privilegeRepository.saveUserPrivileges(new iPrivilegeRepository.iSaveUserPrivilegesCallback() {
+            @Override
+            public void onSaveUserPrivilegesSucceeded(String privilegeMessage) {
+                postMessage(msg);
+            }
+
+            @Override
+            public void onSaveUserPrivilegesFailed(String privilegeMessage) {
+                notifyError("Failure:" + privilegeMessage);
+            }
+
+            @Override
+            public void onSaveOwnerID(String ownerServerID) {
+                sharedPreferenceRepository.updateStringSetting(cSharedPreference.KEY_USER_ID,
+                        ownerServerID);
+                sharedPreferenceRepository.commitSettings();
+            }
+
+            @Override
+            public void onSaveOrganizationServerID(String organizationServerID) {
+                sharedPreferenceRepository.updateStringSetting(cSharedPreference.KEY_ORG_ID,
+                        organizationServerID);
+                sharedPreferenceRepository.commitSettings();
+            }
+
+            @Override
+            public void onSavePrimaryTeamBIT(int primaryTeamBIT) {
+                sharedPreferenceRepository.updateIntSetting(cSharedPreference.KEY_PRIMARY_TEAM_BIT,
+                        primaryTeamBIT);
+                sharedPreferenceRepository.commitSettings();
+            }
+
+            @Override
+            public void onSaveSecondaryTeamBITS(int secondaryTeamBITS) {
+                sharedPreferenceRepository.updateIntSetting(cSharedPreference.KEY_SECONDARY_TEAM_BITS,
+                        secondaryTeamBITS);
+                sharedPreferenceRepository.commitSettings();
+            }
+
+            @Override
+            public void onSaveEntityBITS(String moduleKey, int entityBITS) {
+                sharedPreferenceRepository.updateIntSetting(
+                        cSharedPreference.KEY_MODULE_ENTITY_BITS + "-" + moduleKey,
+                        entityBITS);
+                sharedPreferenceRepository.commitSettings();
+            }
+
+            @Override
+            public void onSaveOperationBITS(String moduleKey, String entityKey, int operationBITS) {
+                sharedPreferenceRepository.updateIntSetting(
+                        cSharedPreference.KEY_ENTITY_OPERATION_BITS + "-" + moduleKey + "-" + entityKey,
+                        operationBITS);
+                sharedPreferenceRepository.commitSettings();
+            }
+
+            @Override
+            public void onSaveStatusBITS(String moduleKey, String entityKey, String operationKey,
+                                         List<Integer> statuses) {
+                sharedPreferenceRepository.updateListIntegerSetting(
+                        cSharedPreference.KEY_OPERATION_STATUS_BITS + "-" + moduleKey + "-" + entityKey + "-" +
+                                operationKey, statuses);
+                sharedPreferenceRepository.commitSettings();
+            }
+
+            @Override
+            public void onSaveUnixPermBITS(String moduleKey, String entityKey, int unixpermBITS) {
+                sharedPreferenceRepository.updateIntSetting(
+                        cSharedPreference.KEY_UNIX_PERM_BITS + "-" + moduleKey + "-" + entityKey,
+                        unixpermBITS);
+                sharedPreferenceRepository.commitSettings();
+            }
+
+            @Override
+            public void onSaveMenuItems(List<cMenuModel> menuModels) {
+                sharedPreferenceRepository.updateMenuItems(
+                        cSharedPreference.KEY_MENU_ITEM_BITS, menuModels);
+                sharedPreferenceRepository.commitSettings();
+            }
+
+            @Override
+            public void onClearPreferences() {
+                sharedPreferenceRepository.deleteSettings();
             }
         });
     }
 
     @Override
     public void run() {
-        userRepository.signInWithEmailAndPassword(email, password, new iUserRepository.iSignInRepositoryCallback() {
-            @Override
-            public void onSignInSucceeded(cUserModel userModel) {
-                if (userModel == null) {
-                    postMessage(userModel);
-                }else {
-                    notifyError("Login failed since there are no privileges assigned !!");
-                }
-            }
 
-            @Override
-            public void onSignInFailed(String msg) {
-                notifyError(msg);
-            }
-        });
+        userProfileRepository.signInWithEmailAndPassword(email, password,
+                new iUserProfileRepository.iSignInRepositoryCallback() {
+                    @Override
+                    public void onSignInSucceeded(String msg) {
+                        saveUserPrivileges(msg);
+                    }
 
-
-
-        /* get the logged in user */
-        cUserModel userModel = userRepository.getUserByEmailPassword(email, password);
-
-        //userRepository.createUserByEmailAndPassword(email, password,null);
-        Gson gson = new Gson();
-        Log.d(TAG,"USER MODEL: "+gson.toJson(userModel));
-
-
-        if (userModel != null) {
-            if (!userModel.getRoleModelSet().isEmpty()) {
-                /* delete all shared preferences */
-                sessionManagerRepository.deleteSettings();
-
-                /* save user/owner ID */
-                sessionManagerRepository.saveUserID(userModel.getUserID());
-                /* save owner organization ID */
-                sessionManagerRepository.saveOrganizationID(userModel.getOrganizationID());
-                /* compute and save user primary role bits */
-                sessionManagerRepository.savePrimaryRoleBITS(userModel);
-                /* compute and save user secondary role bits */
-                sessionManagerRepository.saveSecondaryRoleBITS(userModel);
-                /* save default permission bits */
-                sessionManagerRepository.saveDefaultPermsBITS(cBitwise.OWNER);
-                /* set default status bits */
-                sessionManagerRepository.saveDefaultStatusBITS(cBitwise.ACTIVATED);
-
-                /* compute and save entity, operation and statuses bits for the user */
-                Set<cPermissionModel> permissionModelSet = new HashSet<>();
-                for (cRoleModel roleModel : userModel.getRoleModelSet()) {
-                    Set<cPermissionModel> permissionSet = null;//roleRepository.getPermissionSetByRoleID(roleModel.getRoleID(), 0/*roleModel.getOrganizationID()*/);
-                    permissionModelSet.addAll(permissionSet);
-                }
-
-                if (!permissionModelSet.isEmpty()) {
-                    sessionManagerRepository.savePermissionBITS(permissionModelSet);
-                    /* compute and save the status and role sets */
-                    sessionManagerRepository.saveStatusSet(statusRepository.getStatusSet());
-                    sessionManagerRepository.saveRoleSet(roleRepository.getRoleModelSet());
-                    /* save the individual and organization owners */
-                    sessionManagerRepository.saveIndividualOwners(userRepository.getOwnerSet());
-                    sessionManagerRepository.saveOrganizationOwners(
-                            organizationRepository.getOrganizationSet());
-
-                    /* save the shared preferences */
-                    sessionManagerRepository.commitSettings();
-                } else {
-                    notifyError("Login failed since there are no roles assigned !!");
-                }
-
-                postMessage(userModel);
-            } else {
-                notifyError("Login failed since there are no privileges assigned !!");
-            }
-        } else {
-            notifyError("Login failed due to invalid user login details !!");
-        }
+                    @Override
+                    public void onSignInFailed(String msg) {
+                        notifyError(msg);
+                    }
+                });
     }
 }

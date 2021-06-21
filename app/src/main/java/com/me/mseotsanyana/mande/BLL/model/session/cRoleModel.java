@@ -3,8 +3,11 @@ package com.me.mseotsanyana.mande.BLL.model.session;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.firestore.Exclude;
+
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -14,13 +17,11 @@ import java.util.Set;
 
 public class cRoleModel implements Parcelable {
     private String roleServerID;
-    private int planServerID;
-    private String orgServerID;
 
     private String ownerID;
     private String orgOwnerID;
     private int teamOwnerBIT;
-    private int unixpermsBITS;
+    private List<Integer> unixpermsBITS;
     private int statusesBITS;
 
     private String name;
@@ -28,6 +29,7 @@ public class cRoleModel implements Parcelable {
 
     private Date createdDate;
     private Date modifiedDate;
+
     private Date syncedDate;
 
     private cOrganizationModel organizationModel;
@@ -43,6 +45,20 @@ public class cRoleModel implements Parcelable {
         //menuModelSet    = new HashSet<>();
     }
 
+    public cRoleModel(cRoleModel roleModel){
+        this.roleServerID = roleModel.getRoleServerID();
+
+        this.ownerID = roleModel.getOwnerID();
+        this.orgOwnerID = roleModel.getOrgOwnerID();
+        this.teamOwnerBIT = roleModel.getTeamOwnerBIT();
+        //this.unixpermsBITS = roleModel.getUnixpermsBITS();
+        this.statusesBITS = roleModel.getStatusesBITS();
+
+        this.name = roleModel.getName();
+        this.description = roleModel.getDescription();
+    }
+
+    @Exclude
     public String getRoleServerID() {
         return roleServerID;
     }
@@ -51,21 +67,6 @@ public class cRoleModel implements Parcelable {
         this.roleServerID = roleServerID;
     }
 
-    public int getPlanServerID() {
-        return planServerID;
-    }
-
-    public void setPlanServerID(int planServerID) {
-        this.planServerID = planServerID;
-    }
-
-    public String getOrgServerID() {
-        return orgServerID;
-    }
-
-    public void setOrgServerID(String orgServerID) {
-        this.orgServerID = orgServerID;
-    }
 
     public String getOwnerID() {
         return ownerID;
@@ -91,11 +92,11 @@ public class cRoleModel implements Parcelable {
         this.teamOwnerBIT = teamOwnerBIT;
     }
 
-    public int getUnixpermsBITS() {
+    public List<Integer> getUnixpermsBITS() {
         return unixpermsBITS;
     }
 
-    public void setUnixpermsBITS(int unixpermsBITS) {
+    public void setUnixpermsBITS(List<Integer> unixpermsBITS) {
         this.unixpermsBITS = unixpermsBITS;
     }
 
@@ -139,6 +140,7 @@ public class cRoleModel implements Parcelable {
         this.modifiedDate = modifiedDate;
     }
 
+    @Exclude
     public Date getSyncedDate() {
         return syncedDate;
     }
@@ -147,6 +149,7 @@ public class cRoleModel implements Parcelable {
         this.syncedDate = syncedDate;
     }
 
+    @Exclude
     public cOrganizationModel getOrganizationModel() {
         return organizationModel;
     }
@@ -155,6 +158,7 @@ public class cRoleModel implements Parcelable {
         this.organizationModel = organizationModel;
     }
 
+    @Exclude
     public Set<cUserModel> getUserModelSet() {
         return userModelSet;
     }
@@ -163,6 +167,7 @@ public class cRoleModel implements Parcelable {
         this.userModelSet = userModelSet;
     }
 
+    @Exclude
     public Set<cSessionModel> getSessionModelSet() {
         return sessionModelSet;
     }
@@ -171,6 +176,7 @@ public class cRoleModel implements Parcelable {
         this.sessionModelSet = sessionModelSet;
     }
 
+    @Exclude
     public Set<cPermissionModel> getPermissionModelSet() {
         return permissionModelSet;
     }
@@ -179,6 +185,7 @@ public class cRoleModel implements Parcelable {
         this.permissionModelSet = permissionModelSet;
     }
 
+    @Exclude
     public Set<cMenuModel> getMenuModelSet() {
         return menuModelSet;
     }
@@ -189,12 +196,10 @@ public class cRoleModel implements Parcelable {
 
     protected cRoleModel(Parcel in) {
         roleServerID = in.readString();
-        planServerID = in.readInt();
-        orgServerID = in.readString();
         ownerID = in.readString();
         orgOwnerID = in.readString();
         teamOwnerBIT = in.readInt();
-        unixpermsBITS = in.readInt();
+        //unixpermsBITS = in.readInt();
         statusesBITS = in.readInt();
         name = in.readString();
         description = in.readString();
@@ -204,12 +209,10 @@ public class cRoleModel implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(roleServerID);
-        dest.writeInt(planServerID);
-        dest.writeString(orgServerID);
         dest.writeString(ownerID);
         dest.writeString(orgOwnerID);
         dest.writeInt(teamOwnerBIT);
-        dest.writeInt(unixpermsBITS);
+        //dest.writeInt(unixpermsBITS);
         dest.writeInt(statusesBITS);
         dest.writeString(name);
         dest.writeString(description);

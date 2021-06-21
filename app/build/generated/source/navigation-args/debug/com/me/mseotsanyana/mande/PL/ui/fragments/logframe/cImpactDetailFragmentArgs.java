@@ -20,6 +20,7 @@ public class cImpactDetailFragmentArgs implements NavArgs {
   private cImpactDetailFragmentArgs() {
   }
 
+  @SuppressWarnings("unchecked")
   private cImpactDetailFragmentArgs(HashMap argumentsMap) {
     this.arguments.putAll(argumentsMap);
   }
@@ -134,10 +135,12 @@ public class cImpactDetailFragmentArgs implements NavArgs {
   public static class Builder {
     private final HashMap arguments = new HashMap();
 
+    @SuppressWarnings("unchecked")
     public Builder(cImpactDetailFragmentArgs original) {
       this.arguments.putAll(original.arguments);
     }
 
+    @SuppressWarnings("unchecked")
     public Builder(@NonNull cOutcomeModel[] outcomeModels,
         @NonNull cQuestionModel[] questionModels) {
       if (outcomeModels == null) {
@@ -157,6 +160,7 @@ public class cImpactDetailFragmentArgs implements NavArgs {
     }
 
     @NonNull
+    @SuppressWarnings("unchecked")
     public Builder setOutcomeModels(@NonNull cOutcomeModel[] outcomeModels) {
       if (outcomeModels == null) {
         throw new IllegalArgumentException("Argument \"outcomeModels\" is marked as non-null but was passed a null value.");
@@ -166,6 +170,7 @@ public class cImpactDetailFragmentArgs implements NavArgs {
     }
 
     @NonNull
+    @SuppressWarnings("unchecked")
     public Builder setQuestionModels(@NonNull cQuestionModel[] questionModels) {
       if (questionModels == null) {
         throw new IllegalArgumentException("Argument \"questionModels\" is marked as non-null but was passed a null value.");

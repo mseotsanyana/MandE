@@ -1,0 +1,111 @@
+<html>
+<head>
+<title>cReadMenuItemsInteractorImpl.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #0033b3;}
+.s1 { color: #080808;}
+.s2 { color: #8c8c8c; font-style: italic;}
+.s3 { color: #067d17;}
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+cReadMenuItemsInteractorImpl.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.me.mseotsanyana.mande.BLL.interactors.session.menu.Impl;</span>
+
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.executor.iExecutor;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.executor.iMainThread;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.interactors.session.menu.iReadMenuItemsInteractor;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.repository.session.iMenuRepository;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferencesRepository;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;</span>
+
+<span class="s0">import </span><span class="s1">java.util.List;</span>
+
+<span class="s0">public class </span><span class="s1">cReadMenuItemsInteractorImpl </span><span class="s0">extends </span><span class="s1">cAbstractInteractor</span>
+        <span class="s0">implements </span><span class="s1">iReadMenuItemsInteractor {</span>
+    <span class="s0">private static </span><span class="s1">String TAG = cReadMenuItemsInteractorImpl.</span><span class="s0">class</span><span class="s1">.getSimpleName();</span>
+
+    <span class="s0">private final </span><span class="s1">Callback callback;</span>
+    <span class="s0">private </span><span class="s1">iSharedPreferencesRepository sessionManagerRepository;</span>
+    <span class="s0">private final </span><span class="s1">iMenuRepository menuRepository;</span>
+    <span class="s0">private final long </span><span class="s1">userID;</span>
+    <span class="s0">private final int </span><span class="s1">primaryRoleBITS;</span>
+    <span class="s0">private final int </span><span class="s1">secondaryRoleBITS;</span>
+    <span class="s0">private final int </span><span class="s1">operationMenuBITS;</span>
+    <span class="s0">private final int </span><span class="s1">statusMenuBITS;</span>
+
+    <span class="s0">private </span><span class="s1">String organizationID;</span><span class="s2">// = &quot;-MXhsXL576t4oWtytAUZ&quot;;</span>
+    <span class="s0">private </span><span class="s1">String currentUserID;</span><span class="s2">// = &quot;U536MGessQYpMdPsPZDttHavUD73&quot;;</span>
+
+    <span class="s0">public </span><span class="s1">cReadMenuItemsInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,</span>
+                                        <span class="s1">iSharedPreferencesRepository sessionManagerRepository,</span>
+                                        <span class="s1">iMenuRepository menuRepository,</span>
+                                        <span class="s1">Callback callback) {</span>
+        <span class="s0">super</span><span class="s1">(threadExecutor, mainThread);</span>
+
+        <span class="s0">if </span><span class="s1">(sessionManagerRepository == </span><span class="s0">null </span><span class="s1">|| menuRepository == </span><span class="s0">null </span><span class="s1">|| callback == </span><span class="s0">null</span><span class="s1">) {</span>
+            <span class="s0">throw new </span><span class="s1">IllegalArgumentException(</span><span class="s3">&quot;Arguments can not be null!&quot;</span><span class="s1">);</span>
+        <span class="s1">}</span>
+
+        <span class="s0">this</span><span class="s1">.sessionManagerRepository = sessionManagerRepository;</span>
+        <span class="s0">this</span><span class="s1">.menuRepository = menuRepository;</span>
+        <span class="s0">this</span><span class="s1">.callback = callback;</span>
+
+        <span class="s2">/* common attributes */</span>
+        <span class="s0">this</span><span class="s1">.userID = </span><span class="s0">this</span><span class="s1">.sessionManagerRepository.loadUserID();</span>
+        <span class="s0">this</span><span class="s1">.primaryRoleBITS = </span><span class="s0">this</span><span class="s1">.sessionManagerRepository.loadPrimaryRoleBITS();</span>
+        <span class="s0">this</span><span class="s1">.secondaryRoleBITS = </span><span class="s0">this</span><span class="s1">.sessionManagerRepository.loadSecondaryRoleBITS();</span>
+
+        <span class="s2">/* attributes related to MENU entity */</span>
+        <span class="s0">this</span><span class="s1">.operationMenuBITS = </span><span class="s0">this</span><span class="s1">.sessionManagerRepository.loadOperationBITS(</span>
+                <span class="s1">cBitwise.MENU, cBitwise.SESSION_MODULE);</span>
+        <span class="s0">this</span><span class="s1">.statusMenuBITS = </span><span class="s0">this</span><span class="s1">.sessionManagerRepository.loadStatusBITS(</span>
+                <span class="s1">cBitwise.MENU, cBitwise.SESSION_MODULE, cBitwise.READ);</span>
+
+    <span class="s1">}</span>
+
+    <span class="s2">/* */</span>
+    <span class="s0">private void </span><span class="s1">notifyError(String msg) {</span>
+        <span class="s1">mainThread.post(</span><span class="s0">new </span><span class="s1">Runnable() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">run() {</span>
+                <span class="s1">callback.onReadMenuItemsFailed(msg);</span>
+            <span class="s1">}</span>
+        <span class="s1">});</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/* */</span>
+    <span class="s0">private void </span><span class="s1">postMessage(List&lt;cMenuModel&gt; menuModelSet) {</span>
+        <span class="s1">mainThread.post(</span><span class="s0">new </span><span class="s1">Runnable() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">run() {</span>
+                <span class="s1">callback.onReadMenuItemsSucceeded(menuModelSet);</span>
+            <span class="s1">}</span>
+        <span class="s1">});</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">run() {</span>
+        <span class="s0">this</span><span class="s1">.menuRepository.getMenuModels(userID, primaryRoleBITS, secondaryRoleBITS, statusMenuBITS,</span>
+                <span class="s1">organizationID, currentUserID, </span><span class="s0">new </span><span class="s1">iMenuRepository.iReadMenuModelSetCallback() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onReadMenuSucceeded(List&lt;cMenuModel&gt; menuModels) {</span>
+                <span class="s1">postMessage(menuModels);</span>
+            <span class="s1">}</span>
+
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onReadMenuFailed(String msg) {</span>
+                <span class="s1">notifyError(msg);</span>
+            <span class="s1">}</span>
+        <span class="s1">});</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

@@ -2,18 +2,13 @@ package com.me.mseotsanyana.mande.PL.presenters.logframe.Impl;
 
 import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
-import com.me.mseotsanyana.mande.BLL.interactors.logframe.output.Impl.cReadOutputInteractorImpl;
-import com.me.mseotsanyana.mande.BLL.interactors.logframe.output.iReadOutputInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.question.Impl.cReadQuestionInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.question.iReadQuestionInteractor;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel;
-import com.me.mseotsanyana.mande.BLL.repository.logframe.iOutputRepository;
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iQuestionRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
-import com.me.mseotsanyana.mande.PL.presenters.logframe.iOutputPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iQuestionPresenter;
-import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.util.ArrayList;
 
@@ -25,13 +20,13 @@ public class cQuestionPresenterImpl extends cAbstractPresenter implements iQuest
     private static String TAG = cQuestionPresenterImpl.class.getSimpleName();
 
     private View view;
-    private iSessionManagerRepository sessionManagerRepository;
+    private iSharedPreferenceRepository sessionManagerRepository;
     private iQuestionRepository questionRepository;
     private long logFrameID;
 
     public cQuestionPresenterImpl(iExecutor executor, iMainThread mainThread,
                                   View view,
-                                  iSessionManagerRepository sessionManagerRepository,
+                                  iSharedPreferenceRepository sessionManagerRepository,
                                   iQuestionRepository questionRepository, long logFrameID) {
         super(executor, mainThread);
 

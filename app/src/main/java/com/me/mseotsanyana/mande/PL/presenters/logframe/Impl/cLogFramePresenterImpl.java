@@ -18,7 +18,7 @@ import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cRead
 import com.me.mseotsanyana.mande.BLL.interactors.session.organization.iReadSharedOrgsInteractor;
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iLogFrameRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iMenuRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
@@ -37,7 +37,7 @@ public class cLogFramePresenterImpl extends cAbstractPresenter implements iLogFr
     private static String TAG = cLogFramePresenterImpl.class.getSimpleName();
 
     private View view;
-    private iSessionManagerRepository sessionManagerRepository;
+    private iSharedPreferenceRepository sessionManagerRepository;
     private iMenuRepository menuRepository;
     private iLogFrameRepository logFrameRepository;
 
@@ -45,7 +45,7 @@ public class cLogFramePresenterImpl extends cAbstractPresenter implements iLogFr
 
     public cLogFramePresenterImpl(iExecutor executor, iMainThread mainThread,
                                   View view,
-                                  iSessionManagerRepository sessionManagerRepository,
+                                  iSharedPreferenceRepository sessionManagerRepository,
                                   iMenuRepository menuRepository,
                                   iLogFrameRepository logFrameRepository) {
         super(executor, mainThread);

@@ -8,11 +8,8 @@ import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.activity.iReadActivityInteractor;
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iActivityRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cActivityModel;
-import com.me.mseotsanyana.mande.BLL.model.logframe.cOutputModel;
-import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel;
-import com.me.mseotsanyana.mande.BLL.model.logframe.cRaidModel;
+import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
@@ -31,7 +28,7 @@ public class cReadActivityInteractorImpl extends cAbstractInteractor
     private String logFrameName;
 
     public cReadActivityInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,
-                                       iSessionManagerRepository sessionManagerRepository,
+                                       iSharedPreferenceRepository sessionManagerRepository,
                                        iActivityRepository activityRepository,
                                        Callback callback, long logFrameID) {
         super(threadExecutor, mainThread);
@@ -45,16 +42,16 @@ public class cReadActivityInteractorImpl extends cAbstractInteractor
 
         this.logFrameID = logFrameID;
 
-        /* common attributes */
-        this.userID = sessionManagerRepository.loadUserID();
-        this.primaryRoleBITS = sessionManagerRepository.loadPrimaryRoleBITS();
-        this.secondaryRoleBITS = sessionManagerRepository.loadSecondaryRoleBITS();
-
-        /* attributes related to ACTIVITY entity */
-        this.operationBITS = sessionManagerRepository.loadOperationBITS(
-                cBitwise.ACTIVITY, cBitwise.LOGFRAME_MODULE);
-        this.statusBITS = sessionManagerRepository.loadStatusBITS(
-                cBitwise.ACTIVITY, cBitwise.LOGFRAME_MODULE, cBitwise.READ);
+//        /* common attributes */
+//        this.userID = sessionManagerRepository.loadUserID();
+//        this.primaryRoleBITS = sessionManagerRepository.loadPrimaryRoleBITS();
+//        this.secondaryRoleBITS = sessionManagerRepository.loadSecondaryRoleBITS();
+//
+//        /* attributes related to ACTIVITY entity */
+//        this.operationBITS = sessionManagerRepository.loadOperationBITS(
+//                cBitwise.ACTIVITY, cBitwise.LOGFRAME_MODULE);
+//        this.statusBITS = sessionManagerRepository.loadStatusBITS(
+//                cBitwise.ACTIVITY, cBitwise.LOGFRAME_MODULE, cBitwise.READ);
     }
 
     /* */

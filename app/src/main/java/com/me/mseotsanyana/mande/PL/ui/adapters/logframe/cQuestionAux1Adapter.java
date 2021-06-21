@@ -281,12 +281,12 @@ public class cQuestionAux1Adapter extends cTreeAdapter {
                             if (i == 0) {
                                 HCH.resourcesPlaceholderView.addView(new cLogFrameHeaderView(
                                         context, "List of Users"));
-                                HCH.resourcesPlaceholderView.addView(new cUserBodyView(
-                                        context, null, (cUserModel) objects.get(i)));
+                                //HCH.resourcesPlaceholderView.addView(new cUserBodyView(
+                                //        context, null, (cUserModel) objects.get(i)));
                                 Log.d(TAG, "1. CHILD USER: " + objects.get(i));
                             } else {
-                                HCH.resourcesPlaceholderView.addView(new cUserBodyView(
-                                        context, null, (cUserModel) objects.get(i)));
+                                //HCH.resourcesPlaceholderView.addView(new cUserBodyView(
+                                //        context, null, (cUserModel) objects.get(i)));
                                 Log.d(TAG, "2. CHILD USER: " + objects.get(i));
                             }
                         }

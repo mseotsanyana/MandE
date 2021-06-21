@@ -1,239 +1,101 @@
 {
-  "permissions": [
+  "modules": [
     {
-      "id": 1,
-      "entity": "USER",
-      "operations": [
+      "module_id": 1,
+      "entities":[
         {
-          "action": 1,
-          "status": 0
+          "entity_id": 1,
+          "entity": "USER",
+          "operations": [{"op_id": 1,"status_ids": [0]}, {"op_id": 2,"status_ids": [1, 2, 4, 8, 16]}, {"op_id": 4,"status_ids": [4]}, {"op_id": 8,"status_ids": [4]}],
+          "unixoperations": [
+            {"unix_op_id": 2048}, {"unix_op_id": 1024 }, {"unix_op_id": 512},{"unix_op_id": 256}, {"unix_op_id": 128 }, {"unix_op_id": 64}, {"unix_op_id": 32}, {"unix_op_id": 16 }, {"unix_op_id": 8}, {"unix_op_id": 4}, {"unix_op_id": 2}, {"unix_op_id": 1}]
         },
         {
-          "action": 2,
-          "status": 0
+          "entity_id": 2,
+          "entity": "SESSION",
+          "operations": [
+            {"op_id": 1,"status_ids": [0]}, {"op_id": 2,"status_ids": [1, 2, 4, 8, 16]}, {"op_id": 4,"status_ids": [4]}, {"op_id": 8,"status_ids": [4]}
+          ],
+          "unixoperations": [
+            {"unix_op_id": 2048}, {"unix_op_id": 1024 }, {"unix_op_id": 512},{"unix_op_id": 256}, {"unix_op_id": 128 }, {"unix_op_id": 64}, {"unix_op_id": 32}, {"unix_op_id": 16 }, {"unix_op_id": 8}, {"unix_op_id": 4}, {"unix_op_id": 2}, {"unix_op_id": 1}
+          ]
         },
         {
-          "action": 4,
-          "status": 0
+          "entity_id": 4,
+          "entity": "PLAN",
+          "operations": [
+            {"op_id": 1,"status_ids": [0]}, {"op_id": 2,"status_ids": [1, 2, 4, 8, 16]}, {"op_id": 4,"status_ids": [4]}, {"op_id": 8,"status_ids": [4]}
+          ],
+          "unixoperations": [
+            {"unix_op_id": 2048}, {"unix_op_id": 1024 }, {"unix_op_id": 512},{"unix_op_id": 256}, {"unix_op_id": 128 }, {"unix_op_id": 64}, {"unix_op_id": 32}, {"unix_op_id": 16 }, {"unix_op_id": 8}, {"unix_op_id": 4}, {"unix_op_id": 2}, {"unix_op_id": 1}
+          ]
         },
         {
-          "action": 8,
-          "status": 2
+
+          "entity_id": 8,
+          "entity": "FEATURE",
+          "operations": [
+            {"op_id": 1,"status_ids": [0]}, {"op_id": 2,"status_ids": [1, 2, 4, 8, 16]}, {"op_id": 4,"status_ids": [4]}, {"op_id": 8,"status_ids": [4]}
+          ],
+          "unixoperations": [
+            {"unix_op_id": 2048}, {"unix_op_id": 1024 }, {"unix_op_id": 512},{"unix_op_id": 256}, {"unix_op_id": 128 }, {"unix_op_id": 64}, {"unix_op_id": 32}, {"unix_op_id": 16 }, {"unix_op_id": 8}, {"unix_op_id": 4}, {"unix_op_id": 2}, {"unix_op_id": 1}
+          ]
+        },
+        {
+          "entity_id": 16,
+          "entity": "ORGANIZATION",
+          "operations": [
+            {"op_id": 1,"status_ids": [0]}, {"op_id": 2,"status_ids": [1, 2, 4, 8, 16]}, {"op_id": 4,"status_ids": [4]}, {"op_id": 8,"status_ids": [4]}, {"op_id": 16,"status_ids": [4]}
+          ],
+          "unixoperations": [
+            {"unix_op_id": 2048}, {"unix_op_id": 1024 }, {"unix_op_id": 512},{"unix_op_id": 256}, {"unix_op_id": 128 }, {"unix_op_id": 64}, {"unix_op_id": 32}, {"unix_op_id": 16 }, {"unix_op_id": 8}, {"unix_op_id": 4}, {"unix_op_id": 2}, {"unix_op_id": 1}
+            ]
+        },
+        {
+          "entity_id": 32,
+          "entity": "TEAM",
+          "operations": [
+            {"op_id": 1,"status_ids": [0]}, {"op_id": 2,"status_ids": [1, 2, 4, 8, 16]}, {"op_id": 4,"status_ids": [4]}, {"op_id": 8,"status_ids": [4]}, {"op_id": 16,"status_ids": [4]}
+          ],
+          "unixoperations": [
+            {"unix_op_id": 2048}, {"unix_op_id": 1024 }, {"unix_op_id": 512},{"unix_op_id": 256}, {"unix_op_id": 128 }, {"unix_op_id": 64}, {"unix_op_id": 32}, {"unix_op_id": 16 }, {"unix_op_id": 8}, {"unix_op_id": 4}, {"unix_op_id": 2}, {"unix_op_id": 1}
+          ]
+        },
+        {
+          "entity_id": 64,
+          "entity": "ROLE",
+          "operations": [
+            {"op_id": 1,"status_ids": [0]}, {"op_id": 2,"status_ids": [1, 2, 4, 8, 16]}, {"op_id": 4,"status_ids": [4]}, {"op_id": 8,"status_ids": [4]}
+          ],
+          "unixoperations": [
+            {"unix_op_id": 2048}, {"unix_op_id": 1024 }, {"unix_op_id": 512},{"unix_op_id": 256}, {"unix_op_id": 128 }, {"unix_op_id": 64}, {"unix_op_id": 32}, {"unix_op_id": 16 }, {"unix_op_id": 8}, {"unix_op_id": 4}, {"unix_op_id": 2}, {"unix_op_id": 1}
+          ]
+        },
+        {
+          "entity_id": 128,
+          "entity": "PRIVILEGE",
+          "operations": [
+            {"op_id": 1,"status_ids": [0]}, {"op_id": 2,"status_ids": [1, 2, 4, 8, 16]}, {"op_id": 4,"status_ids": [4]}, {"op_id": 8,"status_ids": [4]}
+          ],
+          "unixoperations": [
+            {"unix_op_id": 2048}, {"unix_op_id": 1024 }, {"unix_op_id": 512},{"unix_op_id": 256}, {"unix_op_id": 128 }, {"unix_op_id": 64}, {"unix_op_id": 32}, {"unix_op_id": 16 }, {"unix_op_id": 8}, {"unix_op_id": 4}, {"unix_op_id": 2}, {"unix_op_id": 1}
+          ]
         }
       ]
     },
     {
-      "id": 2,
-      "entity": "SESSION",
-      "operations": [
+      "module_id": 2,
+      "entities": [
         {
-          "action": 1,
-          "status": 0
-        },
-        {
-          "action": 2,
-          "status": 0
-        },
-        {
-          "action": 4,
-          "status": 0
-        },
-        {
-          "action": 8,
-          "status": 0
-        }
-      ]
-    },
-    {
-      "id": 4,
-      "entity": "ORGANIZATION",
-      "operations": [
-        {
-          "action": 1,
-          "status": 0
-        },
-        {
-          "action": 2,
-          "status": 0
-        },
-        {
-          "action": 4,
-          "status": 0
-        },
-        {
-          "action": 8,
-          "status": 0
-        },
-        {
-          "action": 16,
-          "status": 2
-        }
-      ]
-    },
-    {
-      "id": 8,
-      "entity": "ADDRESS",
-      "operations": [
-        {
-          "action": 1,
-          "status": 0
-        },
-        {
-          "action": 2,
-          "status": 0
-        },
-        {
-          "action": 4,
-          "status": 0
-        },
-        {
-          "action": 8,
-          "status": 0
-        }
-      ]
-    },
-    {
-      "id": 16,
-      "entity": "EMAIL",
-      "operations": [
-        {
-          "action": 1,
-          "status": 0
-        },
-        {
-          "action": 2,
-          "status": 0
-        },
-        {
-          "action": 4,
-          "status": 0
-        },
-        {
-          "action": 8,
-          "status": 0
-        },
-        {
-          "action": 16,
-          "status": 2
-        }
-      ]
-    },
-    {
-      "id": 32,
-      "entity": "TEAM",
-      "operations": [
-        {
-          "action": 1,
-          "status": 0
-        },
-        {
-          "action": 2,
-          "status": 0
-        },
-        {
-          "action": 4,
-          "status": 0
-        },
-        {
-          "action": 8,
-          "status": 0
-        },
-        {
-          "action": 16,
-          "status": 2
-        }
-      ]
-    },
-    {
-      "id": 64,
-      "entity": "ROLE",
-      "operations": [
-        {
-          "action": 1,
-          "status": 0
-        },
-        {
-          "action": 2,
-          "status": 0
-        },
-        {
-          "action": 4,
-          "status": 0
-        },
-        {
-          "action": 8,
-          "status": 0
-        },
-        {
-          "action": 16,
-          "status": 2
-        }
-      ]
-    },
-    {
-      "id": 128,
-      "entity": "PLAN",
-      "operations": [
-        {
-          "action": 1,
-          "status": 0
-        },
-        {
-          "action": 2,
-          "status": 0
-        },
-        {
-          "action": 4,
-          "status": 0
-        },
-        {
-          "action": 8,
-          "status": 0
-        }
-      ]
-    },
-    {
-      "id": 256,
-      "entity": "FEATURE",
-      "operations": [
-        {
-          "action": 1,
-          "status": 0
-        },
-        {
-          "action": 2,
-          "status": 0
-        },
-        {
-          "action": 4,
-          "status": 0
-        },
-        {
-          "action": 8,
-          "status": 0
-        }
-      ]
-    },
-    {
-      "id": 512,
-      "entity": "MENU",
-      "operations": [
-        {
-          "action": 1,
-          "status": 0
-        },
-        {
-          "action": 2,
-          "status": 0
-        },
-        {
-          "action": 4,
-          "status": 0
-        },
-        {
-          "action": 8,
-          "status": 0
-        }
+        "entity_id": 1,
+        "entity": "LOGFRAME",
+        "operations": [
+          {"op_id": 1,"status_ids": [0]}, {"op_id": 2,"status_ids": [1, 2, 4, 8, 16]}, {"op_id": 4,"status_ids": [4]}, {"op_id": 8,"status_ids": [4]}
+        ],
+        "unixoperations": [
+          {"unix_op_id": 2048}, {"unix_op_id": 1024 }, {"unix_op_id": 512},{"unix_op_id": 256}, {"unix_op_id": 128 }, {"unix_op_id": 64}, {"unix_op_id": 32}, {"unix_op_id": 16 }, {"unix_op_id": 8}, {"unix_op_id": 4}, {"unix_op_id": 2}, {"unix_op_id": 1}
+        ]
+      }
       ]
     }
   ]

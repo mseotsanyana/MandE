@@ -26,7 +26,7 @@ public class cExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public cMenuModel getChild(int groupPosition, int childPosititon) {
-        return this.menuModels.get(groupPosition).getMenuModels().get(childPosititon);
+        return this.menuModels.get(groupPosition).getSubMenuModels().get(childPosititon);
     }
 
     @Override
@@ -37,10 +37,10 @@ public class cExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public int getChildrenCount(int groupPosition) {
 
-        if (this.menuModels.get(groupPosition).getMenuModels() == null)
+        if (this.menuModels.get(groupPosition).getSubMenuModels() == null)
             return 0;
         else
-            return Objects.requireNonNull(this.menuModels.get(groupPosition).getMenuModels()).size();
+            return Objects.requireNonNull(this.menuModels.get(groupPosition).getSubMenuModels()).size();
     }
 
     @Override

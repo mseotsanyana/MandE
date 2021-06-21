@@ -893,16 +893,17 @@ public class cOperationsFragment extends Fragment /*implements iTreeAdapterCallb
      * is there a change in common permission attributes
      **/
     public boolean isPermissionDirty(cPermissionModel originalModel, cPermissionModel modifiedModel) {
-        if (((originalModel.getOwnerID() == modifiedModel.getOwnerID()) &&
-                (originalModel.getOrgID() == modifiedModel.getOrgID()) &&
-                (originalModel.getGroupBITS() == modifiedModel.getGroupBITS()) &&
-                (originalModel.getPermsBITS() == modifiedModel.getPermsBITS()) &&
-                (originalModel.getStatusBITS() == modifiedModel.getStatusBITS()))) {
-
-            return false;
-        } else {
-            return true;
-        }
+//        if (((originalModel.getOwnerID() == modifiedModel.getOwnerID()) &&
+//                (originalModel.getOrgID() == modifiedModel.getOrgID()) &&
+//                (originalModel.getGroupBITS() == modifiedModel.getGroupBITS()) &&
+//                (originalModel.getPermsBITS() == modifiedModel.getPermsBITS()) &&
+//                (originalModel.getStatusBITS() == modifiedModel.getStatusBITS()))) {
+//
+//            return false;
+//        } else {
+//            return true;
+//        }
+        return true;
     }
 
 
@@ -1012,23 +1013,23 @@ public class cOperationsFragment extends Fragment /*implements iTreeAdapterCallb
    // @Override
     public void onUpdatePermissions(cPermissionModel originalModel, cPermissionModel modifiedModel) {
         // check whether the permission details from statuses
-        Log.d(TAG, "Owner = " + originalModel.getOwnerID() +
-                ", Org. Owner = " + (originalModel.getGroupBITS() & originalModel.getOrgID()) +
-                ", Other Orgs. = " + (originalModel.getGroupBITS() & ~originalModel.getOrgID()) +
-                ", Permissions = " + originalModel.getPermsBITS() +
-                ", Statuses = " + originalModel.getStatusBITS() +
-                ", Created Date = " + originalModel.getCreatedDate() +
-                ", Modified Date = " + originalModel.getModifiedDate() +
-                ", Synced Date = " + originalModel.getSyncedDate());
-
-        Log.d(TAG, "Owner = " + modifiedModel.getOwnerID() +
-                ", Org. Owner = " + (modifiedModel.getGroupBITS() & modifiedModel.getOrgID()) +
-                ", Other Orgs. = " + (modifiedModel.getGroupBITS() & ~modifiedModel.getOrgID()) +
-                ", Permissions = " + modifiedModel.getPermsBITS() +
-                ", Statuses = " + modifiedModel.getStatusBITS() +
-                ", Created Date = " + modifiedModel.getCreatedDate() +
-                ", Modified Date = " + modifiedModel.getModifiedDate() +
-                ", Synced Date = " + modifiedModel.getSyncedDate());
+//        Log.d(TAG, "Owner = " + originalModel.getOwnerID() +
+//                ", Org. Owner = " + (originalModel.getGroupBITS() & originalModel.getOrgID()) +
+//                ", Other Orgs. = " + (originalModel.getGroupBITS() & ~originalModel.getOrgID()) +
+//                ", Permissions = " + originalModel.getPermsBITS() +
+//                ", Statuses = " + originalModel.getStatusBITS() +
+//                ", Created Date = " + originalModel.getCreatedDate() +
+//                ", Modified Date = " + originalModel.getModifiedDate() +
+//                ", Synced Date = " + originalModel.getSyncedDate());
+//
+//        Log.d(TAG, "Owner = " + modifiedModel.getOwnerID() +
+//                ", Org. Owner = " + (modifiedModel.getGroupBITS() & modifiedModel.getOrgID()) +
+//                ", Other Orgs. = " + (modifiedModel.getGroupBITS() & ~modifiedModel.getOrgID()) +
+//                ", Permissions = " + modifiedModel.getPermsBITS() +
+//                ", Statuses = " + modifiedModel.getStatusBITS() +
+//                ", Created Date = " + modifiedModel.getCreatedDate() +
+//                ", Modified Date = " + modifiedModel.getModifiedDate() +
+//                ", Synced Date = " + modifiedModel.getSyncedDate());
 
         update_perms = new HashSet<>();
 

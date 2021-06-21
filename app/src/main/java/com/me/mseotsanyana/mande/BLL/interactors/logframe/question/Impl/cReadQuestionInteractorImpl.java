@@ -6,13 +6,11 @@ import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
-import com.me.mseotsanyana.mande.BLL.interactors.logframe.output.iReadOutputInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.question.iReadQuestionInteractor;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cOutputModel;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel;
-import com.me.mseotsanyana.mande.BLL.repository.logframe.iOutputRepository;
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iQuestionRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
@@ -31,7 +29,7 @@ public class cReadQuestionInteractorImpl extends cAbstractInteractor
     private String logFrameName;
 
     public cReadQuestionInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,
-                                       iSessionManagerRepository sessionManagerRepository,
+                                       iSharedPreferenceRepository sessionManagerRepository,
                                        iQuestionRepository questionRepository,
                                        Callback callback, long logFrameID) {
         super(threadExecutor, mainThread);
@@ -45,16 +43,16 @@ public class cReadQuestionInteractorImpl extends cAbstractInteractor
 
         this.logFrameID = logFrameID;
 
-        /* common attributes */
-        this.userID = sessionManagerRepository.loadUserID();
-        this.primaryRoleBITS = sessionManagerRepository.loadPrimaryRoleBITS();
-        this.secondaryRoleBITS = sessionManagerRepository.loadSecondaryRoleBITS();
-
-        /* attributes related to OUTCOME entity */
-        this.operationBITS = sessionManagerRepository.loadOperationBITS(
-                cBitwise.OUTPUT, cBitwise.LOGFRAME_MODULE);
-        this.statusBITS = sessionManagerRepository.loadStatusBITS(
-                cBitwise.OUTPUT, cBitwise.LOGFRAME_MODULE, cBitwise.READ);
+//        /* common attributes */
+//        this.userID = sessionManagerRepository.loadUserID();
+//        this.primaryRoleBITS = sessionManagerRepository.loadPrimaryRoleBITS();
+//        this.secondaryRoleBITS = sessionManagerRepository.loadSecondaryRoleBITS();
+//
+//        /* attributes related to OUTCOME entity */
+//        this.operationBITS = sessionManagerRepository.loadOperationBITS(
+//                cBitwise.OUTPUT, cBitwise.LOGFRAME_MODULE);
+//        this.statusBITS = sessionManagerRepository.loadStatusBITS(
+//                cBitwise.OUTPUT, cBitwise.LOGFRAME_MODULE, cBitwise.READ);
     }
 
     /* */

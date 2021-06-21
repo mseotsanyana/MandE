@@ -4,8 +4,8 @@ import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.session.organization.iReadSharedOrgsInteractor;
-import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
 import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
+import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -14,10 +14,10 @@ public class cReadSharedOrgsInteractorImpl extends cAbstractInteractor implement
     private static String TAG = cReadSharedOrgsInteractorImpl.class.getSimpleName();
 
     private Callback callback;
-    private iSessionManagerRepository sessionManagerRepository;
+    private iSharedPreferenceRepository sessionManagerRepository;
 
     public cReadSharedOrgsInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,
-                                         iSessionManagerRepository sessionManagerRepository,
+                                         iSharedPreferenceRepository sessionManagerRepository,
                                          Callback callback) {
         super(threadExecutor, mainThread);
 
@@ -53,8 +53,7 @@ public class cReadSharedOrgsInteractorImpl extends cAbstractInteractor implement
 
     @Override
     public void run() {
-        Set<cOrganizationModel> organizationModels = sessionManagerRepository.
-                loadOrganizationOwners();
+        Set<cOrganizationModel> organizationModels = null;//sessionManagerRepository.loadOrganizationOwners();
 
         if (organizationModels != null) {
                 postMessage(new ArrayList<cOrganizationModel>(organizationModels));

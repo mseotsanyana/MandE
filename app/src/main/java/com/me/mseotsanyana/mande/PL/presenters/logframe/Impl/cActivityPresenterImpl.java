@@ -5,7 +5,7 @@ import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.activity.Impl.cReadActivityInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.activity.iReadActivityInteractor;
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iActivityRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iActivityPresenter;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
@@ -20,13 +20,13 @@ public class cActivityPresenterImpl extends cAbstractPresenter implements iActiv
     private static String TAG = cActivityPresenterImpl.class.getSimpleName();
 
     private View view;
-    private iSessionManagerRepository sessionManagerRepository;
+    private iSharedPreferenceRepository sessionManagerRepository;
     private iActivityRepository activityRepository;
     private long logFrameID;
 
     public cActivityPresenterImpl(iExecutor executor, iMainThread mainThread,
                                   View view,
-                                  iSessionManagerRepository sessionManagerRepository,
+                                  iSharedPreferenceRepository sessionManagerRepository,
                                   iActivityRepository activityRepository, long logFrameID) {
         super(executor, mainThread);
 

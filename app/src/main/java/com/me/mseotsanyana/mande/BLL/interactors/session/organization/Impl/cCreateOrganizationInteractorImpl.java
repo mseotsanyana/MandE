@@ -6,19 +6,19 @@ import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.session.organization.iCreateOrganizationInteractor;
 import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
 import com.me.mseotsanyana.mande.BLL.repository.session.iOrganizationRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 
 public class cCreateOrganizationInteractorImpl extends cAbstractInteractor
         implements iCreateOrganizationInteractor {
     private static String TAG = cCreateOrganizationInteractorImpl.class.getSimpleName();
 
-    private iSessionManagerRepository sessionManagerRepository;
+    private iSharedPreferenceRepository sessionManagerRepository;
     private iOrganizationRepository organizationRepository;
     private Callback callback;
     private cOrganizationModel organizationModel;
 
     public cCreateOrganizationInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,
-                                             iSessionManagerRepository sessionManagerRepository,
+                                             iSharedPreferenceRepository sessionManagerRepository,
                                              iOrganizationRepository organizationRepository,
                                              Callback callback, cOrganizationModel organizationModel) {
         super(threadExecutor, mainThread);

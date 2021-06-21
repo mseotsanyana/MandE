@@ -1,7 +1,7 @@
 {
   "plans": [
     {
-      "id": 1,
+      "id": "FREE_SUB",
       "name": "Free Plan",
       "description": "Free plan with limited features enabled",
       "max_org_limit": 4,
@@ -10,7 +10,7 @@
       "max_team_user_limit": 10
     },
     {
-      "id": 2,
+      "id": "STND_SUB",
       "name": "Standard Plan",
       "description": "Standard plan with some features enabled",
       "max_org_limit": 8,
@@ -19,7 +19,7 @@
       "max_team_user_limit": 500
     },
     {
-      "id": 4,
+      "id": "PREM_SUB",
       "name": "Premium Plan",
       "description": "Premium plan with all features enabled",
       "max_org_limit": 20,

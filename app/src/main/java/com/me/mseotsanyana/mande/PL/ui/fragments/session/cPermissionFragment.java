@@ -450,10 +450,10 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
         final AppCompatEditText editTextPrivilegeDescription =
                 (AppCompatEditText) formElementsView.findViewById(R.id.editTextPrivilegeDescription);
 
-        final cPermissionModel privilegeModel = new cPermissionModel((cPermissionModel) treeModel.getModelObject());
+//        final cPermissionModel privilegeModel = new cPermissionModel((cPermissionModel) treeModel.getModelObject());
 
         /** read roles to populate the spinner **/
-        new cReadRoles().execute(singleSpinnerSearchRole, privilegeModel);
+//        new cReadRoles().execute(singleSpinnerSearchRole, privilegeModel);
 
         //final cPermissionModel privilegeModel = (cPermissionModel) treeModel.getModelObject();
 
@@ -489,18 +489,18 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
                         //privilegeModel.setName(editTextPrivilegeName.getText().toString());
                         //privilegeModel.setDescription(editTextPrivilegeDescription.getText().toString());
 
-                        privilegeModel.setOwnerID(privilegeModel.getOwnerID());
-                        privilegeModel.setOrgID(privilegeModel.getOrgID());
-                        privilegeModel.setGroupBITS(privilegeModel.getGroupBITS());
-                        privilegeModel.setPermsBITS(privilegeModel.getPermsBITS());
-                        privilegeModel.setStatusBITS(privilegeModel.getStatusBITS());
-                        Date timestamp = new Date();
-                        privilegeModel.setCreatedDate(privilegeModel.getCreatedDate());
-                        privilegeModel.setModifiedDate(timestamp);
-                        privilegeModel.setSyncedDate(privilegeModel.getSyncedDate());
-
-                        /** update the privilege **/
-                        new cUpdatePrivilegeTask().execute(privilegeModel, treeModel);
+//                        privilegeModel.setOwnerID(privilegeModel.getOwnerID());
+//                        privilegeModel.setOrgID(privilegeModel.getOrgID());
+//                        privilegeModel.setGroupBITS(privilegeModel.getGroupBITS());
+//                        privilegeModel.setPermsBITS(privilegeModel.getPermsBITS());
+//                        privilegeModel.setStatusBITS(privilegeModel.getStatusBITS());
+//                        Date timestamp = new Date();
+//                        privilegeModel.setCreatedDate(privilegeModel.getCreatedDate());
+//                        privilegeModel.setModifiedDate(timestamp);
+//                        privilegeModel.setSyncedDate(privilegeModel.getSyncedDate());
+//
+//                        /** update the privilege **/
+//                        new cUpdatePrivilegeTask().execute(privilegeModel, treeModel);
 
                         dialog.dismiss();
                     }
@@ -720,9 +720,9 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
                         //permissionModel.setStatusBITS(session.ACTIVATED);
 
                         Date timestamp = new Date();
-                        permissionModel.setCreatedDate(timestamp);
-                        permissionModel.setModifiedDate(timestamp);
-                        permissionModel.setSyncedDate(timestamp);
+//                        permissionModel.setCreatedDate(timestamp);
+//                        permissionModel.setModifiedDate(timestamp);
+//                        permissionModel.setSyncedDate(timestamp);
 
                         selectedPermissions.add(permissionModel);
                     }

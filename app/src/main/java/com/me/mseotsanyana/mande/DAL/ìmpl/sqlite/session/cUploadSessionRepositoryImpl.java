@@ -860,8 +860,8 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
 
             cOperationModel operationModel = new cOperationModel();
 
-            operationModel.setOperationID((int) cRow.getCell(0,
-                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            operationModel.setOperationID((int) cRow.getCell(0,
+//                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             operationModel.setName(cRow.getCell(1,
                     Row.CREATE_NULL_AS_BLANK).getStringCellValue());
             operationModel.setDescription(cRow.getCell(2,
@@ -883,7 +883,7 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, operationModel.getOperationID());
+//        cv.put(cSQLDBHelper.KEY_ID, operationModel.getOperationID());
         cv.put(cSQLDBHelper.KEY_NAME, operationModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, operationModel.getDescription());
 
@@ -1144,16 +1144,16 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
 
             cPermissionModel permissionModel = new cPermissionModel();
 
-            permissionModel.setPermissionID((int)
-                    cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            permissionModel.setEntityID((int)
-                    cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            permissionModel.setEntityTypeID((int)
-                    cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            permissionModel.setOperationID((int)
-                    cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            permissionModel.setStatusSetID((int)
-                    cRow.getCell(4, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            permissionModel.setPermissionID((int)
+//                    cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            permissionModel.setEntityID((int)
+//                    cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            permissionModel.setEntityTypeID((int)
+//                    cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            permissionModel.setOperationID((int)
+//                    cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            permissionModel.setStatusSetID((int)
+//                    cRow.getCell(4, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
 
             if (!addPermission(permissionModel)) {
                 return false;
@@ -1171,11 +1171,11 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, permissionModel.getPermissionID());
-        cv.put(cSQLDBHelper.KEY_ENTITY_FK_ID, permissionModel.getEntityID());
-        cv.put(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID, permissionModel.getEntityTypeID());
-        cv.put(cSQLDBHelper.KEY_OPERATION_FK_ID, permissionModel.getOperationID());
-        cv.put(cSQLDBHelper.KEY_STATUSSET_FK_ID, permissionModel.getStatusSetID());
+//        cv.put(cSQLDBHelper.KEY_ID, permissionModel.getPermissionID());
+//        cv.put(cSQLDBHelper.KEY_ENTITY_FK_ID, permissionModel.getEntityID());
+//        cv.put(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID, permissionModel.getEntityTypeID());
+//        cv.put(cSQLDBHelper.KEY_OPERATION_FK_ID, permissionModel.getOperationID());
+//        cv.put(cSQLDBHelper.KEY_STATUSSET_FK_ID, permissionModel.getStatusSetID());
 
         // insert a record
         try {

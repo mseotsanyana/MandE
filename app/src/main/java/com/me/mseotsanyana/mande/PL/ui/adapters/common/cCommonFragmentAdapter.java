@@ -65,16 +65,18 @@ public class cCommonFragmentAdapter extends FragmentStatePagerAdapter {
                 return cPermissionFragment.newInstance(this.permBITS);
 
             case 1:
-                return cStatusFragment.newInstance(this.statusBITS,
-                        new ArrayList<cStatusModel>(sessionManager.loadStatusSet()));
+                return null;
+//                return cStatusFragment.newInstance(this.statusBITS,
+//                        new ArrayList<cStatusModel>(sessionManager.loadStatusSet()));
 
             case 2:
-                return cOwnershipFragment.newInstance(this.ownerID, this.ownOrgID, this.groupBITS,
-                        new ArrayList<cUserModel>(sessionManager.loadIndividualOwners()),
-                        new ArrayList<cOrganizationModel>(sessionManager.loadOrganizationOwners()),
-                        sessionManager.loadPrimaryRoleBITS(),
-                        sessionManager.loadSecondaryRoleBITS(),
-                        new ArrayList<cRoleModel>(sessionManager.loadRoleSet()));
+                return null;
+//                return cOwnershipFragment.newInstance(this.ownerID, this.ownOrgID, this.groupBITS,
+//                        new ArrayList<cUserModel>(sessionManager.loadIndividualOwners()),
+//                        new ArrayList<cOrganizationModel>(sessionManager.loadOrganizationOwners()),
+//                        sessionManager.loadPrimaryRoleBITS(),
+//                        sessionManager.loadSecondaryRoleBITS(),
+//                        new ArrayList<cRoleModel>(sessionManager.loadRoleSet()));
 
             case 3:
                 return cCommonDatesFragment.newInstance(this.createdDate, this.modifiedDate,

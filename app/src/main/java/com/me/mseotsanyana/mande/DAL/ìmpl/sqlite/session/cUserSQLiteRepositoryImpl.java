@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
+import com.me.mseotsanyana.mande.BLL.repository.session.iUserProfileRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iUserRepository;
 import com.me.mseotsanyana.mande.BLL.model.session.cAddressModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cNotificationModel;
@@ -28,7 +30,7 @@ import java.util.Set;
 /**
  * Created by mseotsanyana on 2016/10/23.
  */
-public class cUserSQLiteRepositoryImpl implements iUserRepository {
+public class cUserSQLiteRepositoryImpl implements iUserProfileRepository {
     private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
     private static String TAG = cUserSQLiteRepositoryImpl.class.getSimpleName();
 
@@ -164,7 +166,17 @@ public class cUserSQLiteRepositoryImpl implements iUserRepository {
     }
 
     @Override
+    public void updateUserProfile(long userID, int primaryRole, int secondaryRoles, int statusBITS, cUserProfileModel userProfileModel, iUpdateUserProfileRepositoryCallback callback) {
+
+    }
+
+    @Override
     public void signOutWithEmailAndPassword(iSignOutRepositoryCallback callback) {
+
+    }
+
+    @Override
+    public void readUserProfile(iReadUserProfileRepositoryCallback callback) {
 
     }
 
@@ -175,7 +187,7 @@ public class cUserSQLiteRepositoryImpl implements iUserRepository {
      * @param password
      * @return
      */
-    @Override
+
     public cUserModel getUserByEmailPassword(String email, String password) {
         cUserModel user = null;
         // open the connection to the database

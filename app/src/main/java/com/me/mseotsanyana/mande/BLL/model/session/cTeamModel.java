@@ -3,39 +3,47 @@ package com.me.mseotsanyana.mande.BLL.model.session;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.firestore.Exclude;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by mseotsanyana on 2021/03/18.
  */
 
 public class cTeamModel implements Parcelable {
+    private String compositeServerID;
     private String teamServerID;
-    private String orgServerID;
+    private String organizationServerID;
 
     private String ownerID;
     private String orgOwnerID;
     private int teamOwnerBIT;
-    private int unixpermsBITS;
+    private List<Integer> unixpermsBITS;
     private int statusesBITS;
+
+    private int numTeams;
 
     private String name;
     private String description;
 
     private Date createdDate;
     private Date modifiedDate;
+
     private Date syncedDate;
 
     public cTeamModel(){
 
     }
 
-    public String getOwnerID() {
-        return ownerID;
+    @Exclude
+    public String getCompositeServerID() {
+        return compositeServerID;
     }
 
-    public void setOwnerID(String ownerID) {
-        this.ownerID = ownerID;
+    public void setCompositeServerID(String compositeServerID) {
+        this.compositeServerID = compositeServerID;
     }
 
     public String getTeamServerID() {
@@ -44,6 +52,14 @@ public class cTeamModel implements Parcelable {
 
     public void setTeamServerID(String teamServerID) {
         this.teamServerID = teamServerID;
+    }
+
+    public String getOwnerID() {
+        return ownerID;
+    }
+
+    public void setOwnerID(String ownerID) {
+        this.ownerID = ownerID;
     }
 
     public String getOrgOwnerID() {
@@ -62,11 +78,11 @@ public class cTeamModel implements Parcelable {
         this.teamOwnerBIT = teamOwnerBIT;
     }
 
-    public int getUnixpermsBITS() {
+    public List<Integer> getUnixpermsBITS() {
         return unixpermsBITS;
     }
 
-    public void setUnixpermsBITS(int unixpermsBITS) {
+    public void setUnixpermsBITS(List<Integer> unixpermsBITS) {
         this.unixpermsBITS = unixpermsBITS;
     }
 
@@ -78,12 +94,20 @@ public class cTeamModel implements Parcelable {
         this.statusesBITS = statusesBITS;
     }
 
-    public String getOrgServerID() {
-        return orgServerID;
+    public String getOrganizationServerID() {
+        return organizationServerID;
     }
 
-    public void setOrgServerID(String orgServerID) {
-        this.orgServerID = orgServerID;
+    public void setOrganizationServerID(String organizationServerID) {
+        this.organizationServerID = organizationServerID;
+    }
+
+    public int getNumTeams() {
+        return numTeams;
+    }
+
+    public void setNumTeams(int numTeams) {
+        this.numTeams = numTeams;
     }
 
     public String getName() {
@@ -118,6 +142,7 @@ public class cTeamModel implements Parcelable {
         this.modifiedDate = modifiedDate;
     }
 
+    @Exclude
     public Date getSyncedDate() {
         return syncedDate;
     }
@@ -136,10 +161,10 @@ public class cTeamModel implements Parcelable {
         parcel.writeString(ownerID);
         parcel.writeString(orgOwnerID);
         parcel.writeInt(teamOwnerBIT);
-        parcel.writeInt(unixpermsBITS);
+        //parcel.writeInt(unixpermsBITS);
         parcel.writeInt(statusesBITS);
         parcel.writeString(teamServerID);
-        parcel.writeString(orgServerID);
+        parcel.writeString(organizationServerID);
         parcel.writeString(name);
         parcel.writeString(description);
     }
@@ -148,10 +173,10 @@ public class cTeamModel implements Parcelable {
         ownerID = in.readString();
         orgOwnerID = in.readString();
         teamOwnerBIT = in.readInt();
-        unixpermsBITS = in.readInt();
+        //unixpermsBITS = in.readInt();
         statusesBITS = in.readInt();
         teamServerID = in.readString();
-        orgServerID = in.readString();
+        organizationServerID = in.readString();
         name = in.readString();
         description = in.readString();
     }
@@ -167,5 +192,4 @@ public class cTeamModel implements Parcelable {
             return new cTeamModel[size];
         }
     };
-
 }

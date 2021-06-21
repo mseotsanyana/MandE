@@ -27,6 +27,7 @@ public class cEvaluationFragmentDirections {
   public static class ActionCEvaluationFragmentToCEvaluationFormFragment implements NavDirections {
     private final HashMap arguments = new HashMap();
 
+    @SuppressWarnings("unchecked")
     private ActionCEvaluationFragmentToCEvaluationFormFragment(
         @NonNull cDBQuestionnaire dbQuestionnaire) {
       if (dbQuestionnaire == null) {
@@ -36,6 +37,7 @@ public class cEvaluationFragmentDirections {
     }
 
     @NonNull
+    @SuppressWarnings("unchecked")
     public ActionCEvaluationFragmentToCEvaluationFormFragment setDbQuestionnaire(
         @NonNull cDBQuestionnaire dbQuestionnaire) {
       if (dbQuestionnaire == null) {

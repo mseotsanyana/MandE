@@ -37,14 +37,6 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpToInclusive="false"/>
-        <action
-            android:id="@+id/action_cSignUpFragment_to_cHomeFragment"
-            app:destination="@id/cHomeFragment"
-            app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:popUpToInclusive="false"/>
     </fragment>
     <fragment
         android:id="@+id/cSettingsFragment"
@@ -296,9 +288,6 @@
         android:id="@+id/cHomeFragment"
         android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cHomeFragment"
         android:label="cHomeFragment" >
-        <argument
-            android:name="userEmail"
-            app:argType="string" />
         <action
             android:id="@+id/action_cHomeFragment_to_cLoginFragment"
             app:destination="@id/cLoginFragment"
@@ -308,8 +297,24 @@
             app:popExitAnim="@anim/slide_out_right"
             app:popUpToInclusive="false"/>
         <action
+            android:id="@+id/action_cHomeFragment_to_cUserProfileFragment"
+            app:destination="@id/cUserProfileFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="false" />
+        <action
             android:id="@+id/action_cHomeFragment_to_cOrganizationDetailFragment"
             app:destination="@id/cOrganizationDetailFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_cHomeFragment_to_cTeamFragment"
+            app:destination="@id/cTeamFragment"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_left"
@@ -328,4 +333,12 @@
         android:id="@+id/cDashboardFragment"
         android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cDashboardFragment"
         android:label="cDashboardFragment" />
+    <fragment
+        android:id="@+id/cUserProfileFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cUserProfileFragment"
+        android:label="cUserProfileFragment" />
+    <fragment
+        android:id="@+id/cTeamFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cTeamFragment"
+        android:label="cTeamFragment" />
 </navigation>

@@ -165,6 +165,11 @@ public class cRoleRepositoryImpl implements iRoleRepository {
 
     /* ############################################# READ ACTIONS ############################################# */
 
+    @Override
+    public void readRoleUsers(List<cRoleModel> roleModels, int primaryRole, int secondaryRoles, int statusBITS, iReadRoleModelSetCallback callback) {
+
+    }
+
     public Set<cRoleModel> getRoleModelSet(int roleID, int organizationID) {
 
         Set<cRoleModel> roleModelSet = new HashSet<>();
@@ -502,46 +507,46 @@ public class cRoleRepositoryImpl implements iRoleRepository {
 
                     cPermissionModel permission = new cPermissionModel();
 
-                    permission.setPermissionID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    permission.setEntityID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_FK_ID)));
-                    permission.setEntityTypeID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID)));
-                    permission.setOperationID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_FK_ID)));
-                    permission.setStatusSetID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUSSET_FK_ID)));
-                    //permission.setServerID(
-                    //        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    permission.setOwnerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    permission.setOrgID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    permission.setGroupBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    permission.setPermsBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    permission.setStatusBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    permission.setCreatedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    permission.setModifiedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    permission.setSyncedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
-
-                    /* populate entity */
-                    permission.setEntityModel(new cEntityModel(entityRepository.getEntityByID(
-                            permission.getEntityID(), permission.getEntityTypeID())));
-
-                    /* populate operation */
-                    permission.setOperationModel(new cOperationModel(
-                            operationRepository.getOperationByID(permission.getOperationID())));
-
-                    /* populate set of statuses */
-                    permission.setStatusSetModel(new cStatusSetModel(
-                            statusSetRepository.getStatusSetByID(permission.getStatusSetID())));
+//                    permission.setPermissionID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+//                    permission.setEntityID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_FK_ID)));
+//                    permission.setEntityTypeID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_TYPE_FK_ID)));
+//                    permission.setOperationID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OPERATION_FK_ID)));
+//                    permission.setStatusSetID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUSSET_FK_ID)));
+//                    //permission.setServerID(
+//                    //        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    permission.setOwnerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    permission.setOrgID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    permission.setGroupBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    permission.setPermsBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    permission.setStatusBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    permission.setCreatedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    permission.setModifiedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    permission.setSyncedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//
+//                    /* populate entity */
+//                    permission.setEntityModel(new cEntityModel(entityRepository.getEntityByID(
+//                            permission.getEntityID(), permission.getEntityTypeID())));
+//
+//                    /* populate operation */
+//                    permission.setOperationModel(new cOperationModel(
+//                            operationRepository.getOperationByID(permission.getOperationID())));
+//
+//                    /* populate set of statuses */
+//                    permission.setStatusSetModel(new cStatusSetModel(
+//                            statusSetRepository.getStatusSetByID(permission.getStatusSetID())));
 
                     permissionModelSet.add(permission);
 
@@ -906,6 +911,7 @@ public class cRoleRepositoryImpl implements iRoleRepository {
 
         return result > -1;
     }
+
 
     /* ############################################# SYNC ACTIONS ############################################# */
 }

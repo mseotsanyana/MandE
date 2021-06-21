@@ -15,7 +15,17 @@ public class cHomeFragmentDirections {
   }
 
   @NonNull
+  public static NavDirections actionCHomeFragmentToCUserProfileFragment() {
+    return new ActionOnlyNavDirections(R.id.action_cHomeFragment_to_cUserProfileFragment);
+  }
+
+  @NonNull
   public static NavDirections actionCHomeFragmentToCOrganizationDetailFragment() {
     return new ActionOnlyNavDirections(R.id.action_cHomeFragment_to_cOrganizationDetailFragment);
+  }
+
+  @NonNull
+  public static NavDirections actionCHomeFragmentToCTeamFragment() {
+    return new ActionOnlyNavDirections(R.id.action_cHomeFragment_to_cTeamFragment);
   }
 }

@@ -215,10 +215,21 @@ public class cOrganizationRepositoryImpl implements iOrganizationRepository {
     }
 
     @Override
-    public void readOrganizations(long userID, int primaryRole, int secondaryRoles, int statusBITS, iReadOrganizationsModelSetCallback callback) {
+    public void readOrganizations(String userServerID, String orgServerID, int primaryTeamBIT, int secondaryTeamBITS, int entitypermBITS, List<Integer> statuses, int unixpermBITS, iReadOrganizationsModelSetCallback callback) {
 
     }
 
+//    @Override
+//    public void readOrganizations(String userServerID, String orgServerID, int primaryTeamBIT,
+//                                  List<Integer> secondaryTeamBITS, int statusBITS, int unixpermBITS,
+//                                  iReadOrganizationsModelSetCallback callback) {
+//
+//    }
+
+//    @Override
+//    public void readOrganizations(iReadOrganizationCallback callback) {
+//
+//    }
 
     public Set<cOrganizationModel> getOrganizationSet() {
         Set<cOrganizationModel> organizationModels = new HashSet<>();

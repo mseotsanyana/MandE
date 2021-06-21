@@ -19,6 +19,7 @@ public class cEvaluationFormFragmentArgs implements NavArgs {
   private cEvaluationFormFragmentArgs() {
   }
 
+  @SuppressWarnings("unchecked")
   private cEvaluationFormFragmentArgs(HashMap argumentsMap) {
     this.arguments.putAll(argumentsMap);
   }
@@ -103,10 +104,12 @@ public class cEvaluationFormFragmentArgs implements NavArgs {
   public static class Builder {
     private final HashMap arguments = new HashMap();
 
+    @SuppressWarnings("unchecked")
     public Builder(cEvaluationFormFragmentArgs original) {
       this.arguments.putAll(original.arguments);
     }
 
+    @SuppressWarnings("unchecked")
     public Builder(@NonNull cDBQuestionnaire dbQuestionnaire) {
       if (dbQuestionnaire == null) {
         throw new IllegalArgumentException("Argument \"dbQuestionnaire\" is marked as non-null but was passed a null value.");
@@ -121,6 +124,7 @@ public class cEvaluationFormFragmentArgs implements NavArgs {
     }
 
     @NonNull
+    @SuppressWarnings("unchecked")
     public Builder setDbQuestionnaire(@NonNull cDBQuestionnaire dbQuestionnaire) {
       if (dbQuestionnaire == null) {
         throw new IllegalArgumentException("Argument \"dbQuestionnaire\" is marked as non-null but was passed a null value.");

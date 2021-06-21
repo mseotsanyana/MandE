@@ -5,7 +5,7 @@ import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.impact.Impl.cReadImpactInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.impact.iReadImpactInteractor;
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iImpactRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iImpactPresenter;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
@@ -20,13 +20,13 @@ public class cImpactPresenterImpl extends cAbstractPresenter implements iImpactP
     private static String TAG = cImpactPresenterImpl.class.getSimpleName();
 
     private View view;
-    private iSessionManagerRepository sessionManagerRepository;
+    private iSharedPreferenceRepository sessionManagerRepository;
     private iImpactRepository impactRepository;
     private long logFrameID;
 
     public cImpactPresenterImpl(iExecutor executor, iMainThread mainThread,
                                 View view,
-                                iSessionManagerRepository sessionManagerRepository,
+                                iSharedPreferenceRepository sessionManagerRepository,
                                 iImpactRepository impactRepository, long logFrameID) {
         super(executor, mainThread);
 

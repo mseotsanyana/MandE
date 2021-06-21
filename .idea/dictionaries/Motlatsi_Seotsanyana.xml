@@ -34,6 +34,7 @@
       <w>combinedchart</w>
       <w>corg</w>
       <w>cowner</w>
+      <w>cproperties</w>
       <w>criteriascore</w>
       <w>crowdfund</w>
       <w>cstatus</w>
@@ -46,15 +47,20 @@
       <w>datacollector</w>
       <w>datasource</w>
       <w>dateresponse</w>
+      <w>defaultmenu</w>
       <w>dependencyaction</w>
       <w>dependencyregister</w>
       <w>dependencyreview</w>
+      <w>dialpad</w>
       <w>disaggregate</w>
       <w>enddate</w>
+      <w>entityperm</w>
       <w>equestion</w>
       <w>eresponse</w>
       <w>evaluationcriteria</w>
       <w>evaluationtype</w>
+      <w>firestore</w>
+      <w>firstname</w>
       <w>fiscalyear</w>
       <w>funder</w>
       <w>horizontalchart</w>
@@ -66,15 +72,18 @@
       <w>indicatorprogress</w>
       <w>indicatortype</w>
       <w>interactor</w>
+      <w>isloggedin</w>
       <w>issueaction</w>
       <w>issuecomment</w>
       <w>issueregister</w>
       <w>issuereview</w>
       <w>jsons</w>
+      <w>lastname</w>
       <w>linechart</w>
       <w>logframe</w>
       <w>logframes</w>
       <w>logframetree</w>
+      <w>loggedin</w>
       <w>mande</w>
       <w>matrixchart</w>
       <w>matrixchoice</w>
@@ -91,11 +100,14 @@
       <w>mquestion</w>
       <w>mseotsanyana</w>
       <w>numericresponse</w>
+      <w>opsstatus</w>
+      <w>opstatus</w>
       <w>orgs</w>
       <w>piechart</w>
       <w>pimset</w>
       <w>precedingactivity</w>
       <w>precedingtask</w>
+      <w>prem</w>
       <w>primitivechart</w>
       <w>primitivequestion</w>
       <w>primitivetype</w>
@@ -150,13 +162,21 @@
       <w>ssdf</w>
       <w>startdate</w>
       <w>statusset</w>
+      <w>statussets</w>
+      <w>stnd</w>
       <w>taskassignment</w>
       <w>textresponse</w>
       <w>timesheet</w>
       <w>tsdf</w>
+      <w>unixoperation</w>
+      <w>unixoperations</w>
+      <w>unixperm</w>
       <w>unixperms</w>
       <w>unkown</w>
+      <w>useraccount</w>
+      <w>useraccounts</w>
       <w>usercomment</w>
+      <w>userprofiles</w>
       <w>workplan</w>
     </words>
   </dictionary>

@@ -6,7 +6,7 @@ import com.me.mseotsanyana.mande.BLL.interactors.session.menu.Impl.cReadMenuItem
 import com.me.mseotsanyana.mande.BLL.interactors.session.menu.iReadMenuItemsInteractor;
 import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
 import com.me.mseotsanyana.mande.BLL.repository.session.iMenuRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.session.iMenuItemsPresenter;
 
@@ -17,12 +17,12 @@ public class cMenuItemsPresenterImpl extends cAbstractPresenter implements iMenu
     private static String TAG = cMenuItemsPresenterImpl.class.getSimpleName();
 
     private View view;
-    private final iSessionManagerRepository sessionManagerRepository;
+    private final iSharedPreferenceRepository sessionManagerRepository;
     private final iMenuRepository menuRepository;
 
     public cMenuItemsPresenterImpl(iExecutor executor, iMainThread mainThread,
                                    View view,
-                                   iSessionManagerRepository sessionManagerRepository,
+                                   iSharedPreferenceRepository sessionManagerRepository,
                                    iMenuRepository menuRepository) {
         super(executor, mainThread);
 

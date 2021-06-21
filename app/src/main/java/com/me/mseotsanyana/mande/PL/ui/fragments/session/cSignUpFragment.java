@@ -10,12 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.firebase.session.cUserFirebaseRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cUserProfileFirestoreRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.realtime.session.cUserProfileFirebaseRepositoryImpl;
 import com.me.mseotsanyana.mande.PL.presenters.session.Impl.cUserSignUpPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.session.iUserSignUpPresenter;
 import com.me.mseotsanyana.mande.R;
@@ -47,7 +47,7 @@ public class cSignUpFragment extends Fragment implements iUserSignUpPresenter.Vi
                 cThreadExecutorImpl.getInstance(),
                 cMainThreadImpl.getInstance(),
                 this,
-                new cUserFirebaseRepositoryImpl(getContext()));
+                new cUserProfileFirestoreRepositoryImpl(getContext()));
     }
 
     @Override
@@ -104,7 +104,7 @@ public class cSignUpFragment extends Fragment implements iUserSignUpPresenter.Vi
                 String confirmPassword = Objects.requireNonNull(confirmPasswordEditText.getText()).toString();
 
                 if (!email.isEmpty() && !password.isEmpty() && !confirmPassword.isEmpty()) {
-                    userSignUpPresenter.createUserWithEmailAndPassword(email, password, firstName, surname);
+                    userSignUpPresenter.createUserWithEmailAndPassword(firstName, surname, email, password);
                 } else {
                     Snackbar.make(requireView(), "Fields are empty !", Snackbar.LENGTH_LONG).show();
                 }
@@ -123,8 +123,9 @@ public class cSignUpFragment extends Fragment implements iUserSignUpPresenter.Vi
 
     @Override
     public void onUserSignUpSucceeded(String msg) {
-        String email = Objects.requireNonNull(emailEditText.getText()).toString();
-        NavDirections action = cSignUpFragmentDirections.actionCSignUpFragmentToCHomeFragment(email);
+        //String email = Objects.requireNonNull(emailEditText.getText()).toString();
+        NavDirections action = cSignUpFragmentDirections.actionCSignUpFragmentToCLoginFragment(); //.actionCSignUpFragmentToCHomeFragment(email);
+
         Navigation.findNavController(requireView()).navigate(action);
     }
 

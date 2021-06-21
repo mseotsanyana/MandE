@@ -4,35 +4,37 @@ import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserSignUpInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.session.user.iUserSignUpInteractor;
-import com.me.mseotsanyana.mande.BLL.repository.session.iUserRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iUserProfileRepository;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.session.iUserSignUpPresenter;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.UTIL.cInputValidation;
+
 
 public class cUserSignUpPresenterImpl extends cAbstractPresenter implements iUserSignUpPresenter,
         iUserSignUpInteractor.Callback {
     private static String TAG = cUserSignUpPresenterImpl.class.getSimpleName();
 
     private View view;
-    private iUserRepository userRepository;
+    private iUserProfileRepository userProfileRepository;
 
     private cInputValidation inputValidation;
 
     public cUserSignUpPresenterImpl(iExecutor executor, iMainThread mainThread,
                                     View view,
-                                    iUserRepository userRepository) {
+                                    iUserProfileRepository userProfileRepository) {
         super(executor, mainThread);
 
         this.view = view;
-        this.userRepository = userRepository;
+        this.userProfileRepository = userProfileRepository;
 
         this.inputValidation = new cInputValidation();
     }
 
 
     @Override
-    public void createUserWithEmailAndPassword(String email, String password, String firstName, String surname) {
+    public void createUserWithEmailAndPassword(String firstName, String surname, String email,
+                                               String password) {
         if (!inputValidation.isEditTextFilled(view.getEmailEditText(),
                 view.getResourceString(R.string.error_message_email))) {
             return;
@@ -62,7 +64,7 @@ public class cUserSignUpPresenterImpl extends cAbstractPresenter implements iUse
         iUserSignUpInteractor userSignUpInteractor = new cUserSignUpInteractorImpl(
                 executor,
                 mainThread,
-                userRepository,
+                userProfileRepository,
                 this,
                 firstName, surname, email, password);
 

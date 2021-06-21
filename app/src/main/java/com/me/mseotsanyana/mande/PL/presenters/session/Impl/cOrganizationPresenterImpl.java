@@ -2,15 +2,13 @@ package com.me.mseotsanyana.mande.PL.presenters.session.Impl;
 
 import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
-import com.me.mseotsanyana.mande.BLL.interactors.logframe.logframe.Impl.cReadLogFrameInteractorImpl;
-import com.me.mseotsanyana.mande.BLL.interactors.logframe.logframe.iReadLogFrameInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cCreateOrganizationInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cReadOrganizationsInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.session.organization.iCreateOrganizationInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.session.organization.iReadOrganizationsInteractor;
 import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
 import com.me.mseotsanyana.mande.BLL.repository.session.iOrganizationRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iSessionManagerRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.session.iOrganizationPresenter;
 import com.me.mseotsanyana.mande.UTIL.cInputValidation;
@@ -22,14 +20,14 @@ public class cOrganizationPresenterImpl extends cAbstractPresenter implements iO
     private static String TAG = cOrganizationPresenterImpl.class.getSimpleName();
 
     private View view;
-    private final iSessionManagerRepository sessionManagerRepository;
+    private final iSharedPreferenceRepository sessionManagerRepository;
     private final iOrganizationRepository organizationRepository;
 
     private final cInputValidation inputValidation;
 
     public cOrganizationPresenterImpl(iExecutor executor, iMainThread mainThread,
                                       View view,
-                                      iSessionManagerRepository sessionManagerRepository,
+                                      iSharedPreferenceRepository sessionManagerRepository,
                                       iOrganizationRepository organizationRepository) {
         super(executor, mainThread);
 
