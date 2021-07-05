@@ -1,9 +1,6 @@
 package com.me.mseotsanyana.mande.BLL.repository.session;
 
-import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
-
-import java.util.List;
 
 public interface iUserProfileRepository {
     void createUserWithEmailAndPassword(String firstName, String surname, String email, String password,

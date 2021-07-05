@@ -34,16 +34,16 @@ public class cOrganizationAdapter extends RecyclerView.Adapter<cOrganizationAdap
     private static SimpleDateFormat sdf = cConstant.SHORT_FORMAT_DATE;
 
     private final Context context;
-    private ArrayList<cOrganizationModel> organizationModels;
+    private List<cOrganizationModel> organizationModels;
     private List<cOrganizationModel> filteredOrganizationModels;
 
-    public cOrganizationAdapter(Context context, ArrayList<cOrganizationModel> organizationModels) {
+    public cOrganizationAdapter(Context context, List<cOrganizationModel> organizationModels) {
         this.context = context;
         this.organizationModels = organizationModels;
         this.filteredOrganizationModels = organizationModels;
     }
 
-    public void setOrganizationModels(ArrayList<cOrganizationModel> organizationModels) {
+    public void setOrganizationModels(List<cOrganizationModel> organizationModels) {
         this.organizationModels = organizationModels;
         this.filteredOrganizationModels = organizationModels;
     }

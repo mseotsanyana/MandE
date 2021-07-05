@@ -189,8 +189,8 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
         logFramePresenter = new cLogFramePresenterImpl(
                 cThreadExecutorImpl.getInstance(),
                 cMainThreadImpl.getInstance(),
-                this,
-                new cSessionManagerImpl(getContext()),
+                this,null
+                /*new cSessionManagerImpl(getContext())*/,
                 new cMenuRepositoryImpl(getContext()),
                 new cLogFrameRepositoryImpl(getContext()));
 

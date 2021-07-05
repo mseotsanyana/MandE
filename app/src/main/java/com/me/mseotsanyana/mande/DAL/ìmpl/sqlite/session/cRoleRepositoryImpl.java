@@ -8,12 +8,9 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.repository.session.iRoleRepository;
-import com.me.mseotsanyana.mande.BLL.model.session.cEntityModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
-import com.me.mseotsanyana.mande.BLL.model.session.cOperationModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cPermissionModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cRoleModel;
-import com.me.mseotsanyana.mande.BLL.model.session.cStatusSetModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
@@ -30,7 +27,7 @@ import java.util.Set;
  * Created by mseotsanyana on 2017/08/24.
  */
 
-public class cRoleRepositoryImpl implements iRoleRepository {
+public class cRoleRepositoryImpl /*implements iRoleRepository*/ {
     private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
     private static String TAG = cRoleRepositoryImpl.class.getSimpleName();
 
@@ -110,7 +107,7 @@ public class cRoleRepositoryImpl implements iRoleRepository {
         // assign values to the table fields
         //cv.put(cSQLDBHelper.KEY_ID, groupModel.getRoleID());
         cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, organizationID);
-        cv.put(cSQLDBHelper.KEY_OWNER_ID, groupModel.getOwnerID());
+        cv.put(cSQLDBHelper.KEY_OWNER_ID, groupModel.getUserOwnerID());
         //cv.put(cSQLDBHelper.KEY_GROUP_BITS, groupModel.getGroupBITS());
         //cv.put(cSQLDBHelper.KEY_PERMS_BITS, groupModel.getPermsBITS());
         //cv.put(cSQLDBHelper.KEY_STATUS_BITS, groupModel.getStatusBITS());
@@ -165,8 +162,9 @@ public class cRoleRepositoryImpl implements iRoleRepository {
 
     /* ############################################# READ ACTIONS ############################################# */
 
-    @Override
-    public void readRoleUsers(List<cRoleModel> roleModels, int primaryRole, int secondaryRoles, int statusBITS, iReadRoleModelSetCallback callback) {
+
+    public void readRoleUsers(List<cRoleModel> roleModels, int primaryRole, int secondaryRoles,
+                              int statusBITS, iRoleRepository.iReadRolesCallback callback) {
 
     }
 
@@ -357,19 +355,19 @@ public class cRoleRepositoryImpl implements iRoleRepository {
                     menu.setMenuServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                     menu.setParentServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
                     //menu.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    menu.setOwnerID(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    menu.setOrgOwnerID(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    menu.setTeamOwnerBIT(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    menu.setUnixpermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    menu.setStatusesBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    menu.setOwnerID(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    menu.setOrgOwnerID(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    menu.setTeamOwnerBIT(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    menu.setUnixpermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    menu.setStatusesBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
                     menu.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    menu.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    menu.setCreatedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    menu.setModifiedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    menu.setSyncedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                    menu.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+//                    menu.setCreatedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    menu.setModifiedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    menu.setSyncedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     // populate submenu for a specific menu item
                     //menu.setMenuModelSet(menuDBA.getSubsetMenuByID(menu.getMenuID()));
@@ -427,19 +425,19 @@ public class cRoleRepositoryImpl implements iRoleRepository {
                     menu.setMenuServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
                     menu.setParentServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
                     //menu.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    menu.setOwnerID(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    menu.setOrgOwnerID(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    menu.setTeamOwnerBIT(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    menu.setUnixpermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    menu.setStatusesBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    menu.setOwnerID(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    menu.setOrgOwnerID(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    menu.setTeamOwnerBIT(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    menu.setUnixpermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    menu.setStatusesBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
                     menu.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    menu.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    menu.setCreatedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    menu.setModifiedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    menu.setSyncedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                    menu.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+//                    menu.setCreatedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    menu.setModifiedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    menu.setSyncedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     // populate submenu for a specific menu item
                     //menu.setMenuModelSet(menuDBA.getSubsetMenuByID(menu.getMenuID()));
@@ -505,7 +503,7 @@ public class cRoleRepositoryImpl implements iRoleRepository {
             if (cursor.moveToFirst()) {
                 do {
 
-                    cPermissionModel permission = new cPermissionModel();
+                    cPermissionModel permission = null;//new cPermissionModel(permissions);
 
 //                    permission.setPermissionID(
 //                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
@@ -872,7 +870,7 @@ public class cRoleRepositoryImpl implements iRoleRepository {
         // assign values to the table fields
         //cv.put(cSQLDBHelper.KEY_ID, roleModel.getRoleID());
         cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, organizationID);
-        cv.put(cSQLDBHelper.KEY_OWNER_ID, roleModel.getOwnerID());
+        cv.put(cSQLDBHelper.KEY_OWNER_ID, roleModel.getUserOwnerID());
         //cv.put(cSQLDBHelper.KEY_GROUP_BITS, roleModel.getGroupBITS());
         //cv.put(cSQLDBHelper.KEY_PERMS_BITS, roleModel.getPermsBITS());
         //cv.put(cSQLDBHelper.KEY_STATUS_BITS, roleModel.getStatusBITS());

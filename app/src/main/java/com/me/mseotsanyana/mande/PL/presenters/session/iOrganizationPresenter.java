@@ -5,6 +5,7 @@ import com.me.mseotsanyana.mande.PL.presenters.base.iPresenter;
 import com.me.mseotsanyana.mande.PL.ui.iBaseView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface iOrganizationPresenter extends iPresenter {
     interface View extends iBaseView {
@@ -12,9 +13,8 @@ public interface iOrganizationPresenter extends iPresenter {
 
         void onCreateOrganizationFailed(String msg);
         void onCreateOrganizationSucceeded(String msg);
-
         void onReadOrganizationsFailed(String msg);
-        void onReadOrganizationsSucceeded(ArrayList<cOrganizationModel> organizationModels);
+        void onReadOrganizationsSucceeded(List<cOrganizationModel> organizationModels);
 
         /*EditText getNameEditText();
         EditText getEmailEditText();

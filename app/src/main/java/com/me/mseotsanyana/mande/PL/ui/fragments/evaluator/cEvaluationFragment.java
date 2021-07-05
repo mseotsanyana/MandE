@@ -140,7 +140,7 @@ public class cEvaluationFragment extends Fragment implements iEvaluationPresente
                 cThreadExecutorImpl.getInstance(),
                 cMainThreadImpl.getInstance(),
                 this,
-                new cSessionManagerImpl(getContext()),
+                null/*cSessionManagerImpl(getContext())*/,
                 new cEvaluationRepositoryImpl(getContext()),
                 logFrameID);
 

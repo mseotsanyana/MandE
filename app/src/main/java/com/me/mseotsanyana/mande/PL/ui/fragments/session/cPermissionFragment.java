@@ -219,7 +219,7 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
         final AppCompatEditText editTextPrivilegeDescription =
                 (AppCompatEditText) formElementsView.findViewById(R.id.editTextPrivilegeDescription);
 
-        final cPermissionModel privilege = new cPermissionModel();
+        final cPermissionModel privilege = null;//new cPermissionModel(permissions);
 
         /** read roles to populate the spinner **/
         new cReadRoles().execute(singleSpinnerSearchRole, privilege);
@@ -648,8 +648,8 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
             for (int i = 0; i < entityModels.size(); i++) {
                 cKeyPairBoolData idNameBool = new cKeyPairBoolData();
 
-                idNameBool.setId(entityModels.get(i).getEntityID());
-                idNameBool.setName(entityModels.get(i).getName());
+//                idNameBool.setId(entityModels.get(i).getEntityID());
+//                idNameBool.setName(entityModels.get(i).getName());
                 idNameBool.setSelected(false);
                 idNameBool.setObject(entityModels.get(i));
 
@@ -706,7 +706,7 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
                     selectedPermissions = new ArrayList<>();
 
                     for (int j = 0; j < selectedEntities.size(); j++) {
-                        cPermissionModel permissionModel = new cPermissionModel();
+                        cPermissionModel permissionModel = null;//new cPermissionModel(permissions);
 
                         //permissionModel.setOrganizationID(session.loadOrgID());
                         //-permissionModel.setPrivilegeModel(privilegeModel);
@@ -855,8 +855,8 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
             for (int i = 0; i < entityModels.size(); i++) {
                 cKeyPairBoolData idNameBool = new cKeyPairBoolData();
 
-                idNameBool.setId(entityModels.get(i).getEntityID());
-                idNameBool.setName(entityModels.get(i).getName());
+//                idNameBool.setId(entityModels.get(i).getEntityID());
+//                idNameBool.setName(entityModels.get(i).getName());
                 idNameBool.setObject(entityModels.get(i));
                 idNameBool.setSelected(false);
 
@@ -916,7 +916,7 @@ public class cPermissionFragment extends Fragment implements iPermissionInterfac
 
                     /** create list of permission domains **/
                     for (int j = 0; j < selectedEntities.size(); j++) {
-                        cPermissionModel permissionModel = new cPermissionModel();
+                        cPermissionModel permissionModel = null;//new cPermissionModel(permissions);
 
                         //-permissionModel.setPrivilegeModel(privilegeModel);
                         //-permissionModel.setEntityModel(selectedEntities.get(j));

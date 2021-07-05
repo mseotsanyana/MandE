@@ -172,8 +172,8 @@ public class cInputFragment extends Fragment implements iViewInputListener, iInp
         inputPresenter = new cInputPresenterImpl(
                 cThreadExecutorImpl.getInstance(),
                 cMainThreadImpl.getInstance(),
-                this,
-                new cSessionManagerImpl(getContext()),
+                this, null
+                /*new cSessionManagerImpl(getContext())*/,
                 new cHumanRepositoryImpl(getContext()),
                 new cMaterialRepositoryImpl(getContext()),
                 new cIncomeRepositoryImpl(getContext()),

@@ -39,10 +39,9 @@ public class cTeamFirebaseRepositoryImpl implements iTeamRepository {
 
     /* ############################################# READ ACTIONS ############################################# */
 
-    @Override
     public void readTeamsWithMembers(long userServerID, int primaryTeamBIT, int secondaryTeamBITS,
                                      int operationsBITS, int statusBITS, String organizationServerID,
-                                     iReadTeamModelCallback callback) {
+                                     iReadTeamsCallback callback) {
 
         DatabaseReference dbTeamsRef;
         dbTeamsRef = database.getReference(cRealtimeHelper.KEY_TEAMS);
@@ -59,21 +58,20 @@ public class cTeamFirebaseRepositoryImpl implements iTeamRepository {
                     assert teamModel != null;
 
                     // TEAM MEMBERS
-                    readTeamMembers(teamMembersMap, numTeams, teamModel, callback);
+                    //readTeamMembers(teamMembersMap, numTeams, teamModel, callback);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                callback.onReadTeamFailed("Failed to read teams: " +
-                        error.toException());
+               // callback.onReadTeamFailed("Failed to read teams: " +error.toException());
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
     }
 
     private void readTeamMembers(Map<cTeamModel, List<cUserProfileModel>> teamMembersMap, long[] numTeams,
-                                 cTeamModel teamModel, iReadTeamModelCallback callback){
+                                 cTeamModel teamModel, iReadTeamsCallback callback){
         DatabaseReference dbTeamMembersRef;
         dbTeamMembersRef = database.getReference(cRealtimeHelper.KEY_TEAM_MEMBERS);
         //assert teamModel != null;
@@ -99,8 +97,7 @@ public class cTeamFirebaseRepositoryImpl implements iTeamRepository {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        callback.onReadTeamFailed("Failed to read team members: " +
-                                error.toException());
+                        //callback.onReadTeamFailed("Failed to read team members: " +error.toException());
                         Log.w(TAG, "Failed to read value.", error.toException());
                     }
                 });
@@ -109,7 +106,7 @@ public class cTeamFirebaseRepositoryImpl implements iTeamRepository {
     private void readUserAccounts(Map<cTeamModel, List<cUserProfileModel>> teamMembersMap, long[] numTeams,
                                   cTeamModel teamModel, List<cUserProfileModel> userProfileModels,
                                   long[] numUserProfiles, String userAccountServerID,
-                                  iReadTeamModelCallback callback){
+                                  iReadTeamsCallback callback){
         DatabaseReference dbUserAccountsRef;
         dbUserAccountsRef = database.getReference(cRealtimeHelper.KEY_USERACCOUNTS);
         assert userAccountServerID != null;
@@ -126,8 +123,7 @@ public class cTeamFirebaseRepositoryImpl implements iTeamRepository {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        callback.onReadTeamFailed("Failed to read user account: " +
-                                error.toException());
+                        //callback.onReadTeamFailed("Failed to read user account: " +error.toException());
                         Log.w(TAG, "Failed to read value.", error.toException());
                     }
                 });
@@ -136,7 +132,7 @@ public class cTeamFirebaseRepositoryImpl implements iTeamRepository {
     private void readUserProfile(Map<cTeamModel, List<cUserProfileModel>> teamMembersMap, long[] numTeams,
                                  cTeamModel teamModel, cUserAccountModel userAccountModel,
                                  List<cUserProfileModel> userProfileModels, long[] numUserProfiles,
-                                 iReadTeamModelCallback callback){
+                                 iReadTeamsCallback callback){
         DatabaseReference dbUserProfilesRef;
         dbUserProfilesRef = database.getReference(cRealtimeHelper.KEY_USERPROFILES);
         assert userAccountModel != null;
@@ -156,7 +152,7 @@ public class cTeamFirebaseRepositoryImpl implements iTeamRepository {
 
                         /* add all the teams with their members in the map before a call back */
                         if (numTeams[0] - 1 == 0) {
-                            callback.onReadTeamsWithMembersSucceeded(teamMembersMap);
+                            //callback.onReadTeamsWithMembersSucceeded(teamMembersMap);
                         } else {
                             numTeams[0] = numTeams[0] - 1;
                         }
@@ -164,10 +160,23 @@ public class cTeamFirebaseRepositoryImpl implements iTeamRepository {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        callback.onReadTeamFailed("Failed to read user profile: " +
-                                error.toException());
+                        //callback.onReadTeamFailed("Failed to read user profile: " +error.toException());
                         Log.w(TAG, "Failed to read value.", error.toException());
                     }
                 });
+    }
+
+    @Override
+    public void readTeams(String organizationServerID, String userServerID, int primaryTeamBIT,
+                          List<Integer> secondaryTeamBITS, List<Integer> statusBITS,
+                          iReadTeamsCallback callback) {
+
+    }
+
+    @Override
+    public void readTeamRoles(String roleServerID, String organizationServerID, String userServerID,
+                              int primaryTeamBIT, List<Integer> secondaryTeamBITS,
+                              List<Integer> statusBITS, iReadTeamsCallback callback) {
+
     }
 }

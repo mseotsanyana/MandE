@@ -4,24 +4,27 @@ import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.session.user.iUserSignOutInteractor;
+import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iUserProfileRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iUserRepository;
 
 public class cUserSignOutInteractorImpl extends cAbstractInteractor implements iUserSignOutInteractor {
-    private static String TAG = cUserSignOutInteractorImpl.class.getSimpleName();
+    //private static String TAG = cUserSignOutInteractorImpl.class.getSimpleName();
 
     private final Callback callback;
     private final iUserProfileRepository userProfileRepository;
+    private final iSharedPreferenceRepository sharedPreferenceRepository;
 
     public cUserSignOutInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,
-                                      iUserProfileRepository userProfileRepository,
-                                      Callback callback) {
+                                      Callback callback,
+                                      iSharedPreferenceRepository sharedPreferenceRepository,
+                                      iUserProfileRepository userProfileRepository) {
         super(threadExecutor, mainThread);
 
-        if (userProfileRepository == null || callback == null) {
+        if (sharedPreferenceRepository == null || userProfileRepository == null || callback == null) {
             throw new IllegalArgumentException("Arguments can not be null!");
         }
 
+        this.sharedPreferenceRepository = sharedPreferenceRepository;
         this.userProfileRepository = userProfileRepository;
         this.callback = callback;
     }
@@ -49,10 +52,13 @@ public class cUserSignOutInteractorImpl extends cAbstractInteractor implements i
     /* sign up a new user */
     @Override
     public void run() {
-        this.userProfileRepository.signOutWithEmailAndPassword(new iUserProfileRepository.iSignOutRepositoryCallback() {
+        this.userProfileRepository.signOutWithEmailAndPassword(
+                new iUserProfileRepository.iSignOutRepositoryCallback() {
             /* logged user successfully sign out with firebase */
             @Override
             public void onSignOutSucceeded(String msg) {
+                sharedPreferenceRepository.deleteSettings();
+                sharedPreferenceRepository.commitSettings();
                 postMessage(msg);
             }
             /* logged user failed to register with firebase */

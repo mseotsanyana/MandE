@@ -148,8 +148,8 @@ public class cActivityFragment extends Fragment implements iActivityPresenter.Vi
         activityPresenter = new cActivityPresenterImpl(
                 cThreadExecutorImpl.getInstance(),
                 cMainThreadImpl.getInstance(),
-                this,
-                new cSessionManagerImpl(getContext()),
+                this,null
+                /*new cSessionManagerImpl(getContext())*/,
                 new cActivityRepositoryImpl(getContext()),
                 logFrameID);
 

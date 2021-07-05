@@ -16,7 +16,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserAccountModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
-import com.me.mseotsanyana.mande.BLL.repository.session.iUserProfileAndMenuItemsRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iHomePageRepository;
 import com.me.mseotsanyana.mande.DAL.storage.database.cRealtimeHelper;
 import com.me.mseotsanyana.mande.DAL.ìmpl.cDatabaseUtils;
 
@@ -28,7 +28,7 @@ import java.util.Set;
  * Created by mseotsanyana on 2017/08/24.
  */
 
-public class cHomePageFirebaseRepositoryImpl implements iUserProfileAndMenuItemsRepository {
+public class cHomePageFirebaseRepositoryImpl implements iHomePageRepository {
     //private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
     private static final String TAG = cHomePageFirebaseRepositoryImpl.class.getSimpleName();
 
@@ -44,9 +44,9 @@ public class cHomePageFirebaseRepositoryImpl implements iUserProfileAndMenuItems
 
     @Override
     public void updateHomePageModels(String userServerID, String orgServerID,
-                                     int primaryTeamBIT, int secondaryTeamBITS,
+                                     int primaryTeamBIT, List<Integer> secondaryTeamBITS,
                                      int statusBITS, List<Integer> statuses, int permBITS,
-                                     iUserProfileAndMenuItemsCallback callback) {
+                                     iHomePageCallback callback) {
         /* read an organization of the current loggedIn user */
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -64,7 +64,7 @@ public class cHomePageFirebaseRepositoryImpl implements iUserProfileAndMenuItems
      * @param firebaseUser firebase user
      * @param callback     return user profile
      */
-    private void readUserProfile(FirebaseUser firebaseUser, iUserProfileAndMenuItemsCallback callback) {
+    private void readUserProfile(FirebaseUser firebaseUser, iHomePageCallback callback) {
         DatabaseReference dbUserProfilesRef;
         dbUserProfilesRef = database.getReference(cRealtimeHelper.KEY_USERPROFILES);
         dbUserProfilesRef.child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
@@ -90,7 +90,7 @@ public class cHomePageFirebaseRepositoryImpl implements iUserProfileAndMenuItems
      * @param callback         return user accounts
      */
     private void readUserAccounts(cUserProfileModel userProfileModel,
-                                  iUserProfileAndMenuItemsCallback callback) {
+                                  iHomePageCallback callback) {
         DatabaseReference dbUserAccountsRef;
         dbUserAccountsRef = database.getReference(cRealtimeHelper.KEY_USERACCOUNTS);
         Query userServerQuery = dbUserAccountsRef.orderByChild("userServerID").equalTo(
@@ -138,7 +138,7 @@ public class cHomePageFirebaseRepositoryImpl implements iUserProfileAndMenuItems
      * @param callback         return teams
      */
     private void readUserAccountTeams(cUserAccountModel userAccountModel,
-                                      iUserProfileAndMenuItemsCallback callback) {
+                                      iHomePageCallback callback) {
         DatabaseReference dbUserAccountTeamsRef;
         dbUserAccountTeamsRef = database.getReference(cRealtimeHelper.KEY_MEMBER_TEAMS);
         dbUserAccountTeamsRef.child(userAccountModel.getUserAccountServerID()).
@@ -166,7 +166,7 @@ public class cHomePageFirebaseRepositoryImpl implements iUserProfileAndMenuItems
      * @param teamID   team identification
      * @param callback return roles
      */
-    private void readTeamRoles(String teamID, iUserProfileAndMenuItemsCallback callback) {
+    private void readTeamRoles(String teamID, iHomePageCallback callback) {
         DatabaseReference dbUserAccountRolesRef;
         dbUserAccountRolesRef = database.getReference(cRealtimeHelper.KEY_TEAM_ROLES);
         dbUserAccountRolesRef.child(teamID).
@@ -194,9 +194,9 @@ public class cHomePageFirebaseRepositoryImpl implements iUserProfileAndMenuItems
      * @param roleID   role identification
      * @param callback return role menu items
      */
-    private void readRoleMenuItems(String roleID, iUserProfileAndMenuItemsCallback callback) {
+    private void readRoleMenuItems(String roleID, iHomePageCallback callback) {
         DatabaseReference dbRoleMenuItemsRef;
-        dbRoleMenuItemsRef = database.getReference(cRealtimeHelper.KEY_ROLE_MENU_ITEMS);
+        dbRoleMenuItemsRef = database.getReference(cRealtimeHelper.KEY_ROLE_PERMISSIONS);
         dbRoleMenuItemsRef.child(roleID).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override

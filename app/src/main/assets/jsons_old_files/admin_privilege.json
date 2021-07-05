@@ -1,0 +1,7 @@
+{
+  "privilege":
+    {
+      "name": "Admin Privilege",
+      "description": "Default admin privilege for an organization"
+    }
+}

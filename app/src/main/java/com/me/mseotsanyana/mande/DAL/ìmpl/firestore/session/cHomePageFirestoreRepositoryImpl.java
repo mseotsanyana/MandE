@@ -12,33 +12,25 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
-import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserAccountModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
-import com.me.mseotsanyana.mande.BLL.repository.session.iUserProfileAndMenuItemsRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iHomePageRepository;
 import com.me.mseotsanyana.mande.DAL.storage.database.cRealtimeHelper;
 import com.me.mseotsanyana.mande.DAL.ìmpl.cDatabaseUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
-import java.util.TreeMap;
+
 
 /**
  * Created by mseotsanyana on 2017/08/24.
  */
 
-public class cHomePageFirestoreRepositoryImpl implements iUserProfileAndMenuItemsRepository {
+public class cHomePageFirestoreRepositoryImpl implements iHomePageRepository {
     private static final String TAG = cHomePageFirestoreRepositoryImpl.class.getSimpleName();
 
     private final FirebaseFirestore db;
@@ -55,8 +47,9 @@ public class cHomePageFirestoreRepositoryImpl implements iUserProfileAndMenuItem
 
     @Override
     public void updateHomePageModels(String userServerID, String orgServerID, int primaryTeamBIT,
-                                     int secondaryTeamBITS, int statusBITS, List<Integer> statuses, int permBITS,
-                                     iUserProfileAndMenuItemsCallback callback) {
+                                     List<Integer> secondaryTeamBITS, int statusBITS,
+                                     List<Integer> statuses, int permBITS,
+                                     iHomePageCallback callback) {
 
         /* read an organization of the current loggedIn user */
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -75,7 +68,7 @@ public class cHomePageFirestoreRepositoryImpl implements iUserProfileAndMenuItem
      * @param firebaseUser firebase user
      * @param callback     return user profile
      */
-    private void readUserProfile(FirebaseUser firebaseUser, iUserProfileAndMenuItemsCallback callback) {
+    private void readUserProfile(FirebaseUser firebaseUser, iHomePageCallback callback) {
         CollectionReference coUserProfilesRef;
         coUserProfilesRef = db.collection(cRealtimeHelper.KEY_USERPROFILES);
 
@@ -114,7 +107,7 @@ public class cHomePageFirestoreRepositoryImpl implements iUserProfileAndMenuItem
      * @param callback         return user accounts
      */
     private void readUserAccounts(cUserProfileModel userProfileModel,
-                                  iUserProfileAndMenuItemsCallback callback) {
+                                  iHomePageCallback callback) {
         CollectionReference coUserAccountsRef;
         coUserAccountsRef = db.collection(cRealtimeHelper.KEY_USERACCOUNTS);
         Query userServerQuery = coUserAccountsRef
@@ -139,10 +132,10 @@ public class cHomePageFirestoreRepositoryImpl implements iUserProfileAndMenuItem
                             /* call back on user profile */
                             callback.onReadUserProfileSucceeded(userProfileModel);
 
-
+                            /* menu is saved in pref file when a user sign in - just retrieve it */
                             callback.onReadMenuItemsSucceeded();
 
-                            /* USER ACCOUNT TEAMS */
+                            /* FIXME: USER ACCOUNT TEAMS */
                             //readUserAccountTeams(userAccountModel, callback);
 
                         } else {
@@ -161,124 +154,124 @@ public class cHomePageFirestoreRepositoryImpl implements iUserProfileAndMenuItem
 
     }
 
-    /**
-     * read teams associated with the loggedIn user
-     *
-     * @param userAccountModel user account
-     * @param callback         return teams
-     */
-    private void readUserAccountTeams(cUserAccountModel userAccountModel,
-                                      iUserProfileAndMenuItemsCallback callback) {
-        CollectionReference coUserAccountTeamsRef;
-        coUserAccountTeamsRef = db.collection(cRealtimeHelper.KEY_TEAM_MEMBERS);
-        Query teamServerQuery = coUserAccountTeamsRef
-                .whereEqualTo("userAccountServerID", userAccountModel.getUserAccountServerID());
-
-        teamServerQuery.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        List<String> team_ids = new ArrayList<>();
-                        for (QueryDocumentSnapshot team : Objects.requireNonNull(task.getResult())) {
-                            Map<String, Object> teamMap = team.getData();
-                            String teamID = Objects.requireNonNull(teamMap.get("teamMemberServerID")).toString();
-                            team_ids.add(teamID);
-                        }
-                        /* MEMBER TEAMS */
-                        readTeamRoles(team_ids, callback);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callback.onReadHomePageFailed("Failed to read user teams ");
-                        Log.w(TAG, "Failed to read value.", e);
-                    }
-                });
-    }
-
-    /**
-     * read team roles
-     *
-     * @param callback return roles
-     */
-
-    private void readTeamRoles(List<String> team_ids, iUserProfileAndMenuItemsCallback callback) {
-        CollectionReference coTeamRolesRef;
-        coTeamRolesRef = db.collection(cRealtimeHelper.KEY_TEAM_ROLES);
-        Query roleServerQuery = coTeamRolesRef
-                .whereIn("teamServerID", team_ids);
-
-        roleServerQuery.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        List<String> role_ids = new ArrayList<>();
-                        for (QueryDocumentSnapshot role : Objects.requireNonNull(task.getResult())) {
-                            Map<String, Object> roleMap = role.getData();
-                            String roleID = Objects.requireNonNull(roleMap.get("roleServerID")).toString();
-                            role_ids.add(roleID);
-                        }
-                        /* TEAM ROLES */
-                        readRoleMenuItems(role_ids, callback);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callback.onReadHomePageFailed("Failed to read team roles: " +
-                                e.toString());
-                        Log.w(TAG, "Failed to read value.", e);
-                    }
-                });
-    }
-
-    /**
-     * read role menu items
-     *
-     * @param callback return role menu items
-     */
-    private void readRoleMenuItems(List<String> role_ids, iUserProfileAndMenuItemsCallback callback) {
-        CollectionReference coRoleMenuItemsRef;
-
-        coRoleMenuItemsRef = db.collection(cRealtimeHelper.KEY_ROLE_MENU_ITEMS);
-        Query menuServerQuery = coRoleMenuItemsRef
-                .whereIn(FieldPath.documentId(), role_ids);
-
-        menuServerQuery.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        //final int[] num_menu_items = {task.getResult().size()};
-                        //List<String> menu_ids = new ArrayList<>();
-                        //Gson gson = new Gson();
-                        //Log.d(TAG, "MENU ITEMS = "+task.getResult().getDocuments());
-//                        Set<Integer> map = new <>();
-//                        for (QueryDocumentSnapshot menu_item : Objects.requireNonNull(task.getResult())) {
-//                            Map<String, Object> menu_items = menu_item.getData();
+//    /**
+//     * read teams associated with the loggedIn user
+//     *
+//     * @param userAccountModel user account
+//     * @param callback         return teams
+//     */
+//    private void readUserAccountTeams(cUserAccountModel userAccountModel,
+//                                      iHomePageCallback callback) {
+//        CollectionReference coUserAccountTeamsRef;
+//        coUserAccountTeamsRef = db.collection(cRealtimeHelper.KEY_TEAM_MEMBERS);
+//        Query teamServerQuery = coUserAccountTeamsRef
+//                .whereEqualTo("userAccountServerID", userAccountModel.getUserAccountServerID());
 //
-//                            Map<Integer, Object> treeMap = new TreeMap<>(menu_items);
-//
-//                            //List<String> keys = new ArrayList<>(menu_items.entrySet());
-//                            //Collections.sort(keys);
-//
-//                            Log.d(TAG, "MENU ITEM ==============>>>>>>>>>>>>>>>>> " + treeMap.keySet());
-//                            //Log.d(TAG, "MENU ITEM ==============>>>>>>>>>>>>>>>>> " + menu_items.values());
+//        teamServerQuery.get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        List<String> team_ids = new ArrayList<>();
+//                        for (QueryDocumentSnapshot team : Objects.requireNonNull(task.getResult())) {
+//                            Map<String, Object> teamMap = team.getData();
+//                            String teamID = Objects.requireNonNull(teamMap.get("teamMemberServerID")).toString();
+//                            team_ids.add(teamID);
 //                        }
-                        /* ROLE MENU ITEMS */
-                        //readMenuItems(menuID, menuModels, num_menu_items, callback);
-                        //readMenuItems(menu_ids, callback);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callback.onReadHomePageFailed("Failed to read role menu items: " +
-                                e.toString());
-                        Log.w(TAG, "Failed to read value.", e);
-                    }
-                });
-    }
+//                        /* MEMBER TEAMS */
+//                        readTeamRoles(team_ids, callback);
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        callback.onReadHomePageFailed("Failed to read user teams ");
+//                        Log.w(TAG, "Failed to read value.", e);
+//                    }
+//                });
+//    }
+//
+//    /**
+//     * read team roles
+//     *
+//     * @param callback return roles
+//     */
+//
+//    private void readTeamRoles(List<String> team_ids, iHomePageCallback callback) {
+//        CollectionReference coTeamRolesRef;
+//        coTeamRolesRef = db.collection(cRealtimeHelper.KEY_TEAM_ROLES);
+//        Query roleServerQuery = coTeamRolesRef
+//                .whereIn("teamServerID", team_ids);
+//
+//        roleServerQuery.get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        List<String> role_ids = new ArrayList<>();
+//                        for (QueryDocumentSnapshot role : Objects.requireNonNull(task.getResult())) {
+//                            Map<String, Object> roleMap = role.getData();
+//                            String roleID = Objects.requireNonNull(roleMap.get("roleServerID")).toString();
+//                            role_ids.add(roleID);
+//                        }
+//                        /* TEAM ROLES */
+//                        readRoleMenuItems(role_ids, callback);
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        callback.onReadHomePageFailed("Failed to read team roles: " +
+//                                e.toString());
+//                        Log.w(TAG, "Failed to read value.", e);
+//                    }
+//                });
+//    }
+//
+//    /**
+//     * read role menu items
+//     *
+//     * @param callback return role menu items
+//     */
+//    private void readRoleMenuItems(List<String> role_ids, iHomePageCallback callback) {
+//        CollectionReference coRoleMenuItemsRef;
+//
+//        coRoleMenuItemsRef = db.collection(cRealtimeHelper.KEY_ROLE_MENU_ITEMS);
+//        Query menuServerQuery = coRoleMenuItemsRef
+//                .whereIn(FieldPath.documentId(), role_ids);
+//
+//        menuServerQuery.get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        //final int[] num_menu_items = {task.getResult().size()};
+//                        //List<String> menu_ids = new ArrayList<>();
+//                        //Gson gson = new Gson();
+//                        //Log.d(TAG, "MENU ITEMS = "+task.getResult().getDocuments());
+////                        Set<Integer> map = new <>();
+////                        for (QueryDocumentSnapshot menu_item : Objects.requireNonNull(task.getResult())) {
+////                            Map<String, Object> menu_items = menu_item.getData();
+////
+////                            Map<Integer, Object> treeMap = new TreeMap<>(menu_items);
+////
+////                            //List<String> keys = new ArrayList<>(menu_items.entrySet());
+////                            //Collections.sort(keys);
+////
+////                            Log.d(TAG, "MENU ITEM ==============>>>>>>>>>>>>>>>>> " + treeMap.keySet());
+////                            //Log.d(TAG, "MENU ITEM ==============>>>>>>>>>>>>>>>>> " + menu_items.values());
+////                        }
+//                        /* ROLE MENU ITEMS */
+//                        //readMenuItems(menuID, menuModels, num_menu_items, callback);
+//                        //readMenuItems(menu_ids, callback);
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        callback.onReadHomePageFailed("Failed to read role menu items: " +
+//                                e.toString());
+//                        Log.w(TAG, "Failed to read value.", e);
+//                    }
+//                });
+//    }
 
     /**
      * read menu items

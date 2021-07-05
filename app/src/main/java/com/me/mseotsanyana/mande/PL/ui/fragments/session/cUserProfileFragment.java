@@ -94,8 +94,8 @@ public class cUserProfileFragment extends Fragment implements iUserProfilePresen
         userProfilePresenter = new cUserProfilePresenterImpl(
                 cThreadExecutorImpl.getInstance(),
                 cMainThreadImpl.getInstance(),
-                this,
-                new cSessionManagerImpl(getContext()),
+                this,null
+                /*new cSessionManagerImpl(getContext())*/,
                 new cUserProfileFirebaseRepositoryImpl(getContext()));
 
         activity = ((AppCompatActivity) getActivity());

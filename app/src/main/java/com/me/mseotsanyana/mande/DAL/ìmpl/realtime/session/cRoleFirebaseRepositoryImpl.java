@@ -24,7 +24,7 @@ import java.util.List;
  * Created by mseotsanyana on 2017/08/24.
  */
 
-public class cRoleFirebaseRepositoryImpl implements iRoleRepository {
+public class cRoleFirebaseRepositoryImpl /*implements iRoleRepository*/ {
     private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
     private static String TAG = cRoleFirebaseRepositoryImpl.class.getSimpleName();
 
@@ -38,9 +38,9 @@ public class cRoleFirebaseRepositoryImpl implements iRoleRepository {
 
     /* ############################################# READ ACTIONS ############################################# */
 
-    @Override
+
     public void readRoleUsers(List<cRoleModel> roleModels, int primaryTeamBIT, int secondaryTeamBITS,
-                              int statusBITS, iRoleRepository.iReadRoleModelSetCallback callback) {
+                              int statusBITS, iRoleRepository.iReadRolesCallback callback) {
 
         for (cRoleModel roleModel : roleModels) {
             DatabaseReference dbRoleUserAccountRef;

@@ -1,0 +1,94 @@
+{
+  "entity": [
+    {
+      "id": 1,
+      "module": 1,
+      "name": "USER",
+      "description": "Users"
+    },
+    {
+      "id": 2,
+      "module": 1,
+      "name": "PROFILE",
+      "description": "Profiles"
+    },
+    {
+      "id": 4,
+      "module": 1,
+      "name": "SESSION",
+      "description": "Sessions"
+    },
+    {
+      "id": 8,
+      "module": 1,
+      "name": "ORGANIZATION",
+      "description": "Organizations"
+    },
+    {
+      "id": 16,
+      "module": 1,
+      "name": "TEAM",
+      "description": "Teams"
+    },
+    {
+      "id": 32,
+      "module": 1,
+      "name": "ROLE",
+      "description": "Roles"
+    },
+    {
+      "id": 64,
+      "module": 1,
+      "name": "MENU",
+      "description": "Menu Items"
+    },
+    {
+      "id": 128,
+      "module": 1,
+      "name": "PERMISSION",
+      "description": "Permissions"
+    },
+    {
+      "id": 256,
+      "module": 1,
+      "name": "OPERATION",
+      "description": "Operations"
+    },
+    {
+      "id": 512,
+      "module": 1,
+      "name": "STATUS",
+      "description": "Statuses"
+    },
+    {
+      "id": 1024,
+      "module": 1,
+      "name": "BILATERALAGREEMENT",
+      "description": "Bilateral Agreements"
+    },
+    {
+      "id": 2048,
+      "module": 1,
+      "name": "BENEFACTORAGREEMENT",
+      "description": "Benefactor Agreements"
+    },
+    {
+      "id": 4096,
+      "module": 1,
+      "name": "IMPLEMENTATIONAGREEMENT",
+      "description": "Implementation Agreements"
+    },
+    {
+      "id": 4096,
+      "module": 1,
+      "name": "PLAN",
+      "description": "Plans"
+    },
+    {
+      "id": 4096,
+      "module": 1,
+      "name": "FEATURE",
+      "description": "Features"
+    }
+  ]
+}

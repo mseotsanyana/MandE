@@ -18,11 +18,11 @@ import java.util.Set;
 public class cRoleModel implements Parcelable {
     private String roleServerID;
 
-    private String ownerID;
-    private String orgOwnerID;
+    private String userOwnerID;
+    private String organizationOwnerID;
     private int teamOwnerBIT;
-    private List<Integer> unixpermsBITS;
-    private int statusesBITS;
+    private List<Integer> unixpermBITS;
+    private int statusBIT;
 
     private String name;
     private String description;
@@ -48,11 +48,11 @@ public class cRoleModel implements Parcelable {
     public cRoleModel(cRoleModel roleModel){
         this.roleServerID = roleModel.getRoleServerID();
 
-        this.ownerID = roleModel.getOwnerID();
-        this.orgOwnerID = roleModel.getOrgOwnerID();
+        this.userOwnerID = roleModel.getUserOwnerID();
+        this.organizationOwnerID = roleModel.getOrganizationOwnerID();
         this.teamOwnerBIT = roleModel.getTeamOwnerBIT();
         //this.unixpermsBITS = roleModel.getUnixpermsBITS();
-        this.statusesBITS = roleModel.getStatusesBITS();
+        this.statusBIT = roleModel.getStatusBIT();
 
         this.name = roleModel.getName();
         this.description = roleModel.getDescription();
@@ -67,21 +67,20 @@ public class cRoleModel implements Parcelable {
         this.roleServerID = roleServerID;
     }
 
-
-    public String getOwnerID() {
-        return ownerID;
+    public String getUserOwnerID() {
+        return userOwnerID;
     }
 
-    public void setOwnerID(String ownerID) {
-        this.ownerID = ownerID;
+    public void setUserOwnerID(String userOwnerID) {
+        this.userOwnerID = userOwnerID;
     }
 
-    public String getOrgOwnerID() {
-        return orgOwnerID;
+    public String getOrganizationOwnerID() {
+        return organizationOwnerID;
     }
 
-    public void setOrgOwnerID(String orgOwnerID) {
-        this.orgOwnerID = orgOwnerID;
+    public void setOrganizationOwnerID(String organizationOwnerID) {
+        this.organizationOwnerID = organizationOwnerID;
     }
 
     public int getTeamOwnerBIT() {
@@ -92,20 +91,20 @@ public class cRoleModel implements Parcelable {
         this.teamOwnerBIT = teamOwnerBIT;
     }
 
-    public List<Integer> getUnixpermsBITS() {
-        return unixpermsBITS;
+    public List<Integer> getUnixpermBITS() {
+        return unixpermBITS;
     }
 
-    public void setUnixpermsBITS(List<Integer> unixpermsBITS) {
-        this.unixpermsBITS = unixpermsBITS;
+    public void setUnixpermBITS(List<Integer> unixpermBITS) {
+        this.unixpermBITS = unixpermBITS;
     }
 
-    public int getStatusesBITS() {
-        return statusesBITS;
+    public int getStatusBIT() {
+        return statusBIT;
     }
 
-    public void setStatusesBITS(int statusesBITS) {
-        this.statusesBITS = statusesBITS;
+    public void setStatusBIT(int statusBIT) {
+        this.statusBIT = statusBIT;
     }
 
     public String getName() {
@@ -196,11 +195,11 @@ public class cRoleModel implements Parcelable {
 
     protected cRoleModel(Parcel in) {
         roleServerID = in.readString();
-        ownerID = in.readString();
-        orgOwnerID = in.readString();
+        userOwnerID = in.readString();
+        organizationOwnerID = in.readString();
         teamOwnerBIT = in.readInt();
         //unixpermsBITS = in.readInt();
-        statusesBITS = in.readInt();
+        statusBIT = in.readInt();
         name = in.readString();
         description = in.readString();
         organizationModel = in.readParcelable(cOrganizationModel.class.getClassLoader());
@@ -209,11 +208,11 @@ public class cRoleModel implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(roleServerID);
-        dest.writeString(ownerID);
-        dest.writeString(orgOwnerID);
+        dest.writeString(userOwnerID);
+        dest.writeString(organizationOwnerID);
         dest.writeInt(teamOwnerBIT);
         //dest.writeInt(unixpermsBITS);
-        dest.writeInt(statusesBITS);
+        dest.writeInt(statusBIT);
         dest.writeString(name);
         dest.writeString(description);
         dest.writeParcelable(organizationModel, flags);

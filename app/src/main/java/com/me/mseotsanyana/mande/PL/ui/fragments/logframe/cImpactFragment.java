@@ -148,8 +148,8 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
         impactPresenter = new cImpactPresenterImpl(
                 cThreadExecutorImpl.getInstance(),
                 cMainThreadImpl.getInstance(),
-                this,
-                new cSessionManagerImpl(getContext()),
+                this,null
+                /*new cSessionManagerImpl(getContext())*/,
                 new cImpactRepositoryImpl(getContext()), logFrameID);
 
         // setup recycler view adapter

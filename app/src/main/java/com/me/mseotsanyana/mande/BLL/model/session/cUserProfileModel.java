@@ -6,15 +6,10 @@ import android.os.Parcelable;
 import com.google.firebase.firestore.Exclude;
 
 import java.util.Date;
+import java.util.List;
 
 public class cUserProfileModel implements Parcelable {
     private String userServerID;
-
-    /*private String ownerID;
-    private String orgOwnerID;
-    private int teamOwnerBIT;
-    private int unixpermsBITS;
-    private int statusesBITS;*/
 
     private String photo;
     private String name;
@@ -34,7 +29,7 @@ public class cUserProfileModel implements Parcelable {
         this.name = name;
         this.surname = surname;
         this.email = email;
-    };
+    }
 
     public cUserProfileModel(String userServerID, String name, String surname,
                              String location, String phone, String email){
@@ -44,7 +39,7 @@ public class cUserProfileModel implements Parcelable {
         this.location = location;
         this.phone = phone;
         this.email = email;
-    };
+    }
 
     @Exclude
     public String getUserServerID() {

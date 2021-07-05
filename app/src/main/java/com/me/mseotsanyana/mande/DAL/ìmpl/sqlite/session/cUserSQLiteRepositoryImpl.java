@@ -549,8 +549,8 @@ public class cUserSQLiteRepositoryImpl implements iUserProfileRepository {
                         Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
                 organization.setModifiedDate(
                         Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                organization.setSyncedDate(
-                        Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                organization.setSyncedDate(
+//                        Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
             }
 
             return organization;

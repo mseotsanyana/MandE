@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 
-public class cSharedPreferenceRepositoryImpl implements iSharedPreferenceRepository {
+public class cSharedPreferenceRepositoryImpl /*implements iSharedPreferenceRepository*/ {
     //private static String TAG = cSharedPreference.class.getSimpleName();
 
     // Shared preferences file name
@@ -106,7 +106,7 @@ public class cSharedPreferenceRepositoryImpl implements iSharedPreferenceReposit
      * @param key key
      * @param value value
      */
-    public void updateIntSetting(String key, int value) {
+    public void saveIntSetting(String key, int value) {
         editor.putInt(key, value);
     }
 
@@ -117,7 +117,7 @@ public class cSharedPreferenceRepositoryImpl implements iSharedPreferenceReposit
      * @param key key
      * @param value value
      */
-    public void updateStringSetting(String key, String value) {
+    public void saveStringSetting(String key, String value) {
         editor.putString(key, value);
     }
 
@@ -128,58 +128,8 @@ public class cSharedPreferenceRepositoryImpl implements iSharedPreferenceReposit
      * @param key key
      * @param value value
      */
-    public void updateBooleanSetting(String key, Boolean value) {
+    public void saveBooleanSetting(String key, Boolean value) {
         editor.putBoolean(key, value);
     }
 
-
-    @Override
-    public void updateListIntegerSetting(String key, List<Integer> value) {
-        Log.d("TAG","====================REALTIMEDATABASE====================");
-    }
-
-    @Override
-    public String loadUserID() {
-        return null;
-    }
-
-    @Override
-    public String loadOrganizationID() {
-        return null;
-    }
-
-    @Override
-    public List<Integer> loadOperationStatuses(int moduleKey, int entityKey, int operationKey) {
-        return null;
-    }
-
-    @Override
-    public int loadPrimaryTeamBIT() {
-        return 0;
-    }
-
-    @Override
-    public int loadSecondaryTeamBITS() {
-        return 0;
-    }
-
-    @Override
-    public int loadEntityPermissionBITS(int moduleKey, int entityKey) {
-        return 0;
-    }
-
-    @Override
-    public int loadUnixPermissionBITS(int moduleKey, int entityKey) {
-        return 0;
-    }
-
-    @Override
-    public void updateMenuItems(String key, List<cMenuModel> value) {
-
-    }
-
-    @Override
-    public List<cMenuModel> loadMenuItems() {
-        return null;
-    }
 }

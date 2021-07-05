@@ -12,10 +12,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserAccountModel;
-import com.me.mseotsanyana.mande.BLL.repository.session.iPrivilegeRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iPermissionRepository;
 import com.me.mseotsanyana.mande.DAL.storage.database.cRealtimeHelper;
 
-public class cPrivilegeFirebaseRepositoryImpl implements iPrivilegeRepository {
+public class cPrivilegeFirebaseRepositoryImpl implements iPermissionRepository {
     private static final String TAG = cPrivilegeFirebaseRepositoryImpl.class.getSimpleName();
 
     private final FirebaseDatabase database;
@@ -28,7 +28,7 @@ public class cPrivilegeFirebaseRepositoryImpl implements iPrivilegeRepository {
     /*################################# SHARED PREFERENCE ACTIONS ################################*/
 
     @Override
-    public void saveUserPrivileges(iPrivilegeRepository.iSaveUserPrivilegesCallback callback) {
+    public void saveUserPermissions(iSaveUserPermissionsCallback callback) {
 
         DatabaseReference dbUserAccountsRef = database.getReference(cRealtimeHelper.KEY_USERACCOUNTS);
 
@@ -71,7 +71,7 @@ public class cPrivilegeFirebaseRepositoryImpl implements iPrivilegeRepository {
      * @param accountServerID user account identification
      */
     public void saveSecondaryTeamsBITS(String accountServerID, String primaryTeamID,
-                                       iSaveUserPrivilegesCallback callback) {
+                                       iSaveUserPermissionsCallback callback) {
         DatabaseReference dbMemberTeamsRef = database.getReference(cRealtimeHelper.KEY_MEMBER_TEAMS);
         dbMemberTeamsRef.child(accountServerID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -87,7 +87,7 @@ public class cPrivilegeFirebaseRepositoryImpl implements iPrivilegeRepository {
                 secondaryTeamBITS &= ~Integer.parseInt(primaryTeamID);
 
                 /* call back on saving secondary bits */
-                callback.onSaveSecondaryTeamBITS(secondaryTeamBITS);
+                //callback.onSaveSecondaryTeamBITS(secondaryTeamBITS);
             }
 
             @Override
@@ -97,7 +97,7 @@ public class cPrivilegeFirebaseRepositoryImpl implements iPrivilegeRepository {
         });
     }
 
-    private void readTeamsRoles(String teamServerID, iSaveUserPrivilegesCallback callback){
+    private void readTeamsRoles(String teamServerID, iSaveUserPermissionsCallback callback){
         DatabaseReference dbTeamsRolesRef = database.getReference(cRealtimeHelper.KEY_TEAM_ROLES);
         dbTeamsRolesRef.child(teamServerID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -115,8 +115,8 @@ public class cPrivilegeFirebaseRepositoryImpl implements iPrivilegeRepository {
         });
     }
 
-    private void readRolesPrivileges(String roleServerID, iSaveUserPrivilegesCallback callback){
-        DatabaseReference dbRolesPrivilegesRef = database.getReference(cRealtimeHelper.KEY_ROLE_PRIVILEGES);
+    private void readRolesPrivileges(String roleServerID, iSaveUserPermissionsCallback callback){
+        DatabaseReference dbRolesPrivilegesRef = null;//database.getReference(cRealtimeHelper.KEY_ROLE_PRIVILEGES);
         dbRolesPrivilegesRef.child(roleServerID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -134,8 +134,8 @@ public class cPrivilegeFirebaseRepositoryImpl implements iPrivilegeRepository {
         });
     }
 
-    private void readPrivilegePermission(String privilegeServerID, iSaveUserPrivilegesCallback callback){
-        DatabaseReference dbPrivilegesPermsRef = database.getReference(cRealtimeHelper.KEY_PRIVILEGE_PERMISSIONS);
+    private void readPrivilegePermission(String privilegeServerID, iSaveUserPermissionsCallback callback){
+        DatabaseReference dbPrivilegesPermsRef = null;//database.getReference(cRealtimeHelper.KEY_PRIVILEGE_PERMISSIONS);
         dbPrivilegesPermsRef.child(privilegeServerID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -148,7 +148,7 @@ public class cPrivilegeFirebaseRepositoryImpl implements iPrivilegeRepository {
                             statusBITS |= operation.getValue(Integer.class);
                             //callback.onSaveStatusBITS(module.getKey(), entity.getKey(), operation.getKey(), statusBITS);
                         }
-                        callback.onSaveOperationBITS(module.getKey(), entity.getKey(), operationBITS);
+                        callback.onSaveEntityPermBITS(module.getKey(), entity.getKey(), operationBITS);
                         entityBITS |= Integer.parseInt(entity.getKey());
                     }
                     callback.onSaveEntityBITS(module.getKey(), entityBITS);

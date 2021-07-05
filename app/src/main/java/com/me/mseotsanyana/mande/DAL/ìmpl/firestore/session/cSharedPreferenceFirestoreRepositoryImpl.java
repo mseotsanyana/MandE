@@ -18,48 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class cSharedPreferenceFirestoreRepositoryImpl implements iSharedPreferenceRepository {
-    //private static String TAG = cSharedPreference.class.getSimpleName();
-
-    // Shared preferences file name
     public static final String KEY_USER_PREFS = "USER_PREFS";
-//
-//    // General global settings
-//    public static final String KEY_USER_PROFILE = "KEY-USER-PROFILE";
-//
-//    // Global settings for bitwise access control
-//    public static final String KEY_USER_ID = "KEY-USER-ID";
-//    public static final String KEY_ORG_ID = "KEY-ORG-ID";
-//    public static final String KEY_PERMS_BITS = "KEY-PERMS-BITS";
-//    public static final String KEY_STATUS_BITS = "KEY_STATUS_BITS";
-//
-//    /* prefixes for preference keys */
-//
-//    public static final String KEY_MODULE_ENTITY_BITS = "KEY-MEB";
-//    public static final String KEY_ENTITY_OPERATION_BITS = "KEY-EOB";
-//    public static final String KEY_OPERATION_STATUS_BITS = "KEY-OSB";
-//
-//    public static final String KEY_STATUS_SET = "KEY-SS";
-//    public static final String KEY_ROLE_SET = "KEY-RS";
-//
-//    public static final String KEY_INDIVIDUAL_OWNER_SET = "KEY-IOS";
-//    public static final String KEY_ORGANIZATION_OWNER_SET = "KEY-OOS";
-//
-//    // All shared preferences file name
-//    public static final String KEY_IS_LOGGEDIN = "KEY-ISLOGGEDIN";
-//    public static final String KEY_TAG = "KEY-PMER";
 
     private SharedPreferences settings;
     private SharedPreferences.Editor editor;
-
-////    private int primaryRoleBITS, secondaryRoleBITS, entityBITS, operationBITS, statusBITS;
-//
-//    public static final int[] entity_types = {
-//            1,  /* 0 = BRBAC (1) */
-//            2   /* 1 = PPMER (2) */
-//    };
+    private final Context context;
 
     public cSharedPreferenceFirestoreRepositoryImpl(Context context) {
-        setSettings(context.getSharedPreferences(KEY_USER_PREFS, Context.MODE_PRIVATE));
+        this.context = context;
+        setSettings(this.context.getSharedPreferences(KEY_USER_PREFS, Context.MODE_PRIVATE));
         setEditor(settings.edit());
     }
 
@@ -116,7 +83,7 @@ public class cSharedPreferenceFirestoreRepositoryImpl implements iSharedPreferen
      * @param value value
      */
     @Override
-    public void updateIntSetting(String key, int value) {
+    public void saveIntSetting(String key, int value) {
         editor.putInt(key, value);
     }
 
@@ -128,7 +95,7 @@ public class cSharedPreferenceFirestoreRepositoryImpl implements iSharedPreferen
      * @param value value
      */
     @Override
-    public void updateStringSetting(String key, String value) {
+    public void saveStringSetting(String key, String value) {
         editor.putString(key, value);
     }
 
@@ -140,7 +107,7 @@ public class cSharedPreferenceFirestoreRepositoryImpl implements iSharedPreferen
      * @param value value
      */
     @Override
-    public void updateBooleanSetting(String key, Boolean value) {
+    public void saveBooleanSetting(String key, Boolean value) {
         editor.putBoolean(key, value);
     }
 
@@ -153,7 +120,7 @@ public class cSharedPreferenceFirestoreRepositoryImpl implements iSharedPreferen
      * @param value value
      */
     @Override
-    public void updateListIntegerSetting(String key, List<Integer> value) {
+    public void saveListIntegerSetting(String key, List<Integer> value) {
         String intString;
 
         JSONArray jsonArr = new JSONArray();
@@ -166,7 +133,7 @@ public class cSharedPreferenceFirestoreRepositoryImpl implements iSharedPreferen
     }
 
     @Override
-    public void updateMenuItems(String key, List<cMenuModel> value) {
+    public void saveMenuItems(String key, List<cMenuModel> value) {
         String menuJSONString = new Gson().toJson(value);
         editor.putString(cSharedPreference.KEY_MENU_ITEM_BITS, menuJSONString);
     }
@@ -187,8 +154,19 @@ public class cSharedPreferenceFirestoreRepositoryImpl implements iSharedPreferen
     }
 
     @Override
-    public int loadSecondaryTeamBITS() {
-        return settings.getInt(cSharedPreference.KEY_SECONDARY_TEAM_BITS, -1);
+    public List<Integer> loadSecondaryTeams() {
+        String intString = settings.getString(cSharedPreference.KEY_SECONDARY_TEAMS, "");
+        try {
+            JSONArray jsonArr = new JSONArray(new JSONTokener(intString));
+            List<Integer> result = new ArrayList<>();
+
+            for (int i = 0; i < jsonArr.length(); i++) {
+                result.add(jsonArr.getInt(i));
+            }
+            return result;
+        } catch (JSONException e) {
+            return null;
+        }
     }
 
     @Override
@@ -203,7 +181,7 @@ public class cSharedPreferenceFirestoreRepositoryImpl implements iSharedPreferen
                 result.add(jsonArr.getInt(i));
             }
             return result;
-        } catch (JSONException excp) {
+        } catch (JSONException e) {
             return null;
         }
     }

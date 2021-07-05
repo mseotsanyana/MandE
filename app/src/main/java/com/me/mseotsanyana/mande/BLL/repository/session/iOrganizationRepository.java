@@ -1,25 +1,36 @@
 package com.me.mseotsanyana.mande.BLL.repository.session;
 
 import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface iOrganizationRepository {
     void createOrganization(cOrganizationModel organizationModel,
-                            iOrganizationRepositoryCallback callback);
+                            iCreateOrganizationCallback callback);
 
-    interface iOrganizationRepositoryCallback{
+    interface iCreateOrganizationCallback {
         void onCreateOrganizationSucceeded(String msg);
+
         void onCreateOrganizationFailed(String msg);
     }
 
-    void readOrganizations(String userServerID, String orgServerID, int primaryTeamBIT,
-                           int secondaryTeamBITS, int entitypermBITS, List<Integer> statuses,
-                           int unixpermBITS, iReadOrganizationsModelSetCallback callback);
+    void readOrganizations(String organizationServerID, String userServerID, int primaryTeamBIT,
+                           List<Integer> secondaryTeams, List<Integer> statuses,
+                           iReadOrganizationsCallback callback);
 
-    interface iReadOrganizationsModelSetCallback{
-        void onReadOrganizationsSucceeded(ArrayList<cOrganizationModel> organizationModels);
+    interface iReadOrganizationsCallback {
+        void onReadOrganizationsSucceeded(List<cOrganizationModel> organizationModels);
         void onReadOrganizationsFailed(String msg);
+    }
+
+    void readOrganizationMembers(String organizationServerID, String userServerID,
+                                 int primaryTeamBIT, List<Integer> secondaryTeamBITS,
+                                 List<Integer> statusBITS,
+                                 iReadOrganizationMembersCallback callback);
+
+    interface iReadOrganizationMembersCallback {
+        void onReadOrganizationMembersSucceeded(List<cUserProfileModel> userProfileModels);
+        void onReadOrganizationMembersFailed(String msg);
     }
 }

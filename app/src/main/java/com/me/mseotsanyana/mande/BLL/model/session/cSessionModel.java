@@ -1,21 +1,21 @@
 package com.me.mseotsanyana.mande.BLL.model.session;
 
-
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 public class cSessionModel {
-    private int sessionID;
-    private int userID;
-    private int serverID;
-    private int ownerID;
-    private int orgID;
-    private int groupBITS;
-    private int permsBITS;
-    private int statusBITS;
+    private int sessionServerID;
+    private int userServerID;
+
+    private String userOwnerID;
+    private String organizationOwnerID;
+    private int teamOwnerBIT;
+    private List<Integer> unixpermBITS;
+    private int statusBIT;
+
     private Date createdDate;
     private Date modifiedDate;
-    private Date syncedDate;
 
     private cUserModel userModel;
     private Set<cRoleModel> roleModelSet;
@@ -23,81 +23,64 @@ public class cSessionModel {
     public cSessionModel(){}
 
     public cSessionModel(cSessionModel sessionModel){
-        this.setSessionID(sessionModel.getSessionID());
-        this.setUserID(sessionModel.getUserID());
-        this.setServerID(sessionModel.getServerID());
-        this.setOwnerID(sessionModel.getOwnerID());
-        this.setOrgID(sessionModel.getOrgID());
-        this.setGroupBITS(sessionModel.getGroupBITS());
-        this.setPermsBITS(sessionModel.getPermsBITS());
-        this.setStatusBITS(sessionModel.getStatusBITS());
         this.setCreatedDate(sessionModel.getCreatedDate());
         this.setModifiedDate(sessionModel.getModifiedDate());
-        this.setSyncedDate(sessionModel.getSyncedDate());
     }
 
-    public int getSessionID() {
-        return sessionID;
+    public int getSessionServerID() {
+        return sessionServerID;
     }
 
-    public void setSessionID(int sessionID) {
-        this.sessionID = sessionID;
+    public void setSessionServerID(int sessionServerID) {
+        this.sessionServerID = sessionServerID;
     }
 
-    public int getUserID() {
-        return userID;
+    public int getUserServerID() {
+        return userServerID;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setUserServerID(int userServerID) {
+        this.userServerID = userServerID;
     }
 
-    public int getOwnerID() {
-        return ownerID;
+    public String getUserOwnerID() {
+        return userOwnerID;
     }
 
-    public void setOwnerID(int ownerID) {
-        this.ownerID = ownerID;
+    public void setUserOwnerID(String userOwnerID) {
+        this.userOwnerID = userOwnerID;
     }
 
-    public int getOrgID() {
-        return orgID;
+    public String getOrganizationOwnerID() {
+        return organizationOwnerID;
     }
 
-    public void setOrgID(int orgID) {
-        this.orgID = orgID;
+    public void setOrganizationOwnerID(String organizationOwnerID) {
+        this.organizationOwnerID = organizationOwnerID;
     }
 
-    public int getServerID() {
-        return serverID;
+    public int getTeamOwnerBIT() {
+        return teamOwnerBIT;
     }
 
-    public void setServerID(int serverID) {
-        this.serverID = serverID;
+    public void setTeamOwnerBIT(int teamOwnerBIT) {
+        this.teamOwnerBIT = teamOwnerBIT;
     }
 
-    public int getGroupBITS() {
-        return groupBITS;
+    public List<Integer> getUnixpermBITS() {
+        return unixpermBITS;
     }
 
-    public void setGroupBITS(int groupBITS) {
-        this.groupBITS = groupBITS;
+    public void setUnixpermBITS(List<Integer> unixpermBITS) {
+        this.unixpermBITS = unixpermBITS;
     }
 
-    public int getPermsBITS() {
-        return permsBITS;
+    public int getStatusBIT() {
+        return statusBIT;
     }
 
-    public void setPermsBITS(int permsBITS) {
-        this.permsBITS = permsBITS;
-    }
-
-    public int getStatusBITS() {
-        return statusBITS;
-    }
-
-    public void setStatusBITS(int statusBITS) {
-        this.statusBITS = statusBITS;
+    public void setStatusBIT(int statusBIT) {
+        this.statusBIT = statusBIT;
     }
 
     public Date getCreatedDate() {
@@ -114,14 +97,6 @@ public class cSessionModel {
 
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
-    }
-
-    public Date getSyncedDate() {
-        return syncedDate;
-    }
-
-    public void setSyncedDate(Date syncedDate) {
-        this.syncedDate = syncedDate;
     }
 
     public cUserModel getUserModel() {

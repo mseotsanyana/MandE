@@ -1,145 +1,74 @@
 package com.me.mseotsanyana.mande.BLL.model.session;
 
-import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by mseotsanyana on 2017/08/24.
  */
 
 public class cEntityModel {
-    private int entityID;
-    private int entityTypeID;
-    private int serverID;
-    private int ownerID;
-    private int orgID;
-    private int groupBITS;
-    private int permsBITS;
-    private int statusBITS;
-    private String name;
-    private String description;
-    private Date createdDate;
-    private Date modifiedDate;
-    private Date syncedDate;
+    private String entityServerID;
+    private List<Integer> unixperms;
+    private Map<String, List<Integer>> entityperms;
 
     public cEntityModel(){}
 
-    public cEntityModel(cEntityModel entityModel){
-        this.setEntityID(entityModel.getEntityID());
-        this.setEntityTypeID(entityModel.getEntityID());
-        this.setServerID(entityModel.getServerID());
-        this.setOwnerID(entityModel.getOwnerID());
-        this.setOrgID(entityModel.getOrgID());
-        this.setGroupBITS(entityModel.getGroupBITS());
-        this.setPermsBITS(entityModel.getPermsBITS());
-        this.setStatusBITS(entityModel.getStatusBITS());
-        this.setName(entityModel.getName());
-        this.setDescription(entityModel.getDescription());
-        this.setCreatedDate(entityModel.getCreatedDate());
-        this.setModifiedDate(entityModel.getModifiedDate());
-        this.setSyncedDate(entityModel.getSyncedDate());
+    public cEntityModel(String entityServerID, Map<String, List<Integer>> entityperms,
+                        List<Integer> unixperms) {
+        this.entityServerID = entityServerID;
+        this.entityperms = entityperms;
+        this.unixperms = unixperms;
     }
 
-    public int getEntityID() {
-        return entityID;
+    public String getEntityServerID() {
+        return entityServerID;
     }
 
-    public void setEntityID(int entityID) {
-        this.entityID = entityID;
+    public void setEntityServerID(String entityServerID) {
+        this.entityServerID = entityServerID;
     }
 
-    public int getEntityTypeID() {
-        return entityTypeID;
+    public List<Integer> getUnixperms() {
+        return unixperms;
     }
 
-    public void setEntityTypeID(int entityTypeID) {
-        this.entityTypeID = entityTypeID;
+    public void setUnixperms(List<Integer> unixperms) {
+        this.unixperms = unixperms;
     }
 
-    public int getServerID() {
-        return serverID;
+    public Map<String, List<Integer>> getEntityperms() {
+        return entityperms;
     }
 
-    public void setServerID(int serverID) {
-        this.serverID = serverID;
-    }
-
-    public int getOwnerID() {
-        return ownerID;
-    }
-
-    public void setOwnerID(int ownerID) {
-        this.ownerID = ownerID;
-    }
-
-    public int getOrgID() {
-        return orgID;
-    }
-
-    public void setOrgID(int orgID) {
-        this.orgID = orgID;
-    }
-
-    public int getGroupBITS() {
-        return groupBITS;
-    }
-
-    public void setGroupBITS(int groupBITS) {
-        this.groupBITS = groupBITS;
-    }
-
-    public int getPermsBITS() {
-        return permsBITS;
-    }
-
-    public void setPermsBITS(int permsBITS) {
-        this.permsBITS = permsBITS;
-    }
-
-    public int getStatusBITS() {
-        return statusBITS;
-    }
-
-    public void setStatusBITS(int statusBITS) {
-        this.statusBITS = statusBITS;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public void setModifiedDate(Date modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
-
-    public Date getSyncedDate() {
-        return syncedDate;
-    }
-
-    public void setSyncedDate(Date syncedDate) {
-        this.syncedDate = syncedDate;
+    public void setEntityperms(Map<String, List<Integer>> entityperms) {
+        this.entityperms = entityperms;
     }
 }
+
+//    private int serverID;
+//    private int ownerID;
+//    private int orgID;
+//    private int groupBITS;
+//    private int permsBITS;
+//    private int statusBITS;
+//    private String name;
+//    private String description;
+//    private Date createdDate;
+//    private Date modifiedDate;
+//    private Date syncedDate;
+//    public cEntityModel(cEntityModel entityModel){
+//        this.setEntityID(entityModel.getEntityID());
+//        this.setModuleID(entityModel.getEntityID());
+//        this.setServerID(entityModel.getServerID());
+//        this.setOwnerID(entityModel.getOwnerID());
+//        this.setOrgID(entityModel.getOrgID());
+//        this.setGroupBITS(entityModel.getGroupBITS());
+//        this.setPermsBITS(entityModel.getPermsBITS());
+//        this.setStatusBITS(entityModel.getStatusBITS());
+//        this.setName(entityModel.getName());
+//        this.setDescription(entityModel.getDescription());
+//        this.setCreatedDate(entityModel.getCreatedDate());
+//        this.setModifiedDate(entityModel.getModifiedDate());
+//        this.setSyncedDate(entityModel.getSyncedDate());
+//    }

@@ -15,7 +15,7 @@ public class cSharedPreference {
     public static final String KEY_USER_ID               = "KEY-USER-ID";
     public static final String KEY_ORG_ID                = "KEY-ORG-ID";
     public static final String KEY_PRIMARY_TEAM_BIT      = "KEY-PTB";
-    public static final String KEY_SECONDARY_TEAM_BITS   = "KEY-STB";
+    public static final String KEY_SECONDARY_TEAMS       = "KEY-STM";
     public static final String KEY_MODULE_ENTITY_BITS    = "KEY-MEB";
     public static final String KEY_ENTITY_OPERATION_BITS = "KEY-EOB";
     public static final String KEY_OPERATION_STATUS_BITS = "KEY-OSB";
@@ -49,32 +49,31 @@ public class cSharedPreference {
     public static final int OWNER_READ       = 2048;
     public static final int PRIMARY_READ     = 1024;
     public static final int SECONDARY_READ   = 512;
-    public static final int OTHER_READ       = 256;
+    public static final int WORKPLACE_READ   = 256;
 
     public static final int OWNER_UPDATE     = 128;
     public static final int PRIMARY_UPDATE   = 64;
     public static final int SECONDARY_UPDATE = 32;
-    public static final int OTHER_UPDATE     = 16;
+    public static final int WORKPLACE_UPDATE = 16;
 
     public static final int OWNER_DELETE     = 8;
     public static final int PRIMARY_DELETE   = 4;
     public static final int SECONDARY_DELETE = 2;
-    public static final int OTHER_DELETE     = 1;
+    public static final int WORKPLACE_DELETE = 1;
 
     public static final int[] permissions = {
             OWNER_READ,       /* 0  */
             PRIMARY_READ,     /* 1  */
             SECONDARY_READ,   /* 2  */
-            OTHER_READ,       /* 3  */
+            WORKPLACE_READ,   /* 3  */
             OWNER_UPDATE,     /* 4  */
             PRIMARY_UPDATE,   /* 5  */
             SECONDARY_UPDATE, /* 6  */
-            OTHER_UPDATE,     /* 7  */
-            OWNER_DELETE,     /* 8  */
-            PRIMARY_DELETE,   /* 9  */
+            WORKPLACE_UPDATE, /* 7  */
+            OWNER_DELETE,     /* 8 */
+            PRIMARY_DELETE,   /* 9 */
             SECONDARY_DELETE, /* 10 */
-            OTHER_DELETE,     /* 11 */
-            OTHER_DELETE,     /* 12 */
+            WORKPLACE_DELETE, /* 11 */
     };
 
     private SharedPreferences settings;

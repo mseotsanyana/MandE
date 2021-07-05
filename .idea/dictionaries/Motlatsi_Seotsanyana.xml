@@ -42,6 +42,7 @@
       <w>cteam</w>
       <w>cteams</w>
       <w>ctor</w>
+      <w>cunixperm</w>
       <w>cunixperms</w>
       <w>currentcontrol</w>
       <w>datacollector</w>
@@ -54,7 +55,9 @@
       <w>dialpad</w>
       <w>disaggregate</w>
       <w>enddate</w>
+      <w>entitymodules</w>
       <w>entityperm</w>
+      <w>entityperms</w>
       <w>equestion</w>
       <w>eresponse</w>
       <w>evaluationcriteria</w>
@@ -96,6 +99,7 @@
       <w>matrixset</w>
       <w>matrixtarget</w>
       <w>matrixtype</w>
+      <w>menuitems</w>
       <w>milestonereview</w>
       <w>mquestion</w>
       <w>mseotsanyana</w>
@@ -164,6 +168,7 @@
       <w>statusset</w>
       <w>statussets</w>
       <w>stnd</w>
+      <w>submenuitems</w>
       <w>taskassignment</w>
       <w>textresponse</w>
       <w>timesheet</w>

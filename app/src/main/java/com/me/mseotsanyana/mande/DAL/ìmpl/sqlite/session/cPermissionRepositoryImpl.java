@@ -6,11 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.me.mseotsanyana.mande.BLL.model.session.cEntityModel;
-import com.me.mseotsanyana.mande.BLL.model.session.cOperationModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cPermissionModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cStatusModel;
-import com.me.mseotsanyana.mande.BLL.model.session.cStatusSetModel;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
 
@@ -162,7 +159,7 @@ public class cPermissionRepositoryImpl {
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    cPermissionModel permission = new cPermissionModel();
+                    cPermissionModel permission = null;//new cPermissionModel(permissions);
 
 //                    permission.setPermissionID(
 //                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_FK_ID)));
@@ -258,7 +255,7 @@ public class cPermissionRepositoryImpl {
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    cPermissionModel permission = new cPermissionModel();
+                    cPermissionModel permission = null;//new cPermissionModel(permissions);
 
 //                    permission.setPermissionID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PRIVILEGE_FK_ID)));
 //                    permission.setEntityID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ENTITY_FK_ID)));

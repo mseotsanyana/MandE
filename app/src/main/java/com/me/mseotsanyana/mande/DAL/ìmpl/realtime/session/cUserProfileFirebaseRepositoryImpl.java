@@ -31,10 +31,10 @@ public class cUserProfileFirebaseRepositoryImpl implements iUserProfileRepositor
     private cSQLDBHelper dbHelper;
 
     // an object of the database helper
-    private FirebaseDatabase database;
+    private final FirebaseDatabase database;
     private DatabaseReference dbReference;
-    private FirebaseAuth firebaseAuth;
-    private Context context;
+    private final FirebaseAuth firebaseAuth;
+    private final Context context;
 
     public cUserProfileFirebaseRepositoryImpl(Context context) {
         this.context = context;

@@ -6,8 +6,8 @@ public class cCommonPropertiesModel {
     private String cownerID;
     private String corgOwnerID;
     private int cteamOwnerBIT;
-    private List<Integer> cunixpermsBITS;
-    private int cstatusesBITS;
+    private List<Integer> cunixpermBITS;
+    private int cstatusBIT;
 
     public String getCownerID() {
         return cownerID;
@@ -33,19 +33,19 @@ public class cCommonPropertiesModel {
         this.cteamOwnerBIT = cteamOwnerBIT;
     }
 
-    public List<Integer> getCunixpermsBITS() {
-        return cunixpermsBITS;
+    public List<Integer> getCunixpermBITS() {
+        return cunixpermBITS;
     }
 
-    public void setCunixpermsBITS(List<Integer> cunixpermsBITS) {
-        this.cunixpermsBITS = cunixpermsBITS;
+    public void setCunixpermBITS(List<Integer> cunixpermBITS) {
+        this.cunixpermBITS = cunixpermBITS;
     }
 
-    public int getCstatusesBITS() {
-        return cstatusesBITS;
+    public int getCstatusBIT() {
+        return cstatusBIT;
     }
 
-    public void setCstatusesBITS(int cstatusesBITS) {
-        this.cstatusesBITS = cstatusesBITS;
+    public void setCstatusBIT(int cstatusBIT) {
+        this.cstatusBIT = cstatusBIT;
     }
 }

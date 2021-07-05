@@ -22,7 +22,7 @@ import java.util.SortedMap;
 
 import static com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise.types;
 
-public class cSessionManagerImpl implements iSharedPreferenceRepository {
+public class cSessionManagerImpl /*implements iSharedPreferenceRepository*/ {
     private static SimpleDateFormat sdf = cConstant.FORMAT_DATE;
     private static String TAG = cSessionManagerImpl.class.getSimpleName();
 
@@ -70,11 +70,6 @@ public class cSessionManagerImpl implements iSharedPreferenceRepository {
     //}
 
 
-    @Override
-    public String loadUserID() {
-        return null;
-    }
-
     /**
      * This sets user organization ID for records and saves it.
      *
@@ -84,11 +79,6 @@ public class cSessionManagerImpl implements iSharedPreferenceRepository {
         editor.putLong(cSharedPreference.KEY_ORG_ID, organizationID);
     }
 
-
-    @Override
-    public String loadOrganizationID() {
-        return null;
-    }
 
     /**
      * This returns organization ID of the loggedIn user. If no organization,
@@ -180,7 +170,7 @@ public class cSessionManagerImpl implements iSharedPreferenceRepository {
                 secondaryRoleBITS |= model.getRoleID();
             }*/
         }
-        StringBuilder key = new StringBuilder(cSharedPreference.KEY_SECONDARY_TEAM_BITS);
+        StringBuilder key = new StringBuilder(cSharedPreference.KEY_SECONDARY_TEAMS);
         editor.putInt(String.valueOf(key), secondaryRoleBITS);
     }
 
@@ -191,7 +181,7 @@ public class cSessionManagerImpl implements iSharedPreferenceRepository {
      * @return
      */
     public int loadSecondaryRoleBITS() {
-        StringBuilder key = new StringBuilder(cSharedPreference.KEY_SECONDARY_TEAM_BITS);
+        StringBuilder key = new StringBuilder(cSharedPreference.KEY_SECONDARY_TEAMS);
         return preferences.getInt(String.valueOf(key), -1);
     }
 
@@ -398,7 +388,7 @@ public class cSessionManagerImpl implements iSharedPreferenceRepository {
      * @param key
      * @param value
      */
-    public void updateIntSetting(String key, int value) {
+    public void saveIntSetting(String key, int value) {
         editor.putInt(key, value);
     }
 
@@ -409,7 +399,7 @@ public class cSessionManagerImpl implements iSharedPreferenceRepository {
      * @param key
      * @param value
      */
-    public void updateStringSetting(String key, String value) {
+    public void saveStringSetting(String key, String value) {
         editor.putString(key, value);
     }
 
@@ -420,7 +410,7 @@ public class cSessionManagerImpl implements iSharedPreferenceRepository {
      * @param key
      * @param value
      */
-    public void updateBooleanSetting(String key, Boolean value) {
+    public void saveBooleanSetting(String key, Boolean value) {
         editor.putBoolean(key, value);
     }
 
@@ -438,44 +428,4 @@ public class cSessionManagerImpl implements iSharedPreferenceRepository {
         editor.putBoolean(cSharedPreference.KEY_IS_LOGGEDIN, false);
     }
 
-
-    @Override
-    public void updateListIntegerSetting(String key, List<Integer> value) {
-        Log.d("T","=================Session Manager=====================");
-    }
-
-    @Override
-    public List<Integer> loadOperationStatuses(int moduleKey, int entityKey, int operationKey) {
-        return null;
-    }
-
-    @Override
-    public int loadPrimaryTeamBIT() {
-        return 0;
-    }
-
-    @Override
-    public int loadSecondaryTeamBITS() {
-        return 0;
-    }
-
-    @Override
-    public int loadEntityPermissionBITS(int moduleKey, int entityKey) {
-        return 0;
-    }
-
-    @Override
-    public int loadUnixPermissionBITS(int moduleKey, int entityKey) {
-        return 0;
-    }
-
-    @Override
-    public void updateMenuItems(String key, List<cMenuModel> value) {
-
-    }
-
-    @Override
-    public List<cMenuModel> loadMenuItems() {
-        return null;
-    }
 }

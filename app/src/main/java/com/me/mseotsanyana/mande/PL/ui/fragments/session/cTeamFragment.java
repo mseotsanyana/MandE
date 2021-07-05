@@ -98,8 +98,8 @@ public class cTeamFragment extends Fragment implements iTeamPresenter.View, Filt
         teamPresenter = new cTeamPresenterImpl(
                 cThreadExecutorImpl.getInstance(),
                 cMainThreadImpl.getInstance(),
-                this,
-                new cSessionManagerImpl(getContext()),
+                this,null
+                /*new cSessionManagerImpl(getContext())*/,
                 new cTeamFirebaseRepositoryImpl(getContext()));
 
         activity = ((AppCompatActivity) getActivity());

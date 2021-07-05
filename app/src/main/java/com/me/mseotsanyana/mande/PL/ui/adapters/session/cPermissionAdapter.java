@@ -571,8 +571,8 @@ public class cPermissionAdapter extends cTreeAdapter {
                     EVH.updateItem(position);
                     EVH.setPaddingLeft(40 * node.getLevel());
 
-                    EVH.textViewName.setText(entityModel.getName());
-                    EVH.textViewDescription.setText(entityModel.getDescription());
+                    //EVH.textViewName.setText(entityModel.getName());
+                    //EVH.textViewDescription.setText(entityModel.getDescription());
 
                     /** collapse and expansion of the details of the role
                     EVH.textViewEntityDetailIcon.setTypeface(null, Typeface.NORMAL);

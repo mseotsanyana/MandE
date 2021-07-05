@@ -37,7 +37,7 @@ import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
 import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cHomePageFirestoreRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cSharedPreferenceFirestoreRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.realtime.session.cUserProfileFirebaseRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cUserProfileFirestoreRepositoryImpl;
 import com.me.mseotsanyana.mande.PL.presenters.session.Impl.cHomePagePresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.session.Impl.cUserSignOutPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.session.iHomePagePresenter;
@@ -65,6 +65,7 @@ public class cHomeFragment extends Fragment implements iHomePagePresenter.View,
 
     private ImageView userIcon;
     private TextView currentDate, displayName, displayEmail;
+
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
@@ -152,11 +153,13 @@ public class cHomeFragment extends Fragment implements iHomePagePresenter.View,
                 cThreadExecutorImpl.getInstance(),
                 cMainThreadImpl.getInstance(),
                 this,
-                new cUserProfileFirebaseRepositoryImpl(getContext()));
+                new cSharedPreferenceFirestoreRepositoryImpl(getContext()),
+                new cUserProfileFirestoreRepositoryImpl(getContext()));
 
         homePagePresenter = new cHomePagePresenterImpl(
                 cThreadExecutorImpl.getInstance(),
-                cMainThreadImpl.getInstance(),this,
+                cMainThreadImpl.getInstance(),
+                this,
                 new cSharedPreferenceFirestoreRepositoryImpl(getContext()),
                 new cHomePageFirestoreRepositoryImpl(getContext()));
 
@@ -249,15 +252,18 @@ public class cHomeFragment extends Fragment implements iHomePagePresenter.View,
                 cMenuModel menuModel = expandableListAdapter.getGroup(groupPosition);
                 switch (menuModel.getMenuServerID()) {
                     case 0: // My Profile
-                        Toast.makeText(getActivity(), "My Profile Fragment", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "My Profile Fragment",
+                                Toast.LENGTH_SHORT).show();
                         retVal = false;
                         break;
                     case 8: // User Management
-                        Toast.makeText(getActivity(), "User Management Fragment", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "User Management Fragment",
+                                Toast.LENGTH_SHORT).show();
                         retVal = false;
                         break;
                     case 256: // Notification Settings
-                        Toast.makeText(getActivity(), "Notification Fragment", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Notification Fragment",
+                                Toast.LENGTH_SHORT).show();
                         break;
                     case 512: // Settings
                         Intent intent = new Intent(activity, cSettingsActivity.class);
@@ -265,7 +271,8 @@ public class cHomeFragment extends Fragment implements iHomePagePresenter.View,
                         break;
                     case 1024: // Logout
                         userSignOutPresenter.signOutWithEmailAndPassword();
-                        NavDirections action = cHomeFragmentDirections.actionCHomeFragmentToCLoginFragment();
+                        NavDirections action;
+                        action = cHomeFragmentDirections.actionCHomeFragmentToCLoginFragment();
                         Navigation.findNavController(requireView()).navigate(action);
                         break;
                     default:
@@ -284,7 +291,8 @@ public class cHomeFragment extends Fragment implements iHomePagePresenter.View,
                 case 0: // Admin
                     switch (childModel.getMenuServerID()) {
                         case 1: // Profile
-                            NavDirections action = cHomeFragmentDirections.actionCHomeFragmentToCUserProfileFragment();
+                            NavDirections action;
+                            action = cHomeFragmentDirections.actionCHomeFragmentToCUserProfileFragment();
                             Navigation.findNavController(requireView()).navigate(action);
                             Toast.makeText(getActivity(), "Profile Fragment", Toast.LENGTH_SHORT).show();
                             break;
@@ -305,14 +313,20 @@ public class cHomeFragment extends Fragment implements iHomePagePresenter.View,
                 case 8:
                     switch (childModel.getMenuServerID()) {
                         case 16:
-                            Toast.makeText(getActivity(), "People Fragment", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Organization members Fragment",
+                                    Toast.LENGTH_SHORT).show();
                             break;
                         case 32:
-                            Toast.makeText(getActivity(), "Teams Fragment", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Team Roles Fragment",
+                                    Toast.LENGTH_SHORT).show();
+                            break;
                         case 64:
-                            Toast.makeText(getActivity(), "Team Roles Fragment", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Entity Permissions Fragment",
+                                    Toast.LENGTH_SHORT).show();
+                            break;
                         case 128:
-                            Toast.makeText(getActivity(), "Permissions Fragment", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Menu Permissions Fragment",
+                                    Toast.LENGTH_SHORT).show();
                             break;
                         default:
                             break;

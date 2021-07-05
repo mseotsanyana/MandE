@@ -144,8 +144,8 @@ public class cOutputFragment extends Fragment implements iOutputPresenter.View,
         outputPresenter = new cOutputPresenterImpl(
                 cThreadExecutorImpl.getInstance(),
                 cMainThreadImpl.getInstance(),
-                this,
-                new cSessionManagerImpl(getContext()),
+                this,null
+                /*new cSessionManagerImpl(getContext())*/,
                 new cOutputRepositoryImpl(getContext()),
                 logFrameID);
 

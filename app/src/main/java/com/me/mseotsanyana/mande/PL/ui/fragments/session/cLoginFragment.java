@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cPrivilegeFirestoreRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cPermissionFirestoreRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cSharedPreferenceFirestoreRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.realtime.session.cUserProfileFirebaseRepositoryImpl;
 import com.me.mseotsanyana.mande.PL.presenters.session.Impl.cUserLoginPresenterImpl;
@@ -50,15 +50,13 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
                 cThreadExecutorImpl.getInstance(),
                 cMainThreadImpl.getInstance(), this,
                 new cSharedPreferenceFirestoreRepositoryImpl(getContext()),
-                new cPrivilegeFirestoreRepositoryImpl(getContext()),
+                new cPermissionFirestoreRepositoryImpl(getContext()),
                 new cUserProfileFirebaseRepositoryImpl(getContext()));
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        //fixme: remove -> userLoginPresenter.readUserProfile();
     }
 
     @Override
@@ -118,7 +116,6 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
             public void onClick(View view) {
                 NavDirections action = cLoginFragmentDirections.actionCLoginFragmentToCSignUpFragment();
                 Navigation.findNavController(requireView()).navigate(action);
-
             }
         });
     }

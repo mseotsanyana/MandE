@@ -142,8 +142,8 @@ public class cQuestionFragment extends Fragment implements iQuestionPresenter.Vi
         questionPresenter = new cQuestionPresenterImpl(
                 cThreadExecutorImpl.getInstance(),
                 cMainThreadImpl.getInstance(),
-                this,
-                new cSessionManagerImpl(getContext()),
+                this,null
+                /*new cSessionManagerImpl(getContext())*/,
                 new cQuestionRepositoryImpl(getContext()),
                 logFrameID);
 

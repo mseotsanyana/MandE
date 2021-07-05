@@ -64,8 +64,8 @@ public class cSessionRepositoryImpl implements iManageSessionRepository {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, sessionModel.getSessionID());
-        cv.put(cSQLDBHelper.KEY_USER_FK_ID, sessionModel.getUserID());
+        cv.put(cSQLDBHelper.KEY_ID, sessionModel.getSessionServerID());
+        cv.put(cSQLDBHelper.KEY_USER_FK_ID, sessionModel.getUserServerID());
 
         // insert outcome record
         try {
@@ -90,11 +90,11 @@ public class cSessionRepositoryImpl implements iManageSessionRepository {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, sessionModel.getSessionID());
-        cv.put(cSQLDBHelper.KEY_OWNER_ID, sessionModel.getOwnerID());
-        cv.put(cSQLDBHelper.KEY_GROUP_BITS, sessionModel.getGroupBITS());
-        cv.put(cSQLDBHelper.KEY_PERMS_BITS, sessionModel.getPermsBITS());
-        cv.put(cSQLDBHelper.KEY_STATUS_BITS, sessionModel.getStatusBITS());
+//        cv.put(cSQLDBHelper.KEY_ID, sessionModel.getSessionID());
+//        cv.put(cSQLDBHelper.KEY_OWNER_ID, sessionModel.getOwnerID());
+//        cv.put(cSQLDBHelper.KEY_GROUP_BITS, sessionModel.getGroupBITS());
+//        cv.put(cSQLDBHelper.KEY_PERMS_BITS, sessionModel.getPermsBITS());
+//        cv.put(cSQLDBHelper.KEY_STATUS_BITS, sessionModel.getStatusBITS());
 
         // insert outcome record
         try {
@@ -137,15 +137,15 @@ public class cSessionRepositoryImpl implements iManageSessionRepository {
                 do {
                     cSessionModel session = new cSessionModel();
 
-                    session.setSessionID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    session.setUserID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_FK_ID)));
-                    session.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    session.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    session.setCreatedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    session.setModifiedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    session.setSyncedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                    session.setSessionID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+//                    session.setUserID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_USER_FK_ID)));
+//                    session.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    session.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    session.setCreatedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    session.setModifiedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    session.setSyncedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     // construct a user
                     //session.setUserModel(new cUserModel(userDBA.getUserByID(session.getUserID())));
@@ -187,11 +187,11 @@ public class cSessionRepositoryImpl implements iManageSessionRepository {
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    session.setSessionID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    session.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    session.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    session.setSessionID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+//                    session.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    session.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
 
                 } while (cursor.moveToNext());
             }
@@ -226,11 +226,11 @@ public class cSessionRepositoryImpl implements iManageSessionRepository {
                 do {
                     session = new cSessionModel();
 
-                    session.setSessionID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    session.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    session.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    session.setSessionID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+//                    session.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    session.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
 
                 } while (cursor.moveToNext());
             }
@@ -335,11 +335,11 @@ public class cSessionRepositoryImpl implements iManageSessionRepository {
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    session.setSessionID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    session.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    session.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    session.setSessionID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+//                    session.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    session.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    session.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    session.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
 
                 } while (cursor.moveToNext());
             }

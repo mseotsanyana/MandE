@@ -88,40 +88,40 @@ public class cReadTeamsWithMembersInteractorImpl extends cAbstractInteractor
 
     @Override
     public void run() {
-        Gson gson = new Gson();
-        this.teamRepository.readTeamsWithMembers(userServerID, primaryTeamBIT,
-                secondaryTeamBITS, operationBITS, statusBITS, organizationServerID,
-                new iTeamRepository.iReadTeamModelCallback() {
-            @Override
-            public void onReadTeamsWithMembersSucceeded(Map<cTeamModel, List<cUserProfileModel>>
-                                                                teamMembersMap) {
-                List<cTreeModel> teamsMembersTree = new ArrayList<>();
-                int parentIndex = 0, childIndex;
-                for(Map.Entry<cTeamModel, List<cUserProfileModel>> entry: teamMembersMap.entrySet()){
-                    /* a team */
-                    cTeamModel teamModel = entry.getKey();
-                    teamsMembersTree.add(new cTreeModel(parentIndex, -1, 0,
-                            teamModel));
-
-                    /* a list of team members under the team */
-                    childIndex = parentIndex;
-                    for(cUserProfileModel userProfileModel: entry.getValue()){
-                        childIndex = childIndex + 1;
-                        teamsMembersTree.add(new cTreeModel(childIndex, parentIndex, 1,
-                                userProfileModel));
-                    }
-                    /* next parent index */
-                    parentIndex = childIndex + 1;
-                }
-
-                Log.d(TAG, "teamMembersMap => "+gson.toJson(teamsMembersTree));
-                teamsWithMembersMessage(teamsMembersTree);
-            }
-
-            @Override
-            public void onReadTeamFailed(String msg) {
-                notifyError(msg);
-            }
-        });
+//        Gson gson = new Gson();
+//        this.teamRepository.readTeamsWithMembers(userServerID, primaryTeamBIT,
+//                secondaryTeamBITS, operationBITS, statusBITS, organizationServerID,
+//                new iTeamRepository.iReadTeamsCallback() {
+//            @Override
+//            public void onReadTeamsWithMembersSucceeded(Map<cTeamModel, List<cUserProfileModel>>
+//                                                                teamMembersMap) {
+//                List<cTreeModel> teamsMembersTree = new ArrayList<>();
+//                int parentIndex = 0, childIndex;
+//                for(Map.Entry<cTeamModel, List<cUserProfileModel>> entry: teamMembersMap.entrySet()){
+//                    /* a team */
+//                    cTeamModel teamModel = entry.getKey();
+//                    teamsMembersTree.add(new cTreeModel(parentIndex, -1, 0,
+//                            teamModel));
+//
+//                    /* a list of team members under the team */
+//                    childIndex = parentIndex;
+//                    for(cUserProfileModel userProfileModel: entry.getValue()){
+//                        childIndex = childIndex + 1;
+//                        teamsMembersTree.add(new cTreeModel(childIndex, parentIndex, 1,
+//                                userProfileModel));
+//                    }
+//                    /* next parent index */
+//                    parentIndex = childIndex + 1;
+//                }
+//
+//                Log.d(TAG, "teamMembersMap => "+gson.toJson(teamsMembersTree));
+//                teamsWithMembersMessage(teamsMembersTree);
+//            }
+//
+//            @Override
+//            public void onReadTeamFailed(String msg) {
+//                notifyError(msg);
+//            }
+//        });
     }
 }

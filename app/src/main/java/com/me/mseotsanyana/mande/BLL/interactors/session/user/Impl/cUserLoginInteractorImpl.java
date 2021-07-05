@@ -5,7 +5,7 @@ import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.session.user.iUserLoginInteractor;
 import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
-import com.me.mseotsanyana.mande.BLL.repository.session.iPrivilegeRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iPermissionRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iUserProfileRepository;
 import com.me.mseotsanyana.mande.DAL.storage.preference.cSharedPreference;
@@ -15,7 +15,7 @@ import java.util.List;
 public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUserLoginInteractor {
     private final Callback callback;
     private final iSharedPreferenceRepository sharedPreferenceRepository;
-    private final iPrivilegeRepository privilegeRepository;
+    private final iPermissionRepository privilegeRepository;
     private final iUserProfileRepository userProfileRepository;
 
 
@@ -24,7 +24,7 @@ public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUs
 
     public cUserLoginInteractorImpl(iExecutor threadExecutor, iMainThread mainThread, Callback callback,
                                     iSharedPreferenceRepository sharedPreferenceRepository,
-                                    iPrivilegeRepository privilegeRepository,
+                                    iPermissionRepository privilegeRepository,
                                     iUserProfileRepository userProfileRepository,
                                     String email, String password) {
         super(threadExecutor, mainThread);
@@ -80,56 +80,57 @@ public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUs
      * delete old and save new user privileges of the loggedIn user
      */
     private void saveUserPrivileges(String msg) {
-        this.privilegeRepository.saveUserPrivileges(new iPrivilegeRepository.iSaveUserPrivilegesCallback() {
+        this.privilegeRepository.saveUserPermissions(new iPermissionRepository.
+                iSaveUserPermissionsCallback() {
             @Override
-            public void onSaveUserPrivilegesSucceeded(String privilegeMessage) {
+            public void onSaveUserPermissionsSucceeded(String privilegeMessage) {
                 postMessage(msg);
             }
 
             @Override
-            public void onSaveUserPrivilegesFailed(String privilegeMessage) {
+            public void onSaveUserPermissionsFailed(String privilegeMessage) {
                 notifyError("Failure:" + privilegeMessage);
             }
 
             @Override
             public void onSaveOwnerID(String ownerServerID) {
-                sharedPreferenceRepository.updateStringSetting(cSharedPreference.KEY_USER_ID,
+                sharedPreferenceRepository.saveStringSetting(cSharedPreference.KEY_USER_ID,
                         ownerServerID);
                 sharedPreferenceRepository.commitSettings();
             }
 
             @Override
             public void onSaveOrganizationServerID(String organizationServerID) {
-                sharedPreferenceRepository.updateStringSetting(cSharedPreference.KEY_ORG_ID,
+                sharedPreferenceRepository.saveStringSetting(cSharedPreference.KEY_ORG_ID,
                         organizationServerID);
                 sharedPreferenceRepository.commitSettings();
             }
 
             @Override
             public void onSavePrimaryTeamBIT(int primaryTeamBIT) {
-                sharedPreferenceRepository.updateIntSetting(cSharedPreference.KEY_PRIMARY_TEAM_BIT,
+                sharedPreferenceRepository.saveIntSetting(cSharedPreference.KEY_PRIMARY_TEAM_BIT,
                         primaryTeamBIT);
                 sharedPreferenceRepository.commitSettings();
             }
 
             @Override
-            public void onSaveSecondaryTeamBITS(int secondaryTeamBITS) {
-                sharedPreferenceRepository.updateIntSetting(cSharedPreference.KEY_SECONDARY_TEAM_BITS,
-                        secondaryTeamBITS);
+            public void onSaveSecondaryTeams(List<Integer> secondaryTeams) {
+                sharedPreferenceRepository.saveListIntegerSetting(
+                        cSharedPreference.KEY_SECONDARY_TEAMS, secondaryTeams);
                 sharedPreferenceRepository.commitSettings();
             }
 
             @Override
             public void onSaveEntityBITS(String moduleKey, int entityBITS) {
-                sharedPreferenceRepository.updateIntSetting(
+                sharedPreferenceRepository.saveIntSetting(
                         cSharedPreference.KEY_MODULE_ENTITY_BITS + "-" + moduleKey,
                         entityBITS);
                 sharedPreferenceRepository.commitSettings();
             }
 
             @Override
-            public void onSaveOperationBITS(String moduleKey, String entityKey, int operationBITS) {
-                sharedPreferenceRepository.updateIntSetting(
+            public void onSaveEntityPermBITS(String moduleKey, String entityKey, int operationBITS) {
+                sharedPreferenceRepository.saveIntSetting(
                         cSharedPreference.KEY_ENTITY_OPERATION_BITS + "-" + moduleKey + "-" + entityKey,
                         operationBITS);
                 sharedPreferenceRepository.commitSettings();
@@ -138,7 +139,7 @@ public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUs
             @Override
             public void onSaveStatusBITS(String moduleKey, String entityKey, String operationKey,
                                          List<Integer> statuses) {
-                sharedPreferenceRepository.updateListIntegerSetting(
+                sharedPreferenceRepository.saveListIntegerSetting(
                         cSharedPreference.KEY_OPERATION_STATUS_BITS + "-" + moduleKey + "-" + entityKey + "-" +
                                 operationKey, statuses);
                 sharedPreferenceRepository.commitSettings();
@@ -146,7 +147,7 @@ public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUs
 
             @Override
             public void onSaveUnixPermBITS(String moduleKey, String entityKey, int unixpermBITS) {
-                sharedPreferenceRepository.updateIntSetting(
+                sharedPreferenceRepository.saveIntSetting(
                         cSharedPreference.KEY_UNIX_PERM_BITS + "-" + moduleKey + "-" + entityKey,
                         unixpermBITS);
                 sharedPreferenceRepository.commitSettings();
@@ -154,7 +155,7 @@ public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUs
 
             @Override
             public void onSaveMenuItems(List<cMenuModel> menuModels) {
-                sharedPreferenceRepository.updateMenuItems(
+                sharedPreferenceRepository.saveMenuItems(
                         cSharedPreference.KEY_MENU_ITEM_BITS, menuModels);
                 sharedPreferenceRepository.commitSettings();
             }

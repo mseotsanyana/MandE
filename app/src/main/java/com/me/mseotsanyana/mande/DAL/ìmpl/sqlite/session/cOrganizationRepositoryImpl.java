@@ -127,7 +127,7 @@ public class cOrganizationRepositoryImpl implements iOrganizationRepository {
         // assign values to the table fields
         //cv.put(cSQLDBHelper.KEY_ID, organizationModel.getOrganizationID());
         //cv.put(cSQLDBHelper.KEY_SERVER_ID, organizationModel.getServerID());
-        cv.put(cSQLDBHelper.KEY_OWNER_ID, organizationModel.getOwnerID());
+        cv.put(cSQLDBHelper.KEY_OWNER_ID, organizationModel.getUserOwnerID());
         cv.put(cSQLDBHelper.KEY_NAME, organizationModel.getName());
         //cv.put(cSQLDBHelper.KEY_TELEPHONE, organizationModel.getPhone());
         //cv.put(cSQLDBHelper.KEY_FAX, organizationModel.getFax());
@@ -137,7 +137,7 @@ public class cOrganizationRepositoryImpl implements iOrganizationRepository {
         cv.put(cSQLDBHelper.KEY_WEBSITE, organizationModel.getWebsite());
         cv.put(cSQLDBHelper.KEY_CREATED_DATE, sdf.format(organizationModel.getCreatedDate()));
         cv.put(cSQLDBHelper.KEY_MODIFIED_DATE, sdf.format(organizationModel.getModifiedDate()));
-        cv.put(cSQLDBHelper.KEY_SYNCED_DATE, sdf.format(organizationModel.getSyncedDate()));
+        //cv.put(cSQLDBHelper.KEY_SYNCED_DATE, sdf.format(organizationModel.getSyncedDate()));
 
         // insert value record
         long result = db.insert(cSQLDBHelper.TABLE_tblORGANIZATION, null, cv);
@@ -210,16 +210,25 @@ public class cOrganizationRepositoryImpl implements iOrganizationRepository {
     /* ############################################# READ ACTIONS ############################################# */
 
     @Override
-    public void createOrganization(cOrganizationModel organizationModel, iOrganizationRepositoryCallback callback) {
+    public void createOrganization(cOrganizationModel organizationModel, iCreateOrganizationCallback callback) {
 
     }
 
     @Override
-    public void readOrganizations(String userServerID, String orgServerID, int primaryTeamBIT, int secondaryTeamBITS, int entitypermBITS, List<Integer> statuses, int unixpermBITS, iReadOrganizationsModelSetCallback callback) {
+    public void readOrganizations(String userServerID, String orgServerID, int primaryTeamBIT,
+                                  List<Integer> secondaryTeams, List<Integer> statuses,
+                                  iReadOrganizationsCallback callback) {
 
     }
 
-//    @Override
+    @Override
+    public void readOrganizationMembers(String userServerID, String orgServerID, int primaryTeamBIT,
+                                        List<Integer> secondaryTeams, List<Integer> statuses,
+                                        iReadOrganizationMembersCallback callback) {
+
+    }
+
+    //    @Override
 //    public void readOrganizations(String userServerID, String orgServerID, int primaryTeamBIT,
 //                                  List<Integer> secondaryTeamBITS, int statusBITS, int unixpermBITS,
 //                                  iReadOrganizationsModelSetCallback callback) {
@@ -259,8 +268,8 @@ public class cOrganizationRepositoryImpl implements iOrganizationRepository {
                             Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
                     organization.setModifiedDate(
                             Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    organization.setSyncedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+                    //organization.setSyncedDate(
+                    //        Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
 
                     // add model organization into the action_list
@@ -322,8 +331,8 @@ public class cOrganizationRepositoryImpl implements iOrganizationRepository {
                             sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
                     organization.setModifiedDate(
                             sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    organization.setSyncedDate(
-                            sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+                    //organization.setSyncedDate(
+                    ///        sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     // populate organization users
                     //organization.setUserModelSet(getUsersByOrganizationID(organization.getOrganizationID()));
@@ -697,8 +706,8 @@ public class cOrganizationRepositoryImpl implements iOrganizationRepository {
                         Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
                 organization.setModifiedDate(
                         Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                organization.setSyncedDate(
-                        Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+                //organization.setSyncedDate(
+                //        Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
             }
 
             return organization;

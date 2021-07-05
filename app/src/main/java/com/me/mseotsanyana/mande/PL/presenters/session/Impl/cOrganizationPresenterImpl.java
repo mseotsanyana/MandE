@@ -14,6 +14,7 @@ import com.me.mseotsanyana.mande.PL.presenters.session.iOrganizationPresenter;
 import com.me.mseotsanyana.mande.UTIL.cInputValidation;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class cOrganizationPresenterImpl extends cAbstractPresenter implements iOrganizationPresenter,
         iCreateOrganizationInteractor.Callback, iReadOrganizationsInteractor.Callback {
@@ -107,7 +108,7 @@ public class cOrganizationPresenterImpl extends cAbstractPresenter implements iO
     }
 
     @Override
-    public void onReadOrganizationsRetrieved(ArrayList<cOrganizationModel> organizationModels) {
+    public void onReadOrganizationsRetrieved(List<cOrganizationModel> organizationModels) {
         if(this.view != null) {
             this.view.onReadOrganizationsSucceeded(organizationModels);
             this.view.hideProgress();

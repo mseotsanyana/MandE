@@ -3,11 +3,11 @@ package com.me.mseotsanyana.mande.PL.presenters.session.Impl;
 import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 
-import com.me.mseotsanyana.mande.BLL.interactors.session.session.Impl.cLoadProfileSettingsInteractorImpl;
+import com.me.mseotsanyana.mande.BLL.interactors.session.session.Impl.cHomePageInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.session.session.iHomePageInteractor;
 import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
-import com.me.mseotsanyana.mande.BLL.repository.session.iUserProfileAndMenuItemsRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iHomePageRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.session.iHomePagePresenter;
@@ -19,16 +19,16 @@ public class cHomePagePresenterImpl extends cAbstractPresenter implements iHomeP
 
     private View view;
     private final iSharedPreferenceRepository sharedPreferenceRepository;
-    private final iUserProfileAndMenuItemsRepository userProfileAndMenuItemsRepository;
+    private final iHomePageRepository homePageRepository;
 
     public cHomePagePresenterImpl(iExecutor executor, iMainThread mainThread, View view,
                                   iSharedPreferenceRepository sharedPreferenceRepository,
-                                  iUserProfileAndMenuItemsRepository userProfileAndMenuItemsRepository) {
+                                  iHomePageRepository homePageRepository) {
         super(executor, mainThread);
 
         this.view = view;
         this.sharedPreferenceRepository = sharedPreferenceRepository;
-        this.userProfileAndMenuItemsRepository = userProfileAndMenuItemsRepository;
+        this.homePageRepository = homePageRepository;
     }
 
     @Override
@@ -62,15 +62,14 @@ public class cHomePagePresenterImpl extends cAbstractPresenter implements iHomeP
 
     @Override
     public void updateHomePage() {
-        iHomePageInteractor updateHomePageInteract = new cLoadProfileSettingsInteractorImpl(
+        iHomePageInteractor homePageInteractor = new cHomePageInteractorImpl(
                 executor,
                 mainThread,this,
                 sharedPreferenceRepository,
-                userProfileAndMenuItemsRepository
-                );
+                homePageRepository);
 
         view.showProgress();
-        updateHomePageInteract.execute();
+        homePageInteractor.execute();
     }
 
     /* general presentation methods */

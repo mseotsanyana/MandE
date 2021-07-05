@@ -443,11 +443,11 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                                 public void onItemsSelected(List<cKeyPairBoolData> items) {
                                     for (int i = 0; i < items.size(); i++) {
                                         if (items.get(i).isSelected()) {
-                                            roleDomain.setOwnerID(""/*(int) items.get(i).getId()*/);
+                                            roleDomain.setRoleServerID(""/*(int) items.get(i).getId()*/);
                                             break;
                                         }
                                     }
-                                    Log.d(TAG, "OWNER : " + roleDomain.getOwnerID());
+                                    Log.d(TAG, "OWNER : " + roleDomain.getRoleServerID());
                                 }
                             });
 

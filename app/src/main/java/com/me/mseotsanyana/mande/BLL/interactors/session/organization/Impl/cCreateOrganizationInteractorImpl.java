@@ -69,7 +69,7 @@ public class cCreateOrganizationInteractorImpl extends cAbstractInteractor
 
         /* create a new organization object and insert it */
         organizationRepository.createOrganization(organizationModel,
-                new iOrganizationRepository.iOrganizationRepositoryCallback() {
+                new iOrganizationRepository.iCreateOrganizationCallback() {
             @Override
             public void onCreateOrganizationSucceeded(String msg) {
                 postMessage(msg);

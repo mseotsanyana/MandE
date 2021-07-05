@@ -14,9 +14,6 @@ import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
 
 import org.apache.poi.ss.usermodel.Row;
 
-import java.util.Calendar;
-import java.util.Date;
-
 /**
  * Created by mseotsanyana on 2017/05/23.
  */
@@ -107,8 +104,8 @@ public class cSetDomainsFromExcel {
     public cSessionModel getSessionFromExcel(Row cRow) {
         sessionDomain = new cSessionModel();
 
-        sessionDomain.setSessionID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-        sessionDomain.setUserID((int)cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+        sessionDomain.setSessionServerID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+        sessionDomain.setUserServerID((int)cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         //sessionDomain.setName(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
         //sessionDomain.setDescription(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
         //sessionDomain.setCreateDate(cRow.getCell(4, Row.CREATE_NULL_AS_BLANK).getDateCellValue());
@@ -134,7 +131,7 @@ public class cSetDomainsFromExcel {
         menuDomain.setMenuServerID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         menuDomain.setParentServerID((int)cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         menuDomain.setName(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-        menuDomain.setDescription(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+        //menuDomain.setDescription(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
         //menuDomain.setCreateDate(cRow.getCell(4, Row.CREATE_NULL_AS_BLANK).getDateCellValue());
 
         return menuDomain;
@@ -151,11 +148,11 @@ public class cSetDomainsFromExcel {
     }
 
     public cEntityModel getEntityFromExcel(Row cRow) {
-        entityDomain = new cEntityModel();
+        entityDomain = null;//new cEntityModel(entityID, moduleID, operationStatusMap, unixPermList);
 
-        entityDomain.setEntityID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-        entityDomain.setName(cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-        entityDomain.setDescription(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+        //entityDomain.setEntityID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+        //entityDomain.setName(cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+        //entityDomain.setDescription(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
         //entityDomain.setCreateDate(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getDateCellValue());
 
         return entityDomain;
@@ -184,7 +181,7 @@ public class cSetDomainsFromExcel {
     }
 
     public cPermissionModel getPermissionFromExcel(Row cRow) {
-        permissionDomain = new cPermissionModel();
+        permissionDomain = null;//new cPermissionModel(permissions);
 /*
         permissionDomain.setPrivilegeID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         permissionDomain.setEntityID((int)cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());

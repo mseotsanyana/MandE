@@ -11,17 +11,18 @@ public interface iSharedPreferenceRepository {
     void commitSettings();
     void deleteSettings();
     void removeSetting(String key);
-    void updateIntSetting(String key, int value);
-    void updateStringSetting(String key, String value);
-    void updateBooleanSetting(String key, Boolean value);
-    void updateListIntegerSetting(String key, List<Integer> value);
-    void updateMenuItems(String key, List<cMenuModel> value);
+
+    void saveIntSetting(String key, int value);
+    void saveStringSetting(String key, String value);
+    void saveBooleanSetting(String key, Boolean value);
+    void saveListIntegerSetting(String key, List<Integer> value);
+    void saveMenuItems(String key, List<cMenuModel> value);
 
     /* load personal preferences of the loggedIn user */
     String loadUserID();
     String loadOrganizationID();
     int loadPrimaryTeamBIT();
-    int loadSecondaryTeamBITS();
+    List<Integer> loadSecondaryTeams();
     int loadEntityPermissionBITS(int moduleKey, int entityKey);
     List<Integer> loadOperationStatuses(int moduleKey, int entityKey, int operationKey);
     int loadUnixPermissionBITS(int moduleKey, int entityKey);

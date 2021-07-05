@@ -4,7 +4,7 @@ import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserLoginInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.session.user.iUserLoginInteractor;
-import com.me.mseotsanyana.mande.BLL.repository.session.iPrivilegeRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iPermissionRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iUserProfileRepository;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
@@ -17,14 +17,14 @@ public class cUserLoginPresenterImpl extends cAbstractPresenter implements iUser
 
     private View view;
     private final iSharedPreferenceRepository sharedPreferenceRepository;
-    private final iPrivilegeRepository privilegeRepository;
+    private final iPermissionRepository privilegeRepository;
     private final iUserProfileRepository userProfileRepository;
 
     private final cInputValidation inputValidation;
 
     public cUserLoginPresenterImpl(iExecutor executor, iMainThread mainThread, View view,
                                    iSharedPreferenceRepository sharedPreferenceRepository,
-                                   iPrivilegeRepository privilegeRepository,
+                                   iPermissionRepository privilegeRepository,
                                    iUserProfileRepository userProfileRepository) {
         super(executor, mainThread);
 

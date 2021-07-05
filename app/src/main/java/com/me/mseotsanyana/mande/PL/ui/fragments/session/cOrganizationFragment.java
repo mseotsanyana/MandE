@@ -141,7 +141,7 @@ public class cOrganizationFragment extends Fragment implements iOrganizationPres
     }
 
     @Override
-    public void onReadOrganizationsSucceeded(ArrayList<cOrganizationModel> organizationModels) {
+    public void onReadOrganizationsSucceeded(List<cOrganizationModel> organizationModels) {
         this.organizationAdapter.setOrganizationModels(organizationModels);
         this.organizationAdapter.notifyDataSetChanged();
     }

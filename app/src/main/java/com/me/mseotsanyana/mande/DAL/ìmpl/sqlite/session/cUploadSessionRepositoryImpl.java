@@ -709,8 +709,8 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
                     Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             menuModel.setName(cRow.getCell(2,
                     Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            menuModel.setDescription(cRow.getCell(3,
-                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+//            menuModel.setDescription(cRow.getCell(3,
+//                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
             if (!addMenu(menuModel)) {
                 return false;
@@ -731,7 +731,7 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
         cv.put(cSQLDBHelper.KEY_ID, menuModel.getMenuServerID());
         cv.put(cSQLDBHelper.KEY_PARENT_FK_ID, menuModel.getParentServerID());
         cv.put(cSQLDBHelper.KEY_NAME, menuModel.getName());
-        cv.put(cSQLDBHelper.KEY_DESCRIPTION, menuModel.getDescription());
+//        cv.put(cSQLDBHelper.KEY_DESCRIPTION, menuModel.getDescription());
 
         // insert outcome record
         try {
@@ -779,16 +779,15 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
                 continue;
             }
 
-            cEntityModel entityModel = new cEntityModel();
+            cEntityModel entityModel = null;//new cEntityModel(entityID, moduleID, operationStatusMap, unixPermList);
 
-            entityModel.setEntityID((int) cRow.getCell(0,
-                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            entityModel.setEntityTypeID((int) cRow.getCell(1,
-                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            entityModel.setName(cRow.getCell(2,
-                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            entityModel.setDescription(cRow.getCell(3,
-                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+//            entityModel.setEntityID((int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            entityModel.setModuleID((int) cRow.getCell(1,
+//                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            entityModel.setName(cRow.getCell(2,
+//                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+//            entityModel.setDescription(cRow.getCell(3,
+//                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
 
             if (!addEntity(entityModel)) {
@@ -807,10 +806,10 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, entityModel.getEntityID());
-        cv.put(cSQLDBHelper.KEY_ENTITY_TYPE_ID, entityModel.getEntityTypeID());
-        cv.put(cSQLDBHelper.KEY_NAME, entityModel.getName());
-        cv.put(cSQLDBHelper.KEY_DESCRIPTION, entityModel.getDescription());
+        cv.put(cSQLDBHelper.KEY_ID, entityModel.getEntityServerID());
+//        cv.put(cSQLDBHelper.KEY_ENTITY_TYPE_ID, entityModel.getModuleID());
+//        cv.put(cSQLDBHelper.KEY_NAME, entityModel.getName());
+//        cv.put(cSQLDBHelper.KEY_DESCRIPTION, entityModel.getDescription());
 
         // insert outcome record
         try {
@@ -1142,7 +1141,7 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
                 continue;
             }
 
-            cPermissionModel permissionModel = new cPermissionModel();
+            cPermissionModel permissionModel = null;//new cPermissionModel(permissions);
 
 //            permissionModel.setPermissionID((int)
 //                    cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());

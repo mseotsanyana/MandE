@@ -143,8 +143,8 @@ public class cOutcomeFragment extends Fragment implements iOutcomePresenter.View
         outcomePresenter = new cOutcomePresenterImpl(
                 cThreadExecutorImpl.getInstance(),
                 cMainThreadImpl.getInstance(),
-                this,
-                new cSessionManagerImpl(getContext()),
+                this,null
+                /*new cSessionManagerImpl(getContext())*/,
                 new cOutcomeRepositoryImpl(getContext()),
                 logFrameID);
 

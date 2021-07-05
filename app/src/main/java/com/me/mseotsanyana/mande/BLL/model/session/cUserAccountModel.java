@@ -16,11 +16,11 @@ public class cUserAccountModel implements Parcelable {
     private String planServerID;
     private boolean currentOrganization;
 
-    private String ownerID;
-    private String orgOwnerID;
+    private String userOwnerID;
+    private String organizationOwnerID;
     private int teamOwnerBIT;
-    private List<Integer> unixpermsBITS;
-    private int statusesBITS;
+    private List<Integer> unixpermBITS;
+    private int statusBIT;
 
     private Date createdDate;
     private Date modifiedDate;
@@ -29,8 +29,9 @@ public class cUserAccountModel implements Parcelable {
 
     public cUserAccountModel(){}
 
-    public cUserAccountModel(String userAccountServerID, String organizationServerID, String teamServerID,
-                             String userServerID, String planServerID, boolean currentOrganization){
+    public cUserAccountModel(String userAccountServerID, String organizationServerID,
+                             String teamServerID, String userServerID, String planServerID,
+                             boolean currentOrganization){
         this.userAccountServerID = userAccountServerID;
         this.userServerID = userServerID;
         this.teamServerID = teamServerID;
@@ -95,21 +96,20 @@ public class cUserAccountModel implements Parcelable {
         this.currentOrganization = currentOrganization;
     }
 
-
-    public String getOwnerID() {
-        return ownerID;
+    public String getUserOwnerID() {
+        return userOwnerID;
     }
 
-    public void setOwnerID(String ownerID) {
-        this.ownerID = ownerID;
+    public void setUserOwnerID(String userOwnerID) {
+        this.userOwnerID = userOwnerID;
     }
 
-    public String getOrgOwnerID() {
-        return orgOwnerID;
+    public String getOrganizationOwnerID() {
+        return organizationOwnerID;
     }
 
-    public void setOrgOwnerID(String orgOwnerID) {
-        this.orgOwnerID = orgOwnerID;
+    public void setOrganizationOwnerID(String organizationOwnerID) {
+        this.organizationOwnerID = organizationOwnerID;
     }
 
     public int getTeamOwnerBIT() {
@@ -120,20 +120,20 @@ public class cUserAccountModel implements Parcelable {
         this.teamOwnerBIT = teamOwnerBIT;
     }
 
-    public List<Integer> getUnixpermsBITS() {
-        return unixpermsBITS;
+    public List<Integer> getUnixpermBITS() {
+        return unixpermBITS;
     }
 
-    public void setUnixpermsBITS(List<Integer> unixpermsBITS) {
-        this.unixpermsBITS = unixpermsBITS;
+    public void setUnixpermBITS(List<Integer> unixpermsBITS) {
+        this.unixpermBITS = unixpermsBITS;
     }
 
-    public int getStatusesBITS() {
-        return statusesBITS;
+    public int getStatusBIT() {
+        return statusBIT;
     }
 
-    public void setStatusesBITS(int statusesBITS) {
-        this.statusesBITS = statusesBITS;
+    public void setStatusBIT(int statusBIT) {
+        this.statusBIT = statusBIT;
     }
 
     protected cUserAccountModel(Parcel in) {

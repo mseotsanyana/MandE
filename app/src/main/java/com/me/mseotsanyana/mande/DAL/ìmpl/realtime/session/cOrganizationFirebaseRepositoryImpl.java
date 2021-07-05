@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 
 import android.content.Context;
 import android.util.Log;
-import android.util.Pair;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -16,9 +15,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
-import com.me.mseotsanyana.mande.BLL.model.session.cPermissionModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cPlanModel;
-import com.me.mseotsanyana.mande.BLL.model.session.cPrivilegeModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cRoleModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cTeamModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserAccountModel;
@@ -50,7 +47,7 @@ public class cOrganizationFirebaseRepositoryImpl implements iOrganizationReposit
 
     @Override
     public void createOrganization(cOrganizationModel organizationModel,
-                                   iOrganizationRepositoryCallback callback) {
+                                   iCreateOrganizationCallback callback) {
 
         // get current logged in user
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -61,15 +58,15 @@ public class cOrganizationFirebaseRepositoryImpl implements iOrganizationReposit
         String organizationServerID = dbOrganizationRef.push().getKey();
         assert organizationServerID != null;
         // get common columns' default values
-        cCommonPropertiesModel commonPropertiesModel = cDatabaseUtils.getColumnModel(context);
+        cCommonPropertiesModel commonPropertiesModel = cDatabaseUtils.getCommonModel(context);
         // update organization model with auto generated id
         organizationModel.setOrganizationServerID(organizationServerID);
         // update organization model with default values
-        organizationModel.setOwnerID(userID);
-        organizationModel.setOrgOwnerID(organizationServerID);
+        organizationModel.setUserOwnerID(userID);
+        organizationModel.setOrganizationOwnerID(organizationServerID);
         organizationModel.setTeamOwnerBIT(commonPropertiesModel.getCteamOwnerBIT());
-        organizationModel.setUnixpermsBITS(commonPropertiesModel.getCunixpermsBITS());
-        organizationModel.setStatusesBITS(commonPropertiesModel.getCstatusesBITS());
+        organizationModel.setUnixpermBITS(commonPropertiesModel.getCunixpermBITS());
+        organizationModel.setStatusBIT(commonPropertiesModel.getCstatusBIT());
 
         dbOrganizationRef.child(organizationServerID).setValue(organizationModel, (dbError, dbReference) -> {
             if (dbError == null) {
@@ -103,7 +100,7 @@ public class cOrganizationFirebaseRepositoryImpl implements iOrganizationReposit
                 cPlanModel defaultPlanModel = cDatabaseUtils.getDefaultPlanModel(context);
                 cTeamModel teamModel = cDatabaseUtils.getAdminTeamModel(context, organizationServerID, commonPropertiesModel);
                 cRoleModel roleModel = cDatabaseUtils.getAdminRoleModel(context, commonPropertiesModel);
-                cPrivilegeModel privilegeModel = cDatabaseUtils.getAdminPrivilegeModel(context, commonPropertiesModel);
+//                cPrivilegeModel privilegeModel = cDatabaseUtils.getAdminPrivilegeModel(context, commonPropertiesModel);
 //                Pair<cPermissionModel, List<cUnixPermissionModel>> permissions = cDatabaseUtils.
 //                        getAdminPermissions(context);
 
@@ -124,7 +121,12 @@ public class cOrganizationFirebaseRepositoryImpl implements iOrganizationReposit
     }
 
     @Override
-    public void readOrganizations(String userServerID, String orgServerID, int primaryTeamBIT, int secondaryTeamBITS, int entitypermBITS, List<Integer> statuses, int unixpermBITS, iReadOrganizationsModelSetCallback callback) {
+    public void readOrganizations(String userServerID, String orgServerID, int primaryTeamBIT, List<Integer> secondaryTeams, List<Integer> statuses, iReadOrganizationsCallback callback) {
+
+    }
+
+    @Override
+    public void readOrganizationMembers(String userServerID, String orgServerID, int primaryTeamBIT, List<Integer> secondaryTeams, List<Integer> statuses, iReadOrganizationMembersCallback callback) {
 
     }
 
@@ -185,11 +187,11 @@ public class cOrganizationFirebaseRepositoryImpl implements iOrganizationReposit
         String compositeServerID = teamModel.getCompositeServerID();
 
         // update team's common columns
-        teamModel.setOwnerID(columnModel.getCownerID());
-        teamModel.setOrgOwnerID(columnModel.getCorgOwnerID());
+        teamModel.setUserOwnerID(columnModel.getCownerID());
+        teamModel.setOrganizationOwnerID(columnModel.getCorgOwnerID());
         teamModel.setTeamOwnerBIT(columnModel.getCteamOwnerBIT());
-        teamModel.setUnixpermsBITS(columnModel.getCunixpermsBITS());
-        teamModel.setStatusesBITS(columnModel.getCstatusesBITS());
+        teamModel.setUnixpermBITS(columnModel.getCunixpermBITS());
+        teamModel.setStatusBIT(columnModel.getCstatusBIT());
 
         dbTeamsRef.child(compositeServerID).setValue(teamModel);
 
@@ -220,11 +222,11 @@ public class cOrganizationFirebaseRepositoryImpl implements iOrganizationReposit
         roleModel.setRoleServerID(roleID);
 
         // update role's common columns
-        roleModel.setOwnerID(columnModel.getCownerID());
-        roleModel.setOrgOwnerID(columnModel.getCorgOwnerID());
+        roleModel.setUserOwnerID(columnModel.getCownerID());
+        roleModel.setOrganizationOwnerID(columnModel.getCorgOwnerID());
         roleModel.setTeamOwnerBIT(columnModel.getCteamOwnerBIT());
-        roleModel.setUnixpermsBITS(columnModel.getCunixpermsBITS());
-        roleModel.setStatusesBITS(columnModel.getCstatusesBITS());
+        roleModel.setUnixpermBITS(columnModel.getCunixpermBITS());
+        roleModel.setStatusBIT(columnModel.getCstatusBIT());
 
         dbRoleRef.child(roleID).setValue(roleModel);
 
@@ -240,7 +242,7 @@ public class cOrganizationFirebaseRepositoryImpl implements iOrganizationReposit
         // create menu items of the related roles
         DatabaseReference dbOrgRoleMenuRef;
         // add menu items related to admin role of the organization
-        dbOrgRoleMenuRef = database.getReference(cRealtimeHelper.KEY_ROLE_MENU_ITEMS);
+        dbOrgRoleMenuRef = database.getReference(cRealtimeHelper.KEY_ROLE_PERMISSIONS);
 
         Map<cMenuModel, Map<String, cMenuModel>> modelMapHashMap = cDatabaseUtils.
                 getAdminMenuModelSet(context);
@@ -255,7 +257,7 @@ public class cOrganizationFirebaseRepositoryImpl implements iOrganizationReposit
                 for (Map.Entry<String, cMenuModel> subEntry : subMenuModelMap.entrySet()) {
                     subMenuModels.add(subEntry.getValue());
                 }
-                menuModel.setSubMenuModels(subMenuModels);
+                menuModel.setSubmenu(subMenuModels);
             }
 
             // add menu items related to admin role of the organization
@@ -264,48 +266,48 @@ public class cOrganizationFirebaseRepositoryImpl implements iOrganizationReposit
         }
     }
 
-    public void createPrivilegeLinks(cRoleModel roleModel, cPrivilegeModel privilegeModel,
-                                     Pair<List<cPermissionModel>, List<cPermissionModel>> permissions) {
-        DatabaseReference dbPrivilegeRef, dbRolePrivRef, dbPrivPermsRef, dbPrivUnixPermsRef;
-
-        dbPrivilegeRef = database.getReference(cRealtimeHelper.KEY_PRIVILEGES);
-        dbRolePrivRef = database.getReference(cRealtimeHelper.KEY_ROLE_PRIVILEGES);
-        dbPrivPermsRef = database.getReference(cRealtimeHelper.KEY_PRIVILEGE_PERMISSIONS);
-        dbPrivUnixPermsRef = database.getReference(cRealtimeHelper.KEY_PRIVILEGE_UNIXPERMS);
-
-        // creating admin privilege
-        String privilegeID = dbPrivilegeRef.push().getKey();
-        assert privilegeID != null;
-        privilegeModel.setPrivilegeServerID(privilegeID);
-        dbPrivilegeRef.child(privilegeID).setValue(privilegeModel);
-
-        // creating admin role privileges
-        dbRolePrivRef.child(roleModel.getRoleServerID()).child(privilegeID).setValue(true);
-
-        List<cPermissionModel> permissionModels = permissions.first;
-        List<cPermissionModel> unixPermissionModels = permissions.second;
-
-        /* permissions which are used to control access at table level */
-        for (int i = 0; i < permissionModels.size(); i++) {
-            // creating permissions
-//            String entityID = permissionModels.get(i).getEntityServerID();
-//            String entityTypeID = permissionModels.get(i).getModuleServerID();
-            String operationID = "";//permissionModels.get(i).getOperationServerID();
-
-//            dbPrivPermsRef.child(privilegeID).child(entityTypeID).
-//                    child(entityID).child(operationID).setValue(0);
-        }
-
-        // create unix permissions for each entity - they put access control on rows
-        for (int j = 0; j < unixPermissionModels.size(); j++) {
-//            String entityID = unixPermissionModels.get(j).getEntityServerID();
-//            String entityTypeID = unixPermissionModels.get(j).getModuleServerID();
-//            String unixOperationID = "";//unixPermissionModels.get(j).getUnixOperationServerID();
+//    public void createPrivilegeLinks(cRoleModel roleModel, cPrivilegeModel privilegeModel,
+//                                     Pair<List<cPermissionModel>, List<cPermissionModel>> permissions) {
+//        DatabaseReference dbPrivilegeRef, dbRolePrivRef, dbPrivPermsRef, dbPrivUnixPermsRef;
 //
-//            dbPrivUnixPermsRef.child(privilegeID).child(entityTypeID).
-//                    child(entityID).child(unixOperationID).setValue(true);
-        }
-    }
+//        dbPrivilegeRef = database.getReference(cRealtimeHelper.KEY_PRIVILEGES);
+//        dbRolePrivRef = database.getReference(cRealtimeHelper.KEY_ROLE_PRIVILEGES);
+//        dbPrivPermsRef = database.getReference(cRealtimeHelper.KEY_PRIVILEGE_PERMISSIONS);
+//        dbPrivUnixPermsRef = database.getReference(cRealtimeHelper.KEY_PRIVILEGE_UNIXPERMS);
+//
+//        // creating admin privilege
+//        String privilegeID = dbPrivilegeRef.push().getKey();
+//        assert privilegeID != null;
+//        privilegeModel.setPrivilegeServerID(privilegeID);
+//        dbPrivilegeRef.child(privilegeID).setValue(privilegeModel);
+//
+//        // creating admin role privileges
+//        dbRolePrivRef.child(roleModel.getRoleServerID()).child(privilegeID).setValue(true);
+//
+//        List<cPermissionModel> permissionModels = permissions.first;
+//        List<cPermissionModel> unixPermissionModels = permissions.second;
+//
+//        /* permissions which are used to control access at table level */
+//        for (int i = 0; i < permissionModels.size(); i++) {
+//            // creating permissions
+////            String entityID = permissionModels.get(i).getEntityServerID();
+////            String entityTypeID = permissionModels.get(i).getModuleServerID();
+//            String operationID = "";//permissionModels.get(i).getOperationServerID();
+//
+////            dbPrivPermsRef.child(privilegeID).child(entityTypeID).
+////                    child(entityID).child(operationID).setValue(0);
+//        }
+//
+//        // create unix permissions for each entity - they put access control on rows
+//        for (int j = 0; j < unixPermissionModels.size(); j++) {
+////            String entityID = unixPermissionModels.get(j).getEntityServerID();
+////            String entityTypeID = unixPermissionModels.get(j).getModuleServerID();
+////            String unixOperationID = "";//unixPermissionModels.get(j).getUnixOperationServerID();
+////
+////            dbPrivUnixPermsRef.child(privilegeID).child(entityTypeID).
+////                    child(entityID).child(unixOperationID).setValue(true);
+//        }
+//    }
 
     /* ############################################# READ ACTIONS ############################################# */
 
@@ -401,7 +403,7 @@ public class cOrganizationFirebaseRepositoryImpl implements iOrganizationReposit
     /*public List<cPlanModel> getPlanModels() {
         List<cPlanModel> planModels = new ArrayList<>();
         // read json file
-        String plans = "jsons/app_plans.json";
+        String plans = "jsons/sys_plans.json";
         String planJSONString = cDatabaseUtils.loadJSONFromAsset(plans, context.getAssets());
 
         try {
@@ -435,7 +437,7 @@ public class cOrganizationFirebaseRepositoryImpl implements iOrganizationReposit
     public List<cFeatureModel> getFeatureModels() {
         List<cFeatureModel> featureModels = new ArrayList<>();
         // read json file
-        String features = "jsons/app_features.json";
+        String features = "jsons/sys_features.json";
         String featureJSONString = cDatabaseUtils.loadJSONFromAsset(features, context.getAssets());
 
         try {
@@ -464,7 +466,7 @@ public class cOrganizationFirebaseRepositoryImpl implements iOrganizationReposit
     public HashMap<String, Set<Integer>> getPlanFeatureModelSet() {
         HashMap<String, Set<Integer>> planFeatures = new HashMap<>();
 
-        String plan = "jsons/plan_features.json";
+        String plan = "jsons/sys_features.json";
         String planJSONString = cDatabaseUtils.loadJSONFromAsset(plan, context.getAssets());
 
         try {

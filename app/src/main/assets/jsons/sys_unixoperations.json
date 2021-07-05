@@ -1,0 +1,64 @@
+{
+  "unixoperations": [
+    {
+      "id": 2048,
+      "name": "Owner Read",
+      "description": "Owner read operation"
+    },
+    {
+      "id": 1024,
+      "name": "Owner Write",
+      "description": "Owner write operation"
+    },
+    {
+      "id": 512,
+      "name": "Owner Delete",
+      "description": "Owner delete operation"
+    },
+    {
+      "id": 256,
+      "name": "Primary Team Read",
+      "description": "Primary Team owner read operation"
+    },
+    {
+      "id": 128,
+      "name": "Primary Team Write",
+      "description": "Primary team write operation"
+    },
+    {
+      "id": 64,
+      "name": "Primary Team Delete",
+      "description": "Primary team delete operation"
+    },
+    {
+      "id": 32,
+      "name": "Secondary Read",
+      "description": "Secondary team read operation"
+    },
+    {
+      "id": 16,
+      "name": "Secondary Team Write",
+      "description": "Secondary team write operation"
+    },
+    {
+      "id": 8,
+      "name": "Secondary Team Delete",
+      "description": "Secondary team delete operation"
+    },
+    {
+      "id": 4,
+      "name": "Organization Read",
+      "description": "Organization member read operation"
+    },
+    {
+      "id": 2,
+      "name": "Organization Write",
+      "description": "Organization member write operation"
+    },
+    {
+      "id": 1,
+      "name": "Organization Delete",
+      "description": "Organization member delete operation"
+    }
+  ]
+}

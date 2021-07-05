@@ -253,7 +253,7 @@ public class cSessionModelFromExcel {
         menuModel.setMenuServerID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         menuModel.setParentServerID((int)cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         menuModel.setName(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-        menuModel.setDescription(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+        //menuModel.setDescription(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
         //Log.d(TAG, "=========================================================");
         //Log.d(TAG, gson.toJson(menuModel));
@@ -316,12 +316,12 @@ public class cSessionModelFromExcel {
     }
 
     public void addEntityFromExcel(Row cRow) {
-        entityModel = new cEntityModel();
+        entityModel = null;//new cEntityModel(entityID, moduleID, operationStatusMap, unixPermList);
 
-        entityModel.setEntityID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-        entityModel.setEntityTypeID((int)cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-        entityModel.setName(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-        entityModel.setDescription(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+        //entityModel.setEntityID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+        //entityModel.setModuleID((int)cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+        //entityModel.setName(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+        //entityModel.setDescription(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
         //Log.d(TAG, "=========================================================");
         //Log.d(TAG, gson.toJson(entityModel));

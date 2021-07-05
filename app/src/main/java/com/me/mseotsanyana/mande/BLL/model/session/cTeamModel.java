@@ -17,11 +17,11 @@ public class cTeamModel implements Parcelable {
     private String teamServerID;
     private String organizationServerID;
 
-    private String ownerID;
-    private String orgOwnerID;
+    private String userOwnerID;
+    private String organizationOwnerID;
     private int teamOwnerBIT;
-    private List<Integer> unixpermsBITS;
-    private int statusesBITS;
+    private List<Integer> unixpermBITS;
+    private int statusBIT;
 
     private int numTeams;
 
@@ -54,20 +54,20 @@ public class cTeamModel implements Parcelable {
         this.teamServerID = teamServerID;
     }
 
-    public String getOwnerID() {
-        return ownerID;
+    public String getUserOwnerID() {
+        return userOwnerID;
     }
 
-    public void setOwnerID(String ownerID) {
-        this.ownerID = ownerID;
+    public void setUserOwnerID(String userOwnerID) {
+        this.userOwnerID = userOwnerID;
     }
 
-    public String getOrgOwnerID() {
-        return orgOwnerID;
+    public String getOrganizationOwnerID() {
+        return organizationOwnerID;
     }
 
-    public void setOrgOwnerID(String orgOwnerID) {
-        this.orgOwnerID = orgOwnerID;
+    public void setOrganizationOwnerID(String organizationOwnerID) {
+        this.organizationOwnerID = organizationOwnerID;
     }
 
     public int getTeamOwnerBIT() {
@@ -78,20 +78,20 @@ public class cTeamModel implements Parcelable {
         this.teamOwnerBIT = teamOwnerBIT;
     }
 
-    public List<Integer> getUnixpermsBITS() {
-        return unixpermsBITS;
+    public List<Integer> getUnixpermBITS() {
+        return unixpermBITS;
     }
 
-    public void setUnixpermsBITS(List<Integer> unixpermsBITS) {
-        this.unixpermsBITS = unixpermsBITS;
+    public void setUnixpermBITS(List<Integer> unixpermBITS) {
+        this.unixpermBITS = unixpermBITS;
     }
 
-    public int getStatusesBITS() {
-        return statusesBITS;
+    public int getStatusBIT() {
+        return statusBIT;
     }
 
-    public void setStatusesBITS(int statusesBITS) {
-        this.statusesBITS = statusesBITS;
+    public void setStatusBIT(int statusBIT) {
+        this.statusBIT = statusBIT;
     }
 
     public String getOrganizationServerID() {
@@ -158,11 +158,11 @@ public class cTeamModel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(ownerID);
-        parcel.writeString(orgOwnerID);
+        parcel.writeString(userOwnerID);
+        parcel.writeString(organizationOwnerID);
         parcel.writeInt(teamOwnerBIT);
         //parcel.writeInt(unixpermsBITS);
-        parcel.writeInt(statusesBITS);
+        parcel.writeInt(statusBIT);
         parcel.writeString(teamServerID);
         parcel.writeString(organizationServerID);
         parcel.writeString(name);
@@ -170,11 +170,11 @@ public class cTeamModel implements Parcelable {
     }
 
     protected cTeamModel(Parcel in) {
-        ownerID = in.readString();
-        orgOwnerID = in.readString();
+        userOwnerID = in.readString();
+        organizationOwnerID = in.readString();
         teamOwnerBIT = in.readInt();
         //unixpermsBITS = in.readInt();
-        statusesBITS = in.readInt();
+        statusBIT = in.readInt();
         teamServerID = in.readString();
         organizationServerID = in.readString();
         name = in.readString();
