@@ -44,14 +44,14 @@ public class cCommonStatusAdapter extends RecyclerView.Adapter<cCommonStatusAdap
     public void onBindViewHolder(cStatusViewHolder SH, final int position) {
         SH.textViewName.setText(statusModels.get(position).getName());
         SH.textViewDescription.setText(statusModels.get(position).getDescription());
-        SH.switchStatus.setChecked(statusModels.get(position).isState());
+        SH.switchStatus.setChecked(statusModels.get(position).isChecked());
         SH.switchStatus.setTag(statusModels.get(position));
 
         SH.switchStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 SwitchMaterial sc = (SwitchMaterial) buttonView;
                 cStatusModel statusModel = (cStatusModel) sc.getTag();
-                int statusID = statusModel.getStatusID();
+                int statusID = statusModel.getStatusServerID();
 
                 if (((SwitchMaterial) buttonView).isChecked()) {
                     statusBITS |= statusID;
@@ -59,7 +59,7 @@ public class cCommonStatusAdapter extends RecyclerView.Adapter<cCommonStatusAdap
                     statusBITS &= ~statusID;
                 }
 
-                statusModels.get(position).setState((statusBITS & statusID) == statusID);
+                statusModels.get(position).setChecked((statusBITS & statusID) == statusID);
             }
         });
     }

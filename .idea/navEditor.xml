@@ -134,7 +134,17 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_cHomeFragment_to_cOrganizationMemberFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_cHomeFragment_to_cTeamFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_cHomeFragment_to_cTeamRoleFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -356,6 +366,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="cOrganizationMemberFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-2044" />
+                            <option name="y" value="-241" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="cOutcomeFragment">
                     <value>
                       <LayoutPositions>
@@ -375,6 +397,18 @@
                           <Point>
                             <option name="x" value="-769" />
                             <option name="y" value="-1279" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="cPermissionFragment2">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-2598" />
+                            <option name="y" value="-130" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -485,13 +519,25 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="cTeamRoleFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-2330" />
+                            <option name="y" value="-127" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="cUserProfileFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-2058" />
-                            <option name="y" value="-545" />
+                            <option name="x" value="-2047" />
+                            <option name="y" value="-558" />
                           </Point>
                         </option>
                       </LayoutPositions>

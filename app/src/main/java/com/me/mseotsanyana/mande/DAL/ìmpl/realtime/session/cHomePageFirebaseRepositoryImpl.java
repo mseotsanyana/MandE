@@ -17,11 +17,11 @@ import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserAccountModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
 import com.me.mseotsanyana.mande.BLL.repository.session.iHomePageRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.DAL.storage.database.cRealtimeHelper;
 import com.me.mseotsanyana.mande.DAL.ìmpl.cDatabaseUtils;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -43,10 +43,9 @@ public class cHomePageFirebaseRepositoryImpl implements iHomePageRepository {
     /* ############################################# READ ACTIONS ############################################# */
 
     @Override
-    public void updateHomePageModels(String userServerID, String orgServerID,
-                                     int primaryTeamBIT, List<Integer> secondaryTeamBITS,
-                                     int statusBITS, List<Integer> statuses, int permBITS,
-                                     iHomePageCallback callback) {
+    public void loadHomePage(boolean isPermissionLoaded,
+                             iSharedPreferenceRepository sharedPreferenceRepository,
+                             iHomePageCallback callback) {
         /* read an organization of the current loggedIn user */
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -119,7 +118,7 @@ public class cHomePageFirebaseRepositoryImpl implements iHomePageRepository {
                     readUserAccountTeams(userAccountModel, callback);
 
                 } else {
-                    callback.onDefaultHomePageSucceeded(userProfileModel,
+                    callback.onDefaultHomePageSucceeded(
                             cDatabaseUtils.getDefaultMenuModelSet(context));
                 }
             }

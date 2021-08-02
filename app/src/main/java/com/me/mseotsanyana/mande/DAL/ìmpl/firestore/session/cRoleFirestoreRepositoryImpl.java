@@ -3,12 +3,10 @@ package com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.me.mseotsanyana.mande.BLL.model.session.cRoleModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cTeamModel;
 import com.me.mseotsanyana.mande.BLL.repository.session.iRoleRepository;
@@ -48,9 +46,9 @@ public class cRoleFirestoreRepositoryImpl implements iRoleRepository {
      */
 
     @Override
-    public void readRoles(String organizationServerID, String userServerID, int primaryTeamBIT,
-                          List<Integer> secondaryTeamBITS, List<Integer> statusBITS,
-                          iReadRolesCallback callback) {
+    public void readTeamRoles(String organizationServerID, String userServerID, int primaryTeamBIT,
+                              List<Integer> secondaryTeamBITS, List<Integer> statusBITS,
+                              iReadTeamRolesCallback callback) {
 
         CollectionReference coRoleRef = db.collection(cRealtimeHelper.KEY_ROLES);
 
@@ -78,9 +76,9 @@ public class cRoleFirestoreRepositoryImpl implements iRoleRepository {
                     }
 
                     // call back on roles
-                    callback.onReadRolesSucceeded(roleModels);
+                    callback.onReadTeamRolesSucceeded(roleModels);
                 })
-                .addOnFailureListener(e -> callback.onReadRolesFailed(
+                .addOnFailureListener(e -> callback.onReadTeamRolesFailed(
                         "Failed to read roles"));
     }
 
@@ -97,7 +95,7 @@ public class cRoleFirestoreRepositoryImpl implements iRoleRepository {
      */
     public void readRoleTeams(String roleServerID, String organizationServerID, String userServerID,
                               int primaryTeamBIT, List<Integer> secondaryTeamBITS,
-                              List<Integer> statusBITS, iReadRolesCallback callback) {
+                              List<Integer> statusBITS, iReadRoleTeamsCallback callback) {
 
         CollectionReference coRoleTeamsRef = db.collection(cRealtimeHelper.KEY_TEAM_ROLES);
         Query roleTeamsQuery = coRoleTeamsRef.whereEqualTo("roleServerID", roleServerID);
@@ -134,9 +132,10 @@ public class cRoleFirestoreRepositoryImpl implements iRoleRepository {
      * @param statusBITS           status bits
      * @param callback             call back
      */
-    private void filterRoleTeams(List<String> team_ids, String organizationServerID, String userServerID,
-                               int primaryTeamBIT, List<Integer> secondaryTeamBITS,
-                               List<Integer> statusBITS, iReadRolesCallback callback) {
+    private void filterRoleTeams(List<String> team_ids, String organizationServerID,
+                                 String userServerID, int primaryTeamBIT,
+                                 List<Integer> secondaryTeamBITS, List<Integer> statusBITS,
+                                 iReadRoleTeamsCallback callback) {
 
         CollectionReference coTeamRef = db.collection(cRealtimeHelper.KEY_TEAMS);
 

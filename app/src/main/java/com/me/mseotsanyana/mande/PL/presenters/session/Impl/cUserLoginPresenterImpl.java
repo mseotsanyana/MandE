@@ -66,17 +66,17 @@ public class cUserLoginPresenterImpl extends cAbstractPresenter implements iUser
     }
 
     @Override
-    public void onUserLoginFailed(String msg) {
+    public void onUserLoginSucceeded(String msg) {
         if(this.view != null) {
-            this.view.onUserLoginFailed(msg);
+            this.view.onUserLoginSucceeded(msg);
             this.view.hideProgress();
         }
     }
 
     @Override
-    public void onUserLoginSucceeded(String msg) {
+    public void onUserLoginFailed(String msg) {
         if(this.view != null) {
-            this.view.onUserLoginSucceeded(msg);
+            this.view.onUserLoginFailed(msg);
             this.view.hideProgress();
         }
     }

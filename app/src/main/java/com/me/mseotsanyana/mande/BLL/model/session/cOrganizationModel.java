@@ -89,7 +89,6 @@ public class cOrganizationModel implements Parcelable {
         this.organizationServerID = organizationServerID;
     }
 
-    @Exclude
     public int getOrganizationType() {
         return organizationType;
     }
@@ -220,4 +219,34 @@ public class cOrganizationModel implements Parcelable {
             return new cOrganizationModel[size];
         }
     };
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof cOrganizationModel)) return false;
+        cOrganizationModel that = (cOrganizationModel) o;
+        return getTeamOwnerBIT() == that.getTeamOwnerBIT() &&
+                getStatusBIT() == that.getStatusBIT() &&
+                getOrganizationType() == that.getOrganizationType() &&
+                getNumOrganizations() == that.getNumOrganizations() &&
+                Objects.equals(getOrganizationServerID(), that.getOrganizationServerID()) &&
+                Objects.equals(getUserOwnerID(), that.getUserOwnerID()) &&
+                Objects.equals(getOrganizationOwnerID(), that.getOrganizationOwnerID()) &&
+                Objects.equals(getUnixpermBITS(), that.getUnixpermBITS()) &&
+                Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getEmail(), that.getEmail()) &&
+                Objects.equals(getWebsite(), that.getWebsite()) &&
+                Objects.equals(getCreatedDate(), that.getCreatedDate()) &&
+                Objects.equals(getModifiedDate(), that.getModifiedDate()) &&
+                Objects.equals(getUserModelSet(), that.getUserModelSet()) &&
+                Objects.equals(getRoleModelSet(), that.getRoleModelSet());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getOrganizationServerID(), getUserOwnerID(), getOrganizationOwnerID(),
+                getTeamOwnerBIT(), getUnixpermBITS(), getStatusBIT(), getName(), getEmail(),
+                getWebsite(), getCreatedDate(), getModifiedDate(), getOrganizationType(),
+                getNumOrganizations(), getUserModelSet(), getRoleModelSet());
+    }
 }

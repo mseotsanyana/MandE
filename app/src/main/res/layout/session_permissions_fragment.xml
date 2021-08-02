@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- progress bar -->
+    <include layout="@layout/me_progress_bar" />
+
+    <!-- include a toolbar layout -->
+    <include layout="@layout/me_toolbar_layout" />
+
+    <!-- impact list layout -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/teamRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <!-- the DraggableFAB layout -->
+    <com.me.mseotsanyana.bmblibrary.cDraggableFAB
+        android:id="@+id/teamFAB"
+        style="@style/FabStyle"
+        android:layout_gravity="center|end" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+

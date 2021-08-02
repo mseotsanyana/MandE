@@ -13,12 +13,13 @@ import android.view.ViewGroup;
 
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cPermissionFirestoreRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cSharedPreferenceFirestoreRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.realtime.session.cUserProfileFirebaseRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cUserProfileFirestoreRepositoryImpl;
 import com.me.mseotsanyana.mande.PL.presenters.session.Impl.cUserLoginPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.session.iUserLoginPresenter;
 import com.me.mseotsanyana.mande.R;
@@ -49,9 +50,9 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
         userLoginPresenter = new cUserLoginPresenterImpl(
                 cThreadExecutorImpl.getInstance(),
                 cMainThreadImpl.getInstance(), this,
-                new cSharedPreferenceFirestoreRepositoryImpl(getContext()),
+                new cSharedPreferenceFirestoreRepositoryImpl(requireContext()),
                 new cPermissionFirestoreRepositoryImpl(getContext()),
-                new cUserProfileFirebaseRepositoryImpl(getContext()));
+                new cUserProfileFirestoreRepositoryImpl(getContext()));
     }
 
     @Override
@@ -114,7 +115,8 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
         signUpTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavDirections action = cLoginFragmentDirections.actionCLoginFragmentToCSignUpFragment();
+                NavDirections action = cLoginFragmentDirections.
+                        actionCLoginFragmentToCSignUpFragment();
                 Navigation.findNavController(requireView()).navigate(action);
             }
         });
@@ -129,7 +131,7 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
 
     @Override
     public void onUserLoginFailed(String msg) {
-        Log.d(TAG, msg);
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override

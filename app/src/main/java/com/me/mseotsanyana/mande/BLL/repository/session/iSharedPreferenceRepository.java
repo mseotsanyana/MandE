@@ -19,10 +19,13 @@ public interface iSharedPreferenceRepository {
     void saveMenuItems(String key, List<cMenuModel> value);
 
     /* load personal preferences of the loggedIn user */
+
     String loadUserID();
     String loadOrganizationID();
     int loadPrimaryTeamBIT();
     List<Integer> loadSecondaryTeams();
+
+    int loadEntityBITS(int moduleKey);
     int loadEntityPermissionBITS(int moduleKey, int entityKey);
     List<Integer> loadOperationStatuses(int moduleKey, int entityKey, int operationKey);
     int loadUnixPermissionBITS(int moduleKey, int entityKey);

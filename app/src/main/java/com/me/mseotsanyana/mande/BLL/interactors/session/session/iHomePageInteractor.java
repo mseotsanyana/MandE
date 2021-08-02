@@ -10,8 +10,7 @@ public interface iHomePageInteractor extends iInteractor {
     interface Callback {
         void onReadUserProfileSucceeded(cUserProfileModel userProfileModel);
         void onReadMenuItemsSucceeded(List<cMenuModel> menuModels);
-        void onDefaultHomePageSucceeded(cUserProfileModel userProfileModel,
-                                        List<cMenuModel> menuModels);
+        void onDefaultHomePageSucceeded(List<cMenuModel> menuModels);
         void onReadHomePageFailed(String msg);
     }
 }

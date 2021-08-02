@@ -1,0 +1,125 @@
+{
+  "modules": [
+    {
+      "module_id": 1,
+      "module_name": "Session Module",
+      "entities": [
+        {
+          "entity_id": 1,
+          "entity_name": "USER",
+          "entity_description": "The entity that stores the collection of users."
+        },
+        {
+          "entity_id": 2,
+          "entity": "SESSION",
+          "entity_description": "The entity that stores currently logged in users."
+        },
+        {
+          "entity_id": 8,
+          "entity_name": "ORGANIZATION",
+          "entity_description": "The entity that stores the collection of organizations."
+        },
+        {
+          "entity_id": 16,
+          "entity_name": "TEAM",
+          "entity_description": "The entity that stores teams of organizations."
+        },
+        {
+          "entity_id": 32,
+          "entity_name": "ROLE",
+          "entity_description": "The entity that stores roles of teams."
+        }
+      ]
+    },
+    {
+      "module_id": 2,
+      "module_name": "LogFrame Module",
+      "entity_name": [
+        {
+          "entity_id": 1,
+          "entity_name": "LOGFRAME",
+          "entity_description": "The entity that stores logframes of organizations."
+        }
+      ]
+    }
+  ],
+  "menuitems": [
+    {
+      "id": 0,
+      "item": "My Profile",
+      "description": "Manage user profile settings.",
+      "sub_menu": [
+        {
+          "sub_id": 1,
+          "sub_item": "Profile",
+          "sub_image": "profile",
+          "sub_description": "User personal details."
+        },
+        {
+          "sub_id": 2,
+          "sub_item": "Account Settings",
+          "sub_image": "account",
+          "sub_description": "Password, deactivation, etc. Mgt."
+        },
+        {
+          "sub_id": 4,
+          "sub_item": "Join Organization",
+          "sub_image": "join",
+          "sub_description": "Joining public Organizations."
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "item": "Permission Management",
+      "description": "Management of own Organizations, Teams, Roles and Permissions.",
+      "sub_menu": [
+        {
+          "sub_id": 16,
+          "sub_item": "Organization Members",
+          "sub_image": "member",
+          "sub_description": "People in Organizations and Teams the user belongs to."
+        },
+        {
+          "sub_id": 32,
+          "sub_item": "Team Roles",
+          "sub_image": "team",
+          "sub_description": "Teams of people the user belongs to."
+        },
+        {
+          "sub_id": 64,
+          "sub_item": "Entity Permissions",
+          "sub_image": "entity",
+          "sub_description": "Entity Permission Management."
+        },
+        {
+          "sub_id": 128,
+          "sub_item": "Menu Permissions",
+          "sub_image": "menu",
+          "sub_description": "Menu Permission Management."
+        }
+      ]
+    },
+    {
+      "id": 256,
+      "item": "Notifications",
+      "image": "notification",
+      "description": "Settings of publication, subscription of messages.",
+      "sub_menu": []
+    },
+    {
+      "id": 512,
+      "item": "Settings",
+      "image": "setting",
+      "description": "The settings related to the user.",
+      "sub_menu": []
+    },
+    {
+      "id": 1024,
+      "item": "Logout",
+      "image": "logout",
+      "description": "Allowing the logout option.",
+      "sub_menu": []
+    }
+  ]
+}

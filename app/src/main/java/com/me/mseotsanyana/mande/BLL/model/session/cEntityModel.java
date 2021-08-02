@@ -1,5 +1,10 @@
 package com.me.mseotsanyana.mande.BLL.model.session;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.google.firebase.database.Exclude;
+
 import java.util.List;
 import java.util.Map;
 
@@ -7,9 +12,15 @@ import java.util.Map;
  * Created by mseotsanyana on 2017/08/24.
  */
 
-public class cEntityModel {
+public class cEntityModel implements Parcelable {
     private String entityServerID;
+
+    private String name;
+    private String description;
+    private boolean checked;
+
     private List<Integer> unixperms;
+    // operation identification with its status identifications
     private Map<String, List<Integer>> entityperms;
 
     public cEntityModel(){}
@@ -21,12 +32,44 @@ public class cEntityModel {
         this.unixperms = unixperms;
     }
 
+    protected cEntityModel(Parcel in) {
+        entityServerID = in.readString();
+    }
+
+
     public String getEntityServerID() {
         return entityServerID;
     }
 
     public void setEntityServerID(String entityServerID) {
         this.entityServerID = entityServerID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Exclude
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    @Exclude
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    @Exclude
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 
     public List<Integer> getUnixperms() {
@@ -44,31 +87,26 @@ public class cEntityModel {
     public void setEntityperms(Map<String, List<Integer>> entityperms) {
         this.entityperms = entityperms;
     }
-}
 
-//    private int serverID;
-//    private int ownerID;
-//    private int orgID;
-//    private int groupBITS;
-//    private int permsBITS;
-//    private int statusBITS;
-//    private String name;
-//    private String description;
-//    private Date createdDate;
-//    private Date modifiedDate;
-//    private Date syncedDate;
-//    public cEntityModel(cEntityModel entityModel){
-//        this.setEntityID(entityModel.getEntityID());
-//        this.setModuleID(entityModel.getEntityID());
-//        this.setServerID(entityModel.getServerID());
-//        this.setOwnerID(entityModel.getOwnerID());
-//        this.setOrgID(entityModel.getOrgID());
-//        this.setGroupBITS(entityModel.getGroupBITS());
-//        this.setPermsBITS(entityModel.getPermsBITS());
-//        this.setStatusBITS(entityModel.getStatusBITS());
-//        this.setName(entityModel.getName());
-//        this.setDescription(entityModel.getDescription());
-//        this.setCreatedDate(entityModel.getCreatedDate());
-//        this.setModifiedDate(entityModel.getModifiedDate());
-//        this.setSyncedDate(entityModel.getSyncedDate());
-//    }
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(entityServerID);
+    }
+
+    public static final Creator<cEntityModel> CREATOR = new Creator<cEntityModel>() {
+        @Override
+        public cEntityModel createFromParcel(Parcel in) {
+            return new cEntityModel(in);
+        }
+
+        @Override
+        public cEntityModel[] newArray(int size) {
+            return new cEntityModel[size];
+        }
+    };
+}

@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
+import com.me.mseotsanyana.mande.BLL.interactors.cInteractorUtils;
 import com.me.mseotsanyana.mande.BLL.interactors.session.session.iHomePageInteractor;
 import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
@@ -14,6 +15,7 @@ import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceReposit
 import com.me.mseotsanyana.mande.DAL.storage.preference.cSharedPreference;
 
 import java.util.List;
+
 
 public class cHomePageInteractorImpl extends cAbstractInteractor
         implements iHomePageInteractor {
@@ -26,23 +28,16 @@ public class cHomePageInteractorImpl extends cAbstractInteractor
     private final String userServerID;
     private final String organizationServerID;
     private final int primaryTeamBIT;
-    private final List<Integer> secondaryTeams;
+    private final List<Integer> secondaryTeamBITS;
+    private final List<Integer> statusBITS;
 
-    private final int teamEntitypermBITS;
-    private final List<Integer> teamStatuses;
-    private final int teamUnixpermBITS;
+    private final int entityBITS;
+    private final int entitypermBITS;
 
-    private final int roleEntitypermBITS;
-    private final List<Integer> roleStatuses;
-    private final int roleUnixpermBITS;
+    private boolean isPermissionLoaded;
 
-    private final int privilegeEntitypermBITS;
-    private final List<Integer> privilegeStatuses;
-    private final int privilegeUnixpermBITS;
-
-    Gson gson = new Gson();
-
-    public cHomePageInteractorImpl(iExecutor threadExecutor, iMainThread mainThread, Callback callback,
+    public cHomePageInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,
+                                   Callback callback,
                                    iSharedPreferenceRepository sharedPreferenceRepository,
                                    iHomePageRepository homePageRepository) {
         super(threadExecutor, mainThread);
@@ -55,47 +50,29 @@ public class cHomePageInteractorImpl extends cAbstractInteractor
         this.homePageRepository = homePageRepository;
         this.callback = callback;
 
-        // load shared preferences
 
+        // load user shared preferences
         this.userServerID = sharedPreferenceRepository.loadUserID();
         this.organizationServerID = sharedPreferenceRepository.loadOrganizationID();
         this.primaryTeamBIT = sharedPreferenceRepository.loadPrimaryTeamBIT();
-        this.secondaryTeams = sharedPreferenceRepository.loadSecondaryTeams();
+        this.secondaryTeamBITS = sharedPreferenceRepository.loadSecondaryTeams();
 
-        // team permissions
-        this.teamEntitypermBITS = sharedPreferenceRepository.loadEntityPermissionBITS(
-                cSharedPreference.SESSION_MODULE, cSharedPreference.TEAM);
-        this.teamStatuses = sharedPreferenceRepository.loadOperationStatuses(
-                cSharedPreference.SESSION_MODULE, cSharedPreference.TEAM,
+        // load entity shared preferences
+        this.entityBITS = sharedPreferenceRepository.loadEntityBITS(
+                cSharedPreference.SESSION_MODULE);
+        this.entitypermBITS = sharedPreferenceRepository.loadEntityPermissionBITS(
+                cSharedPreference.SESSION_MODULE, cSharedPreference.ORGANIZATION);
+        this.statusBITS = sharedPreferenceRepository.loadOperationStatuses(
+                cSharedPreference.SESSION_MODULE, cSharedPreference.ORGANIZATION,
                 cSharedPreference.READ);
-        this.teamUnixpermBITS = sharedPreferenceRepository.loadUnixPermissionBITS(
-                cSharedPreference.SESSION_MODULE, cSharedPreference.TEAM);
 
-        // role permissions
-        this.roleEntitypermBITS = sharedPreferenceRepository.loadEntityPermissionBITS(
-                cSharedPreference.SESSION_MODULE, cSharedPreference.ROLE);
-        this.roleStatuses = sharedPreferenceRepository.loadOperationStatuses(
-                cSharedPreference.SESSION_MODULE, cSharedPreference.ROLE,
-                cSharedPreference.READ);
-        this.roleUnixpermBITS = sharedPreferenceRepository.loadUnixPermissionBITS(
-                cSharedPreference.SESSION_MODULE, cSharedPreference.ROLE);
-
-        // privilege permissions
-        this.privilegeEntitypermBITS = sharedPreferenceRepository.loadEntityPermissionBITS(
-                cSharedPreference.SESSION_MODULE, cSharedPreference.PRIVILEGE);
-        this.privilegeStatuses = sharedPreferenceRepository.loadOperationStatuses(
-                cSharedPreference.SESSION_MODULE, cSharedPreference.PRIVILEGE,
-                cSharedPreference.READ);
-        this.privilegeUnixpermBITS = sharedPreferenceRepository.loadUnixPermissionBITS(
-                cSharedPreference.SESSION_MODULE, cSharedPreference.PRIVILEGE);
-
-        Log.d(TAG, " \n USER ID = " + this.userServerID +
-                " \n ORGANIZATION ID = " + this.organizationServerID +
+        Log.d(TAG, " \n ORGANIZATION ID = " + this.organizationServerID +
+                " \n USER ID = " + this.userServerID +
                 " \n PRIMARY TEAM BIT = " + this.primaryTeamBIT +
-                " \n SECONDARY TEAM BITS = "+this.secondaryTeams +
-                " \n ENTITY PERMISSION BITS = "+this.teamEntitypermBITS +
-                " \n OPERATION STATUSES = " + this.teamStatuses +
-                " \n UNIX PERMISSIONS = "+ this.teamUnixpermBITS);
+                " \n SECONDARY TEAM BITS = " + this.secondaryTeamBITS +
+                " \n ENTITY BITS = " + this.entityBITS +
+                " \n ENTITY PERMISSION BITS = " + this.entitypermBITS +
+                " \n OPERATION STATUSES = " + this.statusBITS);
     }
 
     /* call back on update home page failed */
@@ -114,36 +91,39 @@ public class cHomePageInteractorImpl extends cAbstractInteractor
     }
 
     /* call back on user profile and default menu items */
-    private void defaultProfileMessage(cUserProfileModel userProfileModel,
-                                       List<cMenuModel> menuModels) {
-        mainThread.post(() -> callback.onDefaultHomePageSucceeded(userProfileModel, menuModels));
+    private void defaultProfileMessage(List<cMenuModel> menuModels) {
+        mainThread.post(() -> callback.onDefaultHomePageSucceeded(menuModels));
     }
 
     @Override
     public void run() {
+        /* establish whether the user has permissions or not */
+        this.isPermissionLoaded = cInteractorUtils.isSettingsNonNull(
+                organizationServerID, userServerID, entityBITS, entitypermBITS, primaryTeamBIT,
+                secondaryTeamBITS, statusBITS);
 
         /* load user profile and menu items */
-        this.homePageRepository.updateHomePageModels(userServerID, organizationServerID,
-                primaryTeamBIT, secondaryTeams, teamEntitypermBITS, teamStatuses, teamUnixpermBITS,
+        this.homePageRepository.loadHomePage(isPermissionLoaded, sharedPreferenceRepository,
                 new iHomePageRepository.iHomePageCallback() {
                     @Override
                     public void onReadUserProfileSucceeded(cUserProfileModel userProfileModel) {
                         userProfileMessage(userProfileModel);
-                        Log.d(TAG, " userProfileModel => " + gson.toJson(userProfileModel));
+                        //Log.d(TAG, " userProfileModel => " + gson.toJson(userProfileModel));
                     }
 
                     @Override
-                    public void onReadMenuItemsSucceeded() {
-                        List<cMenuModel> menuModels;
-                        menuModels = sharedPreferenceRepository.loadMenuItems();
-                        menuItemsMessage(menuModels);
+                    public void onReadMenuItemsSucceeded(List<cMenuModel> menuModels) {
+                        Gson gson = new Gson();
                         Log.d(TAG, " roleMenuItemsMap => " + gson.toJson(menuModels));
+                        menuItemsMessage(menuModels);
+                        //List<cMenuModel> menuModels;
+                        //menuModels = sharedPreferenceRepository.loadMenuItems();
+                        //Log.d(TAG, " roleMenuItemsMap => " + gson.toJson(menuModels));
                     }
 
                     @Override
-                    public void onDefaultHomePageSucceeded(cUserProfileModel userProfileModel,
-                                                           List<cMenuModel> menuModels) {
-                        defaultProfileMessage(userProfileModel, menuModels);
+                    public void onDefaultHomePageSucceeded(List<cMenuModel> menuModels) {
+                        defaultProfileMessage(menuModels);
                     }
 
                     @Override
@@ -151,93 +131,8 @@ public class cHomePageInteractorImpl extends cAbstractInteractor
                         notifyError(msg);
                     }
                 });
+
     }
 }
 
-//                    @Override
-//                    public void onReadUserAccountSucceeded(cUserAccountModel userAccountModel) {
-//
-//                    }
-
-//                    @Override
-//                    public void onReadRolesSucceeded(List<cRoleModel> roleModels) {
-//                        rolesMessage(roleModels);
-//                        Log.d(TAG, " roleModels => " + gson.toJson(roleModels));
-//                    }
-
-
-//                    @Override
-//                    public void onReadRolePrivilegesSucceeded(cRoleModel roleModel, List<cPrivilegeModel> privilegeModels) {
-//                        HashMap<cRoleModel, List<cPrivilegeModel>> rolePrivilegesMap = new HashMap<>();
-//                        rolePrivilegesMap.put(roleModel, privilegeModels);
-//                        rolePrivilegesMessage(rolePrivilegesMap);
-//                        Log.d(TAG, " rolePrivilegesMap => " + gson.toJson(rolePrivilegesMap));
-//                    }
-//
-//                    @Override
-//                    public void onReadPrivilegePermissionsSucceeded(cPrivilegeModel privilegeModel,
-//                                                                    List<cPermissionModel> permissionModels) {
-//                        HashMap<cPrivilegeModel, List<cPermissionModel>> privilegePermissionsMap = new HashMap<>();
-//                        privilegePermissionsMap.put(privilegeModel, permissionModels);
-//                        privilegePermissionsMessage(privilegePermissionsMap);
-//                        Log.d(TAG, " privilegePermissionsMap => " + gson.toJson(privilegePermissionsMap));
-//                    }
-
-
-//        /* get the logged in user */
-//        cUserModel userModel = userRepository.getUserByEmailPassword(email, password);
-//
-//        //userRepository.createUserByEmailAndPassword(email, password,null);
-//        Gson gson = new Gson();
-//        Log.d(TAG,"USER MODEL: "+gson.toJson(userModel));
-//
-//
-//        if (userModel != null) {
-//            if (!userModel.getRoleModelSet().isEmpty()) {
-//                /* delete all shared preferences */
-//                sessionManagerRepository.deleteSettings();
-//
-//                /* save user/owner ID */
-//                sessionManagerRepository.saveUserID(userModel.getUserID());
-//                /* save owner organization ID */
-//                sessionManagerRepository.saveOrganizationID(userModel.getOrganizationID());
-//                /* compute and save user primary role bits */
-//                sessionManagerRepository.savePrimaryRoleBITS(userModel);
-//                /* compute and save user secondary role bits */
-//                sessionManagerRepository.saveSecondaryRoleBITS(userModel);
-//                /* save default permission bits */
-//                sessionManagerRepository.saveDefaultPermsBITS(cBitwise.OWNER);
-//                /* set default status bits */
-//                sessionManagerRepository.saveDefaultStatusBITS(cBitwise.ACTIVATED);
-//
-//                /* compute and save entity, operation and statuses bits for the user */
-//                Set<cPermissionModel> permissionModelSet = new HashSet<>();
-//                for (cRoleModel roleModel : userModel.getRoleModelSet()) {
-//                    Set<cPermissionModel> permissionSet = null;//roleRepository.getPermissionSetByRoleID(roleModel.getRoleID(), 0/*roleModel.getOrganizationID()*/);
-//                    permissionModelSet.addAll(permissionSet);
-//                }
-//
-//                if (!permissionModelSet.isEmpty()) {
-//                    sessionManagerRepository.savePermissionBITS(permissionModelSet);
-//                    /* compute and save the status and role sets */
-//                    sessionManagerRepository.saveStatusSet(statusRepository.getStatusSet());
-//                    sessionManagerRepository.saveRoleSet(roleRepository.getRoleModelSet());
-//                    /* save the individual and organization owners */
-//                    sessionManagerRepository.saveIndividualOwners(userRepository.getOwnerSet());
-//                    sessionManagerRepository.saveOrganizationOwners(
-//                            organizationRepository.getOrganizationSet());
-//
-//                    /* save the shared preferences */
-//                    sessionManagerRepository.commitSettings();
-//                } else {
-//                    notifyError("Login failed since there are no roles assigned !!");
-//                }
-//
-//                postMessage(userModel);
-//            } else {
-//                notifyError("Login failed since there are no privileges assigned !!");
-//            }
-//        } else {
-//            notifyError("Login failed due to invalid user login details !!");
-//        }
 

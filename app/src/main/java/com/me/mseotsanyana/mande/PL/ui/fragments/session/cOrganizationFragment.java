@@ -22,6 +22,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
 import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
 import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cOrganizationFirestoreRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cSharedPreferenceFirestoreRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.realtime.session.cOrganizationFirebaseRepositoryImpl;
@@ -48,7 +49,7 @@ public class cOrganizationFragment extends Fragment implements iOrganizationPres
 
     private LinearLayout includeProgressBar;
 
-    private ArrayList<cOrganizationModel> organizationModels;
+    private List<cOrganizationModel> organizationModels;
     private cOrganizationAdapter organizationAdapter;
 
     private final String[] ORG_TYPE = {"National Partner","Donor","Beneficiary","Implementing Agency"};
@@ -133,7 +134,7 @@ public class cOrganizationFragment extends Fragment implements iOrganizationPres
         });
     }
 
-    // READ
+    // READ ORGANIZATIONS
 
     @Override
     public void onReadOrganizationsFailed(String msg) {
@@ -146,7 +147,18 @@ public class cOrganizationFragment extends Fragment implements iOrganizationPres
         this.organizationAdapter.notifyDataSetChanged();
     }
 
-    // CREATE
+    // READ ORGANIZATION MEMBERS
+    @Override
+    public void onReadOrganizationMembersFailed(String msg) {
+
+    }
+
+    @Override
+    public void onReadOrganizationMembersSucceeded(List<cUserProfileModel> userProfileModels) {
+
+    }
+
+    // CREATE ORGANIZATION
 
     @Override
     public void onClickCreateOrganization() {

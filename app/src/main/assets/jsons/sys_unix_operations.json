@@ -1,0 +1,64 @@
+{
+  "unixoperations": [
+    {
+      "unix_op_id": 2048,
+      "unix_op_name": "Owner Read",
+      "unix_op_description": "Owner read operation"
+    },
+    {
+      "unix_op_id": 1024,
+      "unix_op_name": "Owner Write",
+      "unix_op_description": "Owner write operation"
+    },
+    {
+      "unix_op_id": 512,
+      "unix_op_name": "Owner Delete",
+      "unix_op_description": "Owner delete operation"
+    },
+    {
+      "unix_op_id": 256,
+      "unix_op_name": "Primary Team Read",
+      "unix_op_description": "Primary Team owner read operation"
+    },
+    {
+      "unix_op_id": 128,
+      "unix_op_name": "Primary Team Write",
+      "unix_op_description": "Primary team write operation"
+    },
+    {
+      "unix_op_id": 64,
+      "unix_op_name": "Primary Team Delete",
+      "unix_op_description": "Primary team delete operation"
+    },
+    {
+      "unix_op_id": 32,
+      "unix_op_name": "Secondary Read",
+      "unix_op_description": "Secondary team read operation"
+    },
+    {
+      "unix_op_id": 16,
+      "unix_op_name": "Secondary Team Write",
+      "unix_op_description": "Secondary team write operation"
+    },
+    {
+      "unix_op_id": 8,
+      "unix_op_name": "Secondary Team Delete",
+      "unix_op_description": "Secondary team delete operation"
+    },
+    {
+      "unix_op_id": 4,
+      "unix_op_name": "Organization Read",
+      "unix_op_description": "Organization member read operation"
+    },
+    {
+      "unix_op_id": 2,
+      "unix_op_name": "Organization Write",
+      "unix_op_description": "Organization member write operation"
+    },
+    {
+      "unix_op_id": 1,
+      "unix_op_name": "Organization Delete",
+      "unix_op_description": "Organization member delete operation"
+    }
+  ]
+}

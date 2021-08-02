@@ -15,12 +15,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.me.mseotsanyana.mande.BLL.model.session.cRoleModel;
-import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
 import com.me.mseotsanyana.mande.PL.presenters.session.iRolePresenter;
 import com.me.mseotsanyana.mande.PL.ui.adapters.session.cRoleAdapter;
 import com.me.mseotsanyana.mande.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by mseotsanyana on 2017/02/24.
@@ -71,7 +71,7 @@ public class cRoleFragment extends Fragment implements iRolePresenter.View {
         super.onResume();
         /* get all organizations from the database */
         String roleServerID=null;
-        rolePresenter.readRoleUsers(roleServerID);
+        //rolePresenter.readRoleUsers(roleServerID);
     }
 
     /**
@@ -82,7 +82,7 @@ public class cRoleFragment extends Fragment implements iRolePresenter.View {
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Register the event to subscribe.
         //-cGlobalBus.getBus().register(this);
-        return inflater.inflate(R.layout.session_roles_fragment, parent, false);
+        return inflater.inflate(R.layout.session_team_roles_fragment, parent, false);
     }
 
     /**
@@ -118,7 +118,7 @@ public class cRoleFragment extends Fragment implements iRolePresenter.View {
 
     private void initRoleViews(View view) {
         includeProgressBar = view.findViewById(R.id.includeProgressBar);
-        RecyclerView roleRecyclerView = view.findViewById(R.id.roleRecyclerView);
+        RecyclerView roleRecyclerView = null;//view.findViewById(R.id.roleRecyclerView);
 
         roleRecyclerView.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
@@ -129,26 +129,24 @@ public class cRoleFragment extends Fragment implements iRolePresenter.View {
     }
 
     private void initDraggableFAB(View view) {
-        view.findViewById(R.id.roleFAB).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+//        view.findViewById(R.id.roleFAB).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
     }
 
-    // PRESENTER FUNCTIONS
+    // READ ROLES
+    @Override
+    public void onReadRolesSucceeded(List<cRoleModel> roleModels) {
+
+    }
 
     @Override
     public void onReadRolesFailed(String msg) {
 
     }
-
-    @Override
-    public void onReadRolesSucceeded(ArrayList<cUserProfileModel> userProfileModels) {
-
-    }
-
 
     // PARENT PRESENTER FUNCTIONS
 

@@ -6,18 +6,23 @@ import com.me.mseotsanyana.mande.BLL.model.session.cTeamModel;
 import java.util.List;
 
 public interface iRoleRepository {
-    void readRoles(String userServerID, String organizationServerID,
+    void readTeamRoles(String organizationServerID, String userServerID,
                        int primaryTeamBIT, List<Integer> secondaryTeamBITS,
-                       List<Integer> statusBITS, iReadRolesCallback callback);
+                       List<Integer> statusBITS, iReadTeamRolesCallback callback);
+
+    interface iReadTeamRolesCallback {
+        void onReadTeamRolesSucceeded(List<cRoleModel> roleModels);
+
+        void onReadTeamRolesFailed(String msg);
+    }
 
     void readRoleTeams(String roleServerID, String organizationServerID, String userServerID,
                        int primaryTeamBIT, List<Integer> secondaryTeamBITS,
-                       List<Integer> statusBITS, iReadRolesCallback callback);
+                       List<Integer> statusBITS, iReadRoleTeamsCallback callback);
 
-    interface iReadRolesCallback{
-        void onReadRolesSucceeded(List<cRoleModel> roleModels);
+    interface iReadRoleTeamsCallback {
         void onReadRoleTeamsSucceeded(List<cTeamModel> teamModels);
-        void onReadRolesFailed(String msg);
+
         void onReadRoleTeamsFailed(String msg);
     }
 }

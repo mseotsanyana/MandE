@@ -68,11 +68,11 @@ public class cOperationRepositoryImpl {
 
         // assign values to the table fields
 //        cv.put(cSQLDBHelper.KEY_ID, actionModel.getOperationID());
-        cv.put(cSQLDBHelper.KEY_OWNER_ID, actionModel.getOwnerID());
-        cv.put(cSQLDBHelper.KEY_ORG_ID, actionModel.getOrgID());
-        cv.put(cSQLDBHelper.KEY_GROUP_BITS, actionModel.getGroupBITS());
-        cv.put(cSQLDBHelper.KEY_PERMS_BITS, actionModel.getPermsBITS());
-        cv.put(cSQLDBHelper.KEY_STATUS_BITS, actionModel.getStatusBITS());
+//        cv.put(cSQLDBHelper.KEY_OWNER_ID, actionModel.getOwnerID());
+//        cv.put(cSQLDBHelper.KEY_ORG_ID, actionModel.getOrgID());
+//        cv.put(cSQLDBHelper.KEY_GROUP_BITS, actionModel.getGroupBITS());
+//        cv.put(cSQLDBHelper.KEY_PERMS_BITS, actionModel.getPermsBITS());
+//        cv.put(cSQLDBHelper.KEY_STATUS_BITS, actionModel.getStatusBITS());
         cv.put(cSQLDBHelper.KEY_NAME, actionModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, actionModel.getDescription());
 
@@ -109,19 +109,19 @@ public class cOperationRepositoryImpl {
             if (cursor.moveToFirst()) {
 //                operation.setOperationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
 //                operation.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                operation.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                operation.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                operation.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                operation.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                operation.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                operation.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                operation.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                operation.setCreatedDate(Timestamp.valueOf(
-                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                operation.setModifiedDate(Timestamp.valueOf(
-                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                operation.setSyncedDate(Timestamp.valueOf(
-                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                operation.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                operation.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                operation.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                operation.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                operation.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                operation.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+//                operation.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+//                operation.setCreatedDate(Timestamp.valueOf(
+//                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                operation.setModifiedDate(Timestamp.valueOf(
+//                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                operation.setSyncedDate(Timestamp.valueOf(
+//                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
             }
         } catch (Exception e) {
             Log.d(TAG, "Error while trying to get projects from database");
@@ -150,10 +150,10 @@ public class cOperationRepositoryImpl {
                     cOperationModel type = new cOperationModel();
 
 //                    type.setOperationID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    type.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    type.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    type.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    type.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    type.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    type.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    type.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    type.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
                     type.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
                     type.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
                     //type.setCreateDate(formatter.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DATE))));

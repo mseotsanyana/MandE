@@ -7,71 +7,14 @@
     android:background="@color/cardview_background_colour"
     android:fitsSystemWindows="false">
 
-    <!-- include the appbar layout for team -->
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+    <!-- progress bar -->
+    <include
+        layout="@layout/me_progress_bar"
+        app:layout_anchor="@+id/teamRecyclerView"
+        app:layout_anchorGravity="center" />
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsingToolbarLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="false"
-            app:contentScrim="@color/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:title="@string/teams"
-            app:titleEnabled="true">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:fitsSystemWindows="true"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/shepherds"
-                app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.7"
-                android:contentDescription="@string/teams" />
-
-            <LinearLayout
-                android:id="@+id/header_text_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom"
-                android:background="#00FFFFFF"
-                android:gravity="center_vertical"
-                android:orientation="vertical"
-                android:padding="10dp"
-                app:layout_collapseMode="parallax">
-
-                <TextView
-                    android:id="@+id/appName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/app_name"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    android:textSize="28sp"
-                    app:fontFamily="@font/aclonica"/>
-
-            </LinearLayout>
-
-            <!-- the toolbar layout -->
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?android:attr/actionBarSize"
-                android:background="@color/colorPrimary"
-                android:elevation="1dp"
-                android:minHeight="65dp"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/PopupTheme">
-            </androidx.appcompat.widget.Toolbar>
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
+    <!-- include a toolbar layout -->
+    <include layout="@layout/me_toolbar_layout" />
 
     <!-- impact list layout -->
     <androidx.recyclerview.widget.RecyclerView
@@ -81,13 +24,7 @@
         android:scrollbars="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <!-- progress bar -->
-    <include
-        android:id="@+id/includeProgressBar"
-        layout="@layout/me_progress_bar"
-        android:visibility="visible" />
-
-    <!-- the DraggableFAB layout-->
+    <!-- the DraggableFAB layout -->
 
     <com.me.mseotsanyana.bmblibrary.cDraggableFAB
         android:id="@+id/teamFAB"

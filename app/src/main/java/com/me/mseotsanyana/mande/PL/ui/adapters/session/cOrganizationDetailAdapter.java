@@ -22,7 +22,8 @@ import java.util.Locale;
  * Created by mseotsanyana on 2016/08/02.
  */
 
-public class cOrganizationDetailAdapter extends RecyclerView.Adapter<cOrganizationDetailAdapter.cOrganizationDetailViewHolder> {
+public class cOrganizationDetailAdapter extends
+        RecyclerView.Adapter<cOrganizationDetailAdapter.cOrganizationDetailViewHolder> {
 
     Context context;
     private List<cOrganizationRecord> detailList = new ArrayList<>();

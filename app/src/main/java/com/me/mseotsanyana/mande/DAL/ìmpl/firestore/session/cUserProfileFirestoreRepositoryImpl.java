@@ -4,11 +4,6 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -16,10 +11,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
-import com.me.mseotsanyana.mande.BLL.model.utils.cCommonPropertiesModel;
 import com.me.mseotsanyana.mande.BLL.repository.session.iUserProfileRepository;
 import com.me.mseotsanyana.mande.DAL.storage.database.cRealtimeHelper;
-import com.me.mseotsanyana.mande.DAL.ìmpl.cDatabaseUtils;
 
 import java.util.Date;
 import java.util.Objects;
@@ -28,7 +21,7 @@ import java.util.Objects;
  * Created by mseotsanyana on 2016/10/23.
  */
 public class cUserProfileFirestoreRepositoryImpl implements iUserProfileRepository {
-    private static String TAG = cUserProfileFirestoreRepositoryImpl.class.getSimpleName();
+    private static final String TAG = cUserProfileFirestoreRepositoryImpl.class.getSimpleName();
 
     // an object of the database helper
     private final FirebaseFirestore db;
@@ -41,11 +34,12 @@ public class cUserProfileFirestoreRepositoryImpl implements iUserProfileReposito
         this.db = FirebaseFirestore.getInstance();
     }
 
-    /* ############################################# CREATE ACTIONS ############################################# */
+    /* ##################################### CREATE ACTIONS ##################################### */
 
     @Override
     public void createUserWithEmailAndPassword(String firstname, String surname, String userEmail,
-                                               String userPassword, iSignUpRepositoryCallback callback) {
+                                               String userPassword,
+                                               iSignUpRepositoryCallback callback) {
         firebaseAuth.createUserWithEmailAndPassword(userEmail, userPassword)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -57,15 +51,15 @@ public class cUserProfileFirestoreRepositoryImpl implements iUserProfileReposito
                             sendEmailVerification(user);
 
                             /* update the profile in the firebase */
-                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                            UserProfileChangeRequest profileUpdates;
+                            profileUpdates = new UserProfileChangeRequest.Builder()
                                     .setDisplayName(firstname + " " + surname).build();
-                            user.updateProfile(profileUpdates).addOnCompleteListener(updateProfileTask -> {
-                                if (updateProfileTask.isSuccessful()) {
-                                    Log.d(TAG, "User profile updated.");
-                                }
-                            });
-
-
+                            user.updateProfile(profileUpdates).addOnCompleteListener(
+                                    updateProfileTask -> {
+                                        if (updateProfileTask.isSuccessful()) {
+                                            Log.d(TAG, "User profile updated.");
+                                        }
+                                    });
 
                             /* update the user profile in the database */
                             cUserProfileModel userProfileModel = new cUserProfileModel(
@@ -76,21 +70,19 @@ public class cUserProfileFirestoreRepositoryImpl implements iUserProfileReposito
                             userProfileModel.setCreatedDate(currentDate);
                             userProfileModel.setModifiedDate(currentDate);
 
-                            CollectionReference coUsersRef = db.collection(cRealtimeHelper.KEY_USERPROFILES);
+                            CollectionReference coUsersRef;
+                            coUsersRef = db.collection(cRealtimeHelper.KEY_USERPROFILES);
                             coUsersRef.document(user.getUid())
                                     .set(userProfileModel)
-                                    .addOnFailureListener(e -> Log.d(TAG, Objects.requireNonNull(e.getLocalizedMessage())));
-
-                            /* create default menu for the user
-                            DatabaseReference dbMenuItemsRef = database.getReference(cRealtimeHelper.KEY_MENU_ITEMS);
-                            dbMenuItemsRef.setValue(cDatabaseUtils.getDefaultMenuModelSet(context))
-                                    .addOnFailureListener(e -> Log.d(TAG, Objects.requireNonNull(e.getLocalizedMessage())));*/
+                                    .addOnFailureListener(e -> Log.d(TAG,
+                                            Objects.requireNonNull(e.getLocalizedMessage())));
 
                             Log.d(TAG, "createUserWithEmailAndPassword:success");
                             callback.onSignUpSucceeded("Account successfully created.");
                         }
                     } else {
-                        Log.d(TAG, "createUserWithEmailAndPassword:failure", task.getException());
+                        Log.d(TAG, "createUserWithEmailAndPassword:failure",
+                                task.getException());
                         callback.onSignUpFailed("Failed to create a new account. " +
                                 "Try a different email.");
                     }
@@ -113,20 +105,22 @@ public class cUserProfileFirestoreRepositoryImpl implements iUserProfileReposito
         }
     }
 
-    /* ############################################# READ ACTIONS ############################################# */
+    /* ###################################### READ ACTIONS ###################################### */
 
     @Override
-    public void signInWithEmailAndPassword(String email, String password, iSignInRepositoryCallback callback) {
+    public void signInWithEmailAndPassword(String email, String password,
+                                           iSignInRepositoryCallback callback) {
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
                     if (!user.isEmailVerified()) {
-                        callback.onSignInFailed("Verification email sent to " + user.getEmail());
+                        callback.onSignInFailed("Verification email sent to " +
+                                user.getEmail());
                         FirebaseAuth.getInstance().signOut();
                     } else {
                         Log.d(TAG, "signInWithEmail:success");
-                        callback.onSignInSucceeded("Authentication succeeded");
+                        callback.onSignInSucceeded();
                     }
                 } else {
                     Log.d(TAG, "signInWithEmail:failure ", task.getException());
@@ -151,7 +145,7 @@ public class cUserProfileFirestoreRepositoryImpl implements iUserProfileReposito
         }
     }
 
-    /* ############################################# READ ACTIONS ############################################# */
+    /* ###################################### READ ACTIONS ###################################### */
 
     @Override
     public void readUserProfile(iReadUserProfileRepositoryCallback callback) {
@@ -159,32 +153,27 @@ public class cUserProfileFirestoreRepositoryImpl implements iUserProfileReposito
         if (user != null) {
             CollectionReference coUserProfileRef = db.collection(cRealtimeHelper.KEY_USERPROFILES);
             coUserProfileRef.document(user.getUid()).get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot doc = task.getResult();
-                                if (doc != null) {
-                                    cUserProfileModel userProfile = doc.toObject(cUserProfileModel.class);
-                                    callback.onReadUserProfileSucceeded(userProfile);
-                                }
-                            } else {
-                                callback.onReadUserProfileFailed("Undefined error! Please report to the developer.");
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot doc = task.getResult();
+                            if (doc != null) {
+                                cUserProfileModel userProfile;
+                                userProfile = doc.toObject(cUserProfileModel.class);
+                                callback.onReadUserProfileSucceeded(userProfile);
                             }
+                        } else {
+                            callback.onReadUserProfileFailed(
+                                    "Undefined error! Please report to the developer.");
                         }
                     })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            callback.onReadUserProfileFailed("Failure to read user profile!");
-                        }
-                    });
+                    .addOnFailureListener(e ->
+                            callback.onReadUserProfileFailed("Failure to read user profile!"));
         } else {
             callback.onReadUserProfileFailed("Failure to read user profile!");
         }
     }
 
-    /* ############################################# UPDATE ACTIONS ############################################# */
+    /* ##################################### UPDATE ACTIONS ##################################### */
 
     @Override
     public void updateUserProfile(long userID, int primaryRole, int secondaryRoles, int statusBITS,
@@ -197,27 +186,21 @@ public class cUserProfileFirestoreRepositoryImpl implements iUserProfileReposito
             userProfileModel.setEmail(user.getEmail());
             CollectionReference coUserProfileRef = db.collection(cRealtimeHelper.KEY_USERPROFILES);
             coUserProfileRef.document(user.getUid()).set(userProfileModel)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                callback.onUpdateUserProfileSucceeded("Successfully Updated");
-                            } else {
-                                callback.onUpdateUserProfileFailed("Undefined error! Talk to the Admin");
-                            }
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            callback.onUpdateUserProfileSucceeded("Successfully Updated");
+                        } else {
+                            callback.onUpdateUserProfileFailed(
+                                    "Undefined error! Talk to the Admin");
                         }
                     })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            callback.onUpdateUserProfileFailed("Failed to update user profile " + e);
-                        }
-                    });
+                    .addOnFailureListener(e -> callback.onUpdateUserProfileFailed(
+                            "Failed to update user profile " + e));
         } else {
             callback.onUpdateUserProfileFailed("Failed to update user profile!");
         }
     }
 
-    /* ############################################# DELETE ACTIONS ############################################# */
+    /* ##################################### DELETE ACTIONS ##################################### */
 
 }

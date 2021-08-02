@@ -40,7 +40,7 @@ public class cRoleFirebaseRepositoryImpl /*implements iRoleRepository*/ {
 
 
     public void readRoleUsers(List<cRoleModel> roleModels, int primaryTeamBIT, int secondaryTeamBITS,
-                              int statusBITS, iRoleRepository.iReadRolesCallback callback) {
+                              int statusBITS, iRoleRepository.iReadRoleTeamsCallback callback) {
 
         for (cRoleModel roleModel : roleModels) {
             DatabaseReference dbRoleUserAccountRef;

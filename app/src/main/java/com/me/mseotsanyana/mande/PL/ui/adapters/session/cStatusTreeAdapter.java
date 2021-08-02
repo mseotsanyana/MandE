@@ -145,7 +145,7 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
     public void onBindViewHolder(cStatusViewHolder SH, final int position) {
         SH.textViewStatusName.setText(listStatus.get(position).getName());
         SH.textViewStatusDescription.setText(listStatus.get(position).getDescription());
-        SH.switchStatus.setChecked(listStatus.get(position).isState());
+        SH.switchStatus.setChecked(listStatus.get(position).isChecked());
         SH.switchStatus.setTag(listStatus.get(position));
 
         SH.textViewDetailIcon.setTypeface(null, Typeface.NORMAL);
@@ -215,7 +215,7 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
         SH.textViewDetailIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (listStatus.get(position).isState()) {
+                if (listStatus.get(position).isChecked()) {
                     onShowCommonAttributes(view, listStatus.get(position));
                     //Log.d(TAG, "Permission detail test...");
                 }
@@ -256,7 +256,7 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
      */
     public boolean isAllValuesChecked(ArrayList<cStatusModel> statuses) {
         for (int i = 0; i < statuses.size(); i++) {
-            if (!statuses.get(i).isState()) {
+            if (!statuses.get(i).isChecked()) {
                 return false;
             }
         }
@@ -268,7 +268,7 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
      */
     public boolean isAllValuesUnChecked(ArrayList<cStatusModel> statuses) {
         for (int i = 0; i < statuses.size(); i++) {
-            if (statuses.get(i).isState()) {
+            if (statuses.get(i).isChecked()) {
                 return false;
             }
         }
@@ -281,7 +281,7 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
      */
     public boolean isSomeValuesChecked(ArrayList<cStatusModel> statuses) {
         for (int i = 0; i < statuses.size(); i++) {
-            if (statuses.get(i).isState()) {
+            if (statuses.get(i).isChecked()) {
                 return true;
             }
         }
@@ -511,7 +511,7 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
         final List<cKeyPairBoolData> keyPairBoolStatuses = new ArrayList<>();
         for (int i = 0; i < listStatus.size(); i++) {
             cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-            idNameBool.setId(listStatus.get(i).getStatusID());
+            idNameBool.setId(listStatus.get(i).getStatusServerID());
             idNameBool.setName(listStatus.get(i).getName());
 //            if ((mPermissionModel != null) &&
 //                    ((mPermissionModel.getStatusBITS() & listStatus.get(i).getStatusID()) ==

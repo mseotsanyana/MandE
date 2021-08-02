@@ -174,9 +174,18 @@ public class cTeamFirebaseRepositoryImpl implements iTeamRepository {
     }
 
     @Override
-    public void readTeamRoles(String roleServerID, String organizationServerID, String userServerID,
-                              int primaryTeamBIT, List<Integer> secondaryTeamBITS,
-                              List<Integer> statusBITS, iReadTeamsCallback callback) {
+    public void readTeamsWithRoles(String organizationServerID, String userServerID, int primaryTeamBIT, List<Integer> secondaryTeamBITS, List<Integer> statusBITS, iReadTeamsWithRolesCallback callback) {
 
     }
+
+    @Override
+    public void readTeamsWithMembers(String organizationServerID, String userServerID, int primaryTeamBIT, List<Integer> secondaryTeamBITS, List<Integer> statusBITS, iReadTeamsWithMembersCallback callback) {
+
+    }
+
+    @Override
+    public void readTeamRoles(String roleServerID, String organizationServerID, String userServerID, int primaryTeamBIT, List<Integer> secondaryTeamBITS, List<Integer> statusBITS, iReadTeamRolesCallback callback) {
+
+    }
+
 }

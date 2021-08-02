@@ -3,28 +3,16 @@ package com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session;
 import android.content.Context;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.gson.Gson;
-import com.me.mseotsanyana.mande.BLL.model.session.cUserAccountModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
 import com.me.mseotsanyana.mande.BLL.repository.session.iHomePageRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.DAL.storage.database.cRealtimeHelper;
 import com.me.mseotsanyana.mande.DAL.ìmpl.cDatabaseUtils;
-
-import java.util.List;
-import java.util.Objects;
-
 
 /**
  * Created by mseotsanyana on 2017/08/24.
@@ -36,27 +24,24 @@ public class cHomePageFirestoreRepositoryImpl implements iHomePageRepository {
     private final FirebaseFirestore db;
     private final Context context;
 
-    Gson gson = new Gson();
-
     public cHomePageFirestoreRepositoryImpl(Context context) {
         this.context = context;
         this.db = FirebaseFirestore.getInstance();
     }
 
-    /* ############################################# READ ACTIONS ############################################# */
+    /* ###################################### READ ACTIONS ###################################### */
 
     @Override
-    public void updateHomePageModels(String userServerID, String orgServerID, int primaryTeamBIT,
-                                     List<Integer> secondaryTeamBITS, int statusBITS,
-                                     List<Integer> statuses, int permBITS,
-                                     iHomePageCallback callback) {
-
+    public void loadHomePage(boolean isPermissionLoaded,
+                             iSharedPreferenceRepository sharedPreferenceRepository,
+                             iHomePageCallback callback) {
         /* read an organization of the current loggedIn user */
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (firebaseUser != null) {
-            /* READ USER PROFILE */
-            readUserProfile(firebaseUser, callback);
+            /* read user profile settings */
+            readUserProfileSettings(isPermissionLoaded, firebaseUser, sharedPreferenceRepository,
+                    callback);
         } else {
             callback.onReadHomePageFailed("Failed to retrieve loggedIn user! " +
                     "Logout and login again!!");
@@ -65,94 +50,98 @@ public class cHomePageFirestoreRepositoryImpl implements iHomePageRepository {
     }
 
     /**
-     * @param firebaseUser firebase user
-     * @param callback     return user profile
+     * @param firebaseUser               firebase user
+     * @param sharedPreferenceRepository shared preference repository
+     * @param callback                   return user profile
      */
-    private void readUserProfile(FirebaseUser firebaseUser, iHomePageCallback callback) {
+    private void readUserProfileSettings(boolean isPermissionLoaded, FirebaseUser firebaseUser,
+                                         iSharedPreferenceRepository sharedPreferenceRepository,
+                                         iHomePageCallback callback) {
         CollectionReference coUserProfilesRef;
         coUserProfilesRef = db.collection(cRealtimeHelper.KEY_USERPROFILES);
 
         coUserProfilesRef.document(firebaseUser.getUid()).get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        DocumentSnapshot doc = task.getResult();
-                        if (doc != null) {
-                            cUserProfileModel userProfileModel = doc.toObject(cUserProfileModel.class);
-                            /* READ USER ACCOUNTS */
-                            if (userProfileModel != null) {
-                                userProfileModel.setUserServerID(firebaseUser.getUid());
-                                readUserAccounts(userProfileModel, callback);
-                            } else {
-                                callback.onReadHomePageFailed("Failed to read user profiles");
-                            }
-                        } else {
-                            callback.onReadHomePageFailed("Failed to read user profiles");
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callback.onReadHomePageFailed("Failed to read user profiles");
-                        Log.d(TAG, "Failed to read value.", e);
-                    }
-                });
-    }
-
-    /**
-     * read an account of an active organization of the loggedIn user
-     *
-     * @param userProfileModel user profile
-     * @param callback         return user accounts
-     */
-    private void readUserAccounts(cUserProfileModel userProfileModel,
-                                  iHomePageCallback callback) {
-        CollectionReference coUserAccountsRef;
-        coUserAccountsRef = db.collection(cRealtimeHelper.KEY_USERACCOUNTS);
-        Query userServerQuery = coUserAccountsRef
-                .whereEqualTo("userServerID", userProfileModel.getUserServerID())
-                .whereEqualTo("currentOrganization", true);
-
-        userServerQuery.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        cUserAccountModel userAccountModel = null;
-                        for (DocumentSnapshot user : Objects.requireNonNull(task.getResult())) {
-                            userAccountModel = user.toObject(cUserAccountModel.class);
-                            if ((userAccountModel != null) && (userAccountModel.isCurrentOrganization())) {
-                                break;
-                            }
-                        }
-
-                        /* check whether there is an active account, otherwise load default settings */
-                        if (userAccountModel != null) {
+                .addOnCompleteListener(task -> {
+                    DocumentSnapshot doc = task.getResult();
+                    if (doc != null) {
+                        cUserProfileModel userProfileModel = doc.toObject(cUserProfileModel.class);
+                        /* READ USER ACCOUNTS */
+                        if (userProfileModel != null) {
+                            userProfileModel.setUserServerID(firebaseUser.getUid());
 
                             /* call back on user profile */
                             callback.onReadUserProfileSucceeded(userProfileModel);
 
-                            /* menu is saved in pref file when a user sign in - just retrieve it */
-                            callback.onReadMenuItemsSucceeded();
-
-                            /* FIXME: USER ACCOUNT TEAMS */
-                            //readUserAccountTeams(userAccountModel, callback);
+                            /* load menu from saved preference or default json file */
+                            if (isPermissionLoaded) {
+                                callback.onReadMenuItemsSucceeded(
+                                        sharedPreferenceRepository.loadMenuItems());
+                            } else {
+                                callback.onDefaultHomePageSucceeded(
+                                        cDatabaseUtils.getDefaultMenuModelSet(context));
+                            }
 
                         } else {
-                            callback.onDefaultHomePageSucceeded(userProfileModel,
-                                    cDatabaseUtils.getDefaultMenuModelSet(context));
+                            callback.onReadHomePageFailed("Failed to read user profiles");
                         }
+                    } else {
+                        callback.onReadHomePageFailed("Failed to read user profiles");
                     }
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callback.onReadHomePageFailed("Failed to read user accounts");
-                        Log.d(TAG, "Failed to read value.", e);
-                    }
+                .addOnFailureListener(e -> {
+                    callback.onReadHomePageFailed("Failed to read user profiles");
+                    Log.d(TAG, "Failed to read value.", e);
                 });
-
     }
+
+//    /**
+//     * read an account of an active organization of the loggedIn user
+//     *
+//     * @param userProfileModel user profile
+//     * @param callback         return user accounts
+//     */
+//    private void readUserAccounts(cUserProfileModel userProfileModel,
+//                                  iHomePageCallback callback) {
+//        CollectionReference coUserAccountsRef;
+//        coUserAccountsRef = db.collection(cRealtimeHelper.KEY_USERACCOUNTS);
+//        Query userServerQuery = coUserAccountsRef
+//                .whereEqualTo("userServerID", userProfileModel.getUserServerID())
+//                .whereEqualTo("currentOrganization", true);
+//
+//        userServerQuery.get()
+//                .addOnCompleteListener(task -> {
+//                    cUserAccountModel userAccountModel = null;
+//                    for (DocumentSnapshot user : Objects.requireNonNull(task.getResult())) {
+//                        userAccountModel = user.toObject(cUserAccountModel.class);
+//                        if ((userAccountModel != null) &&
+//                                (userAccountModel.isCurrentOrganization())) {
+//                            break;
+//                        }
+//                    }
+//
+//                    /* check whether there is an active account, otherwise load default settings */
+//                    if (userAccountModel != null) {
+//
+//                        /* call back on user profile */
+//                        callback.onReadUserProfileSucceeded(userProfileModel);
+//
+//                        /* menu is saved in pref file when a user sign in - just retrieve it */
+//                        callback.onReadMenuItemsSucceeded();
+//
+//                        /* FIXME: USER ACCOUNT TEAMS */
+//                        //readUserAccountTeams(userAccountModel, callback);
+//
+//                    } else {
+//                        callback.onDefaultHomePageSucceeded(userProfileModel,
+//                                cDatabaseUtils.getDefaultMenuModelSet(context));
+//                    }
+//                })
+//                .addOnFailureListener(e -> {
+//                    callback.onReadHomePageFailed("Failed to read user accounts");
+//                    Log.d(TAG, "Failed to read value.", e);
+//                });
+//
+//    }
 
 //    /**
 //     * read teams associated with the loggedIn user
@@ -273,11 +262,7 @@ public class cHomePageFirestoreRepositoryImpl implements iHomePageRepository {
 //                });
 //    }
 
-    /**
-     * read menu items
-     *
-     * @param callback return menu items
-     */
+
 //    private void readMenuItems(List<String> menu_ids, iUserProfileAndMenuItemsCallback callback) {
 //        CollectionReference coMenuItemsRef;
 //        coMenuItemsRef = db.collection(cRealtimeHelper.KEY_MENU_ITEMS);

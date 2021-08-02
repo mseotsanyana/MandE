@@ -1,29 +1,29 @@
 {
   "statuses": [
     {
-      "id": 1,
-      "item": "DELETED",
-      "description": "Is the record deleted?"
+      "status_id": 1,
+      "status_name": "DELETED",
+      "status_description": "Is the record deleted?"
     },
     {
-      "id": 2,
-      "item": "INACTIVE",
-      "description": "Is the record inactivated?"
+      "status_id": 2,
+      "status_name": "INACTIVE",
+      "status_description": "Is the record inactivated?"
     },
     {
-      "id": 4,
-      "item": "ACTIVE",
+      "status_id": 4,
+      "name": "ACTIVE",
       "description": "Is the record activated?"
     },
     {
-      "id": 8,
-      "item": "CANCELLED",
-      "description": "Is the record called?"
+      "status_id": 8,
+      "status_name": "CANCELLED",
+      "status_description": "Is the record called?"
     },
     {
-      "id": 16,
-      "item": "PENDING",
-      "description": "Is the record pending?"
+      "status_id": 16,
+      "status_name": "PENDING",
+      "status_description": "Is the record pending?"
     }
   ]
 }

@@ -15,9 +15,9 @@ public interface iOrganizationRepository {
         void onCreateOrganizationFailed(String msg);
     }
 
-    void readOrganizations(String organizationServerID, String userServerID, int primaryTeamBIT,
-                           List<Integer> secondaryTeams, List<Integer> statuses,
-                           iReadOrganizationsCallback callback);
+    void readOrganizations(String organizationServerID, String userServerID,
+                           int primaryTeamBIT, List<Integer> secondaryTeamBITS,
+                           List<Integer> statusBITS, iReadOrganizationsCallback callback);
 
     interface iReadOrganizationsCallback {
         void onReadOrganizationsSucceeded(List<cOrganizationModel> organizationModels);

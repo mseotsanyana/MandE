@@ -1,21 +1,9 @@
 package com.me.mseotsanyana.mande.DAL.ìmpl.realtime.session;
 
-import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-import com.me.mseotsanyana.mande.BLL.model.session.cUserAccountModel;
-import com.me.mseotsanyana.mande.BLL.repository.session.iPermissionRepository;
-import com.me.mseotsanyana.mande.DAL.storage.database.cRealtimeHelper;
 
-public class cPrivilegeFirebaseRepositoryImpl implements iPermissionRepository {
+public class cPrivilegeFirebaseRepositoryImpl /*implements */ {
     private static final String TAG = cPrivilegeFirebaseRepositoryImpl.class.getSimpleName();
 
     private final FirebaseDatabase database;
@@ -27,141 +15,141 @@ public class cPrivilegeFirebaseRepositoryImpl implements iPermissionRepository {
 
     /*################################# SHARED PREFERENCE ACTIONS ################################*/
 
-    @Override
-    public void saveUserPermissions(iSaveUserPermissionsCallback callback) {
-
-        DatabaseReference dbUserAccountsRef = database.getReference(cRealtimeHelper.KEY_USERACCOUNTS);
-
-        String userServerID = FirebaseAuth.getInstance().getUid();
-        Query userAccountQuery = dbUserAccountsRef.orderByChild("userServerID").equalTo(userServerID);
-        userAccountQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                callback.onClearPreferences();
-                for (DataSnapshot useraccount : snapshot.getChildren()) {
-                    cUserAccountModel userAccountModel = useraccount.getValue(cUserAccountModel.class);
-
-                    if (userAccountModel.isCurrentOrganization()) {
-                        String userAccountID  = userAccountModel.getUserAccountServerID();
-                        String organizationID = userAccountModel.getOrganizationServerID();
-                        String primaryTeamID  = userAccountModel.getTeamServerID();
-
-                        /* call back on saving organization identification */
-                        callback.onSaveOrganizationServerID(organizationID);
-                        /* call back on saving primary bit */
-                        callback.onSavePrimaryTeamBIT(Integer.parseInt(primaryTeamID));
-
-                        saveSecondaryTeamsBITS(userAccountID, primaryTeamID, callback);
-
-                        break;
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    /**
-     * This sets secondary teams bits of the loggedIn user and saves it.
-     *
-     * @param accountServerID user account identification
-     */
-    public void saveSecondaryTeamsBITS(String accountServerID, String primaryTeamID,
-                                       iSaveUserPermissionsCallback callback) {
-        DatabaseReference dbMemberTeamsRef = database.getReference(cRealtimeHelper.KEY_MEMBER_TEAMS);
-        dbMemberTeamsRef.child(accountServerID).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                int secondaryTeamBITS = 0;
-                for (DataSnapshot team : snapshot.getChildren()) {
-                    String teamID = team.child("teamServerID").getValue(String.class);
-                    secondaryTeamBITS |= Integer.parseInt(teamID);
-                    // Team Roles
-                    readTeamsRoles(team.getKey(), callback);
-                }
-                secondaryTeamBITS &= ~Integer.parseInt(primaryTeamID);
-
-                /* call back on saving secondary bits */
-                //callback.onSaveSecondaryTeamBITS(secondaryTeamBITS);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    private void readTeamsRoles(String teamServerID, iSaveUserPermissionsCallback callback){
-        DatabaseReference dbTeamsRolesRef = database.getReference(cRealtimeHelper.KEY_TEAM_ROLES);
-        dbTeamsRolesRef.child(teamServerID).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot role: snapshot.getChildren()) {
-                    Log.d(TAG, "DataSnapshot ROLES ==>> " + role);
-                    readRolesPrivileges(role.getKey(), callback);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    private void readRolesPrivileges(String roleServerID, iSaveUserPermissionsCallback callback){
-        DatabaseReference dbRolesPrivilegesRef = null;//database.getReference(cRealtimeHelper.KEY_ROLE_PRIVILEGES);
-        dbRolesPrivilegesRef.child(roleServerID).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot privilege: snapshot.getChildren()) {
-                    Log.d(TAG, "DataSnapshot PRIVILEGE ==>> " + privilege);
-
-                    readPrivilegePermission(privilege.getKey(), callback);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    private void readPrivilegePermission(String privilegeServerID, iSaveUserPermissionsCallback callback){
-        DatabaseReference dbPrivilegesPermsRef = null;//database.getReference(cRealtimeHelper.KEY_PRIVILEGE_PERMISSIONS);
-        dbPrivilegesPermsRef.child(privilegeServerID).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot module : snapshot.getChildren()) {
-                    int entityBITS = 0;
-                    for (DataSnapshot entity: module.getChildren()){
-                        int operationBITS = 0, statusBITS = 0;
-                        for(DataSnapshot operation: entity.getChildren()){
-                            operationBITS |= Integer.parseInt(operation.getKey());
-                            statusBITS |= operation.getValue(Integer.class);
-                            //callback.onSaveStatusBITS(module.getKey(), entity.getKey(), operation.getKey(), statusBITS);
-                        }
-                        callback.onSaveEntityPermBITS(module.getKey(), entity.getKey(), operationBITS);
-                        entityBITS |= Integer.parseInt(entity.getKey());
-                    }
-                    callback.onSaveEntityBITS(module.getKey(), entityBITS);
-                    //moduleBITS |= Integer.parseInt(module.getKey());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
+//    @Override
+//    public void saveUserPermissions(iPermissionRepository.iSaveUserPermissionsCallback callback) {
+//
+//        DatabaseReference dbUserAccountsRef = database.getReference(cRealtimeHelper.KEY_USERACCOUNTS);
+//
+//        String userServerID = FirebaseAuth.getInstance().getUid();
+//        Query userAccountQuery = dbUserAccountsRef.orderByChild("userServerID").equalTo(userServerID);
+//        userAccountQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                callback.onClearPreferences();
+//                for (DataSnapshot useraccount : snapshot.getChildren()) {
+//                    cUserAccountModel userAccountModel = useraccount.getValue(cUserAccountModel.class);
+//
+//                    if (userAccountModel.isCurrentOrganization()) {
+//                        String userAccountID  = userAccountModel.getUserAccountServerID();
+//                        String organizationID = userAccountModel.getOrganizationServerID();
+//                        String primaryTeamID  = userAccountModel.getTeamServerID();
+//
+//                        /* call back on saving organization identification */
+//                        callback.onSaveOrganizationServerID(organizationID);
+//                        /* call back on saving primary bit */
+//                        callback.onSavePrimaryTeamBIT(Integer.parseInt(primaryTeamID));
+//
+//                        saveSecondaryTeamsBITS(userAccountID, primaryTeamID, callback);
+//
+//                        break;
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//    }
+//
+//    /**
+//     * This sets secondary teams bits of the loggedIn user and saves it.
+//     *
+//     * @param accountServerID user account identification
+//     */
+//    public void saveSecondaryTeamsBITS(String accountServerID, String primaryTeamID,
+//                                       iSaveUserPermissionsCallback callback) {
+//        DatabaseReference dbMemberTeamsRef = database.getReference(cRealtimeHelper.KEY_MEMBER_TEAMS);
+//        dbMemberTeamsRef.child(accountServerID).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+//                int secondaryTeamBITS = 0;
+//                for (DataSnapshot team : snapshot.getChildren()) {
+//                    String teamID = team.child("teamServerID").getValue(String.class);
+//                    secondaryTeamBITS |= Integer.parseInt(teamID);
+//                    // Team Roles
+//                    readTeamsRoles(team.getKey(), callback);
+//                }
+//                secondaryTeamBITS &= ~Integer.parseInt(primaryTeamID);
+//
+//                /* call back on saving secondary bits */
+//                //callback.onSaveSecondaryTeamBITS(secondaryTeamBITS);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//    }
+//
+//    private void readTeamsRoles(String teamServerID, iSaveUserPermissionsCallback callback){
+//        DatabaseReference dbTeamsRolesRef = database.getReference(cRealtimeHelper.KEY_TEAM_ROLES);
+//        dbTeamsRolesRef.child(teamServerID).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                for (DataSnapshot role: snapshot.getChildren()) {
+//                    Log.d(TAG, "DataSnapshot ROLES ==>> " + role);
+//                    readRolesPrivileges(role.getKey(), callback);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//    }
+//
+//    private void readRolesPrivileges(String roleServerID, iSaveUserPermissionsCallback callback){
+//        DatabaseReference dbRolesPrivilegesRef = null;//database.getReference(cRealtimeHelper.KEY_ROLE_PRIVILEGES);
+//        dbRolesPrivilegesRef.child(roleServerID).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                for (DataSnapshot privilege: snapshot.getChildren()) {
+//                    Log.d(TAG, "DataSnapshot PRIVILEGE ==>> " + privilege);
+//
+//                    readPrivilegePermission(privilege.getKey(), callback);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//    }
+//
+//    private void readPrivilegePermission(String privilegeServerID, iSaveUserPermissionsCallback callback){
+//        DatabaseReference dbPrivilegesPermsRef = null;//database.getReference(cRealtimeHelper.KEY_PRIVILEGE_PERMISSIONS);
+//        dbPrivilegesPermsRef.child(privilegeServerID).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                for(DataSnapshot module : snapshot.getChildren()) {
+//                    int entityBITS = 0;
+//                    for (DataSnapshot entity: module.getChildren()){
+//                        int operationBITS = 0, statusBITS = 0;
+//                        for(DataSnapshot operation: entity.getChildren()){
+//                            operationBITS |= Integer.parseInt(operation.getKey());
+//                            statusBITS |= operation.getValue(Integer.class);
+//                            //callback.onSaveStatusBITS(module.getKey(), entity.getKey(), operation.getKey(), statusBITS);
+//                        }
+//                        callback.onSaveEntityPermBITS(module.getKey(), entity.getKey(), operationBITS);
+//                        entityBITS |= Integer.parseInt(entity.getKey());
+//                    }
+//                    callback.onSaveEntityBITS(module.getKey(), entityBITS);
+//                    //moduleBITS |= Integer.parseInt(module.getKey());
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//    }
 }
 
 

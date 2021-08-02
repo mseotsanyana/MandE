@@ -172,7 +172,7 @@ public class cSetDomainsFromExcel {
     public cStatusModel getStatusFromExcel(Row cRow) {
         statusDomain = new cStatusModel();
 
-        statusDomain.setStatusID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+        statusDomain.setStatusServerID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         statusDomain.setName(cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
         statusDomain.setDescription(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
         //statusDomain.setCreateDate(cRow.getCell(3, Row.CREATE_NULL_AS_BLANK).getDateCellValue());

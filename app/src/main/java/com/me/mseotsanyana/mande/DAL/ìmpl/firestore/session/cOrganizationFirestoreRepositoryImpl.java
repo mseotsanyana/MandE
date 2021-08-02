@@ -3,6 +3,7 @@ package com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -12,7 +13,7 @@ import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cPermissionModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cPlanModel;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+
 
 /**
  * Created by mseotsanyana on 2016/10/23.
@@ -89,51 +91,57 @@ public class cOrganizationFirestoreRepositoryImpl implements iOrganizationReposi
                     Map<String, Object> subOrganization = new HashMap<>();
                     subOrganization.put("organizationServerID", organizationServerID);
 
-                    CollectionReference coOrganizationTypeRef;
+                    CollectionReference orgTypeRef;
                     switch (organizationModel.getOrganizationType()) {
                         case 0:
-                            coOrganizationTypeRef = db.collection(cRealtimeHelper.KEY_BENEFACTORS);
-                            coOrganizationTypeRef.document(organizationServerID).set(subOrganization);
-                            coOrganizationTypeRef = db.collection(cRealtimeHelper.KEY_NATIONAL_PARTNERS);
-                            coOrganizationTypeRef.document(organizationServerID).set(subOrganization);
+                            orgTypeRef = db.collection(cRealtimeHelper.KEY_BENEFACTORS);
+                            orgTypeRef.document(organizationServerID).set(subOrganization);
+                            orgTypeRef = db.collection(cRealtimeHelper.KEY_NATIONAL_PARTNERS);
+                            orgTypeRef.document(organizationServerID).set(subOrganization);
                             break;
                         case 1:
-                            coOrganizationTypeRef = db.collection(cRealtimeHelper.KEY_BENEFACTORS);
-                            coOrganizationTypeRef.document(organizationServerID).set(subOrganization);
-                            coOrganizationTypeRef = db.collection(cRealtimeHelper.KEY_DONORS);
-                            coOrganizationTypeRef.document(organizationServerID).set(subOrganization);
+                            orgTypeRef = db.collection(cRealtimeHelper.KEY_BENEFACTORS);
+                            orgTypeRef.document(organizationServerID).set(subOrganization);
+                            orgTypeRef = db.collection(cRealtimeHelper.KEY_DONORS);
+                            orgTypeRef.document(organizationServerID).set(subOrganization);
                             break;
                         case 2:
-                            coOrganizationTypeRef = db.collection(cRealtimeHelper.KEY_BENEFICIARIES);
-                            coOrganizationTypeRef.document(organizationServerID).set(subOrganization);
+                            orgTypeRef = db.collection(cRealtimeHelper.KEY_BENEFICIARIES);
+                            orgTypeRef.document(organizationServerID).set(subOrganization);
                             break;
                         case 3:
-                            coOrganizationTypeRef = db.collection(cRealtimeHelper.KEY_IMPLEMENTING_AGENCIES);
-                            coOrganizationTypeRef.document(organizationServerID).set(subOrganization);
+                            orgTypeRef = db.collection(cRealtimeHelper.KEY_IMPLEMENTING_AGENCIES);
+                            orgTypeRef.document(organizationServerID).set(subOrganization);
                             break;
                         default:
                             Log.d(TAG, "Error in creating an organization");
                     }
 
-                    /* default settings */
+                    /* create a default administrator team during the creation of an organization */
                     cTeamModel teamModel = cDatabaseUtils.getAdminTeamModel(context,
                             organizationServerID, commonPropertiesModel);
+                    /* create a default administrator role during the creation of an organization */
                     cRoleModel roleModel = cDatabaseUtils.getAdminRoleModel(context,
                             commonPropertiesModel);
+                    /* read a default permissions associated with the administrator role during
+                    the creation of an organization */
                     cPermissionModel permissionModel = cDatabaseUtils.getAdminPermissions(context);
-                    cPlanModel defaultPlanModel = cDatabaseUtils.getDefaultPlanModel(context);
-
-                    /* create links */
-                    createUserAccounts(organizationServerID, userServerID, teamModel,
-                            defaultPlanModel);
+                    /* read a default freemium plan from json associated with the administrator
+                    of the organization just created */
+                    cPlanModel freemiumPlanModel = cDatabaseUtils.getDefaultPlanModel(context);
+                    /* create a user account of the administrator with the organization just
+                    created */
+                    createUserAccount(organizationServerID, userServerID, teamModel,
+                            freemiumPlanModel);
+                    /* create an administrator team of the organization just created */
                     createTeamLinks(organizationServerID, userServerID, teamModel,
                             commonPropertiesModel);
+                    /* create administrator role with the entity and unix permissions of the team
+                    just created */
                     createRoleLinks(organizationServerID, userServerID, teamModel,
                             roleModel, permissionModel, commonPropertiesModel);
-                    //createMenuItemLinks(roleModel);
-
+                    /* call back on successful message */
                     callback.onCreateOrganizationSucceeded("Organization saved successfully.");
-
                 })
                 .addOnFailureListener(e -> callback.onCreateOrganizationFailed(
                         "Organization could not be saved " + e.getMessage()));
@@ -147,8 +155,8 @@ public class cOrganizationFirestoreRepositoryImpl implements iOrganizationReposi
      * @param teamModel            team model
      * @param planModel            plan model
      */
-    public void createUserAccounts(String organizationServerID, String userServerID,
-                                   cTeamModel teamModel, cPlanModel planModel) {
+    public void createUserAccount(String organizationServerID, String userServerID,
+                                  cTeamModel teamModel, cPlanModel planModel) {
         CollectionReference coUserAccountsRef;
         // create a user account for the user in an organization just created
         coUserAccountsRef = db.collection(cRealtimeHelper.KEY_USERACCOUNTS);
@@ -282,90 +290,69 @@ public class cOrganizationFirestoreRepositoryImpl implements iOrganizationReposi
         coRolePermsRef.document(roleID).set(permissionModel);
     }
 
-//    /**
-//     * role menu items
-//     *
-//     * @param roleModel role model
-//     */
-//    public void createMenuItemLinks(cRoleModel roleModel) {
-//        // create menu items of the related roles
-//        CollectionReference coOrgRoleMenuRef;
-//        // add menu items related to admin role of the organization
-//        coOrgRoleMenuRef = db.collection(cRealtimeHelper.KEY_ROLE_MENU_ITEMS);
-//
-//        Map<cMenuModel, Map<String, cMenuModel>> modelMapHashMap = cDatabaseUtils.
-//                getAdminMenuModelSet(context);
-//
-//        Map<String, Object> role_menus = new HashMap<>();
-//        for (Map.Entry<cMenuModel, Map<String, cMenuModel>> entry : modelMapHashMap.entrySet()) {
-//            cMenuModel menuModel = entry.getKey();
-//            String menuServerID = String.valueOf(menuModel.getMenuServerID());
-//
-//            // create sub menu items
-//            Map<String, cMenuModel> subMenuModelMap = entry.getValue();
-//            List<Integer> sub_menu = new ArrayList<>();
-//            if (subMenuModelMap.size() > 0) {
-//                for (Map.Entry<String, cMenuModel> subEntry : subMenuModelMap.entrySet()) {
-//                    sub_menu.add(subEntry.getValue().getMenuServerID());
-//                }
-//            }
-//
-//            // add menu items to the role
-//            role_menus.put(menuServerID, sub_menu);
-//        }
-//
-//        String roleServerID = roleModel.getRoleServerID();
-//        coOrgRoleMenuRef.document(roleServerID).set(role_menus);
-//    }
-
-
     /* ###################################### READ ACTIONS ###################################### */
 
+    /**
+     * read organizations
+     *
+     * @param organizationServerID organization identifications that are aligned to the user
+     *                             account of the loggedin user - FIXME
+     * @param userServerID         user identification
+     * @param primaryTeamBIT       primary team bit
+     * @param secondaryTeamBITS    secondary team bits
+     * @param statusBITS           status bits
+     * @param callback             call back
+     */
     @Override
     public void readOrganizations(String organizationServerID, String userServerID,
                                   int primaryTeamBIT, List<Integer> secondaryTeamBITS,
                                   List<Integer> statusBITS, iReadOrganizationsCallback callback) {
 
+
         CollectionReference coOrganizationRef = db.collection(cRealtimeHelper.KEY_ORGANIZATIONS);
 
-        Query organizationQuery = coOrganizationRef
-                //.whereEqualTo("organizationOwnerID", organizationServerID) FIXME
-                .whereIn("statusBIT", statusBITS);
+        Task<List<QuerySnapshot>> org_perm = cDatabaseUtils.applyReadPermissions(coOrganizationRef,
+                organizationServerID, userServerID, primaryTeamBIT, secondaryTeamBITS);
 
-        organizationQuery.get()
+        org_perm
                 .addOnCompleteListener(task -> {
-                    List<cOrganizationModel> organizationModels = new ArrayList<>();
-                    for (QueryDocumentSnapshot org_doc : Objects.requireNonNull(
-                            task.getResult())) {
+                    Set<cOrganizationModel> organizationSet = new HashSet<>();
+                    for (QuerySnapshot result : Objects.requireNonNull(task.getResult())) {
+                        for (QueryDocumentSnapshot ds : result) {
+                            cOrganizationModel organizationModel = ds.toObject(
+                                    cOrganizationModel.class);
 
-                        cOrganizationModel organizationModel = org_doc.toObject(
-                                cOrganizationModel.class);
+                            if (statusBITS.contains(organizationModel.getStatusBIT())) {
+                                organizationSet.add(organizationModel);
 
-                        cDatabaseUtils.cUnixPerm perm = new cDatabaseUtils.cUnixPerm();
-                        perm.setUserOwnerID(organizationModel.getUserOwnerID());
-                        perm.setTeamOwnerBIT(organizationModel.getTeamOwnerBIT());
-                        perm.setUnixpermBITS(organizationModel.getUnixpermBITS());
-
-                        /*Log.d(TAG, "Organization name: " +
+                                /*Log.d(TAG, "Organization name: " +
                                         organizationModel.getName() + ", email " +
                                         organizationModel.getEmail() + ", website " +
                                         organizationModel.getEmail());*/
-
-                        if (cDatabaseUtils.isPermitted(perm, userServerID, primaryTeamBIT,
-                                secondaryTeamBITS)) {
-                            organizationModels.add(organizationModel);
+                            }
                         }
                     }
 
+                    ArrayList<cOrganizationModel> organizationModels;
+                    organizationModels = new ArrayList<>(organizationSet);
                     callback.onReadOrganizationsSucceeded(organizationModels);
                 })
                 .addOnFailureListener(e -> {
-                    callback.onReadOrganizationsFailed("Failed to read Organization." + e);
+                    callback.onReadOrganizationsFailed("Failed to read Organization.");
                     Log.w(TAG, "Failed to read value.", e);
                 });
     }
 
-
+    /**
+     * read organization members
+     *
+     * @param organizationServerID organization identification
+     * @param userServerID         user identification
+     * @param primaryTeamBIT       primary team bit
+     * @param secondaryTeamBITS    secondary team bits
+     * @param statusBITS           status bits
+     * @param callback             call back
+     */
     @Override
     public void readOrganizationMembers(String organizationServerID, String userServerID,
                                         int primaryTeamBIT, List<Integer> secondaryTeamBITS,
@@ -411,6 +398,12 @@ public class cOrganizationFirestoreRepositoryImpl implements iOrganizationReposi
                         "Failed to read organization members"));
     }
 
+    /**
+     * filter user profiles
+     *
+     * @param user_ids list of user identifications
+     * @param callback call back
+     */
     private void filterUserProfiles(List<String> user_ids,
                                     iReadOrganizationMembersCallback callback) {
 
@@ -639,8 +632,6 @@ public class cOrganizationFirestoreRepositoryImpl implements iOrganizationReposi
 //                        }
 //                    });
 //        }
-
-
 //        if (primaryTeamBIT == 1) {
 //
 //            /* 1. members of the 'Administrator' team are always allowed to do everything */
@@ -720,3 +711,38 @@ public class cOrganizationFirestoreRepositoryImpl implements iOrganizationReposi
 //                    });
 //        }
 //}
+//    /**
+//     * role menu items
+//     *
+//     * @param roleModel role model
+//     */
+//    public void createMenuItemLinks(cRoleModel roleModel) {
+//        // create menu items of the related roles
+//        CollectionReference coOrgRoleMenuRef;
+//        // add menu items related to admin role of the organization
+//        coOrgRoleMenuRef = db.collection(cRealtimeHelper.KEY_ROLE_MENU_ITEMS);
+//
+//        Map<cMenuModel, Map<String, cMenuModel>> modelMapHashMap = cDatabaseUtils.
+//                getAdminMenuModelSet(context);
+//
+//        Map<String, Object> role_menus = new HashMap<>();
+//        for (Map.Entry<cMenuModel, Map<String, cMenuModel>> entry : modelMapHashMap.entrySet()) {
+//            cMenuModel menuModel = entry.getKey();
+//            String menuServerID = String.valueOf(menuModel.getMenuServerID());
+//
+//            // create sub menu items
+//            Map<String, cMenuModel> subMenuModelMap = entry.getValue();
+//            List<Integer> sub_menu = new ArrayList<>();
+//            if (subMenuModelMap.size() > 0) {
+//                for (Map.Entry<String, cMenuModel> subEntry : subMenuModelMap.entrySet()) {
+//                    sub_menu.add(subEntry.getValue().getMenuServerID());
+//                }
+//            }
+//
+//            // add menu items to the role
+//            role_menus.put(menuServerID, sub_menu);
+//        }
+//
+//        String roleServerID = roleModel.getRoleServerID();
+//        coOrgRoleMenuRef.document(roleServerID).set(role_menus);
+//    }

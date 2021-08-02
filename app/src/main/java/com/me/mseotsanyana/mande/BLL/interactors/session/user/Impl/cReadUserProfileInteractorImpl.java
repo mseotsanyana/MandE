@@ -13,20 +13,20 @@ public class cReadUserProfileInteractorImpl extends cAbstractInteractor
     private static String TAG = cReadUserProfileInteractorImpl.class.getSimpleName();
 
     private Callback callback;
-    private iSharedPreferenceRepository sessionManagerRepository;
-    private iUserProfileRepository userProfileRepository;
+    private iSharedPreferenceRepository preferenceRepository;
+    private final iUserProfileRepository userProfileRepository;
 
     public cReadUserProfileInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,
-                                          iSharedPreferenceRepository sessionManagerRepository,
+                                          iSharedPreferenceRepository preferenceRepository,
                                           iUserProfileRepository userProfileRepository,
                                           Callback callback) {
         super(threadExecutor, mainThread);
 
-        if (sessionManagerRepository == null || callback == null) {
+        if (preferenceRepository == null || callback == null) {
             throw new IllegalArgumentException("Arguments can not be null!");
         }
 
-        this.sessionManagerRepository = sessionManagerRepository;
+        this.preferenceRepository = preferenceRepository;
         this.userProfileRepository = userProfileRepository;
         this.callback = callback;
 

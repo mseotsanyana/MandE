@@ -52,11 +52,9 @@ import com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
 import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.logframe.cLogFrameRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cMenuRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cSessionManagerImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.Impl.cLogFramePresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iLogFramePresenter;
 import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cLogFrameAdapter;
-import com.me.mseotsanyana.mande.PL.ui.fragments.session.cPermissionFragment;
 import com.me.mseotsanyana.mande.PL.ui.fragments.session.cRoleFragment;
 import com.me.mseotsanyana.mande.PL.ui.fragments.session.cUserFragment;
 import com.me.mseotsanyana.mande.UTIL.TextDrawable;
@@ -401,10 +399,10 @@ public class cLogFrameFragment extends Fragment implements iLogFramePresenter.Vi
                                 break;
 
                             case 2: // Permissions Mgmt.
-                                cPermissionFragment permissionFragment = cPermissionFragment.newInstance();
-                                ft.replace(R.id.fragment_frame, permissionFragment);
-                                ft.addToBackStack("PERMISSION");
-                                ft.commit();
+//                                cPermissionFragment_REMOVE permissionFragment = cPermissionFragment_REMOVE.newInstance();
+//                                ft.replace(R.id.fragment_frame, permissionFragment);
+//                                ft.addToBackStack("PERMISSION");
+//                                ft.commit();
                                 break;
 
                             default:

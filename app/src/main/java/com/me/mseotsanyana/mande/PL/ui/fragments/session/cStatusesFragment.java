@@ -36,7 +36,7 @@ public class cStatusesFragment extends Fragment {
         Bundle bundle = new Bundle();
 
         cStatusesFragment fragment = new cStatusesFragment();
-        bundle.putParcelableArrayList("STATUSES", statusDomains);
+        //bundle.putParcelableArrayList("STATUSES", statusDomains);
 
         fragment.setArguments(bundle);
 
@@ -63,7 +63,7 @@ public class cStatusesFragment extends Fragment {
         appCompatCheckBoxAllStatus = (AppCompatCheckBox)
                 view.findViewById(R.id.appCompatCheckBoxAllStatus);
 
-        statusDomains = getArguments().getParcelableArrayList("STATUSES");
+        //statusDomains = getArguments().getParcelableArrayList("STATUSES");
 
         Gson gson = new Gson();
         Log.d(TAG, gson.toJson(appCompatCheckBoxAllStatus.isChecked()));
@@ -83,11 +83,11 @@ public class cStatusesFragment extends Fragment {
             public void onClick(View v) {
                 if (appCompatCheckBoxAllStatus.isChecked()) {
                     for (cStatusModel domain : statusDomains) {
-                        domain.setState(true);
+                        domain.setChecked(true);
                     }
                 } else {
                     for (cStatusModel domain : statusDomains) {
-                        domain.setState(false);
+                        domain.setChecked(false);
                     }
                 }
                 statusAdapter.notifyDataSetChanged();

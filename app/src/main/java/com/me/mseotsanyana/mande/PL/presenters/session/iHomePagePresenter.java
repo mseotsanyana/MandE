@@ -12,12 +12,11 @@ public interface iHomePagePresenter extends iPresenter {
     interface View extends iBaseView {
         void onReadUserProfileSucceeded(cUserProfileModel userProfileModel);
         void onReadMenuItemsSucceeded(List<cMenuModel> menuModels);
-        void onDefaultHomePageSucceeded(cUserProfileModel userProfileModel,
-                                        List<cMenuModel> menuModels);
+        void onDefaultHomePageSucceeded(List<cMenuModel> menuModels);
         void onReadHomePageFailed(String msg);
     }
 
     /* implemented in PresenterImpl to link ui with InteractorImpl */
-    void updateHomePage();
+    void loadHomePage();
 }
 

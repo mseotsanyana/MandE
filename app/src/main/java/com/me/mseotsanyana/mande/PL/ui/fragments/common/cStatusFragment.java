@@ -32,7 +32,7 @@ public class cStatusFragment extends Fragment {
         Bundle bundle = new Bundle();
 
         bundle.putInt("STATUS_BITS", statusBITS);
-        bundle.putParcelableArrayList("STATUS_MODELS", statusModels);
+        //-bundle.putParcelableArrayList("STATUS_MODELS", statusModels);
 
         cStatusFragment fragment = new cStatusFragment();
         fragment.setArguments(bundle);
@@ -44,7 +44,7 @@ public class cStatusFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         this.statusBITS = getArguments().getInt("STATUS_BITS", 0);
-        this.statusModels = getArguments().getParcelableArrayList("STATUS_MODELS");
+        //-this.statusModels = getArguments().getParcelableArrayList("STATUS_MODELS");
     }
 
     @Override

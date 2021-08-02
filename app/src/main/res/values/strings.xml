@@ -35,7 +35,7 @@
     <string name="fa_filter">&#xf0b0;</string>
     <string name="fa_calendar">&#xf073;</string>
 
-    <!-- CRUDS Operations -->
+    <!-- CRUD Operations -->
 
     <string name="fa_create">&#xf0fe;</string>
     <string name="fa_read">&#xf02d;</string>
@@ -70,7 +70,7 @@
     <string name="Reset">Reset</string>
     <string name="Yes">Yes</string>
     <string name="No">No</string>
-    <string name="Ok">Ok</string>
+    <string name="Ok">OK</string>
 
     <!-- unix groups -->
     <string name="Owner">Owner</string>
@@ -138,7 +138,6 @@
     <string name="user_hint_password">Password</string>
     <string name="user_hint_confirm_password">Confirm Password</string>
 
-
     <string name="text_save">Save</string>
     <string name="text_change">Change</string>
     <string name="text_cancel">Cancel</string>
@@ -147,6 +146,8 @@
     <string name="role_list_title">Roles</string>
 
     <!-- the role strings -->
+    <string name="role_name">role</string>
+    <string name="role_description">description</string>
 
     <!-- the permission strings -->
     <string name="permission_list_title">Permissions</string>
@@ -182,7 +183,7 @@
     <!-- the dashboard strings -->
     <string name="organization_details">Organizations \&amp; Agreements</string>
     <string name="organizations">Organizations</string>
-    <string name="teams">Teams</string>
+
     <string name="logframes">LogFrames</string>
     <string name="workplans">Work Plans</string>
     <string name="budgets">Budgets</string>
@@ -192,8 +193,11 @@
 
     <!-- the organization strings -->
     <string name="organization_create_title">CREATE ORGANIZATION</string>
+    <string name="organization_members">Organization Members</string>
 
     <!-- the team strings -->
+    <string name="teams">Teams</string>
+    <string name="team_role">Team Roles</string>
     <string name="team_name">team</string>
     <string name="team_description">description</string>
 

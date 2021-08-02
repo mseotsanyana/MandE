@@ -1,0 +1,39 @@
+{
+  "operations": [
+    {
+      "entity_op_id": 1,
+      "entity_op_name": "CREATE",
+      "operation_description": "Create operation"
+    },
+    {
+      "entity_op_id": 2,
+      "entity_op_name": "READ",
+      "entity_op_description": "Read operation"
+    },
+    {
+      "entity_op_id": 4,
+      "entity_op_name": "UPDATE",
+      "entity_op_description": "Update operation"
+    },
+    {
+      "entity_op_id": 8,
+      "entity_op_name": "DELETE",
+      "entity_op_description": "Delete operation"
+    },
+    {
+      "entity_op_id": 16,
+      "entity_op_name": "JOIN",
+      "entity_op_description": "Join operation"
+    },
+    {
+      "entity_op_id": 32,
+      "entity_op_name": "UPLOAD",
+      "entity_op_description": "Upload operation"
+    },
+    {
+      "entity_op_id": 64,
+      "entity_op_name": "DOWNLOAD",
+      "entity_op_description": "Download operation"
+    }
+  ]
+}

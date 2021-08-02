@@ -935,7 +935,7 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
 
             cStatusModel statusModel = new cStatusModel();
 
-            statusModel.setStatusID((int) cRow.getCell(0,
+            statusModel.setStatusServerID((int) cRow.getCell(0,
                     Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             statusModel.setName(cRow.getCell(1,
                     Row.CREATE_NULL_AS_BLANK).getStringCellValue());
@@ -958,7 +958,7 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, statusModel.getStatusID());
+        cv.put(cSQLDBHelper.KEY_ID, statusModel.getStatusServerID());
         cv.put(cSQLDBHelper.KEY_NAME, statusModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, statusModel.getDescription());
 

@@ -1,0 +1,66 @@
+{
+  "menuitems": [
+    {
+      "menu_id": 0,
+      "menu_name": "My Profile",
+      "menu_description": "Manage user profile settings.",
+      "sub_menu": [
+        {
+          "sub_menu_id": 1,
+          "sub_menu_name": "Profile",
+          "sub_menu_description": "User personal details."
+        },
+        {
+          "sub_menu_id": 2,
+          "sub_menu_name": "Account Settings",
+          "sub_menu_description": "Password, deactivation, etc. Mgt."
+        },
+        {
+          "sub_menu_id": 4,
+          "sub_menu_name": "Join Organization",
+          "sub_menu_description": "Joining public Organizations."
+        }
+      ]
+    },
+    {
+      "menu_id": 8,
+      "menu_name": "Permission Management",
+      "menu_description": "Management of own Organizations, Teams, Roles and Permissions.",
+      "sub_menu": [
+        {
+          "sub_menu_id": 16,
+          "sub_menu_name": "Organization Members",
+          "sub_menu_description": "People in Organizations and Teams the user belongs to."
+        },
+        {
+          "sub_menu_id": 32,
+          "sub_menu_name": "Team Roles",
+          "sub_description": "Teams of people the user belongs to."
+        },
+        {
+          "sub_menu_id": 64,
+          "sub_menu_name": "Role Permissions",
+          "sub_description": "Role Permission Management."
+        }
+      ]
+    },
+    {
+      "menu_id": 256,
+      "menu_name": "Notifications",
+      "menu_description": "Settings of publication, subscription of messages.",
+      "sub_menu": []
+    },
+    {
+      "menu_id": 512,
+      "menu_name": "Settings",
+      "menu_description": "The settings related to the user.",
+      "sub_menu": []
+    },
+    {
+      "menu_id": 1024,
+      "menu_name": "Logout",
+      "menu_description": "Allowing the logout option.",
+      "sub_menu": []
+    }
+  ]
+}

@@ -28,4 +28,19 @@ public class cHomeFragmentDirections {
   public static NavDirections actionCHomeFragmentToCTeamFragment() {
     return new ActionOnlyNavDirections(R.id.action_cHomeFragment_to_cTeamFragment);
   }
+
+  @NonNull
+  public static NavDirections actionCHomeFragmentToCOrganizationMemberFragment() {
+    return new ActionOnlyNavDirections(R.id.action_cHomeFragment_to_cOrganizationMemberFragment);
+  }
+
+  @NonNull
+  public static NavDirections actionCHomeFragmentToCTeamRoleFragment() {
+    return new ActionOnlyNavDirections(R.id.action_cHomeFragment_to_cTeamRoleFragment);
+  }
+
+  @NonNull
+  public static NavDirections actionCHomeFragmentToCPermissionFragment() {
+    return new ActionOnlyNavDirections(R.id.action_cHomeFragment_to_cPermissionFragment);
+  }
 }

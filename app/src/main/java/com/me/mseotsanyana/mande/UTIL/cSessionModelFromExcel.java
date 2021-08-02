@@ -345,7 +345,7 @@ public class cSessionModelFromExcel {
     public void addStatusFromExcel(Row cRow) {
         statusModel = new cStatusModel();
 
-        statusModel.setStatusID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+        statusModel.setStatusServerID((int)cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
         statusModel.setName(cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
         statusModel.setDescription(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 

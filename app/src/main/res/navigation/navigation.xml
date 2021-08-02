@@ -294,8 +294,7 @@
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:popUpToInclusive="false"/>
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_cHomeFragment_to_cUserProfileFragment"
             app:destination="@id/cUserProfileFragment"
@@ -320,6 +319,30 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_cHomeFragment_to_cOrganizationMemberFragment"
+            app:destination="@id/cOrganizationMemberFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_cHomeFragment_to_cTeamRoleFragment"
+            app:destination="@id/cTeamRoleFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_cHomeFragment_to_cPermissionFragment"
+            app:destination="@id/cPermissionFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/cNotificationFragment"
@@ -339,6 +362,18 @@
         android:label="cUserProfileFragment" />
     <fragment
         android:id="@+id/cTeamFragment"
-        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cTeamFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cTeamMemberFragment"
         android:label="cTeamFragment" />
+    <fragment
+        android:id="@+id/cOrganizationMemberFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cOrganizationMemberFragment"
+        android:label="cOrganizationMemberFragment" />
+    <fragment
+        android:id="@+id/cTeamRoleFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cTeamRoleFragment"
+        android:label="cTeamRoleFragment" />
+    <fragment
+        android:id="@+id/cPermissionFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cPermissionFragment"
+        android:label="cPermissionFragment" />
 </navigation>

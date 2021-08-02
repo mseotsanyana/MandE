@@ -164,7 +164,7 @@ public class cRoleRepositoryImpl /*implements iRoleRepository*/ {
 
 
     public void readRoleUsers(List<cRoleModel> roleModels, int primaryRole, int secondaryRoles,
-                              int statusBITS, iRoleRepository.iReadRolesCallback callback) {
+                              int statusBITS, iRoleRepository.iReadRoleTeamsCallback callback) {
 
     }
 

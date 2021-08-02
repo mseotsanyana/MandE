@@ -73,7 +73,7 @@ public class cStatusTreeAdapter_OLD extends RecyclerView.Adapter<cStatusTreeAdap
         //if (SH != null && filteredStatus.size() > 0) {
         SH.textViewStatusName.setText(filteredStatus.get(position).getName());
         SH.textViewStatusDescription.setText(filteredStatus.get(position).getDescription());
-        SH.switchStatus.setChecked(filteredStatus.get(position).isState());
+        SH.switchStatus.setChecked(filteredStatus.get(position).isChecked());
         SH.switchStatus.setTag(filteredStatus.get(position));
 
         SH.textViewDetailIcon.setTypeface(null, Typeface.NORMAL);
@@ -93,11 +93,11 @@ public class cStatusTreeAdapter_OLD extends RecyclerView.Adapter<cStatusTreeAdap
                 Log.d(TAG,"Detail Test...");
 
                 if (((Switch) buttonView).isChecked()) {
-                    filteredStatus.get(position).setState(true);
-                    statusDomain.setState(true);
+                    filteredStatus.get(position).setChecked(true);
+                    statusDomain.setChecked(true);
                 } else {
-                    filteredStatus.get(position).setState(false);
-                    statusDomain.setState(false);
+                    filteredStatus.get(position).setChecked(false);
+                    statusDomain.setChecked(false);
                 }
 
                 if (appCompatCheckBoxAllStatusOwner != null) {
@@ -125,7 +125,7 @@ public class cStatusTreeAdapter_OLD extends RecyclerView.Adapter<cStatusTreeAdap
      */
     public boolean isAllValuesChecked() {
         for (int i = 0; i < filteredStatus.size(); i++) {
-            if (!filteredStatus.get(i).isState()) {
+            if (!filteredStatus.get(i).isChecked()) {
                 return false;
             }
         }

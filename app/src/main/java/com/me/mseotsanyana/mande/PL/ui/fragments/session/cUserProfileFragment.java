@@ -21,8 +21,8 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.realtime.session.cUserProfileFirebaseRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cSessionManagerImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cSharedPreferenceFirestoreRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cUserProfileFirestoreRepositoryImpl;
 import com.me.mseotsanyana.mande.PL.presenters.session.Impl.cUserProfilePresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.session.iUserProfilePresenter;
 import com.me.mseotsanyana.mande.R;
@@ -94,9 +94,9 @@ public class cUserProfileFragment extends Fragment implements iUserProfilePresen
         userProfilePresenter = new cUserProfilePresenterImpl(
                 cThreadExecutorImpl.getInstance(),
                 cMainThreadImpl.getInstance(),
-                this,null
-                /*new cSessionManagerImpl(getContext())*/,
-                new cUserProfileFirebaseRepositoryImpl(getContext()));
+                this,
+                new cSharedPreferenceFirestoreRepositoryImpl(getContext()),
+                new cUserProfileFirestoreRepositoryImpl(getContext()));
 
         activity = ((AppCompatActivity) getActivity());
     }
@@ -111,7 +111,6 @@ public class cUserProfileFragment extends Fragment implements iUserProfilePresen
         collapsingToolbarLayout.setContentScrimColor(Color.WHITE);
         //collapsingToolbarLayout.setTitle("Organizations");
     }
-
 
     private void initUserProfileViews(View view) {
         LinearLayout includeProgressBar = view.findViewById(R.id.includeProgressBar);

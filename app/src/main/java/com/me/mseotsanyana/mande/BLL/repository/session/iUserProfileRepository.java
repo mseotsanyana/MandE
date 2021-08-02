@@ -25,7 +25,7 @@ public interface iUserProfileRepository {
     void signInWithEmailAndPassword(String email, String password,
                                     iSignInRepositoryCallback callback);
     interface iSignInRepositoryCallback{
-        void onSignInSucceeded(String msg);
+        void onSignInSucceeded();
         void onSignInFailed(String msg);
     }
 

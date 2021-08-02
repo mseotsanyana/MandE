@@ -53,15 +53,14 @@ public class cHomePagePresenterImpl extends cAbstractPresenter implements iHomeP
     }
 
     @Override
-    public void onDefaultHomePageSucceeded(cUserProfileModel userProfileModel,
-                                          List<cMenuModel> menuModels) {
+    public void onDefaultHomePageSucceeded(List<cMenuModel> menuModels) {
         if(this.view != null) {
-            this.view.onDefaultHomePageSucceeded(userProfileModel, menuModels);
+            this.view.onDefaultHomePageSucceeded(menuModels);
         }
     }
 
     @Override
-    public void updateHomePage() {
+    public void loadHomePage() {
         iHomePageInteractor homePageInteractor = new cHomePageInteractorImpl(
                 executor,
                 mainThread,this,
@@ -76,7 +75,7 @@ public class cHomePagePresenterImpl extends cAbstractPresenter implements iHomeP
 
     @Override
     public void resume() {
-        updateHomePage();
+        loadHomePage();
     }
 
     @Override

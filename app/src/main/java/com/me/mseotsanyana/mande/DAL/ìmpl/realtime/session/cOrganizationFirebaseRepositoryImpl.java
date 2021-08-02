@@ -121,7 +121,7 @@ public class cOrganizationFirebaseRepositoryImpl implements iOrganizationReposit
     }
 
     @Override
-    public void readOrganizations(String userServerID, String orgServerID, int primaryTeamBIT, List<Integer> secondaryTeams, List<Integer> statuses, iReadOrganizationsCallback callback) {
+    public void readOrganizations(String organizationID,String userServerID, int primaryTeamBIT, List<Integer> secondaryTeams, List<Integer> statuses, iReadOrganizationsCallback callback) {
 
     }
 
@@ -244,8 +244,8 @@ public class cOrganizationFirebaseRepositoryImpl implements iOrganizationReposit
         // add menu items related to admin role of the organization
         dbOrgRoleMenuRef = database.getReference(cRealtimeHelper.KEY_ROLE_PERMISSIONS);
 
-        Map<cMenuModel, Map<String, cMenuModel>> modelMapHashMap = cDatabaseUtils.
-                getAdminMenuModelSet(context);
+        Map<cMenuModel, Map<String, cMenuModel>> modelMapHashMap = null;
+        //cDatabaseUtils.getAdminMenuModelSet(context);
         for (Map.Entry<cMenuModel, Map<String, cMenuModel>> entry : modelMapHashMap.entrySet()) {
             cMenuModel menuModel = entry.getKey();
             Map<String, cMenuModel> subMenuModelMap = entry.getValue();

@@ -1,8 +1,5 @@
 package com.me.mseotsanyana.mande.BLL.model.session;
 
-import com.google.firebase.firestore.Exclude;
-
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +13,7 @@ public class cPermissionModel {
 
     // module identification and its entities
     private Map<String, List<cEntityModel>> entitymodules;
-    // module identification and its menu items
+    // parent identification and its child menu identification
     private Map<String, List<Integer>> menuitems;
 
     public cPermissionModel(){}
@@ -34,7 +31,6 @@ public class cPermissionModel {
         this.setMenuitems(menuitems);
     }
 
-    @Exclude
     public String getRoleServerID() {
         return roleServerID;
     }

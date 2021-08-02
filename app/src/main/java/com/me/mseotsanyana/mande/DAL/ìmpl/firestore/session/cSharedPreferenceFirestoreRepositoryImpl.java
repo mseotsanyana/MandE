@@ -1,5 +1,6 @@
 package com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -22,17 +23,16 @@ public class cSharedPreferenceFirestoreRepositoryImpl implements iSharedPreferen
 
     private SharedPreferences settings;
     private SharedPreferences.Editor editor;
-    private final Context context;
 
+    @SuppressLint("CommitPrefEdits")
     public cSharedPreferenceFirestoreRepositoryImpl(Context context) {
-        this.context = context;
-        setSettings(this.context.getSharedPreferences(KEY_USER_PREFS, Context.MODE_PRIVATE));
+        setSettings(context.getSharedPreferences(KEY_USER_PREFS, Context.MODE_PRIVATE));
         setEditor(settings.edit());
     }
 
-    public SharedPreferences.Editor getEditor() {
-        return editor;
-    }
+//    public SharedPreferences.Editor getEditor() {
+//        return editor;
+//    }
 
     public void setEditor(SharedPreferences.Editor editor) {
         this.editor = editor;
@@ -139,14 +139,10 @@ public class cSharedPreferenceFirestoreRepositoryImpl implements iSharedPreferen
     }
 
     @Override
-    public String loadUserID() {
-        return settings.getString(cSharedPreference.KEY_USER_ID, null);
-    }
-
-    @Override
     public String loadOrganizationID() {
         return settings.getString(cSharedPreference.KEY_ORG_ID, null);
     }
+
 
     @Override
     public int loadPrimaryTeamBIT() {
@@ -170,6 +166,23 @@ public class cSharedPreferenceFirestoreRepositoryImpl implements iSharedPreferen
     }
 
     @Override
+    public String loadUserID() {
+        return settings.getString(cSharedPreference.KEY_USER_ID, null);
+    }
+
+    @Override
+    public int loadEntityBITS(int moduleKey) {
+        return settings.getInt(cSharedPreference.KEY_MODULE_ENTITY_BITS + "-" +
+                moduleKey, -1);
+    }
+
+    @Override
+    public int loadEntityPermissionBITS(int moduleKey, int entityKey) {
+        return settings.getInt(cSharedPreference.KEY_ENTITY_OPERATION_BITS + "-" +
+                moduleKey + "-" + entityKey, -1);
+    }
+
+    @Override
     public List<Integer> loadOperationStatuses(int moduleKey, int entityKey, int operationKey) {
         String intString = settings.getString(cSharedPreference.KEY_OPERATION_STATUS_BITS + "-" +
                 moduleKey + "-" + entityKey + "-" + operationKey, "");
@@ -184,12 +197,6 @@ public class cSharedPreferenceFirestoreRepositoryImpl implements iSharedPreferen
         } catch (JSONException e) {
             return null;
         }
-    }
-
-    @Override
-    public int loadEntityPermissionBITS(int moduleKey, int entityKey) {
-        return settings.getInt(cSharedPreference.KEY_ENTITY_OPERATION_BITS + "-" +
-                moduleKey + "-" + entityKey, -1);
     }
 
     @Override

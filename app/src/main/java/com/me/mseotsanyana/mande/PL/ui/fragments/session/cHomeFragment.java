@@ -29,7 +29,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
@@ -56,8 +56,8 @@ import java.util.Objects;
 
 public class cHomeFragment extends Fragment implements iHomePagePresenter.View,
         iUserSignOutPresenter.View {
-    private static String TAG = cHomeFragment.class.getSimpleName();
-    private static SimpleDateFormat tsdf = cConstant.TIMESTAMP_FORMAT_DATE;
+    private static final String TAG = cHomeFragment.class.getSimpleName();
+    private static final SimpleDateFormat tsdf = cConstant.TIMESTAMP_FORMAT_DATE;
     //private static SimpleDateFormat ssdf = cConstant.SHORT_FORMAT_DATE;
 
     private Toolbar toolbar;
@@ -92,6 +92,7 @@ public class cHomeFragment extends Fragment implements iHomePagePresenter.View,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //this.IsPermissionLoaded = cHomeFragmentArgs.fromBundle(requireArguments()).getPerm();
     }
 
     @Override
@@ -153,14 +154,14 @@ public class cHomeFragment extends Fragment implements iHomePagePresenter.View,
                 cThreadExecutorImpl.getInstance(),
                 cMainThreadImpl.getInstance(),
                 this,
-                new cSharedPreferenceFirestoreRepositoryImpl(getContext()),
+                new cSharedPreferenceFirestoreRepositoryImpl(requireContext()),
                 new cUserProfileFirestoreRepositoryImpl(getContext()));
 
         homePagePresenter = new cHomePagePresenterImpl(
                 cThreadExecutorImpl.getInstance(),
                 cMainThreadImpl.getInstance(),
                 this,
-                new cSharedPreferenceFirestoreRepositoryImpl(getContext()),
+                new cSharedPreferenceFirestoreRepositoryImpl(requireContext()),
                 new cHomePageFirestoreRepositoryImpl(getContext()));
 
         /* initialize the toolbar */
@@ -212,7 +213,7 @@ public class cHomeFragment extends Fragment implements iHomePagePresenter.View,
         //
         drawerToggle.setDrawerIndicatorEnabled(true);
 
-        // Sync the toggle state after onRestoreInstanceState has occured
+        // Sync the toggle state after onRestoreInstanceState has occur
         // and show the display menu icon
         drawerToggle.syncState();
     }
@@ -232,7 +233,8 @@ public class cHomeFragment extends Fragment implements iHomePagePresenter.View,
         });
 
         /*expandableListView.setOnGroupCollapseListener(groupPosition ->
-                        Objects.requireNonNull(activity.getSupportActionBar()).setTitle(R.string.app_name));*/
+                        Objects.requireNonNull(activity.getSupportActionBar()).
+                        setTitle(R.string.app_name));*/
 
         // called when clicking on parent menu item...
         expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -241,13 +243,15 @@ public class cHomeFragment extends Fragment implements iHomePagePresenter.View,
              * been clicked.
              *
              * @param parent        The ExpandableListConnector where the click happened
-             * @param v             The view within the expandable action_list/ListView that was clicked
+             * @param v             The view within the expandable action_list/ListView
+             *                      that was clicked
              * @param groupPosition The group position that was clicked
              * @param id            The row id of the group that was clicked
              * @return True if the click was handled
              */
             @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition,
+                                        long id) {
                 boolean retVal = true; // used to enable expanding to child menu items
                 cMenuModel menuModel = expandableListAdapter.getGroup(groupPosition);
                 switch (menuModel.getMenuServerID()) {
@@ -287,22 +291,27 @@ public class cHomeFragment extends Fragment implements iHomePagePresenter.View,
             cMenuModel parentModel = expandableListAdapter.getGroup(groupPosition);
             cMenuModel childModel = expandableListAdapter.getChild(groupPosition, childPosition);
 
+            NavDirections action;
+
             switch (parentModel.getMenuServerID()) {
                 case 0: // Admin
                     switch (childModel.getMenuServerID()) {
                         case 1: // Profile
-                            NavDirections action;
-                            action = cHomeFragmentDirections.actionCHomeFragmentToCUserProfileFragment();
+                            action = cHomeFragmentDirections.
+                                    actionCHomeFragmentToCUserProfileFragment();
                             Navigation.findNavController(requireView()).navigate(action);
-                            Toast.makeText(getActivity(), "Profile Fragment", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getActivity(),
+                            // "Profile Fragment", Toast.LENGTH_SHORT).show();
                             break;
 
                         case 2: // Account Settings
-                            Toast.makeText(getActivity(), "Account Fragment", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(),
+                                    "Account Fragment", Toast.LENGTH_SHORT).show();
                             break;
 
                         case 4: // Join Org.
-                            Toast.makeText(getActivity(), "Join Org. Fragment", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(),
+                                    "Join Org. Fragment", Toast.LENGTH_SHORT).show();
                             break;
 
                         default:
@@ -313,21 +322,27 @@ public class cHomeFragment extends Fragment implements iHomePagePresenter.View,
                 case 8:
                     switch (childModel.getMenuServerID()) {
                         case 16:
-                            Toast.makeText(getActivity(), "Organization members Fragment",
-                                    Toast.LENGTH_SHORT).show();
+                            action = cHomeFragmentDirections.
+                                    actionCHomeFragmentToCOrganizationMemberFragment();
+                            Navigation.findNavController(requireView()).navigate(action);
                             break;
+
                         case 32:
-                            Toast.makeText(getActivity(), "Team Roles Fragment",
-                                    Toast.LENGTH_SHORT).show();
+                            action = cHomeFragmentDirections.
+                                    actionCHomeFragmentToCTeamRoleFragment();
+                            Navigation.findNavController(requireView()).navigate(action);
                             break;
+
                         case 64:
-                            Toast.makeText(getActivity(), "Entity Permissions Fragment",
-                                    Toast.LENGTH_SHORT).show();
+                            action = cHomeFragmentDirections.
+                                    actionCHomeFragmentToCPermissionFragment();
+                            Navigation.findNavController(requireView()).navigate(action);
                             break;
-                        case 128:
-                            Toast.makeText(getActivity(), "Menu Permissions Fragment",
-                                    Toast.LENGTH_SHORT).show();
-                            break;
+
+//                        case 128:
+//                            Toast.makeText(getActivity(), "Menu Permissions Fragment",
+//                                    Toast.LENGTH_SHORT).show();
+//                            break;
                         default:
                             break;
                     }
@@ -343,13 +358,17 @@ public class cHomeFragment extends Fragment implements iHomePagePresenter.View,
 
     /* bottom navigation views */
     private void initBottomNavigationViews(View view) {
-        BottomNavigationView bottomNavigationView = view.findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+        NavigationBarView navigationBarView = view.findViewById(R.id.bottomNavigationView);
+        navigationBarView.setOnItemSelectedListener(onItemSelectedListener);
         openFragment(cDashboardFragment.newInstance());
+
+//        BottomNavigationView bottomNavigationView = view.findViewById(R.id.bottomNavigationView);
+//        bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+//        openFragment(cDashboardFragment.newInstance());
     }
 
     @SuppressLint("NonConstantResourceId")
-    BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
+    NavigationBarView.OnItemSelectedListener onItemSelectedListener =
             item -> {
                 switch (item.getItemId()) {
                     case R.id.cDashboardFragment:
@@ -366,6 +385,25 @@ public class cHomeFragment extends Fragment implements iHomePagePresenter.View,
                 }
                 return false;
             };
+
+//@SuppressLint("NonConstantResourceId")
+//    BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener=
+//            item->{
+//            switch(item.getItemId()){
+//            case R.id.cDashboardFragment:
+//            openFragment(cDashboardFragment.newInstance());
+//            return true;
+//
+//            case R.id.cMessagesFragment:
+//            openFragment(cMessagesFragment.newInstance());
+//            return true;
+//
+//            case R.id.cSettingsFragment:
+//            openFragment(cSettingsFragment.newInstance());
+//            return true;
+//            }
+//            return false;
+//            };
 
     @SuppressLint("SetTextI18n")
     private void populateHeaderViews() {
@@ -483,23 +521,22 @@ public class cHomeFragment extends Fragment implements iHomePagePresenter.View,
     }
 
     @Override
-    public void onReadHomePageFailed(String msg) {
-        hideProgress();
-    }
-
-    @SuppressLint("SetTextI18n")
-    @Override
-    public void onDefaultHomePageSucceeded(cUserProfileModel userProfileModel, List<cMenuModel> menuModels) {
-        /* update the user profile */
+    public void onDefaultHomePageSucceeded(List<cMenuModel> menuModels) {
+        /* update the user profile
         currentDate.setText(tsdf.format(Calendar.getInstance().getTime()));
         displayName.setText(userProfileModel.getName() + " " + userProfileModel.getSurname());
-        displayEmail.setText(userProfileModel.getEmail());
+        displayEmail.setText(userProfileModel.getEmail());*/
+
         // update the menu when there is a change
         this.expandableListAdapter.setMenuModels(menuModels);
         this.expandableListAdapter.notifyDataSetChanged();
         hideProgress();
     }
 
+    @Override
+    public void onReadHomePageFailed(String msg) {
+        hideProgress();
+    }
 
     @Override
     public void showProgress() {

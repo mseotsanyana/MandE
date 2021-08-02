@@ -503,10 +503,10 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
         final List<cKeyPairBoolData> keyPairBoolStatuses = new ArrayList<>();
         for (int i = 0; i < statusDomains.size(); i++) {
             cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-            idNameBool.setId(statusDomains.get(i).getStatusID());
+            idNameBool.setId(statusDomains.get(i).getStatusServerID());
             idNameBool.setName(statusDomains.get(i).getName());
-            if ((userDomain.getStatusBITS() & statusDomains.get(i).getStatusID()) ==
-                    statusDomains.get(i).getStatusID()) {
+            if ((userDomain.getStatusBITS() & statusDomains.get(i).getStatusServerID()) ==
+                    statusDomains.get(i).getStatusServerID()) {
                 idNameBool.setSelected(true);
             } else {
                 idNameBool.setSelected(false);

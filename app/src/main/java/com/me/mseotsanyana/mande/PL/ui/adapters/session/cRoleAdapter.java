@@ -116,7 +116,7 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
         View view, viewStatus;
         switch (viewType) {
             case ROLE:
-                view = inflater.inflate(R.layout.role_cardview, parent, false);
+                view = inflater.inflate(R.layout.session_role_cardview, parent, false);
                 //viewStatus = inflater.inflate(R.layout.status_cardview, parent, false);
                 viewHolder = new cRoleTreeViewHolder(view);
                 break;
@@ -558,7 +558,7 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                     final List<cKeyPairBoolData> keyPairBoolStatuses = new ArrayList<>();
                     for (int i = 0; i < statusDomains.size(); i++) {
                         cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-                        idNameBool.setId(statusDomains.get(i).getStatusID());
+                        idNameBool.setId(statusDomains.get(i).getStatusServerID());
                         idNameBool.setName(statusDomains.get(i).getName());
                         if (true/*(roleDomain.getStatusBITS() & statusDomains.get(i).getStatusID()) ==
                                 statusDomains.get(i).getStatusID()*/) {
@@ -765,15 +765,15 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
         public cRoleTreeViewHolder(final View treeViewHolder) {
             super(treeViewHolder);
             treeView = treeViewHolder;
-            this.textViewRoleName = (TextView) treeViewHolder.findViewById(R.id.textViewRoleName);
+//            this.textViewRoleName = (TextView) treeViewHolder.findViewById(R.id.textViewRoleName);
             this.textViewDescription = (TextView) treeViewHolder.findViewById(R.id.textViewDescription);
-            this.textViewCountUser = (TextView) treeViewHolder.findViewById(R.id.textViewCountUser);
-            this.textViewExpandRoleIcon = (TextView) treeViewHolder.findViewById(R.id.textViewExpandRoleIcon);
+//            this.textViewCountUser = (TextView) treeViewHolder.findViewById(R.id.textViewCountUser);
+//            this.textViewExpandRoleIcon = (TextView) treeViewHolder.findViewById(R.id.textViewExpandRoleIcon);
             this.textViewQuickActionIcon = (TextView) treeViewHolder.findViewById(R.id.textViewQuickActionIcon);
-            this.textViewRoleDetailIcon = (TextView) treeViewHolder.findViewById(R.id.textViewRoleDetailIcon);
-            this.textViewSyncRoleIcon = (TextView) treeViewHolder.findViewById(R.id.textViewSyncRoleIcon);
-            this.textViewDeleteRoleIcon = (TextView) treeViewHolder.findViewById(R.id.textViewDeleteRoleIcon);
-            this.textViewEditRoleIcon = (TextView) treeViewHolder.findViewById(R.id.textViewEditRoleIcon);
+//            this.textViewRoleDetailIcon = (TextView) treeViewHolder.findViewById(R.id.textViewRoleDetailIcon);
+//            this.textViewSyncRoleIcon = (TextView) treeViewHolder.findViewById(R.id.textViewSyncRoleIcon);
+//            this.textViewDeleteRoleIcon = (TextView) treeViewHolder.findViewById(R.id.textViewDeleteRoleIcon);
+//            this.textViewEditRoleIcon = (TextView) treeViewHolder.findViewById(R.id.textViewEditRoleIcon);
 
             this.expandableLayout = (cExpandableLayout) treeViewHolder.findViewById(R.id.expandableLayout);
 

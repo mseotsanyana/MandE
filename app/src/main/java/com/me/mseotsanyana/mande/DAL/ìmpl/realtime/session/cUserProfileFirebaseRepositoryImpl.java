@@ -118,7 +118,7 @@ public class cUserProfileFirebaseRepositoryImpl implements iUserProfileRepositor
                                 FirebaseAuth.getInstance().signOut();
                             } else {
                                 Log.d(TAG, "signInWithEmail:success");
-                                callback.onSignInSucceeded("Authentication succeeded");
+                                callback.onSignInSucceeded();
 
 
                             /*DatabaseReference dbReference = database.getReference(cRealtimeHelper.KEY_USERS);

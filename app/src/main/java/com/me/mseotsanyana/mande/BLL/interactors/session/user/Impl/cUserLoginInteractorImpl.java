@@ -15,21 +15,21 @@ import java.util.List;
 public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUserLoginInteractor {
     private final Callback callback;
     private final iSharedPreferenceRepository sharedPreferenceRepository;
-    private final iPermissionRepository privilegeRepository;
+    private final iPermissionRepository permissionRepository;
     private final iUserProfileRepository userProfileRepository;
-
 
     private final String email;
     private final String password;
 
-    public cUserLoginInteractorImpl(iExecutor threadExecutor, iMainThread mainThread, Callback callback,
+    public cUserLoginInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,
+                                    Callback callback,
                                     iSharedPreferenceRepository sharedPreferenceRepository,
-                                    iPermissionRepository privilegeRepository,
+                                    iPermissionRepository permissionRepository,
                                     iUserProfileRepository userProfileRepository,
                                     String email, String password) {
         super(threadExecutor, mainThread);
 
-        if (privilegeRepository == null || sharedPreferenceRepository == null ||
+        if (permissionRepository == null || sharedPreferenceRepository == null ||
                 userProfileRepository == null || callback == null) {
             throw new IllegalArgumentException("Arguments can not be null!");
         }
@@ -39,7 +39,7 @@ public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUs
         // repository interface for shared preferences
         this.sharedPreferenceRepository = sharedPreferenceRepository;
         // repository interface for loggedIn privileges
-        this.privilegeRepository = privilegeRepository;
+        this.permissionRepository = permissionRepository;
         // repository interface for user profile - menu, user account
         this.userProfileRepository = userProfileRepository;
 
@@ -48,48 +48,44 @@ public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUs
     }
 
     /**
-     * communicate error message to the presentation layer
+     * send an error message to the user
      *
      * @param msg error message
      */
-    private void notifyError(String msg) {
-        mainThread.post(new Runnable() {
-            @Override
-            public void run() {
-                callback.onUserLoginFailed(msg);
-            }
-        });
+    private void userLoginFailed(String msg) {
+        mainThread.post(() -> callback.onUserLoginFailed(msg));
     }
 
     /**
-     * communicate login communication message to the
-     * presentation layer
+     * send a login success message to the user
      *
      * @param msg success message
      */
-    private void postMessage(String msg) {
-        mainThread.post(new Runnable() {
-            @Override
-            public void run() {
-                callback.onUserLoginSucceeded(msg);
-            }
-        });
+    private void userLoginSucceeded(String msg) {
+        mainThread.post(() -> callback.onUserLoginSucceeded(msg));
+    }
+
+    /**
+     * load default settings
+     */
+    private void loadDefaultSettings(String msg){
+        mainThread.post(() -> callback.onUserLoginSucceeded(msg));
     }
 
     /**
      * delete old and save new user privileges of the loggedIn user
      */
-    private void saveUserPrivileges(String msg) {
-        this.privilegeRepository.saveUserPermissions(new iPermissionRepository.
+    private void saveUserPermissions() {
+        this.permissionRepository.saveUserPermissions(new iPermissionRepository.
                 iSaveUserPermissionsCallback() {
             @Override
-            public void onSaveUserPermissionsSucceeded(String privilegeMessage) {
-                postMessage(msg);
+            public void onSaveUserPermissionsSucceeded(String successMessage) {
+                userLoginSucceeded(successMessage);
             }
 
             @Override
-            public void onSaveUserPermissionsFailed(String privilegeMessage) {
-                notifyError("Failure:" + privilegeMessage);
+            public void onSaveUserPermissionsFailed(String errorMessage) {
+                userLoginFailed(errorMessage);
             }
 
             @Override
@@ -108,8 +104,8 @@ public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUs
 
             @Override
             public void onSavePrimaryTeamBIT(int primaryTeamBIT) {
-                sharedPreferenceRepository.saveIntSetting(cSharedPreference.KEY_PRIMARY_TEAM_BIT,
-                        primaryTeamBIT);
+                sharedPreferenceRepository.saveIntSetting(
+                        cSharedPreference.KEY_PRIMARY_TEAM_BIT, primaryTeamBIT);
                 sharedPreferenceRepository.commitSettings();
             }
 
@@ -129,10 +125,11 @@ public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUs
             }
 
             @Override
-            public void onSaveEntityPermBITS(String moduleKey, String entityKey, int operationBITS) {
+            public void onSaveEntityPermBITS(String moduleKey, String entityKey,
+                                             int operationBITS) {
                 sharedPreferenceRepository.saveIntSetting(
-                        cSharedPreference.KEY_ENTITY_OPERATION_BITS + "-" + moduleKey + "-" + entityKey,
-                        operationBITS);
+                        cSharedPreference.KEY_ENTITY_OPERATION_BITS + "-" + moduleKey + "-" +
+                                entityKey, operationBITS);
                 sharedPreferenceRepository.commitSettings();
             }
 
@@ -140,8 +137,8 @@ public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUs
             public void onSaveStatusBITS(String moduleKey, String entityKey, String operationKey,
                                          List<Integer> statuses) {
                 sharedPreferenceRepository.saveListIntegerSetting(
-                        cSharedPreference.KEY_OPERATION_STATUS_BITS + "-" + moduleKey + "-" + entityKey + "-" +
-                                operationKey, statuses);
+                        cSharedPreference.KEY_OPERATION_STATUS_BITS + "-" + moduleKey + "-" +
+                                entityKey + "-" + operationKey, statuses);
                 sharedPreferenceRepository.commitSettings();
             }
 
@@ -164,22 +161,27 @@ public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUs
             public void onClearPreferences() {
                 sharedPreferenceRepository.deleteSettings();
             }
+
+            @Override
+            public void onLoadDefaultSettings(String msg) {
+                loadDefaultSettings(msg);
+            }
         });
     }
 
     @Override
     public void run() {
-
+        /* sign in with email and password */
         userProfileRepository.signInWithEmailAndPassword(email, password,
                 new iUserProfileRepository.iSignInRepositoryCallback() {
                     @Override
-                    public void onSignInSucceeded(String msg) {
-                        saveUserPrivileges(msg);
+                    public void onSignInSucceeded() {
+                        saveUserPermissions();
                     }
 
                     @Override
                     public void onSignInFailed(String msg) {
-                        notifyError(msg);
+                        userLoginFailed(msg);
                     }
                 });
     }

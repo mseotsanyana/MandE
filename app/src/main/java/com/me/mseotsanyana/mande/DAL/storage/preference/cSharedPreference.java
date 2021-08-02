@@ -34,9 +34,11 @@ public class cSharedPreference {
     public static final int PLAN             = 4;
     public static final int FEATURE          = 8;
     public static final int ORGANIZATION     = 16;
-    public static final int TEAM             = 32;
-    public static final int ROLE             = 64;
-    public static final int PRIVILEGE        = 128;
+    public static final int USERACCOUNT      = 32;
+    public static final int TEAM             = 64;
+    public static final int ROLE             = 128;
+    public static final int PERMISSION       = 256;
+
 
     /* system entity operation constants */
     public static final int CREATE           = 1;
@@ -44,6 +46,8 @@ public class cSharedPreference {
     public static final int UPDATE           = 4;
     public static final int DELETE           = 8;
     public static final int JOIN             = 16;
+    public static final int UPLOAD           = 32;
+    public static final int DOWNLOAD         = 64;
 
     /* unix-style row-level operations */
     public static final int OWNER_READ       = 2048;

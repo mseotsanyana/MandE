@@ -11,16 +11,15 @@ import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.me.mseotsanyana.expandablelayoutlibrary.cExpandableLayout;
 import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
 import com.me.mseotsanyana.mande.R;
-import com.me.mseotsanyana.mande.UTIL.cConstant;
+//import com.me.mseotsanyana.mande.UTIL.cConstant;
 import com.me.mseotsanyana.mande.UTIL.cFontManager;
 
-import java.text.SimpleDateFormat;
+//import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,10 +27,11 @@ import java.util.List;
  * Created by mseotsanyana on 2017/02/27.
  */
 
-public class cOrganizationAdapter extends RecyclerView.Adapter<cOrganizationAdapter.cOrganizationViewHolder>
+public class cOrganizationAdapter extends RecyclerView.Adapter<cOrganizationAdapter.
+        cOrganizationViewHolder>
         implements Filterable {
-    private static String TAG = cOrganizationAdapter.class.getSimpleName();
-    private static SimpleDateFormat sdf = cConstant.SHORT_FORMAT_DATE;
+    //private static String TAG = cOrganizationAdapter.class.getSimpleName();
+    //private static SimpleDateFormat sdf = cConstant.SHORT_FORMAT_DATE;
 
     private final Context context;
     private List<cOrganizationModel> organizationModels;
@@ -105,11 +105,8 @@ public class cOrganizationAdapter extends RecyclerView.Adapter<cOrganizationAdap
                 cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
         OH.textViewDeleteIcon.setTextColor(context.getColor(R.color.colorPrimary));
         OH.textViewDeleteIcon.setText(context.getResources().getString(R.string.fa_delete));
-        OH.textViewDeleteIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //PVH.logFrameListener.onClickDeleteLogFrame(position,parentLogFrame.getLogFrameID());
-            }
+        OH.textViewDeleteIcon.setOnClickListener(view -> {
+            //PVH.logFrameListener.onClickDeleteLogFrame(position,parentLogFrame.getLogFrameID());
         });
 
         /* icon for saving updated record */
@@ -118,11 +115,8 @@ public class cOrganizationAdapter extends RecyclerView.Adapter<cOrganizationAdap
                 cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
         OH.textViewUpdateIcon.setTextColor(context.getColor(R.color.colorPrimary));
         OH.textViewUpdateIcon.setText(context.getResources().getString(R.string.fa_update));
-        OH.textViewUpdateIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //HPH.logFrameListener.onClickUpdateLogFrame(position, parentLogFrame);
-            }
+        OH.textViewUpdateIcon.setOnClickListener(view -> {
+            //HPH.logFrameListener.onClickUpdateLogFrame(position, parentLogFrame);
         });
 
         /* icon for joining a record */
@@ -131,11 +125,8 @@ public class cOrganizationAdapter extends RecyclerView.Adapter<cOrganizationAdap
                 cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
         OH.textViewJoinIcon.setTextColor(context.getColor(R.color.colorPrimary));
         OH.textViewJoinIcon.setText(context.getResources().getString(R.string.fa_join));
-        OH.textViewJoinIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //PVH.logFrameListener.onClickSyncLogFrame(position, parentLogFrame);
-            }
+        OH.textViewJoinIcon.setOnClickListener(view -> {
+            //PVH.logFrameListener.onClickSyncLogFrame(position, parentLogFrame);
         });
 
         /* icon for creating a record */
@@ -144,11 +135,8 @@ public class cOrganizationAdapter extends RecyclerView.Adapter<cOrganizationAdap
                 cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
         OH.textViewCreateIcon.setTextColor(context.getColor(R.color.colorPrimary));
         OH.textViewCreateIcon.setText(context.getResources().getString(R.string.fa_create));
-        OH.textViewCreateIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //PVH.logFrameListener.onClickSyncLogFrame(position, parentLogFrame);
-            }
+        OH.textViewCreateIcon.setOnClickListener(view -> {
+            //PVH.logFrameListener.onClickSyncLogFrame(position, parentLogFrame);
         });
 
         // collapse and expansion of the details of the role
@@ -156,17 +144,14 @@ public class cOrganizationAdapter extends RecyclerView.Adapter<cOrganizationAdap
         OH.textViewDetailIcon.setTypeface(cFontManager.getTypeface(context, cFontManager.FONTAWESOME));
         OH.textViewDetailIcon.setTextColor(context.getColor(R.color.colorPrimaryDark));
         OH.textViewDetailIcon.setText(context.getResources().getString(R.string.fa_angle_down));
-        OH.textViewDetailIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!(OH.expandableLayout.isExpanded())) {
-                    OH.textViewDetailIcon.setText(context.getResources().getString(R.string.fa_angle_up));
-                } else {
-                    OH.textViewDetailIcon.setText(context.getResources().getString(R.string.fa_angle_down));
-                }
-
-                OH.expandableLayout.toggle();
+        OH.textViewDetailIcon.setOnClickListener(view -> {
+            if (!(OH.expandableLayout.isExpanded())) {
+                OH.textViewDetailIcon.setText(context.getResources().getString(R.string.fa_angle_up));
+            } else {
+                OH.textViewDetailIcon.setText(context.getResources().getString(R.string.fa_angle_down));
             }
+
+            OH.expandableLayout.toggle();
         });
     }
 
@@ -202,7 +187,7 @@ public class cOrganizationAdapter extends RecyclerView.Adapter<cOrganizationAdap
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                filteredOrganizationModels = (ArrayList<cOrganizationModel>) filterResults.values;
+                filteredOrganizationModels = null;//(ArrayList<cOrganizationModel>) filterResults.values;
                 notifyDataSetChanged();
             }
         };
@@ -231,7 +216,7 @@ public class cOrganizationAdapter extends RecyclerView.Adapter<cOrganizationAdap
             super(viewHolder);
             this.viewHolder = viewHolder;
 
-            CardView cardView = viewHolder.findViewById(R.id.cardView);
+            //CardView cardView = viewHolder.findViewById(R.id.cardView);
             this.expandableLayout = viewHolder.findViewById(R.id.expandableLayout);
 
             this.textViewName = viewHolder.findViewById(R.id.textViewName);

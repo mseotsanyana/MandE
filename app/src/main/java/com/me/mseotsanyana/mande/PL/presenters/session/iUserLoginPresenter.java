@@ -10,8 +10,8 @@ import com.me.mseotsanyana.mande.PL.ui.iBaseView;
 public interface iUserLoginPresenter extends iPresenter {
     /* implemented in either Fragments and/or Activities. Called in PresenterImpl */
     interface View extends iBaseView {
-        void onUserLoginFailed(String msg);
         void onUserLoginSucceeded(String msg);
+        void onUserLoginFailed(String msg);
 
         EditText getEmailEditText();
         EditText getPasswordEditText();

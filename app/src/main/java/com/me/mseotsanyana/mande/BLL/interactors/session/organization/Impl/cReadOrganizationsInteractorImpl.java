@@ -5,6 +5,7 @@ import android.util.Log;
 import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
+import com.me.mseotsanyana.mande.BLL.interactors.cInteractorUtils;
 import com.me.mseotsanyana.mande.BLL.interactors.session.organization.iReadOrganizationsInteractor;
 import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
 import com.me.mseotsanyana.mande.BLL.repository.session.iOrganizationRepository;
@@ -18,18 +19,16 @@ public class cReadOrganizationsInteractorImpl extends cAbstractInteractor implem
     private static final String TAG = cReadOrganizationsInteractorImpl.class.getSimpleName();
 
     private final Callback callback;
-    //private final iSharedPreferenceRepository sharedPreferenceRepository;
     private final iOrganizationRepository organizationRepository;
-
 
     private final String userServerID;
     private final String organizationServerID;
     private final int primaryTeamBIT;
-    private final List<Integer> secondaryTeams;
-    private final List<Integer> statuses;
+    private final List<Integer> secondaryTeamBITS;
+    private final List<Integer> statusBITS;
 
+    private final int entityBITS;
     private final int entitypermBITS;
-    private final int unixpermBITS;
 
     public cReadOrganizationsInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,
                                             iSharedPreferenceRepository sharedPreferenceRepository,
@@ -42,69 +41,72 @@ public class cReadOrganizationsInteractorImpl extends cAbstractInteractor implem
             throw new IllegalArgumentException("Arguments can not be null!");
         }
 
-        //this.sharedPreferenceRepository = sharedPreferenceRepository;
+        // initialise objects
         this.organizationRepository = organizationRepository;
         this.callback = callback;
 
-        // load shared preferences
-        this.userServerID = sharedPreferenceRepository.loadUserID();
+        // load user shared preferences
         this.organizationServerID = sharedPreferenceRepository.loadOrganizationID();
+        this.userServerID = sharedPreferenceRepository.loadUserID();
         this.primaryTeamBIT = sharedPreferenceRepository.loadPrimaryTeamBIT();
-        this.secondaryTeams = sharedPreferenceRepository.loadSecondaryTeams();
-        if (this.secondaryTeams.isEmpty()) {
-            this.secondaryTeams.add(0);
-        }
+        this.secondaryTeamBITS = sharedPreferenceRepository.loadSecondaryTeams();
+
+        // load entity shared preferences
+        this.entityBITS = sharedPreferenceRepository.loadEntityBITS(
+                cSharedPreference.SESSION_MODULE);
         this.entitypermBITS = sharedPreferenceRepository.loadEntityPermissionBITS(
                 cSharedPreference.SESSION_MODULE, cSharedPreference.ORGANIZATION);
-        this.statuses = sharedPreferenceRepository.loadOperationStatuses(
+        this.statusBITS = sharedPreferenceRepository.loadOperationStatuses(
                 cSharedPreference.SESSION_MODULE, cSharedPreference.ORGANIZATION,
                 cSharedPreference.READ);
 
-        this.unixpermBITS = sharedPreferenceRepository.loadUnixPermissionBITS(
-                cSharedPreference.SESSION_MODULE, cSharedPreference.ORGANIZATION);
-
-        Log.d(TAG, " \n USER ID = " + this.userServerID +
-                " \n ORGANIZATION ID = " + this.organizationServerID +
+        Log.d(TAG, " \n ORGANIZATION ID = " + this.organizationServerID +
+                " \n USER ID = " + this.userServerID +
                 " \n PRIMARY TEAM BIT = " + this.primaryTeamBIT +
-                " \n SECONDARY TEAM BITS = " + this.secondaryTeams +
+                " \n SECONDARY TEAM BITS = " + this.secondaryTeamBITS +
+                " \n ENTITY BITS = " + this.entityBITS +
                 " \n ENTITY PERMISSION BITS = " + this.entitypermBITS +
-                " \n OPERATION STATUSES = " + this.statuses +
-                " \n UNIX PERMISSIONS = " + this.unixpermBITS);
+                " \n OPERATION STATUSES = " + this.statusBITS);
     }
 
     /* */
     private void notifyError(String msg) {
-        mainThread.post(new Runnable() {
-            @Override
-            public void run() {
-                callback.onReadOrganizationsFailed(msg);
-            }
-        });
+        mainThread.post(() -> callback.onReadOrganizationsFailed(msg));
     }
 
     /* */
     private void postMessage(List<cOrganizationModel> organizationModels) {
-        mainThread.post(new Runnable() {
-            @Override
-            public void run() {
-                callback.onReadOrganizationsRetrieved(organizationModels);
-            }
-        });
+        mainThread.post(() -> callback.onReadOrganizationsRetrieved(organizationModels));
     }
 
     @Override
     public void run() {
-        organizationRepository.readOrganizations(organizationServerID, userServerID,
-                primaryTeamBIT, secondaryTeams, statuses, new iOrganizationRepository.iReadOrganizationsCallback() {
-                    @Override
-                    public void onReadOrganizationsSucceeded(List<cOrganizationModel> organizationModels) {
-                        postMessage(organizationModels);
-                    }
+        if (cInteractorUtils.isSettingsNonNull(organizationServerID, userServerID, entityBITS,
+                entitypermBITS, primaryTeamBIT, secondaryTeamBITS, statusBITS)) {
+            if ((this.entityBITS & cSharedPreference.ORGANIZATION) != 0) {
+                if ((this.entitypermBITS & cSharedPreference.READ) != 0) {
+                    organizationRepository.readOrganizations(organizationServerID, userServerID,
+                            primaryTeamBIT, secondaryTeamBITS, statusBITS,
+                            new iOrganizationRepository.iReadOrganizationsCallback() {
+                                @Override
+                                public void onReadOrganizationsSucceeded(
+                                        List<cOrganizationModel> organizationModels) {
+                                    postMessage(organizationModels);
+                                }
 
-                    @Override
-                    public void onReadOrganizationsFailed(String msg) {
-                        notifyError(msg);
-                    }
-                });
+                                @Override
+                                public void onReadOrganizationsFailed(String msg) {
+                                    notifyError(msg);
+                                }
+                            });
+                } else {
+                    notifyError("Permission denied! Please contact your administrator");
+                }
+            } else {
+                notifyError("No access to the entity! Please contact your administrator");
+            }
+        }else {
+            notifyError("Error in default settings");
+        }
     }
 }

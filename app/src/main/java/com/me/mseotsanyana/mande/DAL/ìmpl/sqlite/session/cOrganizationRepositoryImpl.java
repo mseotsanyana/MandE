@@ -215,7 +215,7 @@ public class cOrganizationRepositoryImpl implements iOrganizationRepository {
     }
 
     @Override
-    public void readOrganizations(String userServerID, String orgServerID, int primaryTeamBIT,
+    public void readOrganizations(String organizationID, String userServerID, int primaryTeamBIT,
                                   List<Integer> secondaryTeams, List<Integer> statuses,
                                   iReadOrganizationsCallback callback) {
 

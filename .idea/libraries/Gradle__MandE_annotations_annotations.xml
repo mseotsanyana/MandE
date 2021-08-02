@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Gradle: MandE.annotations.annotations">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../Libraries/annotations/build/libs/annotations.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

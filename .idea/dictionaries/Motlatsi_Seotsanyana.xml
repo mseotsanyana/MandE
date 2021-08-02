@@ -1,6 +1,7 @@
 <component name="ProjectDictionaryState">
   <dictionary name="Motlatsi.Seotsanyana">
     <words>
+      <w>aclonica</w>
       <w>actiontask</w>
       <w>activityassignment</w>
       <w>activitylog</w>
@@ -24,11 +25,13 @@
       <w>barchart</w>
       <w>benefactoragreement</w>
       <w>bilateralagreement</w>
+      <w>bmblibrary</w>
       <w>brbac</w>
       <w>bubblechart</w>
       <w>candlestickchart</w>
       <w>cardview</w>
       <w>ccolumns</w>
+      <w>closedate</w>
       <w>colchoice</w>
       <w>coloption</w>
       <w>combinedchart</w>
@@ -52,6 +55,7 @@
       <w>dependencyaction</w>
       <w>dependencyregister</w>
       <w>dependencyreview</w>
+      <w>devicestate</w>
       <w>dialpad</w>
       <w>disaggregate</w>
       <w>enddate</w>
@@ -65,6 +69,7 @@
       <w>firestore</w>
       <w>firstname</w>
       <w>fiscalyear</w>
+      <w>freemium</w>
       <w>funder</w>
       <w>horizontalchart</w>
       <w>humanset</w>
@@ -82,6 +87,8 @@
       <w>issuereview</w>
       <w>jsons</w>
       <w>lastname</w>
+      <w>lesedi</w>
+      <w>likeleli</w>
       <w>linechart</w>
       <w>logframe</w>
       <w>logframes</w>
@@ -101,8 +108,10 @@
       <w>matrixtype</w>
       <w>menuitems</w>
       <w>milestonereview</w>
+      <w>motlatsi</w>
       <w>mquestion</w>
       <w>mseotsanyana</w>
+      <w>networktype</w>
       <w>numericresponse</w>
       <w>opsstatus</w>
       <w>opstatus</w>
@@ -163,14 +172,17 @@
       <w>rowoption</w>
       <w>scatterchart</w>
       <w>scorecriteria</w>
+      <w>seotsanyana</w>
       <w>ssdf</w>
       <w>startdate</w>
       <w>statusset</w>
       <w>statussets</w>
       <w>stnd</w>
       <w>submenuitems</w>
+      <w>syncperiod</w>
       <w>taskassignment</w>
       <w>textresponse</w>
+      <w>thato</w>
       <w>timesheet</w>
       <w>tsdf</w>
       <w>unixoperation</w>
@@ -183,6 +195,7 @@
       <w>usercomment</w>
       <w>userprofiles</w>
       <w>workplan</w>
+      <w>workplans</w>
     </words>
   </dictionary>
 </component>
