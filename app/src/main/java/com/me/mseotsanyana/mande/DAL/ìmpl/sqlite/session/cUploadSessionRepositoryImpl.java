@@ -935,8 +935,7 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
 
             cStatusModel statusModel = new cStatusModel();
 
-            statusModel.setStatusServerID((int) cRow.getCell(0,
-                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            //statusModel.setStatusServerID((int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             statusModel.setName(cRow.getCell(1,
                     Row.CREATE_NULL_AS_BLANK).getStringCellValue());
             statusModel.setDescription(cRow.getCell(2,

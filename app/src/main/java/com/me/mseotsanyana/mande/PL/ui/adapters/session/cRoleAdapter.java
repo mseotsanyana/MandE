@@ -558,7 +558,7 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
                     final List<cKeyPairBoolData> keyPairBoolStatuses = new ArrayList<>();
                     for (int i = 0; i < statusDomains.size(); i++) {
                         cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-                        idNameBool.setId(statusDomains.get(i).getStatusServerID());
+                        idNameBool.setId(Integer.parseInt(statusDomains.get(i).getStatusServerID()));
                         idNameBool.setName(statusDomains.get(i).getName());
                         if (true/*(roleDomain.getStatusBITS() & statusDomains.get(i).getStatusID()) ==
                                 statusDomains.get(i).getStatusID()*/) {

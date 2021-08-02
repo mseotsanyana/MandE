@@ -51,7 +51,7 @@ public class cCommonStatusAdapter extends RecyclerView.Adapter<cCommonStatusAdap
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 SwitchMaterial sc = (SwitchMaterial) buttonView;
                 cStatusModel statusModel = (cStatusModel) sc.getTag();
-                int statusID = statusModel.getStatusServerID();
+                int statusID = Integer.parseInt(statusModel.getStatusServerID());
 
                 if (((SwitchMaterial) buttonView).isChecked()) {
                     statusBITS |= statusID;

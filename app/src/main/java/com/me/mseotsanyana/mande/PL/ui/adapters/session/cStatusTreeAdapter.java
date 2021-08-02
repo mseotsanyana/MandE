@@ -511,7 +511,7 @@ public class cStatusTreeAdapter extends RecyclerView.Adapter<cStatusTreeAdapter.
         final List<cKeyPairBoolData> keyPairBoolStatuses = new ArrayList<>();
         for (int i = 0; i < listStatus.size(); i++) {
             cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-            idNameBool.setId(listStatus.get(i).getStatusServerID());
+            idNameBool.setId(Integer.parseInt(listStatus.get(i).getStatusServerID()));
             idNameBool.setName(listStatus.get(i).getName());
 //            if ((mPermissionModel != null) &&
 //                    ((mPermissionModel.getStatusBITS() & listStatus.get(i).getStatusID()) ==
