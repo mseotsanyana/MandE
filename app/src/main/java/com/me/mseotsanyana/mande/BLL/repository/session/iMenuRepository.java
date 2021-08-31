@@ -1,20 +1,30 @@
 package com.me.mseotsanyana.mande.BLL.repository.session;
 
-import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
+import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.util.List;
-import java.util.Set;
 
 public interface iMenuRepository {
-    void getMenuModels(long userID, int primaryRole, int secondaryRoles, int statusBITS,
-                         String organizationID, String currentUserID,
-                         iMenuRepository.iReadMenuModelSetCallback callback);
+    void readMenuPermissions(String organizationServerID, String userServerID,
+                             int primaryTeamBIT, List<Integer> secondaryTeamBITS,
+                             List<Integer> statusBITS,
+                             iReadMenuPermissionsCallback callback);
 
-    interface iReadMenuModelSetCallback{
-        void onReadMenuSucceeded(List<cMenuModel> menuModels);
-        void onReadMenuFailed(String msg);
+    interface iReadMenuPermissionsCallback {
+        void onReadMenuPermissionsSucceeded(List<cTreeModel> treeModels);
+
+        void onReadMenuPermissionsFailed(String msg);
     }
 
-    Set<cMenuModel> getMenuModelSet(long userID, int primaryRole,
-                                    int secondaryRoles, int statusBITS);
+//    void getMenuModels(long userID, int primaryRole, int secondaryRoles, int statusBITS,
+//                         String organizationID, String currentUserID,
+//                         iMenuRepository.iReadMenuModelSetCallback callback);
+//
+//    interface iReadMenuModelSetCallback{
+//        void onReadMenuSucceeded(List<cMenuModel> menuModels);
+//        void onReadMenuFailed(String msg);
+//    }
+//
+//    Set<cMenuModel> getMenuModelSet(long userID, int primaryRole,
+//                                    int secondaryRoles, int statusBITS);
 }

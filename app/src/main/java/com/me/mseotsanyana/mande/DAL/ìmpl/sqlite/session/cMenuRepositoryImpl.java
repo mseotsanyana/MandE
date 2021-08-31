@@ -101,6 +101,14 @@ public class cMenuRepositoryImpl implements iMenuRepository {
 
     /* ############################################# READ ACTIONS ############################################# */
 
+    @Override
+    public void readMenuPermissions(String organizationServerID, String userServerID,
+                                    int primaryTeamBIT, List<Integer> secondaryTeamBITS,
+                                    List<Integer> statusBITS,
+                                    iReadMenuPermissionsCallback callback) {
+
+    }
+
     public Set<cMenuModel> getMenuModelSet(long userID, int primaryRoleBITS,
                                            int secondaryRoleBITS, int statusBITS) {
         Set<cMenuModel> menuModelSet = new HashSet<>();
@@ -413,12 +421,12 @@ public class cMenuRepositoryImpl implements iMenuRepository {
         return result > -1;
     }
 
-    @Override
-    public void getMenuModels(long userID, int primaryRole, int secondaryRoles, int statusBITS,
-                              String organizationID, String currentUserID,
-                              iReadMenuModelSetCallback callback) {
-
-    }
+//    @Override
+//    public void getMenuModels(long userID, int primaryRole, int secondaryRoles, int statusBITS,
+//                              String organizationID, String currentUserID,
+//                              iReadMenuModelSetCallback callback) {
+//
+//    }
 
     /* ############################################# SYNCED ACTIONS ############################################# */
 

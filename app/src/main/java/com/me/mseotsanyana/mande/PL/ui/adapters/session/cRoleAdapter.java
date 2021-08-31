@@ -594,7 +594,7 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
 
                     createdDate = FORMAT_DATE.format(roleDomain.getCreatedDate());
                     modifiedDate = FORMAT_DATE.format(roleDomain.getModifiedDate());
-                    syncedDate = FORMAT_DATE.format(roleDomain.getSyncedDate());
+                    //syncedDate = FORMAT_DATE.format(roleDomain.getSyncedDate());
 
                     RVH.textViewCreatedDate.setText(createdDate);
                     RVH.textViewModifiedDate.setText(modifiedDate);

@@ -11,13 +11,15 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.me.mseotsanyana.mande.BLL.model.session.cEntityModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
-import com.me.mseotsanyana.mande.BLL.model.session.cModuleModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cOperationStatusCollection;
+import com.me.mseotsanyana.mande.BLL.model.session.cSectionModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cOperationModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cPermissionModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cPlanModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cRoleModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cStatusModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cTeamModel;
+import com.me.mseotsanyana.mande.BLL.model.session.cUnixOperationCollection;
 import com.me.mseotsanyana.mande.BLL.model.session.cUnixOperationModel;
 import com.me.mseotsanyana.mande.BLL.model.utils.cCommonPropertiesModel;
 import com.me.mseotsanyana.mande.DAL.storage.preference.cSharedPreference;
@@ -31,11 +33,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 public final class cDatabaseUtils {
@@ -570,11 +570,93 @@ public final class cDatabaseUtils {
         }
     }
 
-    public static List<cTreeModel> buildPermissionTree(Context context, cRoleModel roleModel,
-                                                       cPermissionModel permissionModel) {
-        List<cTreeModel> treeModels = new ArrayList<>();
+    /**
+     * build permission menu tree
+     *
+     * @param context         context
+     * @param permissionModel permission models
+     * @return menu tree
+     */
+    public static List<cTreeModel> buildMenuPermissions(Context context,
+                                                        cPermissionModel permissionModel) {
+        List<cTreeModel> menuTreeModels = new ArrayList<>();
 
-        /* permission tree */
+        /* menu items */
+        String menu_items = "jsons/sys_menu_items.json";
+        String menuItemsJSONString = cDatabaseUtils.loadJSONFromAsset(menu_items,
+                context.getAssets());
+
+        try {
+            /* LEVEL 0: add permission node as the root node */
+            int parentIndex = 0, childIndex = 0;
+            menuTreeModels.add(new cTreeModel(parentIndex, -1, 0,
+                    new cPermissionModel(permissionModel)));
+            int parentPermissionIndex = childIndex;
+
+            /* menu items */
+            JSONObject jsonObjectMenuItem = new JSONObject(menuItemsJSONString);
+            JSONArray jsonArrayMenu = jsonObjectMenuItem.getJSONArray("menuitems");
+            List<String> main_menu_ids = getMainMenuIDs(permissionModel);
+            for (int m = 0; m < jsonArrayMenu.length(); m++) {
+                JSONObject jsonObjectMenu = jsonArrayMenu.getJSONObject(m);
+
+                cMenuModel menuModel = new cMenuModel();
+                // set the main menu item
+                menuModel.setMenuServerID(jsonObjectMenu.getInt("menu_id"));
+                menuModel.setName(jsonObjectMenu.getString("menu_name"));
+                menuModel.setDescription(jsonObjectMenu.getString("menu_description"));
+                menuModel.setChecked(main_menu_ids.contains(jsonObjectMenu.getString(
+                        "menu_id")));
+
+                /* LEVEL 1: add child main menu node to the parent permission node */
+                childIndex = childIndex + 1;
+                menuTreeModels.add(new cTreeModel(childIndex, parentPermissionIndex, 1,
+                        menuModel));
+                int parentMenuIndex = childIndex;
+
+                JSONArray jsonArraySubMenu = jsonObjectMenu.getJSONArray("sub_menu");
+                List<String> sub_menu_items = getSubMenuIDs(permissionModel,
+                        String.valueOf(menuModel.getMenuServerID()));
+                for (int j = 0; j < jsonArraySubMenu.length(); j++) {
+
+                    JSONObject jsonObjectSubItem = jsonArraySubMenu.getJSONObject(j);
+                    //if (sub_menu_items.contains(jsonObjectSubItem.getString(
+                    //        "sub_menu_id"))) {
+                    cMenuModel subMenuModel = new cMenuModel();
+                    subMenuModel.setParentServerID(menuModel.getMenuServerID());
+                    subMenuModel.setMenuServerID(jsonObjectSubItem.getInt("sub_menu_id"));
+                    subMenuModel.setName(jsonObjectSubItem.getString("sub_menu_name"));
+                    subMenuModel.setDescription(jsonObjectSubItem.getString(
+                            "sub_menu_description"));
+                    subMenuModel.setChecked(sub_menu_items.contains(jsonObjectSubItem.getString(
+                            "sub_menu_id")));
+
+                    /* LEVEL 2: add child sub menu node to the parent main menu node */
+                    childIndex = childIndex + 1;
+                    menuTreeModels.add(new cTreeModel(childIndex, parentMenuIndex, 2,
+                            subMenuModel));
+                    // }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return menuTreeModels;
+    }
+
+    /**
+     * build module permissions
+     *
+     * @param context context
+     * @param permissionModel permission model
+     * @return tree model
+     */
+    public static List<cTreeModel> buildModulePermissions(Context context,
+                                                          cPermissionModel permissionModel) {
+        List<cTreeModel> moduleTreeModels = new ArrayList<>();
+
+        /* permission tree with modules with their entities and menu items */
         String perm_tree = "jsons/sys_permission_tree.json";
         String permTreeJSONString = cDatabaseUtils.loadJSONFromAsset(perm_tree,
                 context.getAssets());
@@ -583,8 +665,9 @@ public final class cDatabaseUtils {
         String entity_ops = "jsons/sys_entity_operations.json";
         String entityOpsJSONString = cDatabaseUtils.loadJSONFromAsset(entity_ops,
                 context.getAssets());
+
         /* operation status */
-        String op_status = "jsons/sys_op_status.json";
+        String op_status = "jsons/sys_op_statuses.json";
         String opStatusJSONString = cDatabaseUtils.loadJSONFromAsset(op_status,
                 context.getAssets());
 
@@ -593,47 +676,103 @@ public final class cDatabaseUtils {
         String unixOpsJSONString = cDatabaseUtils.loadJSONFromAsset(unix_ops,
                 context.getAssets());
 
-        /* menu items */
-        String menu_items = "jsons/sys_menu_items.json";
-        String menuItemsJSONString = cDatabaseUtils.loadJSONFromAsset(menu_items,
-                context.getAssets());
-
         try {
-            int parentIndex = 0, childIndex;
-            /* LEVEL 0: add root role node */
-            treeModels.add(new cTreeModel(new cTreeModel(parentIndex, -1, 0,
-                    roleModel)));
-            /* LEVEL 1: add child permission node to the parent role node */
-            childIndex = parentIndex + 1;
-            treeModels.add(new cTreeModel(new cTreeModel(childIndex, parentIndex, 1,
-                    permissionModel)));
-            parentIndex = childIndex;
-
-            /* modules */
-            List<String> module_ids = getModuleIDs(permissionModel);
+            /* LEVEL 0: add permission node as the root node */
+            int parentIndex = 0, childIndex = 0;
+            moduleTreeModels.add(new cTreeModel(parentIndex, -1, 0,
+                    new cPermissionModel(permissionModel)));
+            int parentPermissionIndex = childIndex;
 
             JSONObject jsonObjectPermTree = new JSONObject(permTreeJSONString);
-            JSONArray jsonArrayModules = jsonObjectPermTree.getJSONArray("modules");
+
+            /* MENU ITEM OPTIONS */
+
+            JSONArray jsonArrayMenuItems = jsonObjectPermTree.getJSONArray("menuitems");
+            for(int i = 0; i < jsonArrayMenuItems.length(); i++) {
+
+                JSONObject objectMenuItem = jsonArrayMenuItems.getJSONObject(i);
+
+                cSectionModel menuItemsSection = new cSectionModel();
+
+                // set the main menu item
+                menuItemsSection.setModuleServerID(objectMenuItem.getString("menuitems_id"));
+                menuItemsSection.setName(objectMenuItem.getString("menuitems_name"));
+
+                /* LEVEL 1: add child module node to the parent permission node */
+                childIndex = childIndex + 1;
+                moduleTreeModels.add(new cTreeModel(childIndex, parentPermissionIndex, 1,
+                        menuItemsSection));
+                int parentMenuItemIndex = childIndex;
+
+                JSONArray jsonArrayItems = objectMenuItem.getJSONArray("items");
+                List<String> main_menu_ids = getMainMenuIDs(permissionModel);
+                for (int j = 0; j < jsonArrayItems.length(); j++) {
+                    JSONObject jsonObjectItem = jsonArrayItems.getJSONObject(j);
+
+                    cMenuModel menuModel = new cMenuModel();
+                    // set the main menu item
+                    menuModel.setMenuServerID(jsonObjectItem.getInt("item_id"));
+                    menuModel.setName(jsonObjectItem.getString("item_name"));
+                    menuModel.setDescription(jsonObjectItem.getString("item_description"));
+                    menuModel.setChecked(main_menu_ids.contains(jsonObjectItem.getString(
+                            "item_id")));
+
+                    /* LEVEL 2: add child item to the parent menu items section node */
+                    childIndex = childIndex + 1;
+                    moduleTreeModels.add(new cTreeModel(childIndex, parentMenuItemIndex, 2,
+                            menuModel));
+                    int parentItemIndex = childIndex;
+
+                    JSONArray jsonArraySubItem = jsonObjectItem.getJSONArray("sub_item");
+                    List<String> sub_menu_items = getSubMenuIDs(permissionModel,
+                            String.valueOf(menuModel.getMenuServerID()));
+                    for (int k = 0; k < jsonArraySubItem.length(); k++) {
+
+                        JSONObject jsonObjectSubItem = jsonArraySubItem.getJSONObject(k);
+
+                        cMenuModel subMenuModel = new cMenuModel();
+                        // set sub menu item
+                        subMenuModel.setParentServerID(menuModel.getMenuServerID());
+                        subMenuModel.setMenuServerID(jsonObjectSubItem.getInt("sub_item_id"));
+                        subMenuModel.setName(jsonObjectSubItem.getString("sub_item_name"));
+                        subMenuModel.setDescription(jsonObjectSubItem.getString(
+                                "sub_item_description"));
+                        subMenuModel.setChecked(sub_menu_items.contains(jsonObjectSubItem.getString(
+                                "sub_item_id")));
+
+                        /* LEVEL 3: add child sub menu node to the parent main menu node */
+                        childIndex = childIndex + 1;
+                        moduleTreeModels.add(new cTreeModel(childIndex, parentItemIndex, 3,
+                                subMenuModel));
+                    }
+                }
+            }
+
+            /* ENTITY MODULES */
+
+            List<String> module_ids = getModuleIDs(permissionModel);
+            JSONArray jsonArrayModules = jsonObjectPermTree.getJSONArray("entitymodules");
             for (int i = 0; i < jsonArrayModules.length(); i++) {
                 JSONObject objectModule = jsonArrayModules.getJSONObject(i);
 
-                cModuleModel moduleModel = new cModuleModel();
-                moduleModel.setModuleServerID(objectModule.getString("module_id"));
-                moduleModel.setName(objectModule.getString("module_name"));
-                moduleModel.setChecked(module_ids.contains(objectModule.getString(
+                cSectionModel moduleSection = new cSectionModel();
+                moduleSection.setModuleServerID(objectModule.getString("module_id"));
+                moduleSection.setName(objectModule.getString("module_name"));
+                moduleSection.setChecked(module_ids.contains(objectModule.getString(
                         "module_id")));
 
-                /* LEVEL 2: add child module node to the parent permission node */
+                /* LEVEL 4: add child module node to the parent permission node */
                 childIndex = childIndex + 1;
-                treeModels.add(new cTreeModel(childIndex, parentIndex, 2, moduleModel));
-                parentIndex = childIndex;
+                moduleTreeModels.add(new cTreeModel(childIndex, parentPermissionIndex, 4,
+                        moduleSection));
+                int parentModuleIndex = childIndex;
 
                 /* entities */
                 JSONArray jsonArrayEntities = objectModule.getJSONArray("entities");
                 List<String> entity_ids = getEntityIDs(permissionModel,
-                        moduleModel.getModuleServerID());
+                        moduleSection.getModuleServerID());
                 for (int j = 0; j < jsonArrayEntities.length(); j++) {
-                    JSONObject objectEntity = jsonArrayEntities.getJSONObject(i);
+                    JSONObject objectEntity = jsonArrayEntities.getJSONObject(j);
 
                     cEntityModel entityModel = new cEntityModel();
                     entityModel.setEntityServerID(objectEntity.getString("entity_id"));
@@ -642,18 +781,30 @@ public final class cDatabaseUtils {
                     entityModel.setChecked(entity_ids.contains(objectEntity.getString(
                             "entity_id")));
 
-                    /* LEVEL 3: add child entity node to the parent module node */
+                    /* LEVEL 5: add child entity node to the parent module node */
                     childIndex = childIndex + 1;
-                    treeModels.add(new cTreeModel(childIndex, parentIndex, 3, entityModel));
-                    parentIndex = childIndex;
+                    moduleTreeModels.add(new cTreeModel(childIndex, parentModuleIndex, 5,
+                            entityModel));
+                    int parentEntityIndex = childIndex;
+
+
+                    /* LEVEL 6: add child entity operation node to the parent entity node */
+                    /* entity operation section model */
+                    cSectionModel entityOperationSection = new cSectionModel();
+                    entityOperationSection.setName(entityModel.getName()+" "+"OPERATIONS");
+
+                    childIndex = childIndex + 1;
+                    moduleTreeModels.add(new cTreeModel(childIndex, parentEntityIndex, 6,
+                            entityOperationSection));
+                    int parentEntityOperationSectionIndex = childIndex;
 
                     /* entity operations */
                     JSONObject jsonObjectEntityOps = new JSONObject(entityOpsJSONString);
                     JSONArray jsonArrayOps = jsonObjectEntityOps.getJSONArray("operations");
                     List<String> op_ids = getOperationIDs(permissionModel,
-                            moduleModel.getModuleServerID(), entityModel.getEntityServerID());
+                            moduleSection.getModuleServerID(), entityModel.getEntityServerID());
                     for (int k = 0; k < jsonArrayOps.length(); k++) {
-                        JSONObject objectOps = jsonArrayOps.getJSONObject(i);
+                        JSONObject objectOps = jsonArrayOps.getJSONObject(k);
 
                         cOperationModel operationModel = new cOperationModel();
                         operationModel.setOperationServerID(objectOps.getString(
@@ -665,21 +816,26 @@ public final class cDatabaseUtils {
                         operationModel.setChecked(op_ids.contains(objectOps.getString(
                                 "entity_op_id")));
 
-                        /* LEVEL 4: add child operation node to the parent entity node */
+                        // LEVEL 7: add child entity operation node to the parent entity operation
+                        // section node
                         childIndex = childIndex + 1;
-                        treeModels.add(new cTreeModel(childIndex, parentIndex, 4,
-                                operationModel));
-                        parentIndex = childIndex;
+                        moduleTreeModels.add(new cTreeModel(childIndex,
+                                parentEntityOperationSectionIndex, 7, operationModel));
+                        int parentEntityOperationIndex = childIndex;
 
                         /* operation status */
+                        List<cStatusModel> collection = new ArrayList<>();
+                        cOperationStatusCollection operationStatusCollection;
+                        operationStatusCollection = new cOperationStatusCollection();
+
                         JSONObject jsonObjectOpStatus = new JSONObject(opStatusJSONString);
                         JSONArray jsonArrayStatus = jsonObjectOpStatus.getJSONArray(
                                 "statuses");
                         List<String> status_ids = getStatusIDs(permissionModel,
-                                moduleModel.getModuleServerID(), entityModel.getEntityServerID(),
+                                moduleSection.getModuleServerID(), entityModel.getEntityServerID(),
                                 operationModel.getOperationServerID());
                         for (int l = 0; l < jsonArrayStatus.length(); l++) {
-                            JSONObject objectStatus = jsonArrayStatus.getJSONObject(i);
+                            JSONObject objectStatus = jsonArrayStatus.getJSONObject(l);
 
                             cStatusModel statusModel = new cStatusModel();
                             statusModel.setStatusServerID(objectStatus.getString(
@@ -690,94 +846,284 @@ public final class cDatabaseUtils {
                             statusModel.setChecked(status_ids.contains(objectStatus.getString(
                                     "status_id")));
 
+                            collection.add(statusModel);
 
-                            /* LEVEL 5: add child status node to the parent operation node */
-                            childIndex = childIndex + 1;
-                            treeModels.add(new cTreeModel(childIndex, parentIndex, 5,
-                                    statusModel));
-                            parentIndex = childIndex;
                         }
+
+                        // LEVEL 8: add child status node to the parent entity operation node
+                        operationStatusCollection.setStatusCollection(collection);
+                        childIndex = childIndex + 1;
+                        moduleTreeModels.add(new cTreeModel(childIndex,
+                                parentEntityOperationIndex, 8, operationStatusCollection));
                     }
 
+                    /* LEVEL 9: add child unix operation node to the parent entity node */
+
+                    /* unix operation section */
+                    cSectionModel unixOperationSection = new cSectionModel();
+                    unixOperationSection.setName(entityModel.getName()+" "+"PERMISSIONS");
+
+                    childIndex = childIndex + 1;
+                    moduleTreeModels.add(new cTreeModel(childIndex, parentEntityIndex, 9,
+                            unixOperationSection));
+                    int parentUnixOperationSectionIndex = childIndex;
+
                     /* unix operations */
+                    List<cUnixOperationModel> collection = new ArrayList<>();
+                    cUnixOperationCollection unixOperationCollection;
+                    unixOperationCollection = new cUnixOperationCollection();
+
                     JSONObject jsonObjectUnixOps = new JSONObject(unixOpsJSONString);
                     JSONArray jsonArrayUnixOps = jsonObjectUnixOps.getJSONArray(
                             "unixoperations");
+
                     List<String> unix_op_ids = getUnixOperationIDs(permissionModel,
-                            moduleModel.getModuleServerID(), entityModel.getEntityServerID());
+                            moduleSection.getModuleServerID(), entityModel.getEntityServerID());
 
                     for (int k = 0; k < jsonArrayUnixOps.length(); k++) {
-                        JSONObject objectUnixOps = jsonArrayUnixOps.getJSONObject(i);
+                        JSONObject objectUnixOps = jsonArrayUnixOps.getJSONObject(k);
 
                         cUnixOperationModel unixOperationModel = new cUnixOperationModel();
+
                         unixOperationModel.setOperationServerID(objectUnixOps.getString(
                                 "unix_op_id"));
                         unixOperationModel.setName(objectUnixOps.getString(
                                 "unix_op_name"));
                         unixOperationModel.setDescription(objectUnixOps.getString(
                                 "unix_op_description"));
-                        unixOperationModel.setChecked(unix_op_ids.contains(objectUnixOps.getString(
-                                "unix_op_id")));
+                        unixOperationModel.setChecked(unix_op_ids.contains(
+                                objectUnixOps.getString("unix_op_id")));
 
-                        /* LEVEL 4: add child unix operation node to the parent entity node */
-                        childIndex = childIndex + 1;
-                        treeModels.add(new cTreeModel(childIndex, parentIndex, 4,
-                                unixOperationModel));
-                        parentIndex = childIndex;
+                        collection.add(unixOperationModel);
                     }
 
-                }
-
-                /* menu items */
-                JSONObject jsonObjectMenuItem = new JSONObject(menuItemsJSONString);
-                JSONArray jsonArrayMenu = jsonObjectMenuItem.getJSONArray("menuitems");
-                List<String> main_menu_ids = getMainMenuIDs(permissionModel);
-                for (int m = 0; m < jsonArrayMenu.length(); m++) {
-                    JSONObject jsonObjectMenu = jsonArrayMenu.getJSONObject(i);
-
-                    cMenuModel menuModel = new cMenuModel();
-                    // set the main menu item
-                    menuModel.setMenuServerID(jsonObjectMenu.getInt("menu_id"));
-                    menuModel.setName(jsonObjectMenu.getString("menu_name"));
-                    menuModel.setDescription(jsonObjectMenu.getString("menu_description"));
-                    menuModel.setChecked(main_menu_ids.contains(jsonObjectMenu.getString(
-                            "menu_id")));
-
-                    /* LEVEL 5: add child status node to the parent operation node */
+                    unixOperationCollection.setUnixOperationModels(collection);
+                    // LEVEL 10: add child unix operation node to the parent entity node
                     childIndex = childIndex + 1;
-                    treeModels.add(new cTreeModel(childIndex, parentIndex, 7, menuModel));
-                    parentIndex = childIndex;
+                    moduleTreeModels.add(new cTreeModel(childIndex, parentUnixOperationSectionIndex,
+                            10, unixOperationCollection));
 
-                    JSONArray jsonArraySubMenu = jsonObjectMenu.getJSONArray("sub_menu");
-                    List<String> sub_menu_items = getSubMenuIDs(permissionModel,
-                            String.valueOf(menuModel.getMenuServerID()));
-                    for (int j = 0; j < jsonArraySubMenu.length(); j++) {
-
-                        JSONObject jsonObjectSubItem = jsonArraySubMenu.getJSONObject(j);
-                        if (sub_menu_items.contains(jsonObjectSubItem.getString("sub_menu_id"))) {
-                            cMenuModel subMenuModel = new cMenuModel();
-                            subMenuModel.setParentServerID(menuModel.getMenuServerID());
-                            subMenuModel.setMenuServerID(jsonObjectSubItem.getInt("sub_id"));
-                            subMenuModel.setName(jsonObjectSubItem.getString("sub_menu_name"));
-                            subMenuModel.setDescription(jsonObjectSubItem.getString(
-                                    "sub_menu_description"));
-
-                            /* LEVEL 5: add child status node to the parent operation node */
-                            childIndex = childIndex + 1;
-                            treeModels.add(new cTreeModel(childIndex, parentIndex, 8,
-                                    subMenuModel));
-                            parentIndex = childIndex;
-
-                        }
-                    }
                 }
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        return treeModels;
+        return moduleTreeModels;
     }
+
+//    public static List<cTreeModel> buildPermissionTree(Context context, cRoleModel roleModel,
+//                                                       cPermissionModel permissionModel) {
+//        List<cTreeModel> treeModels = new ArrayList<>();
+//
+//        Gson gson = new Gson();
+//
+//        /* permission tree */
+//        String perm_tree = "jsons/sys_permission_tree.json";
+//        String permTreeJSONString = cDatabaseUtils.loadJSONFromAsset(perm_tree,
+//                context.getAssets());
+//
+//        /* entity operations */
+//        String entity_ops = "jsons/sys_entity_operations.json";
+//        String entityOpsJSONString = cDatabaseUtils.loadJSONFromAsset(entity_ops,
+//                context.getAssets());
+//        /* operation status */
+//        String op_status = "jsons/sys_op_statuses.json";
+//        String opStatusJSONString = cDatabaseUtils.loadJSONFromAsset(op_status,
+//                context.getAssets());
+//
+//        /* unix operations */
+//        String unix_ops = "jsons/sys_unix_operations.json";
+//        String unixOpsJSONString = cDatabaseUtils.loadJSONFromAsset(unix_ops,
+//                context.getAssets());
+//
+//        /* menu items */
+//        String menu_items = "jsons/sys_menu_items.json";
+//        String menuItemsJSONString = cDatabaseUtils.loadJSONFromAsset(menu_items,
+//                context.getAssets());
+//
+//        try {
+//            /* LEVEL 0: add root role node */
+//            int parentIndex = 0, childIndex = 0;
+//            //treeModels.add(new cTreeModel(childIndex, -1, 0,
+//            //        new cRoleModel(roleModel)));
+//
+//            /* LEVEL 0: add child permission node to the parent role node */
+//            //childIndex = parentIndex + 1;
+//            treeModels.add(new cTreeModel(childIndex, -1, 0,
+//                    new cPermissionModel(permissionModel)));
+//            int parentPermissionIndex = childIndex;
+//
+//            /* modules */
+//            List<String> module_ids = getModuleIDs(permissionModel);
+//
+//            JSONObject jsonObjectPermTree = new JSONObject(permTreeJSONString);
+//            JSONArray jsonArrayModules = jsonObjectPermTree.getJSONArray("modules");
+//            for (int i = 0; i < jsonArrayModules.length(); i++) {
+//                JSONObject objectModule = jsonArrayModules.getJSONObject(i);
+//
+//                cSectionModel moduleModel = new cSectionModel();
+//                moduleModel.setModuleServerID(objectModule.getString("module_id"));
+//                moduleModel.setName(objectModule.getString("module_name"));
+//                moduleModel.setChecked(module_ids.contains(objectModule.getString(
+//                        "module_id")));
+//
+//                /* LEVEL 1: add child module node to the parent permission node */
+//                childIndex = childIndex + 1;
+//                treeModels.add(new cTreeModel(childIndex, parentPermissionIndex, 1,
+//                        moduleModel));
+//                int parentModuleIndex = childIndex;
+//
+//                /* entities */
+//                JSONArray jsonArrayEntities = objectModule.getJSONArray("entities");
+//                List<String> entity_ids = getEntityIDs(permissionModel,
+//                        moduleModel.getModuleServerID());
+//                for (int j = 0; j < jsonArrayEntities.length(); j++) {
+//                    JSONObject objectEntity = jsonArrayEntities.getJSONObject(j);
+//
+//                    cEntityModel entityModel = new cEntityModel();
+//                    entityModel.setEntityServerID(objectEntity.getString("entity_id"));
+//                    entityModel.setName(objectEntity.getString("entity_name"));
+//                    entityModel.setDescription(objectEntity.getString("entity_description"));
+//                    entityModel.setChecked(entity_ids.contains(objectEntity.getString(
+//                            "entity_id")));
+//
+//                    /* LEVEL 2: add child entity node to the parent module node */
+//                    childIndex = childIndex + 1;
+//                    treeModels.add(new cTreeModel(childIndex, parentModuleIndex, 2, entityModel));
+//                    int parentEntityIndex = childIndex;
+//
+//                    /* entity operations */
+//                    JSONObject jsonObjectEntityOps = new JSONObject(entityOpsJSONString);
+//                    JSONArray jsonArrayOps = jsonObjectEntityOps.getJSONArray("operations");
+//                    List<String> op_ids = getOperationIDs(permissionModel,
+//                            moduleModel.getModuleServerID(), entityModel.getEntityServerID());
+//                    for (int k = 0; k < jsonArrayOps.length(); k++) {
+//                        JSONObject objectOps = jsonArrayOps.getJSONObject(k);
+//
+//                        cOperationModel operationModel = new cOperationModel();
+//                        operationModel.setOperationServerID(objectOps.getString(
+//                                "entity_op_id"));
+//                        operationModel.setName(objectOps.getString(
+//                                "entity_op_name"));
+//                        operationModel.setDescription(objectOps.getString(
+//                                "entity_op_description"));
+//                        operationModel.setChecked(op_ids.contains(objectOps.getString(
+//                                "entity_op_id")));
+//
+//                        /* LEVEL 3: add child entity operation node to the parent entity node */
+//                        childIndex = childIndex + 1;
+//                        treeModels.add(new cTreeModel(childIndex, parentEntityIndex, 3,
+//                                operationModel));
+//                        int parentEntityOperationIndex = childIndex;
+//
+//                        /* operation status */
+//                        JSONObject jsonObjectOpStatus = new JSONObject(opStatusJSONString);
+//                        JSONArray jsonArrayStatus = jsonObjectOpStatus.getJSONArray(
+//                                "statuses");
+//                        List<String> status_ids = getStatusIDs(permissionModel,
+//                                moduleModel.getModuleServerID(), entityModel.getEntityServerID(),
+//                                operationModel.getOperationServerID());
+//                        for (int l = 0; l < jsonArrayStatus.length(); l++) {
+//                            JSONObject objectStatus = jsonArrayStatus.getJSONObject(l);
+//
+//                            cStatusModel statusModel = new cStatusModel();
+//                            statusModel.setStatusServerID(objectStatus.getString(
+//                                    "status_id"));
+//                            statusModel.setName(objectStatus.getString("status_name"));
+//                            statusModel.setDescription(objectStatus.getString(
+//                                    "status_description"));
+//                            statusModel.setChecked(status_ids.contains(objectStatus.getString(
+//                                    "status_id")));
+//
+//
+//                            /* LEVEL 4: add child status node to the parent entity operation node */
+//                            childIndex = childIndex + 1;
+//                            treeModels.add(new cTreeModel(childIndex, parentEntityOperationIndex,
+//                                    4, statusModel));
+//                            //parentIndex = childIndex;
+//                        }
+//                    }
+//
+//                    /* unix operations */
+//                    JSONObject jsonObjectUnixOps = new JSONObject(unixOpsJSONString);
+//                    JSONArray jsonArrayUnixOps = jsonObjectUnixOps.getJSONArray(
+//                            "unixoperations");
+//                    List<String> unix_op_ids = getUnixOperationIDs(permissionModel,
+//                            moduleModel.getModuleServerID(), entityModel.getEntityServerID());
+//
+//                    for (int k = 0; k < jsonArrayUnixOps.length(); k++) {
+//                        JSONObject objectUnixOps = jsonArrayUnixOps.getJSONObject(k);
+//
+//                        cUnixOperationModel unixOperationModel = new cUnixOperationModel();
+//                        unixOperationModel.setOperationServerID(objectUnixOps.getString(
+//                                "unix_op_id"));
+//                        unixOperationModel.setName(objectUnixOps.getString(
+//                                "unix_op_name"));
+//                        unixOperationModel.setDescription(objectUnixOps.getString(
+//                                "unix_op_description"));
+//                        unixOperationModel.setChecked(unix_op_ids.contains(objectUnixOps.getString(
+//                                "unix_op_id")));
+//
+//                        /* LEVEL 5: add child unix operation node to the parent entity node */
+//                        childIndex = childIndex + 1;
+//                        treeModels.add(new cTreeModel(childIndex, parentEntityIndex, 5,
+//                                unixOperationModel));
+//                        //parentIndex = childIndex;
+//                    }
+//                }
+//
+//                /* menu items */
+//                JSONObject jsonObjectMenuItem = new JSONObject(menuItemsJSONString);
+//                JSONArray jsonArrayMenu = jsonObjectMenuItem.getJSONArray("menuitems");
+//                List<String> main_menu_ids = getMainMenuIDs(permissionModel);
+//                for (int m = 0; m < jsonArrayMenu.length(); m++) {
+//                    JSONObject jsonObjectMenu = jsonArrayMenu.getJSONObject(m);
+//
+//                    cMenuModel menuModel = new cMenuModel();
+//                    // set the main menu item
+//                    menuModel.setMenuServerID(jsonObjectMenu.getInt("menu_id"));
+//                    menuModel.setName(jsonObjectMenu.getString("menu_name"));
+//                    menuModel.setDescription(jsonObjectMenu.getString("menu_description"));
+//                    menuModel.setChecked(main_menu_ids.contains(jsonObjectMenu.getString(
+//                            "menu_id")));
+//
+//                    /* LEVEL 6: add child main menu node to the parent permission node */
+//                    childIndex = childIndex + 1;
+//                    treeModels.add(new cTreeModel(childIndex, parentPermissionIndex, 6, menuModel));
+//                    int parentMenuIndex = childIndex;
+//
+//                    JSONArray jsonArraySubMenu = jsonObjectMenu.getJSONArray("sub_menu");
+//                    List<String> sub_menu_items = getSubMenuIDs(permissionModel,
+//                            String.valueOf(menuModel.getMenuServerID()));
+//                    for (int j = 0; j < jsonArraySubMenu.length(); j++) {
+//
+//                        JSONObject jsonObjectSubItem = jsonArraySubMenu.getJSONObject(j);
+//                        if (sub_menu_items.contains(jsonObjectSubItem.getString(
+//                                "sub_menu_id"))) {
+//                            cMenuModel subMenuModel = new cMenuModel();
+//                            subMenuModel.setParentServerID(menuModel.getMenuServerID());
+//                            subMenuModel.setMenuServerID(jsonObjectSubItem.getInt("sub_menu_id"));
+//                            subMenuModel.setName(jsonObjectSubItem.getString("sub_menu_name"));
+//                            subMenuModel.setDescription(jsonObjectSubItem.getString(
+//                                    "sub_menu_description"));
+//
+//                            /* LEVEL 7: add child sub menu node to the parent main menu node */
+//                            childIndex = childIndex + 1;
+//                            treeModels.add(new cTreeModel(childIndex, parentMenuIndex, 7,
+//                                    subMenuModel));
+//                            //parentIndex = childIndex;
+//                            //Log.d("TREE MODEL ","RESULTS ==>> "+childIndex);
+//                        }
+//                    }
+//                }
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return treeModels;
+//    }
 
     private static List<String> getModuleIDs(cPermissionModel permissionModel) {
         Map<String, List<cEntityModel>> perm_modules = permissionModel.getEntitymodules();
@@ -827,10 +1173,10 @@ public final class cDatabaseUtils {
             if (entryModule.getKey().equals(moduleID)) {
                 for (cEntityModel entityModel : entryModule.getValue()) {
                     if (entityModel.getEntityServerID().equals(entityID)) {
-                        for(Map.Entry<String, List<Integer>> entry: entityModel.getEntityperms().
-                                entrySet()){
-                            if(String.valueOf(operationID).equals(entry.getKey())){
-                                for (Integer status: entry.getValue()){
+                        for (Map.Entry<String, List<Integer>> entry : entityModel.getEntityperms().
+                                entrySet()) {
+                            if (String.valueOf(operationID).equals(entry.getKey())) {
+                                for (Integer status : entry.getValue()) {
                                     status_ids.add(String.valueOf(status));
                                 }
                                 break;
@@ -846,14 +1192,15 @@ public final class cDatabaseUtils {
     }
 
     private static List<String> getUnixOperationIDs(cPermissionModel perm, String moduleID,
-                                                     String entityID) {
+                                                    String entityID) {
         List<String> unix_ops_ids = new ArrayList<>();
+
         for (Map.Entry<String, List<cEntityModel>> entryModule : perm.getEntitymodules().
                 entrySet()) {
             if (entryModule.getKey().equals(moduleID)) {
                 for (cEntityModel entityModel : entryModule.getValue()) {
                     if (entityModel.getEntityServerID().equals(entityID)) {
-                        for(Integer unix_op: entityModel.getUnixperms()){
+                        for (Integer unix_op : entityModel.getUnixperms()) {
                             unix_ops_ids.add(String.valueOf(unix_op));
                         }
                         break;
@@ -888,416 +1235,4 @@ public final class cDatabaseUtils {
         }
         return sub_menu_ids;
     }
-
-    //==
-
-//    public static Map<cMenuModel, Map<String, cMenuModel>> getAdminMenuModelSet(
-//            Context context) {
-//        Map<cMenuModel, Map<String, cMenuModel>> menuModels = new HashMap<>();
-//
-//        String menu = "jsons/admin_menu_items.json";
-//        String menuJSONString = cDatabaseUtils.loadJSONFromAsset(menu, context.getAssets());
-//
-//        try {
-//            JSONObject jsonObjectMenu = new JSONObject(menuJSONString);
-//            JSONArray jsonArrayMenu = jsonObjectMenu.getJSONArray("menu");
-//            for (int i = 0; i < jsonArrayMenu.length(); i++) {
-//                JSONObject jsonObject = jsonArrayMenu.getJSONObject(i);
-//                JSONArray jsonArraySubMenu = jsonObject.getJSONArray("sub_menu");
-//
-//                Map<String, cMenuModel> subMenuMap = new HashMap<>();
-//                for (int j = 0; j < jsonArraySubMenu.length(); j++) {
-//                    cMenuModel subMenuModel = new cMenuModel();
-//
-//                    JSONObject jsonObjectSubItem = jsonArraySubMenu.getJSONObject(j);
-//                    subMenuModel.setMenuServerID(jsonObjectSubItem.getInt("sub_id"));
-//                    subMenuModel.setName(jsonObjectSubItem.getString("sub_item"));
-//
-//                    subMenuMap.put(jsonObjectSubItem.getString("sub_id"), subMenuModel);
-//                }
-//
-//                cMenuModel menuModel = new cMenuModel();
-//
-//                // set the main menu item
-//                menuModel.setMenuServerID(jsonObject.getInt("id"));
-//                menuModel.setName(jsonObject.getString("item"));
-//
-//                // sub menu items to the main menu item
-//                menuModels.put(menuModel, subMenuMap);
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return menuModels;
-//    }
-//
-//
-
-
-//    public static cPrivilegeModel getAdminPrivilegeModel(Context context,
-//                                                         cCommonPropertiesModel columnModel) {
-//        cPrivilegeModel privilegeModel = new cPrivilegeModel();
-//
-//        // read json file
-//        String privilege = "jsons_old_files/admin_privilege.json";
-//        String privilegeJSONString = cDatabaseUtils.loadJSONFromAsset(privilege,
-//                context.getAssets());
-//
-//        try {
-//            JSONObject jsonObjectPrivilege = new JSONObject(privilegeJSONString);
-//            JSONObject jsonPrivilege = jsonObjectPrivilege.getJSONObject("privilege");
-//            privilegeModel.setName(jsonPrivilege.getString("name"));
-//            privilegeModel.setDescription(jsonPrivilege.getString("description"));
-//
-//            // update privilege's common columns
-//            privilegeModel.setOwnerID(columnModel.getCownerID());
-//            privilegeModel.setOrgOwnerID(columnModel.getCorgOwnerID());
-//            privilegeModel.setTeamOwnerBIT(columnModel.getCteamOwnerBIT());
-//            privilegeModel.setUnixpermsBITS(columnModel.getCunixpermsBITS());
-//            privilegeModel.setStatusesBITS(columnModel.getCstatusesBITS());
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return privilegeModel;
-//    }
-
-
 }
-
-//    public static cPermissionModel getAdminPermissions(Context context) {
-//
-//        cPermissionModel permissionModel = null;
-//
-//        Gson gson = new Gson();
-//        String perms = "jsons/admin_perms.json";
-//        String permsJSONString = cDatabaseUtils.loadJSONFromAsset(perms, context.getAssets());
-//
-//        try {
-//            assert permsJSONString != null;
-//            JSONObject jsonObjectPerms = new JSONObject(permsJSONString);
-//            JSONArray jsonArrayModule = jsonObjectPerms.getJSONArray("modules");
-//
-//            Map<String, Map<String, Map<String, List<Integer>>>> opStatusModuleMap = new HashMap<>();
-//            Map<String, Map<String, List<Integer>>> unixPermModuleMap = new HashMap<>();
-//
-//            for (int i = 0; i < jsonArrayModule.length(); i++) {
-//                JSONObject jsonObjectModules = jsonArrayModule.getJSONObject(i);
-//                String moduleID = jsonObjectModules.getString("module_id");
-//                JSONArray jsonArrayEntity = jsonObjectModules.getJSONArray("entities");
-//                Map<String, Map<String, List<Integer>>> entityOpStatusMap = new HashMap<>();
-//                Map<String, List<Integer>> entityUnixPermMap = new HashMap<>();
-//                for (int j = 0; j < jsonArrayEntity.length(); j++) {
-//                    JSONObject jsonObjectEntities = jsonArrayEntity.getJSONObject(j);
-//                    String entityID = jsonObjectEntities.getString("entity_id");
-//
-//                    // operation with list of statuses
-//                    JSONArray jsonArrayOpStatus = jsonObjectEntities.getJSONArray("operations");
-//                    Map<String, List<Integer>> operationStatusMap = new HashMap<>();
-//                    for (int k = 0; k < jsonArrayOpStatus.length(); k++) {
-//                        JSONObject jsonObjectOps = jsonArrayOpStatus.getJSONObject(k);
-//                        String operationID = jsonObjectOps.getString("op_id");
-//
-//                        JSONArray jsonArrayStatus = jsonObjectOps.getJSONArray("status_ids");
-//                        List<Integer> statuses = new ArrayList<>();
-//                        for (int l = 0; l < jsonArrayStatus.length(); l++) {
-//                            int jsonObjectStatus = jsonArrayStatus.getInt(l);
-//                            statuses.add(jsonObjectStatus);
-//                        }
-//
-//                        operationStatusMap.put(operationID, statuses);
-//                    }
-//
-//                    // unix operations
-//                    JSONArray jsonArrayUnixPerm = jsonObjectEntities.getJSONArray("unixoperations");
-//                    List<Integer> unixPermList = new ArrayList<>();
-//                    for (int k = 0; k < jsonArrayUnixPerm.length(); k++) {
-//                        JSONObject jsonObjectUnixOps = jsonArrayUnixPerm.getJSONObject(k);
-//                        String unixPermID = jsonObjectUnixOps.getString("unix_op_id");
-//                        unixPermList.add(Integer.parseInt(unixPermID));
-//                    }
-//
-//                    entityOpStatusMap.put(entityID, operationStatusMap);
-//                    entityUnixPermMap.put(entityID, unixPermList);
-//                }
-//
-//                opStatusModuleMap.put(moduleID, entityOpStatusMap);
-//                unixPermModuleMap.put(moduleID, entityUnixPermMap);
-//            }
-//
-//            permissionModel = new cPermissionModel(opStatusModuleMap, unixPermModuleMap);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return permissionModel;
-//    }
-//
-//    public static Pair<cPermissionModel, List<cUnixPermissionModel>> getAdminPermissions(Context context) {
-//        //List<cPermissionModel> permissionModels = new ArrayList<>();
-//        //cPermissionModel permissionModels = new ArrayList<>();
-//        List<cUnixPermissionModel> unixPermissionModels = new ArrayList<>();
-//        Pair<cPermissionModel, List<cUnixPermissionModel>> entityPair = null;
-//
-//        String perms = "jsons/admin_perms.json";
-//        String permsJSONString = cDatabaseUtils.loadJSONFromAsset(perms, context.getAssets());
-//
-//        try {
-//            assert permsJSONString != null;
-//            JSONObject jsonObjectPerm = new JSONObject(permsJSONString);
-//            JSONArray jsonArrayPerm = jsonObjectPerm.getJSONArray("permissions");
-//
-//            Map<String, Map<String, Map<String, Integer>>> privileges = new HashMap<>();
-//
-//            for (int i = 0; i < jsonArrayPerm.length(); i++) {
-//
-//                JSONObject jsonObject = jsonArrayPerm.getJSONObject(i);
-//                String moduleID = jsonObject.getString("module_id");
-//                String entityID = jsonObject.getString("entity_id");
-//
-//                cPermissionModel permission = new cPermissionModel(moduleID, entityID);
-//                cUnixPermissionModel unixPermission = new cUnixPermissionModel(moduleID, entityID);
-//
-//                // operations that control access at table/entity level
-//                JSONArray jsonArrayOps = jsonObject.getJSONArray("operations");
-//                Map<String, Integer> operationStatusMap = new HashMap<>();
-//                for (int j = 0; j < jsonArrayOps.length(); j++) {
-//                    JSONObject jsonObjectOps = jsonArrayOps.getJSONObject(j);
-//
-//                    String operationID = jsonObjectOps.getString("op_id");
-//                    operationStatusMap.put(operationID, 0);
-//                }
-//
-//                privileges
-//
-//                permission.setOperationStatusMap(operationStatusMap);
-//                permissionModels.add(permission);
-//
-//                // unix operations that control access at row level
-//                JSONArray jsonArrayUnixOps = jsonObject.getJSONArray("unixoperations");
-//                List<String> unixOperations = new ArrayList<>();
-//                for (int k = 0; k < jsonArrayUnixOps.length(); k++) {
-//                    JSONObject jsonObjectUnixOp = jsonArrayUnixOps.getJSONObject(k);
-//
-//                    String unixOperationID = jsonObjectUnixOp.getString("unix_op_id");
-//                    unixOperations.add(unixOperationID);
-//                }
-//                unixPermission.setUnixOperations(unixOperations);
-//                unixPermissionModels.add(unixPermission);
-//            }
-//
-//            entityPair = new Pair<>(permissionModels, unixPermissionModels);
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return entityPair;
-//    }
-//
-//
-//    public static HashMap<cMenuModel, Map<String, cMenuModel>> getDefaultMenuModelMap(Context context) {
-//        HashMap<cMenuModel, Map<String, cMenuModel>> menuModels = new HashMap<>();
-//
-//        String menu = "jsons_old_files/sys_default_menu_items.json";
-//        String menuJSONString = cDatabaseUtils.loadJSONFromAsset(menu, context.getAssets());
-//
-//        try {
-//            JSONObject jsonObjectMenu = new JSONObject(menuJSONString);
-//            JSONArray jsonArrayMenu = jsonObjectMenu.getJSONArray("menu");
-//            for (int i = 0; i < jsonArrayMenu.length(); i++) {
-//                JSONObject jsonObject = jsonArrayMenu.getJSONObject(i);
-//                JSONArray jsonArraySubMenu = jsonObject.getJSONArray("sub_menu");
-//
-//                Map<String, cMenuModel> subMenuMap = new HashMap<>();
-//                for (int j = 0; j < jsonArraySubMenu.length(); j++) {
-//                    cMenuModel subMenuModel = new cMenuModel();
-//
-//                    JSONObject jsonObjectSubItem = jsonArraySubMenu.getJSONObject(j);
-//                    subMenuModel.setMenuServerID(jsonObjectSubItem.getInt("sub_id"));
-//                    subMenuModel.setName(jsonObjectSubItem.getString("sub_item"));
-//
-//                    subMenuMap.put(jsonObjectSubItem.getString("sub_id"), subMenuModel);
-//                }
-//
-//                cMenuModel menuModel = new cMenuModel();
-//
-//                // set the main menu item
-//                menuModel.setMenuServerID(jsonObject.getInt("id"));
-//                menuModel.setName(jsonObject.getString("item"));
-//
-//                // sub menu items to the main menu item
-//                menuModels.put(menuModel, subMenuMap);
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return menuModels;
-//    }
-//
-//    public static List<cPlanModel> getPlanModels(Context context) {
-//        List<cPlanModel> planModels = new ArrayList<>();
-//        // read json file
-//        String plans = "jsons/sys_plans.json";
-//        String planJSONString = cDatabaseUtils.loadJSONFromAsset(plans, context.getAssets());
-//
-//        try {
-//            JSONObject jsonObjectPlan = new JSONObject(planJSONString);
-//            JSONArray jsonPlans = jsonObjectPlan.getJSONArray("plans");
-//
-//            for (int i = 0; i < jsonPlans.length(); i++) {
-//                cPlanModel planModel = new cPlanModel();
-//
-//                JSONObject jsonPlan = jsonPlans.getJSONObject(i);
-//
-//                planModel.setPlanServerID(jsonPlan.getString("id"));
-//                planModel.setName(jsonPlan.getString("name"));
-//                planModel.setDescription(jsonPlan.getString("description"));
-//
-//                planModel.setOrgLimit(jsonPlan.getInt("max_org_limit"));
-//                planModel.setTeamLimit(jsonPlan.getInt("max_team_limit"));
-//                planModel.setOrgUserLimit(jsonPlan.getInt("max_org_user_limit"));
-//                planModel.setTeamUserLimit(jsonPlan.getInt("max_team_user_limit"));
-//
-//                planModels.add(planModel);
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return planModels;
-//    }
-//
-//    public static List<cFeatureModel> getFeatureModels(Context context) {
-//        List<cFeatureModel> featureModels = new ArrayList<>();
-//        // read json file
-//        String features = "jsons/sys_features.json";
-//        String featureJSONString = cDatabaseUtils.loadJSONFromAsset(features, context.getAssets());
-//
-//        try {
-//            JSONObject jsonObjectFeature = new JSONObject(featureJSONString);
-//            JSONArray jsonFeatures = jsonObjectFeature.getJSONArray("features");
-//
-//            for (int i = 0; i < jsonFeatures.length(); i++) {
-//                cFeatureModel featureModel = new cFeatureModel();
-//
-//                JSONObject jsonFeature = jsonFeatures.getJSONObject(i);
-//
-//                featureModel.setFeatureServerID(jsonFeature.getInt("id"));
-//                featureModel.setName(jsonFeature.getString("name"));
-//                featureModel.setDescription(jsonFeature.getString("description"));
-//
-//                featureModels.add(featureModel);
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return featureModels;
-//    }
-//
-//    public static HashMap<String, List<cFeatureModel>> getPlanFeatureModels(Context context) {
-//        HashMap<String, List<cFeatureModel>> planFeatures = new HashMap<>();
-//
-//        String plan = "jsons/sys_features.json";
-//        String planJSONString = cDatabaseUtils.loadJSONFromAsset(plan, context.getAssets());
-//
-//        try {
-//            assert planJSONString != null;
-//            JSONObject jsonObjectPlan = new JSONObject(planJSONString);
-//            JSONArray jsonArrayPlan = jsonObjectPlan.getJSONArray("plans");
-//            for (int i = 0; i < jsonArrayPlan.length(); i++) {
-//                JSONObject jsonObject = jsonArrayPlan.getJSONObject(i);
-//                String planID = jsonObject.getString("id");
-//
-//                JSONArray jsonArrayFeature = jsonObject.getJSONArray("features");
-//                List<cFeatureModel> featureModels = new ArrayList<>();
-//                for (int j = 0; j < jsonArrayFeature.length(); j++) {
-//                    JSONObject jsonObjectFeature = jsonArrayFeature.getJSONObject(j);
-//
-//                    cFeatureModel featureModel = new cFeatureModel(
-//                            jsonObjectFeature.getInt("id"),
-//                            jsonObjectFeature.getString("name"),
-//                            jsonObjectFeature.getString("description")
-//                    );
-//
-//                    featureModels.add(featureModel);
-//                }
-//
-//                planFeatures.put(planID, featureModels);
-//
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return planFeatures;
-//    }
-//
-//
-//    public static List<Integer> convertBinary(int number) {
-//        //int binary[] = new int[40];
-//        List<Integer> binary_array = new ArrayList<>();
-//        List<Integer> binary = new ArrayList<>();
-//        //int index = 0;
-//        while (number > 0) {
-//            //binary[index++] = num%2;
-//            binary_array.add(number % 2);
-//            number = number / 2;
-//        }
-//
-//        for (int i = binary_array.size() - 1; i >= 0; i--) {
-//            //System.out.print(binary[i]);
-//            binary_array.add(i);
-//        }
-//
-//        return binary;
-//    }
-//
-//    public static List<cUnixPermissionModel> getAdminUnixOperation(Context context) {
-//        List<cUnixPermissionModel> unixOperationModels = new ArrayList<>();
-//
-//        String perms = "jsons/sys_unix_operations.json";
-//        String unixoperationJSONString = cDatabaseUtils.loadJSONFromAsset(perms, context.getAssets());
-//
-//        try {
-//            assert unixoperationJSONString != null;
-//            JSONObject jsonObjectUnixOperation = new JSONObject(unixoperationJSONString);
-//            JSONArray jsonArrayUnixOperation = jsonObjectUnixOperation.getJSONArray("unixoperations");
-//            for (int i = 0; i < jsonArrayUnixOperation.length(); i++) {
-//                cUnixPermissionModel unixperm = new cUnixPermissionModel();
-//
-//                JSONObject jsonObject = jsonArrayUnixOperation.getJSONObject(i);
-//
-//                unixperm.setUnixOperationServerID(jsonObject.getString("id"));
-//                unixperm.setName(jsonObject.getString("name"));
-//                unixperm.setDescription(jsonObject.getString("description"));
-//
-//                unixOperationModels.add(unixperm);
-////
-////                JSONArray jsonArrayOps = jsonObject.getJSONArray("unixoperations");
-////
-////
-////                for (int j = 0; j < jsonArrayOps.length(); j++) {
-////                    JSONObject jsonObjectEntity = jsonArrayOps.getJSONObject(j);
-////
-////                    cUnixPermModel unixperm = new cUnixPermModel();
-////                    // entity and its type identification bits
-////                    unixperm.setEntityServerID(jsonObject.getString("entity_id"));
-////                    unixperm.setEntityTypeServerID(jsonObject.getString("entity_type_id"));
-////                    // unix operation identification bit
-////                    unixperm.setUnixoperationServerID(jsonObjectEntity.getString("ops_id"));
-////
-////                    unixPermModels.add(unixperm);
-////                }
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return unixOperationModels;
-//    }
-

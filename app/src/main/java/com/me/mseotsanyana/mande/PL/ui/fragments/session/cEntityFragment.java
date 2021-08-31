@@ -75,7 +75,7 @@ public class cEntityFragment extends Fragment {
 
     private void initDataStructures() {
         assert getArguments() != null;
-        entityModels = getArguments().getParcelableArrayList("ENTITY_MODELS");
+//        entityModels = null;//getArguments().getParcelableArrayList("ENTITY_MODELS");
 //        entityPermissionAdapter = new cEntityPermissionAdapter(getActivity(), entityModels);
 
 //        entityPresenter = new cEntityPresenterImpl(
@@ -84,9 +84,9 @@ public class cEntityFragment extends Fragment {
 //                this,
 //                new cSharedPreferenceFirestoreRepositoryImpl(requireContext()),
 //                new cEntityFirestoreRepositoryImpl(getContext()));
-
-
-        //activity = ((AppCompatActivity) getActivity());
+//
+//
+//        activity = ((AppCompatActivity) getActivity());
     }
 
     private void initEntityViews(View view) {

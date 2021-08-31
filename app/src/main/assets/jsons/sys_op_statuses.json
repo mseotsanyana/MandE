@@ -12,8 +12,8 @@
     },
     {
       "status_id": 4,
-      "name": "ACTIVE",
-      "description": "Is the record activated?"
+      "status_name": "ACTIVE",
+      "status_description": "Is the record activated?"
     },
     {
       "status_id": 8,

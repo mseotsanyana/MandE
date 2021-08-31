@@ -35,12 +35,17 @@
         {
           "sub_menu_id": 32,
           "sub_menu_name": "Team Roles",
-          "sub_description": "Teams of people the user belongs to."
+          "sub_menu_description": "Teams of people the user belongs to."
         },
         {
           "sub_menu_id": 64,
-          "sub_menu_name": "Role Permissions",
-          "sub_description": "Role Permission Management."
+          "sub_menu_name": "Menu Permissions",
+          "sub_menu_description": "Role Permission Management."
+        },
+        {
+          "sub_menu_id": 128,
+          "sub_menu_name": "Entity Permissions",
+          "sub_menu_description": "Role Permission Management."
         }
       ]
     },

@@ -51,17 +51,6 @@ public class cPermissionFragment extends Fragment {
         return new cPermissionFragment();
     }
 
-    /*
-    * this event fires 1st, before creation of fragment or any views
-    * the onAttach method is called when the Fragment instance is
-    * associated with an Activity and this does not mean the activity
-    * is fully initialized.
-    */
-    @Override
-    public void onAttach(@androidx.annotation.NonNull Context context) {
-        super.onAttach(context);
-    }
-
     /**
      * this method is fired 2nd, before views are created for the fragment,
      * the onCreate method is called when the fragment instance is being created,
@@ -72,6 +61,12 @@ public class cPermissionFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        /* get all organizations from the database */
     }
 
     /**
@@ -106,9 +101,16 @@ public class cPermissionFragment extends Fragment {
     }
 
     private void initDataStructures() {
-        /* items of modules */
-        //entityModels = new ArrayList<>();
-        //menuModels   = new ArrayList<>();
+
+//        permissionPresenter = new cPermissionPresenterImpl(
+//                cThreadExecutorImpl.getInstance(),
+//                cMainThreadImpl.getInstance(),
+//                this,
+//                new cSharedPreferenceFirestoreRepositoryImpl(requireContext()),
+//                new cPermissionFirestoreRepositoryImpl(getContext()));
+//
+//        /* items of modules */
+//        permissionTree = new ArrayList<>();
 
         activity = ((AppCompatActivity) getActivity());
     }
@@ -148,8 +150,7 @@ public class cPermissionFragment extends Fragment {
         /* get inflated option menu */
         Menu toolBarMenu = setToolBar();
 
-        toolbar.setOnMenuItemClickListener(
-                this::onOptionsItemSelected);
+        toolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
 
         SearchManager searchManager = (SearchManager) requireActivity().
                 getSystemService(Context.SEARCH_SERVICE);

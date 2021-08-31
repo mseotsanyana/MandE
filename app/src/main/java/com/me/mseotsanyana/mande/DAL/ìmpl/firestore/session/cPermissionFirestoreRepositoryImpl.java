@@ -28,7 +28,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public class cPermissionFirestoreRepositoryImpl implements iPermissionRepository {
-    //private static final String TAG = cPermissionFirestoreRepositoryImpl.class.getSimpleName();
+//    private static final String TAG = cPermissionFirestoreRepositoryImpl.class.getSimpleName();
 
     private final Context context;
     private final FirebaseFirestore db;
@@ -64,12 +64,14 @@ public class cPermissionFirestoreRepositoryImpl implements iPermissionRepository
         roleQuery.get()
                 .addOnCompleteListener(task -> {
                     //List<String> role_ids = new ArrayList<>();
-
                     Map<String, cRoleModel> roleModelMap = new HashMap<>();
+                    cRoleModel roleModel;
                     for (DocumentSnapshot role_doc : Objects.requireNonNull(task.getResult())) {
-                        cRoleModel roleModel = role_doc.toObject(cRoleModel.class);
+                        roleModel = role_doc.toObject(cRoleModel.class);
 
                         if (roleModel != null) {
+                            roleModel.setRoleServerID(role_doc.getId());
+
                             cDatabaseUtils.cUnixPerm perm = new cDatabaseUtils.cUnixPerm();
                             perm.setUserOwnerID(roleModel.getUserOwnerID());
                             perm.setTeamOwnerBIT(roleModel.getTeamOwnerBIT());
@@ -90,6 +92,14 @@ public class cPermissionFirestoreRepositoryImpl implements iPermissionRepository
                         callback.onReadUserPermissionsFailed("Failed to read roles"));
     }
 
+    @Override
+    public void readModulePermissions(String organizationServerID, String userServerID,
+                                      int primaryTeamBIT, List<Integer> secondaryTeamBITS,
+                                      List<Integer> statusBITS,
+                                      iReadModulePermissionsCallback callback) {
+
+    }
+
     /**
      * filter user permissions by roles
      *
@@ -105,7 +115,6 @@ public class cPermissionFirestoreRepositoryImpl implements iPermissionRepository
 
         permissionQuery.get()
                 .addOnCompleteListener(task -> {
-                    Map<cRoleModel, cPermissionModel> rolePermissionModels = new HashMap<>();
                     cRoleModel roleModel = null;
                     cPermissionModel permissionModel = null;
                     for (DocumentSnapshot perm_doc : Objects.requireNonNull(task.getResult())) {
@@ -113,10 +122,18 @@ public class cPermissionFirestoreRepositoryImpl implements iPermissionRepository
                         permissionModel = perm_doc.toObject(cPermissionModel.class);
 
                         if (permissionModel != null) {
+                            permissionModel.setRoleServerID(perm_doc.getId());
                             for (Map.Entry<String, cRoleModel> entry : roleModelMap.entrySet()) {
+                                //Log.d(TAG, " Role Model = "+entry.getKey()+" = "+permissionModel.getRoleServerID());
                                 if (entry.getKey().equals(permissionModel.getRoleServerID())) {
-                                    rolePermissionModels.put(entry.getValue(), permissionModel);
-                                    roleModel = entry.getValue(); //FIXME: list of roles vs permissionmodel
+
+                                    // rolePermissionModels.put(entry.getValue(), permissionModel);
+                                    // FIXME: what about if the user has list of multiple roles
+                                    //  and permissions
+                                    roleModel = entry.getValue();
+                                    roleModel.setRoleServerID(entry.getKey());
+
+                                    permissionModel.setName(roleModel.getName());
                                     break;
                                 }
                             }
@@ -125,19 +142,24 @@ public class cPermissionFirestoreRepositoryImpl implements iPermissionRepository
 
                     // add maps of menu items and entities not in the db
                     // return all menus
-                    List<cTreeModel> treeModels = cDatabaseUtils.buildPermissionTree(context,
-                            roleModel, permissionModel);
+                    List<cTreeModel> treeModels = new ArrayList<>();
+                    if(roleModel != null) {
 
+                        //Log.d(TAG, " Type = "+roleModel.getName()+" -> "+permissionModel.getName());
 
+                        //treeModels = cDatabaseUtils.buildPermissionTree(context, roleModel,
+                        //        permissionModel);
+                    }
 
-
-
-
-
-
+//                    Gson gson = new Gson();
+//                    for (cTreeModel treeModel: treeModels){
+//                        if(treeModel.getType() == 0) {
+//                            Log.d(TAG, " Type = "+treeModel.getType()+" -> "+gson.toJson(treeModel));
+//                        }
+//                    }
 
                     /* call back on list of user permissions by roles */
-                    callback.onReadUserPermissionsSucceeded(rolePermissionModels);
+                    callback.onReadUserPermissionsSucceeded(treeModels);
                 })
                 .addOnFailureListener(e ->
                         callback.onReadUserPermissionsFailed("Failed to read permissions"));
@@ -437,223 +459,3 @@ public class cPermissionFirestoreRepositoryImpl implements iPermissionRepository
         }
     }
 }
-
-//    /**
-//     * filter roles for menu items
-//     *
-//     * @param role_ids role identifications
-//     * @param callback caLL back
-//     */
-//    private void filterRolesMenuItems(List<String> role_ids,
-//                                      iSaveUserPermissionsCallback callback) {
-//        CollectionReference coRoleMenuItemsRef;
-//
-//        coRoleMenuItemsRef = db.collection(cRealtimeHelper.KEY_ROLE_PERMISSIONS);
-//        Query menuServerQuery = coRoleMenuItemsRef.whereIn(FieldPath.documentId(), role_ids);
-//
-//        menuServerQuery.get()
-//                .addOnCompleteListener(task -> {
-//                    Set<Integer> menu_set = new HashSet<>();
-//                    for (QueryDocumentSnapshot result : Objects.requireNonNull(task.getResult())) {
-//                        Map<String, Object> data = result.getData();
-//                        for (String menu_id : data.keySet()) {
-//                            menu_set.add(Integer.parseInt(menu_id));
-//                        }
-//                    }
-//
-//                    List<cMenuModel> menu_items;
-//                    menu_items = cDatabaseUtils.getMenuModelSet(context, menu_set);
-//                    callback.onSaveMenuItems(menu_items);
-//                })
-//                .addOnFailureListener(e -> {
-//                    callback.onSaveUserPermissionsFailed(" Failed to read role menu items ");
-//                    Log.w(TAG, "Failed to read value.", e);
-//                });
-//    }
-
-//    private void filterRolesPermissions(List<String> roles_ids,
-//                                        iSaveUserPermissionsCallback callback) {
-//        CollectionReference coRolePermsRef = db.collection(cRealtimeHelper.KEY_ROLE_PERMISSIONS);
-//
-//        Query permissionQuery = coRolePermsRef.whereIn(FieldPath.documentId(), roles_ids);
-//
-//        permissionQuery.get()
-//                .addOnCompleteListener(task -> {
-//
-//                    QuerySnapshot perm_snapshot = task.getResult();
-//
-//                    if (perm_snapshot != null) {
-//                        for (DocumentSnapshot perm_doc : perm_snapshot.getDocuments()) {
-//                            cPermissionModel permissionModel = perm_doc.toObject(
-//                                    cPermissionModel.class);
-//                            if (permissionModel != null) {
-//                                // save user permissions
-//                                saveEntityAndUnixPermissions(permissionModel, callback);
-//                            } else {
-//                                callback.onSaveUserPermissionsFailed(" due to permissions !");
-//                            }
-//                        }
-//                    } else {
-//                        callback.onSaveUserPermissionsFailed(" due to permissions!");
-//                        return;
-//                    }
-//
-//                    callback.onSaveUserPermissionsSucceeded("successfully logged in");
-//                })
-//                .addOnFailureListener(e -> callback.onSaveUserPermissionsFailed(
-//                        " due to permissions!"));
-//    }
-
-//    private void filterRolesMenuItems(List<String> role_ids,
-//                                      iSaveUserPermissionsCallback callback) {
-//        CollectionReference coRoleMenuItemsRef;
-//
-//        coRoleMenuItemsRef = db.collection(cRealtimeHelper.KEY_ROLE_MENU_ITEMS);
-//        Query menuServerQuery = coRoleMenuItemsRef.whereIn(FieldPath.documentId(), role_ids);
-//
-//        menuServerQuery.get()
-//                .addOnCompleteListener(task -> {
-//                    Set<Integer> menu_set = new HashSet<>();
-//                    for (QueryDocumentSnapshot result : Objects.requireNonNull(task.getResult())) {
-//                        Map<String, Object> data = result.getData();
-//                        for (String menu_id : data.keySet()) {
-//                            menu_set.add(Integer.parseInt(menu_id));
-//                        }
-//                    }
-//
-//                    List<cMenuModel> menu_items;
-//                    menu_items = cDatabaseUtils.getMenuModelSet(context, menu_set);
-//                    callback.onSaveMenuItems(menu_items);
-//                })
-//                .addOnFailureListener(e -> {
-//                    callback.onSaveUserPermissionsFailed(" Failed to read role menu items ");
-//                    Log.w(TAG, "Failed to read value.", e);
-//                });
-//    }
-
-
-//    /**
-//     * read privileges of the roles the user belongs to through the their teams
-//     *
-//     * @param role_ids role identifications
-//     * @param callback call back
-//     */
-//    private void readRolesPermissions(List<String> role_ids, iSaveUserPrivilegesCallback callback) {
-//        CollectionReference coRolesPrivilegesRef = null;//db.collection(cRealtimeHelper.KEY_ROLE_PRIVILEGES);
-//
-//        Query privilegeQuery = coRolesPrivilegesRef
-//                .whereIn("roleServerID", role_ids);
-//
-//        privilegeQuery.get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        List<String> privilege_ids = new ArrayList<>();
-//                        for (DocumentSnapshot privilege : Objects.requireNonNull(task.getResult())) {
-//                            String privilegeID = Objects.requireNonNull(
-//                                    privilege.get("privilegeServerID")).toString();
-//                            privilege_ids.add(privilegeID);
-//                        }
-//                        if (!privilege_ids.isEmpty()) {
-//                            readPrivilegesPermissions(privilege_ids, callback);
-//                        }
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        callback.onSaveUserPermissionsFailed(" due to role privilege entity!");
-//                    }
-//                });
-//    }
-
-
-//    private void readRolesPermissions(List<String> roles_ids, iSaveUserPermissionsCallback callback) {
-//        CollectionReference coRolePermsRef = db.collection(cRealtimeHelper.KEY_ROLE_PERMISSIONS);
-//
-//        Query permissionQuery = coRolePermsRef
-//                .whereIn(FieldPath.documentId(), roles_ids);
-//
-//        permissionQuery.get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//
-//                        QuerySnapshot permissions = task.getResult();
-//
-//                        if (permissions != null) {
-//                            for (DocumentSnapshot privilege : permissions.getDocuments()) {
-//                                cPermissionModel permission = privilege.toObject(cPermissionModel.class);
-//                                if (permission != null) {
-//                                    // operation status
-//                                    Map<String, Map<String, Map<String, List<Integer>>>> opstatus;
-//                                    opstatus = null;//permission.getOpstatus();
-//                                    String moduleID;
-//
-//                                    /* modules */
-//                                    for (Map.Entry<String, Map<String, Map<String, List<Integer>>>> perms :
-//                                            opstatus.entrySet()) {
-//                                        moduleID = perms.getKey();
-//                                        Map<String, Map<String, List<Integer>>> modules = perms.getValue();
-//                                        String entityID;
-//                                        int entityBITS = 0;
-//
-//                                        /* entities */
-//                                        for (Map.Entry<String, Map<String, List<Integer>>> entities : modules.entrySet()) {
-//                                            entityID = entities.getKey();
-//                                            entityBITS |= Integer.parseInt(entities.getKey());
-//                                            Map<String, List<Integer>> ops_status = entities.getValue();
-//                                            String operationID;
-//                                            int operationBITS = 0, statusBITS;
-//
-//                                            /* operations */
-//                                            for (Map.Entry<String, List<Integer>> ops : ops_status.entrySet()) {
-//                                                operationID = ops.getKey();
-//                                                operationBITS |= Integer.parseInt(ops.getKey());
-//
-//                                                /* statuses */
-//                                                List<Integer> statuses = new ArrayList<>(ops.getValue());
-//                                                callback.onSaveStatusBITS(moduleID, entityID, operationID,
-//                                                        statuses);
-//                                            }
-//                                            callback.onSaveOperationBITS(moduleID, entityID, operationBITS);
-//                                        }
-//                                        callback.onSaveEntityBITS(moduleID, entityBITS);
-//                                    }
-//
-//                                    // unix permissions
-//                                    Map<String, Map<String, List<Integer>>> unixperm;
-//                                    unixperm = null;//permission.getUnixperms();
-//                                    for (Map.Entry<String, Map<String, List<Integer>>> perms :
-//                                            unixperm.entrySet()) {
-//                                        moduleID = perms.getKey();
-//                                        Map<String, List<Integer>> modules = perms.getValue();
-//                                        String entityID;
-//                                        for (Map.Entry<String, List<Integer>> entities : modules.entrySet()) {
-//                                            entityID = entities.getKey();
-//                                            int unixpermBITS = 0;
-//                                            for (Integer unix_perm : entities.getValue()) {
-//                                                unixpermBITS |= unix_perm;
-//                                            }
-//                                            callback.onSaveUnixPermBITS(moduleID, entityID, unixpermBITS);
-//                                        }
-//                                    }
-//                                } else {
-//                                    callback.onSaveUserPermissionsFailed(" due to privilege permission entity!");
-//                                }
-//                            }
-//                        }else {
-//                            callback.onSaveUserPermissionsFailed(" due to privilege permission entity!");
-//                            return;
-//                        }
-//
-//                        callback.onSaveUserPermissionsSucceeded("successfully logged in");
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        callback.onSaveUserPermissionsFailed(" due to privilege permission entity!");
-//                    }
-//                });
-//    }

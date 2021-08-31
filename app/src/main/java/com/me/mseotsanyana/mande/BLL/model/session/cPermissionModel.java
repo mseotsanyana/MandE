@@ -1,5 +1,7 @@
 package com.me.mseotsanyana.mande.BLL.model.session;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.List;
 import java.util.Map;
 
@@ -9,19 +11,34 @@ import java.util.Map;
 
 public class cPermissionModel {
     private String roleServerID;
+
+    private String name;
     private String description;
 
     // module identification and its entities
     private Map<String, List<cEntityModel>> entitymodules;
+
     // parent identification and its child menu identification
     private Map<String, List<Integer>> menuitems;
 
     public cPermissionModel(){}
 
+    public cPermissionModel(cPermissionModel permissionModel){
+        this.setRoleServerID(permissionModel.getRoleServerID());
+        this.setName(permissionModel.getName());
+        this.setDescription(permissionModel.getDescription());
+        this.setEntitymodules(permissionModel.getEntitymodules());
+        this.setMenuitems(permissionModel.getMenuitems());
+    }
+
     public cPermissionModel(Map<String, List<cEntityModel>> entitymodules,
                             Map<String, List<Integer>>  menuitems){
         this.setEntitymodules(entitymodules);
         this.setMenuitems(menuitems);
+    }
+
+    public cPermissionModel(Map<String, List<cEntityModel>> entitymodules){
+        this.setEntitymodules(entitymodules);
     }
 
     public cPermissionModel(String description, Map<String, List<cEntityModel>> entitymodules,
@@ -35,8 +52,18 @@ public class cPermissionModel {
         return roleServerID;
     }
 
+    @Exclude
     public void setRoleServerID(String roleServerID) {
         this.roleServerID = roleServerID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Exclude
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {

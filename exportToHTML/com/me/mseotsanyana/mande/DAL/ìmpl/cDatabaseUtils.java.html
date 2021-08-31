@@ -1,0 +1,914 @@
+<html>
+<head>
+<title>cDatabaseUtils.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #0033b3;}
+.s1 { color: #080808;}
+.s2 { color: #8c8c8c; font-style: italic;}
+.s3 { color: #8c8c8c; font-style: italic;}
+.s4 { color: #067d17;}
+.s5 { color: #1750eb;}
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+cDatabaseUtils.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.me.mseotsanyana.mande.DAL.ìmpl;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Context;</span>
+<span class="s0">import </span><span class="s1">android.content.res.AssetManager;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull;</span>
+
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.Task;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.Tasks;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.CollectionReference;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.QuerySnapshot;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cEntityModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cSectionModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cOperationModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cPermissionModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cPlanModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cRoleModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cStatusModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cTeamModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cUnixOperationModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.utils.cCommonPropertiesModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.DAL.storage.preference.cSharedPreference;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.treeadapterlibrary.cTreeModel;</span>
+
+<span class="s0">import </span><span class="s1">org.json.JSONArray;</span>
+<span class="s0">import </span><span class="s1">org.json.JSONException;</span>
+<span class="s0">import </span><span class="s1">org.json.JSONObject;</span>
+
+<span class="s0">import </span><span class="s1">java.io.IOException;</span>
+<span class="s0">import </span><span class="s1">java.io.InputStream;</span>
+<span class="s0">import </span><span class="s1">java.nio.charset.StandardCharsets;</span>
+<span class="s0">import </span><span class="s1">java.util.ArrayList;</span>
+<span class="s0">import </span><span class="s1">java.util.Collection;</span>
+<span class="s0">import </span><span class="s1">java.util.HashMap;</span>
+<span class="s0">import </span><span class="s1">java.util.List;</span>
+<span class="s0">import </span><span class="s1">java.util.Map;</span>
+<span class="s0">import </span><span class="s1">java.util.Objects;</span>
+<span class="s0">import </span><span class="s1">java.util.Set;</span>
+
+<span class="s0">public final class </span><span class="s1">cDatabaseUtils {</span>
+
+    <span class="s2">// Private constructor to prevent instantiation</span>
+    <span class="s0">private </span><span class="s1">cDatabaseUtils() {</span>
+        <span class="s0">throw new </span><span class="s1">UnsupportedOperationException();</span>
+    <span class="s1">}</span>
+
+    <span class="s2">// public static methods here</span>
+    <span class="s0">public static </span><span class="s1">@NonNull</span>
+    <span class="s1">String loadJSONFromAsset(String jsonMenu, AssetManager assetManager) {</span>
+        <span class="s1">String json;</span>
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s2">//AssetManager assetManager = getContext().getAssets();</span>
+            <span class="s1">InputStream is = assetManager.open(jsonMenu);</span>
+
+            <span class="s0">int </span><span class="s1">size = is.available();</span>
+            <span class="s0">byte</span><span class="s1">[] buffer = </span><span class="s0">new byte</span><span class="s1">[size];</span>
+            <span class="s1">is.read(buffer);</span>
+            <span class="s1">is.close();</span>
+            <span class="s1">json = </span><span class="s0">new </span><span class="s1">String(buffer, StandardCharsets.UTF_8);</span>
+
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(IOException ex) {</span>
+            <span class="s1">ex.printStackTrace();</span>
+            <span class="s0">return null</span><span class="s1">;</span>
+        <span class="s1">}</span>
+
+        <span class="s2">//Log.e(TAG, &quot;Json response &quot; + json);</span>
+        <span class="s0">return </span><span class="s1">json;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* read a default freemium plan of the new user or demotion to a lower plan due to non payment</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">context context</span>
+     <span class="s2">* </span><span class="s3">@return </span><span class="s2">plan model</span>
+     <span class="s2">*/</span>
+    <span class="s0">public static </span><span class="s1">cPlanModel getDefaultPlanModel(Context context) {</span>
+        <span class="s1">cPlanModel planModel = </span><span class="s0">new </span><span class="s1">cPlanModel();</span>
+        <span class="s2">// read json file</span>
+        <span class="s1">String plans = </span><span class="s4">&quot;jsons/sys_plans.json&quot;</span><span class="s1">;</span>
+        <span class="s1">String planJSONString = cDatabaseUtils.loadJSONFromAsset(plans, context.getAssets());</span>
+
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s1">JSONObject jsonObjectPlan = </span><span class="s0">new </span><span class="s1">JSONObject(planJSONString);</span>
+            <span class="s1">JSONArray jsonPlans = jsonObjectPlan.getJSONArray(</span><span class="s4">&quot;plans&quot;</span><span class="s1">);</span>
+
+            <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s5">0</span><span class="s1">; i &lt; jsonPlans.length(); i++) {</span>
+                <span class="s1">JSONObject jsonPlan = jsonPlans.getJSONObject(i);</span>
+                <span class="s1">String default_plan = jsonPlan.getString(</span><span class="s4">&quot;id&quot;</span><span class="s1">);</span>
+
+                <span class="s0">if </span><span class="s1">(default_plan.equals(</span><span class="s4">&quot;FREE_SUB&quot;</span><span class="s1">)) {</span>
+                    <span class="s1">planModel.setPlanServerID(jsonPlan.getString(</span><span class="s4">&quot;id&quot;</span><span class="s1">));</span>
+                    <span class="s1">planModel.setName(jsonPlan.getString(</span><span class="s4">&quot;name&quot;</span><span class="s1">));</span>
+                    <span class="s1">planModel.setDescription(jsonPlan.getString(</span><span class="s4">&quot;description&quot;</span><span class="s1">));</span>
+
+                    <span class="s1">planModel.setOrgLimit(jsonPlan.getInt(</span><span class="s4">&quot;max_org_limit&quot;</span><span class="s1">));</span>
+                    <span class="s1">planModel.setTeamLimit(jsonPlan.getInt(</span><span class="s4">&quot;max_team_limit&quot;</span><span class="s1">));</span>
+                    <span class="s1">planModel.setOrgUserLimit(jsonPlan.getInt(</span><span class="s4">&quot;max_org_user_limit&quot;</span><span class="s1">));</span>
+                    <span class="s1">planModel.setTeamUserLimit(jsonPlan.getInt(</span><span class="s4">&quot;max_team_user_limit&quot;</span><span class="s1">));</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(JSONException e) {</span>
+            <span class="s1">e.printStackTrace();</span>
+        <span class="s1">}</span>
+
+        <span class="s0">return </span><span class="s1">planModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* read administrator's default team from json - during the creation of an organization</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">context               context</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">organizationID        organization identification</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">commonPropertiesModel common properties model</span>
+     <span class="s2">* </span><span class="s3">@return </span><span class="s2">team model</span>
+     <span class="s2">*/</span>
+    <span class="s0">public static </span><span class="s1">cTeamModel getAdminTeamModel(Context context, String organizationID,</span>
+                                               <span class="s1">cCommonPropertiesModel commonPropertiesModel) {</span>
+        <span class="s1">cTeamModel teamModel = </span><span class="s0">new </span><span class="s1">cTeamModel();</span>
+
+        <span class="s2">// read json file</span>
+        <span class="s1">String team = </span><span class="s4">&quot;jsons/admin_team.json&quot;</span><span class="s1">;</span>
+        <span class="s1">String teamJSONString = cDatabaseUtils.loadJSONFromAsset(team, context.getAssets());</span>
+
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s1">teamModel.setOrganizationServerID(organizationID);</span>
+
+            <span class="s1">JSONObject jsonObjectTeam = </span><span class="s0">new </span><span class="s1">JSONObject(teamJSONString);</span>
+            <span class="s1">JSONObject jsonTeam = jsonObjectTeam.getJSONObject(</span><span class="s4">&quot;team&quot;</span><span class="s1">);</span>
+
+            <span class="s1">teamModel.setCompositeServerID(organizationID + </span><span class="s4">&quot;_&quot; </span><span class="s1">+ jsonTeam.getString(</span><span class="s4">&quot;id&quot;</span><span class="s1">));</span>
+            <span class="s1">teamModel.setOrganizationServerID(organizationID);</span>
+            <span class="s1">teamModel.setTeamServerID(jsonTeam.getString(</span><span class="s4">&quot;id&quot;</span><span class="s1">));</span>
+
+            <span class="s1">teamModel.setName(jsonTeam.getString(</span><span class="s4">&quot;name&quot;</span><span class="s1">));</span>
+            <span class="s1">teamModel.setDescription(jsonTeam.getString(</span><span class="s4">&quot;description&quot;</span><span class="s1">));</span>
+
+            <span class="s2">// update team's common columns</span>
+            <span class="s1">teamModel.setUserOwnerID(commonPropertiesModel.getCownerID());</span>
+            <span class="s1">teamModel.setOrganizationOwnerID(commonPropertiesModel.getCorgOwnerID());</span>
+            <span class="s1">teamModel.setTeamOwnerBIT(commonPropertiesModel.getCteamOwnerBIT());</span>
+            <span class="s1">teamModel.setUnixpermBITS(commonPropertiesModel.getCunixpermBITS());</span>
+            <span class="s1">teamModel.setStatusBIT(commonPropertiesModel.getCstatusBIT());</span>
+
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(JSONException e) {</span>
+            <span class="s1">e.printStackTrace();</span>
+        <span class="s1">}</span>
+
+        <span class="s0">return </span><span class="s1">teamModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* read administrator's default role from json - during the creation of an organization</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">context               context</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">commonPropertiesModel common properties model</span>
+     <span class="s2">* </span><span class="s3">@return </span><span class="s2">role model</span>
+     <span class="s2">*/</span>
+    <span class="s0">public static </span><span class="s1">cRoleModel getAdminRoleModel(Context context,</span>
+                                               <span class="s1">cCommonPropertiesModel commonPropertiesModel) {</span>
+        <span class="s1">cRoleModel roleModel = </span><span class="s0">new </span><span class="s1">cRoleModel();</span>
+
+        <span class="s2">// read json file</span>
+        <span class="s1">String role = </span><span class="s4">&quot;jsons/admin_role.json&quot;</span><span class="s1">;</span>
+        <span class="s1">String roleJSONString = cDatabaseUtils.loadJSONFromAsset(role, context.getAssets());</span>
+
+        <span class="s2">//Log.d(TAG, roleJSONString);</span>
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s1">JSONObject jsonObjectRole = </span><span class="s0">new </span><span class="s1">JSONObject(roleJSONString);</span>
+            <span class="s1">JSONObject jsonRole = jsonObjectRole.getJSONObject(</span><span class="s4">&quot;role&quot;</span><span class="s1">);</span>
+
+            <span class="s1">roleModel.setName(jsonRole.getString(</span><span class="s4">&quot;name&quot;</span><span class="s1">));</span>
+            <span class="s1">roleModel.setDescription(jsonRole.getString(</span><span class="s4">&quot;description&quot;</span><span class="s1">));</span>
+
+            <span class="s2">// update privilege's common columns</span>
+            <span class="s1">roleModel.setUserOwnerID(commonPropertiesModel.getCownerID());</span>
+            <span class="s1">roleModel.setOrganizationOwnerID(commonPropertiesModel.getCorgOwnerID());</span>
+            <span class="s1">roleModel.setTeamOwnerBIT(commonPropertiesModel.getCteamOwnerBIT());</span>
+            <span class="s1">roleModel.setUnixpermBITS(commonPropertiesModel.getCunixpermBITS());</span>
+            <span class="s1">roleModel.setStatusBIT(commonPropertiesModel.getCstatusBIT());</span>
+
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(JSONException e) {</span>
+            <span class="s1">e.printStackTrace();</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s1">roleModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* read default menu if the role based menu is not available.</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">context context</span>
+     <span class="s2">* </span><span class="s3">@return </span><span class="s2">list of default menu</span>
+     <span class="s2">*/</span>
+    <span class="s0">public static </span><span class="s1">List&lt;cMenuModel&gt; getDefaultMenuModelSet(Context context) {</span>
+        <span class="s1">List&lt;cMenuModel&gt; menuModels = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;();</span>
+
+        <span class="s1">String menu = </span><span class="s4">&quot;jsons/sys_default_menu_items.json&quot;</span><span class="s1">;</span>
+        <span class="s1">String menuJSONString = cDatabaseUtils.loadJSONFromAsset(menu, context.getAssets());</span>
+
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s1">JSONObject jsonObjectMenu = </span><span class="s0">new </span><span class="s1">JSONObject(menuJSONString);</span>
+            <span class="s1">JSONArray jsonArrayMenu = jsonObjectMenu.getJSONArray(</span><span class="s4">&quot;menu&quot;</span><span class="s1">);</span>
+            <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s5">0</span><span class="s1">; i &lt; jsonArrayMenu.length(); i++) {</span>
+                <span class="s1">ArrayList&lt;cMenuModel&gt; subMenuModels = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;();</span>
+                <span class="s1">JSONObject jsonObject = jsonArrayMenu.getJSONObject(i);</span>
+                <span class="s1">JSONArray jsonArraySubMenu = jsonObject.getJSONArray(</span><span class="s4">&quot;sub_menu&quot;</span><span class="s1">);</span>
+
+                <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">j = </span><span class="s5">0</span><span class="s1">; j &lt; jsonArraySubMenu.length(); j++) {</span>
+                    <span class="s1">cMenuModel subMenuModel = </span><span class="s0">new </span><span class="s1">cMenuModel();</span>
+                    <span class="s1">JSONObject jsonObjectSubItem = jsonArraySubMenu.getJSONObject(j);</span>
+                    <span class="s1">subMenuModel.setMenuServerID(jsonObjectSubItem.getInt(</span><span class="s4">&quot;sub_id&quot;</span><span class="s1">));</span>
+                    <span class="s1">subMenuModel.setName(jsonObjectSubItem.getString(</span><span class="s4">&quot;sub_item&quot;</span><span class="s1">));</span>
+                    <span class="s1">subMenuModels.add(subMenuModel);</span>
+                <span class="s1">}</span>
+
+                <span class="s1">cMenuModel menuModel = </span><span class="s0">new </span><span class="s1">cMenuModel();</span>
+                <span class="s2">// set the main menu item</span>
+                <span class="s1">menuModel.setMenuServerID(jsonObject.getInt(</span><span class="s4">&quot;id&quot;</span><span class="s1">));</span>
+                <span class="s1">menuModel.setName(jsonObject.getString(</span><span class="s4">&quot;item&quot;</span><span class="s1">));</span>
+
+                <span class="s2">// sub menu items to the main menu item</span>
+                <span class="s1">menuModel.setSubmenu(subMenuModels);</span>
+
+                <span class="s1">menuModels.add(menuModel);</span>
+            <span class="s1">}</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(JSONException e) {</span>
+            <span class="s1">e.printStackTrace();</span>
+        <span class="s1">}</span>
+
+        <span class="s0">return </span><span class="s1">menuModels;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* build the main menu with its corresponding sub menu model based on the permissions</span>
+     <span class="s2">* allocated to the user through team membership and role assigned to the team</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">context  context</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">menu_map menu map with main and sub menu items</span>
+     <span class="s2">* </span><span class="s3">@return </span><span class="s2">list of menu models</span>
+     <span class="s2">*/</span>
+    <span class="s0">public static </span><span class="s1">List&lt;cMenuModel&gt; getMenuModelSet(Context context,</span>
+                                                   <span class="s1">Map&lt;String, List&lt;Integer&gt;&gt; menu_map) {</span>
+        <span class="s1">List&lt;cMenuModel&gt; menuModels = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;();</span>
+
+        <span class="s1">String menu = </span><span class="s4">&quot;jsons/admin_menu_items.json&quot;</span><span class="s1">;</span>
+        <span class="s1">String menuJSONString = cDatabaseUtils.loadJSONFromAsset(menu, context.getAssets());</span>
+
+        <span class="s0">try </span><span class="s1">{</span>
+
+            <span class="s1">JSONObject jsonObjectMenu = </span><span class="s0">new </span><span class="s1">JSONObject(menuJSONString);</span>
+            <span class="s1">JSONArray jsonArrayMenu = jsonObjectMenu.getJSONArray(</span><span class="s4">&quot;menu&quot;</span><span class="s1">);</span>
+
+            <span class="s1">Set&lt;String&gt; menu_set = menu_map.keySet();</span>
+
+            <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s5">0</span><span class="s1">; i &lt; jsonArrayMenu.length(); i++) {</span>
+
+                <span class="s1">ArrayList&lt;cMenuModel&gt; subMenuModels = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;();</span>
+                <span class="s1">JSONObject jsonObject = jsonArrayMenu.getJSONObject(i);</span>
+
+                <span class="s0">if </span><span class="s1">(menu_set.contains(jsonObject.getString(</span><span class="s4">&quot;id&quot;</span><span class="s1">))) {</span>
+
+                    <span class="s1">cMenuModel menuModel = </span><span class="s0">new </span><span class="s1">cMenuModel();</span>
+                    <span class="s2">// set the main menu item</span>
+                    <span class="s1">menuModel.setMenuServerID(jsonObject.getInt(</span><span class="s4">&quot;id&quot;</span><span class="s1">));</span>
+                    <span class="s1">menuModel.setName(jsonObject.getString(</span><span class="s4">&quot;item&quot;</span><span class="s1">));</span>
+
+                    <span class="s1">JSONArray jsonArraySubMenu = jsonObject.getJSONArray(</span><span class="s4">&quot;sub_menu&quot;</span><span class="s1">);</span>
+                    <span class="s1">List&lt;Integer&gt; sub_menu_items = menu_map.get(jsonObject.getString(</span><span class="s4">&quot;id&quot;</span><span class="s1">));</span>
+                    <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">j = </span><span class="s5">0</span><span class="s1">; j &lt; jsonArraySubMenu.length(); j++) {</span>
+
+                        <span class="s1">JSONObject jsonObjectSubItem = jsonArraySubMenu.getJSONObject(j);</span>
+                        <span class="s0">assert </span><span class="s1">sub_menu_items != </span><span class="s0">null</span><span class="s1">;</span>
+                        <span class="s0">if </span><span class="s1">(sub_menu_items.contains(jsonObjectSubItem.getInt(</span><span class="s4">&quot;sub_id&quot;</span><span class="s1">))) {</span>
+                            <span class="s1">cMenuModel subMenuModel = </span><span class="s0">new </span><span class="s1">cMenuModel();</span>
+                            <span class="s1">subMenuModel.setParentServerID(menuModel.getMenuServerID());</span>
+                            <span class="s1">subMenuModel.setMenuServerID(jsonObjectSubItem.getInt(</span><span class="s4">&quot;sub_id&quot;</span><span class="s1">));</span>
+                            <span class="s1">subMenuModel.setName(jsonObjectSubItem.getString(</span><span class="s4">&quot;sub_item&quot;</span><span class="s1">));</span>
+                            <span class="s1">subMenuModels.add(subMenuModel);</span>
+                        <span class="s1">}</span>
+                    <span class="s1">}</span>
+
+                    <span class="s2">// sub menu items to the main menu item</span>
+                    <span class="s1">menuModel.setSubmenu(subMenuModels);</span>
+                    <span class="s2">// add menu items in the list</span>
+                    <span class="s1">menuModels.add(menuModel);</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(JSONException e) {</span>
+            <span class="s1">e.printStackTrace();</span>
+        <span class="s1">}</span>
+
+        <span class="s0">return </span><span class="s1">menuModels;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* load a default administration menu from json file into the database - during the</span>
+     <span class="s2">* creation of an organization</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">context context</span>
+     <span class="s2">* </span><span class="s3">@return </span><span class="s2">permission model</span>
+     <span class="s2">*/</span>
+    <span class="s0">public static </span><span class="s1">cPermissionModel getAdminPermissions(Context context) {</span>
+
+        <span class="s1">cPermissionModel permissionModel = </span><span class="s0">null</span><span class="s1">;</span>
+
+        <span class="s1">String perms = </span><span class="s4">&quot;jsons/admin_perms.json&quot;</span><span class="s1">;</span>
+        <span class="s1">String permsJSONString = cDatabaseUtils.loadJSONFromAsset(perms, context.getAssets());</span>
+
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s1">JSONObject jsonObjectPerms = </span><span class="s0">new </span><span class="s1">JSONObject(permsJSONString);</span>
+
+            <span class="s2">/* processing entity and unix permissions*/</span>
+
+            <span class="s1">JSONArray jsonArrayModule = jsonObjectPerms.getJSONArray(</span><span class="s4">&quot;entitymodules&quot;</span><span class="s1">);</span>
+            <span class="s1">Map&lt;String, List&lt;cEntityModel&gt;&gt; entitymodules = </span><span class="s0">new </span><span class="s1">HashMap&lt;&gt;();</span>
+
+            <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s5">0</span><span class="s1">; i &lt; jsonArrayModule.length(); i++) {</span>
+                <span class="s1">JSONObject jsonObjectModules = jsonArrayModule.getJSONObject(i);</span>
+                <span class="s1">String moduleID = jsonObjectModules.getString(</span><span class="s4">&quot;module_id&quot;</span><span class="s1">);</span>
+                <span class="s1">JSONArray jsonArrayEntity = jsonObjectModules.getJSONArray(</span><span class="s4">&quot;entities&quot;</span><span class="s1">);</span>
+
+                <span class="s1">List&lt;cEntityModel&gt; entityModels = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;();</span>
+
+                <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">j = </span><span class="s5">0</span><span class="s1">; j &lt; jsonArrayEntity.length(); j++) {</span>
+                    <span class="s1">JSONObject jsonObjectEntity = jsonArrayEntity.getJSONObject(j);</span>
+                    <span class="s1">String entityID = jsonObjectEntity.getString(</span><span class="s4">&quot;entity_id&quot;</span><span class="s1">);</span>
+
+                    <span class="s2">// operation with list of statuses</span>
+                    <span class="s1">JSONArray jsonArrayOpStatus = jsonObjectEntity.getJSONArray(</span><span class="s4">&quot;operations&quot;</span><span class="s1">);</span>
+                    <span class="s1">Map&lt;String, List&lt;Integer&gt;&gt; entityperms = </span><span class="s0">new </span><span class="s1">HashMap&lt;&gt;();</span>
+                    <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">k = </span><span class="s5">0</span><span class="s1">; k &lt; jsonArrayOpStatus.length(); k++) {</span>
+                        <span class="s1">JSONObject jsonObjectOps = jsonArrayOpStatus.getJSONObject(k);</span>
+                        <span class="s1">String operationID = jsonObjectOps.getString(</span><span class="s4">&quot;op_id&quot;</span><span class="s1">);</span>
+
+                        <span class="s1">JSONArray jsonArrayStatus = jsonObjectOps.getJSONArray(</span><span class="s4">&quot;status_ids&quot;</span><span class="s1">);</span>
+                        <span class="s1">List&lt;Integer&gt; statuses = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;();</span>
+                        <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">l = </span><span class="s5">0</span><span class="s1">; l &lt; jsonArrayStatus.length(); l++) {</span>
+                            <span class="s0">int </span><span class="s1">jsonObjectStatus = jsonArrayStatus.getInt(l);</span>
+                            <span class="s1">statuses.add(jsonObjectStatus);</span>
+                        <span class="s1">}</span>
+
+                        <span class="s1">entityperms.put(operationID, statuses);</span>
+                    <span class="s1">}</span>
+
+                    <span class="s2">// unix operations</span>
+                    <span class="s1">JSONArray jsonArrayUnixPerm = jsonObjectEntity.getJSONArray(</span><span class="s4">&quot;unixoperations&quot;</span><span class="s1">);</span>
+                    <span class="s1">List&lt;Integer&gt; unixperms = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;();</span>
+                    <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">k = </span><span class="s5">0</span><span class="s1">; k &lt; jsonArrayUnixPerm.length(); k++) {</span>
+                        <span class="s1">JSONObject jsonObjectUnixOps = jsonArrayUnixPerm.getJSONObject(k);</span>
+                        <span class="s1">String unixPermID = jsonObjectUnixOps.getString(</span><span class="s4">&quot;unix_op_id&quot;</span><span class="s1">);</span>
+                        <span class="s1">unixperms.add(Integer.parseInt(unixPermID));</span>
+                    <span class="s1">}</span>
+
+                    <span class="s2">// create entity model</span>
+                    <span class="s1">cEntityModel entityModel = </span><span class="s0">new </span><span class="s1">cEntityModel(entityID, entityperms, unixperms);</span>
+                    <span class="s1">entityModels.add(entityModel);</span>
+                <span class="s1">}</span>
+
+                <span class="s1">entitymodules.put(moduleID, entityModels);</span>
+            <span class="s1">}</span>
+
+            <span class="s2">/* processing menu items */</span>
+
+            <span class="s1">JSONArray jsonArrayMenuItem = jsonObjectPerms.getJSONArray(</span><span class="s4">&quot;menuitems&quot;</span><span class="s1">);</span>
+            <span class="s1">Map&lt;String, List&lt;Integer&gt;&gt; menuitems = </span><span class="s0">new </span><span class="s1">HashMap&lt;&gt;();</span>
+            <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s5">0</span><span class="s1">; i &lt; jsonArrayMenuItem.length(); i++) {</span>
+                <span class="s1">JSONObject jsonObject = jsonArrayMenuItem.getJSONObject(i);</span>
+                <span class="s1">JSONArray jsonArraySubMenu = jsonObject.getJSONArray(</span><span class="s4">&quot;sub_menu&quot;</span><span class="s1">);</span>
+
+                <span class="s1">List&lt;Integer&gt; submenuitems = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;();</span>
+                <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">j = </span><span class="s5">0</span><span class="s1">; j &lt; jsonArraySubMenu.length(); j++) {</span>
+                    <span class="s1">JSONObject jsonObjectSubItem = jsonArraySubMenu.getJSONObject(j);</span>
+                    <span class="s1">submenuitems.add(jsonObjectSubItem.getInt(</span><span class="s4">&quot;sub_id&quot;</span><span class="s1">));</span>
+                <span class="s1">}</span>
+
+                <span class="s2">// set the main menu item</span>
+                <span class="s1">menuitems.put(jsonObject.getString(</span><span class="s4">&quot;id&quot;</span><span class="s1">), submenuitems);</span>
+            <span class="s1">}</span>
+
+            <span class="s1">permissionModel = </span><span class="s0">new </span><span class="s1">cPermissionModel(entitymodules, menuitems);</span>
+
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(JSONException e) {</span>
+            <span class="s1">e.printStackTrace();</span>
+        <span class="s1">}</span>
+
+        <span class="s0">return </span><span class="s1">permissionModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* read default common properties of every entity</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">context context</span>
+     <span class="s2">* </span><span class="s3">@return </span><span class="s2">common properties model</span>
+     <span class="s2">*/</span>
+    <span class="s0">public static </span><span class="s1">cCommonPropertiesModel getCommonModel(Context context) {</span>
+        <span class="s1">cCommonPropertiesModel commonPropertiesModel = </span><span class="s0">new </span><span class="s1">cCommonPropertiesModel();</span>
+
+        <span class="s2">// read json file</span>
+        <span class="s1">String cproperties = </span><span class="s4">&quot;jsons/admin_common_properties.json&quot;</span><span class="s1">;</span>
+        <span class="s1">String ccolumnsJSONString = cDatabaseUtils.loadJSONFromAsset(cproperties,</span>
+                <span class="s1">context.getAssets());</span>
+
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s2">//assert ccolumnsJSONString != null;</span>
+            <span class="s1">JSONObject jsonObjectColumn = </span><span class="s0">new </span><span class="s1">JSONObject(ccolumnsJSONString);</span>
+            <span class="s1">JSONObject jsonColumn = jsonObjectColumn.getJSONObject(</span><span class="s4">&quot;cproperties&quot;</span><span class="s1">);</span>
+
+            <span class="s1">commonPropertiesModel.setCteamOwnerBIT(jsonColumn.getInt(</span><span class="s4">&quot;cteam&quot;</span><span class="s1">));</span>
+            <span class="s1">commonPropertiesModel.setCstatusBIT(jsonColumn.getInt(</span><span class="s4">&quot;cstatus&quot;</span><span class="s1">));</span>
+            <span class="s1">JSONArray jsonArrayPerm = jsonColumn.getJSONArray(</span><span class="s4">&quot;cunixperms&quot;</span><span class="s1">);</span>
+
+            <span class="s1">List&lt;Integer&gt; unixperm = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;();</span>
+            <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">j = </span><span class="s5">0</span><span class="s1">; j &lt; jsonArrayPerm.length(); j++) {</span>
+                <span class="s1">JSONObject jsonObjectPerm = jsonArrayPerm.getJSONObject(j);</span>
+                <span class="s1">unixperm.add(jsonObjectPerm.getInt(</span><span class="s4">&quot;unix_op_id&quot;</span><span class="s1">));</span>
+            <span class="s1">}</span>
+            <span class="s1">commonPropertiesModel.setCunixpermBITS(unixperm);</span>
+
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(JSONException e) {</span>
+            <span class="s1">e.printStackTrace();</span>
+        <span class="s1">}</span>
+
+        <span class="s0">return </span><span class="s1">commonPropertiesModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* apply read permissions on organization entity - this needs a special application of</span>
+     <span class="s2">* permissions since they have be applied from outside of the organization itself</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">coRef                collection reference</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">organizationServerID organization identification</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">userServerID         user identification</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">primaryTeamBIT       primary team identification</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">secondaryTeamBITS    secondary teams identification</span>
+     <span class="s2">* </span><span class="s3">@return </span><span class="s2">list query results</span>
+     <span class="s2">*/</span>
+    <span class="s0">public static </span><span class="s1">Task&lt;List&lt;QuerySnapshot&gt;&gt; applyReadPermissions(CollectionReference coRef,</span>
+                                                                 <span class="s1">String organizationServerID,</span>
+                                                                 <span class="s1">String userServerID,</span>
+                                                                 <span class="s0">int </span><span class="s1">primaryTeamBIT,</span>
+                                                                 <span class="s1">List&lt;Integer&gt; secondaryTeamBITS) {</span>
+
+        <span class="s1">Task ownerTask, primaryTask, secondaryTask, workplaceTask;</span>
+
+        <span class="s2">/* 2. the owner permission bit is on, and the member is the owner */</span>
+        <span class="s1">ownerTask = coRef</span>
+                <span class="s1">.whereEqualTo(</span><span class="s4">&quot;userOwnerID&quot;</span><span class="s1">, userServerID)</span>
+                <span class="s1">.whereArrayContains(</span><span class="s4">&quot;unixpermBITS&quot;</span><span class="s1">, cSharedPreference.OWNER_READ)</span>
+                <span class="s1">.get();</span>
+
+        <span class="s2">/* 3. the primary team permission bit is on, and the member is in the team */</span>
+        <span class="s1">primaryTask = coRef</span>
+                <span class="s1">.whereEqualTo(</span><span class="s4">&quot;organizationServerID&quot;</span><span class="s1">, organizationServerID)</span>
+                <span class="s1">.whereEqualTo(</span><span class="s4">&quot;teamOwnerBIT&quot;</span><span class="s1">, primaryTeamBIT)</span>
+                <span class="s1">.whereArrayContains(</span><span class="s4">&quot;unixpermBITS&quot;</span><span class="s1">, cSharedPreference.PRIMARY_READ)</span>
+                <span class="s1">.get();</span>
+
+        <span class="s2">/* 4. the second team permission bit is on, and the member is in the team */</span>
+        <span class="s1">secondaryTask = coRef</span>
+                <span class="s1">.whereEqualTo(</span><span class="s4">&quot;organizationServerID&quot;</span><span class="s1">, organizationServerID)</span>
+                <span class="s1">.whereIn(</span><span class="s4">&quot;teamOwnerBIT&quot;</span><span class="s1">, secondaryTeamBITS)</span>
+                <span class="s1">.whereArrayContains(</span><span class="s4">&quot;unixpermBITS&quot;</span><span class="s1">, cSharedPreference.SECONDARY_READ)</span>
+                <span class="s1">.get();</span>
+
+        <span class="s2">/* 5. the other permission bit is on - 
+              all members of an organization have access */</span>
+        <span class="s1">workplaceTask = coRef</span>
+                <span class="s1">.whereEqualTo(</span><span class="s4">&quot;organizationServerID&quot;</span><span class="s1">, organizationServerID)</span>
+                <span class="s1">.whereArrayContains(</span><span class="s4">&quot;unixpermBITS&quot;</span><span class="s1">, cSharedPreference.WORKPLACE_READ)</span>
+                <span class="s1">.get();</span>
+
+        <span class="s0">return </span><span class="s1">Tasks.whenAllSuccess(ownerTask, primaryTask, secondaryTask, workplaceTask);</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* check whether the access is allowed or not based on the permission assigned to a role</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">perm              common properties permissions for an entity</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">userServerID      user identification for testing the ownership permissions</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">primaryTeamBIT    primary team bit for testing primary team membership permissions</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">secondaryTeamBITS secondary team bits for testing secondary teams membership permissions</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">statusBITS        status bits for testing permission on an operation given the status bits</span>
+     <span class="s2">* </span><span class="s3">@return </span><span class="s2">boolean</span>
+     <span class="s2">*/</span>
+    <span class="s0">public static boolean </span><span class="s1">isPermitted(cUnixPerm perm, String userServerID, </span><span class="s0">int </span><span class="s1">primaryTeamBIT,</span>
+                                      <span class="s1">List&lt;Integer&gt; secondaryTeamBITS, List&lt;Integer&gt; statusBITS) {</span>
+
+        <span class="s0">return </span><span class="s1">statusBITS.contains(perm.getStatusBIT()) &amp;&amp;</span>
+                <span class="s2">/* 1. members of 'Administrator' team are always allowed to do everything */</span>
+                <span class="s1">((perm.getTeamOwnerBIT() == </span><span class="s5">1</span><span class="s1">) ||</span>
+                        <span class="s2">/* 2. the member is the owner and the owner permission bit is on */</span>
+                        <span class="s1">(perm.getUserOwnerID().equals(userServerID) &amp;&amp;</span>
+                                <span class="s1">perm.getUnixpermBITS().contains(cSharedPreference.OWNER_READ)) ||</span>
+                        <span class="s2">/* 3. the member is in the primary team and the primary team permission bit is on */</span>
+                        <span class="s1">(perm.getTeamOwnerBIT() == primaryTeamBIT &amp;&amp;</span>
+                                <span class="s1">perm.getUnixpermBITS().contains(cSharedPreference.PRIMARY_READ)) ||</span>
+                        <span class="s2">/* 4. the member is in the secondary team and the second team permission bit is on */</span>
+                        <span class="s1">(secondaryTeamBITS.contains(perm.getTeamOwnerBIT()) &amp;&amp;</span>
+                                <span class="s1">perm.getUnixpermBITS().contains(cSharedPreference.SECONDARY_READ)) ||</span>
+                        <span class="s2">/* 5. members is in the organization and the workplace permission bit is on */</span>
+                        <span class="s1">(perm.getUnixpermBITS().contains(cSharedPreference.WORKPLACE_READ)));</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* check whether the access is allowed or not based on the permission assigned to a role</span>
+     <span class="s2">* used only for organization entity</span>
+     <span class="s2">*</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">perm              common properties permissions for an entity</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">userServerID      user identification for testing the ownership permissions</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">primaryTeamBIT    primary team bit for testing primary team membership permissions</span>
+     <span class="s2">* </span><span class="s3">@param </span><span class="s2">secondaryTeamBITS secondary team bits for testing secondary teams membership permissions</span>
+     <span class="s2">* </span><span class="s3">@return </span><span class="s2">boolean</span>
+     <span class="s2">*/</span>
+    <span class="s0">public static boolean </span><span class="s1">isPermitted(cUnixPerm perm, String userServerID, </span><span class="s0">int </span><span class="s1">primaryTeamBIT,</span>
+                                      <span class="s1">List&lt;Integer&gt; secondaryTeamBITS) {</span>
+
+        <span class="s0">return </span><span class="s1">(</span>
+                <span class="s2">/* 1. the member is the owner and the owner permission bit is on */</span>
+                <span class="s1">(perm.getUserOwnerID().equals(userServerID) &amp;&amp;</span>
+                        <span class="s1">perm.getUnixpermBITS().contains(cSharedPreference.OWNER_READ)) ||</span>
+                        <span class="s2">/* 2. the member is in the primary team and the primary team permission bit is on */</span>
+                        <span class="s1">(perm.getTeamOwnerBIT() == primaryTeamBIT &amp;&amp;</span>
+                                <span class="s1">perm.getUnixpermBITS().contains(cSharedPreference.PRIMARY_READ)) ||</span>
+                        <span class="s2">/* 3. the member is in the secondary team and the second team permission bit is on */</span>
+                        <span class="s1">(secondaryTeamBITS.contains(perm.getTeamOwnerBIT()) &amp;&amp;</span>
+                                <span class="s1">perm.getUnixpermBITS().contains(cSharedPreference.SECONDARY_READ)) ||</span>
+                        <span class="s2">/* 4. members is in the organization and the workplace permission bit is on */</span>
+                        <span class="s1">(perm.getUnixpermBITS().contains(cSharedPreference.WORKPLACE_READ)));</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/**</span>
+     <span class="s2">* static class that holds permissions of an entity</span>
+     <span class="s2">*/</span>
+    <span class="s0">public static class </span><span class="s1">cUnixPerm {</span>
+        <span class="s0">private </span><span class="s1">String userOwnerID;</span>
+        <span class="s0">private int </span><span class="s1">teamOwnerBIT;</span>
+        <span class="s0">private </span><span class="s1">List&lt;Integer&gt; unixpermBITS;</span>
+        <span class="s0">private int </span><span class="s1">statusBIT;</span>
+
+        <span class="s0">public </span><span class="s1">String getUserOwnerID() {</span>
+            <span class="s0">return </span><span class="s1">userOwnerID;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public void </span><span class="s1">setUserOwnerID(String userOwnerID) {</span>
+            <span class="s0">this</span><span class="s1">.userOwnerID = userOwnerID;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public int </span><span class="s1">getTeamOwnerBIT() {</span>
+            <span class="s0">return </span><span class="s1">teamOwnerBIT;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public void </span><span class="s1">setTeamOwnerBIT(</span><span class="s0">int </span><span class="s1">teamOwnerBIT) {</span>
+            <span class="s0">this</span><span class="s1">.teamOwnerBIT = teamOwnerBIT;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public </span><span class="s1">List&lt;Integer&gt; getUnixpermBITS() {</span>
+            <span class="s0">return </span><span class="s1">unixpermBITS;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public void </span><span class="s1">setUnixpermBITS(List&lt;Integer&gt; unixpermBITS) {</span>
+            <span class="s0">this</span><span class="s1">.unixpermBITS = unixpermBITS;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public int </span><span class="s1">getStatusBIT() {</span>
+            <span class="s0">return </span><span class="s1">statusBIT;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public void </span><span class="s1">setStatusBIT(</span><span class="s0">int </span><span class="s1">statusBIT) {</span>
+            <span class="s0">this</span><span class="s1">.statusBIT = statusBIT;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static </span><span class="s1">List&lt;cTreeModel&gt; buildPermissionTree(Context context, cRoleModel roleModel,</span>
+                                                       <span class="s1">cPermissionModel permissionModel) {</span>
+        <span class="s1">List&lt;cTreeModel&gt; treeModels = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;();</span>
+
+        <span class="s2">/* permission tree */</span>
+        <span class="s1">String perm_tree = </span><span class="s4">&quot;jsons/sys_permission_tree.json&quot;</span><span class="s1">;</span>
+        <span class="s1">String permTreeJSONString = cDatabaseUtils.loadJSONFromAsset(perm_tree,</span>
+                <span class="s1">context.getAssets());</span>
+
+        <span class="s2">/* entity operations */</span>
+        <span class="s1">String entity_ops = </span><span class="s4">&quot;jsons/sys_entity_operations.json&quot;</span><span class="s1">;</span>
+        <span class="s1">String entityOpsJSONString = cDatabaseUtils.loadJSONFromAsset(entity_ops,</span>
+                <span class="s1">context.getAssets());</span>
+        <span class="s2">/* operation status */</span>
+        <span class="s1">String op_status = </span><span class="s4">&quot;jsons/sys_op_status.json&quot;</span><span class="s1">;</span>
+        <span class="s1">String opStatusJSONString = cDatabaseUtils.loadJSONFromAsset(op_status,</span>
+                <span class="s1">context.getAssets());</span>
+
+        <span class="s2">/* unix operations */</span>
+        <span class="s1">String unix_ops = </span><span class="s4">&quot;jsons/sys_unix_operations.json&quot;</span><span class="s1">;</span>
+        <span class="s1">String unixOpsJSONString = cDatabaseUtils.loadJSONFromAsset(unix_ops,</span>
+                <span class="s1">context.getAssets());</span>
+
+        <span class="s2">/* menu items */</span>
+        <span class="s1">String menu_items = </span><span class="s4">&quot;jsons/sys_menu_items.json&quot;</span><span class="s1">;</span>
+        <span class="s1">String menuItemsJSONString = cDatabaseUtils.loadJSONFromAsset(menu_items,</span>
+                <span class="s1">context.getAssets());</span>
+
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s0">int </span><span class="s1">parentIndex = </span><span class="s5">0</span><span class="s1">, childIndex;</span>
+            <span class="s2">/* LEVEL 0: add root role node */</span>
+            <span class="s1">treeModels.add(</span><span class="s0">new </span><span class="s1">cTreeModel(</span><span class="s0">new </span><span class="s1">cTreeModel(parentIndex, -</span><span class="s5">1</span><span class="s1">, </span><span class="s5">0</span><span class="s1">,</span>
+                    <span class="s1">roleModel)));</span>
+            <span class="s2">/* LEVEL 1: add child permission node to the parent role node */</span>
+            <span class="s1">childIndex = parentIndex + </span><span class="s5">1</span><span class="s1">;</span>
+            <span class="s1">treeModels.add(</span><span class="s0">new </span><span class="s1">cTreeModel(</span><span class="s0">new </span><span class="s1">cTreeModel(childIndex, parentIndex, </span><span class="s5">1</span><span class="s1">,</span>
+                    <span class="s1">permissionModel)));</span>
+            <span class="s1">parentIndex = childIndex;</span>
+
+            <span class="s2">/* modules */</span>
+            <span class="s1">List&lt;String&gt; module_ids = getModuleIDs(permissionModel);</span>
+
+            <span class="s1">JSONObject jsonObjectPermTree = </span><span class="s0">new </span><span class="s1">JSONObject(permTreeJSONString);</span>
+            <span class="s1">JSONArray jsonArrayModules = jsonObjectPermTree.getJSONArray(</span><span class="s4">&quot;modules&quot;</span><span class="s1">);</span>
+            <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s5">0</span><span class="s1">; i &lt; jsonArrayModules.length(); i++) {</span>
+                <span class="s1">JSONObject objectModule = jsonArrayModules.getJSONObject(i);</span>
+
+                <span class="s1">cModuleModel moduleModel = </span><span class="s0">new </span><span class="s1">cModuleModel();</span>
+                <span class="s1">moduleModel.setModuleServerID(objectModule.getString(</span><span class="s4">&quot;module_id&quot;</span><span class="s1">));</span>
+                <span class="s1">moduleModel.setName(objectModule.getString(</span><span class="s4">&quot;module_name&quot;</span><span class="s1">));</span>
+                <span class="s1">moduleModel.setChecked(module_ids.contains(objectModule.getString(</span>
+                        <span class="s4">&quot;module_id&quot;</span><span class="s1">)));</span>
+
+                <span class="s2">/* LEVEL 2: add child module node to the parent permission node */</span>
+                <span class="s1">childIndex = childIndex + </span><span class="s5">1</span><span class="s1">;</span>
+                <span class="s1">treeModels.add(</span><span class="s0">new </span><span class="s1">cTreeModel(childIndex, parentIndex, </span><span class="s5">2</span><span class="s1">, moduleModel));</span>
+                <span class="s1">parentIndex = childIndex;</span>
+
+                <span class="s2">/* entities */</span>
+                <span class="s1">JSONArray jsonArrayEntities = objectModule.getJSONArray(</span><span class="s4">&quot;entities&quot;</span><span class="s1">);</span>
+                <span class="s1">List&lt;String&gt; entity_ids = getEntityIDs(permissionModel,</span>
+                        <span class="s1">moduleModel.getModuleServerID());</span>
+                <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">j = </span><span class="s5">0</span><span class="s1">; j &lt; jsonArrayEntities.length(); j++) {</span>
+                    <span class="s1">JSONObject objectEntity = jsonArrayEntities.getJSONObject(i);</span>
+
+                    <span class="s1">cEntityModel entityModel = </span><span class="s0">new </span><span class="s1">cEntityModel();</span>
+                    <span class="s1">entityModel.setEntityServerID(objectEntity.getString(</span><span class="s4">&quot;entity_id&quot;</span><span class="s1">));</span>
+                    <span class="s1">entityModel.setName(objectEntity.getString(</span><span class="s4">&quot;entity_name&quot;</span><span class="s1">));</span>
+                    <span class="s1">entityModel.setDescription(objectEntity.getString(</span><span class="s4">&quot;entity_description&quot;</span><span class="s1">));</span>
+                    <span class="s1">entityModel.setChecked(entity_ids.contains(objectEntity.getString(</span>
+                            <span class="s4">&quot;entity_id&quot;</span><span class="s1">)));</span>
+
+                    <span class="s2">/* LEVEL 3: add child entity node to the parent module node */</span>
+                    <span class="s1">childIndex = childIndex + </span><span class="s5">1</span><span class="s1">;</span>
+                    <span class="s1">treeModels.add(</span><span class="s0">new </span><span class="s1">cTreeModel(childIndex, parentIndex, </span><span class="s5">3</span><span class="s1">, entityModel));</span>
+                    <span class="s1">parentIndex = childIndex;</span>
+
+                    <span class="s2">/* entity operations */</span>
+                    <span class="s1">JSONObject jsonObjectEntityOps = </span><span class="s0">new </span><span class="s1">JSONObject(entityOpsJSONString);</span>
+                    <span class="s1">JSONArray jsonArrayOps = jsonObjectEntityOps.getJSONArray(</span><span class="s4">&quot;operations&quot;</span><span class="s1">);</span>
+                    <span class="s1">List&lt;String&gt; op_ids = getOperationIDs(permissionModel,</span>
+                            <span class="s1">moduleModel.getModuleServerID(), entityModel.getEntityServerID());</span>
+                    <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">k = </span><span class="s5">0</span><span class="s1">; k &lt; jsonArrayOps.length(); k++) {</span>
+                        <span class="s1">JSONObject objectOps = jsonArrayOps.getJSONObject(i);</span>
+
+                        <span class="s1">cOperationModel operationModel = </span><span class="s0">new </span><span class="s1">cOperationModel();</span>
+                        <span class="s1">operationModel.setOperationServerID(objectOps.getString(</span>
+                                <span class="s4">&quot;entity_op_id&quot;</span><span class="s1">));</span>
+                        <span class="s1">operationModel.setName(objectOps.getString(</span>
+                                <span class="s4">&quot;entity_op_name&quot;</span><span class="s1">));</span>
+                        <span class="s1">operationModel.setDescription(objectOps.getString(</span>
+                                <span class="s4">&quot;entity_op_description&quot;</span><span class="s1">));</span>
+                        <span class="s1">operationModel.setChecked(op_ids.contains(objectOps.getString(</span>
+                                <span class="s4">&quot;entity_op_id&quot;</span><span class="s1">)));</span>
+
+                        <span class="s2">/* LEVEL 4: add child operation node to the parent entity node */</span>
+                        <span class="s1">childIndex = childIndex + </span><span class="s5">1</span><span class="s1">;</span>
+                        <span class="s1">treeModels.add(</span><span class="s0">new </span><span class="s1">cTreeModel(childIndex, parentIndex, </span><span class="s5">4</span><span class="s1">,</span>
+                                <span class="s1">operationModel));</span>
+                        <span class="s1">parentIndex = childIndex;</span>
+
+                        <span class="s2">/* operation status */</span>
+                        <span class="s1">JSONObject jsonObjectOpStatus = </span><span class="s0">new </span><span class="s1">JSONObject(opStatusJSONString);</span>
+                        <span class="s1">JSONArray jsonArrayStatus = jsonObjectOpStatus.getJSONArray(</span>
+                                <span class="s4">&quot;statuses&quot;</span><span class="s1">);</span>
+                        <span class="s1">List&lt;String&gt; status_ids = getStatusIDs(permissionModel,</span>
+                                <span class="s1">moduleModel.getModuleServerID(), entityModel.getEntityServerID(),</span>
+                                <span class="s1">operationModel.getOperationServerID());</span>
+                        <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">l = </span><span class="s5">0</span><span class="s1">; l &lt; jsonArrayStatus.length(); l++) {</span>
+                            <span class="s1">JSONObject objectStatus = jsonArrayStatus.getJSONObject(i);</span>
+
+                            <span class="s1">cStatusModel statusModel = </span><span class="s0">new </span><span class="s1">cStatusModel();</span>
+                            <span class="s1">statusModel.setStatusServerID(objectStatus.getString(</span>
+                                    <span class="s4">&quot;status_id&quot;</span><span class="s1">));</span>
+                            <span class="s1">statusModel.setName(objectStatus.getString(</span><span class="s4">&quot;status_name&quot;</span><span class="s1">));</span>
+                            <span class="s1">statusModel.setDescription(objectStatus.getString(</span>
+                                    <span class="s4">&quot;status_description&quot;</span><span class="s1">));</span>
+                            <span class="s1">statusModel.setChecked(status_ids.contains(objectStatus.getString(</span>
+                                    <span class="s4">&quot;status_id&quot;</span><span class="s1">)));</span>
+
+
+                            <span class="s2">/* LEVEL 5: add child status node to the parent operation node */</span>
+                            <span class="s1">childIndex = childIndex + </span><span class="s5">1</span><span class="s1">;</span>
+                            <span class="s1">treeModels.add(</span><span class="s0">new </span><span class="s1">cTreeModel(childIndex, parentIndex, </span><span class="s5">5</span><span class="s1">,</span>
+                                    <span class="s1">statusModel));</span>
+                            <span class="s1">parentIndex = childIndex;</span>
+                        <span class="s1">}</span>
+                    <span class="s1">}</span>
+
+                    <span class="s2">/* unix operations */</span>
+                    <span class="s1">JSONObject jsonObjectUnixOps = </span><span class="s0">new </span><span class="s1">JSONObject(unixOpsJSONString);</span>
+                    <span class="s1">JSONArray jsonArrayUnixOps = jsonObjectUnixOps.getJSONArray(</span>
+                            <span class="s4">&quot;unixoperations&quot;</span><span class="s1">);</span>
+                    <span class="s1">List&lt;String&gt; unix_op_ids = getUnixOperationIDs(permissionModel,</span>
+                            <span class="s1">moduleModel.getModuleServerID(), entityModel.getEntityServerID());</span>
+
+                    <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">k = </span><span class="s5">0</span><span class="s1">; k &lt; jsonArrayUnixOps.length(); k++) {</span>
+                        <span class="s1">JSONObject objectUnixOps = jsonArrayUnixOps.getJSONObject(i);</span>
+
+                        <span class="s1">cUnixOperationModel unixOperationModel = </span><span class="s0">new </span><span class="s1">cUnixOperationModel();</span>
+                        <span class="s1">unixOperationModel.setOperationServerID(objectUnixOps.getString(</span>
+                                <span class="s4">&quot;unix_op_id&quot;</span><span class="s1">));</span>
+                        <span class="s1">unixOperationModel.setName(objectUnixOps.getString(</span>
+                                <span class="s4">&quot;unix_op_name&quot;</span><span class="s1">));</span>
+                        <span class="s1">unixOperationModel.setDescription(objectUnixOps.getString(</span>
+                                <span class="s4">&quot;unix_op_description&quot;</span><span class="s1">));</span>
+                        <span class="s1">unixOperationModel.setChecked(unix_op_ids.contains(objectUnixOps.getString(</span>
+                                <span class="s4">&quot;unix_op_id&quot;</span><span class="s1">)));</span>
+
+                        <span class="s2">/* LEVEL 4: add child unix operation node to the parent entity node */</span>
+                        <span class="s1">childIndex = childIndex + </span><span class="s5">1</span><span class="s1">;</span>
+                        <span class="s1">treeModels.add(</span><span class="s0">new </span><span class="s1">cTreeModel(childIndex, parentIndex, </span><span class="s5">4</span><span class="s1">,</span>
+                                <span class="s1">unixOperationModel));</span>
+                        <span class="s1">parentIndex = childIndex;</span>
+                    <span class="s1">}</span>
+
+                <span class="s1">}</span>
+
+                <span class="s2">/* menu items */</span>
+                <span class="s1">JSONObject jsonObjectMenuItem = </span><span class="s0">new </span><span class="s1">JSONObject(menuItemsJSONString);</span>
+                <span class="s1">JSONArray jsonArrayMenu = jsonObjectMenuItem.getJSONArray(</span><span class="s4">&quot;menuitems&quot;</span><span class="s1">);</span>
+                <span class="s1">List&lt;String&gt; main_menu_ids = getMainMenuIDs(permissionModel);</span>
+                <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">m = </span><span class="s5">0</span><span class="s1">; m &lt; jsonArrayMenu.length(); m++) {</span>
+                    <span class="s1">JSONObject jsonObjectMenu = jsonArrayMenu.getJSONObject(i);</span>
+
+                    <span class="s1">cMenuModel menuModel = </span><span class="s0">new </span><span class="s1">cMenuModel();</span>
+                    <span class="s2">// set the main menu item</span>
+                    <span class="s1">menuModel.setMenuServerID(jsonObjectMenu.getInt(</span><span class="s4">&quot;menu_id&quot;</span><span class="s1">));</span>
+                    <span class="s1">menuModel.setName(jsonObjectMenu.getString(</span><span class="s4">&quot;menu_name&quot;</span><span class="s1">));</span>
+                    <span class="s1">menuModel.setDescription(jsonObjectMenu.getString(</span><span class="s4">&quot;menu_description&quot;</span><span class="s1">));</span>
+                    <span class="s1">menuModel.setChecked(main_menu_ids.contains(jsonObjectMenu.getString(</span>
+                            <span class="s4">&quot;menu_id&quot;</span><span class="s1">)));</span>
+
+                    <span class="s2">/* LEVEL 5: add child status node to the parent operation node */</span>
+                    <span class="s1">childIndex = childIndex + </span><span class="s5">1</span><span class="s1">;</span>
+                    <span class="s1">treeModels.add(</span><span class="s0">new </span><span class="s1">cTreeModel(childIndex, parentIndex, </span><span class="s5">7</span><span class="s1">, menuModel));</span>
+                    <span class="s1">parentIndex = childIndex;</span>
+
+                    <span class="s1">JSONArray jsonArraySubMenu = jsonObjectMenu.getJSONArray(</span><span class="s4">&quot;sub_menu&quot;</span><span class="s1">);</span>
+                    <span class="s1">List&lt;String&gt; sub_menu_items = getSubMenuIDs(permissionModel,</span>
+                            <span class="s1">String.valueOf(menuModel.getMenuServerID()));</span>
+                    <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">j = </span><span class="s5">0</span><span class="s1">; j &lt; jsonArraySubMenu.length(); j++) {</span>
+
+                        <span class="s1">JSONObject jsonObjectSubItem = jsonArraySubMenu.getJSONObject(j);</span>
+                        <span class="s0">if </span><span class="s1">(sub_menu_items.contains(jsonObjectSubItem.getString(</span>
+                                <span class="s4">&quot;sub_menu_id&quot;</span><span class="s1">))) {</span>
+                            <span class="s1">cMenuModel subMenuModel = </span><span class="s0">new </span><span class="s1">cMenuModel();</span>
+                            <span class="s1">subMenuModel.setParentServerID(menuModel.getMenuServerID());</span>
+                            <span class="s1">subMenuModel.setMenuServerID(jsonObjectSubItem.getInt(</span><span class="s4">&quot;sub_id&quot;</span><span class="s1">));</span>
+                            <span class="s1">subMenuModel.setName(jsonObjectSubItem.getString(</span><span class="s4">&quot;sub_menu_name&quot;</span><span class="s1">));</span>
+                            <span class="s1">subMenuModel.setDescription(jsonObjectSubItem.getString(</span>
+                                    <span class="s4">&quot;sub_menu_description&quot;</span><span class="s1">));</span>
+
+                            <span class="s2">/* LEVEL 5: add child status node to the parent operation node */</span>
+                            <span class="s1">childIndex = childIndex + </span><span class="s5">1</span><span class="s1">;</span>
+                            <span class="s1">treeModels.add(</span><span class="s0">new </span><span class="s1">cTreeModel(childIndex, parentIndex, </span><span class="s5">8</span><span class="s1">,</span>
+                                    <span class="s1">subMenuModel));</span>
+                            <span class="s1">parentIndex = childIndex;</span>
+
+                        <span class="s1">}</span>
+                    <span class="s1">}</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(JSONException e) {</span>
+            <span class="s1">e.printStackTrace();</span>
+        <span class="s1">}</span>
+
+        <span class="s0">return </span><span class="s1">treeModels;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private static </span><span class="s1">List&lt;String&gt; getModuleIDs(cPermissionModel permissionModel) {</span>
+        <span class="s1">Map&lt;String, List&lt;cEntityModel&gt;&gt; perm_modules = permissionModel.getEntitymodules();</span>
+        <span class="s0">return new </span><span class="s1">ArrayList&lt;&gt;(perm_modules.keySet());</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private static </span><span class="s1">List&lt;String&gt; getEntityIDs(cPermissionModel permissionModel, String moduleID) {</span>
+        <span class="s1">List&lt;String&gt; entity_ids = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;();</span>
+        <span class="s0">for </span><span class="s1">(Map.Entry&lt;String, List&lt;cEntityModel&gt;&gt; entry : permissionModel.getEntitymodules().</span>
+                <span class="s1">entrySet()) {</span>
+            <span class="s0">if </span><span class="s1">(entry.getKey().equals(moduleID)) {</span>
+                <span class="s0">for </span><span class="s1">(cEntityModel entityModel : entry.getValue()) {</span>
+                    <span class="s1">entity_ids.add(entityModel.getEntityServerID());</span>
+                <span class="s1">}</span>
+                <span class="s0">break</span><span class="s1">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s1">entity_ids;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private static </span><span class="s1">List&lt;String&gt; getOperationIDs(cPermissionModel perm, String moduleID,</span>
+                                                <span class="s1">String entityID) {</span>
+        <span class="s1">List&lt;String&gt; ops_ids = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;();</span>
+        <span class="s0">for </span><span class="s1">(Map.Entry&lt;String, List&lt;cEntityModel&gt;&gt; entryModule : perm.getEntitymodules().</span>
+                <span class="s1">entrySet()) {</span>
+            <span class="s0">if </span><span class="s1">(entryModule.getKey().equals(moduleID)) {</span>
+                <span class="s0">for </span><span class="s1">(cEntityModel entityModel : entryModule.getValue()) {</span>
+                    <span class="s0">if </span><span class="s1">(entityModel.getEntityServerID().equals(entityID)) {</span>
+                        <span class="s0">for </span><span class="s1">(Map.Entry&lt;String, List&lt;Integer&gt;&gt; entry : entityModel.getEntityperms().</span>
+                                <span class="s1">entrySet()) {</span>
+                            <span class="s1">ops_ids.add(entry.getKey());</span>
+                        <span class="s1">}</span>
+                        <span class="s0">break</span><span class="s1">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">}</span>
+                <span class="s0">break</span><span class="s1">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s1">ops_ids;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private static </span><span class="s1">List&lt;String&gt; getStatusIDs(cPermissionModel perm, String moduleID,</span>
+                                             <span class="s1">String entityID, String operationID) {</span>
+        <span class="s1">List&lt;String&gt; status_ids = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;();</span>
+        <span class="s0">for </span><span class="s1">(Map.Entry&lt;String, List&lt;cEntityModel&gt;&gt; entryModule : perm.getEntitymodules().</span>
+                <span class="s1">entrySet()) {</span>
+            <span class="s0">if </span><span class="s1">(entryModule.getKey().equals(moduleID)) {</span>
+                <span class="s0">for </span><span class="s1">(cEntityModel entityModel : entryModule.getValue()) {</span>
+                    <span class="s0">if </span><span class="s1">(entityModel.getEntityServerID().equals(entityID)) {</span>
+                        <span class="s0">for </span><span class="s1">(Map.Entry&lt;String, List&lt;Integer&gt;&gt; entry : entityModel.getEntityperms().</span>
+                                <span class="s1">entrySet()) {</span>
+                            <span class="s0">if </span><span class="s1">(String.valueOf(operationID).equals(entry.getKey())) {</span>
+                                <span class="s0">for </span><span class="s1">(Integer status : entry.getValue()) {</span>
+                                    <span class="s1">status_ids.add(String.valueOf(status));</span>
+                                <span class="s1">}</span>
+                                <span class="s0">break</span><span class="s1">;</span>
+                            <span class="s1">}</span>
+                        <span class="s1">}</span>
+                        <span class="s0">break</span><span class="s1">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">}</span>
+                <span class="s0">break</span><span class="s1">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s1">status_ids;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private static </span><span class="s1">List&lt;String&gt; getUnixOperationIDs(cPermissionModel perm, String moduleID,</span>
+                                                    <span class="s1">String entityID) {</span>
+        <span class="s1">List&lt;String&gt; unix_ops_ids = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;();</span>
+        <span class="s0">for </span><span class="s1">(Map.Entry&lt;String, List&lt;cEntityModel&gt;&gt; entryModule : perm.getEntitymodules().</span>
+                <span class="s1">entrySet()) {</span>
+            <span class="s0">if </span><span class="s1">(entryModule.getKey().equals(moduleID)) {</span>
+                <span class="s0">for </span><span class="s1">(cEntityModel entityModel : entryModule.getValue()) {</span>
+                    <span class="s0">if </span><span class="s1">(entityModel.getEntityServerID().equals(entityID)) {</span>
+                        <span class="s0">for </span><span class="s1">(Integer unix_op : entityModel.getUnixperms()) {</span>
+                            <span class="s1">unix_ops_ids.add(String.valueOf(unix_op));</span>
+                        <span class="s1">}</span>
+                        <span class="s0">break</span><span class="s1">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">}</span>
+                <span class="s0">break</span><span class="s1">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s1">unix_ops_ids;</span>
+    <span class="s1">}</span>
+
+
+    <span class="s0">private static </span><span class="s1">List&lt;String&gt; getMainMenuIDs(cPermissionModel permissionModel) {</span>
+        <span class="s1">List&lt;String&gt; menu_ids = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;();</span>
+        <span class="s0">for </span><span class="s1">(Map.Entry&lt;String, List&lt;Integer&gt;&gt; entry : permissionModel.getMenuitems().</span>
+                <span class="s1">entrySet()) {</span>
+            <span class="s1">menu_ids.add(entry.getKey());</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s1">menu_ids;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private static </span><span class="s1">List&lt;String&gt; getSubMenuIDs(cPermissionModel permissionModel, String menuID) {</span>
+        <span class="s1">List&lt;String&gt; sub_menu_ids = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;();</span>
+        <span class="s0">for </span><span class="s1">(Map.Entry&lt;String, List&lt;Integer&gt;&gt; entry : permissionModel.getMenuitems().</span>
+                <span class="s1">entrySet()) {</span>
+            <span class="s0">if </span><span class="s1">(entry.getKey().equals(menuID)) {</span>
+                <span class="s0">for </span><span class="s1">(Integer sub_menu : entry.getValue()) {</span>
+                    <span class="s1">sub_menu_ids.add(String.valueOf(sub_menu));</span>
+                <span class="s1">}</span>
+                <span class="s0">break</span><span class="s1">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s1">sub_menu_ids;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

@@ -12,7 +12,7 @@ import java.util.Map;
  * Created by mseotsanyana on 2017/08/24.
  */
 
-public class cEntityModel implements Parcelable {
+public class cEntityModel {
     private String entityServerID;
 
     private String name;
@@ -87,26 +87,4 @@ public class cEntityModel implements Parcelable {
     public void setEntityperms(Map<String, List<Integer>> entityperms) {
         this.entityperms = entityperms;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(entityServerID);
-    }
-
-    public static final Creator<cEntityModel> CREATOR = new Creator<cEntityModel>() {
-        @Override
-        public cEntityModel createFromParcel(Parcel in) {
-            return new cEntityModel(in);
-        }
-
-        @Override
-        public cEntityModel[] newArray(int size) {
-            return new cEntityModel[size];
-        }
-    };
 }

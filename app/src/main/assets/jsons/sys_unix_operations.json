@@ -32,7 +32,7 @@
     },
     {
       "unix_op_id": 32,
-      "unix_op_name": "Secondary Read",
+      "unix_op_name": "Secondary Team Read",
       "unix_op_description": "Secondary team read operation"
     },
     {

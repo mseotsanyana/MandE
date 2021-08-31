@@ -129,6 +129,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_cHomeFragment_to_cMenuFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_cHomeFragment_to_cOrganizationDetailFragment">
                               <value>
                                 <LayoutPositions />
@@ -330,6 +335,30 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="cMenuFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-2855" />
+                            <option name="y" value="-111" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="cModuleFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-2592" />
+                            <option name="y" value="-134" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="cMonitoringFragment">
                     <value>
                       <LayoutPositions>
@@ -397,18 +426,6 @@
                           <Point>
                             <option name="x" value="-769" />
                             <option name="y" value="-1279" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="cPermissionFragment2">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="-2598" />
-                            <option name="y" value="-130" />
                           </Point>
                         </option>
                       </LayoutPositions>

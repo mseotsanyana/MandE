@@ -59,9 +59,11 @@
       <w>dialpad</w>
       <w>disaggregate</w>
       <w>enddate</w>
+      <w>entitymodule</w>
       <w>entitymodules</w>
       <w>entityperm</w>
       <w>entityperms</w>
+      <w>eosh</w>
       <w>equestion</w>
       <w>eresponse</w>
       <w>evaluationcriteria</w>
@@ -69,6 +71,7 @@
       <w>firestore</w>
       <w>firstname</w>
       <w>fiscalyear</w>
+      <w>fliter</w>
       <w>freemium</w>
       <w>funder</w>
       <w>horizontalchart</w>
@@ -94,6 +97,7 @@
       <w>logframes</w>
       <w>logframetree</w>
       <w>loggedin</w>
+      <w>mainmenu</w>
       <w>mande</w>
       <w>matrixchart</w>
       <w>matrixchoice</w>
@@ -106,6 +110,7 @@
       <w>matrixset</w>
       <w>matrixtarget</w>
       <w>matrixtype</w>
+      <w>menuitem</w>
       <w>menuitems</w>
       <w>milestonereview</w>
       <w>motlatsi</w>
@@ -190,6 +195,7 @@
       <w>unixperm</w>
       <w>unixperms</w>
       <w>unkown</w>
+      <w>uosh</w>
       <w>useraccount</w>
       <w>useraccounts</w>
       <w>usercomment</w>

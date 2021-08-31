@@ -336,8 +336,16 @@
             app:popExitAnim="@anim/slide_out_right"
             app:popUpToInclusive="false" />
         <action
-            android:id="@+id/action_cHomeFragment_to_cPermissionFragment"
-            app:destination="@id/cPermissionFragment"
+            android:id="@+id/action_cHomeFragment_to_cMenuFragment"
+            app:destination="@id/cMenuFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_cHomeFragment_to_cModuleFragment"
+            app:destination="@id/cModuleFragment"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_left"
@@ -373,7 +381,11 @@
         android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cTeamRoleFragment"
         android:label="cTeamRoleFragment" />
     <fragment
-        android:id="@+id/cPermissionFragment"
-        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cPermissionFragment"
-        android:label="cPermissionFragment" />
+        android:id="@+id/cMenuFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cMenuFragment"
+        android:label="cMenuFragment" />
+    <fragment
+        android:id="@+id/cModuleFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cModuleFragment"
+        android:label="cModuleFragment" />
 </navigation>

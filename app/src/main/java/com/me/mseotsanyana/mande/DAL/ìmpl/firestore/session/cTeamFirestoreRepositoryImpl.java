@@ -138,44 +138,48 @@ public class cTeamFirestoreRepositoryImpl implements iTeamRepository {
                                    List<Integer> statusBITS,
                                    iReadTeamsWithMembersCallback callback) {
 
-        CollectionReference coTeamMemberRef = db.collection(cRealtimeHelper.KEY_TEAM_MEMBERS);
-        List<String> team_id_set = new ArrayList<>(teamModelMap.keySet());
-        Query teamMemberQuery = coTeamMemberRef.whereIn("teamMemberServerID", team_id_set);
+        if(!teamModelMap.isEmpty()) {
+            CollectionReference coTeamMemberRef = db.collection(cRealtimeHelper.KEY_TEAM_MEMBERS);
+            List<String> team_id_set = new ArrayList<>(teamModelMap.keySet());
+            Query teamMemberQuery = coTeamMemberRef.whereIn("teamMemberServerID", team_id_set);
 
-        teamMemberQuery.get()
-                .addOnCompleteListener(task -> {
-                    /* retrieve a pair of user account and team member ids */
-                    List<Pair<String, String>> team_acc_ids = new ArrayList<>();
-                    for (DocumentSnapshot acc_doc : Objects.requireNonNull(task.getResult())) {
-                        String accountID = acc_doc.getString("userAccountServerID");
-                        String teamID = acc_doc.getString("teamMemberServerID");
+            teamMemberQuery.get()
+                    .addOnCompleteListener(task -> {
+                        /* retrieve a pair of user account and team member ids */
+                        List<Pair<String, String>> team_acc_ids = new ArrayList<>();
+                        for (DocumentSnapshot acc_doc : Objects.requireNonNull(task.getResult())) {
+                            String accountID = acc_doc.getString("userAccountServerID");
+                            String teamID = acc_doc.getString("teamMemberServerID");
 
-                        if (teamID != null && accountID != null) {
-                            team_acc_ids.add(new Pair<>(teamID, accountID));
-                        }
-                    }
-
-                    /* map team model with a corresponding list of user account ids */
-                    Map<cTeamModel, List<String>> team_user_acc_ids = new HashMap<>();
-                    for (Map.Entry<String, cTeamModel> entry : teamModelMap.entrySet()) {
-                        cTeamModel teamModel = entry.getValue();
-
-                        List<String> user_acc_ids = new ArrayList<>();
-                        for (Pair<String, String> pair : team_acc_ids) {
-                            if (teamModel.getCompositeServerID().equals(pair.first)) {
-                                user_acc_ids.add(pair.second);
+                            if (teamID != null && accountID != null) {
+                                team_acc_ids.add(new Pair<>(teamID, accountID));
                             }
                         }
-                        team_user_acc_ids.put(teamModel, user_acc_ids);
-                    }
 
-                    // filter the account of the team member
-                    filterMemberAccounts(team_user_acc_ids, organizationServerID,
-                            userServerID, primaryTeamBIT, secondaryTeamBITS, statusBITS,
-                            callback);
-                })
-                .addOnFailureListener(e -> callback.onReadTeamsWithMembersFailed(
-                        "Failed to filter team members"));
+                        /* map team model with a corresponding list of user account ids */
+                        Map<cTeamModel, List<String>> team_user_acc_ids = new HashMap<>();
+                        for (Map.Entry<String, cTeamModel> entry : teamModelMap.entrySet()) {
+                            cTeamModel teamModel = entry.getValue();
+
+                            List<String> user_acc_ids = new ArrayList<>();
+                            for (Pair<String, String> pair : team_acc_ids) {
+                                if (teamModel.getCompositeServerID().equals(pair.first)) {
+                                    user_acc_ids.add(pair.second);
+                                }
+                            }
+                            team_user_acc_ids.put(teamModel, user_acc_ids);
+                        }
+
+                        // filter the account of the team member
+                        filterMemberAccounts(team_user_acc_ids, organizationServerID,
+                                userServerID, primaryTeamBIT, secondaryTeamBITS, statusBITS,
+                                callback);
+                    })
+                    .addOnFailureListener(e -> callback.onReadTeamsWithMembersFailed(
+                            "Failed to filter team members"));
+        }else {
+            callback.onReadTeamsWithMembersFailed("Failed to filter team members");
+        }
     }
 
     private void filterMemberAccounts(Map<cTeamModel, List<String>> team_user_acc_ids,

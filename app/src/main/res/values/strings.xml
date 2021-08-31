@@ -64,6 +64,14 @@
     <string name="Delete">Delete</string>
     <string name="Sync">Sync</string>
 
+    <!-- status -->
+    <string name="Deleted">Deleted</string>
+    <string name="Blocked">Blocked</string>
+    <string name="Activated">Activated</string>
+    <string name="Cancelled">Cancelled</string>
+    <string name="Pending">Pending</string>
+
+
     <!-- other operations -->
     <string name="Save">Save</string>
     <string name="Cancel">Cancel</string>
@@ -73,9 +81,10 @@
     <string name="Ok">OK</string>
 
     <!-- unix groups -->
-    <string name="Owner">Owner</string>
-    <string name="Group">Group</string>
-    <string name="Other">Other</string>
+    <string name="Owner">Own Record</string>
+    <string name="Primary">Primary Team</string>
+    <string name="Secondary">Secondary Team</string>
+    <string name="Organization">Own Organization</string>
 
     <!-- common dates -->
     <string name="createdOn">created on:</string>
@@ -200,6 +209,12 @@
     <string name="team_role">Team Roles</string>
     <string name="team_name">team</string>
     <string name="team_description">description</string>
+
+    <!-- the team strings -->
+    <string name="perms">Permissions</string>
+    <string name="perm_role">Permission Menu</string>
+    <string name="perm_name">permission</string>
+    <string name="perm_description">description</string>
 
     <!-- the Impact strings -->
     <string name="impact_list_title">List of Impacts</string>

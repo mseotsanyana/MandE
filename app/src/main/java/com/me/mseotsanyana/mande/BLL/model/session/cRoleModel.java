@@ -30,8 +30,6 @@ public class cRoleModel implements Parcelable {
     private Date createdDate;
     private Date modifiedDate;
 
-    private Date syncedDate;
-
     private cOrganizationModel organizationModel;
 
     private Set<cUserModel> userModelSet;
@@ -46,16 +44,19 @@ public class cRoleModel implements Parcelable {
     }
 
     public cRoleModel(cRoleModel roleModel){
-        this.roleServerID = roleModel.getRoleServerID();
+        //this.setRoleServerID(roleModel.getRoleServerID());
 
-        this.userOwnerID = roleModel.getUserOwnerID();
-        this.organizationOwnerID = roleModel.getOrganizationOwnerID();
-        this.teamOwnerBIT = roleModel.getTeamOwnerBIT();
-        //this.unixpermsBITS = roleModel.getUnixpermsBITS();
-        this.statusBIT = roleModel.getStatusBIT();
+        this.setUserOwnerID(roleModel.getUserOwnerID());
+        this.setOrganizationOwnerID(roleModel.getOrganizationOwnerID());
+        this.setTeamOwnerBIT(roleModel.getTeamOwnerBIT());
+        this.setUnixpermBITS(roleModel.getUnixpermBITS());
+        this.setStatusBIT(roleModel.getStatusBIT());
 
-        this.name = roleModel.getName();
-        this.description = roleModel.getDescription();
+        this.setName(roleModel.getName());
+        this.setDescription(roleModel.getDescription());
+
+        this.setCreatedDate(roleModel.getCreatedDate());
+        this.setModifiedDate(roleModel.getModifiedDate());
     }
 
     @Exclude
@@ -137,15 +138,6 @@ public class cRoleModel implements Parcelable {
 
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
-    }
-
-    @Exclude
-    public Date getSyncedDate() {
-        return syncedDate;
-    }
-
-    public void setSyncedDate(Date syncedDate) {
-        this.syncedDate = syncedDate;
     }
 
     @Exclude

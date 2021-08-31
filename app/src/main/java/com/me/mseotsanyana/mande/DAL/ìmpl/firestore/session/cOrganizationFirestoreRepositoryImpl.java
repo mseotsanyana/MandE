@@ -285,8 +285,8 @@ public class cOrganizationFirestoreRepositoryImpl implements iOrganizationReposi
         coTeamRolesRef.document(compositeTeamID + "_" + roleID).set(team_roles);
 
         // add permissions to the role
-        permissionModel.setDescription("Administrator permissions for both entity and property level " +
-                "access control");
+        permissionModel.setDescription("Administrator permissions for both entity and " +
+                "property level access control");
         coRolePermsRef.document(roleID).set(permissionModel);
     }
 

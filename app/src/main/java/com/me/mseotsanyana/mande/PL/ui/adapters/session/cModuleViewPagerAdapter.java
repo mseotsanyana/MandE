@@ -21,6 +21,10 @@ public class cModuleViewPagerAdapter extends FragmentStateAdapter {
         titleList.add(title);
     }
 
+    public Fragment getPageFragment(int position){
+        return fragmentList.get(position);
+    }
+
     public CharSequence getPageTitle(int position) {
         return titleList.get(position);
     }

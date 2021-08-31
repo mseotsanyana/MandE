@@ -2,19 +2,19 @@ package com.me.mseotsanyana.mande.PL.presenters.session.Impl;
 
 import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
-import com.me.mseotsanyana.mande.BLL.interactors.session.menu.Impl.cReadMenuItemsInteractorImpl;
-import com.me.mseotsanyana.mande.BLL.interactors.session.menu.iReadMenuItemsInteractor;
-import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
+import com.me.mseotsanyana.mande.BLL.interactors.session.menu.Impl.cReadMenuInteractorImpl;
+import com.me.mseotsanyana.mande.BLL.interactors.session.menu.iReadMenuInteractor;
 import com.me.mseotsanyana.mande.BLL.repository.session.iMenuRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.session.iMenuPresenter;
+import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.util.List;
 
 public class cMenuPresenterImpl extends cAbstractPresenter implements iMenuPresenter,
-        iReadMenuItemsInteractor.Callback{
-    private static String TAG = cMenuPresenterImpl.class.getSimpleName();
+        iReadMenuInteractor.Callback{
+    //private static final String TAG = cMenuPresenterImpl.class.getSimpleName();
 
     private View view;
     private final iSharedPreferenceRepository sessionManagerRepository;
@@ -32,22 +32,24 @@ public class cMenuPresenterImpl extends cAbstractPresenter implements iMenuPrese
     }
 
     @Override
-    public void onReadMenuItemsFailed(String msg) {
+    public void onReadMenuFailed(String msg) {
         if(this.view != null) {
             this.view.onReadMenuFailed(msg);
+            this.view.hideProgress();
         }
     }
 
     @Override
-    public void onReadMenuItemsSucceeded(List<cMenuModel> menuModels) {
+    public void onReadMenuSucceeded(List<cTreeModel> treeModels) {
         if(this.view != null) {
-            //this.view.onReadMenuSucceeded(menuModels);
+            this.view.onReadMenuSucceeded(treeModels);
+            this.view.hideProgress();
         }
     }
 
     @Override
     public void readMenuItems() {
-        iReadMenuItemsInteractor readMenuItemsInteractor = new cReadMenuItemsInteractorImpl(
+        iReadMenuInteractor readMenuInteractor = new cReadMenuInteractorImpl(
                 executor,
                 mainThread,
                 sessionManagerRepository,
@@ -55,7 +57,7 @@ public class cMenuPresenterImpl extends cAbstractPresenter implements iMenuPrese
                 this);
 
         view.showProgress();
-        readMenuItemsInteractor.execute();
+        readMenuInteractor.execute();
     }
 
     /* ===================================== END PREFERENCE ===================================== */

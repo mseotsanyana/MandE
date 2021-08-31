@@ -40,7 +40,12 @@ public class cHomeFragmentDirections {
   }
 
   @NonNull
-  public static NavDirections actionCHomeFragmentToCPermissionFragment() {
-    return new ActionOnlyNavDirections(R.id.action_cHomeFragment_to_cPermissionFragment);
+  public static NavDirections actionCHomeFragmentToCMenuFragment() {
+    return new ActionOnlyNavDirections(R.id.action_cHomeFragment_to_cMenuFragment);
+  }
+
+  @NonNull
+  public static NavDirections actionCHomeFragmentToCModuleFragment() {
+    return new ActionOnlyNavDirections(R.id.action_cHomeFragment_to_cModuleFragment);
   }
 }

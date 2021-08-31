@@ -44,9 +44,15 @@
         },
         {
           "sub_id": 64,
-          "sub_item": "Role Permissions",
-          "sub_image": "role",
-          "sub_description": "Role Permission Management."
+          "sub_item": "Menu Permissions",
+          "sub_image": "menu",
+          "sub_description": "Menu Permission Management."
+        },
+        {
+          "sub_id": 128,
+          "sub_item": "Entity Permissions",
+          "sub_image": "entity",
+          "sub_description": "Entity Permission Management."
         }
       ]
     },

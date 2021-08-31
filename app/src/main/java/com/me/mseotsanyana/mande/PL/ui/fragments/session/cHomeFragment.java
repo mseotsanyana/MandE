@@ -334,15 +334,13 @@ public class cHomeFragment extends Fragment implements iHomePagePresenter.View,
                             break;
 
                         case 64:
-                            action = cHomeFragmentDirections.
-                                    actionCHomeFragmentToCPermissionFragment();
+                            action = cHomeFragmentDirections.actionCHomeFragmentToCMenuFragment();
                             Navigation.findNavController(requireView()).navigate(action);
                             break;
-
-//                        case 128:
-//                            Toast.makeText(getActivity(), "Menu Permissions Fragment",
-//                                    Toast.LENGTH_SHORT).show();
-//                            break;
+                        case 128:
+                            action = cHomeFragmentDirections.actionCHomeFragmentToCModuleFragment();
+                            Navigation.findNavController(requireView()).navigate(action);
+                            break;
                         default:
                             break;
                     }
@@ -361,10 +359,6 @@ public class cHomeFragment extends Fragment implements iHomePagePresenter.View,
         NavigationBarView navigationBarView = view.findViewById(R.id.bottomNavigationView);
         navigationBarView.setOnItemSelectedListener(onItemSelectedListener);
         openFragment(cDashboardFragment.newInstance());
-
-//        BottomNavigationView bottomNavigationView = view.findViewById(R.id.bottomNavigationView);
-//        bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-//        openFragment(cDashboardFragment.newInstance());
     }
 
     @SuppressLint("NonConstantResourceId")

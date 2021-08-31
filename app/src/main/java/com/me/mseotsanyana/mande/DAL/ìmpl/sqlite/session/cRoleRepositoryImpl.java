@@ -210,8 +210,8 @@ public class cRoleRepositoryImpl /*implements iRoleRepository*/ {
                             cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
                     role.setModifiedDate(Timestamp.valueOf(
                             cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    role.setSyncedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                    role.setSyncedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     // populate permissions for a specific role
                     //role.setPermissionModelSet(
@@ -614,8 +614,8 @@ public class cRoleRepositoryImpl /*implements iRoleRepository*/ {
                             Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
                     role.setModifiedDate(
                             Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    role.setSyncedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                    role.setSyncedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
 
                     // construct an organization
@@ -700,8 +700,8 @@ public class cRoleRepositoryImpl /*implements iRoleRepository*/ {
                             Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
                     role.setModifiedDate(
                             Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    role.setSyncedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                    role.setSyncedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
 
                     // construct an organization
@@ -771,8 +771,8 @@ public class cRoleRepositoryImpl /*implements iRoleRepository*/ {
                             sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
                     role.setModifiedDate(
                             sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    role.setSyncedDate(
-                            sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                    role.setSyncedDate(
+//                            sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     //role.setOrganizationModel(new cOrganizationModel(organizationDBA.getOrganizationByID(
                     //        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)))));
@@ -833,9 +833,9 @@ public class cRoleRepositoryImpl /*implements iRoleRepository*/ {
                     role.setModifiedDate(
                             Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(
                                     cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    role.setSyncedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(
-                                    cSQLDBHelper.KEY_SYNCED_DATE))));
+//                    role.setSyncedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(
+//                                    cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     roleModelSet.add(role);
 

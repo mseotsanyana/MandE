@@ -1,13 +1,22 @@
 package com.me.mseotsanyana.mande.BLL.repository.session;
 
 import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
-import com.me.mseotsanyana.mande.BLL.model.session.cPermissionModel;
-import com.me.mseotsanyana.mande.BLL.model.session.cRoleModel;
+import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.util.List;
-import java.util.Map;
 
 public interface iPermissionRepository {
+
+    void readModulePermissions(String organizationServerID, String userServerID,
+                             int primaryTeamBIT, List<Integer> secondaryTeamBITS,
+                             List<Integer> statusBITS,
+                             iReadModulePermissionsCallback callback);
+
+    interface iReadModulePermissionsCallback {
+        void onReadModulePermissionsSucceeded(List<cTreeModel> treeModels);
+
+        void onReadModulePermissionsFailed(String msg);
+    }
 
     void readUserPermissions(String organizationServerID, String userServerID,
                              int primaryTeamBIT, List<Integer> secondaryTeamBITS,
@@ -15,7 +24,7 @@ public interface iPermissionRepository {
                              iReadUserPermissionsCallback callback);
 
     interface iReadUserPermissionsCallback {
-        void onReadUserPermissionsSucceeded(Map<cRoleModel, cPermissionModel> rolePermissionModels);
+        void onReadUserPermissionsSucceeded(List<cTreeModel> treeModels);
 
         void onReadUserPermissionsFailed(String msg);
     }

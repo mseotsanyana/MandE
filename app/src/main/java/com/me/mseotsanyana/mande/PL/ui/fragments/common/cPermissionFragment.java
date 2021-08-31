@@ -58,7 +58,7 @@ public class cPermissionFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.me_unix_permission, container, false);
+        View view = inflater.inflate(R.layout.session_unix_permission, container, false);
         return view;
     }
 
@@ -123,19 +123,19 @@ public class cPermissionFragment extends Fragment {
                 }
             }
         });
-        checkBoxOwnerSync = (AppCompatCheckBox) view.findViewById(R.id.checkBoxOwnerSync);
-        checkBoxOwnerSync.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean checked = ((CheckBox) view).isChecked();
-                if (checked){
-                    permBITS |= cBitwise.OWNER_SYNC;
-                }
-                else{
-                    permBITS &= ~cBitwise.OWNER_SYNC;
-                }
-            }
-        });
+//        checkBoxOwnerSync = (AppCompatCheckBox) view.findViewById(R.id.checkBoxOwnerSync);
+//        checkBoxOwnerSync.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                boolean checked = ((CheckBox) view).isChecked();
+//                if (checked){
+//                    permBITS |= cBitwise.OWNER_SYNC;
+//                }
+//                else{
+//                    permBITS &= ~cBitwise.OWNER_SYNC;
+//                }
+//            }
+//        });
 
         /* initialize and set listeners on group permissions */
         checkBoxGroupCreate = (AppCompatCheckBox) view.findViewById(R.id.checkBoxGroupCreate);
@@ -194,19 +194,19 @@ public class cPermissionFragment extends Fragment {
             }
         });
 
-        checkBoxGroupSync = (AppCompatCheckBox) view.findViewById(R.id.checkBoxGroupSync);
-        checkBoxGroupSync.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean checked = ((CheckBox) view).isChecked();
-                if (checked){
-                    permBITS |= cBitwise.GROUP_SYNC;
-                }
-                else{
-                    permBITS &= ~cBitwise.GROUP_SYNC;
-                }
-            }
-        });
+//        checkBoxGroupSync = (AppCompatCheckBox) view.findViewById(R.id.checkBoxGroupSync);
+//        checkBoxGroupSync.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                boolean checked = ((CheckBox) view).isChecked();
+//                if (checked){
+//                    permBITS |= cBitwise.GROUP_SYNC;
+//                }
+//                else{
+//                    permBITS &= ~cBitwise.GROUP_SYNC;
+//                }
+//            }
+//        });
 
         /* initialize and set listeners on other permissions */
         checkBoxOtherCreate = (AppCompatCheckBox) view.findViewById(R.id.checkBoxOtherCreate);
@@ -265,19 +265,19 @@ public class cPermissionFragment extends Fragment {
             }
         });
 
-        checkBoxOtherSync = (AppCompatCheckBox) view.findViewById(R.id.checkBoxOtherSync);
-        checkBoxOtherSync.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean checked = ((CheckBox) view).isChecked();
-                if (checked){
-                    permBITS |= cBitwise.OTHER_SYNC;
-                }
-                else{
-                    permBITS &= ~cBitwise.OTHER_SYNC;
-                }
-            }
-        });
+//        checkBoxOtherSync = (AppCompatCheckBox) view.findViewById(R.id.checkBoxOtherSync);
+//        checkBoxOtherSync.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                boolean checked = ((CheckBox) view).isChecked();
+//                if (checked){
+//                    permBITS |= cBitwise.OTHER_SYNC;
+//                }
+//                else{
+//                    permBITS &= ~cBitwise.OTHER_SYNC;
+//                }
+//            }
+//        });
 
         /* initialize permissions */
         checkBoxOwnerCreate.setChecked((permBITS & cBitwise.OWNER_CREATE) == cBitwise.OWNER_CREATE);

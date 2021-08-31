@@ -54,7 +54,7 @@
         },
         {
           "entity_id": 32,
-          "entity": "TEAM",
+          "entity": "USERACCOUNT",
           "operations": [
             {"op_id": 1,"status_ids": [0]}, {"op_id": 2,"status_ids": [1, 2, 4, 8, 16]}, {"op_id": 4,"status_ids": [4]}, {"op_id": 8,"status_ids": [4]}, {"op_id": 16,"status_ids": [4]}
           ],
@@ -64,6 +64,16 @@
         },
         {
           "entity_id": 64,
+          "entity": "TEAM",
+          "operations": [
+            {"op_id": 1,"status_ids": [0]}, {"op_id": 2,"status_ids": [1, 2, 4, 8, 16]}, {"op_id": 4,"status_ids": [4]}, {"op_id": 8,"status_ids": [4]}, {"op_id": 16,"status_ids": [4]}
+          ],
+          "unixoperations": [
+            {"unix_op_id": 2048}, {"unix_op_id": 1024 }, {"unix_op_id": 512},{"unix_op_id": 256}, {"unix_op_id": 128 }, {"unix_op_id": 64}, {"unix_op_id": 32}, {"unix_op_id": 16 }, {"unix_op_id": 8}, {"unix_op_id": 4}, {"unix_op_id": 2}, {"unix_op_id": 1}
+          ]
+        },
+        {
+          "entity_id": 128,
           "entity": "ROLE",
           "operations": [
             {"op_id": 1,"status_ids": [0]}, {"op_id": 2,"status_ids": [1, 2, 4, 8, 16]}, {"op_id": 4,"status_ids": [4]}, {"op_id": 8,"status_ids": [4]}
@@ -73,8 +83,8 @@
           ]
         },
         {
-          "entity_id": 128,
-          "entity": "PRIVILEGE",
+          "entity_id": 256,
+          "entity": "PERMISSION",
           "operations": [
             {"op_id": 1,"status_ids": [0]}, {"op_id": 2,"status_ids": [1, 2, 4, 8, 16]}, {"op_id": 4,"status_ids": [4]}, {"op_id": 8,"status_ids": [4]}
           ],
@@ -145,15 +155,15 @@
         },
         {
           "sub_id": 64,
-          "sub_item": "Entity Permissions",
-          "sub_image": "entity",
-          "sub_description": "Entity Permission Management."
-        },
-        {
-          "sub_id": 128,
           "sub_item": "Menu Permissions",
           "sub_image": "menu",
           "sub_description": "Menu Permission Management."
+        },
+        {
+          "sub_id": 128,
+          "sub_item": "Entity Permissions",
+          "sub_image": "entity",
+          "sub_description": "Entity Permission Management."
         }
       ]
     },

@@ -496,8 +496,8 @@ public class cOrganizationRepositoryImpl implements iOrganizationRepository {
                             cSQLDBHelper.KEY_CREATED_DATE))));
                     role.setModifiedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(
                             cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    role.setSyncedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(
-                            cSQLDBHelper.KEY_SYNCED_DATE))));
+                    //role.setSyncedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(
+                    //        cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     roleModelSet.add(role);
 
