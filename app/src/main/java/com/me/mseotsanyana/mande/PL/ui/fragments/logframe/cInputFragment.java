@@ -34,7 +34,6 @@ import com.me.mseotsanyana.mande.BLL.model.wpb.cExpenseModel;
 import com.me.mseotsanyana.mande.BLL.model.wpb.cHumanModel;
 import com.me.mseotsanyana.mande.BLL.model.wpb.cIncomeModel;
 import com.me.mseotsanyana.mande.BLL.model.wpb.cMaterialModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cSessionManagerImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.awpb.cExpenseRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.awpb.cHumanRepositoryImpl;
 import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.awpb.cIncomeRepositoryImpl;
@@ -118,7 +117,7 @@ public class cInputFragment extends Fragment implements iViewInputListener, iInp
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        this.logFrameID = cInputFragmentArgs.fromBundle(requireArguments()).getLogFrameID();
+        //this.logFrameID = cInputFragmentArgs.fromBundle(requireArguments()).getLogFrameID();
     }
 
     @Override
@@ -298,7 +297,7 @@ public class cInputFragment extends Fragment implements iViewInputListener, iInp
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.helpItem) {
+        if (item.getItemId() == R.id.uploadItem) {
             Log.d(TAG, "Stub for displaying menu for input resources manual");
         }
         return super.onOptionsItemSelected(item);

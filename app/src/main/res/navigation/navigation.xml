@@ -132,8 +132,8 @@
         android:name="com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cImpactFragment"
         android:label="cImpactFragment" >
         <argument
-            android:name="logFrameID"
-            app:argType="long" />
+            android:name="logFrameModel"
+            app:argType="com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel" />
         <action
             android:id="@+id/action_cImpactFragment_to_cImpactDetailFragment"
             app:destination="@id/cImpactDetailFragment"
@@ -149,24 +149,24 @@
         android:name="com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cOutcomeFragment"
         android:label="cOutcomeFragment" >
         <argument
-            android:name="logFrameID"
-            app:argType="long" />
+            android:name="logFrameModel"
+            app:argType="com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel" />
     </fragment>
     <fragment
         android:id="@+id/cOutputFragment"
         android:name="com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cOutputFragment"
         android:label="cOutputFragment" >
         <argument
-            android:name="logFrameID"
-            app:argType="long" />
+            android:name="logFrameModel"
+            app:argType="com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel" />
     </fragment>
     <fragment
         android:id="@+id/cInputFragment"
         android:name="com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cInputFragment"
         android:label="cInputFragment" >
         <argument
-            android:name="logFrameID"
-            app:argType="long" />
+            android:name="logFrameModel"
+            app:argType="com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel" />
     </fragment>
     <fragment
         android:id="@+id/cEvaluationFragment"
@@ -194,8 +194,8 @@
         android:name="com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cActivityFragment"
         android:label="cActivityFragment" >
         <argument
-            android:name="logFrameID"
-            app:argType="long" />
+            android:name="logFrameModel"
+            app:argType="com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel" />
     </fragment>
     <fragment
         android:id="@+id/cQuestionFragment"
@@ -276,14 +276,7 @@
     <fragment
         android:id="@+id/cImpactDetailFragment"
         android:name="com.me.mseotsanyana.mande.PL.ui.fragments.logframe.cImpactDetailFragment"
-        android:label="cImpactDetailFragment" >
-        <argument
-            android:name="outcomeModels"
-            app:argType="com.me.mseotsanyana.mande.BLL.model.logframe.cOutcomeModel[]" />
-        <argument
-            android:name="questionModels"
-            app:argType="com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel[]" />
-    </fragment>
+        android:label="cImpactDetailFragment" />
     <fragment
         android:id="@+id/cHomeFragment"
         android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cHomeFragment"
@@ -296,8 +289,8 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_cHomeFragment_to_cUserProfileFragment"
-            app:destination="@id/cUserProfileFragment"
+            android:id="@+id/action_cHomeFragment_to_cMyUserProfileFragment"
+            app:destination="@id/cMyUserProfileFragment"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_left"
@@ -344,13 +337,23 @@
             app:popExitAnim="@anim/slide_out_right"
             app:popUpToInclusive="false" />
         <action
-            android:id="@+id/action_cHomeFragment_to_cModuleFragment"
-            app:destination="@id/cModuleFragment"
+            android:id="@+id/action_cHomeFragment_to_cPermissionFragment"
+            app:destination="@id/cPermissionFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_cHomeFragment_to_cLogFrameFragment"
+            app:destination="@id/cLogFrameFragment"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_cHomeFragment_to_cUserProfilesFragment"
+            app:destination="@id/cUserProfilesFragment" />
     </fragment>
     <fragment
         android:id="@+id/cNotificationFragment"
@@ -365,9 +368,9 @@
         android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cDashboardFragment"
         android:label="cDashboardFragment" />
     <fragment
-        android:id="@+id/cUserProfileFragment"
-        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cUserProfileFragment"
-        android:label="cUserProfileFragment" />
+        android:id="@+id/cMyUserProfileFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cMyUserProfileFragment"
+        android:label="cMyUserProfileFragment" />
     <fragment
         android:id="@+id/cTeamFragment"
         android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cTeamMemberFragment"
@@ -385,7 +388,11 @@
         android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cMenuFragment"
         android:label="cMenuFragment" />
     <fragment
-        android:id="@+id/cModuleFragment"
-        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cModuleFragment"
-        android:label="cModuleFragment" />
+        android:id="@+id/cPermissionFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cPermissionFragment"
+        android:label="cPermissionFragment" />
+    <fragment
+        android:id="@+id/cUserProfilesFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cUserProfilesFragment"
+        android:label="cUserProfilesFragment" />
 </navigation>

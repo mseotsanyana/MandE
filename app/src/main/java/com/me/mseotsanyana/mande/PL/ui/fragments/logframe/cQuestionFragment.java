@@ -28,7 +28,6 @@ import com.me.mseotsanyana.mande.BLL.model.logframe.cMatrixQuestionModel;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cPrimitiveQuestionModel;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel;
 import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.logframe.cQuestionRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cSessionManagerImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.Impl.cQuestionPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iQuestionPresenter;
 import com.me.mseotsanyana.mande.PL.ui.views.cLogFrameHeaderView;
@@ -210,7 +209,7 @@ public class cQuestionFragment extends Fragment implements iQuestionPresenter.Vi
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.helpItem) {
+        if (item.getItemId() == R.id.uploadItem) {
             Log.d(TAG,"Stub for component questions");
         }
         return super.onOptionsItemSelected(item);

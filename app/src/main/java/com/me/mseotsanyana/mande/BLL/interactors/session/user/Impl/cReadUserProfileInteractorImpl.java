@@ -55,15 +55,15 @@ public class cReadUserProfileInteractorImpl extends cAbstractInteractor
 
     @Override
     public void run() {
-        userProfileRepository.readUserProfile(
-                new iUserProfileRepository.iReadUserProfileRepositoryCallback() {
+        userProfileRepository.readMyUserProfile(
+                new iUserProfileRepository.iReadMyUserProfileRepositoryCallback() {
                     @Override
-                    public void onReadUserProfileSucceeded(cUserProfileModel userProfileModel) {
+                    public void onReadMyUserProfileSucceeded(cUserProfileModel userProfileModel) {
                         postMessage(userProfileModel);
                     }
 
                     @Override
-                    public void onReadUserProfileFailed(String msg) {
+                    public void onReadMyUserProfileFailed(String msg) {
                         notifyError(msg);
                     }
                 });

@@ -10,11 +10,21 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.WriteBatch;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
 import com.me.mseotsanyana.mande.BLL.repository.session.iUserProfileRepository;
 import com.me.mseotsanyana.mande.DAL.storage.database.cRealtimeHelper;
+import com.me.mseotsanyana.mande.DAL.storage.excel.cExcelHelper;
+import com.me.mseotsanyana.mande.DAL.ìmpl.cDatabaseUtils;
 
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -24,6 +34,8 @@ public class cUserProfileFirestoreRepositoryImpl implements iUserProfileReposito
     private static final String TAG = cUserProfileFirestoreRepositoryImpl.class.getSimpleName();
 
     // an object of the database helper
+    private final cExcelHelper excelHelper;
+
     private final FirebaseFirestore db;
     private final FirebaseAuth firebaseAuth;
     private final Context context;
@@ -32,6 +44,7 @@ public class cUserProfileFirestoreRepositoryImpl implements iUserProfileReposito
         this.context = context;
         this.firebaseAuth = FirebaseAuth.getInstance();
         this.db = FirebaseFirestore.getInstance();
+        this.excelHelper = new cExcelHelper(context);
     }
 
     /* ##################################### CREATE ACTIONS ##################################### */
@@ -148,7 +161,7 @@ public class cUserProfileFirestoreRepositoryImpl implements iUserProfileReposito
     /* ###################################### READ ACTIONS ###################################### */
 
     @Override
-    public void readUserProfile(iReadUserProfileRepositoryCallback callback) {
+    public void readMyUserProfile(iReadMyUserProfileRepositoryCallback callback) {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user != null) {
             CollectionReference coUserProfileRef = db.collection(cRealtimeHelper.KEY_USERPROFILES);
@@ -159,17 +172,49 @@ public class cUserProfileFirestoreRepositoryImpl implements iUserProfileReposito
                             if (doc != null) {
                                 cUserProfileModel userProfile;
                                 userProfile = doc.toObject(cUserProfileModel.class);
-                                callback.onReadUserProfileSucceeded(userProfile);
+                                callback.onReadMyUserProfileSucceeded(userProfile);
                             }
                         } else {
-                            callback.onReadUserProfileFailed(
+                            callback.onReadMyUserProfileFailed(
                                     "Undefined error! Please report to the developer.");
                         }
                     })
                     .addOnFailureListener(e ->
-                            callback.onReadUserProfileFailed("Failure to read user profile!"));
+                            callback.onReadMyUserProfileFailed("Failure to read user profile!"));
         } else {
-            callback.onReadUserProfileFailed("Failure to read user profile!");
+            callback.onReadMyUserProfileFailed("Failure to read user profile!");
+        }
+    }
+
+    @Override
+    public void readUserProfiles(iReadUserProfilesRepositoryCallback callback) {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        if (user != null) {
+            CollectionReference coUserProfileRef;
+            coUserProfileRef = db.collection(cRealtimeHelper.KEY_USERPROFILES);
+
+            Query userProfileQuery = coUserProfileRef
+                    .whereEqualTo("userOwnerID", user.getUid());
+
+            userProfileQuery.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    List<cUserProfileModel> userProfileModels = new ArrayList<>();
+                    for (DocumentSnapshot userprofile_doc : Objects.requireNonNull(task.getResult())) {
+                        cUserProfileModel userProfileModel;
+                        userProfileModel = userprofile_doc.toObject(cUserProfileModel.class);
+
+                        if (userProfileModel != null) {
+                            userProfileModels.add(userProfileModel);
+                        }
+                    }
+                    callback.onReadUserProfilesSucceeded(userProfileModels);
+                } else {
+                    callback.onReadUserProfilesFailed("Failed to upload user profiles.");
+                }
+            });
+        } else {
+            callback.onReadUserProfilesFailed("Failure to read user profile!");
         }
     }
 
@@ -203,4 +248,76 @@ public class cUserProfileFirestoreRepositoryImpl implements iUserProfileReposito
 
     /* ##################################### DELETE ACTIONS ##################################### */
 
+
+    /* ##################################### UPLOAD ACTIONS ##################################### */
+
+    @Override
+    public void uploadUserProfilesFromExcel(iUploadUserProfilesRepositoryCallback callback) {
+        Workbook workbook = excelHelper.getWorkbookSESSION();
+        Sheet userProfileSheet = workbook.getSheet(cExcelHelper.SHEET_tblUSERPROFILE);
+
+        Log.d(TAG, "IAM HERS========================= "+userProfileSheet.getSheetName());
+
+        // user profile
+        List<cUserProfileModel> userProfileModels = new ArrayList<>();
+
+        for (Row userProfileRow : userProfileSheet) {
+            //just skip the row if row number is 0
+            if (userProfileRow.getRowNum() == 0) {
+                continue;
+            }
+
+            cUserProfileModel userProfileModel = new cUserProfileModel();
+
+            userProfileModel.setUserServerID(String.valueOf(
+                    cDatabaseUtils.getCellAsNumeric(userProfileRow, 0)));
+            userProfileModel.setName(cDatabaseUtils.getCellAsString(userProfileRow, 1));
+            userProfileModel.setSurname(cDatabaseUtils.getCellAsString(userProfileRow, 2));
+            userProfileModel.setDesignation(cDatabaseUtils.getCellAsString(userProfileRow, 3));
+            userProfileModel.setLocation(cDatabaseUtils.getCellAsString(userProfileRow, 4));
+            userProfileModel.setEmail(cDatabaseUtils.getCellAsString(userProfileRow, 5));
+            userProfileModel.setWebsite(cDatabaseUtils.getCellAsString(userProfileRow, 6));
+            userProfileModel.setPhone(cDatabaseUtils.getCellAsString(userProfileRow, 7));
+
+            /* user who created user profiles */
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            assert user != null;
+            userProfileModel.setUserOwnerID(user.getUid());
+
+            Date now = new Date();
+            userProfileModel.setCreatedDate(now);
+            userProfileModel.setModifiedDate(now);
+
+            userProfileModels.add(userProfileModel);
+
+        }
+
+        // add logframes
+        createUserProfileFromExcel(userProfileModels, callback);
+
+    }
+
+    private void createUserProfileFromExcel(List<cUserProfileModel> userProfileModels,
+                                            iUploadUserProfilesRepositoryCallback callback) {
+
+        CollectionReference coUserProfileRef;
+        coUserProfileRef = db.collection(cRealtimeHelper.KEY_USERPROFILES);
+
+        /* create a batch object */
+        WriteBatch batch = db.batch();
+
+        /* add user profiles  */
+        for (cUserProfileModel userProfileModel : userProfileModels) {
+            String userProfileID = coUserProfileRef.document().getId();
+            batch.set(coUserProfileRef.document(userProfileID), userProfileModel);
+        }
+
+        batch.commit().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                callback.onUploadUserProfilesSucceeded("User Profile module successfully uploaded");
+            } else {
+                callback.onUploadUserProfilesFailed("Failed to update User Profile module");
+            }
+        });
+    }
 }

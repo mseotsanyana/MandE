@@ -11,9 +11,9 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
     <item
-        android:id="@+id/helpItem"
+        android:id="@+id/uploadItem"
         android:orderInCategory="11"
         android:title="Help"
-        android:icon="@drawable/me_info_item"
+        android:icon="@drawable/me_ic_baseline_upload_24"
         app:showAsAction="ifRoom" />
 </menu>

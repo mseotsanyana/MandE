@@ -31,6 +31,7 @@
       <w>candlestickchart</w>
       <w>cardview</w>
       <w>ccolumns</w>
+      <w>circ</w>
       <w>closedate</w>
       <w>colchoice</w>
       <w>coloption</w>
@@ -38,6 +39,7 @@
       <w>corg</w>
       <w>cowner</w>
       <w>cproperties</w>
+      <w>createdon</w>
       <w>criteriascore</w>
       <w>crowdfund</w>
       <w>cstatus</w>
@@ -73,6 +75,7 @@
       <w>fiscalyear</w>
       <w>fliter</w>
       <w>freemium</w>
+      <w>fullname</w>
       <w>funder</w>
       <w>horizontalchart</w>
       <w>humanset</w>
@@ -113,17 +116,22 @@
       <w>menuitem</w>
       <w>menuitems</w>
       <w>milestonereview</w>
+      <w>modifiedon</w>
       <w>motlatsi</w>
       <w>mquestion</w>
       <w>mseotsanyana</w>
+      <w>myprofile</w>
       <w>networktype</w>
       <w>numericresponse</w>
+      <w>officedocument</w>
+      <w>openxmlformats</w>
       <w>opsstatus</w>
       <w>opstatus</w>
       <w>orgs</w>
       <w>piechart</w>
       <w>pimset</w>
       <w>precedingactivity</w>
+      <w>precedings</w>
       <w>precedingtask</w>
       <w>prem</w>
       <w>primitivechart</w>
@@ -156,6 +164,7 @@
       <w>raidlog</w>
       <w>raidregister</w>
       <w>resourcetype</w>
+      <w>resourcetypes</w>
       <w>reviewcomment</w>
       <w>reviewmilestone</w>
       <w>riskaction</w>
@@ -178,12 +187,22 @@
       <w>scatterchart</w>
       <w>scorecriteria</w>
       <w>seotsanyana</w>
+      <w>spreadsheetml</w>
       <w>ssdf</w>
       <w>startdate</w>
       <w>statusset</w>
       <w>statussets</w>
       <w>stnd</w>
+      <w>subactivities</w>
+      <w>subactivity</w>
+      <w>subimpact</w>
+      <w>subimpacts</w>
+      <w>sublogframes</w>
       <w>submenuitems</w>
+      <w>suboutcome</w>
+      <w>suboutcomes</w>
+      <w>suboutput</w>
+      <w>suboutputs</w>
       <w>syncperiod</w>
       <w>taskassignment</w>
       <w>textresponse</w>

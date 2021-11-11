@@ -297,16 +297,15 @@ public class cHomeFragment extends Fragment implements iHomePagePresenter.View,
                 case 0: // Admin
                     switch (childModel.getMenuServerID()) {
                         case 1: // Profile
-                            action = cHomeFragmentDirections.
-                                    actionCHomeFragmentToCUserProfileFragment();
+                            action = cHomeFragmentDirections.actionCHomeFragmentToCMyUserProfileFragment();
                             Navigation.findNavController(requireView()).navigate(action);
-                            //Toast.makeText(getActivity(),
-                            // "Profile Fragment", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getActivity(),"Profile Fragment", Toast.LENGTH_SHORT).show();
                             break;
 
                         case 2: // Account Settings
-                            Toast.makeText(getActivity(),
-                                    "Account Fragment", Toast.LENGTH_SHORT).show();
+                            action = cHomeFragmentDirections.actionCHomeFragmentToCUserProfilesFragment();
+                            Navigation.findNavController(requireView()).navigate(action);
+                            //Toast.makeText(getActivity(), "Account Fragment", Toast.LENGTH_SHORT).show();
                             break;
 
                         case 4: // Join Org.
@@ -334,13 +333,15 @@ public class cHomeFragment extends Fragment implements iHomePagePresenter.View,
                             break;
 
                         case 64:
-                            action = cHomeFragmentDirections.actionCHomeFragmentToCMenuFragment();
+                            action = cHomeFragmentDirections.
+                                    actionCHomeFragmentToCPermissionFragment();
                             Navigation.findNavController(requireView()).navigate(action);
                             break;
-                        case 128:
-                            action = cHomeFragmentDirections.actionCHomeFragmentToCModuleFragment();
-                            Navigation.findNavController(requireView()).navigate(action);
-                            break;
+
+//                        case 128:
+//                            action = cHomeFragmentDirections.actionCHomeFragmentToCModuleFragment();
+//                            Navigation.findNavController(requireView()).navigate(action);
+//                            break;
                         default:
                             break;
                     }

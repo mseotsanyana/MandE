@@ -47,6 +47,9 @@
     <string name="fa_details">&#xf1e5;</string>
     <string name="fa_group">&#xf0c0;</string>
     <string name="fa_join">&#xf2b5;</string>
+    <string name="fa_change">&#xf0ec;</string>
+    <string name="fa_location">&#xf041;</string>
+
     <string name="fa_organization">&#xf1ad;</string>
 
     <!-- Permission Icons -->
@@ -96,9 +99,8 @@
     <string name="organizationOwner">organization owner:</string>
 
     <!-- start common attributes -->
-
-
-
+    <string name="common_created_on">Created On: </string>
+    <string name="common_modified_on">Modified On: </string>
 
     <!-- the notification strings -->
     <string name="notification_name_caption">notification</string>

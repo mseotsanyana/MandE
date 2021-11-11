@@ -39,7 +39,7 @@ public class cExcelHelper {
     public static final String SHEET_tblBENEFICIARY        = "tblBENEFICIARY";       /* 4  */
     public static final String SHEET_tblIMPLEMENTINGAGENCY = "tblIMPLEMENTINGAGENCY";/* 5  */
     public static final String SHEET_tblVALUE              = "tblVALUE";             /* 6  */
-    public static final String SHEET_tblUSER               = "tblUSER";              /* 7  */
+    public static final String SHEET_tblUSERPROFILE        = "tblUSERPROFILE";       /* 7  */
     public static final String SHEET_tblSESSION            = "tblSESSION";           /* 8  */
     public static final String SHEET_tblROLE               = "tblROLE";              /* 9  */
     public static final String SHEET_tblMENU               = "tblMENU";              /* 10 */
@@ -89,6 +89,9 @@ public class cExcelHelper {
     public static final String SHEET_tblCRITERIA           = "tblCRITERIA";          /* 11 */
     public static final String SHEET_tblQUESTIONGROUPING   = "tblQUESTIONGROUPING";  /* 12 */
     public static final String SHEET_tblQUESTIONTYPE       = "tblQUESTIONTYPE";      /* 13 */
+    public static final String SHEET_tblCHOICE             = "tblCHOICE";        /* 10 */
+    public static final String SHEET_tblDIMENSION          = "tblDIMENSION";        /* 10 */
+    public static final String SHEET_tblDISAGGREGATION     = "tblDISAGGREGATION";        /* 10 */
     public static final String SHEET_tblQUESTION           = "tblQUESTION";          /* 14 */
     public static final String SHEET_tblPRIMITIVEQUESTION  = "tblPRIMITIVEQUESTION"; /* 15 */
     public static final String SHEET_tblARRAYQUESTION      = "tblARRAYQUESTION";     /* 16 */
@@ -269,38 +272,52 @@ public class cExcelHelper {
 
     /*################################# END RAID MODULE TABLES ###################################*/
 
+
+    public cExcelHelper(){
+        try {
+            setWorkbookLOGFRAME(new XSSFWorkbook(getExcelLOGFRAME()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public cExcelHelper(Context context){
         try {
             AssetManager assetManager = context.getAssets();
 
-            setExcelGLOBAL(assetManager.open("GLOBAL.xlsx"));
+            setExcelLOGFRAME(assetManager.open("excels/LOGFRAME.xlsx"));
             setExcelSESSION(assetManager.open("excels/SESSION.xlsx"));
-            setExcelLOGFRAME(assetManager.open("LOGFRAME.xlsx"));
-            setExcelEVALUATION(assetManager.open("EVALUATION.xlsx"));
-            setExcelMONITORING(assetManager.open("MONITORING.xlsx"));
-            setExcelRAID(assetManager.open("RAID.xlsx"));
-            setExcelAWPB(assetManager.open("AWPB.xlsx"));
 
-            setWorkbookGLOBAL(new XSSFWorkbook(getExcelGLOBAL()));
-            setRowsGLOBAL(computeAllRows(getWorkbookGLOBAL()));
+//            setExcelGLOBAL(assetManager.open("GLOBAL.xlsx"));
 
-            setWorkbookSESSION(new XSSFWorkbook(getExcelSESSION()));
-            setRowsSESSION(computeAllRows(getWorkbookSESSION()));
+//
+//            setExcelEVALUATION(assetManager.open("EVALUATION.xlsx"));
+//            setExcelMONITORING(assetManager.open("MONITORING.xlsx"));
+//            setExcelRAID(assetManager.open("RAID.xlsx"));
+//            setExcelAWPB(assetManager.open("AWPB.xlsx"));
 
             setWorkbookLOGFRAME(new XSSFWorkbook(getExcelLOGFRAME()));
             setRowsLOGFRAME(computeAllRows(getWorkbookLOGFRAME()));
 
-            setWorkbookEVALUATION(new XSSFWorkbook(getExcelEVALUATION()));
-            setRowsEVALUATION(computeAllRows(getWorkbookEVALUATION()));
+            setWorkbookSESSION(new XSSFWorkbook(getExcelSESSION()));
+            setRowsSESSION(computeAllRows(getWorkbookSESSION()));
 
-            setWorkbookMONITORING(new XSSFWorkbook(getExcelMONITORING()));
-            setRowsMONITORING(computeAllRows(getWorkbookMONITORING()));
+//            setWorkbookGLOBAL(new XSSFWorkbook(getExcelGLOBAL()));
+//            setRowsGLOBAL(computeAllRows(getWorkbookGLOBAL()));
+//
 
-            setWorkbookRAID(new XSSFWorkbook(getExcelRAID()));
-            setRowsRAID(computeAllRows(getWorkbookRAID()));
-
-            setWorkbookAWPB(new XSSFWorkbook(getExcelAWPB()));
-            setRowsAWPB(computeAllRows(getWorkbookAWPB()));
+//
+//            setWorkbookEVALUATION(new XSSFWorkbook(getExcelEVALUATION()));
+//            setRowsEVALUATION(computeAllRows(getWorkbookEVALUATION()));
+//
+//            setWorkbookMONITORING(new XSSFWorkbook(getExcelMONITORING()));
+//            setRowsMONITORING(computeAllRows(getWorkbookMONITORING()));
+//
+//            setWorkbookRAID(new XSSFWorkbook(getExcelRAID()));
+//            setRowsRAID(computeAllRows(getWorkbookRAID()));
+//
+//            setWorkbookAWPB(new XSSFWorkbook(getExcelAWPB()));
+//            setRowsAWPB(computeAllRows(getWorkbookAWPB()));
 
         } catch (IOException e) {
             e.printStackTrace();

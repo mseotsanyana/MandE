@@ -27,7 +27,6 @@ import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cOutcomeModel;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cOutputModel;
 import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.logframe.cOutcomeRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cSessionManagerImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.Impl.cOutcomePresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iOutcomePresenter;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iOutputPresenter;
@@ -89,7 +88,7 @@ public class cOutcomeFragment extends Fragment implements iOutcomePresenter.View
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        this.logFrameID = cOutcomeFragmentArgs.fromBundle(requireArguments()).getLogFrameID();
+        //this.logFrameID = cOutcomeFragmentArgs.fromBundle(requireArguments()).getLogFrameID();
     }
 
     @Override
@@ -218,7 +217,7 @@ public class cOutcomeFragment extends Fragment implements iOutcomePresenter.View
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.helpItem) {
+        if (item.getItemId() == R.id.uploadItem) {
             Log.d(TAG, "Stub for information fragment");
         }
         return super.onOptionsItemSelected(item);

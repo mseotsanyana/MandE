@@ -9,7 +9,6 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
 import com.me.mseotsanyana.mande.BLL.repository.session.iUserProfileRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iUserRepository;
 import com.me.mseotsanyana.mande.BLL.model.session.cAddressModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cNotificationModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
@@ -176,7 +175,12 @@ public class cUserSQLiteRepositoryImpl implements iUserProfileRepository {
     }
 
     @Override
-    public void readUserProfile(iReadUserProfileRepositoryCallback callback) {
+    public void readMyUserProfile(iReadMyUserProfileRepositoryCallback callback) {
+
+    }
+
+    @Override
+    public void readUserProfiles(iReadUserProfilesRepositoryCallback callback) {
 
     }
 
@@ -1179,4 +1183,8 @@ public class cUserSQLiteRepositoryImpl implements iUserProfileRepository {
 
     /* ############################################# SYNC ACTIONS ############################################# */
 
+    @Override
+    public void uploadUserProfilesFromExcel(iUploadUserProfilesRepositoryCallback callback) {
+
+    }
 }

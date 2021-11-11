@@ -4,7 +4,7 @@ package com.me.mseotsanyana.mande.BLL.interactors.base;
 import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 
-public abstract class cAbstractInteractor  implements iInteractor {
+public abstract class cAbstractInteractor implements iInteractor {
     protected iExecutor threadExecutor;
     protected iMainThread mainThread;
 

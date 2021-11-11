@@ -27,7 +27,6 @@ import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cActivityModel;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cOutputModel;
 import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.logframe.cOutputRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cSessionManagerImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.Impl.cOutputPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iActivityPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iOutputPresenter;
@@ -90,7 +89,7 @@ public class cOutputFragment extends Fragment implements iOutputPresenter.View,
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        this.logFrameID = cOutputFragmentArgs.fromBundle(requireArguments()).getLogFrameID();
+        //this.logFrameID = cOutputFragmentArgs.fromBundle(requireArguments()).getLogFrameID();
     }
 
     @Override
@@ -222,7 +221,7 @@ public class cOutputFragment extends Fragment implements iOutputPresenter.View,
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.helpItem) {
+        if (item.getItemId() == R.id.uploadItem) {
             Log.d(TAG, "Stub for output help page");
         }
         return super.onOptionsItemSelected(item);

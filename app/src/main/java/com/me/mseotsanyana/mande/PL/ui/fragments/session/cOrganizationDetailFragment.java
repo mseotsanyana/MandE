@@ -40,8 +40,8 @@ import java.util.Objects;
 
 public class cOrganizationDetailFragment extends Fragment {
     private static String TAG = cOrganizationDetailFragment.class.getSimpleName();
-    private static SimpleDateFormat tsdf = cConstant.TIMESTAMP_FORMAT_DATE;
-    private static SimpleDateFormat ssdf = cConstant.SHORT_FORMAT_DATE;
+    private static final SimpleDateFormat tsdf = cConstant.TIMESTAMP_FORMAT_DATE;
+    private static final SimpleDateFormat ssdf = cConstant.SHORT_FORMAT_DATE;
 
     private Toolbar toolbar;
     private View organizationProgressBar;
@@ -256,7 +256,7 @@ public class cOrganizationDetailFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.helpItem) {
+        if (item.getItemId() == R.id.uploadItem) {
             Log.d(TAG, "Stub for information button");
         }
         return super.onOptionsItemSelected(item);

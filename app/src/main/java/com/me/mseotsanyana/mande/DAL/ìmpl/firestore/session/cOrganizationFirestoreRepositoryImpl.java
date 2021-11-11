@@ -125,7 +125,8 @@ public class cOrganizationFirestoreRepositoryImpl implements iOrganizationReposi
                             commonPropertiesModel);
                     /* read a default permissions associated with the administrator role during
                     the creation of an organization */
-                    cPermissionModel permissionModel = cDatabaseUtils.getAdminPermissions(context);
+                    cPermissionModel permissionModel;
+                    permissionModel = cDatabaseUtils.createAdminPermissions(context);
                     /* read a default freemium plan from json associated with the administrator
                     of the organization just created */
                     cPlanModel freemiumPlanModel = cDatabaseUtils.getDefaultPlanModel(context);
@@ -391,8 +392,12 @@ public class cOrganizationFirestoreRepositoryImpl implements iOrganizationReposi
 
                     /* read organization members */
                     List<String> user_ids = new ArrayList<>(user_ids_set);
-                    filterUserProfiles(user_ids, callback);
-
+                    if (!user_ids.isEmpty()) {
+                        filterUserProfiles(user_ids, callback);
+                    }else{
+                        callback.onReadOrganizationMembersFailed(
+                                "No organization members found!");
+                    }
                 })
                 .addOnFailureListener(e -> callback.onReadOrganizationMembersFailed(
                         "Failed to read organization members"));

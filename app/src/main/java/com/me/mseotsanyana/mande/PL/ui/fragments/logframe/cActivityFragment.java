@@ -26,12 +26,12 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cActivityModel;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cInputModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel;
 import com.me.mseotsanyana.mande.BLL.model.wpb.cExpenseModel;
 import com.me.mseotsanyana.mande.BLL.model.wpb.cHumanModel;
 import com.me.mseotsanyana.mande.BLL.model.wpb.cIncomeModel;
 import com.me.mseotsanyana.mande.BLL.model.wpb.cMaterialModel;
 import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.logframe.cActivityRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cSessionManagerImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.Impl.cActivityPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iActivityPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iInputPresenter;
@@ -59,7 +59,7 @@ public class cActivityFragment extends Fragment implements iActivityPresenter.Vi
     /* activity interface */
     private iActivityPresenter activityPresenter;
 
-    private long logFrameID;
+    private cLogFrameModel logFrameModel;
     private TextView logFrameName;
 
     private AppCompatActivity activity;
@@ -94,7 +94,7 @@ public class cActivityFragment extends Fragment implements iActivityPresenter.Vi
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        this.logFrameID = cActivityFragmentArgs.fromBundle(requireArguments()).getLogFrameID();
+        this.logFrameModel = cActivityFragmentArgs.fromBundle(requireArguments()).getLogFrameModel();
     }
 
     @Override
@@ -151,7 +151,7 @@ public class cActivityFragment extends Fragment implements iActivityPresenter.Vi
                 this,null
                 /*new cSessionManagerImpl(getContext())*/,
                 new cActivityRepositoryImpl(getContext()),
-                logFrameID);
+                logFrameModel);
 
         // setup recycler view adapter
         activityAdapter = new cActivityAdapter(getActivity(), this,
@@ -222,7 +222,7 @@ public class cActivityFragment extends Fragment implements iActivityPresenter.Vi
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.helpItem) {
+        if (item.getItemId() == R.id.uploadItem) {
             Log.d(TAG, "Stub for activity manual");
         }
         return super.onOptionsItemSelected(item);

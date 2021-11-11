@@ -6,18 +6,23 @@ import android.os.Parcelable;
 import com.google.firebase.firestore.Exclude;
 
 import java.util.Date;
-import java.util.List;
 
 public class cUserProfileModel implements Parcelable {
     private String userServerID;
 
+    private String userOwnerID;
+
     private String photo;
     private String name;
     private String surname;
-    private String gender;
+    private String designation;
+
     private String location;
-    private String phone;
     private String email;
+    private String website;
+    private String phone;
+
+
     private Date createdDate;
     private Date modifiedDate;
 
@@ -32,7 +37,8 @@ public class cUserProfileModel implements Parcelable {
     }
 
     public cUserProfileModel(String userServerID, String name, String surname,
-                             String location, String phone, String email){
+                             String designation, String phone, String email,
+                             String website, String location){
         this.userServerID = userServerID;
         this.name = name;
         this.surname = surname;
@@ -50,6 +56,15 @@ public class cUserProfileModel implements Parcelable {
         this.userServerID = userServerID;
     }
 
+    public String getUserOwnerID() {
+        return userOwnerID;
+    }
+
+    public void setUserOwnerID(String userOwnerID) {
+        this.userOwnerID = userOwnerID;
+    }
+
+    @Exclude
     public String getPhoto() {
         return photo;
     }
@@ -74,12 +89,12 @@ public class cUserProfileModel implements Parcelable {
         this.surname = surname;
     }
 
-    public String getGender() {
-        return gender;
+    public String getDesignation() {
+        return designation;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setDesignation(String designation) {
+        this.designation = designation;
     }
 
     public String getLocation() {
@@ -90,20 +105,28 @@ public class cUserProfileModel implements Parcelable {
         this.location = location;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public Date getCreatedDate() {
@@ -122,36 +145,21 @@ public class cUserProfileModel implements Parcelable {
         this.modifiedDate = modifiedDate;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
     protected cUserProfileModel(Parcel in) {
         userServerID = in.readString();
         photo = in.readString();
         name = in.readString();
         surname = in.readString();
-        gender = in.readString();
+        designation = in.readString();
         location = in.readString();
-        phone = in.readString();
         email = in.readString();
-        //createdDate = in.readString();
-        //modifiedDate = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(userServerID);
-        dest.writeString(photo);
-        dest.writeString(name);
-        dest.writeString(surname);
-        dest.writeString(gender);
-        dest.writeString(location);
-        dest.writeString(phone);
-        dest.writeString(email);
-        //dest.writeString(createdDate);
-        //dest.writeString(modifiedDate);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
+        website = in.readString();
+        phone = in.readString();
     }
 
     public static final Creator<cUserProfileModel> CREATOR = new Creator<cUserProfileModel>() {
@@ -165,4 +173,17 @@ public class cUserProfileModel implements Parcelable {
             return new cUserProfileModel[size];
         }
     };
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(userServerID);
+        parcel.writeString(photo);
+        parcel.writeString(name);
+        parcel.writeString(surname);
+        parcel.writeString(designation);
+        parcel.writeString(location);
+        parcel.writeString(email);
+        parcel.writeString(website);
+        parcel.writeString(phone);
+    }
 }

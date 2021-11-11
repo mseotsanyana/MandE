@@ -12,29 +12,29 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cImpactModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cOutcomeModel;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel;
-import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.logframe.cImpactRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cSessionManagerImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.logframe.cImpactFirestoreRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cSharedPreferenceFirestoreRepositoryImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.Impl.cImpactPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iImpactPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iOutcomePresenter;
 import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cImpactAdapter;
+import com.me.mseotsanyana.mande.PL.ui.adapters.session.cModuleViewPagerAdapter;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.cMainThreadImpl;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
@@ -48,24 +48,26 @@ import java.util.Objects;
  */
 
 public class cImpactFragment extends Fragment implements iImpactPresenter.View,
-        iOutcomePresenter.View{
+        iOutcomePresenter.View {
     private static String TAG = cImpactFragment.class.getSimpleName();
+
+    private cModuleViewPagerAdapter moduleViewPagerAdapter;
 
     private Toolbar toolbar;
 
-    private LinearLayout impactProgressBar;
+    private LinearLayout includeProgressBar;
 
     private cImpactAdapter impactAdapter;
 
     /* impact interface */
     private iImpactPresenter impactPresenter;
 
-    private long logFrameID;
-    private TextView logFrameName;
+    private cLogFrameModel logFrameModel;
+    //private TextView logFrameName;
 
     private AppCompatActivity activity;
 
-    public cImpactFragment(){
+    public cImpactFragment() {
 
     }
 
@@ -74,11 +76,11 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
     }
 
     /*
-    * this event fires 1st, before creation of fragment or any views
-    * the onAttach method is called when the Fragment instance is
-    * associated with an Activity and this does not mean the activity
-    * is fully initialized.
-    */
+     * this event fires 1st, before creation of fragment or any views
+     * the onAttach method is called when the Fragment instance is
+     * associated with an Activity and this does not mean the activity
+     * is fully initialized.
+     */
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -94,7 +96,7 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        this.logFrameID = cImpactFragmentArgs.fromBundle(requireArguments()).getLogFrameID();
+        this.logFrameModel = cImpactFragmentArgs.fromBundle(requireArguments()).getLogFrameModel();
     }
 
     @Override
@@ -144,26 +146,29 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
     private void initDataStructures() {
         /* contains a tree of impact */
         List<cTreeModel> impactTreeModels = new ArrayList<>();
+        //new cImpactFirestoreRepositoryImpl(getContext())
+
 
         impactPresenter = new cImpactPresenterImpl(
                 cThreadExecutorImpl.getInstance(),
                 cMainThreadImpl.getInstance(),
-                this,null
-                /*new cSessionManagerImpl(getContext())*/,
-                new cImpactRepositoryImpl(getContext()), logFrameID);
+                this,
+                new cSharedPreferenceFirestoreRepositoryImpl(getContext()),
+                new cImpactFirestoreRepositoryImpl(getContext()), logFrameModel);
 
         // setup recycler view adapter
         impactAdapter = new cImpactAdapter(getActivity(), this,
-                this, impactTreeModels,-1);
+                this, impactTreeModels, -1);
 
         activity = ((AppCompatActivity) getActivity());
     }
 
-    private void initAppBarLayout(View view){
+    private void initAppBarLayout(View view) {
         toolbar = view.findViewById(R.id.toolbar);
-        TextView logFrameCaption = view.findViewById(R.id.title);
-        logFrameName = view.findViewById(R.id.subtitle);
-        logFrameCaption.setText(R.string.logframe_name_caption);
+        //TextView logFrameCaption = view.findViewById(R.id.title);
+        //logFrameName = view.findViewById(R.id.subtitle);
+        //logFrameCaption.setText(R.string.logframe_name_caption);
+
         CollapsingToolbarLayout collapsingToolbarLayout =
                 view.findViewById(R.id.collapsingToolbarLayout);
         collapsingToolbarLayout.setContentScrimColor(Color.WHITE);
@@ -182,16 +187,15 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
     }
 
     private void initProgressBarView(View view) {
-        impactProgressBar = view.findViewById(R.id.impactProgressBar);
+        includeProgressBar = view.findViewById(R.id.includeProgressBar);
+
+        //impactProgressBar = view.findViewById(R.id.impactProgressBar);
     }
 
     // initialise the floating action button
     private void initDraggableFAB(View view) {
-        view.findViewById(R.id.impactDraggableFAB).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        view.findViewById(R.id.impactDraggableFAB).setOnClickListener(v -> {
 
-            }
         });
     }
 
@@ -200,13 +204,7 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
         /* get inflated option menu */
         Menu toolBarMenu = setToolBar();
 
-        toolbar.setOnMenuItemClickListener(
-                new Toolbar.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        return onOptionsItemSelected(item);
-                    }
-                });
+        toolbar.setOnMenuItemClickListener(item -> onOptionsItemSelected(item));
 
         SearchManager searchManager = (SearchManager) requireActivity().
                 getSystemService(Context.SEARCH_SERVICE);
@@ -221,7 +219,7 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.helpItem) {
+        if (item.getItemId() == R.id.uploadItem) {
             Log.d(TAG, "Stub for information button");
         }
         return super.onOptionsItemSelected(item);
@@ -242,30 +240,35 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
         });
     }
 
-    private Menu setToolBar(){
+    private Menu setToolBar() {
         toolbar.inflateMenu(R.menu.me_toolbar_menu);
         return toolbar.getMenu();
     }
 
     @Override
-    public void onRetrieveImpactsCompleted(String logFrameName, ArrayList<cTreeModel> impactModelSet) {
+    public void onRetrieveImpactsCompleted(String logFrameName, List<cTreeModel> impactModels) {
         try {
             /* update subtitle */
-            this.logFrameName.setText(logFrameName);
-            impactAdapter.setTreeModel(impactModelSet);
+            //this.logFrameName.setText(logFrameName);
+            impactAdapter.setTreeModel(impactModels);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
     }
 
     @Override
+    public void onImpactUpdateFailed(String msg) {
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void showProgress() {
-        impactProgressBar.setVisibility(View.VISIBLE);
+        includeProgressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress() {
-        impactProgressBar.setVisibility(View.GONE);
+        includeProgressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -313,9 +316,9 @@ public class cImpactFragment extends Fragment implements iImpactPresenter.View,
     @Override
     public void onClickDetailImpact(cOutcomeModel[] outcomeModels, cQuestionModel[] questionModels) {
         /* navigate from logframe to outcome */
-        NavDirections action = cImpactFragmentDirections.
-                actionCImpactFragmentToCImpactDetailFragment(outcomeModels, questionModels);
-        Navigation.findNavController(requireView()).navigate(action);
+//        NavDirections action = cImpactFragmentDirections.
+//                actionCImpactFragmentToCImpactDetailFragment(outcomeModels, questionModels);
+//        Navigation.findNavController(requireView()).navigate(action);
     }
 
     /* outcome events */

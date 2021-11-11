@@ -6,9 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,19 +22,14 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.palette.graphics.Palette;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
-import com.me.mseotsanyana.mande.BLL.model.logframe.cOutcomeModel;
-import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cRaidModel;
 import com.me.mseotsanyana.mande.PL.ui.adapters.logframe.cImpactViewPagerAdapter;
 import com.me.mseotsanyana.mande.R;
-import com.me.mseotsanyana.mande.UTIL.TextDrawable;
-import com.me.mseotsanyana.mande.UTIL.cFontManager;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -57,8 +50,8 @@ public class cImpactDetailFragment extends Fragment {
 
     private AppCompatActivity activity;
 
-    private cOutcomeModel[] outcomeModels;
-    private cQuestionModel[] questionModels;
+    //private cOutcomeModel[] outcomeModels;
+    //private cQuestionModel[] questionModels;
     private ArrayList<cRaidModel> raidModels;
 
     public cImpactDetailFragment() {
@@ -92,10 +85,8 @@ public class cImpactDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        this.outcomeModels = cImpactDetailFragmentArgs.fromBundle(
-                requireArguments()).getOutcomeModels();
-        this.questionModels = cImpactDetailFragmentArgs.fromBundle(
-                requireArguments()).getQuestionModels();
+        //this.outcomeModels = cImpactDetailFragmentArgs.fromBundle(requireArguments()).getOutcomeModels();
+        //this.questionModels = cImpactDetailFragmentArgs.fromBundle(requireArguments()).getQuestionModels();
     }
 
     @Override
@@ -196,7 +187,7 @@ public class cImpactDetailFragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 impactDetailViewPager.setCurrentItem(tab.getPosition());
                 Log.d(TAG, "onTabSelected: pos: " + tab.getPosition());
-                cOutcomeAuxFragment outcomeAuxFragment;
+                cImpactOutcomeFragment outcomeAuxFragment;
                 switch (tab.getPosition()) {
                     case 0:
                         Log.d(TAG, "ONE: " + tab.getPosition());
@@ -221,19 +212,19 @@ public class cImpactDetailFragment extends Fragment {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        impactDetailViewPagerAdapter = new cImpactViewPagerAdapter(getChildFragmentManager(),
-               FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-
-        impactDetailViewPagerAdapter.addFrag(
-                cOutcomeAuxFragment.newInstance(outcomeModels),"outcomes");
-        impactDetailViewPagerAdapter.addFrag(
-                cQuestionAuxFragment.newInstance(questionModels),"questions");
-        impactDetailViewPagerAdapter.addFrag(
-                cOutcomeAuxFragment.newInstance(outcomeModels),"raid");
-
-        // use a number higher than half your fragments.
-        viewPager.setOffscreenPageLimit(3);
-        viewPager.setAdapter(impactDetailViewPagerAdapter);
+//        impactDetailViewPagerAdapter = new cImpactViewPagerAdapter(getChildFragmentManager(),
+//               FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+//
+////        impactDetailViewPagerAdapter.addFrag(
+////                cOutcomeAuxFragment.newInstance(outcomeModels),"outcomes");
+////        impactDetailViewPagerAdapter.addFrag(
+////                cQuestionAuxFragment.newInstance(questionModels),"questions");
+////        impactDetailViewPagerAdapter.addFrag(
+////                cOutcomeAuxFragment.newInstance(outcomeModels),"raid");
+//
+//        // use a number higher than half your fragments.
+//        viewPager.setOffscreenPageLimit(3);
+//        viewPager.setAdapter(impactDetailViewPagerAdapter);
     }
 
     @Override
@@ -264,7 +255,7 @@ public class cImpactDetailFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.helpItem:
+            case R.id.uploadItem:
                 //showFragment(cLogFrameFragment.class.getSimpleName());
                 break;
             default:

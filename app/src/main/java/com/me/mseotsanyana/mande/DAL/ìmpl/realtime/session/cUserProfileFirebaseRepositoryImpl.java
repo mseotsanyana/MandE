@@ -169,7 +169,7 @@ public class cUserProfileFirebaseRepositoryImpl implements iUserProfileRepositor
     /* ############################################# READ ACTIONS ############################################# */
 
     @Override
-    public void readUserProfile(iReadUserProfileRepositoryCallback callback) {
+    public void readMyUserProfile(iReadMyUserProfileRepositoryCallback callback) {
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if(user != null) {
@@ -181,18 +181,23 @@ public class cUserProfileFirebaseRepositoryImpl implements iUserProfileRepositor
                     //Gson gson = new Gson();
                     //Log.d(TAG, " ======= "+gson.toJson(userProfile));
 
-                    callback.onReadUserProfileSucceeded(userProfile);
+                    callback.onReadMyUserProfileSucceeded(userProfile);
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    callback.onReadUserProfileFailed(databaseError.toString());
+                    callback.onReadMyUserProfileFailed(databaseError.toString());
                 }
             });
         }
     }
 
-    /* ############################################# UPDATE ACTIONS ############################################# */
+    @Override
+    public void readUserProfiles(iReadUserProfilesRepositoryCallback callback) {
+
+    }
+
+    /* ##################################### UPDATE ACTIONS ##################################### */
 
     @Override
     public void updateUserProfile(long userID, int primaryRole, int secondaryRoles, int statusBITS,
@@ -216,5 +221,11 @@ public class cUserProfileFirebaseRepositoryImpl implements iUserProfileRepositor
 
     }
     /* ############################################# DELETE ACTIONS ############################################# */
+
+    @Override
+    public void uploadUserProfilesFromExcel(iUploadUserProfilesRepositoryCallback callback) {
+
+    }
+
 
 }

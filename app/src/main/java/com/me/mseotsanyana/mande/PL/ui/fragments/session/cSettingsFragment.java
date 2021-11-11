@@ -28,7 +28,6 @@ import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cUploadSessionReposito
 import com.me.mseotsanyana.mande.PL.presenters.wpb.Impl.cUploadAWPBPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.evaluator.Impl.cUploadEvaluationPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.common.Impl.cUploadGlobalPresenterImpl;
-import com.me.mseotsanyana.mande.PL.presenters.logframe.Impl.cUploadLogFramePresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.monitor.Impl.cUploadMonitoringPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.raid.Impl.cUploadRAIDPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.wpb.iUploadAWPBPresenter;
@@ -124,13 +123,13 @@ public class cSettingsFragment extends Fragment implements
         appCompatButtonLogFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenterLogFrame = new cUploadLogFramePresenterImpl(
-                        cThreadExecutorImpl.getInstance(),
-                        cMainThreadImpl.getInstance(),
-                        cSettingsFragment.this,
-                        new cUploadLogFrameRepositoryImpl(getContext()));
-
-                presenterLogFrame.uploadLogFrameFromExcel();
+//                presenterLogFrame = new cUploadLogFramePresenterImpl(
+//                        cThreadExecutorImpl.getInstance(),
+//                        cMainThreadImpl.getInstance(),
+//                        cSettingsFragment.this,
+//                        new cUploadLogFrameRepositoryImpl(getContext()));
+//
+//                presenterLogFrame.uploadLogFrameFromExcel();
             }
         });
 

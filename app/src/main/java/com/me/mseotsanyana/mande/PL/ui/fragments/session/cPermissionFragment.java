@@ -2,7 +2,6 @@ package com.me.mseotsanyana.mande.PL.ui.fragments.session;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,52 +10,52 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
-import com.me.mseotsanyana.mande.PL.ui.adapters.session.cModuleViewPagerAdapter;
+import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cPermissionFirestoreRepositoryImpl;
+import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cSharedPreferenceFirestoreRepositoryImpl;
+import com.me.mseotsanyana.mande.PL.presenters.session.Impl.cPermissionPresenterImpl;
+import com.me.mseotsanyana.mande.PL.presenters.session.iPermissionPresenter;
+import com.me.mseotsanyana.mande.PL.ui.adapters.session.cPermissionAdapter;
 import com.me.mseotsanyana.mande.R;
+import com.me.mseotsanyana.mande.cMainThreadImpl;
+import com.me.mseotsanyana.treeadapterlibrary.cNode;
+import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-/**
- * Created by mseotsanyana on 2016/12/04.
- */
-
-public class cPermissionFragment extends Fragment {
+public class cPermissionFragment extends Fragment implements iPermissionPresenter.View{
     private static final String TAG = cPermissionFragment.class.getSimpleName();
-    //private static final SimpleDateFormat tsdf = cConstant.TIMESTAMP_FORMAT_DATE;
-    //private static final SimpleDateFormat ssdf = cConstant.SHORT_FORMAT_DATE;
 
     private Toolbar toolbar;
 
-    private cModuleViewPagerAdapter moduleViewPagerAdapter;
+    private iPermissionPresenter permissionPresenter;
+
+    private LinearLayout includeProgressBar;
+
+    private cPermissionAdapter moduleAdapter;
 
     private AppCompatActivity activity;
 
-    public cPermissionFragment(){
-
+    public cPermissionFragment() {
     }
 
     public static cPermissionFragment newInstance() {
         return new cPermissionFragment();
     }
 
-    /**
-     * this method is fired 2nd, before views are created for the fragment,
-     * the onCreate method is called when the fragment instance is being created,
-     * or re-created use onCreate for any standard setup that does not require
-     * the activity to be fully created.
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,83 +65,60 @@ public class cPermissionFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        /* get all organizations from the database */
+        permissionPresenter.readRolePermissions();
     }
 
-    /**
-     * the onCreateView method is called when fragment should create its View object
-     * hierarchy either dynamically or via XML Layout inflation.
-     */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.session_modules_fragment, parent, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.session_menu_items_fragment, container, false);
     }
 
-    /**
-     * this event is triggered soon after on CreateView(). onViewCreated is called if the
-     * view is returned from onCreateView() is non-null. Any view setup should occur here. e.g.
-     * view lookups and attaching view listeners.
-     */
     @Override
-    public void onViewCreated(@androidx.annotation.NonNull View view, Bundle savedInstanceState) {
-        /* initialise data structures */
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        /* create data structures */
         initDataStructures();
 
-        /* initialize appBar Layout */
-        initAppBarLayout(view);
+        /* create RecyclerView */
+        initModuleViews(view);
 
-        /* initialise view pager */
-        initViewPager(view);
+        /* apply button */
+        //initButton(view);
 
         /* show the back arrow button */
+        toolbar = view.findViewById(R.id.toolbar);
         activity.setSupportActionBar(toolbar);
         Objects.requireNonNull(activity.getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         Objects.requireNonNull(activity.getSupportActionBar()).setDisplayShowHomeEnabled(true);
     }
 
     private void initDataStructures() {
+        //List<cTreeModel> permissionTree = new ArrayList<>();
 
-//        permissionPresenter = new cPermissionPresenterImpl(
-//                cThreadExecutorImpl.getInstance(),
-//                cMainThreadImpl.getInstance(),
-//                this,
-//                new cSharedPreferenceFirestoreRepositoryImpl(requireContext()),
-//                new cPermissionFirestoreRepositoryImpl(getContext()));
-//
-//        /* items of modules */
-//        permissionTree = new ArrayList<>();
+        moduleAdapter = new cPermissionAdapter(getActivity(), this,
+                new ArrayList<>());
+
+        permissionPresenter = new cPermissionPresenterImpl(
+                cThreadExecutorImpl.getInstance(),
+                cMainThreadImpl.getInstance(),
+                this,
+                new cSharedPreferenceFirestoreRepositoryImpl(requireContext()),
+                new cPermissionFirestoreRepositoryImpl(getContext()));
 
         activity = ((AppCompatActivity) getActivity());
     }
 
-    private void initAppBarLayout(View view){
-        toolbar = view.findViewById(R.id.toolbar);
-        TextView appName = view.findViewById(R.id.appName);
-        //logFrameName = view.findViewById(R.id.subtitle);
-        appName.setText(R.string.app_name);
-        CollapsingToolbarLayout collapsingToolbarLayout =
-                view.findViewById(R.id.collapsingToolbarLayout);
-        collapsingToolbarLayout.setContentScrimColor(Color.WHITE);
-        //collapsingToolbarLayout.setTitle("Organizations");
-    }
+    private void initModuleViews(View view) {
+        includeProgressBar = view.findViewById(R.id.includeProgressBar);
+        RecyclerView moduleRecyclerView = view.findViewById(R.id.menuRecyclerView);
 
-    private void initViewPager(View view) {
-        /* setup the pager views */
-        ViewPager2 moduleViewPager2 = view.findViewById(R.id.moduleViewPager2);
+        moduleRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
 
-        moduleViewPagerAdapter = new cModuleViewPagerAdapter(requireActivity());
-
-        moduleViewPagerAdapter.addFrag(cEntityFragment.newInstance(), "entity permissions");
-        moduleViewPagerAdapter.addFrag(cMenuFragment.newInstance(), "menu permissions");
-
-        moduleViewPager2.setAdapter(moduleViewPagerAdapter);
-
-        /* setup the tab layout and add tabs to the view pager2 */
-        TabLayout moduleTabLayout = view.findViewById(R.id.moduleTabLayout);
-        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(moduleTabLayout,
-                moduleViewPager2, (tab, position) ->
-                tab.setText(moduleViewPagerAdapter.getPageTitle(position)));
-        tabLayoutMediator.attach();
+        moduleRecyclerView.setAdapter(moduleAdapter);
+        moduleRecyclerView.setLayoutManager(llm);
     }
 
     @Override
@@ -150,7 +126,13 @@ public class cPermissionFragment extends Fragment {
         /* get inflated option menu */
         Menu toolBarMenu = setToolBar();
 
-        toolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
+        toolbar.setOnMenuItemClickListener(
+                new Toolbar.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        return onOptionsItemSelected(item);
+                    }
+                });
 
         SearchManager searchManager = (SearchManager) requireActivity().
                 getSystemService(Context.SEARCH_SERVICE);
@@ -165,7 +147,7 @@ public class cPermissionFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.helpItem) {
+        if (item.getItemId() == R.id.uploadItem) {
             Log.d(TAG, "Stub for information button");
         }
         return super.onOptionsItemSelected(item);
@@ -180,7 +162,7 @@ public class cPermissionFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String query) {
-                //organizationAdapter.getFilter().filter(query);
+                moduleAdapter.getFilter().filter(query);
                 return false;
             }
         });
@@ -189,5 +171,60 @@ public class cPermissionFragment extends Fragment {
     private Menu setToolBar(){
         toolbar.inflateMenu(R.menu.me_toolbar_menu);
         return toolbar.getMenu();
+    }
+
+    // READ MENU ITEMS
+
+    @Override
+    public void onReadRolePermissionFailed(String msg) {
+
+    }
+
+    @Override
+    public void onReadRolePermissionSucceeded(List<cTreeModel> treeModels) {
+        //Gson gson = new Gson();
+        //Log.d(TAG, "PERM MENU = "+gson.toJson(treeModels));
+        try {
+            moduleAdapter.setTreeModel(treeModels);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onUpdateRolePermissionFailed(String msg) {
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onUpdateRolePermissionSucceeded(String msg) {
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClickUpdateRolePermission(List<cNode> nodes) {
+        permissionPresenter.updateRolePermissions(nodes);
+    }
+
+    @Override
+    public void onClickDeleteRolePermission(String permissionServerID) {
+
+    }
+
+    // PRESENTER FUNCTIONS
+
+    @Override
+    public void showProgress() {
+        includeProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+        includeProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showError(String message) {
+
     }
 }

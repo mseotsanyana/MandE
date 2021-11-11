@@ -150,7 +150,7 @@ public class cMenuFragment extends Fragment implements iMenuPresenter.View{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.helpItem) {
+        if (item.getItemId() == R.id.uploadItem) {
             Log.d(TAG, "Stub for information button");
         }
         return super.onOptionsItemSelected(item);

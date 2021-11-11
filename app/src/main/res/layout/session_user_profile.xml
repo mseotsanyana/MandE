@@ -145,7 +145,7 @@
                     android:layout_marginTop="1dp"
                     android:layout_marginRight="5dp"
                     android:layout_marginBottom="1dp"
-                    app:srcCompat="@drawable/baseline_account_box_black_24dp" />
+                    app:srcCompat="@drawable/baseline_account_circle_black_24dp" />
 
                 <TextView
                     android:id="@+id/surnameTextView"
@@ -171,6 +171,102 @@
 
                 <Button
                     android:id="@+id/surnameButtonEdit"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="1dp"
+                    android:background="@drawable/custom_button_background"
+                    android:drawableEnd="@drawable/baseline_create_black_24dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
+
+                <ImageView
+                    android:id="@+id/designationImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="1dp"
+                    app:srcCompat="@drawable/baseline_account_circle_black_24dp" />
+
+                <TextView
+                    android:id="@+id/designationTextView"
+                    android:layout_width="315dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="1dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/user_hint_designation"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/designationEditText"
+                    android:layout_width="315dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="1dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/designationButtonEdit"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="1dp"
+                    android:background="@drawable/custom_button_background"
+                    android:drawableEnd="@drawable/baseline_create_black_24dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
+
+                <ImageView
+                    android:id="@+id/websiteImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="1dp"
+                    app:srcCompat="@drawable/ic_sharp_language_black_24" />
+
+                <TextView
+                    android:id="@+id/websiteTextView"
+                    android:layout_width="315dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="1dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/user_hint_website"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/websiteEditText"
+                    android:layout_width="315dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="1dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/websiteButtonEdit"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -226,7 +322,6 @@
                     android:layout_marginBottom="1dp"
                     android:background="@drawable/custom_button_background"
                     android:drawableEnd="@drawable/baseline_create_black_24dp" />
-
             </TableRow>
 
             <TableRow
@@ -305,6 +400,58 @@
                     android:text="@string/user_hint_email"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="20sp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="4">
+
+                <TextView
+                    android:id="@+id/createdonCaptionTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginStart="8dp"
+                    android:textStyle="bold"
+                    android:text="Created On:"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_size_small_medium" />
+
+                <TextView
+                    android:id="@+id/createdonTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginStart="2dp"
+                    android:text="@string/user_hint_email"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_size_small_medium" />
+
+                <TextView
+                    android:id="@+id/modifiedonCaptionTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginStart="50dp"
+                    android:textStyle="bold"
+                    android:text="Modified On:"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_size_small_medium" />
+
+                <TextView
+                    android:id="@+id/modifiedonTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginBottom="1dp"
+                    android:text="@string/user_hint_email"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_size_small_medium" />
             </TableRow>
 
         </LinearLayout>
