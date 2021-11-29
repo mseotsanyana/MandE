@@ -94,8 +94,6 @@ public class cMenuFirestoreRepositoryImpl implements iMenuRepository {
                         if (permissionModel != null) {
                             permissionModel.setRoleServerID(perm_doc.getId());
                             for (Map.Entry<String, cRoleModel> entry : roleModelMap.entrySet()) {
-                                //Log.d(TAG, " Role Model = " + entry.getKey() + " = " +
-                                // permissionModel.getRoleServerID());
                                 if (entry.getKey().equals(permissionModel.getRoleServerID())) {
                                     // rolePermissionModels.put(entry.getValue(), permissionModel);
                                     // FIXME: what about if the user has list of multiple roles
@@ -109,7 +107,7 @@ public class cMenuFirestoreRepositoryImpl implements iMenuRepository {
 
                                     // add maps of menu items and entities not in the db
                                     // return all menus
-                                    treeModels = cDatabaseUtils.buildMenuPermissions(context,
+                                    treeModels = cDatabaseUtils.getMenuPermissions(context,
                                             permissionModel);
 
                                     break;

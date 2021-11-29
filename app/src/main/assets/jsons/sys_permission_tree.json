@@ -103,6 +103,21 @@
           "entity_id": 32,
           "entity_name": "ROLE",
           "entity_description": "stores the roles of teams."
+        },
+        {
+          "entity_id": 64,
+          "entity_name": "ROLE",
+          "entity_description": "stores the roles of teams."
+        },
+        {
+          "entity_id": 128,
+          "entity_name": "ROLE",
+          "entity_description": "stores the roles of teams."
+        },
+        {
+          "entity_id": 256,
+          "entity_name": "ROLE",
+          "entity_description": "stores the roles of teams."
         }
       ]
     },
@@ -114,6 +129,31 @@
           "entity_id": 1,
           "entity_name": "LOGFRAME",
           "entity_description": "stores the logframes of organizations."
+        },
+        {
+          "entity_id": 2,
+          "entity_name": "IMPACT",
+          "entity_description": "stores the impacts of logframes."
+        },
+        {
+          "entity_id": 4,
+          "entity_name": "OUTCOME",
+          "entity_description": "stores the outcomes of logframes."
+        },
+        {
+          "entity_id": 8,
+          "entity_name": "OUTPUT",
+          "entity_description": "stores the outputs of logframes."
+        },
+        {
+          "entity_id": 16,
+          "entity_name": "ACTIVITY",
+          "entity_description": "stores the activities of logframes."
+        },
+        {
+          "entity_id": 32,
+          "entity_name": "INPUT",
+          "entity_description": "stores the inputs of logframes."
         }
       ]
     }

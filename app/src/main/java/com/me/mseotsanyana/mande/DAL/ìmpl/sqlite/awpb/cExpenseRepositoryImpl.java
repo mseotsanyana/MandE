@@ -81,69 +81,69 @@ public class cExpenseRepositoryImpl extends cInputRepositoryImpl implements iExp
                 do {
                     cExpenseModel expense = new cExpenseModel();
 
-                    expense.setComponentID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
-                    expense.getActivityModel().setComponentID(cursor.getInt(
-                            cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
-                    expense.getLogFrameModel().setLogFrameID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
-                    expense.getResourceTypeModel().setResourceTypeID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_RESOURCE_TYPE_FK_ID)));
-                    expense.setServerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    expense.setOwnerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    expense.setOrgID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    expense.setGroupBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    expense.setPermsBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    expense.setStatusBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    expense.setExpense(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_EXPENSE)));
-                    expense.setStartDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    expense.setEndDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    expense.setCreatedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    expense.setModifiedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    expense.setSyncedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                    expense.setComponentID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
+//                    expense.getActivityModel().setComponentID(cursor.getInt(
+//                            cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
+////                    expense.getLogFrameModel().setLogFrameID(
+////                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
+//                    expense.getResourceTypeModel().setResourceTypeID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_RESOURCE_TYPE_FK_ID)));
+//                    expense.setServerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    expense.setOwnerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    expense.setOrgID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    expense.setGroupBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    expense.setPermsBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    expense.setStatusBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    expense.setExpense(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_EXPENSE)));
+//                    expense.setStartDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+//                    expense.setEndDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+//                    expense.setCreatedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    expense.setModifiedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    expense.setSyncedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     /* objects */
 
                     /* populate a logframe object */
-                    expense.setLogFrameModel(getLogFrameModelByID(
-                            expense.getLogFrameModel().getLogFrameID(), userID,
-                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//                    expense.setLogFrameModel(getLogFrameModelByID(
+//                            expense.getLogFrameModel().getLogFrameID(), userID,
+//                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
                     /* populate an resource object */
-                    expense.setResourceTypeModel(getResourceTypeModelByID(
-                            expense.getComponentID(), userID, primaryRoleBITS, secondaryRoleBITS,
-                            statusBITS));
-                    /* populate an activity object */
-                    expense.setActivityModel(getActivityModelByID(
-                            expense.getComponentID(), userID, primaryRoleBITS, secondaryRoleBITS,
-                            statusBITS));
-
-                    /* sets */
-
-                    /* populate question components */
-                    expense.setQuestionModelSet(getQuestionModelSetByID(
-                            expense.getComponentID(), userID, primaryRoleBITS, secondaryRoleBITS,
-                            statusBITS));
-                    /* populate journal components */
-                    expense.setJournalModelSet(getJournalModelSetByID(expense.getComponentID(), userID,
-                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
-
-                    /* maps */
-
-                    /* populate child activity for the input*/
-                    expense.setChildActivityModelSet(getChildActivitySetByID(expense.getComponentID(),
-                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//                    expense.setResourceTypeModel(getResourceTypeModelByID(
+//                            expense.getComponentID(), userID, primaryRoleBITS, secondaryRoleBITS,
+//                            statusBITS));
+//                    /* populate an activity object */
+//                    expense.setActivityModel(getActivityModelByID(
+//                            expense.getComponentID(), userID, primaryRoleBITS, secondaryRoleBITS,
+//                            statusBITS));
+//
+//                    /* sets */
+//
+//                    /* populate question components */
+//                    expense.setQuestionModelSet(getQuestionModelSetByID(
+//                            expense.getComponentID(), userID, primaryRoleBITS, secondaryRoleBITS,
+//                            statusBITS));
+//                    /* populate journal components */
+//                    expense.setJournalModelSet(getJournalModelSetByID(expense.getComponentID(), userID,
+//                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//
+//                    /* maps */
+//
+//                    /* populate child activity for the input*/
+//                    expense.setChildActivityModelSet(getChildActivitySetByID(expense.getComponentID(),
+//                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
 
                     /* add expenses */
                     expenseModelSet.add(expense);

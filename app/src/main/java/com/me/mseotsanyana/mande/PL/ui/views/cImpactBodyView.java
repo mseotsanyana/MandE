@@ -164,7 +164,7 @@ public class cImpactBodyView {
                         @Override
                         public void onBoomButtonClick(int index) {
                             /* when the boom-button is clicked. */
-                            listener.onClickBMBImpact(index,  impactModel.getComponentID());
+//                            listener.onClickBMBImpact(index,  impactModel.getComponentID());
                         }
                     });
             this.bmbMenu.addBuilder(builder);
@@ -193,7 +193,7 @@ public class cImpactBodyView {
 
     @Click(R.id.textViewDeleteIcon)
     void onDeleteIconClick(){
-        listener.onClickDeleteImpact(childPosition, impactModel.getComponentID());
+//        listener.onClickDeleteImpact(childPosition, impactModel.getComponentID());
     }
 
     @Click(R.id.textViewSyncIcon)

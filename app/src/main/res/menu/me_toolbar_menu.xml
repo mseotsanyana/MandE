@@ -6,14 +6,21 @@
         android:id="@+id/searchItem"
         android:orderInCategory="10"
         android:icon="@drawable/me_search_item"
-        android:title="Search"
+        android:title="@string/common_search"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
     <item
         android:id="@+id/uploadItem"
         android:orderInCategory="11"
-        android:title="Help"
+        android:title="@string/common_upload"
         android:icon="@drawable/me_ic_baseline_upload_24"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/downloadItem"
+        android:orderInCategory="12"
+        android:title="@string/common_download"
+        android:icon="@drawable/me_ic_baseline_upload_24"
+        app:showAsAction="never" />
 </menu>

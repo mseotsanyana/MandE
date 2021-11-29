@@ -1,54 +1,69 @@
 package com.me.mseotsanyana.mande.BLL.model.logframe;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.google.firebase.firestore.Exclude;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class cOutputModel extends cComponentModel {
-    /*** incoming mappings ***/
-    private cOutcomeModel outcomeModel;
-    private Set<cOutputModel> childOutputModelSet;
-    /*** outgoing mappings ***/
-    private Set<cActivityModel> activityModelSet;
-    /*** set of outcome in a child logframe for the output of the parent logframe ***/
-    private Set<cOutcomeModel> childOutcomeModelSet;
+    private String parentServerID;
+    private List<cOutputModel> childModels;
+
+    private String outcomeServerID;
+
+    private List<cActivityModel> activityModels;
+    // sub-logframe outcomes
+    private List<cOutcomeModel> suboutcomeModels;
 
     public cOutputModel(){
-        outcomeModel = new cOutcomeModel();
-        childOutputModelSet = new HashSet<>();
-        activityModelSet = new HashSet<>();
-        childOutcomeModelSet = new HashSet<>();
+        parentServerID = null;
+        outcomeServerID = null;
+        childModels = new ArrayList<>();
+        activityModels = new ArrayList<>();
+        suboutcomeModels = new ArrayList<>();
     }
 
-    public cOutcomeModel getOutcomeModel() {
-        return outcomeModel;
+    public String getParentServerID() {
+        return parentServerID;
     }
 
-    public void setOutcomeModel(cOutcomeModel outcomeModel) {
-        this.outcomeModel = outcomeModel;
+    public void setParentServerID(String parentServerID) {
+        this.parentServerID = parentServerID;
     }
 
-    public Set<cOutputModel> getChildOutputModelSet() {
-        return childOutputModelSet;
+    public String getOutcomeServerID() {
+        return outcomeServerID;
     }
 
-    public void setChildOutputModelSet(Set<cOutputModel> childOutputModelSet) {
-        this.childOutputModelSet = childOutputModelSet;
+    public void setOutcomeServerID(String outcomeServerID) {
+        this.outcomeServerID = outcomeServerID;
     }
 
-    public Set<cActivityModel> getActivityModelSet() {
-        return activityModelSet;
+    @Exclude
+    public List<cOutputModel> getChildModels() {
+        return childModels;
     }
 
-    public void setActivityModelSet(Set<cActivityModel> activityModelSet) {
-        this.activityModelSet = activityModelSet;
+    public void setChildModels(List<cOutputModel> childModels) {
+        this.childModels = childModels;
     }
 
-    public Set<cOutcomeModel> getChildOutcomeModelSet() {
-        return childOutcomeModelSet;
+    @Exclude
+    public List<cActivityModel> getActivityModels() {
+        return activityModels;
     }
 
-    public void setChildOutcomeModelSet(Set<cOutcomeModel> childOutcomeModelSet) {
-        this.childOutcomeModelSet = childOutcomeModelSet;
+    public void setActivityModels(List<cActivityModel> activityModels) {
+        this.activityModels = activityModels;
+    }
+
+    @Exclude
+    public List<cOutcomeModel> getSuboutcomeModels() {
+        return suboutcomeModels;
+    }
+
+    public void setSuboutcomeModels(List<cOutcomeModel> suboutcomeModels) {
+        this.suboutcomeModels = suboutcomeModels;
     }
 }
 

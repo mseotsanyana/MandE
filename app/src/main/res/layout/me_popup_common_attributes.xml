@@ -20,8 +20,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimaryDark"
-                android:text="Ownership Attributes"
                 android:gravity="center"
+                android:text="Ownership Attributes"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold" />

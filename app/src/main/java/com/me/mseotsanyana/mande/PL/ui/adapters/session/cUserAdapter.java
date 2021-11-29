@@ -1,5 +1,6 @@
 package com.me.mseotsanyana.mande.PL.ui.adapters.session;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -106,7 +107,7 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
     }
 
     @Override
-    public void onBindViewHolder(final cUserViewHolder holder, final int position) {
+    public void onBindViewHolder(final cUserViewHolder holder, int position) {
         // set icons for menu items
         /*
         holder.textViewUserNameIcon.setTypeface(null, Typeface.NORMAL);
@@ -835,7 +836,7 @@ public class cUserAdapter extends RecyclerView.Adapter<cUserAdapter.cUserViewHol
             this.textViewModifiedDate = (TextView) view.findViewById(R.id.textViewModifiedDate);
             this.textViewSyncedDate = (TextView) view.findViewById(R.id.textViewSyncedDate);
 
-            this.textViewChangeUserIcon = (AppCompatTextView) view.findViewById(R.id.textViewChangeUserIcon);
+            //this.textViewChangeUserIcon = (AppCompatTextView) view.findViewById(R.id.textViewChangeUserIcon);
 
         }
     }

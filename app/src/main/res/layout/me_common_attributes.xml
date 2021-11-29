@@ -1,216 +1,637 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
-    android:orientation="vertical"
-    android:paddingLeft="4dp"
-    android:paddingRight="4dp">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
-    <LinearLayout
-        android:id="@+id/linearLayoutOwner"
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:orientation="horizontal">
+        android:layout_margin="4dp"
+        app:cardBackgroundColor="@color/faintGrey"
+        app:cardCornerRadius="10dp">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/appCompatTextViewOwner"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Owner"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/text_size_medium"
-            android:textStyle="bold" />
+            android:padding="4dp">
 
-        <com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch_old
-            android:id="@+id/appCompatSpinnerOwner"
+            <!-- record owner -->
+            <LinearLayout
+                android:id="@+id/linearLayoutOwner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/appCompatTextViewOwner"
+                    android:layout_width="349dp"
+                    android:layout_height="wrap_content"
+                    android:text="Owner"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_size_small"
+                    app:layout_constraintEnd_toStartOf="@id/appCompatSpinnerOwner" />
+
+                <com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch
+                    android:id="@+id/appCompatSpinnerOwner"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    app:hintText="Select Owner"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/appCompatTextViewOwner" />
+            </LinearLayout>
+
+            <!-- team that owns the record -->
+            <LinearLayout
+                android:id="@+id/linearLayoutTeam"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linearLayoutOwner">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/appCompatTextViewTeam"
+                    android:layout_width="349dp"
+                    android:layout_height="wrap_content"
+                    android:text="Team"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_size_small"
+                    app:layout_constraintEnd_toStartOf="@id/appCompatSpinnerOwner" />
+
+                <com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch
+                    android:id="@+id/appCompatSpinnerTeam"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    app:hintText="Select Owner"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/appCompatTextViewOwner" />
+            </LinearLayout>
+
+            <!-- organization that owns the record -->
+            <LinearLayout
+                android:id="@+id/linearLayoutOrganization"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linearLayoutTeam">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/appCompatTextViewOrganization"
+                    android:layout_width="349dp"
+                    android:layout_height="wrap_content"
+                    android:text="Organization"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_size_small"
+                    app:layout_constraintEnd_toStartOf="@id/appCompatSpinnerOwner" />
+
+                <com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch
+                    android:id="@+id/appCompatSpinnerOrganization"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    app:hintText="Select Owner"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/appCompatTextViewOwner" />
+            </LinearLayout>
+
+            <!-- created and modified dates -->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewCreatedDateCaption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="4dp"
+                android:text="@string/common_created_on"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linearLayoutOrganization" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewCreatedDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="2dp"
+                android:text="value"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/colorPrimaryDark"
+                app:layout_constraintStart_toEndOf="@+id/textViewCreatedDateCaption"
+                app:layout_constraintTop_toBottomOf="@id/linearLayoutOrganization" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewModifiedDateCaption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/common_modified_on"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/linearLayoutOrganization"
+                app:layout_constraintEnd_toStartOf="@+id/textViewModifiedDate" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewModifiedDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:textSize="@dimen/text_size_small"
+                android:text="value"
+                android:textColor="@color/colorPrimaryDark"
+                app:layout_constraintTop_toBottomOf="@id/linearLayoutOrganization"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- separator between status and permissions -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@color/colorPrimaryDark"
+                app:layout_constraintTop_toBottomOf="@+id/textViewCreatedDateCaption"
+                app:layout_constraintBottom_toTopOf="@+id/tableLayoutStatus"/>
+
+            <!-- status of the record -->
+            <TableLayout
+                android:id="@+id/tableLayoutStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/me_rounded_corner_light_grew"
+                android:padding="5dp"
+                android:shrinkColumns="*"
+                android:stretchColumns="*"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewCreatedDateCaption">
+
+                <TableRow
+                    android:id="@+id/tableRowStatusOperations"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textViewDeleted"
+                        android:layout_gravity="center"
+                        android:text="@string/Deleted"
+                        android:textSize="@dimen/text_size_small"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold"
+                        android:typeface="serif" />
+
+                    <TextView
+                        android:id="@+id/textViewBlocked"
+                        android:layout_gravity="center"
+                        android:text="@string/Blocked"
+                        android:textSize="@dimen/text_size_small"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold"
+                        android:typeface="serif" />
+
+                    <TextView
+                        android:id="@+id/textViewActivated"
+                        android:layout_gravity="center"
+                        android:text="@string/Activated"
+                        android:textSize="@dimen/text_size_small"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold"
+                        android:typeface="serif" />
+
+                    <TextView
+                        android:id="@+id/textViewCancelled"
+                        android:layout_gravity="center"
+                        android:text="@string/Cancelled"
+                        android:textSize="@dimen/text_size_small"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold"
+                        android:typeface="serif" />
+
+                    <TextView
+                        android:id="@+id/textViewPending"
+                        android:layout_gravity="center"
+                        android:text="@string/Pending"
+                        android:textSize="@dimen/text_size_small"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold"
+                        android:typeface="serif" />
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRowStatusOwner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switchDeleted"
+                        android:layout_gravity="center" />
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switchBlocked"
+                        android:layout_gravity="center" />
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switchActivated"
+                        android:layout_gravity="center" />
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switchCancelled"
+                        android:layout_gravity="center" />
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switchPending"
+                        android:layout_gravity="center" />
+                </TableRow>
+            </TableLayout>
+
+            <!-- separator between status and permissions -->
+            <View
+                android:id="@+id/separatorView"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@color/colorPrimaryDark"
+                app:layout_constraintTop_toBottomOf="@+id/tableLayoutStatus"
+                app:layout_constraintBottom_toTopOf="@+id/tableLayoutPermission"/>
+
+            <!-- record unix permissions -->
+            <TableLayout
+                android:id="@+id/tableLayoutPermission"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/me_rounded_corner_light_grew"
+                android:padding="10dp"
+                android:shrinkColumns="*"
+                android:stretchColumns="*"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tableLayoutStatus">
+
+                <TableRow
+                    android:id="@+id/tableRowOperations"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textViewEmpty"
+                        android:layout_gravity="center"
+                        android:text="   " />
+
+                    <TextView
+                        android:id="@+id/textViewRead"
+                        android:text="@string/Read"
+                        android:textSize="@dimen/text_size_small"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold"
+                        android:typeface="serif" />
+
+                    <TextView
+                        android:id="@+id/textViewUpdate"
+                        android:text="@string/Update"
+                        android:textSize="@dimen/text_size_small"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold"
+                        android:typeface="serif" />
+
+                    <TextView
+                        android:id="@+id/textViewDelete"
+                        android:text="@string/Delete"
+                        android:textSize="@dimen/text_size_small"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold"
+                        android:typeface="serif" />
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRowOwner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textViewOwner"
+                        android:layout_gravity="start|center"
+                        android:text="@string/Owner"
+                        android:textSize="@dimen/text_size_small"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/checkBoxOwnerRead"
+                        android:layout_gravity="center" />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/checkBoxOwnerUpdate"
+                        android:layout_gravity="center" />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/checkBoxOwnerDelete"
+                        android:layout_gravity="center" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRowPrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textViewPrimary"
+                        android:layout_gravity="start|center"
+                        android:text="@string/Primary"
+                        android:textSize="@dimen/text_size_small"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/checkBoxPrimaryRead"
+                        android:layout_gravity="center" />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/checkBoxPrimaryUpdate"
+                        android:layout_gravity="center" />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/checkBoxPrimaryDelete"
+                        android:layout_gravity="center" />
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRowSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textViewSecondary"
+                        android:layout_gravity="start|center"
+                        android:text="@string/Secondary"
+                        android:textSize="@dimen/text_size_small"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/checkBoxSecondaryRead"
+                        android:layout_gravity="center" />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/checkBoxSecondaryUpdate"
+                        android:layout_gravity="center" />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/checkBoxSecondaryDelete"
+                        android:layout_gravity="center" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRowOrganization"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textViewOrganization"
+                        android:layout_gravity="start|center"
+                        android:text="@string/Organization"
+                        android:textSize="@dimen/text_size_small"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/checkBoxOrganizationRead"
+                        android:layout_gravity="center" />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/checkBoxOrganizationUpdate"
+                        android:layout_gravity="center" />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/checkBoxOrganizationDelete"
+                        android:layout_gravity="center" />
+                </TableRow>
+            </TableLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutModify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/tableLayoutPermission"
+                app:layout_constraintRight_toRightOf="parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonReset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/Reset"
+                    app:backgroundTint="@color/colorPrimaryDark"
+                    style="@style/Widget.MaterialComponents.Button"/>
+
+                <Button
+                    android:id="@+id/buttonUpdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Save"
+                    app:backgroundTint="@color/colorPrimaryDark"
+                    style="@style/Widget.MaterialComponents.Button"/>
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>
+
+    <!--
+        <LinearLayout
+            android:id="@+id/linearLayoutOrg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:hintText="Select Owner" />
+            android:layout_below="@+id/linearLayoutOwner"
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Organization"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold" />
 
-    <LinearLayout
-        android:id="@+id/linearLayoutOrg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayoutOwner"
-        android:orientation="horizontal">
+            <com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch_old
+                android:id="@+id/appCompatSpinnerOrg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:hintText="Select Organization" />
+        </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <LinearLayout
+            android:id="@+id/linearLayoutOtherOrg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Organization"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/text_size_medium"
-            android:textStyle="bold" />
+            android:layout_below="@+id/linearLayoutOrg"
+            android:orientation="horizontal">
 
-        <com.me.mseotsanyana.multiselectspinnerlibrary.cSingleSpinnerSearch_old
-            android:id="@+id/appCompatSpinnerOrg"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Other Orgs."
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold" />
+
+            <com.me.mseotsanyana.multiselectspinnerlibrary.cMultiSpinnerSearch
+                android:id="@+id/appCompatSpinnerOtherOrg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:hintText="Select Organization(s)" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutPerm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:hintText="Select Organization" />
-    </LinearLayout>
+            android:layout_below="@+id/linearLayoutOtherOrg"
+            android:orientation="horizontal">
 
-    <LinearLayout
-        android:id="@+id/linearLayoutOtherOrg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayoutOrg"
-        android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Permissions"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+            <com.me.mseotsanyana.multiselectspinnerlibrary.cTableSpinner
+                android:id="@+id/appCompatSpinnerPerms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:hintText="Select Permissions" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutStatuses"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Other Orgs."
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/text_size_medium"
-            android:textStyle="bold" />
+            android:layout_below="@+id/linearLayoutPerm"
+            android:orientation="horizontal">
 
-        <com.me.mseotsanyana.multiselectspinnerlibrary.cMultiSpinnerSearch
-            android:id="@+id/appCompatSpinnerOtherOrg"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Statuses"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold" />
+
+            <com.me.mseotsanyana.multiselectspinnerlibrary.cMultiSpinnerSearch
+                android:id="@+id/appCompatSpinnerStatuses"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:hintText="Select Statuses" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutCreatedOn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:hintText="Select Organization(s)" />
+            android:layout_below="@+id/linearLayoutStatuses"
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Created on"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold" />
 
-    <LinearLayout
-        android:id="@+id/linearLayoutPerm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayoutOtherOrg"
-        android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewCreatedDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/department_of_energy"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <LinearLayout
+            android:id="@+id/linearLayoutModifiedOn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Permissions"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/text_size_medium"
-            android:textStyle="bold" />
+            android:layout_below="@+id/linearLayoutCreatedOn"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
 
-        <com.me.mseotsanyana.multiselectspinnerlibrary.cTableSpinner
-            android:id="@+id/appCompatSpinnerPerms"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Modified on"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewModifiedDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Department of Energy"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutSyncedOn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:hintText="Select Permissions" />
+            android:layout_below="@+id/linearLayoutModifiedOn"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextViewSyncedDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Synced on"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold" />
 
-    <LinearLayout
-        android:id="@+id/linearLayoutStatuses"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayoutPerm"
-        android:orientation="horizontal">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Statuses"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/text_size_medium"
-            android:textStyle="bold" />
-
-        <com.me.mseotsanyana.multiselectspinnerlibrary.cMultiSpinnerSearch
-            android:id="@+id/appCompatSpinnerStatuses"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:hintText="Select Statuses" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayoutCreatedOn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayoutStatuses"
-        android:orientation="horizontal">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Created on"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/text_size_medium"
-            android:textStyle="bold" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textViewCreatedDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/department_of_energy"
-            android:textColor="@android:color/black" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayoutModifiedOn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayoutCreatedOn"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Modified on"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/text_size_medium"
-            android:textStyle="bold" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textViewModifiedDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Department of Energy"
-            android:textColor="@android:color/black" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayoutSyncedOn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayoutModifiedOn"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/appCompatTextViewSyncedDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Synced on"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/text_size_medium"
-            android:textStyle="bold" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textViewSyncedDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Department of Energy"
-            android:textColor="@android:color/black" />
-    </LinearLayout>
-
-    <!-- change user entity -->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewSyncedDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Department of Energy"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+    -->
+    <!-- change user entity
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewChangeUserIcon"
         android:layout_width="wrap_content"
@@ -222,5 +643,4 @@
         android:background="@drawable/me_btn_flexible"
         android:textSize="@dimen/text_size_large"
         android:textColor="@color/colorPrimaryDark"
-        android:textStyle="bold" />
-</RelativeLayout>
+        android:textStyle="bold" />-->

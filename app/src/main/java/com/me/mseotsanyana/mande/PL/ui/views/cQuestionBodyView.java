@@ -75,7 +75,7 @@ public class cQuestionBodyView {
         this.question = questionModel.getQuestion();
         this.questionType = questionModel.getQuestionTypeModel().getName();
         this.description = questionModel.getQuestionTypeModel().getDescription();
-        if(questionModel.getQuestionGroupingModel().getQuestionGroupingID() != 0) {
+        if(questionModel.getQuestionGroupingModel().getQuestionGroupingServerID() != "0") {
             this.group = questionModel.getQuestionGroupingModel().getName();
             this.groupDescription = questionModel.getQuestionGroupingModel().getDescription();
         }else {

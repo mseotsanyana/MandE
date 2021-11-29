@@ -544,7 +544,7 @@ public class cUploadSessionRepositoryImpl implements iUploadSessionRepository {
     @Override
     public boolean addUserFromExcel() {
         Workbook workbook = excelHelper.getWorkbookSESSION();
-        Sheet USheet = workbook.getSheet(cExcelHelper.SHEET_tblUSER);
+        Sheet USheet = workbook.getSheet(cExcelHelper.SHEET_tblUSERPROFILE);
         Sheet UASheet = workbook.getSheet(cExcelHelper.SHEET_tblUSER_ADDRESS);
 
         if (USheet == null) {

@@ -2,86 +2,90 @@ package com.me.mseotsanyana.mande.BLL.interactors.logframe.impact.Impl;
 
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
+import com.me.mseotsanyana.mande.BLL.interactors.cInteractorUtils;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.impact.iReadImpactInteractor;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cOutcomeModel;
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iImpactRepository;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cImpactModel;
 import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
-import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
+import com.me.mseotsanyana.mande.DAL.storage.preference.cSharedPreference;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.List;
 
 public class cReadImpactInteractorImpl extends cAbstractInteractor
         implements iReadImpactInteractor {
-    private static String TAG = cReadImpactInteractorImpl.class.getSimpleName();
+    private static final String TAG = cReadImpactInteractorImpl.class.getSimpleName();
 
-    private Callback callback;
-    private iImpactRepository impactRepository;
-    private long userID, logFrameID;
-    private int primaryRoleBITS, secondaryRoleBITS, operationBITS, statusBITS;
+    private final Callback callback;
+    private final iImpactRepository impactRepository;
 
-    private String logFrameName;
+    private final cLogFrameModel logFrameModel; String organizationServerID;
+    private final String userServerID;
+    private final int primaryTeamBIT;
+    private final List<Integer> secondaryTeamBITS;
+    private final List<Integer> statusBITS;
+
+    private final int entityBITS;
+    private final int entitypermBITS;
 
     public cReadImpactInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,
-                                     iSharedPreferenceRepository sessionManagerRepository,
+                                     iSharedPreferenceRepository sharedPreferenceRepository,
                                      iImpactRepository impactRepository,
-                                     Callback callback, long logFrameID) {
+                                     Callback callback, cLogFrameModel logFrameModel) {
         super(threadExecutor, mainThread);
 
-        if (sessionManagerRepository == null || impactRepository == null || callback == null) {
+        if (sharedPreferenceRepository == null || impactRepository == null || callback == null) {
             throw new IllegalArgumentException("Arguments can not be null!");
         }
 
         this.impactRepository = impactRepository;
         this.callback = callback;
+        this.logFrameModel = logFrameModel;
 
-        this.logFrameID = logFrameID;
+        // load user shared preferences
+        this.userServerID = sharedPreferenceRepository.loadUserID();
+        this.organizationServerID = sharedPreferenceRepository.loadOrganizationID();
+        this.primaryTeamBIT = sharedPreferenceRepository.loadPrimaryTeamBIT();
+        this.secondaryTeamBITS = sharedPreferenceRepository.loadSecondaryTeams();
 
-//        /* common attributes */
-//        this.userID = sessionManagerRepository.loadUserID();
-//        this.primaryRoleBITS = sessionManagerRepository.loadPrimaryRoleBITS();
-//        this.secondaryRoleBITS = sessionManagerRepository.loadSecondaryRoleBITS();
-//
-//        /* attributes related to IMPACT entity */
-//        this.operationBITS = sessionManagerRepository.loadOperationBITS(
-//                cBitwise.IMPACT, cBitwise.LOGFRAME_MODULE);
-//        this.statusBITS = sessionManagerRepository.loadStatusBITS(
-//                cBitwise.IMPACT, cBitwise.LOGFRAME_MODULE, cBitwise.READ);
+        // load entity shared preferences
+        this.entityBITS = sharedPreferenceRepository.loadEntityBITS(
+                cSharedPreference.LOGFRAME_MODULE);
+        this.entitypermBITS = sharedPreferenceRepository.loadEntityPermissionBITS(
+                cSharedPreference.LOGFRAME_MODULE, cSharedPreference.IMPACT);
+        this.statusBITS = sharedPreferenceRepository.loadOperationStatuses(
+                cSharedPreference.LOGFRAME_MODULE, cSharedPreference.IMPACT,
+                cSharedPreference.READ);
+
+        Log.d(TAG, " \n ORGANIZATION ID = " + this.organizationServerID +
+                " \n USER ID = " + this.userServerID +
+                " \n PRIMARY TEAM BIT = " + this.primaryTeamBIT +
+                " \n UNIX TEAM BITS = " + this.secondaryTeamBITS +
+                " \n ENTITY BITS = " + this.entityBITS +
+                " \n ENTITY PERMISSION BITS = " + this.entitypermBITS +
+                " \n OPERATION STATUSES = " + this.statusBITS);
     }
 
     /* */
     private void notifyError(String msg) {
-        mainThread.post(new Runnable() {
-            @Override
-            public void run() {
-                callback.onImpactModelsFailed(msg);
-            }
-        });
+        mainThread.post(() -> callback.onImpactModelsFailed(msg));
     }
 
     /* */
-    private void postMessage(String logFrameName, ArrayList<cTreeModel> impactTreeModels) {
-        mainThread.post(new Runnable() {
-            @Override
-            public void run() {
-                callback.onImpactModelsRetrieved(logFrameName, impactTreeModels);
-            }
-        });
+    private void postMessage(List<cTreeModel> impactTreeModels) {
+        mainThread.post(() -> callback.onImpactModelsRetrieved(logFrameModel.getName(),
+                impactTreeModels));
     }
 
-    private ArrayList<cTreeModel> getImpactTree(Set<cImpactModel> impactModelSet) {
-        ArrayList<cTreeModel> impactTreeModels = new ArrayList<>();
+    private List<cTreeModel> getImpactTree(List<cImpactModel> impactModels) {
+        List<cTreeModel> impactTreeModels = new ArrayList<>();
         int parentIndex = 0, childIndex;
-
-        ArrayList<cImpactModel> impactModels = new ArrayList<>(impactModelSet);
-        if (impactModels.size() > 0) {
-            logFrameName = impactModels.get(0).getLogFrameModel().getName();
-        }
 
         for (int i = 0; i < impactModels.size(); i++) {
 
@@ -89,16 +93,90 @@ public class cReadImpactInteractorImpl extends cAbstractInteractor
             cImpactModel impactModel = impactModels.get(i);
             impactTreeModels.add(new cTreeModel(parentIndex, -1, 0, impactModel));
 
-            /* set of impact children under the impact */
-            childIndex = parentIndex;
-            ArrayList<cImpactModel> impacts = new ArrayList<>(impactModel.getChildImpactModelSet());
-            for (int j = 0; j < impacts.size(); j++) {
-                childIndex = childIndex + 1;
-                impactTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, impacts.get(j)));
-            }
+            /* impact details as child */
+            childIndex = parentIndex + 1;
+            impactTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, impactModel));
 
             /* next parent index */
             parentIndex = childIndex + 1;
+
+//            /* list of outcomes under the impact */
+//            childIndex = parentIndex;
+//            List<cOutcomeModel> outcomeModels = impactModel.getOutcomeModels();
+//
+//            Log.d(TAG, "IMPACT ID : "+impactModel.getComponentServerID()+" - OUTCOME SIZE : "+
+//                    outcomeModels.size());
+//
+//            for (int j = 0; j < outcomeModels.size(); j++) {
+//                childIndex = childIndex + 1;
+//                impactTreeModels.add(new cTreeModel(childIndex, parentIndex, 1,
+//                        outcomeModels.get(j)));
+//            }
+//
+//            /* next parent index */
+//            parentIndex = childIndex + 1;
+
+        }
+        return impactTreeModels;
+    }
+
+    @Override
+    public void run() {
+        if (cInteractorUtils.isSettingsNonNull(organizationServerID, userServerID, entityBITS,
+                entitypermBITS, primaryTeamBIT, secondaryTeamBITS, statusBITS)) {
+            if ((this.entityBITS & cSharedPreference.IMPACT) != 0) {
+                if ((this.entitypermBITS & cSharedPreference.READ) != 0) {
+
+                    impactRepository.readImpacts(logFrameModel.getLogFrameServerID(),
+                            organizationServerID, userServerID, primaryTeamBIT,
+                            secondaryTeamBITS, statusBITS,
+                            new iImpactRepository.iReadImpactsCallback() {
+                                @Override
+                                public void onReadImpactSucceeded(List<cImpactModel> impactModels) {
+                                    List<cTreeModel> treeModels = getImpactTree(impactModels);
+                                    postMessage(treeModels);
+                                }
+
+                                @Override
+                                public void onReadImpactFailed(String msg) {
+                                    notifyError(msg);
+                                }
+                            });
+
+                } else {
+                    notifyError("Permission denied! Please contact your administrator");
+                }
+            } else {
+                notifyError("No access to the entity! Please contact your administrator");
+            }
+        } else {
+            notifyError("Error in default settings");
+        }
+    }
+}
+
+//        if ((operationBITS & cBitwise.READ) != 0) {
+//
+//            /* retrieve a set logFrames from the database */
+//            Log.d(TAG, "LOGFRAME ID = "+logFrameID+"; USER ID = "+userID+"; PRIMARY = "+primaryRoleBITS+
+//                    "; SECONDARY = "+secondaryRoleBITS+"; STATUS = "+statusBITS);
+//
+//            Set<cImpactModel> impactModelSet = //impactRepository.getImpactModelSet(logFrameID,
+//                    userID, primaryRoleBITS, secondaryRoleBITS, statusBITS);
+//
+//            if (impactModelSet != null) {
+//                Gson gson = new Gson();
+//                Log.d(TAG, "IMPACT = "+gson.toJson(impactModelSet.size()));
+//
+//                ArrayList<cTreeModel> impactTreeModels = getImpactTree(impactModelSet);
+//
+//                postMessage(logFrameName, impactTreeModels);
+//            } else {
+//                notifyError("Failed to read impacts !!");
+//            }
+//        } else {
+//            notifyError("Failed due to reading access rights !!");
+//        }
 
             /* set of outcomes under the impact
             childIndex = parentIndex + 2;
@@ -114,33 +192,3 @@ public class cReadImpactInteractorImpl extends cAbstractInteractor
             childIndex = parentIndex + 4;
             ArrayList<cRaidModel> raids = new ArrayList<>(impactModel.getRaidModelSet());
             impactTreeModels.add(new cTreeModel(childIndex, parentIndex, 2, raids));*/
-        }
-        return impactTreeModels;
-    }
-
-    @Override
-    public void run() {
-        if ((operationBITS & cBitwise.READ) != 0) {
-
-            /* retrieve a set logFrames from the database */
-            Log.d(TAG, "LOGFRAME ID = "+logFrameID+"; USER ID = "+userID+"; PRIMARY = "+primaryRoleBITS+
-                    "; SECONDARY = "+secondaryRoleBITS+"; STATUS = "+statusBITS);
-
-            Set<cImpactModel> impactModelSet = impactRepository.getImpactModelSet(logFrameID,
-                    userID, primaryRoleBITS, secondaryRoleBITS, statusBITS);
-
-            if (impactModelSet != null) {
-                Gson gson = new Gson();
-                Log.d(TAG, "IMPACT = "+gson.toJson(impactModelSet.size()));
-
-                ArrayList<cTreeModel> impactTreeModels = getImpactTree(impactModelSet);
-
-                postMessage(logFrameName, impactTreeModels);
-            } else {
-                notifyError("Failed to read impacts !!");
-            }
-        } else {
-            notifyError("Failed due to reading access rights !!");
-        }
-    }
-}

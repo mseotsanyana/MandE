@@ -111,7 +111,7 @@ public class cOutputAdapter extends cTreeAdapter implements iViewOutcomeListener
                     OPH.textViewEndDateCaption.setText(
                             context.getResources().getString(R.string.enddate_caption));
 
-                    OPH.textViewParent.setText(parentOutput.getOutcomeModel().getName());
+//                    OPH.textViewParent.setText(parentOutput.getOutcomeModel().getName());
                     OPH.textViewName.setText(parentOutput.getName());
                     OPH.textViewDescription.setText(parentOutput.getDescription());
                     OPH.textViewStartDate.setText(sdf.format(parentOutput.getStartDate()));
@@ -239,7 +239,7 @@ public class cOutputAdapter extends cTreeAdapter implements iViewOutcomeListener
                     OCH.textViewEndDateCaption.setText(
                             context.getResources().getString(R.string.enddate_caption));
 
-                    OCH.textViewParent.setText(childOutput.getOutcomeModel().getName());
+//                    OCH.textViewParent.setText(childOutput.getOutcomeModel().getName());
                     OCH.textViewName.setText(childOutput.getName());
                     OCH.textViewDescription.setText(childOutput.getDescription());
                     OCH.textViewStartDate.setText(sdf.format(childOutput.getStartDate()));
@@ -396,12 +396,12 @@ public class cOutputAdapter extends cTreeAdapter implements iViewOutcomeListener
 
                     ArrayList<cTreeModel> filteredList = new ArrayList<>();
                     for (cTreeModel treeModel : getTreeModel()) {
-                        if (((cOutputModel)treeModel.getModelObject()).getName().toLowerCase().
-                                contains(charString.toLowerCase()) ||
-                                ((cOutputModel)treeModel.getModelObject()).getOutcomeModel().
-                                        getName().toLowerCase().contains(charString.toLowerCase())) {
-                            filteredList.add(treeModel);
-                        }
+//                        if (((cOutputModel)treeModel.getModelObject()).getName().toLowerCase().
+//                                contains(charString.toLowerCase()) ||
+//                                ((cOutputModel)treeModel.getModelObject()).getOutcomeModel().
+//                                        getName().toLowerCase().contains(charString.toLowerCase())) {
+//                            filteredList.add(treeModel);
+//                        }
                     }
 
                     filteredTreeModels = filteredList;

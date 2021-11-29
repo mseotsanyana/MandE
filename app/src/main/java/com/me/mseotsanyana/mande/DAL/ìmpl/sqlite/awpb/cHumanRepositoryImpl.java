@@ -71,72 +71,72 @@ public class cHumanRepositoryImpl extends cInputRepositoryImpl implements iHuman
                 do {
                     cHumanModel human = new cHumanModel();
 
-                    human.setComponentID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
-                    human.getActivityModel().setComponentID(cursor.getInt(
-                            cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
-                    human.getLogFrameModel().setLogFrameID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
-                    human.getResourceTypeModel().setResourceTypeID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_RESOURCE_TYPE_FK_ID)));
-                    human.setServerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    human.setOwnerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    human.setOrgID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    human.setGroupBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    human.setPermsBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    human.setStatusBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    human.setQuantity(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_QUANTITY)));
-                    human.setStartDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    human.setEndDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    human.setCreatedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    human.setModifiedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    human.setSyncedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
-
-                    /* objects */
-
-                    /* populate a logframe object */
-                    human.setLogFrameModel(getLogFrameModelByID(
-                            human.getLogFrameModel().getLogFrameID(), userID,
-                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
-                    /* populate an resource object */
-                    human.setResourceTypeModel(getResourceTypeModelByID(
-                            human.getComponentID(), userID, primaryRoleBITS, secondaryRoleBITS,
-                            statusBITS));
-                    /* populate an activity object */
-                    human.setActivityModel(getActivityModelByID(
-                            human.getActivityModel().getComponentID(), userID, primaryRoleBITS,
-                            secondaryRoleBITS, statusBITS));
-
-                    /* sets */
-                    /* populate user models */
-                    human.setUserModelSet(getUserModelSetByID(human.getComponentID(),
-                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
-
-                    /* populate question components */
-                    human.setQuestionModelSet(getQuestionModelSetByID(
-                            human.getComponentID(), userID, primaryRoleBITS, secondaryRoleBITS,
-                            statusBITS));
-                    /* populate journal components */
-                    human.setJournalModelSet(getJournalModelSetByID(human.getComponentID(), userID,
-                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
-
-                    /* maps */
-
-                    /* populate child activity for the input*/
-                    human.setChildActivityModelSet(getChildActivitySetByID(human.getComponentID(),
-                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//                    human.setComponentID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
+//                    human.getActivityModel().setComponentID(cursor.getInt(
+//                            cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
+////                    human.getLogFrameModel().setLogFrameID(
+////                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
+//                    human.getResourceTypeModel().setResourceTypeID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_RESOURCE_TYPE_FK_ID)));
+//                    human.setServerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    human.setOwnerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    human.setOrgID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    human.setGroupBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    human.setPermsBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    human.setStatusBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    human.setQuantity(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_QUANTITY)));
+//                    human.setStartDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+//                    human.setEndDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+//                    human.setCreatedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    human.setModifiedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    human.setSyncedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//
+//                    /* objects */
+//
+//                    /* populate a logframe object */
+////                    human.setLogFrameModel(getLogFrameModelByID(
+////                            human.getLogFrameModel().getLogFrameID(), userID,
+////                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//                    /* populate an resource object */
+//                    human.setResourceTypeModel(getResourceTypeModelByID(
+//                            human.getComponentID(), userID, primaryRoleBITS, secondaryRoleBITS,
+//                            statusBITS));
+//                    /* populate an activity object */
+//                    human.setActivityModel(getActivityModelByID(
+//                            human.getActivityModel().getComponentID(), userID, primaryRoleBITS,
+//                            secondaryRoleBITS, statusBITS));
+//
+//                    /* sets */
+//                    /* populate user models */
+//                    human.setUserModelSet(getUserModelSetByID(human.getComponentID(),
+//                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//
+//                    /* populate question components */
+//                    human.setQuestionModelSet(getQuestionModelSetByID(
+//                            human.getComponentID(), userID, primaryRoleBITS, secondaryRoleBITS,
+//                            statusBITS));
+//                    /* populate journal components */
+//                    human.setJournalModelSet(getJournalModelSetByID(human.getComponentID(), userID,
+//                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//
+//                    /* maps */
+//
+//                    /* populate child activity for the input*/
+//                    human.setChildActivityModelSet(getChildActivitySetByID(human.getComponentID(),
+//                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
 
                     /* add expenses */
                     humanModelSet.add(human);

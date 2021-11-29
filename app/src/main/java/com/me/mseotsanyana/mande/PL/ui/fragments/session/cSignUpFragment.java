@@ -1,11 +1,19 @@
 package com.me.mseotsanyana.mande.PL.ui.fragments.session;
 
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,23 +22,33 @@ import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
+import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
 import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cUserProfileFirestoreRepositoryImpl;
-import com.me.mseotsanyana.mande.DAL.ìmpl.realtime.session.cUserProfileFirebaseRepositoryImpl;
 import com.me.mseotsanyana.mande.PL.presenters.session.Impl.cUserSignUpPresenterImpl;
 import com.me.mseotsanyana.mande.PL.presenters.session.iUserSignUpPresenter;
 import com.me.mseotsanyana.mande.R;
 import com.me.mseotsanyana.mande.cMainThreadImpl;
+import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 
-public class cSignUpFragment extends Fragment implements iUserSignUpPresenter.View {
-    private static String TAG = cSignUpFragment.class.getSimpleName();
+import de.hdodenhof.circleimageview.CircleImageView;
 
-    private EditText firstNameEditText, surnameEditText, emailEditText,
+public class cSignUpFragment extends Fragment implements iUserSignUpPresenter.View {
+//    private static final String TAG = cSignUpFragment.class.getSimpleName();
+
+    private CircleImageView profileCircleImageView;
+    private Bitmap bitmap;
+
+    private EditText firstNameEditText, surnameEditText, designationEditText, emailEditText,
             passwordEditText, confirmPasswordEditText;
     private View progressBar;
 
     private iUserSignUpPresenter userSignUpPresenter;
+    private ActivityResultLauncher<String> launchUploadActivity;
 
     public cSignUpFragment() {
     }
@@ -42,24 +60,26 @@ public class cSignUpFragment extends Fragment implements iUserSignUpPresenter.Vi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // initialise default profile image
+        try {
+            AssetManager am = requireActivity().getAssets();
+            InputStream is = am.open("image/me_default_avatar.png");
+            bitmap = BitmapFactory.decodeStream(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        userSignUpPresenter = new cUserSignUpPresenterImpl(
-                cThreadExecutorImpl.getInstance(),
-                cMainThreadImpl.getInstance(),
-                this,
-                new cUserProfileFirestoreRepositoryImpl(getContext()));
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.session_signup_fragment, container,
-                false);
-
-        initViews(view);
-
-        return view;
+        // create launcher variable to select profile image from gallery
+        launchUploadActivity = registerForActivityResult(new ActivityResultContracts.GetContent(),
+                uri -> {
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(
+                                requireActivity().getContentResolver(), uri);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Picasso.get().load(uri).into(profileCircleImageView);
+                });
     }
 
     @Override
@@ -67,9 +87,36 @@ public class cSignUpFragment extends Fragment implements iUserSignUpPresenter.Vi
         super.onDestroy();
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.session_signup_fragment, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        /* create data structures */
+        initDataStructures();
+
+        /* initialize views */
+        initViews(view);
+    }
+
+    private void initDataStructures() {
+        userSignUpPresenter = new cUserSignUpPresenterImpl(
+                cThreadExecutorImpl.getInstance(),
+                cMainThreadImpl.getInstance(),
+                this,
+                new cUserProfileFirestoreRepositoryImpl(requireContext()));
+    }
+
     private void initViews(View view) {
+        profileCircleImageView = view.findViewById(R.id.profileCircleImageView);
         firstNameEditText = view.findViewById(R.id.firstNameEditText);
         surnameEditText = view.findViewById(R.id.surnameEditText);
+        designationEditText = view.findViewById(R.id.designationEditText);
         emailEditText = view.findViewById(R.id.emailEditText);
         passwordEditText = view.findViewById(R.id.passwordEditText);
         confirmPasswordEditText = view.findViewById(R.id.confirmPasswordEditText);
@@ -84,48 +131,55 @@ public class cSignUpFragment extends Fragment implements iUserSignUpPresenter.Vi
         /* initial hide progress bar */
         hideProgress();
 
+        /* change profile image */
+        profileCircleImageView.setOnClickListener(v -> launchUploadActivity.launch("image/*"));
+
         /* login listener */
-        loginTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavDirections action = cSignUpFragmentDirections.actionCSignUpFragmentToCLoginFragment();
-                Navigation.findNavController(requireView()).navigate(action);
-            }
+        loginTextView.setOnClickListener(v -> {
+            NavDirections action = cSignUpFragmentDirections.actionCSignUpFragmentToCLoginFragment();
+            Navigation.findNavController(requireView()).navigate(action);
         });
 
         /* sign up listener */
-        signUpTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String firstName = Objects.requireNonNull(firstNameEditText.getText()).toString();
-                String surname = Objects.requireNonNull(surnameEditText.getText()).toString();
-                String email = Objects.requireNonNull(emailEditText.getText()).toString();
-                String password = Objects.requireNonNull(passwordEditText.getText()).toString();
-                String confirmPassword = Objects.requireNonNull(confirmPasswordEditText.getText()).toString();
+        signUpTextView.setOnClickListener(v -> {
+            String name = Objects.requireNonNull(firstNameEditText.getText()).toString().trim();
+            String surname = Objects.requireNonNull(surnameEditText.getText()).toString().trim();
+            String designation = Objects.requireNonNull(designationEditText.getText()).toString().trim();
+            String email = Objects.requireNonNull(emailEditText.getText()).toString().trim();
+            String password = Objects.requireNonNull(passwordEditText.getText()).toString().trim();
+            String confirmPassword = Objects.requireNonNull(confirmPasswordEditText.getText()).toString().trim();
 
-                if (!email.isEmpty() && !password.isEmpty() && !confirmPassword.isEmpty()) {
-                    userSignUpPresenter.createUserWithEmailAndPassword(firstName, surname, email, password);
-                } else {
-                    Snackbar.make(requireView(), "Fields are empty !", Snackbar.LENGTH_LONG).show();
-                }
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+            byte[] imageData = bytes.toByteArray();
+
+            cUserProfileModel userProfileModel = new cUserProfileModel(imageData, name, surname,
+                    designation, email, password);
+
+            if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty() &&
+                    !confirmPassword.isEmpty()) {
+                userSignUpPresenter.createUserWithEmailAndPassword(userProfileModel);
+            } else {
+                Snackbar.make(requireView(), "Fields are empty !", Snackbar.LENGTH_LONG).show();
             }
         });
 
         /* login listener */
-        loginTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavDirections action = cSignUpFragmentDirections.actionCSignUpFragmentToCLoginFragment();
-                Navigation.findNavController(requireView()).navigate(action);
-            }
+        loginTextView.setOnClickListener(v -> {
+            NavDirections action = cSignUpFragmentDirections.actionCSignUpFragmentToCLoginFragment();
+            Navigation.findNavController(requireView()).navigate(action);
         });
     }
 
+    /*private String getFileExtension(Uri uri){
+        ContentResolver contentResolver = requireActivity().getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(contentResolver.getType(uri));
+    }*/
+
     @Override
     public void onUserSignUpSucceeded(String msg) {
-        //String email = Objects.requireNonNull(emailEditText.getText()).toString();
-        NavDirections action = cSignUpFragmentDirections.actionCSignUpFragmentToCLoginFragment(); //.actionCSignUpFragmentToCHomeFragment(email);
-
+        NavDirections action = cSignUpFragmentDirections.actionCSignUpFragmentToCLoginFragment();
         Navigation.findNavController(requireView()).navigate(action);
     }
 

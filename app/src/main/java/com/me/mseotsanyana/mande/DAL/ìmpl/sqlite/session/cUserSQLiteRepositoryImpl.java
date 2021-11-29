@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
 import com.me.mseotsanyana.mande.BLL.repository.session.iUserProfileRepository;
@@ -14,6 +15,7 @@ import com.me.mseotsanyana.mande.BLL.model.session.cNotificationModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cRoleModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
+import com.me.mseotsanyana.mande.DAL.storage.base.cFirebaseChildCallBack;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.DAL.storage.preference.cBitwise;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
@@ -54,8 +56,9 @@ public class cUserSQLiteRepositoryImpl implements iUserProfileRepository {
 
     /* ############################################# CREATE ACTIONS ############################################# */
 
+
     @Override
-    public void createUserWithEmailAndPassword(String email, String password, String firstName, String surname, iSignUpRepositoryCallback callback) {
+    public void createUserWithEmailAndPassword(cUserProfileModel userProfileModel, iSignUpRepositoryCallback callback) {
 
     }
 
@@ -165,7 +168,12 @@ public class cUserSQLiteRepositoryImpl implements iUserProfileRepository {
     }
 
     @Override
-    public void updateUserProfile(long userID, int primaryRole, int secondaryRoles, int statusBITS, cUserProfileModel userProfileModel, iUpdateUserProfileRepositoryCallback callback) {
+    public void updateUserProfileImage(long userID, int primaryRole, int secondaryRoles, int statusBITS, cUserProfileModel userProfileModel, iUpdateUserProfileRepositoryCallback callback) {
+
+    }
+
+    @Override
+    public void updateUserProfileImage(String userServerID, byte[] userProfileImageData, iUpdateUserProfileImageRepositoryCallback callback) {
 
     }
 
@@ -1184,7 +1192,12 @@ public class cUserSQLiteRepositoryImpl implements iUserProfileRepository {
     /* ############################################# SYNC ACTIONS ############################################# */
 
     @Override
-    public void uploadUserProfilesFromExcel(iUploadUserProfilesRepositoryCallback callback) {
+    public void uploadUserProfilesFromExcel(String filename, iUploadUserProfilesRepositoryCallback callback) {
 
+    }
+
+    @Override
+    public ListenerRegistration readAllUserProfilesByChildEvent(cFirebaseChildCallBack firebaseChildCallBack) {
+        return null;
     }
 }

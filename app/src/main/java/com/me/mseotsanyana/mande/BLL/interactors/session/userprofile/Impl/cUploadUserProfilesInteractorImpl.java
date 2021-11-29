@@ -1,7 +1,5 @@
 package com.me.mseotsanyana.mande.BLL.interactors.session.userprofile.Impl;
 
-import android.util.Log;
-
 import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
@@ -12,15 +10,16 @@ import com.me.mseotsanyana.mande.BLL.repository.session.iUserProfileRepository;
 public class cUploadUserProfilesInteractorImpl extends cAbstractInteractor
         implements iUserProfilesInteractor {
 
-    private static final String TAG = cUploadUserProfilesInteractorImpl.class.getSimpleName();
+    //private static final String TAG = cUploadUserProfilesInteractorImpl.class.getSimpleName();
 
     private final Callback callback;
     private final iUserProfileRepository userProfileRepository;
 
+    private final String filename;
     public cUploadUserProfilesInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,
                                              iSharedPreferenceRepository sharedPreferenceRepository,
                                              iUserProfileRepository userProfileRepository,
-                                             Callback callback) {
+                                             Callback callback, String filename) {
         super(threadExecutor, mainThread);
 
         if (sharedPreferenceRepository == null || userProfileRepository == null || callback == null) {
@@ -29,6 +28,7 @@ public class cUploadUserProfilesInteractorImpl extends cAbstractInteractor
 
         this.callback = callback;
         this.userProfileRepository = userProfileRepository;
+        this.filename = filename;
     }
 
     /* notify on the main thread */
@@ -43,7 +43,7 @@ public class cUploadUserProfilesInteractorImpl extends cAbstractInteractor
 
     @Override
     public void run() {
-        this.userProfileRepository.uploadUserProfilesFromExcel(
+        this.userProfileRepository.uploadUserProfilesFromExcel(filename,
                 new iUserProfileRepository.iUploadUserProfilesRepositoryCallback() {
                     @Override
                     public void onUploadUserProfilesSucceeded(String msg) {

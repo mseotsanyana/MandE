@@ -50,7 +50,6 @@ public class cHomePageInteractorImpl extends cAbstractInteractor
         this.homePageRepository = homePageRepository;
         this.callback = callback;
 
-
         // load user shared preferences
         this.userServerID = sharedPreferenceRepository.loadUserID();
         this.organizationServerID = sharedPreferenceRepository.loadOrganizationID();
@@ -113,8 +112,8 @@ public class cHomePageInteractorImpl extends cAbstractInteractor
 
                     @Override
                     public void onReadMenuItemsSucceeded(List<cMenuModel> menuModels) {
-                        Gson gson = new Gson();
-                        Log.d(TAG, " roleMenuItemsMap => " + gson.toJson(menuModels));
+                        //Gson gson = new Gson();
+                        //Log.d(TAG, " roleMenuItemsMap => " + gson.toJson(menuModels));
                         menuItemsMessage(menuModels);
                         //List<cMenuModel> menuModels;
                         //menuModels = sharedPreferenceRepository.loadMenuItems();

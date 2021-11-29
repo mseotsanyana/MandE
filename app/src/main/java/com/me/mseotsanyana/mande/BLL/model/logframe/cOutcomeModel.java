@@ -1,57 +1,69 @@
 package com.me.mseotsanyana.mande.BLL.model.logframe;
 
-import android.util.Pair;
+import com.google.firebase.firestore.Exclude;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class cOutcomeModel extends cComponentModel {
-    /*** incoming mappings ***/
-    private cImpactModel impactModel;
-    private Set<cOutcomeModel> childOutcomeModelSet; //children
-    /*** outgoing mappings ***/
-    private Set<cOutputModel> outputModelSet;
-    /* set of impact in a child logframe for the outcome of the parent logframe */
-    private Map<Pair<Long, Long>, Set<cImpactModel>> childImpactModelMap;
+    private String parentServerID;
+    private List<cOutcomeModel> childModels;
+
+    private String impactServerID;
+
+    private List<cOutputModel> outputModels;
+
+    // sub-logframe impacts
+    private List<cImpactModel> subimpactModels;
 
     public cOutcomeModel(){
-        impactModel = new cImpactModel();
-        childOutcomeModelSet = new HashSet<>();
-        outputModelSet = new HashSet<>();
-        childImpactModelMap =new HashMap<>();
+        parentServerID = null;
+        impactServerID = null;
+        childModels = new ArrayList<>();
+        outputModels = new ArrayList<>();
+        subimpactModels = new ArrayList<>();
     }
 
-    public cImpactModel getImpactModel() {
-        return impactModel;
+    public String getParentServerID() {
+        return parentServerID;
     }
 
-    public void setImpactModel(cImpactModel impactModel) {
-        this.impactModel = impactModel;
+    public void setParentServerID(String parentServerID) {
+        this.parentServerID = parentServerID;
     }
 
-    public Set<cOutcomeModel> getChildOutcomeModelSet() {
-        return childOutcomeModelSet;
+    public String getImpactServerID() {
+        return impactServerID;
     }
 
-    public void setChildOutcomeModelSet(Set<cOutcomeModel> childOutcomeModelSet) {
-        this.childOutcomeModelSet = childOutcomeModelSet;
+    public void setImpactServerID(String impactServerID) {
+        this.impactServerID = impactServerID;
     }
 
-    public Set<cOutputModel> getOutputModelSet() {
-        return outputModelSet;
+    @Exclude
+    public List<cOutcomeModel> getChildModels() {
+        return childModels;
     }
 
-    public void setOutputModelSet(Set<cOutputModel> outputModelSet) {
-        this.outputModelSet = outputModelSet;
+    public void setChildModels(List<cOutcomeModel> childModels) {
+        this.childModels = childModels;
     }
 
-    public Map<Pair<Long, Long>, Set<cImpactModel>> getChildImpactModelMap() {
-        return childImpactModelMap;
+    @Exclude
+    public List<cOutputModel> getOutputModels() {
+        return outputModels;
     }
 
-    public void setChildImpactModelMap(Map<Pair<Long, Long>, Set<cImpactModel>> childImpactModelMap) {
-        this.childImpactModelMap = childImpactModelMap;
+    public void setOutputModels(List<cOutputModel> outputModels) {
+        this.outputModels = outputModels;
+    }
+
+    @Exclude
+    public List<cImpactModel> getSubimpactModels() {
+        return subimpactModels;
+    }
+
+    public void setSubimpactModels(List<cImpactModel> subimpactModels) {
+        this.subimpactModels = subimpactModels;
     }
 }

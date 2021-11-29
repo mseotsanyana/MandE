@@ -66,7 +66,7 @@ public class cExpenseAdapter extends RecyclerView.Adapter<cExpenseAdapter.cExpen
                 R.color.child_body_colour));
 
         EH.textViewParentCaption.setText(R.string.activity_caption);
-        EH.textViewParent.setText(expenseModel.getActivityModel().getName());
+//        EH.textViewParent.setText(expenseModel.getActivityModel().getName());
         EH.textViewNameCaption.setText(R.string.input_caption);
         //--EH.textViewName.setText(expenseModel.getResourceModel().getName());
         EH.textViewNumberCaption.setText(R.string.input_expense_caption);

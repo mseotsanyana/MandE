@@ -2,42 +2,31 @@ package com.me.mseotsanyana.mande.BLL.model.logframe;
 
 import com.me.mseotsanyana.mande.BLL.model.wpb.cJournalModel;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class cInputModel extends cComponentModel{
-	/*** incoming mappings ***/
+	private String activityServerID;
 	private cResourceTypeModel resourceTypeModel;
-	private cActivityModel activityModel;
-	/*** outgoing mappings ***/
-	private Set<cJournalModel> journalModelSet;
+
+	private List<cJournalModel> journalModels;
+
 	/* set of activity in a sub-logframe for the parent input */
-	private Set<cActivityModel> childActivityModelSet;
+	private List<cActivityModel> subactivityModels;
 
 	public cInputModel(){
-		activityModel = new cActivityModel();
+		activityServerID = null;
 		resourceTypeModel = new cResourceTypeModel();
-
-		journalModelSet = new HashSet<>();
-		childActivityModelSet = new HashSet<>();
+		journalModels = new ArrayList<>();
+		subactivityModels = new ArrayList<>();
 	}
 
-	public cInputModel(cInputModel inputModel){
-		setServerID(inputModel.getServerID());
-		setOwnerID(inputModel.getOwnerID());
-		setOrgID(inputModel.getOrgID());
-		setGroupBITS(inputModel.getGroupBITS());
-		setPermsBITS(inputModel.getPermsBITS());
-		setStatusBITS(inputModel.getStatusBITS());
-		setStartDate(inputModel.getStartDate());
-		setEndDate(inputModel.getEndDate());
-		setCreatedDate(inputModel.getCreatedDate());
-		setModifiedDate(inputModel.getModifiedDate());
-		setSyncedDate(inputModel.getSyncedDate());
+	public String getActivityServerID() {
+		return activityServerID;
+	}
 
-		setResourceTypeModel(inputModel.getResourceTypeModel());
-		setLogFrameModel(inputModel.getLogFrameModel());
-		setActivityModel(inputModel.getActivityModel());
+	public void setActivityServerID(String activityServerID) {
+		this.activityServerID = activityServerID;
 	}
 
 	public cResourceTypeModel getResourceTypeModel() {
@@ -48,28 +37,20 @@ public class cInputModel extends cComponentModel{
 		this.resourceTypeModel = resourceTypeModel;
 	}
 
-	public cActivityModel getActivityModel() {
-		return activityModel;
+	public List<cJournalModel> getJournalModels() {
+		return journalModels;
 	}
 
-	public void setActivityModel(cActivityModel activityModel) {
-		this.activityModel = activityModel;
+	public void setJournalModels(List<cJournalModel> journalModels) {
+		this.journalModels = journalModels;
 	}
 
-	public Set<cJournalModel> getJournalModelSet() {
-		return journalModelSet;
+	public List<cActivityModel> getSubactivityModels() {
+		return subactivityModels;
 	}
 
-	public void setJournalModelSet(Set<cJournalModel> journalModelSet) {
-		this.journalModelSet = journalModelSet;
-	}
-
-	public Set<cActivityModel> getChildActivityModelSet() {
-		return childActivityModelSet;
-	}
-
-	public void setChildActivityModelSet(Set<cActivityModel> childActivityModelSet) {
-		this.childActivityModelSet = childActivityModelSet;
+	public void setSubactivityModels(List<cActivityModel> subactivityModels) {
+		this.subactivityModels = subactivityModels;
 	}
 }
 

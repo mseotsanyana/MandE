@@ -70,20 +70,20 @@ public class cPrimitiveTypeRepositoryImpl {
 
                 //primitive = new cPrimitiveQuestionModel();
 
-                primitive.setQuestionTypeID(cursor.getInt(
-                        cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID)));
-                primitive.setServerID(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                primitive.setOwnerID(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                primitive.setOrgID(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                primitive.setGroupBITS(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                primitive.setPermsBITS(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                primitive.setStatusBITS(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                primitive.setQuestionTypeID(cursor.getInt(
+//                        cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID)));
+//                primitive.setServerID(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                primitive.setOwnerID(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                primitive.setOrgID(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                primitive.setGroupBITS(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                primitive.setPermsBITS(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                primitive.setStatusBITS(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
                 //primitive.setName(
                 //        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
                 //primitive.setDescription(
@@ -92,8 +92,8 @@ public class cPrimitiveTypeRepositoryImpl {
                         cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
                 primitive.setModifiedDate(Timestamp.valueOf(
                         cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                primitive.setSyncedDate(Timestamp.valueOf(
-                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                primitive.setSyncedDate(Timestamp.valueOf(
+//                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                 /* sets
                 primitive.setPrimitiveChartModelSet(chartRepository.getChartModelSetByID(

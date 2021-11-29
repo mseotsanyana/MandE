@@ -1,6 +1,7 @@
 package com.me.mseotsanyana.mande.PL.presenters.logframe;
 
 import com.me.mseotsanyana.mande.BLL.model.logframe.cActivityModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel;
 import com.me.mseotsanyana.mande.PL.presenters.base.iPresenter;
 import com.me.mseotsanyana.mande.PL.ui.iBaseView;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
@@ -22,7 +23,7 @@ public interface iActivityPresenter extends iPresenter {
     }
 
     /* pass data from view to the interactor */
-    void readActivityModels(long logFrameID);
+    void readActivityModels(cLogFrameModel logFrameModel);
 
     /*
     void createActivityModel(cActivityModel activityModel);

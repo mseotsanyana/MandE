@@ -70,69 +70,69 @@ public class cMaterialRepositoryImpl extends cInputRepositoryImpl implements iMa
                 do {
                     cMaterialModel material = new cMaterialModel();
 
-                    material.setComponentID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
-                    material.getActivityModel().setComponentID(cursor.getInt(
-                            cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
-                    material.getLogFrameModel().setLogFrameID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
-                    material.getResourceTypeModel().setResourceTypeID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_RESOURCE_TYPE_FK_ID)));
-                    material.setServerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    material.setOwnerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    material.setOrgID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    material.setGroupBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    material.setPermsBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    material.setStatusBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    material.setQuantity(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_QUANTITY)));
-                    material.setStartDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    material.setEndDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    material.setCreatedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    material.setModifiedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    material.setSyncedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
-
-                    /* objects */
-
-                    /* populate a logframe object */
-                    material.setLogFrameModel(getLogFrameModelByID(
-                            material.getLogFrameModel().getLogFrameID(), userID,
-                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
-                    /* populate an resource object */
-                    material.setResourceTypeModel(getResourceTypeModelByID(
-                            material.getResourceTypeModel().getResourceTypeID(), userID,
-                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
-                    /* populate an activity object */
-                    material.setActivityModel(getActivityModelByID(
-                            material.getComponentID(), userID, primaryRoleBITS, secondaryRoleBITS,
-                            statusBITS));
-
-                    /* sets */
-
-                    /* populate question components */
-                    material.setQuestionModelSet(getQuestionModelSetByID(
-                            material.getComponentID(), userID, primaryRoleBITS, secondaryRoleBITS,
-                            statusBITS));
-                    /* populate journal components */
-                    material.setJournalModelSet(getJournalModelSetByID(material.getComponentID(), userID,
-                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
-
-                    /* maps */
-
-                    /* populate child activity for the input*/
-                    material.setChildActivityModelSet(getChildActivitySetByID(material.getComponentID(),
-                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//                    material.setComponentID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
+//                    material.getActivityModel().setComponentID(cursor.getInt(
+//                            cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
+////                    material.getLogFrameModel().setLogFrameID(
+////                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
+//                    material.getResourceTypeModel().setResourceTypeID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_RESOURCE_TYPE_FK_ID)));
+//                    material.setServerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    material.setOwnerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    material.setOrgID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    material.setGroupBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    material.setPermsBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    material.setStatusBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    material.setQuantity(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_QUANTITY)));
+//                    material.setStartDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+//                    material.setEndDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+//                    material.setCreatedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    material.setModifiedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    material.setSyncedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//
+//                    /* objects */
+//
+//                    /* populate a logframe object */
+////                    material.setLogFrameModel(getLogFrameModelByID(
+////                            material.getLogFrameModel().getLogFrameID(), userID,
+////                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//                    /* populate an resource object */
+//                    material.setResourceTypeModel(getResourceTypeModelByID(
+//                            material.getResourceTypeModel().getResourceTypeID(), userID,
+//                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//                    /* populate an activity object */
+//                    material.setActivityModel(getActivityModelByID(
+//                            material.getComponentID(), userID, primaryRoleBITS, secondaryRoleBITS,
+//                            statusBITS));
+//
+//                    /* sets */
+//
+//                    /* populate question components */
+//                    material.setQuestionModelSet(getQuestionModelSetByID(
+//                            material.getComponentID(), userID, primaryRoleBITS, secondaryRoleBITS,
+//                            statusBITS));
+//                    /* populate journal components */
+//                    material.setJournalModelSet(getJournalModelSetByID(material.getComponentID(), userID,
+//                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//
+//                    /* maps */
+//
+//                    /* populate child activity for the input*/
+//                    material.setChildActivityModelSet(getChildActivitySetByID(material.getComponentID(),
+//                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
 
                     /* add expenses */
                     materialModelSet.add(material);

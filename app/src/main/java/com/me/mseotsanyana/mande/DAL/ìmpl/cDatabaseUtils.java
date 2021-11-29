@@ -1,7 +1,10 @@
 package com.me.mseotsanyana.mande.DAL.ìmpl;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.net.Uri;
+import android.webkit.MimeTypeMap;
 
 import androidx.annotation.NonNull;
 
@@ -23,8 +26,12 @@ import com.me.mseotsanyana.mande.BLL.model.session.cUnixOperationCollection;
 import com.me.mseotsanyana.mande.BLL.model.session.cUnixOperationModel;
 import com.me.mseotsanyana.mande.BLL.model.utils.cCommonPropertiesModel;
 import com.me.mseotsanyana.mande.DAL.storage.preference.cSharedPreference;
+import com.me.mseotsanyana.mande.UTIL.cConstant;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,13 +39,16 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public final class cDatabaseUtils {
+    private static final SimpleDateFormat sdf = cConstant.FORMAT_DATE;
 
     // Private constructor to prevent instantiation
     private cDatabaseUtils() {
@@ -299,7 +309,7 @@ public final class cDatabaseUtils {
      * @param context context
      * @return permission model
      */
-    public static cPermissionModel getAdminPermissions(Context context) {
+    public static cPermissionModel createAdminPermissions(Context context) {
 
         cPermissionModel permissionModel = null;
 
@@ -319,7 +329,7 @@ public final class cDatabaseUtils {
                 String moduleID = jsonObjectModules.getString("module_id");
                 JSONArray jsonArrayEntity = jsonObjectModules.getJSONArray("entities");
 
-                List<cEntityModel> entityModels = new ArrayList<>();
+                List<cEntityModel> entityPermModels = new ArrayList<>();
 
                 for (int j = 0; j < jsonArrayEntity.length(); j++) {
                     JSONObject jsonObjectEntity = jsonArrayEntity.getJSONObject(j);
@@ -352,11 +362,12 @@ public final class cDatabaseUtils {
                     }
 
                     // create entity model
-                    cEntityModel entityModel = new cEntityModel(entityID, entityperms, unixperms);
-                    entityModels.add(entityModel);
+                    cEntityModel entityPermModel = new cEntityModel(entityID, entityperms,
+                            unixperms);
+                    entityPermModels.add(entityPermModel);
                 }
 
-                entitymodules.put(moduleID, entityModels);
+                entitymodules.put(moduleID, entityPermModels);
             }
 
             /* processing menu items */
@@ -577,8 +588,8 @@ public final class cDatabaseUtils {
      * @param permissionModel permission models
      * @return menu tree
      */
-    public static List<cTreeModel> buildMenuPermissions(Context context,
-                                                        cPermissionModel permissionModel) {
+    public static List<cTreeModel> getMenuPermissions(Context context,
+                                                      cPermissionModel permissionModel) {
         List<cTreeModel> menuTreeModels = new ArrayList<>();
 
         /* menu items */
@@ -648,12 +659,12 @@ public final class cDatabaseUtils {
     /**
      * build module permissions
      *
-     * @param context context
+     * @param context         context
      * @param permissionModel permission model
      * @return tree model
      */
-    public static List<cTreeModel> buildModulePermissions(Context context,
-                                                          cPermissionModel permissionModel) {
+    public static List<cTreeModel> buildRolePermissions(Context context,
+                                                        cPermissionModel permissionModel) {
         List<cTreeModel> moduleTreeModels = new ArrayList<>();
 
         /* permission tree with modules with their entities and menu items */
@@ -688,7 +699,7 @@ public final class cDatabaseUtils {
             /* MENU ITEM OPTIONS */
 
             JSONArray jsonArrayMenuItems = jsonObjectPermTree.getJSONArray("menuitems");
-            for(int i = 0; i < jsonArrayMenuItems.length(); i++) {
+            for (int i = 0; i < jsonArrayMenuItems.length(); i++) {
 
                 JSONObject objectMenuItem = jsonArrayMenuItems.getJSONObject(i);
 
@@ -791,7 +802,7 @@ public final class cDatabaseUtils {
                     /* LEVEL 6: add child entity operation node to the parent entity node */
                     /* entity operation section model */
                     cSectionModel entityOperationSection = new cSectionModel();
-                    entityOperationSection.setName(entityModel.getName()+" "+"OPERATIONS");
+                    entityOperationSection.setName(entityModel.getName() + " " + "OPERATIONS");
 
                     childIndex = childIndex + 1;
                     moduleTreeModels.add(new cTreeModel(childIndex, parentEntityIndex, 6,
@@ -861,7 +872,7 @@ public final class cDatabaseUtils {
 
                     /* unix operation section */
                     cSectionModel unixOperationSection = new cSectionModel();
-                    unixOperationSection.setName(entityModel.getName()+" "+"PERMISSIONS");
+                    unixOperationSection.setName(entityModel.getName() + " " + "PERMISSIONS");
 
                     childIndex = childIndex + 1;
                     moduleTreeModels.add(new cTreeModel(childIndex, parentEntityIndex, 9,
@@ -911,6 +922,170 @@ public final class cDatabaseUtils {
 
         return moduleTreeModels;
     }
+
+    private static List<String> getModuleIDs(cPermissionModel permissionModel) {
+        Map<String, List<cEntityModel>> perm_modules = permissionModel.getEntitymodules();
+        return new ArrayList<>(perm_modules.keySet());
+    }
+
+    private static List<String> getEntityIDs(cPermissionModel permissionModel, String moduleID) {
+        List<String> entity_ids = new ArrayList<>();
+        for (Map.Entry<String, List<cEntityModel>> entry : permissionModel.getEntitymodules().
+                entrySet()) {
+            if (entry.getKey().equals(moduleID)) {
+                for (cEntityModel entityModel : entry.getValue()) {
+                    entity_ids.add(entityModel.getEntityServerID());
+                }
+                break;
+            }
+        }
+        return entity_ids;
+    }
+
+    private static List<String> getOperationIDs(cPermissionModel perm, String moduleID,
+                                                String entityID) {
+        List<String> ops_ids = new ArrayList<>();
+        for (Map.Entry<String, List<cEntityModel>> entryModule : perm.getEntitymodules().
+                entrySet()) {
+            if (entryModule.getKey().equals(moduleID)) {
+                for (cEntityModel entityModel : entryModule.getValue()) {
+                    if (entityModel.getEntityServerID().equals(entityID)) {
+                        for (Map.Entry<String, List<Integer>> entry : entityModel.getEntityperms().
+                                entrySet()) {
+                            ops_ids.add(entry.getKey());
+                        }
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        return ops_ids;
+    }
+
+    private static List<String> getStatusIDs(cPermissionModel perm, String moduleID,
+                                             String entityID, String operationID) {
+        List<String> status_ids = new ArrayList<>();
+        for (Map.Entry<String, List<cEntityModel>> entryModule : perm.getEntitymodules().
+                entrySet()) {
+            if (entryModule.getKey().equals(moduleID)) {
+                for (cEntityModel entityModel : entryModule.getValue()) {
+                    if (entityModel.getEntityServerID().equals(entityID)) {
+                        for (Map.Entry<String, List<Integer>> entry : entityModel.getEntityperms().
+                                entrySet()) {
+                            if (String.valueOf(operationID).equals(entry.getKey())) {
+                                for (Integer status : entry.getValue()) {
+                                    status_ids.add(String.valueOf(status));
+                                }
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        return status_ids;
+    }
+
+    private static List<String> getUnixOperationIDs(cPermissionModel perm, String moduleID,
+                                                    String entityID) {
+        List<String> unix_ops_ids = new ArrayList<>();
+
+        for (Map.Entry<String, List<cEntityModel>> entryModule : perm.getEntitymodules().
+                entrySet()) {
+            if (entryModule.getKey().equals(moduleID)) {
+                for (cEntityModel entityModel : entryModule.getValue()) {
+                    if (entityModel.getEntityServerID().equals(entityID)) {
+                        for (Integer unix_op : entityModel.getUnixperms()) {
+                            unix_ops_ids.add(String.valueOf(unix_op));
+                        }
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        return unix_ops_ids;
+    }
+
+    private static List<String> getMainMenuIDs(cPermissionModel permissionModel) {
+        List<String> menu_ids = new ArrayList<>();
+        for (Map.Entry<String, List<Integer>> entry : permissionModel.getMenuitems().
+                entrySet()) {
+            menu_ids.add(entry.getKey());
+        }
+        return menu_ids;
+    }
+
+    private static List<String> getSubMenuIDs(cPermissionModel permissionModel, String menuID) {
+        List<String> sub_menu_ids = new ArrayList<>();
+        for (Map.Entry<String, List<Integer>> entry : permissionModel.getMenuitems().
+                entrySet()) {
+            if (entry.getKey().equals(menuID)) {
+                for (Integer sub_menu : entry.getValue()) {
+                    sub_menu_ids.add(String.valueOf(sub_menu));
+                }
+                break;
+            }
+        }
+        return sub_menu_ids;
+    }
+
+
+    /**
+     * get a string value from cell of an excel file.
+     *
+     * @param row row of the sheet
+     * @param column column of the sheet
+     * @return return a string value
+     */
+    public static String getCellAsString(Row row, int column) {
+        return row.getCell(column, Row.CREATE_NULL_AS_BLANK).getStringCellValue();
+    }
+
+    /**
+     * get a numeric value from cell of an excel file.
+     *
+     * @param row row of the sheet
+     * @param column column of the sheet
+     * @return return a numeric value
+     */
+    public static int getCellAsNumeric(Row row, int column) {
+        return (int) row.getCell(column, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+    }
+
+    /**
+     * get a date value from cell of an excel file.
+     *
+     * @param row row of the sheet
+     * @param column column of the sheet
+     * @return return a numeric value
+     */
+    public static Date getCellAsDate(Row row, int column) {
+        Cell cell = row.getCell(column);
+        //CellValue cellValue = formulaEvaluator.evaluate(cell);
+        if (HSSFDateUtil.isCellDateFormatted(cell)) {
+            Date date = row.getCell(column, Row.CREATE_NULL_AS_BLANK).getDateCellValue();
+            return date;
+        }
+        return new Date();
+    }
+
+    /**
+     * get an extension of a file
+     * @param context context
+     * @param uri URI
+     * @return extension
+     */
+    public static String getFileExtension(Context context, Uri uri) {
+        ContentResolver cR = context.getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cR.getType(uri));
+    }
+
+}
 
 //    public static List<cTreeModel> buildPermissionTree(Context context, cRoleModel roleModel,
 //                                                       cPermissionModel permissionModel) {
@@ -1124,115 +1299,3 @@ public final class cDatabaseUtils {
 //
 //        return treeModels;
 //    }
-
-    private static List<String> getModuleIDs(cPermissionModel permissionModel) {
-        Map<String, List<cEntityModel>> perm_modules = permissionModel.getEntitymodules();
-        return new ArrayList<>(perm_modules.keySet());
-    }
-
-    private static List<String> getEntityIDs(cPermissionModel permissionModel, String moduleID) {
-        List<String> entity_ids = new ArrayList<>();
-        for (Map.Entry<String, List<cEntityModel>> entry : permissionModel.getEntitymodules().
-                entrySet()) {
-            if (entry.getKey().equals(moduleID)) {
-                for (cEntityModel entityModel : entry.getValue()) {
-                    entity_ids.add(entityModel.getEntityServerID());
-                }
-                break;
-            }
-        }
-        return entity_ids;
-    }
-
-    private static List<String> getOperationIDs(cPermissionModel perm, String moduleID,
-                                                String entityID) {
-        List<String> ops_ids = new ArrayList<>();
-        for (Map.Entry<String, List<cEntityModel>> entryModule : perm.getEntitymodules().
-                entrySet()) {
-            if (entryModule.getKey().equals(moduleID)) {
-                for (cEntityModel entityModel : entryModule.getValue()) {
-                    if (entityModel.getEntityServerID().equals(entityID)) {
-                        for (Map.Entry<String, List<Integer>> entry : entityModel.getEntityperms().
-                                entrySet()) {
-                            ops_ids.add(entry.getKey());
-                        }
-                        break;
-                    }
-                }
-                break;
-            }
-        }
-        return ops_ids;
-    }
-
-    private static List<String> getStatusIDs(cPermissionModel perm, String moduleID,
-                                             String entityID, String operationID) {
-        List<String> status_ids = new ArrayList<>();
-        for (Map.Entry<String, List<cEntityModel>> entryModule : perm.getEntitymodules().
-                entrySet()) {
-            if (entryModule.getKey().equals(moduleID)) {
-                for (cEntityModel entityModel : entryModule.getValue()) {
-                    if (entityModel.getEntityServerID().equals(entityID)) {
-                        for (Map.Entry<String, List<Integer>> entry : entityModel.getEntityperms().
-                                entrySet()) {
-                            if (String.valueOf(operationID).equals(entry.getKey())) {
-                                for (Integer status : entry.getValue()) {
-                                    status_ids.add(String.valueOf(status));
-                                }
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                }
-                break;
-            }
-        }
-        return status_ids;
-    }
-
-    private static List<String> getUnixOperationIDs(cPermissionModel perm, String moduleID,
-                                                    String entityID) {
-        List<String> unix_ops_ids = new ArrayList<>();
-
-        for (Map.Entry<String, List<cEntityModel>> entryModule : perm.getEntitymodules().
-                entrySet()) {
-            if (entryModule.getKey().equals(moduleID)) {
-                for (cEntityModel entityModel : entryModule.getValue()) {
-                    if (entityModel.getEntityServerID().equals(entityID)) {
-                        for (Integer unix_op : entityModel.getUnixperms()) {
-                            unix_ops_ids.add(String.valueOf(unix_op));
-                        }
-                        break;
-                    }
-                }
-                break;
-            }
-        }
-        return unix_ops_ids;
-    }
-
-
-    private static List<String> getMainMenuIDs(cPermissionModel permissionModel) {
-        List<String> menu_ids = new ArrayList<>();
-        for (Map.Entry<String, List<Integer>> entry : permissionModel.getMenuitems().
-                entrySet()) {
-            menu_ids.add(entry.getKey());
-        }
-        return menu_ids;
-    }
-
-    private static List<String> getSubMenuIDs(cPermissionModel permissionModel, String menuID) {
-        List<String> sub_menu_ids = new ArrayList<>();
-        for (Map.Entry<String, List<Integer>> entry : permissionModel.getMenuitems().
-                entrySet()) {
-            if (entry.getKey().equals(menuID)) {
-                for (Integer sub_menu : entry.getValue()) {
-                    sub_menu_ids.add(String.valueOf(sub_menu));
-                }
-                break;
-            }
-        }
-        return sub_menu_ids;
-    }
-}

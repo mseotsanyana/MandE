@@ -1,87 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
+    android:background="@color/cardview_background_colour"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:openDrawer="start">
+    android:fitsSystemWindows="false">
 
-    <!-- housing the toolbar and grid view -->
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <!-- progress bar -->
+    <include
+        layout="@layout/me_progress_bar"
+        app:layout_anchor="@+id/includeProgressBar"
+        app:layout_anchorGravity="center" />
+
+    <!-- include a toolbar layout -->
+    <include layout="@layout/me_toolbar_layout" />
+
+    <!-- impact list layout -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/logFrameRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBarLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
+    <!-- the DraggableFAB layout -->
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/collapsingToolbarLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
-                app:contentScrim="@color/colorPrimary"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:title="@string/logframe_list_title">
+    <com.me.mseotsanyana.bmblibrary.cDraggableFAB
+        android:id="@+id/logFrameFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/FabMoreStyle"
+        android:layout_gravity="center|end" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:adjustViewBounds="true"
-                    android:fitsSystemWindows="true"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/shepherds"
-                    app:layout_collapseMode="parallax"
-                    app:layout_collapseParallaxMultiplier="0.7" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-                <!-- the toolbar layout -->
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?android:attr/actionBarSize"
-                    android:elevation="1dp"
-                    android:minHeight="65dp"
-                    app:popupTheme="@style/PopupTheme"
-                    app:layout_collapseMode="pin" />
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-        </com.google.android.material.appbar.AppBarLayout>
 
-        <!-- logframe list layout -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/logframeRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+<!--<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:id="@+id/drawer_layout"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    tools:openDrawer="start">-->
 
-        <!-- progress bar -->
-        <include
-            android:id="@+id/includeProgressBar"
-            layout="@layout/me_progress_bar"
-            android:visibility="visible" />
+<!--    &lt;!&ndash; housing the toolbar and grid view &ndash;&gt;-->
+<!--    <androidx.coordinatorlayout.widget.CoordinatorLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
 
-        <!-- the DraggableFAB layout -->
-        <com.me.mseotsanyana.bmblibrary.cDraggableFAB
-            android:id="@+id/logframeFAB"
-            style="@style/FabStyle"
-            android:layout_gravity="center|end" />
+<!--        <com.google.android.material.appbar.AppBarLayout-->
+<!--            android:id="@+id/appBarLayout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:theme="@style/AppTheme.AppBarOverlay">-->
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+<!--            <com.google.android.material.appbar.CollapsingToolbarLayout-->
+<!--                android:id="@+id/collapsingToolbarLayout"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:fitsSystemWindows="true"-->
+<!--                app:contentScrim="@color/colorPrimary"-->
+<!--                app:layout_scrollFlags="scroll|exitUntilCollapsed"-->
+<!--                app:title="@string/logframe_list_title">-->
 
-    <!-- housing the drawer header and navigation menu
-         the header is inflated and added to the drawer
-         (i.e. ExpandableListView) at runtime -->
-    <ExpandableListView
-        android:id="@+id/navigationList"
-        android:layout_width="@dimen/nav_drawer_width"
-        android:layout_height="match_parent"
-        android:layout_gravity="left|start"
-        android:background="@drawable/dashboard_drawer_background"
-        android:divider="@color/group_divider_color"
-        android:dividerHeight="@dimen/divider_height"
-        android:groupIndicator="@null" />
+<!--                <ImageView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:adjustViewBounds="true"-->
+<!--                    android:fitsSystemWindows="true"-->
+<!--                    android:scaleType="centerCrop"-->
+<!--                    android:src="@mipmap/shepherds"-->
+<!--                    app:layout_collapseMode="parallax"-->
+<!--                    app:layout_collapseParallaxMultiplier="0.7" />-->
 
-</androidx.drawerlayout.widget.DrawerLayout>
+<!--                &lt;!&ndash; the toolbar layout &ndash;&gt;-->
+<!--                <androidx.appcompat.widget.Toolbar-->
+<!--                    android:id="@+id/toolbar"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="?android:attr/actionBarSize"-->
+<!--                    android:elevation="1dp"-->
+<!--                    android:minHeight="65dp"-->
+<!--                    app:popupTheme="@style/PopupTheme"-->
+<!--                    app:layout_collapseMode="pin" />-->
+<!--            </com.google.android.material.appbar.CollapsingToolbarLayout>-->
+<!--        </com.google.android.material.appbar.AppBarLayout>-->
+
+<!--        &lt;!&ndash; logframe list layout &ndash;&gt;-->
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/logframeRecyclerView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:scrollbars="vertical"-->
+<!--            app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
+
+<!--        &lt;!&ndash; progress bar &ndash;&gt;-->
+<!--        <include-->
+<!--            android:id="@+id/includeProgressBar"-->
+<!--            layout="@layout/me_progress_bar"-->
+<!--            android:visibility="invisible" />-->
+
+<!--        &lt;!&ndash; the DraggableFAB layout &ndash;&gt;-->
+<!--        <com.me.mseotsanyana.bmblibrary.cDraggableFAB-->
+<!--            android:id="@+id/logframeFAB"-->
+<!--            style="@style/FabStyle"-->
+<!--            android:layout_gravity="center|end" />-->
+
+<!--    </androidx.coordinatorlayout.widget.CoordinatorLayout>-->
+
+<!--    &lt;!&ndash; housing the drawer header and navigation menu-->
+<!--         the header is inflated and added to the drawer-->
+<!--         (i.e. ExpandableListView) at runtime &ndash;&gt;-->
+<!--    <ExpandableListView-->
+<!--        android:id="@+id/navigationList"-->
+<!--        android:layout_width="@dimen/nav_drawer_width"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_gravity="left|start"-->
+<!--        android:background="@drawable/dashboard_drawer_background"-->
+<!--        android:divider="@color/group_divider_color"-->
+<!--        android:dividerHeight="@dimen/divider_height"-->
+<!--        android:groupIndicator="@null" />-->
+
+<!--</androidx.drawerlayout.widget.DrawerLayout>-->

@@ -794,7 +794,7 @@ public class cRoleAdapter extends cTreeAdapter implements Filterable {
             this.textViewModifiedDate = (TextView) treeViewHolder.findViewById(R.id.textViewModifiedDate);
             this.textViewSyncedDate = (TextView) treeViewHolder.findViewById(R.id.textViewSyncedDate);
 
-            this.textViewChangeUserIcon = (AppCompatTextView) treeViewHolder.findViewById(R.id.textViewChangeUserIcon);
+            //this.textViewChangeUserIcon = (AppCompatTextView) treeViewHolder.findViewById(R.id.textViewChangeUserIcon);
 
         }
 

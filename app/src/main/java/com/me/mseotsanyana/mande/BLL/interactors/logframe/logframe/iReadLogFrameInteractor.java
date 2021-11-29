@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface iReadLogFrameInteractor extends iInteractor {
     interface Callback {
-        void onLogFramesRetrieved(LinkedHashMap<String, List<String>> menuModelSet, ArrayList<cTreeModel> logFrameModelSet);
+        void onLogFramesRetrieved(List<cTreeModel> treeModels);
         void onLogFramesRetrieveFailed(String msg);
     }
 }

@@ -49,20 +49,20 @@ public class cOutputRepositoryImpl implements iOutputRepository {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, outputModel.getComponentID());
-        cv.put(cSQLDBHelper.KEY_SERVER_ID, outputModel.getServerID());
-        cv.put(cSQLDBHelper.KEY_OWNER_ID, outputModel.getOwnerID());
-        cv.put(cSQLDBHelper.KEY_ORG_ID, outputModel.getOrgID());
-        cv.put(cSQLDBHelper.KEY_GROUP_BITS, outputModel.getGroupBITS());
-        cv.put(cSQLDBHelper.KEY_PERMS_BITS, outputModel.getPermsBITS());
-        cv.put(cSQLDBHelper.KEY_STATUS_BITS, outputModel.getStatusBITS());
-        cv.put(cSQLDBHelper.KEY_NAME, outputModel.getName());
-        cv.put(cSQLDBHelper.KEY_DESCRIPTION, outputModel.getDescription());
-        cv.put(cSQLDBHelper.KEY_START_DATE, sdf.format(outputModel.getStartDate()));
-        cv.put(cSQLDBHelper.KEY_END_DATE, sdf.format(outputModel.getEndDate()));
-        cv.put(cSQLDBHelper.KEY_CREATED_DATE, sdf.format(outputModel.getCreatedDate()));
-        cv.put(cSQLDBHelper.KEY_MODIFIED_DATE, sdf.format(outputModel.getModifiedDate()));
-        cv.put(cSQLDBHelper.KEY_SYNCED_DATE, sdf.format(outputModel.getSyncedDate()));
+//        cv.put(cSQLDBHelper.KEY_ID, outputModel.getComponentID());
+//        cv.put(cSQLDBHelper.KEY_SERVER_ID, outputModel.getServerID());
+//        cv.put(cSQLDBHelper.KEY_OWNER_ID, outputModel.getOwnerID());
+//        cv.put(cSQLDBHelper.KEY_ORG_ID, outputModel.getOrgID());
+//        cv.put(cSQLDBHelper.KEY_GROUP_BITS, outputModel.getGroupBITS());
+//        cv.put(cSQLDBHelper.KEY_PERMS_BITS, outputModel.getPermsBITS());
+//        cv.put(cSQLDBHelper.KEY_STATUS_BITS, outputModel.getStatusBITS());
+//        cv.put(cSQLDBHelper.KEY_NAME, outputModel.getName());
+//        cv.put(cSQLDBHelper.KEY_DESCRIPTION, outputModel.getDescription());
+//        cv.put(cSQLDBHelper.KEY_START_DATE, sdf.format(outputModel.getStartDate()));
+//        cv.put(cSQLDBHelper.KEY_END_DATE, sdf.format(outputModel.getEndDate()));
+//        cv.put(cSQLDBHelper.KEY_CREATED_DATE, sdf.format(outputModel.getCreatedDate()));
+//        cv.put(cSQLDBHelper.KEY_MODIFIED_DATE, sdf.format(outputModel.getModifiedDate()));
+//        cv.put(cSQLDBHelper.KEY_SYNCED_DATE, sdf.format(outputModel.getSyncedDate()));
 
         // insert project details
         try {
@@ -122,72 +122,72 @@ public class cOutputRepositoryImpl implements iOutputRepository {
                 do {
                     cOutputModel output = new cOutputModel();
 
-                    output.setComponentID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    output.getLogFrameModel().setLogFrameID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
-                    output.getOutcomeModel().setComponentID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OUTCOME_FK_ID)));
-                    output.setServerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    output.setOwnerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    output.setOrgID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    output.setGroupBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    output.setPermsBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    output.setStatusBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    output.setName(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    output.setDescription(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    output.setStartDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    output.setEndDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    output.setCreatedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    output.setModifiedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    output.setSyncedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
-
-                    /* objects */
-
-                    /* populate a logframe object */
-                    output.setLogFrameModel(getLogFrameModelByID(
-                            output.getLogFrameModel().getLogFrameID(), userID,
-                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
-                    /* populate an outcome object */
-                    output.setOutcomeModel(getOutcomeModelByID(
-                            output.getOutcomeModel().getComponentID(), userID,
-                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
-
-                    /* sets */
-
-                    /* populate child output components */
-                    output.setChildOutputModelSet(getOutputModelSetByID(output.getComponentID(),
-                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
-                    /* populate activity components */
-                    output.setActivityModelSet(getActivityModelSetByID(output.getComponentID(),
-                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
-                    /* populate question components */
-                    output.setQuestionModelSet(questionRepository.getQuestionModelSetByID(
-                            output.getComponentID(), userID, primaryRoleBITS, secondaryRoleBITS,
-                            statusBITS));
-                    /* populate raid components */
-                    output.setRaidModelSet(getRaidModelSetByID(output.getComponentID(), userID,
-                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
-
-                    /* maps */
-
-                    /* populate child impacts for the outcome */
-                    output.setChildOutcomeModelSet(getChildOutcomeSetByID(
-                            output.getOutcomeModel().getComponentID(),
-                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//                    output.setComponentID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+////                    output.getLogFrameModel().setLogFrameID(
+////                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
+//                    output.getOutcomeModel().setComponentID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OUTCOME_FK_ID)));
+//                    output.setServerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    output.setOwnerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    output.setOrgID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    output.setGroupBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    output.setPermsBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    output.setStatusBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    output.setName(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+//                    output.setDescription(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+//                    output.setStartDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+//                    output.setEndDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+//                    output.setCreatedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    output.setModifiedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    output.setSyncedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//
+//                    /* objects */
+//
+//                    /* populate a logframe object */
+////                    output.setLogFrameModel(getLogFrameModelByID(
+////                            output.getLogFrameModel().getLogFrameID(), userID,
+////                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//                    /* populate an outcome object */
+//                    output.setOutcomeModel(getOutcomeModelByID(
+//                            output.getOutcomeModel().getComponentID(), userID,
+//                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//
+//                    /* sets */
+//
+//                    /* populate child output components */
+//                    output.setChildOutputModelSet(getOutputModelSetByID(output.getComponentID(),
+//                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//                    /* populate activity components */
+//                    output.setActivityModelSet(getActivityModelSetByID(output.getComponentID(),
+//                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//                    /* populate question components */
+//                    output.setQuestionModelSet(questionRepository.getQuestionModelSetByID(
+//                            output.getComponentID(), userID, primaryRoleBITS, secondaryRoleBITS,
+//                            statusBITS));
+//                    /* populate raid components */
+//                    output.setRaidModelSet(getRaidModelSetByID(output.getComponentID(), userID,
+//                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//
+//                    /* maps */
+//
+//                    /* populate child impacts for the outcome */
+//                    output.setChildOutcomeModelSet(getChildOutcomeSetByID(
+//                            output.getOutcomeModel().getComponentID(),
+//                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
 
                     /* add outcome entity */
                     outputModelSet.add(output);
@@ -244,20 +244,20 @@ public class cOutputRepositoryImpl implements iOutputRepository {
 
         try {
             if (cursor.moveToFirst()) {
-                logFrame.setLogFrameID(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                logFrame.setServerID(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                logFrame.setOwnerID(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                logFrame.setOrgID(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                logFrame.setGroupBITS(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                logFrame.setPermsBITS(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                logFrame.setStatusBITS(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                logFrame.setLogFrameID(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+//                logFrame.setServerID(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                logFrame.setOwnerID(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                logFrame.setOrgID(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                logFrame.setGroupBITS(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                logFrame.setPermsBITS(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                logFrame.setStatusBITS(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
                 logFrame.setName(
                         cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
                 logFrame.setDescription(
@@ -270,8 +270,8 @@ public class cOutputRepositoryImpl implements iOutputRepository {
                         cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
                 logFrame.setModifiedDate(Timestamp.valueOf(
                         cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                logFrame.setSyncedDate(Timestamp.valueOf(
-                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                logFrame.setSyncedDate(Timestamp.valueOf(
+//                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
             }
         } catch (Exception e) {
             Log.d(TAG, "Error while trying to read logFrame entity: " + e.getMessage());
@@ -322,36 +322,36 @@ public class cOutputRepositoryImpl implements iOutputRepository {
 
         try {
             if (cursor.moveToFirst()) {
-                outcome.setComponentID(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                outcome.getLogFrameModel().setLogFrameID(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
-                outcome.setServerID(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                outcome.setOwnerID(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                outcome.setOrgID(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                outcome.setGroupBITS(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                outcome.setPermsBITS(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                outcome.setStatusBITS(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                outcome.setName(
-                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                outcome.setDescription(
-                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                outcome.setStartDate(Timestamp.valueOf(
-                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                outcome.setEndDate(Timestamp.valueOf(
-                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                outcome.setCreatedDate(Timestamp.valueOf(
-                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                outcome.setModifiedDate(Timestamp.valueOf(
-                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                outcome.setSyncedDate(Timestamp.valueOf(
-                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                outcome.setComponentID(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+////                outcome.getLogFrameModel().setLogFrameID(
+////                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
+//                outcome.setServerID(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                outcome.setOwnerID(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                outcome.setOrgID(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                outcome.setGroupBITS(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                outcome.setPermsBITS(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                outcome.setStatusBITS(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                outcome.setName(
+//                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+//                outcome.setDescription(
+//                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+//                outcome.setStartDate(Timestamp.valueOf(
+//                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+//                outcome.setEndDate(Timestamp.valueOf(
+//                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+//                outcome.setCreatedDate(Timestamp.valueOf(
+//                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                outcome.setModifiedDate(Timestamp.valueOf(
+//                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                outcome.setSyncedDate(Timestamp.valueOf(
+//                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
             }
         } catch (Exception e) {
             Log.d(TAG, "Error while trying to read an OUTCOME entity: " + e.getMessage());
@@ -405,38 +405,38 @@ public class cOutputRepositoryImpl implements iOutputRepository {
                 do {
                     cOutputModel output = new cOutputModel();
 
-                    output.setComponentID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    output.getLogFrameModel().setLogFrameID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
-                    output.getOutcomeModel().setComponentID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OUTCOME_FK_ID)));
-                    output.setServerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    output.setOwnerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    output.setOrgID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    output.setGroupBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    output.setPermsBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    output.setStatusBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    output.setName(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    output.setDescription(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    output.setStartDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    output.setEndDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    output.setCreatedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    output.setModifiedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    output.setSyncedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                    output.setComponentID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+////                    output.getLogFrameModel().setLogFrameID(
+////                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
+//                    output.getOutcomeModel().setComponentID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OUTCOME_FK_ID)));
+//                    output.setServerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    output.setOwnerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    output.setOrgID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    output.setGroupBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    output.setPermsBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    output.setStatusBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    output.setName(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+//                    output.setDescription(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+//                    output.setStartDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+//                    output.setEndDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+//                    output.setCreatedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    output.setModifiedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    output.setSyncedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     outputModelSet.add(output);
 
@@ -497,38 +497,38 @@ public class cOutputRepositoryImpl implements iOutputRepository {
                 do {
                     cActivityModel activity = new cActivityModel();
 
-                    activity.setComponentID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
-                    activity.getLogFrameModel().setLogFrameID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
-                    activity.getOutputModel().setComponentID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OUTPUT_FK_ID)));
-                    activity.setServerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    activity.setOwnerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    activity.setOrgID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    activity.setGroupBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    activity.setPermsBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    activity.setStatusBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    activity.setName(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    activity.setDescription(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    activity.setStartDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    activity.setEndDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    activity.setCreatedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    activity.setModifiedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    activity.setSyncedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                    activity.setComponentID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
+////                    activity.getLogFrameModel().setLogFrameID(
+////                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
+//                    activity.getOutputModel().setComponentID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OUTPUT_FK_ID)));
+//                    activity.setServerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    activity.setOwnerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    activity.setOrgID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    activity.setGroupBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    activity.setPermsBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    activity.setStatusBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    activity.setName(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+//                    activity.setDescription(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+//                    activity.setStartDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+//                    activity.setEndDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+//                    activity.setCreatedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    activity.setModifiedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    activity.setSyncedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     activityModelSet.add(activity);
 
@@ -603,12 +603,12 @@ public class cOutputRepositoryImpl implements iOutputRepository {
 
                     question.setQuestionID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    question.getLogFrameModel().setLogFrameID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
-                    question.getQuestionTypeModel().setQuestionTypeID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID)));
-                    question.getQuestionGroupingModel().setQuestionGroupingID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_GROUPING_FK_ID)));
+//                    question.getLogFrameModel().setLogFrameID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
+//                    question.getQuestionTypeModel().setQuestionTypeID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID)));
+//                    question.getQuestionGroupingModel().setQuestionGroupingID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_GROUPING_FK_ID)));
                     question.setServerID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
                     question.setOwnerID(
@@ -812,38 +812,38 @@ public class cOutputRepositoryImpl implements iOutputRepository {
                 do {
                     cOutcomeModel outcome = new cOutcomeModel();
 
-                    outcome.setComponentID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    outcome.getImpactModel().setComponentID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_IMPACT_FK_ID)));
-                    outcome.getLogFrameModel().setLogFrameID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
-                    outcome.setServerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    outcome.setOwnerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    outcome.setOrgID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    outcome.setGroupBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    outcome.setPermsBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    outcome.setStatusBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    outcome.setName(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    outcome.setDescription(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    outcome.setStartDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    outcome.setEndDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    outcome.setCreatedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    outcome.setModifiedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    outcome.setSyncedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                    outcome.setComponentID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+//                    outcome.getImpactModel().setComponentID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_IMPACT_FK_ID)));
+////                    outcome.getLogFrameModel().setLogFrameID(
+////                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
+//                    outcome.setServerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    outcome.setOwnerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    outcome.setOrgID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    outcome.setGroupBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    outcome.setPermsBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    outcome.setStatusBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    outcome.setName(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+//                    outcome.setDescription(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+//                    outcome.setStartDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+//                    outcome.setEndDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+//                    outcome.setCreatedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    outcome.setModifiedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    outcome.setSyncedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     outcomeModelSet.add(outcome);
 
@@ -927,20 +927,20 @@ public class cOutputRepositoryImpl implements iOutputRepository {
                 do {
                     cOutputModel outputModel = new cOutputModel();
 
-                    outputModel.setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    outputModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    outputModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    outputModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    outputModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    outputModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    outputModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    outputModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    outputModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    outputModel.setStartDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    outputModel.setEndDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    outputModel.setCreatedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    outputModel.setModifiedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    outputModel.setSyncedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                    outputModel.setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+//                    outputModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    outputModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    outputModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    outputModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    outputModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    outputModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    outputModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+//                    outputModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+//                    outputModel.setStartDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+//                    outputModel.setEndDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+//                    outputModel.setCreatedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    outputModel.setModifiedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    outputModel.setSyncedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     outputModels.add(outputModel);
 
@@ -987,20 +987,20 @@ public class cOutputRepositoryImpl implements iOutputRepository {
 
                     cOutcomeModel outcomeModel = new cOutcomeModel();
 
-                    outcomeModel.setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    outcomeModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    outcomeModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    outcomeModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    outcomeModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    outcomeModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    outcomeModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    outcomeModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    outcomeModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    outcomeModel.setStartDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    outcomeModel.setEndDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    outcomeModel.setCreatedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    outcomeModel.setModifiedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    outcomeModel.setSyncedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                    outcomeModel.setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+//                    outcomeModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    outcomeModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    outcomeModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    outcomeModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    outcomeModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    outcomeModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    outcomeModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+//                    outcomeModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+//                    outcomeModel.setStartDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+//                    outcomeModel.setEndDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+//                    outcomeModel.setCreatedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    outcomeModel.setModifiedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    outcomeModel.setSyncedDate(sdf.parse(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     outcomeModels.add(outcomeModel);
 

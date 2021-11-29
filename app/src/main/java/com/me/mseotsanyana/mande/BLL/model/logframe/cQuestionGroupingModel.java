@@ -1,105 +1,78 @@
 package com.me.mseotsanyana.mande.BLL.model.logframe;
 
 import java.util.Date;
+import java.util.List;
 
 public class cQuestionGroupingModel {
-    private int questionGroupingID;
-    private int serverID;
-    private int ownerID;
-    private int orgID;
-    private int groupBITS;
-    private int permsBITS;
-    private int statusBITS;
-    private int label;
+    private String questionGroupingServerID;
+
+    // common attributes
+    private String userOwnerID;
+    private String organizationOwnerID;
+    private int teamOwnerBIT;
+    private List<Integer> unixpermBITS;
+    private int statusBIT;
+
+    // meta attributes
+    private String label;
     private String name;
     private String description;
     private Date createdDate;
     private Date modifiedDate;
-    private Date syncedDate;
 
-    public cQuestionGroupingModel(int questionGroupingID, int serverID, int ownerID, int orgID,
-                                  int groupBITS, int permsBITS, int statusBITS,
-                                  String name, String description, Date createdDate,
-                                  Date modifiedDate, Date syncedDate) {
-        this.questionGroupingID = questionGroupingID;
-        this.serverID = serverID;
-        this.ownerID = ownerID;
-        this.orgID = orgID;
-        this.groupBITS = groupBITS;
-        this.permsBITS = permsBITS;
-        this.statusBITS = statusBITS;
-        this.name = name;
-        this.description = description;
-        this.createdDate = createdDate;
-        this.modifiedDate = modifiedDate;
-        this.syncedDate = syncedDate;
+    public String getQuestionGroupingServerID() {
+        return questionGroupingServerID;
     }
 
-    public cQuestionGroupingModel() {
-
+    public void setQuestionGroupingServerID(String questionGroupingServerID) {
+        this.questionGroupingServerID = questionGroupingServerID;
     }
 
-    public int getQuestionGroupingID() {
-        return questionGroupingID;
+    public String getUserOwnerID() {
+        return userOwnerID;
     }
 
-    public void setQuestionGroupingID(int questionGroupingID) {
-        this.questionGroupingID = questionGroupingID;
+    public void setUserOwnerID(String userOwnerID) {
+        this.userOwnerID = userOwnerID;
     }
 
-    public int getServerID() {
-        return serverID;
+    public String getOrganizationOwnerID() {
+        return organizationOwnerID;
     }
 
-    public void setServerID(int serverID) {
-        this.serverID = serverID;
+    public void setOrganizationOwnerID(String organizationOwnerID) {
+        this.organizationOwnerID = organizationOwnerID;
     }
 
-    public int getOwnerID() {
-        return ownerID;
+    public int getTeamOwnerBIT() {
+        return teamOwnerBIT;
     }
 
-    public void setOwnerID(int ownerID) {
-        this.ownerID = ownerID;
+    public void setTeamOwnerBIT(int teamOwnerBIT) {
+        this.teamOwnerBIT = teamOwnerBIT;
     }
 
-    public int getOrgID() {
-        return orgID;
+    public List<Integer> getUnixpermBITS() {
+        return unixpermBITS;
     }
 
-    public void setOrgID(int orgID) {
-        this.orgID = orgID;
+    public void setUnixpermBITS(List<Integer> unixpermBITS) {
+        this.unixpermBITS = unixpermBITS;
     }
 
-    public int getGroupBITS() {
-        return groupBITS;
+    public int getStatusBIT() {
+        return statusBIT;
     }
 
-    public void setGroupBITS(int groupBITS) {
-        this.groupBITS = groupBITS;
+    public void setStatusBIT(int statusBIT) {
+        this.statusBIT = statusBIT;
     }
 
-    public int getPermsBITS() {
-        return permsBITS;
-    }
-
-    public void setPermsBITS(int permsBITS) {
-        this.permsBITS = permsBITS;
-    }
-
-    public int getStatusBITS() {
-        return statusBITS;
-    }
-
-    public void setStatusBITS(int statusBITS) {
-        this.statusBITS = statusBITS;
-    }
-
-    public int getLabel() {
+    public String getLabel() {
         return label;
     }
 
-    public void setLabel(int label) {
+    public void setLabel(String label) {
         this.label = label;
     }
 
@@ -133,13 +106,5 @@ public class cQuestionGroupingModel {
 
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
-    }
-
-    public Date getSyncedDate() {
-        return syncedDate;
-    }
-
-    public void setSyncedDate(Date syncedDate) {
-        this.syncedDate = syncedDate;
     }
 }

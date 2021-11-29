@@ -32,21 +32,32 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class cLogFrameRepositoryImpl implements iLogFrameRepository {
-    private static SimpleDateFormat sdf = cConstant.TIMESTAMP_FORMAT_DATE;
-    private static String TAG = cLogFrameRepositoryImpl.class.getSimpleName();
+    private static final SimpleDateFormat sdf = cConstant.TIMESTAMP_FORMAT_DATE;
+    private static final String TAG = cLogFrameRepositoryImpl.class.getSimpleName();
 
     /* an object of the database helper */
-    private cSQLDBHelper dbHelper;
-    private Context context;
+    private final cSQLDBHelper dbHelper;
+    private final Context context;
 
     //private cOrganizationRepositoryImpl organizationRepository;
 
     public cLogFrameRepositoryImpl(Context context) {
         this.context = context;
         dbHelper = new cSQLDBHelper(context);
+    }
+
+    @Override
+    public void upLoadLogFrameFromExcel(String organizationServerID, String userServerID, int primaryTeamBIT, int statusBIT, String filePath, iUploadLogFrameCallback callback) {
+
+    }
+
+    @Override
+    public void readLogFrames(String organizationServerID, String userServerID, int primaryTeamBIT, List<Integer> secondaryTeamBITS, List<Integer> statusBITS, iReadLogFramesCallback callback) {
+
     }
 
     /* ######################################## CREATE ACTIONS ########################################*/
@@ -67,7 +78,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
 
             cLogFrameModel logFrameModel = new cLogFrameModel();
 
-            logFrameModel.setLogFrameID((int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            //logFrameModel.setLogFrameID((int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             logFrameModel.setName(cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
             logFrameModel.setDescription(cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
@@ -82,10 +93,10 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                 }
 
                 parentID = (int) rowLogFrameTree.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (logFrameModel.getLogFrameID() == parentID) {
-                    childID = (int) rowLogFrameTree.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    subLogFrameDomainSet.add(childID);
-                }
+//                if (logFrameModel.getLogFrameID() == parentID) {
+//                    childID = (int) rowLogFrameTree.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    subLogFrameDomainSet.add(childID);
+//                }
             }
 
             //Gson gson = new Gson();
@@ -109,7 +120,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, logFrameModel.getLogFrameID());
+        //cv.put(cSQLDBHelper.KEY_ID, logFrameModel.getLogFrameID());
         cv.put(cSQLDBHelper.KEY_NAME, logFrameModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, logFrameModel.getDescription());
 
@@ -121,8 +132,8 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
 
             // add subLogFrame
             for (int childID : subLogFrameSet) {
-                if (!addLogFrameTree(logFrameModel.getLogFrameID(), childID))
-                    return false;
+//                if (!addLogFrameTree(logFrameModel.getLogFrameID(), childID))
+//                    return false;
             }
         } catch (Exception e) {
             Log.d(TAG, "Exception in importing LOGFRAME from Excel: " + e.getMessage());
@@ -134,7 +145,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
         return true;
     }
 
-    public boolean addLogFrameTree(long parentID, long childID) {
+    public boolean addLogFrameTree(String parentID, String childID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -158,7 +169,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, logFrameModel.getOrganizationID());
+        //cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, logFrameModel.getOrganizationID());
         cv.put(cSQLDBHelper.KEY_NAME, logFrameModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, logFrameModel.getDescription());
         cv.put(cSQLDBHelper.KEY_START_DATE, sdf.format(logFrameModel.getStartDate()));
@@ -180,7 +191,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
     }
 
     @Override
-    public boolean createSubLogFrameModel(long logParentFrameID, cLogFrameModel logSubFrameModel) {
+    public boolean createSubLogFrameModel(String logParentFrameID, cLogFrameModel logSubFrameModel) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -188,7 +199,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, logSubFrameModel.getOrganizationID());
+        //cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, logSubFrameModel.getOrganizationID());
         cv.put(cSQLDBHelper.KEY_NAME, logSubFrameModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, logSubFrameModel.getDescription());
         cv.put(cSQLDBHelper.KEY_START_DATE, sdf.format(logSubFrameModel.getStartDate()));
@@ -202,7 +213,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
             }
 
             // add subLogFrame
-            if (!addLogFrameTree(logParentFrameID, childLOgFrameID)) {
+            if (!addLogFrameTree(logParentFrameID, String.valueOf(childLOgFrameID))) {
                 return false;
             }
         } catch (Exception e) {
@@ -264,22 +275,22 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
         try {
             if (cursor.moveToFirst()) {
 
-                logFrameModel.setLogFrameID(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                logFrameModel.setOrganizationID(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
-                logFrameModel.setServerID(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                logFrameModel.setOwnerID(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                logFrameModel.setOrgID(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                logFrameModel.setGroupBITS(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                logFrameModel.setPermsBITS(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                logFrameModel.setStatusBITS(
-                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                logFrameModel.setLogFrameID(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+//                logFrameModel.setOrganizationID(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
+//                logFrameModel.setServerID(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                logFrameModel.setOwnerID(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                logFrameModel.setOrgID(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                logFrameModel.setGroupBITS(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                logFrameModel.setPermsBITS(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                logFrameModel.setStatusBITS(
+//                        cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
                 logFrameModel.setName(
                         cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
                 logFrameModel.setDescription(
@@ -292,8 +303,8 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                         cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
                 logFrameModel.setModifiedDate(Timestamp.valueOf(
                         cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                logFrameModel.setSyncedDate(Timestamp.valueOf(
-                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                logFrameModel.setSyncedDate(Timestamp.valueOf(
+//                        cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
             }
         } catch (Exception e) {
@@ -349,24 +360,24 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                 do {
                     cLogFrameModel logFrameModel = new cLogFrameModel();
 
-                    logFrameModel.setLogFrameID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    logFrameModel.setLogFrameParentID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
-                    logFrameModel.setOrganizationID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
-                    logFrameModel.setServerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    logFrameModel.setOwnerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    logFrameModel.setOrgID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    logFrameModel.setGroupBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    logFrameModel.setPermsBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    logFrameModel.setStatusBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    logFrameModel.setLogFrameID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+//                    logFrameModel.setLogFrameParentID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
+//                    logFrameModel.setOrganizationID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
+//                    logFrameModel.setServerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    logFrameModel.setOwnerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    logFrameModel.setOrgID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    logFrameModel.setGroupBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    logFrameModel.setPermsBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    logFrameModel.setStatusBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
                     logFrameModel.setName(
                             cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
                     logFrameModel.setDescription(
@@ -379,19 +390,19 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                             cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
                     logFrameModel.setModifiedDate(Timestamp.valueOf(
                             cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    logFrameModel.setSyncedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
-
-                    long logFrameID = logFrameModel.getLogFrameID();
-                    long organizationID = logFrameModel.getOrganizationID();
+//                    logFrameModel.setSyncedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//
+//                    long logFrameID = logFrameModel.getLogFrameID();
+//                    long organizationID = logFrameModel.getOrganizationID();
                     cOrganizationRepositoryImpl organizationRepository =
                             new cOrganizationRepositoryImpl(context);
-                    logFrameModel.setOrganizationModel(organizationRepository.getOrganizationByID(
-                            organizationID));
-
-                    /* populate child log-frames */
-                    logFrameModel.setLogFrameModelSet(getLogFrameModelSetByID(logFrameID, userID,
-                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//                    logFrameModel.setOrganizationModel(organizationRepository.getOrganizationByID(
+//                            organizationID));
+//
+//                    /* populate child log-frames */
+//                    logFrameModel.setLogFrameModelSet(getLogFrameModelSetByID(logFrameID, userID,
+//                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
 
                     /* populate impact component
                     logFrameModel.setImpactModelSet(getImpactModelSetByID(logFrameID, userID,
@@ -496,22 +507,22 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                 do {
                     cLogFrameModel logFrameModel = new cLogFrameModel();
 
-                    logFrameModel.setLogFrameID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    logFrameModel.setOrganizationID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
-                    logFrameModel.setServerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    logFrameModel.setOwnerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    logFrameModel.setOrgID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    logFrameModel.setGroupBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    logFrameModel.setPermsBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    logFrameModel.setStatusBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    logFrameModel.setLogFrameID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+//                    logFrameModel.setOrganizationID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORGANIZATION_FK_ID)));
+//                    logFrameModel.setServerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    logFrameModel.setOwnerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    logFrameModel.setOrgID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    logFrameModel.setGroupBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    logFrameModel.setPermsBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    logFrameModel.setStatusBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
                     logFrameModel.setName(
                             cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
                     logFrameModel.setDescription(
@@ -524,15 +535,15 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                             cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
                     logFrameModel.setModifiedDate(Timestamp.valueOf(
                             cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    logFrameModel.setSyncedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
-
-                    /* organization object */
-                    long organizationID = logFrameModel.getOrganizationID();
+//                    logFrameModel.setSyncedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//
+//                    /* organization object */
+//                    long organizationID = logFrameModel.getOrganizationID();
                     cOrganizationRepositoryImpl organizationRepository =
                             new cOrganizationRepositoryImpl(context);
-                    logFrameModel.setOrganizationModel(organizationRepository.getOrganizationByID(
-                            organizationID));
+//                    logFrameModel.setOrganizationModel(organizationRepository.getOrganizationByID(
+//                            organizationID));
 
                     logFrameModelSet.add(logFrameModel);
 
@@ -603,38 +614,38 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                 do {
                     cImpactModel impactModel = new cImpactModel();
 
-                    impactModel.setComponentID
-                            (cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
-                    impactModel.setParentID
-                            (cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
-                    impactModel.getLogFrameModel().setLogFrameID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
-                    impactModel.setServerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    impactModel.setOwnerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    impactModel.setOrgID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    impactModel.setGroupBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    impactModel.setPermsBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    impactModel.setStatusBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    impactModel.setName(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    impactModel.setDescription(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    impactModel.setStartDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    impactModel.setEndDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    impactModel.setCreatedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    impactModel.setModifiedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    impactModel.setSyncedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                    impactModel.setComponentID
+//                            (cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
+//                    impactModel.setParentID
+//                            (cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
+////                    impactModel.getLogFrameModel().setLogFrameID(
+////                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
+//                    impactModel.setServerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    impactModel.setOwnerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    impactModel.setOrgID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    impactModel.setGroupBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    impactModel.setPermsBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    impactModel.setStatusBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    impactModel.setName(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+//                    impactModel.setDescription(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+//                    impactModel.setStartDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+//                    impactModel.setEndDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+//                    impactModel.setCreatedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    impactModel.setModifiedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    impactModel.setSyncedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     impactModelSet.add(impactModel);
 
@@ -705,28 +716,28 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                 do {
                     cOutcomeModel outcomeModel = new cOutcomeModel();
 
-                    outcomeModel.setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
-                    outcomeModel.setParentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
-                    outcomeModel.getLogFrameModel().setLogFrameID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
-                    outcomeModel.getImpactModel().setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_IMPACT_FK_ID)));
-                    outcomeModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    outcomeModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    outcomeModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    outcomeModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    outcomeModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    outcomeModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    outcomeModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    outcomeModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    outcomeModel.setStartDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    outcomeModel.setEndDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    outcomeModel.setCreatedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    outcomeModel.setModifiedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    outcomeModel.setSyncedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                    outcomeModel.setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
+//                    outcomeModel.setParentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
+////                    outcomeModel.getLogFrameModel().setLogFrameID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
+//                    outcomeModel.getImpactModel().setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_IMPACT_FK_ID)));
+//                    outcomeModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    outcomeModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    outcomeModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    outcomeModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    outcomeModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    outcomeModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    outcomeModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+//                    outcomeModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+//                    outcomeModel.setStartDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+//                    outcomeModel.setEndDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+//                    outcomeModel.setCreatedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    outcomeModel.setModifiedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    outcomeModel.setSyncedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     outcomeModelSet.add(outcomeModel);
 
@@ -796,28 +807,28 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                 do {
                     cOutputModel outputModel = new cOutputModel();
 
-                    outputModel.setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    outputModel.setParentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
-                    outputModel.getLogFrameModel().setLogFrameID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
-                    outputModel.getOutcomeModel().setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OUTCOME_FK_ID)));
-                    outputModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    outputModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    outputModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    outputModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    outputModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    outputModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    outputModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    outputModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    outputModel.setStartDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    outputModel.setEndDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    outputModel.setCreatedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    outputModel.setModifiedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    outputModel.setSyncedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                    outputModel.setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+//                    outputModel.setParentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
+////                    outputModel.getLogFrameModel().setLogFrameID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
+//                    outputModel.getOutcomeModel().setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OUTCOME_FK_ID)));
+//                    outputModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    outputModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    outputModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    outputModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    outputModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    outputModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    outputModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+//                    outputModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+//                    outputModel.setStartDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+//                    outputModel.setEndDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+//                    outputModel.setCreatedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    outputModel.setModifiedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    outputModel.setSyncedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     outputModelSet.add(outputModel);
 
@@ -887,28 +898,28 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                 do {
                     cActivityModel activityModel = new cActivityModel();
 
-                    activityModel.setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
-                    activityModel.setParentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
-                    activityModel.getLogFrameModel().setLogFrameID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
-                    activityModel.getOutputModel().setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
-                    activityModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    activityModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    activityModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    activityModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    activityModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    activityModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    activityModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    activityModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    activityModel.setStartDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    activityModel.setEndDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    activityModel.setCreatedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    activityModel.setModifiedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    activityModel.setSyncedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                    activityModel.setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
+//                    activityModel.setParentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PARENT_FK_ID)));
+////                    activityModel.getLogFrameModel().setLogFrameID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
+//                    activityModel.getOutputModel().setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
+//                    activityModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    activityModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    activityModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    activityModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    activityModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    activityModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    activityModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+//                    activityModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+//                    activityModel.setStartDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+//                    activityModel.setEndDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+//                    activityModel.setCreatedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    activityModel.setModifiedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    activityModel.setSyncedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     activityModelSet.add(activityModel);
 
@@ -979,27 +990,27 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                 do {
                     cInputModel inputModel = new cInputModel();
 
-                    inputModel.setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
-                    inputModel.getActivityModel().setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
-                    inputModel.getLogFrameModel().setLogFrameID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
-                    inputModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    inputModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    inputModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    inputModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    inputModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    inputModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    inputModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    inputModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    inputModel.setStartDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    inputModel.setEndDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    inputModel.setCreatedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    inputModel.setModifiedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    inputModel.setSyncedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                    inputModel.setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
+//                    inputModel.getActivityModel().setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
+////                    inputModel.getLogFrameModel().setLogFrameID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
+//                    inputModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    inputModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    inputModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    inputModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    inputModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    inputModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    inputModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+//                    inputModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+//                    inputModel.setStartDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+//                    inputModel.setEndDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+//                    inputModel.setCreatedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    inputModel.setModifiedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    inputModel.setSyncedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     inputModelSet.add(inputModel);
 
@@ -1036,14 +1047,14 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                 do {
                     cLogFrameModel logFrameModel = new cLogFrameModel();
 
-                    logFrameModel.setLogFrameID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    logFrameModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    logFrameModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    logFrameModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    logFrameModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    logFrameModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    logFrameModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    logFrameModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+//                    logFrameModel.setLogFrameID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+//                    logFrameModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    logFrameModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    logFrameModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    logFrameModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    logFrameModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    logFrameModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    logFrameModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
                     logFrameModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
                     logFrameModel.setStartDate(
                             Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
@@ -1093,14 +1104,14 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
             if (cursor.moveToFirst()) {
                 do {
                     cLogFrameModel logFrameModel = new cLogFrameModel();
-
-                    logFrameModel.setLogFrameID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    logFrameModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    logFrameModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    logFrameModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    logFrameModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    logFrameModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    logFrameModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//
+//                    logFrameModel.setLogFrameID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+//                    logFrameModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    logFrameModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    logFrameModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    logFrameModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    logFrameModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    logFrameModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
                     logFrameModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
                     logFrameModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
                     logFrameModel.setStartDate(
@@ -1150,23 +1161,23 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                 do {
                     cImpactModel impactModel = new cImpactModel();
 
-                    impactModel.setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
-                    impactModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    impactModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    impactModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    impactModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    impactModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    impactModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    impactModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    impactModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    impactModel.setStartDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    impactModel.setEndDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    impactModel.setCreatedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    impactModel.setModifiedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    impactModel.setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
+//                    impactModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    impactModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    impactModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    impactModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    impactModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    impactModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    impactModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+//                    impactModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+//                    impactModel.setStartDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+//                    impactModel.setEndDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+//                    impactModel.setCreatedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    impactModel.setModifiedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
 
                     impactModels.add(impactModel);
 
@@ -1206,24 +1217,24 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                 do {
                     cOutcomeModel outcomeModel = new cOutcomeModel();
 
-                    outcomeModel.setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
-                    outcomeModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    outcomeModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    outcomeModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    outcomeModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    outcomeModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    outcomeModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    outcomeModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    outcomeModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-
-                    outcomeModel.setStartDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    outcomeModel.setEndDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    outcomeModel.setCreatedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    outcomeModel.setModifiedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    outcomeModel.setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
+//                    outcomeModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    outcomeModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    outcomeModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    outcomeModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    outcomeModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    outcomeModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    outcomeModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+//                    outcomeModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+//
+//                    outcomeModel.setStartDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+//                    outcomeModel.setEndDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+//                    outcomeModel.setCreatedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    outcomeModel.setModifiedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
 
                     outcomeModels.add(outcomeModel);
 
@@ -1263,23 +1274,23 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                 do {
                     cOutputModel outputModel = new cOutputModel();
 
-                    outputModel.setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
-                    outputModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    outputModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    outputModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    outputModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    outputModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    outputModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    outputModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    outputModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    outputModel.setStartDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    outputModel.setEndDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    outputModel.setCreatedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    outputModel.setModifiedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    outputModel.setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
+//                    outputModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    outputModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    outputModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    outputModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    outputModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    outputModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    outputModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+//                    outputModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+//                    outputModel.setStartDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+//                    outputModel.setEndDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+//                    outputModel.setCreatedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    outputModel.setModifiedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
 
                     outputModels.add(outputModel);
 
@@ -1319,25 +1330,25 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                 do {
                     cActivityModel activityModel = new cActivityModel();
 
-                    activityModel.setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
-                    activityModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    activityModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    activityModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    activityModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    activityModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    activityModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    activityModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    activityModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    activityModel.setStartDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    activityModel.setEndDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    activityModel.setCreatedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    activityModel.setModifiedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    activityModel.setSyncedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                    activityModel.setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
+//                    activityModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    activityModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    activityModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    activityModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    activityModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    activityModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    activityModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+//                    activityModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+//                    activityModel.setStartDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+//                    activityModel.setEndDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+//                    activityModel.setCreatedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    activityModel.setModifiedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    activityModel.setSyncedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     activityModels.add(activityModel);
 
@@ -1377,25 +1388,25 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
                 do {
                     cInputModel inputModel = new cInputModel();
 
-                    inputModel.setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
-                    inputModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    inputModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    inputModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    inputModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    inputModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    inputModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    //inputModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
-                    //inputModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
-                    inputModel.setStartDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    inputModel.setEndDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    inputModel.setCreatedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    inputModel.setModifiedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    inputModel.setSyncedDate(
-                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                    inputModel.setComponentID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
+//                    inputModel.setServerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    inputModel.setOwnerID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    inputModel.setOrgID(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    inputModel.setGroupBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    inputModel.setPermsBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    inputModel.setStatusBITS(cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    //inputModel.setName(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_NAME)));
+//                    //inputModel.setDescription(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_DESCRIPTION)));
+//                    inputModel.setStartDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+//                    inputModel.setEndDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+//                    inputModel.setCreatedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    inputModel.setModifiedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    inputModel.setSyncedDate(
+//                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     inputModels.add(inputModel);
 
@@ -1602,22 +1613,22 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
         Timestamp timestamp = new Timestamp(date.getTime());
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, logFrameModel.getLogFrameID());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, logFrameModel.getOrganizationID());
+//        cv.put(cSQLDBHelper.KEY_ID, logFrameModel.getLogFrameID());
+//        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, logFrameModel.getOrganizationID());
         cv.put(cSQLDBHelper.KEY_NAME, logFrameModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, logFrameModel.getDescription());
         cv.put(cSQLDBHelper.KEY_START_DATE, sdf.format(logFrameModel.getStartDate()));
         cv.put(cSQLDBHelper.KEY_END_DATE, sdf.format(logFrameModel.getEndDate()));
 
         // update a specific record
-        long result = db.update(cSQLDBHelper.TABLE_tblLOGFRAME, cv,
-                cSQLDBHelper.KEY_ID + "= ?",
-                new String[]{String.valueOf(logFrameModel.getLogFrameID())});
+//        long result = db.update(cSQLDBHelper.TABLE_tblLOGFRAME, cv,
+//                cSQLDBHelper.KEY_ID + "= ?",
+//                new String[]{String.valueOf(logFrameModel.getLogFrameID())});
 
         // close the database connection
         db.close();
 
-        return result > -1;
+        return true;//result > -1;
     }
 
     /* ######################################## DELETE ACTIONS ########################################*/
@@ -1625,7 +1636,7 @@ public class cLogFrameRepositoryImpl implements iLogFrameRepository {
     /*
      * the function delate a specific logframe
      */
-    public boolean deleteLogFrame(long logFrameID) {
+    public boolean deleteLogFrame(String logFrameID) {
         // open the connection to the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 

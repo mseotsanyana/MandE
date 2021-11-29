@@ -117,12 +117,12 @@ public class cQuestionRepositoryImpl implements iQuestionRepository {
                     assert question != null;
                     question.setQuestionID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    question.getLogFrameModel().setLogFrameID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
-                    question.getQuestionTypeModel().setQuestionTypeID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID)));
-                    question.getQuestionGroupingModel().setQuestionGroupingID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_GROUPING_FK_ID)));
+//                    question.getLogFrameModel().setLogFrameID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
+//                    question.getQuestionTypeModel().setQuestionTypeID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID)));
+//                    question.getQuestionGroupingModel().setQuestionGroupingID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_GROUPING_FK_ID)));
                     question.setServerID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
                     question.setOwnerID(
@@ -156,25 +156,25 @@ public class cQuestionRepositoryImpl implements iQuestionRepository {
                     /* logframe object */
                     cLogFrameRepositoryImpl logFrameRepository;
                     logFrameRepository = new cLogFrameRepositoryImpl(context);
-                    question.setLogFrameModel(logFrameRepository.getLogFrameModelByID(
-                            question.getLogFrameModel().getLogFrameID(), userID, primaryRoleBITS,
-                            secondaryRoleBITS, statusBITS));
+//                    question.setLogFrameModel(logFrameRepository.getLogFrameModelByID(
+//                            question.getLogFrameModel().getLogFrameID(), userID, primaryRoleBITS,
+//                            secondaryRoleBITS, statusBITS));
 
                     /* question grouping object */
                     cQuestionGroupingRepositoryImpl questionGroupingRepository;
                     questionGroupingRepository = new cQuestionGroupingRepositoryImpl(context);
-                    question.setQuestionGroupingModel(
-                            questionGroupingRepository.getQuestionGroupingModelByID(
-                                    question.getQuestionGroupingModel().getQuestionGroupingID(),
-                                    userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//                    question.setQuestionGroupingModel(
+//                            questionGroupingRepository.getQuestionGroupingModelByID(
+//                                    question.getQuestionGroupingModel().getQuestionGroupingID(),
+//                                    userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
 
                     /* question type object */
                     cQuestionTypeRepositoryImpl questionTypeRepository;
                     questionTypeRepository = new cQuestionTypeRepositoryImpl(context);
-                    question.setQuestionTypeModel(
-                            questionTypeRepository.getQuestionTypeModelByID(
-                                    question.getQuestionTypeModel().getQuestionTypeID(), userID,
-                                    primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//                    question.setQuestionTypeModel(
+//                            questionTypeRepository.getQuestionTypeModelByID(
+//                                    question.getQuestionTypeModel().getQuestionTypeID(), userID,
+//                                    primaryRoleBITS, secondaryRoleBITS, statusBITS));
 
                     questionModelSet.add(question);
 
@@ -252,42 +252,42 @@ public class cQuestionRepositoryImpl implements iQuestionRepository {
                 do {
                     cQuestionModel question = new cQuestionModel();
 
-                    question.setQuestionID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    question.getLogFrameModel().setLogFrameID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
-                    question.getComponentModel().setComponentID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
-                    question.getQuestionGroupingModel().setQuestionGroupingID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_GROUPING_FK_ID)));
-                    question.getQuestionTypeModel().setQuestionTypeID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID)));
-                    question.setServerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    question.setOwnerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    question.setOrgID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    question.setGroupBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    question.setPermsBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    question.setStatusBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    question.setLabel(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LABEL)));
-                    question.setQuestion(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION)));
-                    question.setStartDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    question.setEndDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    question.setCreatedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    question.setModifiedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    question.setSyncedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//                    question.setQuestionID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
+////                    question.getLogFrameModel().setLogFrameID(
+////                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
+//                    question.getComponentModel().setComponentID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
+//                    question.getQuestionGroupingModel().setQuestionGroupingID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_GROUPING_FK_ID)));
+//                    question.getQuestionTypeModel().setQuestionTypeID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID)));
+//                    question.setServerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    question.setOwnerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    question.setOrgID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    question.setGroupBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    question.setPermsBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    question.setStatusBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    question.setLabel(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LABEL)));
+//                    question.setQuestion(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION)));
+//                    question.setStartDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+//                    question.setEndDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+//                    question.setCreatedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    question.setModifiedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    question.setSyncedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
 
                     /* the criteria of the question */
 

@@ -7,6 +7,7 @@ import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.activity.iReadActivityInteractor;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel;
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iActivityRepository;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cActivityModel;
 import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
@@ -22,7 +23,7 @@ public class cReadActivityInteractorImpl extends cAbstractInteractor
 
     private Callback callback;
     private iActivityRepository activityRepository;
-    private long logFrameID, userID;
+    private cLogFrameModel logFrameModel; String userID;
     private int primaryRoleBITS, secondaryRoleBITS, operationBITS, statusBITS;
 
     private String logFrameName;
@@ -30,7 +31,7 @@ public class cReadActivityInteractorImpl extends cAbstractInteractor
     public cReadActivityInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,
                                        iSharedPreferenceRepository sessionManagerRepository,
                                        iActivityRepository activityRepository,
-                                       Callback callback, long logFrameID) {
+                                       Callback callback, cLogFrameModel logFrameModel) {
         super(threadExecutor, mainThread);
 
         if (sessionManagerRepository == null || activityRepository == null || callback == null) {
@@ -40,7 +41,7 @@ public class cReadActivityInteractorImpl extends cAbstractInteractor
         this.activityRepository = activityRepository;
         this.callback = callback;
 
-        this.logFrameID = logFrameID;
+        this.logFrameModel = logFrameModel;
 
 //        /* common attributes */
 //        this.userID = sessionManagerRepository.loadUserID();
@@ -80,24 +81,24 @@ public class cReadActivityInteractorImpl extends cAbstractInteractor
 
         ArrayList<cActivityModel> activityModels = new ArrayList<>(activityModelSet);
         if (activityModelSet.size() > 0) {
-            logFrameName = activityModels.get(0).getLogFrameModel().getName();
+//            logFrameName = activityModels.get(0).getLogFrameModel().getName();
         }
 
         for (int i = 0; i < activityModels.size(); i++) {
-            /* activity model */
-            cActivityModel activityModel = activityModels.get(i);
-            activityTreeModels.add(new cTreeModel(parentIndex, -1, 0, activityModel));
-
-            /* set of activities children under the activity */
-            childIndex = parentIndex;
-            ArrayList<cActivityModel> activities = new ArrayList<>(activityModel.getChildActivityModelSet());
-            for (int j = 0; j < activities.size(); j++) {
-                childIndex = childIndex + 1;
-                activityTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, activities));
-            }
-
-            /* next parent index */
-            parentIndex = childIndex + 1;
+//            /* activity model */
+//            cActivityModel activityModel = activityModels.get(i);
+//            activityTreeModels.add(new cTreeModel(parentIndex, -1, 0, activityModel));
+//
+//            /* set of activities children under the activity */
+//            childIndex = parentIndex;
+//            ArrayList<cActivityModel> activities = new ArrayList<>(activityModel.getChildActivityModelSet());
+//            for (int j = 0; j < activities.size(); j++) {
+//                childIndex = childIndex + 1;
+//                activityTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, activities));
+//            }
+//
+//            /* next parent index */
+//            parentIndex = childIndex + 1;
 
 //            /* set of output children under the sub-logframe of the activity logframe */
 //            ArrayList<cOutputModel> outputs = new ArrayList<>(activityModel.getChildOutputModelSet());
@@ -136,12 +137,12 @@ public class cReadActivityInteractorImpl extends cAbstractInteractor
         if ((operationBITS & cBitwise.READ) != 0) {
 
             /* retrieve a set logFrames from the database */
-            Log.d(TAG, "LOGFRAME ID = " + logFrameID + "; USER ID = " + userID +
+            Log.d(TAG, "LOGFRAME ID = " + logFrameModel.getLogFrameServerID() + "; USER ID = " + userID +
                     "; PRIMARY = " + primaryRoleBITS + "; SECONDARY = " + secondaryRoleBITS +
                     "; STATUS = " + statusBITS);
 
-            Set<cActivityModel> activityModelSet = activityRepository.getActivityModelSet(logFrameID,
-                    userID, primaryRoleBITS, secondaryRoleBITS, statusBITS);
+            Set<cActivityModel> activityModelSet = null;//activityRepository.getActivityModelSet(logFrameID,
+            // userID, primaryRoleBITS, secondaryRoleBITS, statusBITS);
 
             if (activityModelSet != null) {
                 Gson gson = new Gson();

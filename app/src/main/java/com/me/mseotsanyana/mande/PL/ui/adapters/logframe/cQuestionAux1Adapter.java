@@ -119,7 +119,7 @@ public class cQuestionAux1Adapter extends cTreeAdapter {
                             parentBackgroundColor));
 
                     HPH.textViewParentCaption.setText(R.string.activity_caption);
-                    HPH.textViewParent.setText(humanModel.getActivityModel().getName());
+//                    HPH.textViewParent.setText(humanModel.getActivityModel().getName());
                     HPH.textViewNameCaption.setText(R.string.input_caption);
                     //--HPH.textViewName.setText(humanModel.getResourceModel().getName());
                     HPH.textViewNumberCaption.setText(R.string.input_number_caption);

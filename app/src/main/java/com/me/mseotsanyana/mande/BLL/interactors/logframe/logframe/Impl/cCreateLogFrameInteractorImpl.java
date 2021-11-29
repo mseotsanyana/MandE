@@ -41,7 +41,7 @@ public class cCreateLogFrameInteractorImpl extends cAbstractInteractor
 //        this.logFrameModel.setStatusBITS(sessionManagerRepository.loadDefaultStatusBITS());
         this.logFrameModel.setCreatedDate(new Date());
         this.logFrameModel.setModifiedDate(new Date());
-        this.logFrameModel.setSyncedDate(new Date());
+        //this.logFrameModel.setSyncedDate(new Date());
     }
 
     /* */

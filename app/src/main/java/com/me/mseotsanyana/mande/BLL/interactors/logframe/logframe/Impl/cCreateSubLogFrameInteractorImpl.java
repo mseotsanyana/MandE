@@ -16,13 +16,13 @@ public class cCreateSubLogFrameInteractorImpl extends cAbstractInteractor
 
     private iLogFrameRepository logSubFrameRepository;
     private Callback callback;
-    private long logFrameID;
+    private String logFrameID;
     private cLogFrameModel logSubFrameModel;
 
     public cCreateSubLogFrameInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,
                                             iSharedPreferenceRepository sessionManagerRepository,
                                             iLogFrameRepository logSubFrameRepository, Callback callback,
-                                            long logFrameID, cLogFrameModel logSubFrameModel) {
+                                            String logFrameID, cLogFrameModel logSubFrameModel) {
         super(threadExecutor, mainThread);
 
         if (logSubFrameRepository == null || callback == null) {
@@ -43,7 +43,7 @@ public class cCreateSubLogFrameInteractorImpl extends cAbstractInteractor
 //        this.logSubFrameModel.setStatusBITS(sessionManagerRepository.loadDefaultStatusBITS());
         this.logSubFrameModel.setCreatedDate(new Date());
         this.logSubFrameModel.setModifiedDate(new Date());
-        this.logSubFrameModel.setSyncedDate(new Date());
+        //this.logSubFrameModel.setSyncedDate(new Date());
     }
 
     /* */

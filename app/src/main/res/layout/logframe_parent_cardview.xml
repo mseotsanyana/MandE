@@ -41,18 +41,18 @@
                 android:elevation="4dp"
                 android:gravity="top"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toTopOf="@+id/textViewNameCaption"
+                app:layout_constraintBottom_toTopOf="@+id/textViewDescriptionCaption"
                 app:layout_constraintStart_toEndOf="@+id/textViewExpandIcon"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="match_parent"
                     android:gravity="center"
                     android:orientation="vertical"
                     tools:ignore="UselessParent">
 
-                    <androidx.appcompat.widget.AppCompatTextView
+                    <!--androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/textViewOrganizationCaption"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -60,12 +60,12 @@
                         android:text="@string/logframe_organization_caption"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_small"
-                        android:textStyle="bold" />
+                        android:textStyle="bold" /-->
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/textViewOrganization"
+                        android:id="@+id/textViewName"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="32dp"
                         android:layout_marginStart="2dp"
                         android:layout_marginTop="1dp"
                         android:textColor="@color/white"
@@ -73,7 +73,7 @@
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
-
+<!--
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewNameCaption"
                 android:layout_width="wrap_content"
@@ -105,7 +105,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/textViewDescriptionCaption"
                 app:layout_constraintStart_toEndOf="@+id/textViewExpandIcon"
                 app:layout_constraintTop_toBottomOf="@+id/textViewNameCaption" />
-
+-->
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewDescriptionCaption"
                 android:layout_width="wrap_content"
@@ -121,7 +121,7 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/textViewDescription"
                 app:layout_constraintStart_toEndOf="@+id/textViewExpandIcon"
-                app:layout_constraintTop_toBottomOf="@id/textViewName" />
+                app:layout_constraintTop_toBottomOf="@id/linearLayoutHeader" />
 
             <!-- parent logframe description -->
             <androidx.appcompat.widget.AppCompatTextView
@@ -207,9 +207,9 @@
                 android:layout_marginBottom="4dp"
                 android:gravity="center_vertical"
                 app:bmb_buttonEnum="textOutsideCircle"
-                app:bmb_buttonPlaceEnum="buttonPlace_sc_12_1"
+                app:bmb_buttonPlaceEnum="buttonPlace_sc_5_3"
                 app:bmb_inList="true"
-                app:bmb_piecePlaceEnum="piecePlace_dot_12_1"
+                app:bmb_piecePlaceEnum="piecePlace_dot_5_3"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textViewStartDate" />

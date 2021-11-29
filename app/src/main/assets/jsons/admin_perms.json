@@ -98,15 +98,65 @@
       "module_id": 2,
       "entities": [
         {
-        "entity_id": 1,
-        "entity": "LOGFRAME",
-        "operations": [
-          {"op_id": 1,"status_ids": [0]}, {"op_id": 2,"status_ids": [1, 2, 4, 8, 16]}, {"op_id": 4,"status_ids": [4]}, {"op_id": 8,"status_ids": [4]}
-        ],
-        "unixoperations": [
-          {"unix_op_id": 2048}, {"unix_op_id": 1024 }, {"unix_op_id": 512},{"unix_op_id": 256}, {"unix_op_id": 128 }, {"unix_op_id": 64}, {"unix_op_id": 32}, {"unix_op_id": 16 }, {"unix_op_id": 8}, {"unix_op_id": 4}, {"unix_op_id": 2}, {"unix_op_id": 1}
-        ]
-      }
+          "entity_id": 1,
+          "entity": "LOGFRAME",
+          "operations": [
+            {"op_id": 1,"status_ids": [0]}, {"op_id": 2,"status_ids": [1, 2, 4, 8, 16]}, {"op_id": 4,"status_ids": [4]}, {"op_id": 8,"status_ids": [4]}
+          ],
+          "unixoperations": [
+            {"unix_op_id": 2048}, {"unix_op_id": 1024 }, {"unix_op_id": 512},{"unix_op_id": 256}, {"unix_op_id": 128 }, {"unix_op_id": 64}, {"unix_op_id": 32}, {"unix_op_id": 16 }, {"unix_op_id": 8}, {"unix_op_id": 4}, {"unix_op_id": 2}, {"unix_op_id": 1}
+          ]
+        },
+        {
+          "entity_id": 2,
+          "entity": "IMPACT",
+          "operations": [
+            {"op_id": 1,"status_ids": [0]}, {"op_id": 2,"status_ids": [1, 2, 4, 8, 16]}, {"op_id": 4,"status_ids": [4]}, {"op_id": 8,"status_ids": [4]}
+          ],
+          "unixoperations": [
+            {"unix_op_id": 2048}, {"unix_op_id": 1024 }, {"unix_op_id": 512},{"unix_op_id": 256}, {"unix_op_id": 128 }, {"unix_op_id": 64}, {"unix_op_id": 32}, {"unix_op_id": 16 }, {"unix_op_id": 8}, {"unix_op_id": 4}, {"unix_op_id": 2}, {"unix_op_id": 1}
+          ]
+        },
+        {
+          "entity_id": 4,
+          "entity": "OUTCOME",
+          "operations": [
+            {"op_id": 1,"status_ids": [0]}, {"op_id": 2,"status_ids": [1, 2, 4, 8, 16]}, {"op_id": 4,"status_ids": [4]}, {"op_id": 8,"status_ids": [4]}
+          ],
+          "unixoperations": [
+            {"unix_op_id": 2048}, {"unix_op_id": 1024 }, {"unix_op_id": 512},{"unix_op_id": 256}, {"unix_op_id": 128 }, {"unix_op_id": 64}, {"unix_op_id": 32}, {"unix_op_id": 16 }, {"unix_op_id": 8}, {"unix_op_id": 4}, {"unix_op_id": 2}, {"unix_op_id": 1}
+          ]
+        },
+        {
+          "entity_id": 8,
+          "entity": "OUTPUT",
+          "operations": [
+            {"op_id": 1,"status_ids": [0]}, {"op_id": 2,"status_ids": [1, 2, 4, 8, 16]}, {"op_id": 4,"status_ids": [4]}, {"op_id": 8,"status_ids": [4]}
+          ],
+          "unixoperations": [
+            {"unix_op_id": 2048}, {"unix_op_id": 1024 }, {"unix_op_id": 512},{"unix_op_id": 256}, {"unix_op_id": 128 }, {"unix_op_id": 64}, {"unix_op_id": 32}, {"unix_op_id": 16 }, {"unix_op_id": 8}, {"unix_op_id": 4}, {"unix_op_id": 2}, {"unix_op_id": 1}
+          ]
+        },
+        {
+          "entity_id": 16,
+          "entity": "ACTIVITY",
+          "operations": [
+            {"op_id": 1,"status_ids": [0]}, {"op_id": 2,"status_ids": [1, 2, 4, 8, 16]}, {"op_id": 4,"status_ids": [4]}, {"op_id": 8,"status_ids": [4]}
+          ],
+          "unixoperations": [
+            {"unix_op_id": 2048}, {"unix_op_id": 1024 }, {"unix_op_id": 512},{"unix_op_id": 256}, {"unix_op_id": 128 }, {"unix_op_id": 64}, {"unix_op_id": 32}, {"unix_op_id": 16 }, {"unix_op_id": 8}, {"unix_op_id": 4}, {"unix_op_id": 2}, {"unix_op_id": 1}
+          ]
+        },
+        {
+          "entity_id": 32,
+          "entity": "INPUT",
+          "operations": [
+            {"op_id": 1,"status_ids": [0]}, {"op_id": 2,"status_ids": [1, 2, 4, 8, 16]}, {"op_id": 4,"status_ids": [4]}, {"op_id": 8,"status_ids": [4]}
+          ],
+          "unixoperations": [
+            {"unix_op_id": 2048}, {"unix_op_id": 1024 }, {"unix_op_id": 512},{"unix_op_id": 256}, {"unix_op_id": 128 }, {"unix_op_id": 64}, {"unix_op_id": 32}, {"unix_op_id": 16 }, {"unix_op_id": 8}, {"unix_op_id": 4}, {"unix_op_id": 2}, {"unix_op_id": 1}
+          ]
+        }
       ]
     }
   ],

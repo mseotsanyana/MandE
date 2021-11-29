@@ -1,0 +1,265 @@
+<html>
+<head>
+<title>cLogFrameModel.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #0033b3;}
+.s1 { color: #080808;}
+.s2 { color: #8c8c8c; font-style: italic;}
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+cLogFrameModel.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.logframe;</span>
+
+<span class="s0">import </span><span class="s1">com.google.firebase.database.Exclude;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.evaluator.cEvaluationModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.raid.cRAIDLOGModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cCrowdFundModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.monitor.cIndicatorModel;</span>
+
+<span class="s0">import </span><span class="s1">java.util.Date;</span>
+<span class="s0">import </span><span class="s1">java.util.HashSet;</span>
+<span class="s0">import </span><span class="s1">java.util.List;</span>
+<span class="s0">import </span><span class="s1">java.util.Set;</span>
+
+<span class="s0">public class </span><span class="s1">cLogFrameModel {</span>
+    <span class="s0">private </span><span class="s1">String logFrameServerID;</span>
+    <span class="s0">private </span><span class="s1">String subLogFrameServerID;</span>
+
+    <span class="s2">// common attributes</span>
+    <span class="s0">private </span><span class="s1">String userOwnerID;</span>
+    <span class="s0">private </span><span class="s1">String organizationOwnerID;</span>
+    <span class="s0">private int </span><span class="s1">teamOwnerBIT;</span>
+    <span class="s0">private </span><span class="s1">List&lt;Integer&gt; unixpermBITS;</span>
+    <span class="s0">private int </span><span class="s1">statusBIT;</span>
+
+    <span class="s2">// meta attributes</span>
+    <span class="s0">private </span><span class="s1">String name;</span>
+    <span class="s0">private </span><span class="s1">String description;</span>
+    <span class="s0">private </span><span class="s1">Date startDate;</span>
+    <span class="s0">private </span><span class="s1">Date endDate;</span>
+    <span class="s0">private </span><span class="s1">Date createdDate;</span>
+    <span class="s0">private </span><span class="s1">Date modifiedDate;</span>
+
+    <span class="s0">private </span><span class="s1">cOrganizationModel organizationModel;</span>
+
+    <span class="s0">private </span><span class="s1">Set&lt;cLogFrameModel&gt; logFrameModelSet;</span>
+    <span class="s0">private </span><span class="s1">Set&lt;cComponentModel&gt; componentModelSet;</span>
+    <span class="s0">private </span><span class="s1">Set&lt;cQuestionModel&gt; questionModelSet;</span>
+    <span class="s0">private </span><span class="s1">Set&lt;cRaidModel&gt; raidModelSet;</span>
+    <span class="s0">private </span><span class="s1">Set&lt;cRAIDLOGModel&gt; raidlogModelSet;</span>
+    <span class="s0">private </span><span class="s1">Set&lt;cEvaluationModel&gt; evaluationModelSet;</span>
+    <span class="s0">private </span><span class="s1">Set&lt;cIndicatorModel&gt; indicatorModelSet;</span>
+    <span class="s0">private </span><span class="s1">Set&lt;cCrowdFundModel&gt; crowdFundModelSet;</span>
+
+
+
+
+    <span class="s0">public </span><span class="s1">cLogFrameModel(){</span>
+<span class="s2">//        organizationModel = new cOrganizationModel();</span>
+<span class="s2">//</span>
+<span class="s2">//        logFrameModelSet = new HashSet&lt;&gt;();</span>
+<span class="s2">//        componentModelSet = new HashSet&lt;&gt;();</span>
+<span class="s2">//        questionModelSet = new HashSet&lt;&gt;();</span>
+<span class="s2">//        raidModelSet = new HashSet&lt;&gt;();</span>
+<span class="s2">//        raidlogModelSet = new HashSet&lt;&gt;();</span>
+<span class="s2">//        evaluationModelSet = new HashSet&lt;&gt;();</span>
+<span class="s2">//        indicatorModelSet = new HashSet&lt;&gt;();</span>
+<span class="s2">//        crowdFundModelSet = new HashSet&lt;&gt;();</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getLogFrameServerID() {</span>
+        <span class="s0">return </span><span class="s1">logFrameServerID;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setLogFrameServerID(String logFrameServerID) {</span>
+        <span class="s0">this</span><span class="s1">.logFrameServerID = logFrameServerID;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getSubLogFrameServerID() {</span>
+        <span class="s0">return </span><span class="s1">subLogFrameServerID;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setSubLogFrameServerID(String subLogFrameServerID) {</span>
+        <span class="s0">this</span><span class="s1">.subLogFrameServerID = subLogFrameServerID;</span>
+    <span class="s1">}</span>
+
+
+    <span class="s0">public </span><span class="s1">String getUserOwnerID() {</span>
+        <span class="s0">return </span><span class="s1">userOwnerID;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setUserOwnerID(String userOwnerID) {</span>
+        <span class="s0">this</span><span class="s1">.userOwnerID = userOwnerID;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getOrganizationOwnerID() {</span>
+        <span class="s0">return </span><span class="s1">organizationOwnerID;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setOrganizationOwnerID(String organizationOwnerID) {</span>
+        <span class="s0">this</span><span class="s1">.organizationOwnerID = organizationOwnerID;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public int </span><span class="s1">getTeamOwnerBIT() {</span>
+        <span class="s0">return </span><span class="s1">teamOwnerBIT;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setTeamOwnerBIT(</span><span class="s0">int </span><span class="s1">teamOwnerBIT) {</span>
+        <span class="s0">this</span><span class="s1">.teamOwnerBIT = teamOwnerBIT;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">List&lt;Integer&gt; getUnixpermBITS() {</span>
+        <span class="s0">return </span><span class="s1">unixpermBITS;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setUnixpermBITS(List&lt;Integer&gt; unixpermBITS) {</span>
+        <span class="s0">this</span><span class="s1">.unixpermBITS = unixpermBITS;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public int </span><span class="s1">getStatusBIT() {</span>
+        <span class="s0">return </span><span class="s1">statusBIT;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setStatusBIT(</span><span class="s0">int </span><span class="s1">statusBIT) {</span>
+        <span class="s0">this</span><span class="s1">.statusBIT = statusBIT;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getName() {</span>
+        <span class="s0">return </span><span class="s1">name;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setName(String name) {</span>
+        <span class="s0">this</span><span class="s1">.name = name;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getDescription() {</span>
+        <span class="s0">return </span><span class="s1">description;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setDescription(String description) {</span>
+        <span class="s0">this</span><span class="s1">.description = description;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">Date getStartDate() {</span>
+        <span class="s0">return </span><span class="s1">startDate;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setStartDate(Date startDate) {</span>
+        <span class="s0">this</span><span class="s1">.startDate = startDate;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">Date getEndDate() {</span>
+        <span class="s0">return </span><span class="s1">endDate;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setEndDate(Date endDate) {</span>
+        <span class="s0">this</span><span class="s1">.endDate = endDate;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">Date getCreatedDate() {</span>
+        <span class="s0">return </span><span class="s1">createdDate;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setCreatedDate(Date createdDate) {</span>
+        <span class="s0">this</span><span class="s1">.createdDate = createdDate;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">Date getModifiedDate() {</span>
+        <span class="s0">return </span><span class="s1">modifiedDate;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setModifiedDate(Date modifiedDate) {</span>
+        <span class="s0">this</span><span class="s1">.modifiedDate = modifiedDate;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Exclude</span>
+    <span class="s0">public </span><span class="s1">cOrganizationModel getOrganizationModel() {</span>
+        <span class="s0">return </span><span class="s1">organizationModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setOrganizationModel(cOrganizationModel organizationModel) {</span>
+        <span class="s0">this</span><span class="s1">.organizationModel = organizationModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Exclude</span>
+    <span class="s0">public </span><span class="s1">Set&lt;cLogFrameModel&gt; getLogFrameModelSet() {</span>
+        <span class="s0">return </span><span class="s1">logFrameModelSet;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setLogFrameModelSet(Set&lt;cLogFrameModel&gt; logFrameModelSet) {</span>
+        <span class="s0">this</span><span class="s1">.logFrameModelSet = logFrameModelSet;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Exclude</span>
+    <span class="s0">public </span><span class="s1">Set&lt;cComponentModel&gt; getComponentModelSet() {</span>
+        <span class="s0">return </span><span class="s1">componentModelSet;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setComponentModelSet(Set&lt;cComponentModel&gt; componentModelSet) {</span>
+        <span class="s0">this</span><span class="s1">.componentModelSet = componentModelSet;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Exclude</span>
+    <span class="s0">public </span><span class="s1">Set&lt;cQuestionModel&gt; getQuestionModelSet() {</span>
+        <span class="s0">return </span><span class="s1">questionModelSet;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setQuestionModelSet(Set&lt;cQuestionModel&gt; questionModelSet) {</span>
+        <span class="s0">this</span><span class="s1">.questionModelSet = questionModelSet;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Exclude</span>
+    <span class="s0">public </span><span class="s1">Set&lt;cRaidModel&gt; getRaidModelSet() {</span>
+        <span class="s0">return </span><span class="s1">raidModelSet;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setRaidModelSet(Set&lt;cRaidModel&gt; raidModelSet) {</span>
+        <span class="s0">this</span><span class="s1">.raidModelSet = raidModelSet;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Exclude</span>
+    <span class="s0">public </span><span class="s1">Set&lt;cRAIDLOGModel&gt; getRaidlogModelSet() {</span>
+        <span class="s0">return </span><span class="s1">raidlogModelSet;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setRaidlogModelSet(Set&lt;cRAIDLOGModel&gt; raidlogModelSet) {</span>
+        <span class="s0">this</span><span class="s1">.raidlogModelSet = raidlogModelSet;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Exclude</span>
+    <span class="s0">public </span><span class="s1">Set&lt;cEvaluationModel&gt; getEvaluationModelSet() {</span>
+        <span class="s0">return </span><span class="s1">evaluationModelSet;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setEvaluationModelSet(Set&lt;cEvaluationModel&gt; evaluationModelSet) {</span>
+        <span class="s0">this</span><span class="s1">.evaluationModelSet = evaluationModelSet;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Exclude</span>
+    <span class="s0">public </span><span class="s1">Set&lt;cIndicatorModel&gt; getIndicatorModelSet() {</span>
+        <span class="s0">return </span><span class="s1">indicatorModelSet;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setIndicatorModelSet(Set&lt;cIndicatorModel&gt; indicatorModelSet) {</span>
+        <span class="s0">this</span><span class="s1">.indicatorModelSet = indicatorModelSet;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Exclude</span>
+    <span class="s0">public </span><span class="s1">Set&lt;cCrowdFundModel&gt; getCrowdFundModelSet() {</span>
+        <span class="s0">return </span><span class="s1">crowdFundModelSet;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setCrowdFundModelSet(Set&lt;cCrowdFundModel&gt; crowdFundModelSet) {</span>
+        <span class="s0">this</span><span class="s1">.crowdFundModelSet = crowdFundModelSet;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

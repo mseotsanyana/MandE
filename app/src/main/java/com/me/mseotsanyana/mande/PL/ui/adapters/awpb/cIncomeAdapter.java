@@ -67,7 +67,7 @@ public class cIncomeAdapter extends RecyclerView.Adapter<cIncomeAdapter.cIncomeP
                 R.color.child_body_colour));
 
         IH.textViewParentCaption.setText(R.string.activity_caption);
-        IH.textViewParent.setText(incomeModel.getActivityModel().getName());
+//        IH.textViewParent.setText(incomeModel.getActivityModel().getName());
         IH.textViewNameCaption.setText(R.string.input_caption);
         //--IH.textViewName.setText(incomeModel.getResourceModel().getName());
         IH.textViewNumberCaption.setText(R.string.input_income_caption);

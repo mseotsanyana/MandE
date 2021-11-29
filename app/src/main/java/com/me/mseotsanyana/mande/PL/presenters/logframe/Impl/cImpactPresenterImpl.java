@@ -1,9 +1,12 @@
 package com.me.mseotsanyana.mande.PL.presenters.logframe.Impl;
 
+import android.util.Log;
+
 import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.impact.Impl.cReadImpactInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.impact.iReadImpactInteractor;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel;
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iImpactRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
@@ -11,6 +14,7 @@ import com.me.mseotsanyana.mande.PL.presenters.logframe.iImpactPresenter;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class cImpactPresenterImpl extends cAbstractPresenter implements iImpactPresenter,
         iReadImpactInteractor.Callback/*, iReadSharedOrgsInteractor.Callback,
@@ -20,20 +24,21 @@ public class cImpactPresenterImpl extends cAbstractPresenter implements iImpactP
     private static String TAG = cImpactPresenterImpl.class.getSimpleName();
 
     private View view;
-    private iSharedPreferenceRepository sessionManagerRepository;
-    private iImpactRepository impactRepository;
-    private long logFrameID;
+    private final iSharedPreferenceRepository sharedPreferenceRepository;
+    private final iImpactRepository impactRepository;
+    private final cLogFrameModel logFrameModel;
 
     public cImpactPresenterImpl(iExecutor executor, iMainThread mainThread,
                                 View view,
-                                iSharedPreferenceRepository sessionManagerRepository,
-                                iImpactRepository impactRepository, long logFrameID) {
+                                iSharedPreferenceRepository sharedPreferenceRepository,
+                                iImpactRepository impactRepository, cLogFrameModel logFrameModel) {
         super(executor, mainThread);
 
         this.view = view;
-        this.sessionManagerRepository = sessionManagerRepository;
+        this.sharedPreferenceRepository = sharedPreferenceRepository;
         this.impactRepository = impactRepository;
-        this.logFrameID = logFrameID;
+        this.logFrameModel = logFrameModel;
+
     }
 
     /* ====================================== START CREATE ====================================== */
@@ -105,30 +110,33 @@ public class cImpactPresenterImpl extends cAbstractPresenter implements iImpactP
 
     /* ======================================= START READ ======================================= */
     @Override
-    public void readImpacts(long logFrameID) {
+    public void readImpacts(cLogFrameModel logFrameModel) {
         iReadImpactInteractor readImpactInteractor = new cReadImpactInteractorImpl(
                 executor,
                 mainThread,
-                sessionManagerRepository,
+                sharedPreferenceRepository,
                 impactRepository,
                 this,
-                logFrameID);
+                logFrameModel);
 
         view.showProgress();
         readImpactInteractor.execute();
     }
 
     @Override
-    public void onImpactModelsRetrieved(String logFrameName, ArrayList<cTreeModel> impactTreeModels) {
+    public void onImpactModelsRetrieved(String logframeServerID, List<cTreeModel> impactTreeModels) {
         if(this.view != null) {
-            this.view.onRetrieveImpactsCompleted(logFrameName, impactTreeModels);
+            this.view.onRetrieveImpactsCompleted(logframeServerID, impactTreeModels);
             this.view.hideProgress();
         }
     }
 
     @Override
     public void onImpactModelsFailed(String msg) {
-
+        if (this.view != null) {
+            this.view.onImpactUpdateFailed(msg);
+            this.view.hideProgress();
+        }
     }
 
     /* ======================================== END READ ======================================== */
@@ -268,7 +276,7 @@ public class cImpactPresenterImpl extends cAbstractPresenter implements iImpactP
     /* corresponding view functions */
     @Override
     public void resume() {
-        readImpacts(this.logFrameID);
+        readImpacts(this.logFrameModel);
     }
 
     @Override

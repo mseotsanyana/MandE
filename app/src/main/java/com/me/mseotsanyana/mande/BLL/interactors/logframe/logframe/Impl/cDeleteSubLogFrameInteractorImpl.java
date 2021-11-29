@@ -15,12 +15,12 @@ public class cDeleteSubLogFrameInteractorImpl extends cAbstractInteractor
 
     private Callback callback;
     private iLogFrameRepository logFrameRepository;
-    private long logFrameID;
+    private String logFrameID;
     private int position;
 
     public cDeleteSubLogFrameInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,
                                             iLogFrameRepository logFrameRepository, Callback callback,
-                                            long logFrameID, int position) {
+                                            String logFrameID, int position) {
         super(threadExecutor, mainThread);
 
         if (logFrameRepository == null || callback == null) {

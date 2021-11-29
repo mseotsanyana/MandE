@@ -28,8 +28,7 @@ import java.util.List;
  */
 
 public class cOrganizationAdapter extends RecyclerView.Adapter<cOrganizationAdapter.
-        cOrganizationViewHolder>
-        implements Filterable {
+        cOrganizationViewHolder> implements Filterable {
     //private static String TAG = cOrganizationAdapter.class.getSimpleName();
     //private static SimpleDateFormat sdf = cConstant.SHORT_FORMAT_DATE;
 

@@ -73,10 +73,10 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
             cLogFrameModel logFrame = new cLogFrameModel();
 
-            logFrame.setLogFrameID(
-                    (int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            logFrame.setOrganizationID(
-                    (int) cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            logFrame.setLogFrameID(
+//                    (int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            logFrame.setOrganizationID(
+//                    (int) cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             logFrame.setName(
                     cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
             logFrame.setDescription(
@@ -94,11 +94,11 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
                 parentID = (int) rowLogFrameTree.getCell(0,
                         Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (logFrame.getLogFrameID() == parentID) {
-                    childID = (int) rowLogFrameTree.getCell(1,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    subLogFrameModelSet.add(childID);
-                }
+//                if (logFrame.getLogFrameID() == parentID) {
+//                    childID = (int) rowLogFrameTree.getCell(1,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    subLogFrameModelSet.add(childID);
+//                }
             }
 
             if (!addLogFrameFromExcel(logFrame, subLogFrameModelSet)) {
@@ -124,8 +124,8 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, logFrameModel.getLogFrameID());
-        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, logFrameModel.getOrganizationID());
+//        cv.put(cSQLDBHelper.KEY_ID, logFrameModel.getLogFrameID());
+//        cv.put(cSQLDBHelper.KEY_ORGANIZATION_FK_ID, logFrameModel.getOrganizationID());
         cv.put(cSQLDBHelper.KEY_NAME, logFrameModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, logFrameModel.getDescription());
 
@@ -137,8 +137,8 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
             // add subLogFrame
             for (long childID : subLogFrameSet) {
-                if (!addLogFrameTree(logFrameModel.getLogFrameID(), childID))
-                    return false;
+//                if (!addLogFrameTree(logFrameModel.getLogFrameID(), childID))
+//                    return false;
             }
         } catch (Exception e) {
             Log.d(TAG, "Exception in importing LOGFRAME from Excel: " + e.getMessage());
@@ -220,12 +220,12 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
             cResourceTypeModel resourceTypeModel = new cResourceTypeModel();
 
-            resourceTypeModel.setResourceTypeID((int)
-                    cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            resourceTypeModel.setName(
-                    cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
-            resourceTypeModel.setDescription(
-                    cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+//            resourceTypeModel.setResourceTypeID((int)
+//                    cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            resourceTypeModel.setName(
+//                    cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+//            resourceTypeModel.setDescription(
+//                    cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 
             if (!addResourceType(resourceTypeModel)) {
                 return false;
@@ -249,7 +249,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, resourceTypeModel.getResourceTypeID());
+//        cv.put(cSQLDBHelper.KEY_ID, resourceTypeModel.getResourceTypeID());
         cv.put(cSQLDBHelper.KEY_NAME, resourceTypeModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, resourceTypeModel.getDescription());
 
@@ -329,10 +329,10 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
             cComponentModel componentModel = new cComponentModel();
 
-            componentModel.setComponentID((int) cRow.getCell(0,
-                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            componentModel.getLogFrameModel().setLogFrameID((int) cRow.getCell(1,
-                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+            componentModel.setComponentServerID(cRow.getCell(0,
+                    Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+//            componentModel.getLogFrameModel().setLogFrameID((int) cRow.getCell(1,
+//                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             componentModel.setName(cRow.getCell(2,
                     Row.CREATE_NULL_AS_BLANK).getStringCellValue());
             componentModel.setDescription(cRow.getCell(3,
@@ -348,16 +348,16 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
                 long impactID = (int) impactRow.getCell(0,
                         Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (componentModel.getComponentID() == impactID) {
-
-                    cImpactModel impactModel = new cImpactModel();
-
-                    impactModel.setComponentID(impactID);
-                    impactModel.setParentID((int) impactRow.getCell(1,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-
-                    impactModelSet.add(impactModel);
-                }
+//                if (componentModel.getComponentID() == impactID) {
+//
+//                    cImpactModel impactModel = new cImpactModel();
+//
+//                    impactModel.setComponentID(impactID);
+//                    impactModel.setParentID((int) impactRow.getCell(1,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//
+//                    impactModelSet.add(impactModel);
+//                }
             }
 
             /* outcome component */
@@ -370,18 +370,18 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
                 long outcomeID = (int) outcomeRow.getCell(0,
                         Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (componentModel.getComponentID() == outcomeID) {
-
-                    cOutcomeModel outcomeModel = new cOutcomeModel();
-
-                    outcomeModel.setComponentID(outcomeID);
-                    outcomeModel.setParentID((int) outcomeRow.getCell(1,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-                    outcomeModel.getImpactModel().setComponentID((int) outcomeRow.getCell(2,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-
-                    outcomeModelSet.add(outcomeModel);
-                }
+//                if (componentModel.getComponentID() == outcomeID) {
+//
+//                    cOutcomeModel outcomeModel = new cOutcomeModel();
+//
+//                    outcomeModel.setComponentID(outcomeID);
+//                    outcomeModel.setParentID((int) outcomeRow.getCell(1,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//                    outcomeModel.getImpactModel().setComponentID((int) outcomeRow.getCell(2,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//
+//                    outcomeModelSet.add(outcomeModel);
+//                }
             }
             /* get impacts of the outcome for a sub-logframe */
             Map<Set<Pair<Long, Long>>, Pair<Long, Long>> oiMap = new HashMap<>();
@@ -394,16 +394,16 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
                 long outcomeID = (int) rowOI.getCell(2,
                         Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (componentModel.getComponentID() == outcomeID) {
-                    Set<Pair<Long, Long>> impactSet = new HashSet<>();
-                    long parentID = (int) rowOI.getCell(0,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    long childID = (int) rowOI.getCell(1,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    long impactID = (int) rowOI.getCell(3,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    impactSet.add(new Pair<>(outcomeID, impactID));
-                    oiMap.put(impactSet, new Pair<>(parentID, childID));
+//                if (componentModel.getComponentID() == outcomeID) {
+//                    Set<Pair<Long, Long>> impactSet = new HashSet<>();
+//                    long parentID = (int) rowOI.getCell(0,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    long childID = (int) rowOI.getCell(1,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    long impactID = (int) rowOI.getCell(3,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    impactSet.add(new Pair<>(outcomeID, impactID));
+//                    oiMap.put(impactSet, new Pair<>(parentID, childID));
                 }
             }
 
@@ -417,18 +417,18 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
                 long outputID = (int) outputRow.getCell(0,
                         Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (componentModel.getComponentID() == outputID) {
-
-                    cOutputModel outputModel = new cOutputModel();
-
-                    outputModel.setComponentID(outputID);
-                    outputModel.setParentID((int) outputRow.getCell(1,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-                    outputModel.getOutcomeModel().setComponentID((int) outputRow.getCell(2,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-
-                    outputModelSet.add(outputModel);
-                }
+//                if (componentModel.getComponentID() == outputID) {
+//
+//                    cOutputModel outputModel = new cOutputModel();
+//
+//                    outputModel.setComponentID(outputID);
+//                    outputModel.setParentID((int) outputRow.getCell(1,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//                    outputModel.getOutcomeModel().setComponentID((int) outputRow.getCell(2,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//
+//                    outputModelSet.add(outputModel);
+//                }
             }
             /* get outcomes of the output for a sub-logframe */
             Map<Set<Pair<Long, Long>>, Pair<Long, Long>> ooMap = new HashMap<>();
@@ -440,17 +440,17 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
                 long outputID = (int) rowOO.getCell(2,
                         Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (componentModel.getComponentID() == outputID) {
-                    Set<Pair<Long, Long>> impactSet = new HashSet<>();
-                    long parentID = (int) rowOO.getCell(0,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    long childID = (int) rowOO.getCell(1,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    long outcomeID = (int) rowOO.getCell(3,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    impactSet.add(new Pair<>(outputID, outcomeID));
-                    ooMap.put(impactSet, new Pair<>(parentID, childID));
-                }
+//                if (componentModel.getComponentID() == outputID) {
+//                    Set<Pair<Long, Long>> impactSet = new HashSet<>();
+//                    long parentID = (int) rowOO.getCell(0,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    long childID = (int) rowOO.getCell(1,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    long outcomeID = (int) rowOO.getCell(3,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    impactSet.add(new Pair<>(outputID, outcomeID));
+//                    ooMap.put(impactSet, new Pair<>(parentID, childID));
+//                }
             }
 
             /* activity component */
@@ -463,18 +463,18 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
                 long activityID = (int) activityRow.getCell(0,
                         Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (componentModel.getComponentID() == activityID) {
-
-                    cActivityModel activityModel = new cActivityModel();
-
-                    activityModel.setComponentID(activityID);
-                    activityModel.setParentID((int) activityRow.getCell(1,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-                    activityModel.getOutputModel().setComponentID((int) activityRow.getCell(2,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-
-                    activityModelSet.add(activityModel);
-                }
+//                if (componentModel.getComponentID() == activityID) {
+//
+//                    cActivityModel activityModel = new cActivityModel();
+//
+//                    activityModel.setComponentID(activityID);
+//                    activityModel.setParentID((int) activityRow.getCell(1,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//                    activityModel.getOutputModel().setComponentID((int) activityRow.getCell(2,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//
+//                    activityModelSet.add(activityModel);
+//                }
             }
             /* get outputs of the activity for a sub-logframe */
             Map<Set<Pair<Long, Long>>, Pair<Long, Long>> aoMap = new HashMap<>();
@@ -486,17 +486,17 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
                 long activityID = (int) rowAO.getCell(2,
                         Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (componentModel.getComponentID() == activityID) {
-                    Set<Pair<Long, Long>> AOSet = new HashSet<>();
-                    long parentID = (int) rowAO.getCell(0,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    long childID = (int) rowAO.getCell(1,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    long outputID = (int) rowAO.getCell(3,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    AOSet.add(new Pair<>(activityID, outputID));
-                    aoMap.put(AOSet, new Pair<>(parentID, childID));
-                }
+//                if (componentModel.getComponentID() == activityID) {
+//                    Set<Pair<Long, Long>> AOSet = new HashSet<>();
+//                    long parentID = (int) rowAO.getCell(0,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    long childID = (int) rowAO.getCell(1,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    long outputID = (int) rowAO.getCell(3,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    AOSet.add(new Pair<>(activityID, outputID));
+//                    aoMap.put(AOSet, new Pair<>(parentID, childID));
+//                }
             }
             /* get preceding activities of the activity*/
             Set<Pair<Long, Long>> precedingSet = new HashSet<>();
@@ -508,11 +508,11 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
                 long precedingActivityID = (int) rowPA.getCell(0,
                         Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (componentModel.getComponentID() == precedingActivityID) {
-                    long succeedingActivityID = (int) rowPA.getCell(1,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    precedingSet.add(new Pair<>(precedingActivityID, succeedingActivityID));
-                }
+//                if (componentModel.getComponentID() == precedingActivityID) {
+//                    long succeedingActivityID = (int) rowPA.getCell(1,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    precedingSet.add(new Pair<>(precedingActivityID, succeedingActivityID));
+//                }
             }
             /* get activity assignment */
             Map<Long, Set<Pair<Long, Long>>> assignmentMap = new HashMap<>();
@@ -525,14 +525,14 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
                 long assignedActivityID = (int) rowAA.getCell(2,
                         Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (componentModel.getComponentID() == assignedActivityID) {
-                    long staffID = (int) rowAA.getCell(1,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    long assignmentID = (int) rowAA.getCell(0,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    asSet.add(new Pair<>(assignmentID, staffID));
-                    assignmentMap.put(assignedActivityID, asSet);
-                }
+//                if (componentModel.getComponentID() == assignedActivityID) {
+//                    long staffID = (int) rowAA.getCell(1,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    long assignmentID = (int) rowAA.getCell(0,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    asSet.add(new Pair<>(assignmentID, staffID));
+//                    assignmentMap.put(assignedActivityID, asSet);
+//                }
             }
 
             /* input component */
@@ -545,18 +545,18 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
                 long inputID = (int) inputRow.getCell(0,
                         Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (componentModel.getComponentID() == inputID) {
-
-                    cInputModel inputModel = new cInputModel();
-
-                    inputModel.setComponentID(inputID);
-                    inputModel.getActivityModel().setComponentID((int) inputRow.getCell(1,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-                    inputModel.getResourceTypeModel().setResourceTypeID((int) inputRow.getCell(2,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-
-                    inputModelSet.add(inputModel);
-                }
+//                if (componentModel.getComponentID() == inputID) {
+//
+//                    cInputModel inputModel = new cInputModel();
+//
+//                    inputModel.setComponentID(inputID);
+//                    inputModel.getActivityModel().setComponentID((int) inputRow.getCell(1,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//                    inputModel.getResourceTypeModel().setResourceTypeID((int) inputRow.getCell(2,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//
+//                    inputModelSet.add(inputModel);
+//                }
             }
             /* get activities of the input for a sub-logframe */
             Map<Set<Pair<Long, Long>>, Pair<Long, Long>> iaMap = new HashMap<>();
@@ -568,17 +568,17 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
                 long inputID = (int) rowIA.getCell(2,
                         Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (componentModel.getComponentID() == inputID) {
-                    Set<Pair<Long, Long>> activitySet = new HashSet<>();
-                    long parentID = (int) rowIA.getCell(0,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    long childID = (int) rowIA.getCell(1,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    long activityID = (int) rowIA.getCell(3,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    activitySet.add(new Pair<>(inputID, activityID));
-                    iaMap.put(activitySet, new Pair<>(parentID, childID));
-                }
+//                if (componentModel.getComponentID() == inputID) {
+//                    Set<Pair<Long, Long>> activitySet = new HashSet<>();
+//                    long parentID = (int) rowIA.getCell(0,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    long childID = (int) rowIA.getCell(1,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    long activityID = (int) rowIA.getCell(3,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    activitySet.add(new Pair<>(inputID, activityID));
+//                    iaMap.put(activitySet, new Pair<>(parentID, childID));
+//                }
             }
             /* human input */
             long humanID = -1;
@@ -608,36 +608,36 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
                 humanID = (int) rowHuman.getCell(0,
                         Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (componentModel.getComponentID() == humanID) {
-                    humanQuantity = (int) rowHuman.getCell(1,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-
-                    /* human set input */
-                    long humanSetInputID = -1, humanSetID = -1, userID = -1;
-
-                    for (Row rowHumanSet : humanSetSheet) {
-                        //just skip the row if row number is 0
-                        if (rowHumanSet.getRowNum() == 0) {
-                            continue;
-                        }
-
-                        humanSetInputID = (int) rowHumanSet.getCell(1,
-                                Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                        if (componentModel.getComponentID() == humanSetInputID) {
-                            humanSetID = (int) rowHumanSet.getCell(0,
-                                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                            userID = (int) rowHumanSet.getCell(2,
-                                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                            huSet.add(new Pair<>(humanSetID, userID));
-                        }
-                    }
-
-                    break;
-                } else {
-                    humanID = -1;
-                }
+//                if (componentModel.getComponentID() == humanID) {
+//                    humanQuantity = (int) rowHuman.getCell(1,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//
+//                    /* human set input */
+//                    long humanSetInputID = -1, humanSetID = -1, userID = -1;
+//
+//                    for (Row rowHumanSet : humanSetSheet) {
+//                        //just skip the row if row number is 0
+//                        if (rowHumanSet.getRowNum() == 0) {
+//                            continue;
+//                        }
+//
+//                        humanSetInputID = (int) rowHumanSet.getCell(1,
+//                                Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+////                        if (componentModel.getComponentID() == humanSetInputID) {
+////                            humanSetID = (int) rowHumanSet.getCell(0,
+////                                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+////                            userID = (int) rowHumanSet.getCell(2,
+////                                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+////                            huSet.add(new Pair<>(humanSetID, userID));
+////                        }
+//                    }
+//
+//                    break;
+//                } else {
+//                    humanID = -1;
+//                }
             }
-            hiuMap.put(componentModel.getComponentID(), huSet);
+//            hiuMap.put(componentModel.getComponentID(), huSet);
 
             /* material input */
             for (Row rowMaterial : materialSheet) {
@@ -648,13 +648,13 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
                 materialID = (int) rowMaterial.getCell(0,
                         Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (componentModel.getComponentID() == materialID) {
-                    materialQuantity = (int) rowMaterial.getCell(1,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    break;
-                } else {
-                    materialID = -1;
-                }
+//                if (componentModel.getComponentID() == materialID) {
+//                    materialQuantity = (int) rowMaterial.getCell(1,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    break;
+//                } else {
+//                    materialID = -1;
+//                }
             }
 
             /* income input */
@@ -670,34 +670,34 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
                 incomeID = (int) rowIncome.getCell(0,
                         Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-
-                if (componentModel.getComponentID() == incomeID) {
-
-                    for (Row rowFundSet : fundSheet) {
-                        //just skip the row if row number is 0
-                        if (rowFundSet.getRowNum() == 0) {
-                            continue;
-                        }
-
-                        fundInputID = (int) rowFundSet.getCell(1,
-                                Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                        if (componentModel.getComponentID() == fundInputID) {
-                            fundID = (int) rowFundSet.getCell(0,
-                                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                            funderID = (int) rowFundSet.getCell(2,
-                                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                            fund = (double) rowFundSet.getCell(3,
-                                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-
-                            fundSet.add(new Pair<Long, Double>((long) funderID, fund));
-                        }
-                    }
-                    ffaMap.put(fundID, fundSet);
-
-                    break;
-                } else {
-                    incomeID = -1;
-                }
+//
+//                if (componentModel.getComponentID() == incomeID) {
+//
+//                    for (Row rowFundSet : fundSheet) {
+//                        //just skip the row if row number is 0
+//                        if (rowFundSet.getRowNum() == 0) {
+//                            continue;
+//                        }
+//
+//                        fundInputID = (int) rowFundSet.getCell(1,
+//                                Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                        if (componentModel.getComponentID() == fundInputID) {
+//                            fundID = (int) rowFundSet.getCell(0,
+//                                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                            funderID = (int) rowFundSet.getCell(2,
+//                                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                            fund = (double) rowFundSet.getCell(3,
+//                                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//
+//                            fundSet.add(new Pair<Long, Double>((long) funderID, fund));
+//                        }
+//                    }
+//                    ffaMap.put(fundID, fundSet);
+//
+//                    break;
+//                } else {
+//                    incomeID = -1;
+//                }
             }
 
             /* expense input */
@@ -709,23 +709,23 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
                 expenseID = (int) rowExpense.getCell(0,
                         Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                if (componentModel.getComponentID() == expenseID) {
-                    expense = (int) rowExpense.getCell(1,
-                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
-                    break;
-                } else {
-                    expenseID = -1;
-                }
+//                if (componentModel.getComponentID() == expenseID) {
+//                    expense = (int) rowExpense.getCell(1,
+//                            Row.CREATE_NULL_AS_BLANK).getNumericCellValue();
+//                    break;
+//                } else {
+//                    expenseID = -1;
+//                }
             }
 
-            if (!addComponents(componentModel, impactModelSet,
-                    outcomeModelSet, outputModelSet, activityModelSet, inputModelSet,
-                    oiMap, ooMap, aoMap, iaMap, precedingSet, assignmentMap,
-                    humanID, humanQuantity, hiuMap, materialID, materialQuantity, incomeID, ffaMap,
-                    expenseID, expense)) {
-                return false;
-            }
-        }
+//            if (!addComponents(componentModel, impactModelSet,
+//                    outcomeModelSet, outputModelSet, activityModelSet, inputModelSet,
+//                    oiMap, ooMap, aoMap, iaMap, precedingSet, assignmentMap,
+//                    humanID, humanQuantity, hiuMap, materialID, materialQuantity, incomeID, ffaMap,
+//                    expenseID, expense)) {
+//                return false;
+//            }
+        //}
 
         return true;
     }
@@ -755,8 +755,8 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, componentModel.getComponentID());
-        cv.put(cSQLDBHelper.KEY_LOGFRAME_FK_ID, componentModel.getLogFrameModel().getLogFrameID());
+//        cv.put(cSQLDBHelper.KEY_ID, componentModel.getComponentID());
+//        cv.put(cSQLDBHelper.KEY_LOGFRAME_FK_ID, componentModel.getLogFrameModel().getLogFrameID());
         cv.put(cSQLDBHelper.KEY_NAME, componentModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, componentModel.getDescription());
 
@@ -835,8 +835,8 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_COMPONENT_FK_ID, impactModel.getComponentID());
-        cv.put(cSQLDBHelper.KEY_PARENT_FK_ID, impactModel.getParentID());
+//        cv.put(cSQLDBHelper.KEY_COMPONENT_FK_ID, impactModel.getComponentID());
+//        cv.put(cSQLDBHelper.KEY_PARENT_FK_ID, impactModel.getParentID());
 
         // insert project details
         try {
@@ -880,9 +880,9 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_COMPONENT_FK_ID, outcomeModel.getComponentID());
-        cv.put(cSQLDBHelper.KEY_PARENT_FK_ID, outcomeModel.getParentID());
-        cv.put(cSQLDBHelper.KEY_IMPACT_FK_ID, outcomeModel.getImpactModel().getComponentID());
+//        cv.put(cSQLDBHelper.KEY_COMPONENT_FK_ID, outcomeModel.getComponentID());
+//        cv.put(cSQLDBHelper.KEY_PARENT_FK_ID, outcomeModel.getParentID());
+//        cv.put(cSQLDBHelper.KEY_IMPACT_FK_ID, outcomeModel.getImpactModel().getComponentID());
 
         // insert project details
         try {
@@ -975,9 +975,9 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_COMPONENT_FK_ID, outputModel.getComponentID());
-        cv.put(cSQLDBHelper.KEY_PARENT_FK_ID, outputModel.getParentID());
-        cv.put(cSQLDBHelper.KEY_OUTCOME_FK_ID, outputModel.getOutcomeModel().getComponentID());
+//        cv.put(cSQLDBHelper.KEY_COMPONENT_FK_ID, outputModel.getComponentID());
+//        cv.put(cSQLDBHelper.KEY_PARENT_FK_ID, outputModel.getParentID());
+//        cv.put(cSQLDBHelper.KEY_OUTCOME_FK_ID, outputModel.getOutcomeModel().getComponentID());
 
         // insert project details
         try {
@@ -1073,9 +1073,9 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_COMPONENT_FK_ID, activityModel.getComponentID());
-        cv.put(cSQLDBHelper.KEY_PARENT_FK_ID, activityModel.getParentID());
-        cv.put(cSQLDBHelper.KEY_OUTPUT_FK_ID, activityModel.getOutputModel().getComponentID());
+//        cv.put(cSQLDBHelper.KEY_COMPONENT_FK_ID, activityModel.getComponentID());
+//        cv.put(cSQLDBHelper.KEY_PARENT_FK_ID, activityModel.getParentID());
+//        cv.put(cSQLDBHelper.KEY_OUTPUT_FK_ID, activityModel.getOutputModel().getComponentID());
 
         // insert project details
         try {
@@ -1253,10 +1253,10 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_COMPONENT_FK_ID, inputModel.getComponentID());
-        cv.put(cSQLDBHelper.KEY_ACTIVITY_FK_ID, inputModel.getActivityModel().getComponentID());
-        cv.put(cSQLDBHelper.KEY_RESOURCE_TYPE_FK_ID,
-                inputModel.getResourceTypeModel().getResourceTypeID());
+//        cv.put(cSQLDBHelper.KEY_COMPONENT_FK_ID, inputModel.getComponentID());
+//        cv.put(cSQLDBHelper.KEY_ACTIVITY_FK_ID, inputModel.getActivityModel().getComponentID());
+//        cv.put(cSQLDBHelper.KEY_RESOURCE_TYPE_FK_ID,
+//                inputModel.getResourceTypeModel().getResourceTypeID());
 
         // insert project details
         try {
@@ -1279,21 +1279,21 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
                 }
             }
 
-            if (humanID != -1) {
-                return addHumanInput(inputModel.getComponentID(), humanQuantity, hiuMap);
-            }
-
-            if (materialID != -1) {
-                return addMaterialInput(inputModel.getComponentID(), materialQuantity);
-            }
-
-            if (incomeID != -1) {
-                return addIncomeInput(inputModel.getComponentID(), ffaMap);
-            }
-
-            if (expenseID != -1) {
-                return addExpenseInput(inputModel.getComponentID(), expense);
-            }
+//            if (humanID != -1) {
+//                return addHumanInput(inputModel.getComponentID(), humanQuantity, hiuMap);
+//            }
+//
+//            if (materialID != -1) {
+//                return addMaterialInput(inputModel.getComponentID(), materialQuantity);
+//            }
+//
+//            if (incomeID != -1) {
+//                return addIncomeInput(inputModel.getComponentID(), ffaMap);
+//            }
+//
+//            if (expenseID != -1) {
+//                return addExpenseInput(inputModel.getComponentID(), expense);
+//            }
 
         } catch (Exception e) {
             Log.d(TAG, "Exception in importing INPUT from Excel: " + e.getMessage());
@@ -1641,8 +1641,8 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
             cCriteriaModel criteriaModel = new cCriteriaModel();
 
-            criteriaModel.setCriteriaID((int)
-                    cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            criteriaModel.setCriteriaID((int)
+//                    cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             criteriaModel.setName(
                     cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
             criteriaModel.setDescription(
@@ -1670,7 +1670,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, criteriaModel.getCriteriaID());
+//        cv.put(cSQLDBHelper.KEY_ID, criteriaModel.getCriteriaID());
         cv.put(cSQLDBHelper.KEY_NAME, criteriaModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, criteriaModel.getDescription());
 
@@ -1727,11 +1727,11 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
             }
 
             cQuestionGroupingModel questionGroupingModel = new cQuestionGroupingModel();
-
-            questionGroupingModel.setQuestionGroupingID(
-                    (int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            questionGroupingModel.setLabel((int) cRow.getCell(1,
-                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//
+//            questionGroupingModel.setQuestionGroupingID(
+//                    (int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            questionGroupingModel.setLabel((int) cRow.getCell(1,
+//                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             questionGroupingModel.setName(
                     cRow.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
             questionGroupingModel.setDescription(
@@ -1759,7 +1759,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, questionGroupingModel.getQuestionGroupingID());
+//        cv.put(cSQLDBHelper.KEY_ID, questionGroupingModel.getQuestionGroupingID());
         cv.put(cSQLDBHelper.KEY_LABEL, questionGroupingModel.getLabel());
         cv.put(cSQLDBHelper.KEY_NAME, questionGroupingModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, questionGroupingModel.getDescription());
@@ -1819,8 +1819,8 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
             cQuestionTypeModel questionTypeModel = new cQuestionTypeModel();
 
-            questionTypeModel.setQuestionTypeID(
-                    (int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            questionTypeModel.setQuestionTypeID(
+//                    (int) cRow.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             questionTypeModel.setName(
                     cRow.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
             questionTypeModel.setDescription(
@@ -1848,7 +1848,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
         ContentValues cv = new ContentValues();
 
         // assign values to the table fields
-        cv.put(cSQLDBHelper.KEY_ID, questionTypeModel.getQuestionTypeID());
+//        cv.put(cSQLDBHelper.KEY_ID, questionTypeModel.getQuestionTypeID());
         cv.put(cSQLDBHelper.KEY_NAME, questionTypeModel.getName());
         cv.put(cSQLDBHelper.KEY_DESCRIPTION, questionTypeModel.getDescription());
 
@@ -1912,14 +1912,14 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
             questionModel.setQuestionID((int) rowQ.getCell(0,
                     Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            questionModel.getLogFrameModel().setLogFrameID((int) rowQ.getCell(1,
-                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            questionModel.getComponentModel().setComponentID((int) rowQ.getCell(2,
-                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            questionModel.getQuestionTypeModel().setQuestionTypeID((int) rowQ.getCell(3,
-                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            questionModel.getQuestionGroupingModel().setQuestionGroupingID((int) rowQ.getCell(4,
-                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            questionModel.getLogFrameModel().setLogFrameID((int) rowQ.getCell(1,
+//                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            questionModel.getComponentModel().setComponentID((int) rowQ.getCell(2,
+////                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            questionModel.getQuestionTypeModel().setQuestionTypeID((int) rowQ.getCell(3,
+//                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            questionModel.getQuestionGroupingModel().setQuestionGroupingID((int) rowQ.getCell(4,
+//                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             questionModel.setLabel((int) rowQ.getCell(5,
                     Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             questionModel.setQuestion(rowQ.getCell(6,
@@ -2029,12 +2029,12 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ID, questionModel.getQuestionID());
-        cv.put(cSQLDBHelper.KEY_LOGFRAME_FK_ID, questionModel.getLogFrameModel().getLogFrameID());
-        cv.put(cSQLDBHelper.KEY_COMPONENT_FK_ID, questionModel.getComponentModel().getComponentID());
-        cv.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID,
-                questionModel.getQuestionTypeModel().getQuestionTypeID());
-        cv.put(cSQLDBHelper.KEY_QUESTION_GROUPING_FK_ID,
-                questionModel.getQuestionGroupingModel().getQuestionGroupingID());
+//        cv.put(cSQLDBHelper.KEY_LOGFRAME_FK_ID, questionModel.getLogFrameModel().getLogFrameID());
+//        cv.put(cSQLDBHelper.KEY_COMPONENT_FK_ID, questionModel.getComponentModel().getComponentID());
+//        cv.put(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID,
+//                questionModel.getQuestionTypeModel().getQuestionTypeID());
+//        cv.put(cSQLDBHelper.KEY_QUESTION_GROUPING_FK_ID,
+//                questionModel.getQuestionGroupingModel().getQuestionGroupingID());
         cv.put(cSQLDBHelper.KEY_LABEL, questionModel.getLabel());
         cv.put(cSQLDBHelper.KEY_QUESTION, questionModel.getQuestion());
         cv.put(cSQLDBHelper.KEY_DEFAULT_CHART, questionModel.getDefaultChart());
@@ -2355,8 +2355,8 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
             raidModel.setRaidID((int) cRow.getCell(0,
                     Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            raidModel.getLogFrameModel().setLogFrameID((int) cRow.getCell(1,
-                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            raidModel.getLogFrameModel().setLogFrameID((int) cRow.getCell(1,
+//                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             raidModel.getRaidCategoryModel().setRaidCategoryID((int) cRow.getCell(2,
                     Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             raidModel.getOriginatorModel().setHumanSetID((int) cRow.getCell(3,
@@ -2419,7 +2419,7 @@ public class cUploadLogFrameRepositoryImpl implements iUploadLogFrameRepository 
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ID, raidModel.getRaidID());
-        cv.put(cSQLDBHelper.KEY_LOGFRAME_FK_ID, raidModel.getLogFrameModel().getLogFrameID());
+//        cv.put(cSQLDBHelper.KEY_LOGFRAME_FK_ID, raidModel.getLogFrameModel().getLogFrameID());
         cv.put(cSQLDBHelper.KEY_RAID_CATEGORY_FK_ID,
                 raidModel.getRaidCategoryModel().getRaidCategoryID());
         cv.put(cSQLDBHelper.KEY_ORIGINATOR_FK_ID, raidModel.getOriginatorModel().getHumanSetID());

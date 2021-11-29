@@ -79,7 +79,7 @@ public class cReadOutcomeInteractorImpl extends cAbstractInteractor
         int parentIndex = 0, childIndex = 0;
         ArrayList<cOutcomeModel> outcomeModels = new ArrayList<>(outcomeModelSet);
         if (outcomeModels.size() > 0) {
-            logFrameName = outcomeModels.get(0).getLogFrameModel().getName();
+            //logFrameName = outcomeModels.get(0).getLogFrameModel().getName();
         }
 
         for (int i = 0; i < outcomeModels.size(); i++) {
@@ -89,11 +89,11 @@ public class cReadOutcomeInteractorImpl extends cAbstractInteractor
 
             /* set of impact children under the impact */
             childIndex = parentIndex;
-            ArrayList<cOutcomeModel> outcomes = new ArrayList<>(outcomeModel.getChildOutcomeModelSet());
-            for (int j = 0; j < outcomes.size(); j++) {
-                childIndex = childIndex + 1;
-                outcomeTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, outcomes.get(j)));
-            }
+//            ArrayList<cOutcomeModel> outcomes = new ArrayList<>(outcomeModel.getChildOutcomeModelSet());
+//            for (int j = 0; j < outcomes.size(); j++) {
+//                childIndex = childIndex + 1;
+//                outcomeTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, outcomes.get(j)));
+//            }
 
             /* next parent index */
             parentIndex = childIndex + 1;

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/includeProgressBar"
     android:gravity="center"
-    android:visibility="visible"
+    android:visibility="invisible"
     android:orientation="vertical"
     android:background="#CCFFFFFF"
     android:layout_width="match_parent"

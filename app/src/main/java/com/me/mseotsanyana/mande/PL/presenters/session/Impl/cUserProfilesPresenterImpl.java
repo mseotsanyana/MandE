@@ -3,17 +3,18 @@ package com.me.mseotsanyana.mande.PL.presenters.session.Impl;
 import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.session.userprofile.Impl.cReadUserProfilesInteractorImpl;
+import com.me.mseotsanyana.mande.BLL.interactors.session.userprofile.Impl.cUpdateUserProfileImageInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.session.userprofile.Impl.cUploadUserProfilesInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.session.userprofile.iUserProfilesInteractor;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
 import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iUserProfileRepository;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
-import com.me.mseotsanyana.mande.PL.presenters.session.iUserProfilesPresenter;
+import com.me.mseotsanyana.mande.PL.presenters.session.iUserProfilePresenter;
 
 import java.util.List;
 
-public class cUserProfilesPresenterImpl extends cAbstractPresenter implements iUserProfilesPresenter,
+public class cUserProfilesPresenterImpl extends cAbstractPresenter implements iUserProfilePresenter,
         iUserProfilesInteractor.Callback {
     //private static final String TAG = cOrganizationPresenterImpl.class.getSimpleName();
 
@@ -32,19 +33,6 @@ public class cUserProfilesPresenterImpl extends cAbstractPresenter implements iU
         this.userProfileRepository = userProfileRepository;
     }
 
-    // UPLOAD
-
-    @Override
-    public void uploadUserProfiles() {
-         iUserProfilesInteractor userProfilesInteractor =
-                new cUploadUserProfilesInteractorImpl(executor, mainThread,
-                        sharedPreferenceRepository,
-                        userProfileRepository,
-                        this);
-
-        view.showProgress();
-        userProfilesInteractor.execute();
-    }
 
     // READ USER PROFILES
     @Override
@@ -77,6 +65,22 @@ public class cUserProfilesPresenterImpl extends cAbstractPresenter implements iU
         }
     }
 
+
+
+    // UPLOAD or UPDATE
+
+    @Override
+    public void uploadUserProfilesFromExcel(String filename) {
+        iUserProfilesInteractor userProfilesInteractor =
+                new cUploadUserProfilesInteractorImpl(executor, mainThread,
+                        sharedPreferenceRepository,
+                        userProfileRepository,
+                        this, filename);
+
+        view.showProgress();
+        userProfilesInteractor.execute();
+    }
+
     @Override
     public void onUploadUserProfilesSucceeded(String msg) {
         if (this.view != null) {
@@ -93,6 +97,33 @@ public class cUserProfilesPresenterImpl extends cAbstractPresenter implements iU
         }
     }
 
+    @Override
+    public void updateUserProfileImage(String userServerID, byte[] userProfileImageData) {
+        iUserProfilesInteractor userProfilesInteractor =
+                new cUpdateUserProfileImageInteractorImpl(executor, mainThread,
+                        sharedPreferenceRepository,
+                        userProfileRepository,
+                        this, userServerID, userProfileImageData);
+
+        view.showProgress();
+        userProfilesInteractor.execute();
+    }
+
+    @Override
+    public void onUpdateUserProfileImageSucceeded(String msg) {
+        if (this.view != null) {
+            this.view.onUpdateUserProfileImageSucceeded(msg);
+            this.view.hideProgress();
+        }
+    }
+
+    @Override
+    public void onUpdateUserProfileImageFailed(String msg) {
+        if (this.view != null) {
+            this.view.onUpdateUserProfileImageFailed(msg);
+            this.view.hideProgress();
+        }
+    }
 
     // PRESENTER FUNCTIONS
 

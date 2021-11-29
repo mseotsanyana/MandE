@@ -1,31 +1,46 @@
 package com.me.mseotsanyana.mande.BLL.model.logframe;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.google.firebase.firestore.Exclude;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class cImpactModel extends cComponentModel {
-    private Set<cImpactModel> childImpactModelSet; //children
-    private Set<cOutcomeModel> outcomeModelSet;
+    private String parentServerID;
+    private List<cImpactModel> childModels;
 
-    public cImpactModel(){
+    private List<cOutcomeModel> outcomeModels;
+
+    public cImpactModel() {
         /* mappings */
-        childImpactModelSet = new HashSet<>();
-        outcomeModelSet = new HashSet<>();
+        parentServerID = null;
+        childModels = new ArrayList<>();
+        outcomeModels = new ArrayList<>();
     }
 
-    public Set<cImpactModel> getChildImpactModelSet() {
-        return childImpactModelSet;
+    public String getParentServerID() {
+        return parentServerID;
     }
 
-    public void setChildImpactModelSet(Set<cImpactModel> childImpactModelSet) {
-        this.childImpactModelSet = childImpactModelSet;
+    public void setParentServerID(String parentServerID) {
+        this.parentServerID = parentServerID;
     }
 
-    public Set<cOutcomeModel> getOutcomeModelSet() {
-        return outcomeModelSet;
+    @Exclude
+    public List<cOutcomeModel> getOutcomeModels() {
+        return outcomeModels;
     }
 
-    public void setOutcomeModelSet(Set<cOutcomeModel> outcomeModelSet) {
-        this.outcomeModelSet = outcomeModelSet;
+    public void setOutcomeModels(List<cOutcomeModel> outcomeModels) {
+        this.outcomeModels = outcomeModels;
+    }
+
+    @Exclude
+    public List<cImpactModel> getChildModels() {
+        return childModels;
+    }
+
+    public void setChildModels(List<cImpactModel> childModels) {
+        this.childModels = childModels;
     }
 }

@@ -8,51 +8,43 @@ import com.me.mseotsanyana.mande.BLL.interactors.logframe.logframe.Impl.cDeleteL
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.logframe.Impl.cDeleteSubLogFrameInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.logframe.Impl.cReadLogFrameInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.logframe.Impl.cUpdateLogFrameInteractorImpl;
+import com.me.mseotsanyana.mande.BLL.interactors.logframe.logframe.Impl.cUploadLogFrameInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.logframe.iCreateLogFrameInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.logframe.iCreateSubLogFrameInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.logframe.iDeleteLogFrameInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.logframe.iDeleteSubLogFrameInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.logframe.iReadLogFrameInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.logframe.iUpdateLogFrameInteractor;
-import com.me.mseotsanyana.mande.BLL.interactors.session.organization.Impl.cReadSharedOrgsInteractorImpl;
-import com.me.mseotsanyana.mande.BLL.interactors.session.organization.iReadSharedOrgsInteractor;
+import com.me.mseotsanyana.mande.BLL.interactors.logframe.logframe.iUploadLogFrameInteractor;
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iLogFrameRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iMenuRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel;
-import com.me.mseotsanyana.mande.BLL.model.session.cOrganizationModel;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.logframe.iLogFramePresenter;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public class cLogFramePresenterImpl extends cAbstractPresenter implements iLogFramePresenter,
-        iReadLogFrameInteractor.Callback, iReadSharedOrgsInteractor.Callback,
+        iReadLogFrameInteractor.Callback, iUploadLogFrameInteractor.Callback,
         iCreateLogFrameInteractor.Callback, iCreateSubLogFrameInteractor.Callback,
         iUpdateLogFrameInteractor.Callback, iDeleteLogFrameInteractor.Callback,
-        iDeleteSubLogFrameInteractor.Callback{
-    private static String TAG = cLogFramePresenterImpl.class.getSimpleName();
+        iDeleteSubLogFrameInteractor.Callback {
+
+    //private static final String TAG = cLogFramePresenterImpl.class.getSimpleName();
 
     private View view;
-    private iSharedPreferenceRepository sessionManagerRepository;
-    private iMenuRepository menuRepository;
-    private iLogFrameRepository logFrameRepository;
-
-    //private int userID;
+    private final iSharedPreferenceRepository sharedPreferenceRepository;
+    private final iLogFrameRepository logFrameRepository;
 
     public cLogFramePresenterImpl(iExecutor executor, iMainThread mainThread,
                                   View view,
-                                  iSharedPreferenceRepository sessionManagerRepository,
-                                  iMenuRepository menuRepository,
+                                  iSharedPreferenceRepository sharedPreferenceRepository,
                                   iLogFrameRepository logFrameRepository) {
         super(executor, mainThread);
 
         this.view = view;
-        this.sessionManagerRepository = sessionManagerRepository;
-        this.menuRepository = menuRepository;
+        this.sharedPreferenceRepository = sharedPreferenceRepository;
         this.logFrameRepository = logFrameRepository;
     }
 
@@ -60,28 +52,26 @@ public class cLogFramePresenterImpl extends cAbstractPresenter implements iLogFr
     /* create a sub-logframe model */
     @Override
     public void createLogFrameModel(cLogFrameModel logFrameModel) {
-        iCreateLogFrameInteractor createLogFrameInteractor = new cCreateLogFrameInteractorImpl(
-                executor,
-                mainThread,
-                sessionManagerRepository,
-                logFrameRepository,
-                this,
-                logFrameModel);
+        iCreateLogFrameInteractor createLogFrameInteractor =
+                new cCreateLogFrameInteractorImpl(executor, mainThread,
+                        sharedPreferenceRepository,
+                        logFrameRepository,
+                        this,
+                        logFrameModel);
 
         view.showProgress();
         createLogFrameInteractor.execute();
     }
 
     @Override
-    public void createSubLogFrameModel(long logFrameID, cLogFrameModel logSubFrameModel) {
-        iCreateSubLogFrameInteractor createSubLogFrameInteractor = new cCreateSubLogFrameInteractorImpl(
-                executor,
-                mainThread,
-                sessionManagerRepository,
-                logFrameRepository,
-                this,
-                logFrameID,
-                logSubFrameModel);
+    public void createSubLogFrameModel(String logFrameID, cLogFrameModel logSubFrameModel) {
+        iCreateSubLogFrameInteractor createSubLogFrameInteractor =
+                new cCreateSubLogFrameInteractorImpl(executor, mainThread,
+                        sharedPreferenceRepository,
+                        logFrameRepository,
+                        this,
+                        logFrameID,
+                        logSubFrameModel);
 
         view.showProgress();
         createSubLogFrameInteractor.execute();
@@ -90,7 +80,7 @@ public class cLogFramePresenterImpl extends cAbstractPresenter implements iLogFr
     /* create success  response to the view */
     @Override
     public void onLogFrameCreated(cLogFrameModel logFrameModel, String msg) {
-        if(this.view != null) {
+        if (this.view != null) {
             this.view.onLogFrameCreated(logFrameModel, msg);
             this.view.hideProgress();
         }
@@ -98,7 +88,7 @@ public class cLogFramePresenterImpl extends cAbstractPresenter implements iLogFr
 
     @Override
     public void onSubLogFrameCreated(cLogFrameModel logFrameModel, String msg) {
-        if(this.view != null) {
+        if (this.view != null) {
             this.view.onSubLogFrameCreated(logFrameModel, msg);
             this.view.hideProgress();
         }
@@ -107,7 +97,7 @@ public class cLogFramePresenterImpl extends cAbstractPresenter implements iLogFr
     /* create failure response to the view */
     @Override
     public void onLogFrameCreateFailed(String msg) {
-        if(this.view != null) {
+        if (this.view != null) {
             this.view.onLogFrameCreateFailed(msg);
             this.view.hideProgress();
         }
@@ -115,7 +105,7 @@ public class cLogFramePresenterImpl extends cAbstractPresenter implements iLogFr
 
     @Override
     public void onSubLogFrameCreateFailed(String msg) {
-        if(this.view != null) {
+        if (this.view != null) {
             this.view.onSubLogFrameCreateFailed(msg);
             this.view.hideProgress();
         }
@@ -125,12 +115,11 @@ public class cLogFramePresenterImpl extends cAbstractPresenter implements iLogFr
 
     /* ======================================= START READ ======================================= */
     @Override
-    public void readAllLogFrames() {
+    public void readLogFrames() {
         iReadLogFrameInteractor readLogFrameInteractor = new cReadLogFrameInteractorImpl(
                 executor,
                 mainThread,
-                sessionManagerRepository,
-                menuRepository,
+                sharedPreferenceRepository,
                 logFrameRepository,
                 this);
 
@@ -139,30 +128,31 @@ public class cLogFramePresenterImpl extends cAbstractPresenter implements iLogFr
     }
 
     @Override
-    public void onLogFramesRetrieved(LinkedHashMap<String, List<String>> expandableMenuItems,
-                                     ArrayList<cTreeModel> logFrameTreeModels) {
-        if(this.view != null) {
-            this.view.onRetrieveLogFramesCompleted(expandableMenuItems, logFrameTreeModels);
+    public void onLogFramesRetrieved(List<cTreeModel> treeModels) {
+        if (this.view != null) {
+            this.view.onRetrieveLogFramesCompleted(treeModels);
             this.view.hideProgress();
         }
     }
 
     @Override
     public void onLogFramesRetrieveFailed(String msg) {
-
+        if (this.view != null) {
+            this.view.onRetrieveLogFramesFailed(msg);
+            this.view.hideProgress();
+        }
     }
     /* ======================================== END READ ======================================== */
 
     /* ====================================== START UPDATE ====================================== */
     @Override
     public void updateLogFrame(cLogFrameModel logFrameModel, int position) {
-        iUpdateLogFrameInteractor updateLogFrameInteractor = new cUpdateLogFrameInteractorImpl(
-                executor,
-                mainThread,
-                logFrameRepository,
-                this,
-                logFrameModel,
-                position);
+        iUpdateLogFrameInteractor updateLogFrameInteractor =
+                new cUpdateLogFrameInteractorImpl(executor, mainThread,
+                        logFrameRepository,
+                        this,
+                        logFrameModel,
+                        position);
 
         view.showProgress();
         updateLogFrameInteractor.execute();
@@ -170,7 +160,7 @@ public class cLogFramePresenterImpl extends cAbstractPresenter implements iLogFr
 
     @Override
     public void onLogFrameUpdated(cLogFrameModel logFrameModel, int position, String msg) {
-        if(this.view != null) {
+        if (this.view != null) {
             this.view.onLogFrameUpdated(logFrameModel, position, msg);
             this.view.hideProgress();
         }
@@ -184,26 +174,24 @@ public class cLogFramePresenterImpl extends cAbstractPresenter implements iLogFr
 
     /* ====================================== START DELETE ====================================== */
     @Override
-    public void deleteLogFrameModel(long logFrameID, int position) {
-        iDeleteLogFrameInteractor deleteLogFrameInteractor = new cDeleteLogFrameInteractorImpl(
-                executor,
-                mainThread,
-                logFrameRepository,
-                this,
-                logFrameID, position);
+    public void deleteLogFrameModel(String logFrameID, int position) {
+        iDeleteLogFrameInteractor deleteLogFrameInteractor =
+                new cDeleteLogFrameInteractorImpl(executor, mainThread,
+                        logFrameRepository,
+                        this,
+                        logFrameID, position);
 
         view.showProgress();
         deleteLogFrameInteractor.execute();
     }
 
     @Override
-    public void deleteSubLogFrameModel(long logSubFrameID, int position) {
-        iDeleteSubLogFrameInteractor delSubLogFrameInteractor = new cDeleteSubLogFrameInteractorImpl(
-                executor,
-                mainThread,
-                logFrameRepository,
-                this,
-                logSubFrameID, position);
+    public void deleteSubLogFrameModel(String logSubFrameID, int position) {
+        iDeleteSubLogFrameInteractor delSubLogFrameInteractor =
+                new cDeleteSubLogFrameInteractorImpl(executor, mainThread,
+                        logFrameRepository,
+                        this,
+                        logSubFrameID, position);
 
         view.showProgress();
         delSubLogFrameInteractor.execute();
@@ -211,7 +199,7 @@ public class cLogFramePresenterImpl extends cAbstractPresenter implements iLogFr
 
     @Override
     public void onLogFrameDeleted(int position, String msg) {
-        if(this.view != null) {
+        if (this.view != null) {
             this.view.onLogFrameDeleted(position, msg);
             this.view.hideProgress();
         }
@@ -219,7 +207,7 @@ public class cLogFramePresenterImpl extends cAbstractPresenter implements iLogFr
 
     @Override
     public void onLogFrameDeleteFailed(String msg) {
-        if(this.view != null) {
+        if (this.view != null) {
             this.view.onLogFrameDeleteFailed(msg);
             this.view.hideProgress();
         }
@@ -227,7 +215,7 @@ public class cLogFramePresenterImpl extends cAbstractPresenter implements iLogFr
 
     @Override
     public void onSubLogFrameDeleted(int position, String msg) {
-        if(this.view != null) {
+        if (this.view != null) {
             this.view.onSubLogFrameDeleted(position, msg);
             this.view.hideProgress();
         }
@@ -235,7 +223,7 @@ public class cLogFramePresenterImpl extends cAbstractPresenter implements iLogFr
 
     @Override
     public void onSubLogFrameDeleteFailed(String msg) {
-        if(this.view != null) {
+        if (this.view != null) {
             this.view.onSubLogFrameDeleteFailed(msg);
             this.view.hideProgress();
         }
@@ -243,40 +231,38 @@ public class cLogFramePresenterImpl extends cAbstractPresenter implements iLogFr
 
     /* ======================================= END DELETE ======================================= */
 
-    /* ======================================= START SYNC ======================================= */
+    /* ====================================== START UPLOAD ====================================== */
     @Override
-    public void syncLogFrameModel(cLogFrameModel logFrameModel) {
-        /*try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-    }
-    /* ======================================== END SYNC ======================================== */
-
-    /* ==================================== START PREFERENCE ==================================== */
-    /* shared preferences */
-    @Override
-    public void readSharedOrganizations() {
-        iReadSharedOrgsInteractor readSharedOrgsInteractor = new cReadSharedOrgsInteractorImpl(
-                executor,
-                mainThread,
-                sessionManagerRepository,
-                this);
+    public void uploadLogFrameFromExcel(String filePath) {
+        iUploadLogFrameInteractor uploadLogFrameInteractor =
+                new cUploadLogFrameInteractorImpl(executor, mainThread,
+                        sharedPreferenceRepository,
+                        logFrameRepository,
+                        this,
+                        filePath);
 
         view.showProgress();
+        uploadLogFrameInteractor.execute();
+    }
 
-        readSharedOrgsInteractor.execute();
+    /* ======================================= END UPLOAD ======================================= */
+
+    /* ==================================== START PREFERENCE ==================================== */
+
+    @Override
+    public void onUploadLogFrameCompleted(String msg) {
+        if (this.view != null) {
+            this.view.onUploadLogFrameCompleted(msg);
+            this.view.hideProgress();
+        }
     }
 
     @Override
-    public void onReadSharedOrgsFailed(String msg) {
-
-    }
-
-    @Override
-    public void onSharedOrgsRetrieved(ArrayList<cOrganizationModel> organizationModels) {
-        view.onRetrieveSharedOrgsCompleted(organizationModels);
+    public void onUploadLogFrameFailed(String msg) {
+        if (this.view != null) {
+            this.view.onUploadLogFrameFailed(msg);
+            this.view.hideProgress();
+        }
     }
 
     /* ===================================== END PREFERENCE ===================================== */
@@ -285,7 +271,7 @@ public class cLogFramePresenterImpl extends cAbstractPresenter implements iLogFr
     /* corresponding view functions */
     @Override
     public void resume() {
-        readAllLogFrames();
+        readLogFrames();
     }
 
     @Override
@@ -295,7 +281,7 @@ public class cLogFramePresenterImpl extends cAbstractPresenter implements iLogFr
 
     @Override
     public void stop() {
-        if(this.view != null){
+        if (this.view != null) {
             this.view.hideProgress();
         }
     }

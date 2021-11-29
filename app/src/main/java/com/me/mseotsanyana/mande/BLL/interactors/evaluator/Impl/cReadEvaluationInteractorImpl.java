@@ -87,8 +87,8 @@ public class cReadEvaluationInteractorImpl extends cAbstractInteractor
         cDBQuestion dbQuestion = new cDBQuestion();
 
         dbQuestion.setQuestionID(questionModel.getQuestionID());
-        dbQuestion.setQuestionTypeID(questionModel.getQuestionTypeModel().getQuestionTypeID());
-        dbQuestion.setQuestionGroupingID(questionModel.getQuestionGroupingModel().getQuestionGroupingID());
+//        dbQuestion.setQuestionTypeID(questionModel.getQuestionTypeModel().getQuestionTypeID());
+//        dbQuestion.setQuestionGroupingID(questionModel.getQuestionGroupingModel().getQuestionGroupingID());
         dbQuestion.setLabel(questionModel.getLabel());
         dbQuestion.setQuestion(questionModel.getQuestion());
 

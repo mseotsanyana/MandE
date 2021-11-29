@@ -14,5 +14,9 @@ public interface iUserProfilesInteractor extends iInteractor {
         /* upload user profile use case */
         void onUploadUserProfilesSucceeded(String msg);
         void onUploadUserProfilesFailed(String msg);
+
+        /* update user profile use case */
+        void onUpdateUserProfileImageSucceeded(String msg);
+        void onUpdateUserProfileImageFailed(String msg);
     }
 }

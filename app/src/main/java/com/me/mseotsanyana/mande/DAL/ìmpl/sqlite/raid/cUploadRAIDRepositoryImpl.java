@@ -804,8 +804,8 @@ public class cUploadRAIDRepositoryImpl implements iUploadRAIDRepository {
 
             raidlogModel.setRaidLogID((int)
                     rowRL.getCell(0, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            raidlogModel.getLogFrameModel().setLogFrameID((int)
-                    rowRL.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            raidlogModel.getLogFrameModel().setLogFrameID((int)
+//                    rowRL.getCell(1, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             raidlogModel.getRiskRegisterModel().setRaidRegisterID((int)
                     rowRL.getCell(2, Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             raidlogModel.getAssRegisterModel().setRaidRegisterID((int)
@@ -835,8 +835,8 @@ public class cUploadRAIDRepositoryImpl implements iUploadRAIDRepository {
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ID, raidlogModel.getRaidLogID());
-        cv.put(cSQLDBHelper.KEY_LOGFRAME_FK_ID,
-                raidlogModel.getLogFrameModel().getLogFrameID());
+//        cv.put(cSQLDBHelper.KEY_LOGFRAME_FK_ID,
+//                raidlogModel.getLogFrameModel().getLogFrameID());
         cv.put(cSQLDBHelper.KEY_RISK_REGISTER_FK_ID,
                 raidlogModel.getRiskRegisterModel().getRaidRegisterID());
         cv.put(cSQLDBHelper.KEY_ASS_REGISTER_FK_ID,

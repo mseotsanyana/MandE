@@ -10,6 +10,8 @@
     -->
     <color name="backgroundColor">#0A5D00</color>
     <color name="faintWhite">#55FFFFFF</color>
+    <color name="faintGrey">#E1E2E2</color>
+
     <!--
    <color name="colorPrimary">#356859</color>
    <color name="colorPrimaryDark">#23453B</color>

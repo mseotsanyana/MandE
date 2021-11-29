@@ -39,6 +39,12 @@ public class cSharedPreference {
     public static final int ROLE             = 128;
     public static final int PERMISSION       = 256;
 
+    public static final int LOGFRAME         = 1;
+    public static final int IMPACT           = 2;
+    public static final int OUTCOME          = 4;
+    public static final int OUTPUT           = 8;
+    public static final int ACTIVITY         = 16;
+    public static final int INPUT            = 32;
 
     /* system entity operation constants */
     public static final int CREATE           = 1;
@@ -79,6 +85,14 @@ public class cSharedPreference {
             SECONDARY_DELETE, /* 10 */
             WORKPLACE_DELETE, /* 11 */
     };
+
+    /* operation statuses */
+    public static final int DELETED   = 1;
+    public static final int INACTIVE  = 2;
+    public static final int ACTIVE    = 4;
+    public static final int CANCELLED = 8;
+    public static final int PENDING   = 16;
+
 
     private SharedPreferences settings;
     private SharedPreferences.Editor editor;

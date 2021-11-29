@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
@@ -62,6 +63,7 @@ public class cSharedPreferenceFirestoreRepositoryImpl implements iSharedPreferen
      */
     @Override
     public void deleteSettings() {
+        // clear all saved preferences
         editor.clear();
     }
 

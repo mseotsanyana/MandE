@@ -10,7 +10,6 @@
     </facet>
     <facet type="java-gradle" name="Java-Gradle">
       <configuration>
-        <option name="BUILD_FOLDER_PATH" value="$MODULE_DIR$/../../../../Libraries/compilers/build" />
         <option name="BUILDABLE" value="true" />
       </configuration>
     </facet>
@@ -28,6 +27,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="MandE.annotations" />
-    <orderEntry type="library" name="Gradle: com.squareup:javapoet:1.10.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup:javapoet:1.13.0" level="project" />
   </component>
 </module>

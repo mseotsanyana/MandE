@@ -1,32 +1,32 @@
 package com.me.mseotsanyana.mande.BLL.repository.session;
 
 import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
+import com.me.mseotsanyana.treeadapterlibrary.cNode;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.util.List;
 
 public interface iPermissionRepository {
 
-    void readModulePermissions(String organizationServerID, String userServerID,
+    void readRolePermissions(String organizationServerID, String userServerID,
                              int primaryTeamBIT, List<Integer> secondaryTeamBITS,
-                             List<Integer> statusBITS,
-                             iReadModulePermissionsCallback callback);
+                             List<Integer> statusBITS, iReadRolePermissionsCallback callback);
 
-    interface iReadModulePermissionsCallback {
-        void onReadModulePermissionsSucceeded(List<cTreeModel> treeModels);
+    interface iReadRolePermissionsCallback {
+        void onReadRolePermissionsSucceeded(List<cTreeModel> treeModels);
 
-        void onReadModulePermissionsFailed(String msg);
+        void onReadRolePermissionsFailed(String msg);
     }
 
-    void readUserPermissions(String organizationServerID, String userServerID,
-                             int primaryTeamBIT, List<Integer> secondaryTeamBITS,
-                             List<Integer> statusBITS,
-                             iReadUserPermissionsCallback callback);
+    void updateRolePermissions(String organizationServerID, String userServerID,
+                               int primaryTeamBIT, List<Integer> secondaryTeamBITS,
+                               List<Integer> statusBITS, List<cNode> nodes,
+                               iUpdateRolePermissionsCallback callback);
 
-    interface iReadUserPermissionsCallback {
-        void onReadUserPermissionsSucceeded(List<cTreeModel> treeModels);
+    interface iUpdateRolePermissionsCallback {
+        void onUpdateRolePermissionsSucceeded(String msg);
 
-        void onReadUserPermissionsFailed(String msg);
+        void onUpdateRolePermissionsFailed(String msg);
     }
 
     void saveUserPermissions(iSaveUserPermissionsCallback callback);
@@ -59,6 +59,29 @@ public interface iPermissionRepository {
 
         void onLoadDefaultSettings(String msg);
     }
+    /*
+    //    void readUserPermissions(String organizationServerID, String userServerID,
+//                             int primaryTeamBIT, List<Integer> secondaryTeamBITS,
+//                             List<Integer> statusBITS, iReadUserPermissionsCallback callback);
+//
+//    interface iReadUserPermissionsCallback {
+//        void onReadUserPermissionsSucceeded(List<cTreeModel> treeModels);
+//
+//        void onReadUserPermissionsFailed(String msg);
+//    }
+
+    void readModulePermissions(String organizationServerID, String userServerID,
+                             int primaryTeamBIT, List<Integer> secondaryTeamBITS,
+                             List<Integer> statusBITS,
+                             iReadModulePermissionsCallback callback);
+
+    interface iReadModulePermissionsCallback {
+        void onReadModulePermissionsSucceeded(List<cTreeModel> treeModels);
+
+        void onReadModulePermissionsFailed(String msg);
+    }
+*/
+
 //    /* user shared preferences */
 //    void commitSettings();
 //    void deleteSettings();

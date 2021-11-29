@@ -67,7 +67,7 @@ public class cMaterialAdapter extends RecyclerView.Adapter<cMaterialAdapter.cMat
                 R.color.child_body_colour));
 
         MH.textViewParentCaption.setText(R.string.activity_caption);
-        MH.textViewParent.setText(materialModel.getActivityModel().getName());
+//        MH.textViewParent.setText(materialModel.getActivityModel().getName());
         MH.textViewNameCaption.setText(R.string.input_caption);
         //--MH.textViewName.setText(materialModel.getResourceModel().getName());
         MH.textViewNumberCaption.setText(R.string.input_number_caption);

@@ -77,6 +77,7 @@
       <w>freemium</w>
       <w>fullname</w>
       <w>funder</w>
+      <w>horiz</w>
       <w>horizontalchart</w>
       <w>humanset</w>
       <w>imageid</w>
@@ -138,6 +139,7 @@
       <w>primitivequestion</w>
       <w>primitivetype</w>
       <w>priv</w>
+      <w>profilephotos</w>
       <w>qualitativechoice</w>
       <w>qualitativechoiceset</w>
       <w>qualitativecriteria</w>

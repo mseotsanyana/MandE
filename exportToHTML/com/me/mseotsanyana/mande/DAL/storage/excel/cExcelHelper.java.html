@@ -1,0 +1,511 @@
+<html>
+<head>
+<title>cExcelHelper.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #0033b3;}
+.s1 { color: #080808;}
+.s2 { color: #8c8c8c; font-style: italic;}
+.s3 { color: #067d17;}
+.s4 { color: #1750eb;}
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+cExcelHelper.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.me.mseotsanyana.mande.DAL.storage.excel;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Context;</span>
+<span class="s0">import </span><span class="s1">android.content.res.AssetManager;</span>
+
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.UTIL.cConstant;</span>
+
+<span class="s0">import </span><span class="s1">org.apache.poi.ss.usermodel.Sheet;</span>
+<span class="s0">import </span><span class="s1">org.apache.poi.ss.usermodel.Workbook;</span>
+<span class="s0">import </span><span class="s1">org.apache.poi.xssf.usermodel.XSSFWorkbook;</span>
+
+<span class="s0">import </span><span class="s1">java.io.IOException;</span>
+<span class="s0">import </span><span class="s1">java.io.InputStream;</span>
+<span class="s0">import </span><span class="s1">java.text.SimpleDateFormat;</span>
+
+
+<span class="s2">/**</span>
+ <span class="s2">* Created by mseotsanyana on 2017/05/23.</span>
+ <span class="s2">*/</span>
+
+<span class="s0">public class </span><span class="s1">cExcelHelper {</span>
+    <span class="s0">private static </span><span class="s1">SimpleDateFormat sdf = cConstant.FORMAT_DATE;</span>
+    <span class="s0">private static </span><span class="s1">String TAG = cExcelHelper.</span><span class="s0">class</span><span class="s1">.getSimpleName();</span>
+
+    <span class="s0">private </span><span class="s1">InputStream excelGLOBAL, excelSESSION, excelLOGFRAME,excelEVALUATION,</span>
+            <span class="s1">excelMONITORING, excelRAID, excelAWPB;</span>
+
+    <span class="s0">private </span><span class="s1">Workbook workbookGLOBAL, workbookSESSION, workbookLOGFRAME, workbookEVALUATION,</span>
+            <span class="s1">workbookMONITORING, workbookRAID, workbookAWPB;</span>
+
+    <span class="s0">private int </span><span class="s1">rowsGLOBAL, rowsSESSION, rowsLOGFRAME, rowsEVALUATION, rowsMONITORING,</span>
+            <span class="s1">rowsRAID, rowsAWPB;</span>
+
+    <span class="s2">/*############################### START SESSION MODULE TABLES ################################*/</span>
+
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblADDRESS            = </span><span class="s3">&quot;tblADDRESS&quot;</span><span class="s1">;           </span><span class="s2">/* 1  */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblORGANIZATION       = </span><span class="s3">&quot;tblORGANIZATION&quot;</span><span class="s1">;      </span><span class="s2">/* 2  */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblFUNDER             = </span><span class="s3">&quot;tblFUNDER&quot;</span><span class="s1">;            </span><span class="s2">/* 3  */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblBENEFICIARY        = </span><span class="s3">&quot;tblBENEFICIARY&quot;</span><span class="s1">;       </span><span class="s2">/* 4  */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblIMPLEMENTINGAGENCY = </span><span class="s3">&quot;tblIMPLEMENTINGAGENCY&quot;</span><span class="s1">;</span><span class="s2">/* 5  */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblVALUE              = </span><span class="s3">&quot;tblVALUE&quot;</span><span class="s1">;             </span><span class="s2">/* 6  */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblUSER               = </span><span class="s3">&quot;tblUSER&quot;</span><span class="s1">;              </span><span class="s2">/* 7  */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblSESSION            = </span><span class="s3">&quot;tblSESSION&quot;</span><span class="s1">;           </span><span class="s2">/* 8  */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblROLE               = </span><span class="s3">&quot;tblROLE&quot;</span><span class="s1">;              </span><span class="s2">/* 9  */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblMENU               = </span><span class="s3">&quot;tblMENU&quot;</span><span class="s1">;              </span><span class="s2">/* 10 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblENTITY             = </span><span class="s3">&quot;tblENTITY&quot;</span><span class="s1">;            </span><span class="s2">/* 12 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblOPERATION          = </span><span class="s3">&quot;tblOPERATION&quot;</span><span class="s1">;         </span><span class="s2">/* 13 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblSTATUS             = </span><span class="s3">&quot;tblSTATUS&quot;</span><span class="s1">;            </span><span class="s2">/* 14 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblSTATUSSET          = </span><span class="s3">&quot;tblSTATUSSET&quot;</span><span class="s1">;         </span><span class="s2">/* 11 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblORG_ADDRESS        = </span><span class="s3">&quot;tblORG_ADDRESS&quot;</span><span class="s1">;       </span><span class="s2">/* 15 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblUSER_ADDRESS       = </span><span class="s3">&quot;tblUSER_ADDRESS&quot;</span><span class="s1">;      </span><span class="s2">/* 16 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblUSER_ROLE          = </span><span class="s3">&quot;tblUSER_ROLE&quot;</span><span class="s1">;         </span><span class="s2">/* 17 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblSESSION_ROLE       = </span><span class="s3">&quot;tblSESSION_ROLE&quot;</span><span class="s1">;      </span><span class="s2">/* 18 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblMENU_ROLE          = </span><span class="s3">&quot;tblMENU_ROLE&quot;</span><span class="s1">;         </span><span class="s2">/* 19 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblPRIVILEGE          = </span><span class="s3">&quot;tblPRIVILEGE&quot;</span><span class="s1">;         </span><span class="s2">/* 20 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblPERMISSION         = </span><span class="s3">&quot;tblPERMISSION&quot;</span><span class="s1">;        </span><span class="s2">/* 20 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblSTATUSSET_STATUS   = </span><span class="s3">&quot;tblSTATUSSET_STATUS&quot;</span><span class="s1">;  </span><span class="s2">/* 21 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblSETTING            = </span><span class="s3">&quot;tblSETTING&quot;</span><span class="s1">;           </span><span class="s2">/* 22 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblNOTIFICATION       = </span><span class="s3">&quot;tblNOTIFICATION&quot;</span><span class="s1">;      </span><span class="s2">/* 23 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblSUBSCRIBER         = </span><span class="s3">&quot;tblSUBSCRIBER&quot;</span><span class="s1">;        </span><span class="s2">/* 24 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblPUBLISHER          = </span><span class="s3">&quot;tblPUBLISHER&quot;</span><span class="s1">;         </span><span class="s2">/* 25 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblNOTIFY_SETTING     = </span><span class="s3">&quot;tblNOTIFY_SETTING&quot;</span><span class="s1">;    </span><span class="s2">/* 26 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblACTIVITYLOG        = </span><span class="s3">&quot;tblACTIVITYLOG&quot;</span><span class="s1">;       </span><span class="s2">/* 27 */</span>
+
+    <span class="s2">/*################################ END SESSION MODULE TABLES #################################*/</span>
+
+    <span class="s2">/*############################### START GLOBAL MODULE TABLES #################################*/</span>
+
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblFREQUENCY          = </span><span class="s3">&quot;tblFREQUENCY&quot;</span><span class="s1">;                 </span><span class="s2">/* 1 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblPERIOD             = </span><span class="s3">&quot;tblPERIOD&quot;</span><span class="s1">;                    </span><span class="s2">/* 2 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblFISCALYEAR         = </span><span class="s3">&quot;tblFISCALYEAR&quot;</span><span class="s1">;                </span><span class="s2">/* 3 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblCHART              = </span><span class="s3">&quot;tblCHART&quot;</span><span class="s1">;                     </span><span class="s2">/* 4 */</span>
+
+    <span class="s2">/*############################## START LOGFRAME MODULE TABLES ################################*/</span>
+
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblLOGFRAME           = </span><span class="s3">&quot;tblLOGFRAME&quot;</span><span class="s1">;                  </span><span class="s2">/* 1 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblLOGFRAMETREE       = </span><span class="s3">&quot;tblLOGFRAMETREE&quot;</span><span class="s1">;              </span><span class="s2">/* 2 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblCOMPONENT          = </span><span class="s3">&quot;tblCOMPONENT&quot;</span><span class="s1">;                 </span><span class="s2">/* 3 */</span>
+
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblIMPACT             = </span><span class="s3">&quot;tblIMPACT&quot;</span><span class="s1">;                    </span><span class="s2">/* 3 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblOUTCOME            = </span><span class="s3">&quot;tblOUTCOME&quot;</span><span class="s1">;                   </span><span class="s2">/* 4 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblOUTPUT             = </span><span class="s3">&quot;tblOUTPUT&quot;</span><span class="s1">;                    </span><span class="s2">/* 5 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblACTIVITY           = </span><span class="s3">&quot;tblACTIVITY&quot;</span><span class="s1">;                  </span><span class="s2">/* 7 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblINPUT              = </span><span class="s3">&quot;tblINPUT&quot;</span><span class="s1">;                    </span><span class="s2">/* 8  */</span>
+
+    <span class="s2">//public static final String SHEET_tblWORKPLAN           = &quot;tblWORKPLAN&quot;;                /* 6 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblRESOURCETYPE       = </span><span class="s3">&quot;tblRESOURCETYPE&quot;</span><span class="s1">;      </span><span class="s2">/* 9  */</span>
+    <span class="s2">//public static final String SHEET_tblRESOURCE           = &quot;tblRESOURCE&quot;;        /* 10 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblCRITERIA           = </span><span class="s3">&quot;tblCRITERIA&quot;</span><span class="s1">;          </span><span class="s2">/* 11 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblQUESTIONGROUPING   = </span><span class="s3">&quot;tblQUESTIONGROUPING&quot;</span><span class="s1">;  </span><span class="s2">/* 12 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblQUESTIONTYPE       = </span><span class="s3">&quot;tblQUESTIONTYPE&quot;</span><span class="s1">;      </span><span class="s2">/* 13 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblQUESTION           = </span><span class="s3">&quot;tblQUESTION&quot;</span><span class="s1">;          </span><span class="s2">/* 14 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblPRIMITIVEQUESTION  = </span><span class="s3">&quot;tblPRIMITIVEQUESTION&quot;</span><span class="s1">; </span><span class="s2">/* 15 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblARRAYQUESTION      = </span><span class="s3">&quot;tblARRAYQUESTION&quot;</span><span class="s1">;     </span><span class="s2">/* 16 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblMATRIXQUESTION     = </span><span class="s3">&quot;tblMATRIXQUESTION&quot;</span><span class="s1">;    </span><span class="s2">/* 17 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblQUESTION_CRITERIA  = </span><span class="s3">&quot;tblQUESTION_CRITERIA&quot;</span><span class="s1">;          </span><span class="s2">/* 14 */</span>
+
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblRAIDCATEGORY       = </span><span class="s3">&quot;tblRAIDCATEGORY&quot;</span><span class="s1">;      </span><span class="s2">/* 18 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblRAID               = </span><span class="s3">&quot;tblRAID&quot;</span><span class="s1">;              </span><span class="s2">/* 19 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblCOMPONENT_RAID     = </span><span class="s3">&quot;tblCOMPONENT_RAID&quot;</span><span class="s1">;    </span><span class="s2">/* 3 */</span>
+
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblOUTCOME_IMPACT     = </span><span class="s3">&quot;tblOUTCOME_IMPACT&quot;</span><span class="s1">;    </span><span class="s2">/* 20 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblOUTPUT_OUTCOME     = </span><span class="s3">&quot;tblOUTPUT_OUTCOME&quot;</span><span class="s1">;    </span><span class="s2">/* 21 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblACTIVITY_OUTPUT    = </span><span class="s3">&quot;tblACTIVITY_OUTPUT&quot;</span><span class="s1">;   </span><span class="s2">/* 22 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblINPUT_ACTIVITY     = </span><span class="s3">&quot;tblINPUT_ACTIVITY&quot;</span><span class="s1">;    </span><span class="s2">/* 23 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblPRECEDINGACTIVITY  = </span><span class="s3">&quot;tblPRECEDINGACTIVITY&quot;</span><span class="s1">; </span><span class="s2">/* 24 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblACTIVITYASSIGNMENT = </span><span class="s3">&quot;tblACTIVITYASSIGNMENT&quot;</span><span class="s1">;</span><span class="s2">/* 25 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblIMPACT_QUESTION    = </span><span class="s3">&quot;tblIMPACT_QUESTION&quot;</span><span class="s1">;   </span><span class="s2">/* 26 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblOUTCOME_QUESTION   = </span><span class="s3">&quot;tblOUTCOME_QUESTION&quot;</span><span class="s1">;  </span><span class="s2">/* 27 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblOUTPUT_QUESTION    = </span><span class="s3">&quot;tblOUTPUT_QUESTION&quot;</span><span class="s1">;   </span><span class="s2">/* 28 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblACTIVITY_QUESTION  = </span><span class="s3">&quot;tblACTIVITY_QUESTION&quot;</span><span class="s1">; </span><span class="s2">/* 29 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblINPUT_QUESTION     = </span><span class="s3">&quot;tblINPUT_QUESTION&quot;</span><span class="s1">;    </span><span class="s2">/* 30 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblIMPACT_RAID        = </span><span class="s3">&quot;tblIMPACT_RAID&quot;</span><span class="s1">;       </span><span class="s2">/* 31 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblOUTCOME_RAID       = </span><span class="s3">&quot;tblOUTCOME_RAID&quot;</span><span class="s1">;      </span><span class="s2">/* 32 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblOUTPUT_RAID        = </span><span class="s3">&quot;tblOUTPUT_RAID&quot;</span><span class="s1">;       </span><span class="s2">/* 33 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblACTIVITY_RAID      = </span><span class="s3">&quot;tblACTIVITY_RAID&quot;</span><span class="s1">;     </span><span class="s2">/* 34 */</span>
+
+    <span class="s2">/*############################## START EVALUATION MODULE TABLES ##############################*/</span>
+
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblARRAYCHOICE         = </span><span class="s3">&quot;tblARRAYCHOICE&quot;</span><span class="s1">;           </span><span class="s2">/* 1 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblROWCHOICE           = </span><span class="s3">&quot;tblROWCHOICE&quot;</span><span class="s1">;             </span><span class="s2">/* 2 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblCOLCHOICE           = </span><span class="s3">&quot;tblCOLCHOICE&quot;</span><span class="s1">;             </span><span class="s2">/* 3 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblARRAYSET            = </span><span class="s3">&quot;tblARRAYSET&quot;</span><span class="s1">;              </span><span class="s2">/* 4 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblMATRIXSET           = </span><span class="s3">&quot;tblMATRIXSET&quot;</span><span class="s1">;             </span><span class="s2">/* 5 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblARRAYCHOICESET      = </span><span class="s3">&quot;tblARRAYCHOICESET&quot;</span><span class="s1">;        </span><span class="s2">/* 6 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblMATRIXCHOICESET     = </span><span class="s3">&quot;tblMATRIXCHOICESET&quot;</span><span class="s1">;       </span><span class="s2">/* 7 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblEVALUATIONTYPE      = </span><span class="s3">&quot;tblEVALUATIONTYPE&quot;</span><span class="s1">;        </span><span class="s2">/* 8 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblEVALUATION          = </span><span class="s3">&quot;tblEVALUATION&quot;</span><span class="s1">;            </span><span class="s2">/* 9 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblQUESTION_EVALUATION = </span><span class="s3">&quot;tblQUESTION_EVALUATION&quot;</span><span class="s1">;   </span><span class="s2">/* 10*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblCONDITIONAL_ORDER   = </span><span class="s3">&quot;tblCONDITIONAL_ORDER&quot;</span><span class="s1">;     </span><span class="s2">/* 11*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblUSER_EVALUATION     = </span><span class="s3">&quot;tblUSER_EVALUATION&quot;</span><span class="s1">;       </span><span class="s2">/* 12*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblEVALUATION_RESPONSE = </span><span class="s3">&quot;tblEVALUATION_RESPONSE&quot;</span><span class="s1">;   </span><span class="s2">/* 13*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblNUMERICRESPONSE     = </span><span class="s3">&quot;tblNUMERICRESPONSE&quot;</span><span class="s1">;       </span><span class="s2">/* 14*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblTEXTRESPONSE        = </span><span class="s3">&quot;tblTEXTRESPONSE&quot;</span><span class="s1">;          </span><span class="s2">/* 15*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblDATERESPONSE        = </span><span class="s3">&quot;tblDATERESPONSE&quot;</span><span class="s1">;          </span><span class="s2">/* 16*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblARRAYRESPONSE       = </span><span class="s3">&quot;tblARRAYRESPONSE&quot;</span><span class="s1">;         </span><span class="s2">/* 17*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblMATRIXRESPONSE      = </span><span class="s3">&quot;tblMATRIXRESPONSE&quot;</span><span class="s1">;        </span><span class="s2">/* 18*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblPRIMITIVECHART      = </span><span class="s3">&quot;tblPRIMITIVECHART&quot;</span><span class="s1">;        </span><span class="s2">/* 19*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblARRAYCHART          = </span><span class="s3">&quot;tblARRAYCHART&quot;</span><span class="s1">;            </span><span class="s2">/* 20*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblMATRIXCHART         = </span><span class="s3">&quot;tblMATRIXCHART&quot;</span><span class="s1">;           </span><span class="s2">/* 21*/</span>
+
+    <span class="s2">/*############################## START MONITORING MODULE TABLES ##############################*/</span>
+
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblQUESTION_INDICATOR    = </span><span class="s3">&quot;tblQUESTION_INDICATOR&quot;</span><span class="s1">;    </span><span class="s2">/* 1 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblMETHOD                = </span><span class="s3">&quot;tblMETHOD&quot;</span><span class="s1">;                </span><span class="s2">/* 2 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblMOV                   = </span><span class="s3">&quot;tblMOV&quot;</span><span class="s1">;                   </span><span class="s2">/* 3 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblDATASOURCE            = </span><span class="s3">&quot;tblDATASOURCE&quot;</span><span class="s1">;            </span><span class="s2">/* 4 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblINDICATORTYPE         = </span><span class="s3">&quot;tblINDICATORTYPE&quot;</span><span class="s1">;         </span><span class="s2">/* 5 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblQUANTITATIVETYPE      = </span><span class="s3">&quot;tblQUANTITATIVETYPE&quot;</span><span class="s1">;      </span><span class="s2">/* 6 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblCRITERIASCORE         = </span><span class="s3">&quot;tblCRITERIASCORE&quot;</span><span class="s1">;         </span><span class="s2">/* 7 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblQUALITATIVECRITERIA   = </span><span class="s3">&quot;tblQUALITATIVECRITERIA&quot;</span><span class="s1">;   </span><span class="s2">/* 8 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblQUALITATIVESET        = </span><span class="s3">&quot;tblQUALITATIVESET&quot;</span><span class="s1">;        </span><span class="s2">/* 9 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblQUALITATIVESCORESET   = </span><span class="s3">&quot;tblQUALITATIVESCORESET&quot;</span><span class="s1">;   </span><span class="s2">/* 10*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblARRAYINDICATOR        = </span><span class="s3">&quot;tblARRAYINDICATOR&quot;</span><span class="s1">;        </span><span class="s2">/* 11*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblMATRIXINDICATOR       = </span><span class="s3">&quot;tblMATRIXINDICATOR&quot;</span><span class="s1">;       </span><span class="s2">/* 12*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblQUALITATIVEINDICATOR  = </span><span class="s3">&quot;tblQUALITATIVEINDICATOR&quot;</span><span class="s1">;  </span><span class="s2">/* 13*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblQUANTITATIVEINDICATOR = </span><span class="s3">&quot;tblQUANTITATIVEINDICATOR&quot;</span><span class="s1">; </span><span class="s2">/* 14*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblTARGET                = </span><span class="s3">&quot;tblTARGET&quot;</span><span class="s1">;                </span><span class="s2">/* 15*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblQUALITATIVETARGET     = </span><span class="s3">&quot;tblQUALITATIVETARGET&quot;</span><span class="s1">;     </span><span class="s2">/* 16*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblQUANTITATIVETARGET    = </span><span class="s3">&quot;tblQUANTITATIVETARGET&quot;</span><span class="s1">;    </span><span class="s2">/* 17*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblARRAYTARGET           = </span><span class="s3">&quot;tblARRAYTARGET&quot;</span><span class="s1">;           </span><span class="s2">/* 18*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblMATRIXTARGET          = </span><span class="s3">&quot;tblMATRIXTARGET&quot;</span><span class="s1">;          </span><span class="s2">/* 19*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblDATACOLLECTOR         = </span><span class="s3">&quot;tblDATACOLLECTOR&quot;</span><span class="s1">;         </span><span class="s2">/* 20*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblINDICATOR             = </span><span class="s3">&quot;tblINDICATOR&quot;</span><span class="s1">;             </span><span class="s2">/* 21*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblINDICATORMILESTONE    = </span><span class="s3">&quot;tblINDICATORMILESTONE&quot;</span><span class="s1">;    </span><span class="s2">/* 22*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblQUALITATIVEMILESTONE  = </span><span class="s3">&quot;tblQUALITATIVEMILESTONE&quot;</span><span class="s1">;  </span><span class="s2">/* 23*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblQUANTITATIVEMILESTONE = </span><span class="s3">&quot;tblQUANTITATIVEMILESTONE&quot;</span><span class="s1">; </span><span class="s2">/* 24*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblARRAYMILESTONE        = </span><span class="s3">&quot;tblARRAYMILESTONE&quot;</span><span class="s1">;        </span><span class="s2">/* 25*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblMATRIXMILESTONE       = </span><span class="s3">&quot;tblMATRIXMILESTONE&quot;</span><span class="s1">;       </span><span class="s2">/* 26*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblINDICATORPROGRESS     = </span><span class="s3">&quot;tblINDICATORPROGRESS&quot;</span><span class="s1">;     </span><span class="s2">/* 27*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblQUALITATIVEPROGRESS   = </span><span class="s3">&quot;tblQUALITATIVEPROGRESS&quot;</span><span class="s1">;   </span><span class="s2">/* 28*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblQUANTITATIVEPROGRESS  = </span><span class="s3">&quot;tblQUANTITATIVEPROGRESS&quot;</span><span class="s1">;  </span><span class="s2">/* 29*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblARRAYPROGRESS         = </span><span class="s3">&quot;tblARRAYPROGRESS&quot;</span><span class="s1">;         </span><span class="s2">/* 30*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblMATRIXPROGRESS        = </span><span class="s3">&quot;tblMATRIXPROGRESS&quot;</span><span class="s1">;        </span><span class="s2">/* 31*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblINDICATOR_MOV         = </span><span class="s3">&quot;tblINDICATOR_MOV&quot;</span><span class="s1">;         </span><span class="s2">/* 32*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblINDICATOR_DATASOURCE  = </span><span class="s3">&quot;tblINDICATOR_DATASOURCE&quot;</span><span class="s1">;  </span><span class="s2">/* 33*/</span>
+
+<span class="s2">//    public static final String SHEET_tblMOV                    = &quot;tblMOV&quot;;                   /* 1 */</span>
+<span class="s2">//    public static final String SHEET_tblMETHOD                 = &quot;tblMETHOD&quot;;                /* 2 */</span>
+<span class="s2">//    public static final String SHEET_tblUNIT                   = &quot;tblUNIT&quot;;                  /* 3 */</span>
+<span class="s2">//    public static final String SHEET_tblINDICATORTYPE          = &quot;tblINDICATORTYPE&quot;;         /* 4 */</span>
+<span class="s2">//    public static final String SHEET_tblQUALITATIVECHOICE      = &quot;tblQUALITATIVECHOICE&quot;;     /* 5 */</span>
+<span class="s2">//    public static final String SHEET_tblDATACOLLECTOR          = &quot;tblDATACOLLECTOR&quot;;         /* 6 */</span>
+<span class="s2">//    public static final String SHEET_tblQUANTITATIVE           = &quot;tblQUANTITATIVE&quot;;          /* 7 */</span>
+<span class="s2">//    public static final String SHEET_tblQUALITATIVE            = &quot;tblQUALITATIVE&quot;;           /* 8 */</span>
+<span class="s2">//    public static final String SHEET_tblQUALITATIVECHOICESET   = &quot;tblQUALITATIVECHOICESET&quot;;  /* 9 */</span>
+<span class="s2">//    public static final String SHEET_tblINDICATOR              = &quot;tblINDICATOR&quot;;             /* 10*/</span>
+<span class="s2">//    public static final String SHEET_tblMRESPONSE              = &quot;tblMRESPONSE&quot;;             /* 11*/</span>
+<span class="s2">//    public static final String SHEET_tblQUANTITATIVERESPONSE   = &quot;tblQUANTITATIVERESPONSE&quot;;  /* 12*/</span>
+<span class="s2">//    public static final String SHEET_tblQUALITATIVERESPONSE    = &quot;tblQUALITATIVERESPONSE&quot;;   /* 13*/</span>
+
+    <span class="s2">/*################################ START AWPB MODULE TABLES ##################################*/</span>
+
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblHUMAN                  = </span><span class="s3">&quot;tblHUMAN&quot;</span><span class="s1">;                 </span><span class="s2">/* 1 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblHUMANSET               = </span><span class="s3">&quot;tblHUMANSET&quot;</span><span class="s1">;              </span><span class="s2">/* 2 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblMATERIAL               = </span><span class="s3">&quot;tblMATERIAL&quot;</span><span class="s1">;              </span><span class="s2">/* 3 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblEXPENSE                = </span><span class="s3">&quot;tblEXPENSE&quot;</span><span class="s1">;               </span><span class="s2">/* 4 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblINCOME                 = </span><span class="s3">&quot;tblINCOME&quot;</span><span class="s1">;                </span><span class="s2">/* 5 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblFUND                   = </span><span class="s3">&quot;tblFUND&quot;</span><span class="s1">;                  </span><span class="s2">/* 6 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblTASK                   = </span><span class="s3">&quot;tblTASK&quot;</span><span class="s1">;                  </span><span class="s2">/* 7 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblPRECEDINGTASK          = </span><span class="s3">&quot;tblPRECEDINGTASK&quot;</span><span class="s1">;         </span><span class="s2">/* 8 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblTASK_MILESTONE         = </span><span class="s3">&quot;tblTASK_MILESTONE&quot;</span><span class="s1">;        </span><span class="s2">/* 9 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblACTIVITYTASK           = </span><span class="s3">&quot;tblACTIVITYTASK&quot;</span><span class="s1">;          </span><span class="s2">/* 10*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblTASKASSIGNMENT         = </span><span class="s3">&quot;tblTASKASSIGNMENT&quot;</span><span class="s1">;        </span><span class="s2">/* 11*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblUSERCOMMENT            = </span><span class="s3">&quot;tblUSERCOMMENT&quot;</span><span class="s1">;           </span><span class="s2">/* 12*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblTIMESHEET              = </span><span class="s3">&quot;tblTIMESHEET&quot;</span><span class="s1">;             </span><span class="s2">/* 13*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblINVOICE                = </span><span class="s3">&quot;tblINVOICE&quot;</span><span class="s1">;               </span><span class="s2">/* 14*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblINVOICE_TIMESHEET      = </span><span class="s3">&quot;tblINVOICE_TIMESHEET&quot;</span><span class="s1">;     </span><span class="s2">/* 15*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblDOCUMENT               = </span><span class="s3">&quot;tblDOCUMENT&quot;</span><span class="s1">;              </span><span class="s2">/* 16*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblTRANSACTION            = </span><span class="s3">&quot;tblTRANSACTION&quot;</span><span class="s1">;           </span><span class="s2">/* 17*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblINTERNAL               = </span><span class="s3">&quot;tblINTERNAL&quot;</span><span class="s1">;              </span><span class="s2">/* 18*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblEXTERNAL               = </span><span class="s3">&quot;tblEXTERNAL&quot;</span><span class="s1">;              </span><span class="s2">/* 19*/</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblJOURNAL                = </span><span class="s3">&quot;tblJOURNAL&quot;</span><span class="s1">;               </span><span class="s2">/* 20*/</span>
+
+    <span class="s2">/*################################ START RAID MODULE TABLES ##################################*/</span>
+
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblPIM                   = </span><span class="s3">&quot;tblPIM&quot;</span><span class="s1">;                  </span><span class="s2">/* 1  */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblRAIDLIKELIHOOD        = </span><span class="s3">&quot;tblRAIDLIKELIHOOD&quot;</span><span class="s1">;       </span><span class="s2">/* 2  */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblRAIDIMPACT            = </span><span class="s3">&quot;tblRAIDIMPACT&quot;</span><span class="s1">;           </span><span class="s2">/* 3  */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblROBOT                 = </span><span class="s3">&quot;tblROBOT&quot;</span><span class="s1">;                </span><span class="s2">/* 4  */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblPIMSET                = </span><span class="s3">&quot;tblPIMSET&quot;</span><span class="s1">;               </span><span class="s2">/* 5  */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblRAIDREGISTER          = </span><span class="s3">&quot;tblRAIDREGISTER&quot;</span><span class="s1">;         </span><span class="s2">/* 6  */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblRISKREGISTER          = </span><span class="s3">&quot;tblRISKREGISTER&quot;</span><span class="s1">;         </span><span class="s2">/* 7  */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblASSUMPTIONREGISTER    = </span><span class="s3">&quot;tblASSUMPTIONREGISTER&quot;</span><span class="s1">;   </span><span class="s2">/* 8  */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblISSUEREGISTER         = </span><span class="s3">&quot;tblISSUEREGISTER&quot;</span><span class="s1">;        </span><span class="s2">/* 9  */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblDEPENDENCYREGISTER    = </span><span class="s3">&quot;tblDEPENDENCYREGISTER&quot;</span><span class="s1">;   </span><span class="s2">/* 10 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblRAIDLOG               = </span><span class="s3">&quot;tblRAIDLOG&quot;</span><span class="s1">;              </span><span class="s2">/* 11 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblRISK                  = </span><span class="s3">&quot;tblRISK&quot;</span><span class="s1">;                 </span><span class="s2">/* 12 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblRISKROOTCAUSE         = </span><span class="s3">&quot;tblRISKROOTCAUSE&quot;</span><span class="s1">;        </span><span class="s2">/* 13 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblRISKCONSEQUENCE       = </span><span class="s3">&quot;tblRISKCONSEQUENCE&quot;</span><span class="s1">;      </span><span class="s2">/* 14 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblASSUMPTION            = </span><span class="s3">&quot;tblASSUMPTION&quot;</span><span class="s1">;           </span><span class="s2">/* 15 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblISSUE                 = </span><span class="s3">&quot;tblISSUE&quot;</span><span class="s1">;                </span><span class="s2">/* 16 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblISSUECOMMENT          = </span><span class="s3">&quot;tblISSUECOMMENT&quot;</span><span class="s1">;         </span><span class="s2">/* 17 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblDEPENDENCY            = </span><span class="s3">&quot;tblDEPENDENCY&quot;</span><span class="s1">;           </span><span class="s2">/* 18 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblMILESTONEREVIEW       = </span><span class="s3">&quot;tblMILESTONEREVIEW&quot;</span><span class="s1">;      </span><span class="s2">/* 19 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblREVIEWCOMMENT         = </span><span class="s3">&quot;tblREVIEWCOMMENT&quot;</span><span class="s1">;        </span><span class="s2">/* 20 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblRISKREVIEW            = </span><span class="s3">&quot;tblRISKREVIEW&quot;</span><span class="s1">;           </span><span class="s2">/* 21 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblASSUMPTIONREVIEW      = </span><span class="s3">&quot;ASSUMPTIONREVIEW&quot;</span><span class="s1">;        </span><span class="s2">/* 22 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblISSUEREVIEW           = </span><span class="s3">&quot;tblISSUEREVIEW&quot;</span><span class="s1">;          </span><span class="s2">/* 23 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblDEPENDENCYREVIEW      = </span><span class="s3">&quot;tblDEPENDENCYREVIEW&quot;</span><span class="s1">;     </span><span class="s2">/* 24 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblACTION                = </span><span class="s3">&quot;tblACTION&quot;</span><span class="s1">;               </span><span class="s2">/* 25 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblACTIONTASK            = </span><span class="s3">&quot;tblACTIONTASK&quot;</span><span class="s1">;           </span><span class="s2">/* 26 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblMILESTONE_ACTION      = </span><span class="s3">&quot;tblMILESTONE_ACTION&quot;</span><span class="s1">;     </span><span class="s2">/* 27 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblRISKACTIONTYPE        = </span><span class="s3">&quot;tblRISKACTIONTYPE&quot;</span><span class="s1">;       </span><span class="s2">/* 28 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblRISKACTION            = </span><span class="s3">&quot;tblRISKACTION&quot;</span><span class="s1">;           </span><span class="s2">/* 29 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblCURRENTCONTROL        = </span><span class="s3">&quot;tblCURRENTCONTROL&quot;</span><span class="s1">;       </span><span class="s2">/* 30 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblADDITIONALCONTROL     = </span><span class="s3">&quot;tblADDITIONALCONTROL&quot;</span><span class="s1">;    </span><span class="s2">/* 31 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblASSUMPTIONACTION      = </span><span class="s3">&quot;tblASSUMPTIONACTION&quot;</span><span class="s1">;     </span><span class="s2">/* 32 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblISSUEACTION           = </span><span class="s3">&quot;tblISSUEACTION&quot;</span><span class="s1">;          </span><span class="s2">/* 33 */</span>
+    <span class="s0">public static final </span><span class="s1">String SHEET_tblDEPENDENCYACTION      = </span><span class="s3">&quot;tblDEPENDENCYACTION&quot;</span><span class="s1">;     </span><span class="s2">/* 34 */</span>
+
+<span class="s2">//    public static final String SHEET_tblRISKREGISTER           = &quot;tblRISKREGISTER&quot;;         /* 1  */</span>
+<span class="s2">//    public static final String SHEET_tblRISKLIKELIHOOD         = &quot;tblRISKLIKELIHOOD&quot;;       /* 2  */</span>
+<span class="s2">//    public static final String SHEET_tblRISKLIKELIHOODSET      = &quot;tblRISKLIKELIHOODSET&quot;;    /* 3  */</span>
+<span class="s2">//    public static final String SHEET_tblRISKIMPACT             = &quot;tblRISKIMPACT&quot;;           /* 4  */</span>
+<span class="s2">//    public static final String SHEET_tblRISKIMPACTSET          = &quot;tblRISKIMPACTSET&quot;;        /* 5  */</span>
+<span class="s2">//    public static final String SHEET_tblRISKCRITERIA           = &quot;tblRISKCRITERIA&quot;;         /* 6  */</span>
+<span class="s2">//    public static final String SHEET_tblRISKCRITERIASET        = &quot;tblRISKCRITERIASET&quot;;      /* 7  */</span>
+<span class="s2">//    public static final String SHEET_tblRISK                   = &quot;tblRISK&quot;;                 /* 8  */</span>
+<span class="s2">//    public static final String SHEET_tblRISKROOTCAUSE          = &quot;tblRISKROOTCAUSE&quot;;        /* 9  */</span>
+<span class="s2">//    public static final String SHEET_tblRISKCONSEQUENCE        = &quot;tblRISKCONSEQUENCE&quot;;      /* 10 */</span>
+<span class="s2">//    public static final String SHEET_tblCURRENTCONTROL         = &quot;tblCURRENTCONTROL&quot;;       /* 11 */</span>
+<span class="s2">//    public static final String SHEET_tblADDITIONALCONTROL      = &quot;tblADDITIONALCONTROL&quot;;    /* 12 */</span>
+<span class="s2">//    public static final String SHEET_tblRISKMILESTONE          = &quot;tblRISKMILESTONE&quot;;        /* 13 */</span>
+<span class="s2">//    public static final String SHEET_tblRISKANALYSIS           = &quot;tblRISKANALYSIS&quot;;         /* 14 */</span>
+<span class="s2">//    public static final String SHEET_tblRISKPLAN               = &quot;tblRISKPLAN&quot;;             /* 15 */</span>
+<span class="s2">//    public static final String SHEET_tblRISKACTIONTYPE         = &quot;tblRISKACTIONTYPE&quot;;       /* 16 */</span>
+<span class="s2">//    public static final String SHEET_tblRISKACTION             = &quot;tblRISKACTION&quot;;           /* 17 */</span>
+
+    <span class="s2">/*################################# END RAID MODULE TABLES ###################################*/</span>
+
+    <span class="s0">public </span><span class="s1">cExcelHelper(Context context){</span>
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s1">AssetManager assetManager = context.getAssets();</span>
+
+            <span class="s1">setExcelGLOBAL(assetManager.open(</span><span class="s3">&quot;GLOBAL.xlsx&quot;</span><span class="s1">));</span>
+            <span class="s1">setExcelSESSION(assetManager.open(</span><span class="s3">&quot;excels/SESSION.xlsx&quot;</span><span class="s1">));</span>
+            <span class="s1">setExcelLOGFRAME(assetManager.open(</span><span class="s3">&quot;LOGFRAME.xlsx&quot;</span><span class="s1">));</span>
+            <span class="s1">setExcelEVALUATION(assetManager.open(</span><span class="s3">&quot;EVALUATION.xlsx&quot;</span><span class="s1">));</span>
+            <span class="s1">setExcelMONITORING(assetManager.open(</span><span class="s3">&quot;MONITORING.xlsx&quot;</span><span class="s1">));</span>
+            <span class="s1">setExcelRAID(assetManager.open(</span><span class="s3">&quot;RAID.xlsx&quot;</span><span class="s1">));</span>
+            <span class="s1">setExcelAWPB(assetManager.open(</span><span class="s3">&quot;AWPB.xlsx&quot;</span><span class="s1">));</span>
+
+            <span class="s1">setWorkbookGLOBAL(</span><span class="s0">new </span><span class="s1">XSSFWorkbook(getExcelGLOBAL()));</span>
+            <span class="s1">setRowsGLOBAL(computeAllRows(getWorkbookGLOBAL()));</span>
+
+            <span class="s1">setWorkbookSESSION(</span><span class="s0">new </span><span class="s1">XSSFWorkbook(getExcelSESSION()));</span>
+            <span class="s1">setRowsSESSION(computeAllRows(getWorkbookSESSION()));</span>
+
+            <span class="s1">setWorkbookLOGFRAME(</span><span class="s0">new </span><span class="s1">XSSFWorkbook(getExcelLOGFRAME()));</span>
+            <span class="s1">setRowsLOGFRAME(computeAllRows(getWorkbookLOGFRAME()));</span>
+
+            <span class="s1">setWorkbookEVALUATION(</span><span class="s0">new </span><span class="s1">XSSFWorkbook(getExcelEVALUATION()));</span>
+            <span class="s1">setRowsEVALUATION(computeAllRows(getWorkbookEVALUATION()));</span>
+
+            <span class="s1">setWorkbookMONITORING(</span><span class="s0">new </span><span class="s1">XSSFWorkbook(getExcelMONITORING()));</span>
+            <span class="s1">setRowsMONITORING(computeAllRows(getWorkbookMONITORING()));</span>
+
+            <span class="s1">setWorkbookRAID(</span><span class="s0">new </span><span class="s1">XSSFWorkbook(getExcelRAID()));</span>
+            <span class="s1">setRowsRAID(computeAllRows(getWorkbookRAID()));</span>
+
+            <span class="s1">setWorkbookAWPB(</span><span class="s0">new </span><span class="s1">XSSFWorkbook(getExcelAWPB()));</span>
+            <span class="s1">setRowsAWPB(computeAllRows(getWorkbookAWPB()));</span>
+
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(IOException e) {</span>
+            <span class="s1">e.printStackTrace();</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public int </span><span class="s1">computeAllRows(Workbook workbook) {</span>
+        <span class="s0">int </span><span class="s1">allRows = </span><span class="s4">0</span><span class="s1">;</span>
+
+        <span class="s0">int </span><span class="s1">numSheets = workbook.getNumberOfSheets();</span>
+
+        <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s4">0</span><span class="s1">; i &lt; numSheets; i++) {</span>
+            <span class="s1">Sheet sheet = workbook.getSheet(workbook.getSheetName(i));</span>
+            <span class="s2">// number of rows (for all tables used for checking progress</span>
+            <span class="s1">allRows = allRows + (sheet.getPhysicalNumberOfRows() - </span><span class="s4">1</span><span class="s1">);</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s1">allRows;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">InputStream getExcelGLOBAL() {</span>
+        <span class="s0">return </span><span class="s1">excelGLOBAL;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setExcelGLOBAL(InputStream excelGLOBAL) {</span>
+        <span class="s0">this</span><span class="s1">.excelGLOBAL = excelGLOBAL;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">InputStream getExcelSESSION() {</span>
+        <span class="s0">return </span><span class="s1">excelSESSION;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setExcelSESSION(InputStream excelSESSION) {</span>
+        <span class="s0">this</span><span class="s1">.excelSESSION = excelSESSION;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">InputStream getExcelLOGFRAME() {</span>
+        <span class="s0">return </span><span class="s1">excelLOGFRAME;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setExcelLOGFRAME(InputStream excelLOGFRAME) {</span>
+        <span class="s0">this</span><span class="s1">.excelLOGFRAME = excelLOGFRAME;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">InputStream getExcelEVALUATION() {</span>
+        <span class="s0">return </span><span class="s1">excelEVALUATION;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setExcelEVALUATION(InputStream excelEVALUATION) {</span>
+        <span class="s0">this</span><span class="s1">.excelEVALUATION = excelEVALUATION;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">InputStream getExcelMONITORING() {</span>
+        <span class="s0">return </span><span class="s1">excelMONITORING;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setExcelMONITORING(InputStream excelMONITORING) {</span>
+        <span class="s0">this</span><span class="s1">.excelMONITORING = excelMONITORING;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">InputStream getExcelRAID() {</span>
+        <span class="s0">return </span><span class="s1">excelRAID;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setExcelRAID(InputStream excelRAID) {</span>
+        <span class="s0">this</span><span class="s1">.excelRAID = excelRAID;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">InputStream getExcelAWPB() {</span>
+        <span class="s0">return </span><span class="s1">excelAWPB;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setExcelAWPB(InputStream excelAWPB) {</span>
+        <span class="s0">this</span><span class="s1">.excelAWPB = excelAWPB;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">Workbook getWorkbookGLOBAL() {</span>
+        <span class="s0">return </span><span class="s1">workbookGLOBAL;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setWorkbookGLOBAL(Workbook workbookGLOBAL) {</span>
+        <span class="s0">this</span><span class="s1">.workbookGLOBAL = workbookGLOBAL;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">Workbook getWorkbookSESSION() {</span>
+        <span class="s0">return </span><span class="s1">workbookSESSION;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setWorkbookSESSION(Workbook workbookSESSION) {</span>
+        <span class="s0">this</span><span class="s1">.workbookSESSION = workbookSESSION;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">Workbook getWorkbookLOGFRAME() {</span>
+        <span class="s0">return </span><span class="s1">workbookLOGFRAME;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setWorkbookLOGFRAME(Workbook workbookLOGFRAME) {</span>
+        <span class="s0">this</span><span class="s1">.workbookLOGFRAME = workbookLOGFRAME;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">Workbook getWorkbookEVALUATION() {</span>
+        <span class="s0">return </span><span class="s1">workbookEVALUATION;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setWorkbookEVALUATION(Workbook workbookEVALUATION) {</span>
+        <span class="s0">this</span><span class="s1">.workbookEVALUATION = workbookEVALUATION;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">Workbook getWorkbookMONITORING() {</span>
+        <span class="s0">return </span><span class="s1">workbookMONITORING;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setWorkbookMONITORING(Workbook workbookMONITORING) {</span>
+        <span class="s0">this</span><span class="s1">.workbookMONITORING = workbookMONITORING;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">Workbook getWorkbookRAID() {</span>
+        <span class="s0">return </span><span class="s1">workbookRAID;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setWorkbookRAID(Workbook workbookRAID) {</span>
+        <span class="s0">this</span><span class="s1">.workbookRAID = workbookRAID;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">Workbook getWorkbookAWPB() {</span>
+        <span class="s0">return </span><span class="s1">workbookAWPB;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setWorkbookAWPB(Workbook workbookAWPB) {</span>
+        <span class="s0">this</span><span class="s1">.workbookAWPB = workbookAWPB;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public int </span><span class="s1">getRowsGLOBAL() {</span>
+        <span class="s0">return </span><span class="s1">rowsGLOBAL;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setRowsGLOBAL(</span><span class="s0">int </span><span class="s1">rowsGLOBAL) {</span>
+        <span class="s0">this</span><span class="s1">.rowsGLOBAL = rowsGLOBAL;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public int </span><span class="s1">getRowsSESSION() {</span>
+        <span class="s0">return </span><span class="s1">rowsSESSION;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setRowsSESSION(</span><span class="s0">int </span><span class="s1">rowsSESSION) {</span>
+        <span class="s0">this</span><span class="s1">.rowsSESSION = rowsSESSION;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public int </span><span class="s1">getRowsLOGFRAME() {</span>
+        <span class="s0">return </span><span class="s1">rowsLOGFRAME;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setRowsLOGFRAME(</span><span class="s0">int </span><span class="s1">rowsLOGFRAME) {</span>
+        <span class="s0">this</span><span class="s1">.rowsLOGFRAME = rowsLOGFRAME;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public int </span><span class="s1">getRowsEVALUATION() {</span>
+        <span class="s0">return </span><span class="s1">rowsEVALUATION;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setRowsEVALUATION(</span><span class="s0">int </span><span class="s1">rowsEVALUATION) {</span>
+        <span class="s0">this</span><span class="s1">.rowsEVALUATION = rowsEVALUATION;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public int </span><span class="s1">getRowsMONITORING() {</span>
+        <span class="s0">return </span><span class="s1">rowsMONITORING;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setRowsMONITORING(</span><span class="s0">int </span><span class="s1">rowsMONITORING) {</span>
+        <span class="s0">this</span><span class="s1">.rowsMONITORING = rowsMONITORING;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public int </span><span class="s1">getRowsRAID() {</span>
+        <span class="s0">return </span><span class="s1">rowsRAID;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setRowsRAID(</span><span class="s0">int </span><span class="s1">rowsRAID) {</span>
+        <span class="s0">this</span><span class="s1">.rowsRAID = rowsRAID;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public int </span><span class="s1">getRowsAWPB() {</span>
+        <span class="s0">return </span><span class="s1">rowsAWPB;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setRowsAWPB(</span><span class="s0">int </span><span class="s1">rowsAWPB) {</span>
+        <span class="s0">this</span><span class="s1">.rowsAWPB = rowsAWPB;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

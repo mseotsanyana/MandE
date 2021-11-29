@@ -10,12 +10,12 @@
 
         <item name="alertDialogTheme">@style/DialogStyle</item>
 
-        <!-- Background Color
-        <item name="android:windowBackground">@color/backgroundColor</item>-->
-        <item name="backgroundColor">@color/backgroundColor</item>
+        <!-- Background Color-->
+        <item name="android:windowBackground">@color/backgroundColor</item>
+        <!--item name="backgroundColor">@color/backgroundColor</item-->
 
         <!-- Text Color -->
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
 
         <!-- Edit Text Hint color -->
         <item name="android:textColorHint">@color/faintWhite</item>
@@ -24,6 +24,7 @@
         <item name="android:editTextColor">@android:color/white</item>
 
         <item name="drawerArrowStyle">@style/DrawerHamburgerStyle</item>
+
     </style>
 
     <style name="DialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
@@ -86,7 +87,20 @@
         <item name="backgroundTint">@color/colorPrimaryDark</item>
     </style>
 
-    <!-- user entity -->
+    <!-- fab style -->
+    <style name="FabMoreStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/spacing_large</item>
+        <item name="android:src">@drawable/round_more_horiz_24</item>
+        <item name="borderWidth">0dp</item>
+        <item name="elevation">6dp</item>
+        <item name="pressedTranslationZ">12dp</item>
+        <item name="rippleColor">@android:color/white</item>
+        <item name="backgroundTint">@color/colorPrimary</item>
+    </style>
+
+    <!-- user entity
     <style name="formSubHeader">
         <item name="android:background">@drawable/customshape</item>
         <item name="android:layout_width">match_parent</item>
@@ -96,6 +110,7 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold|italic</item>
     </style>
+    -->
 
     <!-- Material Design for Buttons -->
     <style name="AlertDialogTheme">

@@ -6,7 +6,6 @@ import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.session.user.iUpdateUserProfileInteractor;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
 import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
-import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iUserProfileRepository;
 
 public class cUpdateUserProfileInteractorImpl extends cAbstractInteractor
@@ -57,7 +56,7 @@ public class cUpdateUserProfileInteractorImpl extends cAbstractInteractor
 
     @Override
     public void run() {
-        userProfileRepository.updateUserProfile(0, 0, 0, 0,
+        userProfileRepository.updateUserProfileImage(0, 0, 0, 0,
                 userProfileModel, new iUserProfileRepository.iUpdateUserProfileRepositoryCallback() {
                     @Override
                     public void onUpdateUserProfileSucceeded(String msg) {

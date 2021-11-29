@@ -111,7 +111,7 @@ public class cOutcomeAdapter extends cTreeAdapter implements iViewImpactListener
                     OPH.textViewEndDateCaption.setText(
                             context.getResources().getString(R.string.enddate_caption));
 
-                    OPH.textViewParent.setText(parentOutcome.getImpactModel().getName());
+//                    OPH.textViewParent.setText(parentOutcome.getImpactModel().getName());
                     OPH.textViewName.setText(parentOutcome.getName());
                     OPH.textViewDescription.setText(parentOutcome.getDescription());
                     OPH.textViewStartDate.setText(sdf.format(parentOutcome.getStartDate()));
@@ -238,7 +238,7 @@ public class cOutcomeAdapter extends cTreeAdapter implements iViewImpactListener
                     OCH.textViewEndDateCaption.setText(
                             context.getResources().getString(R.string.enddate_caption));
 
-                    OCH.textViewParent.setText(childOutcome.getImpactModel().getName());
+//                    OCH.textViewParent.setText(childOutcome.getImpactModel().getName());
                     OCH.textViewName.setText(childOutcome.getName());
                     OCH.textViewDescription.setText(childOutcome.getDescription());
                     OCH.textViewStartDate.setText(sdf.format(childOutcome.getStartDate()));
@@ -406,12 +406,12 @@ public class cOutcomeAdapter extends cTreeAdapter implements iViewImpactListener
 
                     ArrayList<cTreeModel> filteredList = new ArrayList<>();
                     for (cTreeModel treeModel : getTreeModel()) {
-                        if (((cOutcomeModel)treeModel.getModelObject()).getName().toLowerCase().
-                                contains(charString.toLowerCase()) ||
-                                ((cOutcomeModel)treeModel.getModelObject()).getImpactModel().
-                                        getName().toLowerCase().contains(charString.toLowerCase())) {
-                            filteredList.add(treeModel);
-                        }
+//                        if (((cOutcomeModel)treeModel.getModelObject()).getName().toLowerCase().
+//                                contains(charString.toLowerCase()) ||
+//                                ((cOutcomeModel)treeModel.getModelObject()).getImpactModel().
+//                                        getName().toLowerCase().contains(charString.toLowerCase())) {
+//                            filteredList.add(treeModel);
+//                        }
                     }
 
                     filteredTreeModels = filteredList;

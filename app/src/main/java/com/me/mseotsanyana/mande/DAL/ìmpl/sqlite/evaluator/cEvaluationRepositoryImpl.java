@@ -458,12 +458,12 @@ public class cEvaluationRepositoryImpl implements iEvaluationRepository {
 
                     question.setQuestionID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ID)));
-                    question.getLogFrameModel().setLogFrameID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
-                    question.getQuestionTypeModel().setQuestionTypeID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID)));
-                    question.getQuestionGroupingModel().setQuestionGroupingID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_GROUPING_FK_ID)));
+//                    question.getLogFrameModel().setLogFrameID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
+//                    question.getQuestionTypeModel().setQuestionTypeID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_TYPE_FK_ID)));
+//                    question.getQuestionGroupingModel().setQuestionGroupingID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_QUESTION_GROUPING_FK_ID)));
                     question.setServerID(
                             cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
                     question.setOwnerID(
@@ -496,15 +496,15 @@ public class cEvaluationRepositoryImpl implements iEvaluationRepository {
                     /* objects */
                     /* logframe object */
 
-                    question.setLogFrameModel(logFrameRepository.getLogFrameModelByID(
-                            question.getLogFrameModel().getLogFrameID(), userID, primaryRoleBITS,
-                            secondaryRoleBITS, statusBITS));
+//                    question.setLogFrameModel(logFrameRepository.getLogFrameModelByID(
+//                            question.getLogFrameModel().getLogFrameID(), userID, primaryRoleBITS,
+//                            secondaryRoleBITS, statusBITS));
 
                     /* question grouping object */
-                    question.setQuestionGroupingModel(
-                            questionGroupingRepository.getQuestionGroupingModelByID(
-                                    question.getQuestionGroupingModel().getQuestionGroupingID(),
-                                    userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//                    question.setQuestionGroupingModel(
+//                            questionGroupingRepository.getQuestionGroupingModelByID(
+//                                    question.getQuestionGroupingModel().getQuestionGroupingID(),
+//                                    userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
 
                     /* instantiate question type objects. only one of them should be non-null
                     cPrimitiveQuestionModel primitive = primitiveTypeRepository.getPrimitiveTypeModelSet(

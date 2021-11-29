@@ -127,7 +127,7 @@ public class cActivityAdapter extends cTreeAdapter implements iViewOutputListene
                     APH.textViewEndDateCaption.setText(
                             context.getResources().getString(R.string.enddate_caption));
 
-                    APH.textViewParent.setText(parentActivity.getOutputModel().getName());
+//                    APH.textViewParent.setText(parentActivity.getOutputModel().getName());
                     APH.textViewName.setText(parentActivity.getName());
                     APH.textViewDescription.setText(parentActivity.getDescription());
                     APH.textViewStartDate.setText(sdf.format(parentActivity.getStartDate()));
@@ -255,7 +255,7 @@ public class cActivityAdapter extends cTreeAdapter implements iViewOutputListene
                     ACH.textViewEndDateCaption.setText(
                             context.getResources().getString(R.string.enddate_caption));
 
-                    ACH.textViewParent.setText(childActivity.getOutputModel().getName());
+//                    ACH.textViewParent.setText(childActivity.getOutputModel().getName());
                     ACH.textViewName.setText(childActivity.getName());
                     ACH.textViewDescription.setText(childActivity.getDescription());
                     ACH.textViewStartDate.setText(sdf.format(childActivity.getStartDate()));
@@ -412,12 +412,12 @@ public class cActivityAdapter extends cTreeAdapter implements iViewOutputListene
 
                     ArrayList<cTreeModel> filteredList = new ArrayList<>();
                     for (cTreeModel treeModel : getTreeModel()) {
-                        if (((cActivityModel)treeModel.getModelObject()).getName().toLowerCase().
-                                contains(charString.toLowerCase()) ||
-                                ((cActivityModel)treeModel.getModelObject()).getOutputModel().
-                                        getName().toLowerCase().contains(charString.toLowerCase())) {
-                            filteredList.add(treeModel);
-                        }
+//                        if (((cActivityModel)treeModel.getModelObject()).getName().toLowerCase().
+//                                contains(charString.toLowerCase()) ||
+//                                ((cActivityModel)treeModel.getModelObject()).getOutputModel().
+//                                        getName().toLowerCase().contains(charString.toLowerCase())) {
+//                            filteredList.add(treeModel);
+//                        }
                     }
 
                     filteredTreeModels = filteredList;

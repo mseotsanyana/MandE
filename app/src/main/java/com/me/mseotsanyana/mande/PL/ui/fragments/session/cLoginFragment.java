@@ -51,8 +51,8 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
                 cThreadExecutorImpl.getInstance(),
                 cMainThreadImpl.getInstance(), this,
                 new cSharedPreferenceFirestoreRepositoryImpl(requireContext()),
-                new cPermissionFirestoreRepositoryImpl(getContext()),
-                new cUserProfileFirestoreRepositoryImpl(getContext()));
+                new cPermissionFirestoreRepositoryImpl(requireContext()),
+                new cUserProfileFirestoreRepositoryImpl(requireContext()));
     }
 
     @Override
@@ -100,8 +100,8 @@ public class cLoginFragment extends Fragment implements iUserLoginPresenter.View
         loginTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = Objects.requireNonNull(emailEditText.getText()).toString();
-                String password = Objects.requireNonNull(passwordEditText.getText()).toString();
+                String email = Objects.requireNonNull(emailEditText.getText()).toString().trim();
+                String password = Objects.requireNonNull(passwordEditText.getText()).toString().trim();
 
                 if (!email.isEmpty() && !password.isEmpty()) {
                     userLoginPresenter.signInWithEmailAndPassword(email, password);

@@ -2,17 +2,17 @@
   "menuitems": [
     {
       "menu_id": 0,
-      "menu_name": "My Profile",
+      "menu_name": "Profile Settings",
       "menu_description": "Manage user profile settings.",
       "sub_menu": [
         {
           "sub_menu_id": 1,
-          "sub_menu_name": "Profile",
+          "sub_menu_name": "My Profile",
           "sub_menu_description": "User personal details."
         },
         {
           "sub_menu_id": 2,
-          "sub_menu_name": "Account Settings",
+          "sub_menu_name": "User Profiles",
           "sub_menu_description": "Password, deactivation, etc. Mgt."
         },
         {
@@ -39,12 +39,7 @@
         },
         {
           "sub_menu_id": 64,
-          "sub_menu_name": "Menu Permissions",
-          "sub_menu_description": "Role Permission Management."
-        },
-        {
-          "sub_menu_id": 128,
-          "sub_menu_name": "Entity Permissions",
+          "sub_menu_name": "Role Permissions",
           "sub_menu_description": "Role Permission Management."
         }
       ]

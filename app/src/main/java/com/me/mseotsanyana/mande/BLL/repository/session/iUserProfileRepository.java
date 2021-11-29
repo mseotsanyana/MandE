@@ -1,12 +1,14 @@
 package com.me.mseotsanyana.mande.BLL.repository.session;
 
+import com.google.firebase.firestore.ListenerRegistration;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
+import com.me.mseotsanyana.mande.DAL.storage.base.cFirebaseChildCallBack;
 
 import java.util.List;
 
 public interface iUserProfileRepository {
-    void createUserWithEmailAndPassword(String firstName, String surname, String email,
-                                        String password, iSignUpRepositoryCallback callback);
+    void createUserWithEmailAndPassword(cUserProfileModel userProfileModel,
+                                        iSignUpRepositoryCallback callback);
     interface iSignUpRepositoryCallback{
         void onSignUpSucceeded(String msg);
         void onSignUpFailed(String msg);
@@ -31,23 +33,35 @@ public interface iUserProfileRepository {
     }
 
 
+    ListenerRegistration readAllUserProfilesByChildEvent(cFirebaseChildCallBack firebaseChildCallBack);
+
+
     void signInWithEmailAndPassword(String email, String password,
                                     iSignInRepositoryCallback callback);
     interface iSignInRepositoryCallback{
         void onSignInSucceeded();
-        void onSignInFailed(String msg);
+        void onSignInMessage(String msg);
     }
 
-    void updateUserProfile(long userID, int primaryRole, int secondaryRoles, int statusBITS,
-                           cUserProfileModel userProfileModel,
-                           iUpdateUserProfileRepositoryCallback callback);
+    void updateUserProfileImage(long userID, int primaryRole, int secondaryRoles, int statusBITS,
+                                cUserProfileModel userProfileModel,
+                                iUpdateUserProfileRepositoryCallback callback);
 
     interface iUpdateUserProfileRepositoryCallback{
         void onUpdateUserProfileSucceeded(String msg);
         void onUpdateUserProfileFailed(String msg);
     }
 
-    void uploadUserProfilesFromExcel(iUploadUserProfilesRepositoryCallback callback);
+    void updateUserProfileImage(String userServerID, byte[] userProfileImageData,
+                                iUpdateUserProfileImageRepositoryCallback callback);
+
+    interface iUpdateUserProfileImageRepositoryCallback{
+        void onUpdateUserProfileImageSucceeded(Object object);
+        void onUpdateUserProfileImageFailed(Object object);
+    }
+
+    void uploadUserProfilesFromExcel(String filename,
+                                     iUploadUserProfilesRepositoryCallback callback);
 
     interface iUploadUserProfilesRepositoryCallback {
         void onUploadUserProfilesSucceeded(String msg);

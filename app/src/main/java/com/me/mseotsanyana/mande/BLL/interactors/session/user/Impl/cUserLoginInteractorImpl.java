@@ -136,6 +136,10 @@ public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUs
             @Override
             public void onSaveStatusBITS(String moduleKey, String entityKey, String operationKey,
                                          List<Integer> statuses) {
+                if(statuses.isEmpty()){
+                    statuses.add(0);
+                }
+
                 sharedPreferenceRepository.saveListIntegerSetting(
                         cSharedPreference.KEY_OPERATION_STATUS_BITS + "-" + moduleKey + "-" +
                                 entityKey + "-" + operationKey, statuses);
@@ -180,7 +184,7 @@ public class cUserLoginInteractorImpl extends cAbstractInteractor implements iUs
                     }
 
                     @Override
-                    public void onSignInFailed(String msg) {
+                    public void onSignInMessage(String msg) {
                         userLoginFailed(msg);
                     }
                 });

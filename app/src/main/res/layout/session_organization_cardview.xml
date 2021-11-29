@@ -160,7 +160,6 @@
                     app:layout_constraintEnd_toStartOf="@+id/textViewDeleteIcon"
                     app:layout_constraintTop_toBottomOf="@id/linearLayoutWebsite" />
 
-
                 <!-- create people, teams, roles -->
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textViewCreateIcon"

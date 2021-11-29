@@ -13,8 +13,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
 import com.me.mseotsanyana.mande.BLL.repository.session.iUserProfileRepository;
+import com.me.mseotsanyana.mande.DAL.storage.base.cFirebaseChildCallBack;
 import com.me.mseotsanyana.mande.DAL.storage.database.cRealtimeHelper;
 import com.me.mseotsanyana.mande.DAL.storage.database.cSQLDBHelper;
 import com.me.mseotsanyana.mande.UTIL.cConstant;
@@ -46,8 +48,12 @@ public class cUserProfileFirebaseRepositoryImpl implements iUserProfileRepositor
     /* ############################################# CREATE ACTIONS ############################################# */
 
     @Override
-    public void createUserWithEmailAndPassword(String firstname, String surname, String userEmail,
-                                               String userPassword, iSignUpRepositoryCallback callback) {
+    public void createUserWithEmailAndPassword(cUserProfileModel userProfileModel, iSignUpRepositoryCallback callback) {
+
+    }
+
+    public void createUserWithEmailAndPassword1(String photo, String firstname, String surname, String userEmail,
+                                               String designation, String userPassword, iSignUpRepositoryCallback callback) {
         firebaseAuth.createUserWithEmailAndPassword(userEmail, userPassword)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -68,8 +74,8 @@ public class cUserProfileFirebaseRepositoryImpl implements iUserProfileRepositor
                             });
 
                             /* update the user profile in the database */
-                            cUserProfileModel userProfileModel = new cUserProfileModel(user.getUid(), firstname,
-                                    surname, userEmail);
+                            cUserProfileModel userProfileModel = new cUserProfileModel(null, firstname,
+                                    surname, designation, userEmail,null);
                             DatabaseReference dbUsersRef = database.getReference(cRealtimeHelper.KEY_USERPROFILES);
                             dbUsersRef.child(user.getUid())
                                     .setValue(userProfileModel)
@@ -114,7 +120,7 @@ public class cUserProfileFirebaseRepositoryImpl implements iUserProfileRepositor
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         if (user != null) {
                             if (!user.isEmailVerified()) {
-                                callback.onSignInFailed("Verification email sent to " + user.getEmail());
+                                callback.onSignInMessage("Verification email sent to " + user.getEmail());
                                 FirebaseAuth.getInstance().signOut();
                             } else {
                                 Log.d(TAG, "signInWithEmail:success");
@@ -143,12 +149,12 @@ public class cUserProfileFirebaseRepositoryImpl implements iUserProfileRepositor
                                 //callback.onSignInSucceeded(userModel);
                             }
                         }else{
-                            callback.onSignInFailed("Authentication failed. " +
+                            callback.onSignInMessage("Authentication failed. " +
                                     Objects.requireNonNull(task.getException()).getMessage());
                         }
                     } else {
                         Log.d(TAG, "signInWithEmail:failure ", task.getException());
-                        callback.onSignInFailed("Authentication failed. " +
+                        callback.onSignInMessage("Authentication failed. " +
                                 Objects.requireNonNull(task.getException()).getMessage());
                     }
                 });
@@ -200,9 +206,9 @@ public class cUserProfileFirebaseRepositoryImpl implements iUserProfileRepositor
     /* ##################################### UPDATE ACTIONS ##################################### */
 
     @Override
-    public void updateUserProfile(long userID, int primaryRole, int secondaryRoles, int statusBITS,
-                                  cUserProfileModel userProfileModel,
-                                  iUpdateUserProfileRepositoryCallback callback) {
+    public void updateUserProfileImage(long userID, int primaryRole, int secondaryRoles, int statusBITS,
+                                       cUserProfileModel userProfileModel,
+                                       iUpdateUserProfileRepositoryCallback callback) {
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
         assert user != null;
@@ -220,12 +226,21 @@ public class cUserProfileFirebaseRepositoryImpl implements iUserProfileRepositor
 
 
     }
-    /* ############################################# DELETE ACTIONS ############################################# */
 
     @Override
-    public void uploadUserProfilesFromExcel(iUploadUserProfilesRepositoryCallback callback) {
+    public void updateUserProfileImage(String userServerID, byte[] userProfileImageData, iUpdateUserProfileImageRepositoryCallback callback) {
 
     }
 
+    /* ############################################# DELETE ACTIONS ############################################# */
 
+    @Override
+    public void uploadUserProfilesFromExcel(String filename, iUploadUserProfilesRepositoryCallback callback) {
+
+    }
+
+    @Override
+    public ListenerRegistration readAllUserProfilesByChildEvent(cFirebaseChildCallBack firebaseChildCallBack) {
+        return null;
+    }
 }

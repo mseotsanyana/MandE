@@ -80,7 +80,7 @@ public class cReadOutputInteractorImpl extends cAbstractInteractor
 
         ArrayList<cOutputModel> outputModels = new ArrayList<>(outputModelSet);
         if (outputModelSet.size() > 0) {
-            logFrameName = outputModels.get(0).getLogFrameModel().getName();
+            //logFrameName = outputModels.get(0).getLogFrameModel().getName();
         }
 
         for (int i = 0; i < outputModels.size(); i++) {

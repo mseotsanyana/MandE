@@ -114,12 +114,11 @@ public class cReadInputInteractorImpl extends cAbstractInteractor
 
             ArrayList<cUserModel> users = new ArrayList<>(
                     humanModel.getUserModelSet());
-            ArrayList<cActivityModel> activities = new ArrayList<>(
-                    humanModel.getChildActivityModelSet());
-            ArrayList<cQuestionModel> questions = new ArrayList<>(
-                    humanModel.getQuestionModelSet());
-            ArrayList<cJournalModel> journals = new ArrayList<>(
-                    humanModel.getJournalModelSet());
+//            ArrayList<cActivityModel> activities = new ArrayList<>(
+//                    humanModel.getChildActivityModelSet());
+//            ArrayList<cQuestionModel> questions = null;//new ArrayList<>(humanModel.getQuestionModelSet());
+//            ArrayList<cJournalModel> journals = new ArrayList<>(
+//                    humanModel.getJournalModelSet());
 
             /* human resources */
             humanTreeModels.add(new cTreeModel(parentIndex, -1, 0, humanModel));
@@ -128,21 +127,21 @@ public class cReadInputInteractorImpl extends cAbstractInteractor
                 childIndex = parentIndex + 1;
                 humanTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, users));
             }
-            /* set of activity children under the sub-logframe of the input logframe */
-            if (activities.size() > 0) {
-                childIndex = parentIndex + 2;
-                humanTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, activities));
-            }
-            /* set of questions under the input */
-            if (questions.size() > 0) {
-                childIndex = parentIndex + 3;
-                humanTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, questions));
-            }
-            /* set of journals under the input */
-            if (journals.size() > 0) {
-                childIndex = parentIndex + 4;
-                humanTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, journals));
-            }
+//            /* set of activity children under the sub-logframe of the input logframe */
+//            if (activities.size() > 0) {
+//                childIndex = parentIndex + 2;
+//                humanTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, activities));
+//            }
+//            /* set of questions under the input */
+//            if (questions.size() > 0) {
+//                childIndex = parentIndex + 3;
+//                humanTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, questions));
+//            }
+//            /* set of journals under the input */
+//            if (journals.size() > 0) {
+//                childIndex = parentIndex + 4;
+//                humanTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, journals));
+//            }
 
             /* next parent index */
             parentIndex = childIndex + 1;
@@ -166,31 +165,30 @@ public class cReadInputInteractorImpl extends cAbstractInteractor
             /* input model */
             cMaterialModel materialModel = materialModels.get(i);
 
-            ArrayList<cActivityModel> activities = new ArrayList<>(
-                    materialModel.getChildActivityModelSet());
-            ArrayList<cQuestionModel> questions = new ArrayList<>(
-                    materialModel.getQuestionModelSet());
-            ArrayList<cJournalModel> journals = new ArrayList<>(
-                    materialModel.getJournalModelSet());
+//            ArrayList<cActivityModel> activities = new ArrayList<>(
+//                    materialModel.getChildActivityModelSet());
+//            ArrayList<cQuestionModel> questions = null;//new ArrayList<>(materialModel.getQuestionModelSet());
+//            ArrayList<cJournalModel> journals = new ArrayList<>(
+//                    materialModel.getJournalModelSet());
 
             /* material resources */
             materialTreeModels.add(new cTreeModel(parentIndex, -1, 0, materialModel));
 
-            /* set of activity children under the sub-logframe of the input logframe */
-            if (activities.size() > 0) {
-                childIndex = parentIndex + 1;
-                materialTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, activities));
-            }
-            /* set of questions under the input */
-            if (questions.size() > 0) {
-                childIndex = parentIndex + 2;
-                materialTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, questions));
-            }
-            /* set of journals under the input */
-            if (journals.size() > 0) {
-                childIndex = parentIndex + 3;
-                materialTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, journals));
-            }
+//            /* set of activity children under the sub-logframe of the input logframe */
+//            if (activities.size() > 0) {
+//                childIndex = parentIndex + 1;
+//                materialTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, activities));
+//            }
+//            /* set of questions under the input */
+//            if (questions.size() > 0) {
+//                childIndex = parentIndex + 2;
+//                materialTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, questions));
+//            }
+//            /* set of journals under the input */
+//            if (journals.size() > 0) {
+//                childIndex = parentIndex + 3;
+//                materialTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, journals));
+//            }
 
             /* next parent index */
             parentIndex = childIndex + 1;
@@ -215,30 +213,29 @@ public class cReadInputInteractorImpl extends cAbstractInteractor
             /* income model */
             cIncomeModel incomeModel = incomeModels.get(i);
 
-            ArrayList<cActivityModel> activities = new ArrayList<>(
-                    incomeModel.getChildActivityModelSet());
-            ArrayList<cQuestionModel> questions = new ArrayList<>(
-                    incomeModel.getQuestionModelSet());
-            ArrayList<cJournalModel> journals = new ArrayList<>(
-                    incomeModel.getJournalModelSet());
+//            ArrayList<cActivityModel> activities = new ArrayList<>(
+//                    incomeModel.getChildActivityModelSet());
+//            ArrayList<cQuestionModel> questions = null;//new ArrayList<>(incomeModel.getQuestionModelSet());
+//            ArrayList<cJournalModel> journals = new ArrayList<>(
+//                    incomeModel.getJournalModelSet());
 
             incomeTreeModels.add(new cTreeModel(parentIndex, -1, 0, incomeModel));
 
-            /* set of activity children under the sub-logframe of the input logframe */
-            if (activities.size() > 0) {
-                childIndex = parentIndex + 1;
-                incomeTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, activities));
-            }
-            /* set of questions under the input */
-            if (questions.size() > 0) {
-                childIndex = parentIndex + 2;
-                incomeTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, questions));
-            }
-            /* set of journals under the input */
-            if (journals.size() > 0) {
-                childIndex = parentIndex + 3;
-                incomeTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, journals));
-            }
+//            /* set of activity children under the sub-logframe of the input logframe */
+//            if (activities.size() > 0) {
+//                childIndex = parentIndex + 1;
+//                incomeTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, activities));
+//            }
+//            /* set of questions under the input */
+//            if (questions.size() > 0) {
+//                childIndex = parentIndex + 2;
+//                incomeTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, questions));
+//            }
+//            /* set of journals under the input */
+//            if (journals.size() > 0) {
+//                childIndex = parentIndex + 3;
+//                incomeTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, journals));
+//            }
 
             /* next parent index */
             parentIndex = childIndex + 1;
@@ -263,30 +260,29 @@ public class cReadInputInteractorImpl extends cAbstractInteractor
             /* material model */
             cExpenseModel expenseModel = expenseModels.get(i);
 
-            ArrayList<cActivityModel> activities = new ArrayList<>(
-                    expenseModel.getChildActivityModelSet());
-            ArrayList<cQuestionModel> questions = new ArrayList<>(
-                    expenseModel.getQuestionModelSet());
-            ArrayList<cJournalModel> journals = new ArrayList<>(
-                    expenseModel.getJournalModelSet());
+//            ArrayList<cActivityModel> activities = new ArrayList<>(
+//                    expenseModel.getChildActivityModelSet());
+//            ArrayList<cQuestionModel> questions = null;//new ArrayList<>(expenseModel.getQuestionModelSet());
+//            ArrayList<cJournalModel> journals = new ArrayList<>(
+//                    expenseModel.getJournalModelSet());
 
             expenseTreeModels.add(new cTreeModel(parentIndex, -1, 0, expenseModel));
 
-            /* set of activity children under the sub-logframe of the input logframe */
-            if (activities.size() > 0) {
-                childIndex = parentIndex + 1;
-                expenseTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, activities));
-            }
-            /* set of questions under the input */
-            if (questions.size() > 0) {
-                childIndex = parentIndex + 2;
-                expenseTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, questions));
-            }
-            /* set of journals under the input */
-            if (journals.size() > 0) {
-                childIndex = parentIndex + 3;
-                expenseTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, journals));
-            }
+//            /* set of activity children under the sub-logframe of the input logframe */
+//            if (activities.size() > 0) {
+//                childIndex = parentIndex + 1;
+//                expenseTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, activities));
+//            }
+//            /* set of questions under the input */
+//            if (questions.size() > 0) {
+//                childIndex = parentIndex + 2;
+//                expenseTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, questions));
+//            }
+//            /* set of journals under the input */
+//            if (journals.size() > 0) {
+//                childIndex = parentIndex + 3;
+//                expenseTreeModels.add(new cTreeModel(childIndex, parentIndex, 1, journals));
+//            }
 
             /* next parent index */
             parentIndex = childIndex + 1;

@@ -71,68 +71,68 @@ public class cIncomeRepositoryImpl extends cInputRepositoryImpl implements iInco
                 do {
                     cIncomeModel income = new cIncomeModel();
 
-                    income.setComponentID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
-                    income.getActivityModel().setComponentID(cursor.getInt(
-                            cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
-                    income.getLogFrameModel().setLogFrameID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
-                    income.getResourceTypeModel().setResourceTypeID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_RESOURCE_TYPE_FK_ID)));
-                    income.setServerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
-                    income.setOwnerID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
-                    income.setOrgID(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
-                    income.setGroupBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
-                    income.setPermsBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
-                    income.setStatusBITS(
-                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
-                    income.setStartDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
-                    income.setEndDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
-                    income.setCreatedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
-                    income.setModifiedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
-                    income.setSyncedDate(Timestamp.valueOf(
-                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
-
-                    /* objects */
-
-                    /* populate a logframe object */
-                    income.setLogFrameModel(getLogFrameModelByID(income.getLogFrameModel().getLogFrameID(), userID,
-                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
-                    /* populate an resource object */
-                    income.setResourceTypeModel(getResourceTypeModelByID(
-                            income.getComponentID(), userID, primaryRoleBITS, secondaryRoleBITS,
-                            statusBITS));
-                    /* populate an activity object */
-                    income.setActivityModel(getActivityModelByID(
-                            income.getComponentID(), userID, primaryRoleBITS, secondaryRoleBITS,
-                            statusBITS));
-
-                    /* sets */
-                    /* populate a set of funders */
-                    income.setFunderModelSet(getFunderModelSetByID(income.getComponentID(), userID,
-                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
-                    /* populate question components */
-                    income.setQuestionModelSet(getQuestionModelSetByID(
-                            income.getComponentID(), userID, primaryRoleBITS, secondaryRoleBITS,
-                            statusBITS));
-                    /* populate journal components */
-                    income.setJournalModelSet(getJournalModelSetByID(income.getComponentID(), userID,
-                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
-
-                    /* maps */
-
-                    /* populate child activity for the input */
-                    income.setChildActivityModelSet(getChildActivitySetByID(income.getComponentID(),
-                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//                    income.setComponentID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
+//                    income.getActivityModel().setComponentID(cursor.getInt(
+//                            cursor.getColumnIndex(cSQLDBHelper.KEY_COMPONENT_FK_ID)));
+////                    income.getLogFrameModel().setLogFrameID(
+////                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_LOGFRAME_FK_ID)));
+//                    income.getResourceTypeModel().setResourceTypeID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_RESOURCE_TYPE_FK_ID)));
+//                    income.setServerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_SERVER_ID)));
+//                    income.setOwnerID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_OWNER_ID)));
+//                    income.setOrgID(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_ORG_ID)));
+//                    income.setGroupBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_GROUP_BITS)));
+//                    income.setPermsBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_PERMS_BITS)));
+//                    income.setStatusBITS(
+//                            cursor.getInt(cursor.getColumnIndex(cSQLDBHelper.KEY_STATUS_BITS)));
+//                    income.setStartDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_START_DATE))));
+//                    income.setEndDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_END_DATE))));
+//                    income.setCreatedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_CREATED_DATE))));
+//                    income.setModifiedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_MODIFIED_DATE))));
+//                    income.setSyncedDate(Timestamp.valueOf(
+//                            cursor.getString(cursor.getColumnIndex(cSQLDBHelper.KEY_SYNCED_DATE))));
+//
+//                    /* objects */
+//
+//                    /* populate a logframe object */
+////                    income.setLogFrameModel(getLogFrameModelByID(income.getLogFrameModel().getLogFrameID(), userID,
+////                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//                    /* populate an resource object */
+//                    income.setResourceTypeModel(getResourceTypeModelByID(
+//                            income.getComponentID(), userID, primaryRoleBITS, secondaryRoleBITS,
+//                            statusBITS));
+//                    /* populate an activity object */
+//                    income.setActivityModel(getActivityModelByID(
+//                            income.getComponentID(), userID, primaryRoleBITS, secondaryRoleBITS,
+//                            statusBITS));
+//
+//                    /* sets */
+//                    /* populate a set of funders */
+//                    income.setFunderModelSet(getFunderModelSetByID(income.getComponentID(), userID,
+//                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//                    /* populate question components */
+//                    income.setQuestionModelSet(getQuestionModelSetByID(
+//                            income.getComponentID(), userID, primaryRoleBITS, secondaryRoleBITS,
+//                            statusBITS));
+//                    /* populate journal components */
+//                    income.setJournalModelSet(getJournalModelSetByID(income.getComponentID(), userID,
+//                            primaryRoleBITS, secondaryRoleBITS, statusBITS));
+//
+//                    /* maps */
+//
+//                    /* populate child activity for the input */
+//                    income.setChildActivityModelSet(getChildActivitySetByID(income.getComponentID(),
+//                            userID, primaryRoleBITS, secondaryRoleBITS, statusBITS));
 
                     /* add expenses */
                     incomeModelSet.add(income);

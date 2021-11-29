@@ -47,7 +47,7 @@ public class cQuestionAuxFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.impact_aux_list_fragment, container, false);
+        return inflater.inflate(R.layout.impact_outcome_list_fragment, container, false);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class cQuestionAuxFragment extends Fragment {
         cQuestionAuxAdapter questionAuxAdapter = new cQuestionAuxAdapter(getActivity(), questionModels);
 
         assert getArguments() != null;
-        RecyclerView questionRecyclerView = view.findViewById(R.id.impactAuxRecyclerView);
+        RecyclerView questionRecyclerView = view.findViewById(R.id.impactOutcomeRecyclerView);
         questionRecyclerView.setHasFixedSize(true);
         questionRecyclerView.setAdapter(questionAuxAdapter);
 

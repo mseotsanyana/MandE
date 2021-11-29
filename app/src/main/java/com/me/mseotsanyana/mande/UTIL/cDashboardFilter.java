@@ -63,7 +63,7 @@ public class cDashboardFilter {
         List<cKeyPairBoolData> keyPairBoolOutcomeTree = new ArrayList<>();
         for (int i = 0; i < outcomeTree.size(); i++) {
             cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-            idNameBool.setId((outcomeTree.get(i)).getComponentID());
+//            idNameBool.setId((outcomeTree.get(i)).getComponentID());
             idNameBool.setName((outcomeTree.get(i)).getName());
             idNameBool.setObject(outcomeTree.get(i));
             idNameBool.setSelected(false);
@@ -76,7 +76,7 @@ public class cDashboardFilter {
         List<cKeyPairBoolData> keyPairBoolOutputTree = new ArrayList<>();
         for (int i = 0; i < outputTree.size(); i++) {
             cKeyPairBoolData idNameBool = new cKeyPairBoolData();
-            idNameBool.setId((outputTree.get(i)).getComponentID());
+//            idNameBool.setId((outputTree.get(i)).getComponentID());
             idNameBool.setName((outputTree.get(i)).getName());
             idNameBool.setObject(outputTree.get(i));
             idNameBool.setSelected(false);

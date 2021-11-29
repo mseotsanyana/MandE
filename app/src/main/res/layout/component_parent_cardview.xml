@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -13,85 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        card_view:cardCornerRadius="4dp">
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <!-- expandable view -->
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/textViewExpandIcon"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/text_size_medium"
-                app:layout_constraintEnd_toStartOf="@+id/textViewDescription"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                card_view:layout_constraintBottom_toBottomOf="parent"
-                card_view:layout_constraintHorizontal_bias="0.5" />
-
-            <!-- header -->
-            <LinearLayout
-                android:id="@+id/linearLayoutHeader"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/parent_header_colour"
-                android:gravity="top"
-                android:orientation="horizontal"
-                android:elevation="4dp"
-                app:layout_constraintBottom_toTopOf="@+id/textViewNameCaption"
-                app:layout_constraintStart_toEndOf="@+id/textViewExpandIcon"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    tools:ignore="UselessParent">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/textViewParentCaption"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:text="@string/logframe_organization_caption"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_size_small"
-                        android:textStyle="bold" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/textViewParent"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginTop="1dp"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_size_medium"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- name caption -->
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/textViewNameCaption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="4dp"
-                android:paddingStart="2dp"
-                android:paddingEnd="2dp"
-                android:text="@string/unkown"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/text_size_small"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/textViewName"
-                app:layout_constraintStart_toEndOf="@+id/textViewExpandIcon"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutHeader" />
 
             <!-- name -->
             <androidx.appcompat.widget.AppCompatTextView
@@ -99,29 +25,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
                 android:paddingStart="2dp"
                 android:paddingEnd="2dp"
+                android:textColor="@color/black"
                 android:textSize="@dimen/text_size_small_medium"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/textViewExpandIcon"
-                app:layout_constraintTop_toBottomOf="@+id/textViewNameCaption" />
-
-            <!-- description caption -->
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/textViewDescriptionCaption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="8dp"
-                android:paddingStart="2dp"
-                android:paddingEnd="2dp"
-                android:text="@string/unkown"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/text_size_small"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/textViewDescription"
-                app:layout_constraintStart_toEndOf="@+id/textViewExpandIcon"
-                app:layout_constraintTop_toBottomOf="@id/textViewName" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <!-- description -->
             <androidx.appcompat.widget.AppCompatTextView
@@ -129,11 +41,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
+                android:layout_marginTop="4dp"
                 android:paddingStart="2dp"
                 android:paddingEnd="2dp"
+                android:textColor="@color/android_text_color"
                 android:textSize="@dimen/text_size_small_medium"
-                app:layout_constraintStart_toEndOf="@+id/textViewExpandIcon"
-                app:layout_constraintTop_toBottomOf="@id/textViewDescriptionCaption" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewName" />
 
             <!-- start date caption -->
             <androidx.appcompat.widget.AppCompatTextView
@@ -141,15 +55,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginEnd="4dp"
                 android:paddingStart="2dp"
                 android:paddingEnd="2dp"
                 android:text="@string/unkown"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/black"
                 android:textSize="@dimen/text_size_small"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/textViewDetailIcon"
-                app:layout_constraintStart_toEndOf="@+id/textViewExpandIcon"
+                app:layout_constraintBottom_toTopOf="@id/textViewDeleteIcon"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textViewDescription" />
 
             <!-- start date -->
@@ -157,10 +72,12 @@
                 android:id="@+id/textViewStartDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
                 android:paddingStart="2dp"
                 android:paddingEnd="2dp"
+                android:textColor="@color/android_text_color"
                 android:textSize="@dimen/text_size_small"
-                app:layout_constraintBottom_toTopOf="@id/textViewDetailIcon"
+                app:layout_constraintBottom_toTopOf="@id/textViewDeleteIcon"
                 app:layout_constraintStart_toEndOf="@+id/textViewStartDateCaption"
                 app:layout_constraintTop_toBottomOf="@id/textViewDescription" />
 
@@ -169,13 +86,14 @@
                 android:id="@+id/textViewEndDateCaption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
                 android:paddingStart="2dp"
                 android:paddingEnd="2dp"
                 android:text="@string/unkown"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/black"
                 android:textSize="@dimen/text_size_small"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/textViewDetailIcon"
+                app:layout_constraintBottom_toTopOf="@id/textViewDeleteIcon"
                 app:layout_constraintEnd_toStartOf="@+id/textViewEndDate"
                 app:layout_constraintTop_toBottomOf="@id/textViewDescription" />
 
@@ -185,88 +103,88 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_marginTop="2dp"
                 android:layout_marginEnd="2dp"
                 android:paddingStart="2dp"
                 android:paddingEnd="2dp"
+                android:textColor="@color/android_text_color"
                 android:textSize="@dimen/text_size_small"
-                app:layout_constraintBottom_toTopOf="@id/textViewDetailIcon"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/textViewDeleteIcon"
                 app:layout_constraintTop_toBottomOf="@id/textViewDescription" />
-
-            <!-- details -->
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/textViewDetailIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:layout_marginBottom="4dp"
-                android:background="@drawable/me_btn_flexible"
-                android:textSize="@dimen/text_size_medium"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <!-- synchronise -->
-            <TextView
-                android:id="@+id/textViewSyncIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="25dp"
-                android:layout_marginBottom="2dp"
-                android:background="@drawable/me_btn_flexible"
-                android:textSize="@dimen/text_size_large"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/textViewDetailIcon"
-                app:layout_constraintTop_toBottomOf="@id/textViewStartDate" />
 
             <!-- delete -->
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewDeleteIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginTop="4dp"
-                android:layout_marginEnd="25dp"
+                android:layout_marginEnd="5dp"
                 android:layout_marginBottom="2dp"
                 android:background="@drawable/me_btn_flexible"
                 android:textSize="@dimen/text_size_large"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/textViewSyncIcon"
-                app:layout_constraintTop_toBottomOf="@id/textViewStartDate" />
+                app:layout_constraintTop_toBottomOf="@id/textViewStartDateCaption"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <!-- update -->
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewUpdateIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginTop="4dp"
-                android:layout_marginEnd="25dp"
+                android:layout_marginEnd="5dp"
                 android:layout_marginBottom="2dp"
                 android:background="@drawable/me_btn_flexible"
                 android:textSize="@dimen/text_size_large"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/textViewDeleteIcon"
-                app:layout_constraintTop_toBottomOf="@id/textViewStartDate" />
+                app:layout_constraintTop_toBottomOf="@id/textViewStartDateCaption" />
 
-            <!-- create -->
+            <!-- details icon -->
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/textViewCreateIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/textViewDetailIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="4dp"
-                android:layout_marginEnd="25dp"
                 android:layout_marginBottom="2dp"
                 android:background="@drawable/me_btn_flexible"
-                android:textSize="@dimen/text_size_large"
+                android:textSize="@dimen/text_size_very_large"
                 android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewStartDateCaption" />
+
+<!--
+            <LinearLayout
+                android:id="@+id/tabLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/textViewUpdateIcon"
-                app:layout_constraintTop_toBottomOf="@id/textViewStartDate" />
+                app:layout_constraintTop_toBottomOf="@id/textViewDetailIcon">
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/moduleTabLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    app:tabIndicatorColor="@color/colorAccent"
+                    app:tabSelectedTextColor="@color/colorPrimaryDark"
+                    app:tabTextColor="@color/colorPrimaryDark" />
+
+                 organization list layout
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/moduleViewPager2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="vertical"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+            </LinearLayout>
+            -->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.cardview.widget.CardView>
 </LinearLayout>

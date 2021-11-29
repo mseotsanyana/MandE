@@ -32,6 +32,7 @@ import androidx.navigation.Navigation;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
 import com.me.mseotsanyana.mande.BLL.model.session.cMenuModel;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
@@ -99,7 +100,9 @@ public class cHomeFragment extends Fragment implements iHomePagePresenter.View,
     public void onStart() {
         super.onStart();
         //FirebaseAuth.getInstance().signOut();
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (firebaseUser == null /*|| !firebaseUser.isEmailVerified()*/) {
             NavDirections action = cHomeFragmentDirections.actionCHomeFragmentToCLoginFragment();
             Navigation.findNavController(requireView()).navigate(action);
         }
@@ -155,7 +158,7 @@ public class cHomeFragment extends Fragment implements iHomePagePresenter.View,
                 cMainThreadImpl.getInstance(),
                 this,
                 new cSharedPreferenceFirestoreRepositoryImpl(requireContext()),
-                new cUserProfileFirestoreRepositoryImpl(getContext()));
+                new cUserProfileFirestoreRepositoryImpl(requireContext()));
 
         homePagePresenter = new cHomePagePresenterImpl(
                 cThreadExecutorImpl.getInstance(),

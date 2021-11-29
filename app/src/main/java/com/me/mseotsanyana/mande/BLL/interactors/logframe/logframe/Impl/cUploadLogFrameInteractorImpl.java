@@ -2,56 +2,106 @@ package com.me.mseotsanyana.mande.BLL.interactors.logframe.logframe.Impl;
 
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.base.cAbstractInteractor;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.logframe.iUploadLogFrameInteractor;
-import com.me.mseotsanyana.mande.BLL.repository.logframe.iUploadLogFrameRepository;
-import com.me.mseotsanyana.mande.BuildConfig;
+import com.me.mseotsanyana.mande.BLL.repository.logframe.iLogFrameRepository;
+import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
+import com.me.mseotsanyana.mande.DAL.storage.preference.cSharedPreference;
 
 public class cUploadLogFrameInteractorImpl extends cAbstractInteractor
         implements iUploadLogFrameInteractor {
-    private Callback callback;
-    private iUploadLogFrameRepository uploadLMRepository;
+
+    private static final String TAG = cUploadLogFrameInteractorImpl.class.getSimpleName();
+
+    private final Callback callback;
+    private final iLogFrameRepository logFrameRepository;
+
+
+    // permission data
+    private final String userServerID;
+    private final String organizationServerID;
+    private final int primaryTeamBIT;
+    private final int statusBIT;
+
+    private final int entityBITS;
+    private final int entitypermBITS;
+
+    private final String filePath;
 
     public cUploadLogFrameInteractorImpl(iExecutor threadExecutor, iMainThread mainThread,
-                                         iUploadLogFrameRepository uploadLMRepository,
-                                         Callback callback) {
+                                         iSharedPreferenceRepository sharedPreferenceRepository,
+                                         iLogFrameRepository logFrameRepository,
+                                         Callback callback, String filePath) {
         super(threadExecutor, mainThread);
 
-        if (uploadLMRepository == null || callback == null) {
+        if (sharedPreferenceRepository == null || logFrameRepository == null || callback == null) {
             throw new IllegalArgumentException("Arguments can not be null!");
         }
 
-        this.uploadLMRepository = uploadLMRepository;
         this.callback = callback;
+        this.logFrameRepository = logFrameRepository;
+
+        this.filePath = filePath;
+
+        // load user shared preferences
+        this.userServerID = sharedPreferenceRepository.loadUserID();
+        this.organizationServerID = sharedPreferenceRepository.loadOrganizationID();
+        this.primaryTeamBIT = sharedPreferenceRepository.loadPrimaryTeamBIT();
+        //this.secondaryTeamBITS = sharedPreferenceRepository.loadSecondaryTeams();
+
+        // load entity shared preferences
+        this.entityBITS = sharedPreferenceRepository.loadEntityBITS(
+                cSharedPreference.LOGFRAME_MODULE);
+        this.entitypermBITS = sharedPreferenceRepository.loadEntityPermissionBITS(
+                cSharedPreference.LOGFRAME_MODULE, cSharedPreference.LOGFRAME);
+        this.statusBIT = cSharedPreference.ACTIVE;
+
+        Log.d(TAG, " \n USER ID = " + this.userServerID +
+                " \n ORGANIZATION ID = " + this.organizationServerID +
+                " \n PRIMARY TEAM BIT = " + this.primaryTeamBIT +
+                " \n ENTITY PERMISSION BITS = " + this.entitypermBITS +
+                " \n OPERATION STATUS = " + this.statusBIT);
+
     }
 
     /* notify on the main thread */
     private void notifyError(String msg) {
-        mainThread.post(new Runnable() {
-            @Override
-            public void run() {
-                callback.onUploadLogFrameCompleted(msg);
-            }
-        });
+        mainThread.post(() -> callback.onUploadLogFrameFailed(msg));
     }
 
     /* notify on the main thread */
     private void postMessage(String msg) {
-        mainThread.post(new Runnable() {
-            @Override
-            public void run() {
-                callback.onUploadLogFrameCompleted(msg);
-            }
-        });
+        mainThread.post(() -> callback.onUploadLogFrameCompleted(msg));
     }
 
     @Override
     public void run() {
+        if ((this.entityBITS & cSharedPreference.LOGFRAME) != 0) {
+            if ((this.entitypermBITS & cSharedPreference.CREATE) != 0) {
+                this.logFrameRepository.upLoadLogFrameFromExcel(organizationServerID, userServerID,
+                        primaryTeamBIT, statusBIT, filePath,
+                        new iLogFrameRepository.iUploadLogFrameCallback() {
+                            @Override
+                            public void onUploadLogFrameSucceeded(String msg) {
+                                postMessage(msg);
+                            }
 
-        /* delete all logframe module records */
+                            @Override
+                            public void onUploadLogFrameFailed(String msg) {
+                                notifyError(msg);
+                            }
+                        });
+            } else {
+                notifyError("Permission denied! Please contact your administrator");
+            }
+        } else {
+            notifyError("No access to the entity! Please contact your administrator");
+        }
+    }
+}
+        /* delete all logframe module records
         uploadLMRepository.deleteLogFrame();
 
         uploadLMRepository.deleteLogFrameTree();
@@ -91,9 +141,9 @@ public class cUploadLogFrameInteractorImpl extends cAbstractInteractor
 
         uploadLMRepository.deleteRaidCategories();
         uploadLMRepository.deleteRaids();
-        uploadLMRepository.deleteComponentRaids();
+        uploadLMRepository.deleteComponentRaids();*/
 
-        /* upload all logframe module records */
+        /* upload all logframe module records
         if (uploadLMRepository.addLogFrameFromExcel()) {
             postMessage("LogFrame Entity Added Successfully!");
         } else {
@@ -142,6 +192,4 @@ public class cUploadLogFrameInteractorImpl extends cAbstractInteractor
             postMessage("Raid Entity Added Successfully!");
         } else {
             notifyError("Failed to Add Raid Entity");
-        }
-    }
-}
+        }*/

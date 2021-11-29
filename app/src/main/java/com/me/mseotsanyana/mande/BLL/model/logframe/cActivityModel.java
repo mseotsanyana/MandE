@@ -1,88 +1,106 @@
 package com.me.mseotsanyana.mande.BLL.model.logframe;
 
-import com.me.mseotsanyana.mande.BLL.model.wpb.cActivityTaskModel;
+import com.google.firebase.firestore.Exclude;
+import com.me.mseotsanyana.mande.BLL.model.session.cUserModel;
+import com.me.mseotsanyana.mande.BLL.model.wpb.cTaskModel;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class cActivityModel extends cComponentModel {
-    /*** incoming mappings ***/
-    private cOutputModel outputModel;
-    private Set<cActivityModel> childActivityModelSet;
-    /*** outgoing mappings ***/
-    private Set<cInputModel> inputModelSet;
-    private Set<cActivityTaskModel> taskModelSet;
-    private Set<cPrecedingActivityModel> precedingActivityModelSet;
-    private Set<cActivityAssignmentModel> activityAssignmentModelSet;
+    private String parentServerID;
+    private List<cActivityModel> childModels;
+
+    private String outputServerID;
+
+    private List<cActivityModel> precedingActivities;
+    private List<cUserModel> activityAssignments;
+
+    private List<cInputModel> inputModels;
+    private List<cTaskModel> taskModels;
+
     /* set of output in a sub-logframe for the parent activity */
-    private Set<cOutputModel> childOutputModelSet;
+    private List<cOutputModel> suboutputModels;
 
     public cActivityModel(){
-        /* incoming mappings */
-        outputModel = new cOutputModel();
-        childActivityModelSet = new HashSet<>();
-        /* outgoing mappings */
-        inputModelSet = new HashSet<>();
-        taskModelSet = new HashSet<>();
-        precedingActivityModelSet = new HashSet<>();
-        activityAssignmentModelSet = new HashSet<>();
-        childOutputModelSet = new HashSet<>();
+        parentServerID = null;
+        outputServerID = null;
+        childModels = new ArrayList<>();
+        activityAssignments = new ArrayList<>();
+        precedingActivities = new ArrayList<>();
+        inputModels = new ArrayList<>();
+        taskModels = new ArrayList<>();
+        suboutputModels = new ArrayList<>();
     }
 
-    public cOutputModel getOutputModel() {
-        return outputModel;
+    public String getParentServerID() {
+        return parentServerID;
     }
 
-    public void setOutputModel(cOutputModel outputModel) {
-        this.outputModel = outputModel;
+    public void setParentServerID(String parentServerID) {
+        this.parentServerID = parentServerID;
     }
 
-    public Set<cActivityModel> getChildActivityModelSet() {
-        return childActivityModelSet;
+    public String getOutputServerID() {
+        return outputServerID;
     }
 
-    public void setChildActivityModelSet(Set<cActivityModel> childActivityModelSet) {
-        this.childActivityModelSet = childActivityModelSet;
+    public void setOutputServerID(String outputServerID) {
+        this.outputServerID = outputServerID;
     }
 
-    public Set<cInputModel> getInputModelSet() {
-        return inputModelSet;
+    @Exclude
+    public List<cActivityModel> getChildModels() {
+        return childModels;
     }
 
-    public void setInputModelSet(Set<cInputModel> inputModelSet) {
-        this.inputModelSet = inputModelSet;
+    public void setChildModels(List<cActivityModel> childModels) {
+        this.childModels = childModels;
     }
 
-    public Set<cActivityTaskModel> getTaskModelSet() {
-        return taskModelSet;
+    @Exclude
+    public List<cActivityModel> getPrecedingActivities() {
+        return precedingActivities;
     }
 
-    public void setTaskModelSet(Set<cActivityTaskModel> taskModelSet) {
-        this.taskModelSet = taskModelSet;
+    public void setPrecedingActivities(List<cActivityModel> precedingActivities) {
+        this.precedingActivities = precedingActivities;
     }
 
-    public Set<cPrecedingActivityModel> getPrecedingActivityModelSet() {
-        return precedingActivityModelSet;
+    @Exclude
+    public List<cUserModel> getActivityAssignments() {
+        return activityAssignments;
     }
 
-    public void setPrecedingActivityModelSet(Set<cPrecedingActivityModel> precedingActivityModelSet) {
-        this.precedingActivityModelSet = precedingActivityModelSet;
+    public void setActivityAssignments(List<cUserModel> activityAssignments) {
+        this.activityAssignments = activityAssignments;
     }
 
-    public Set<cActivityAssignmentModel> getActivityAssignmentModelSet() {
-        return activityAssignmentModelSet;
+    @Exclude
+    public List<cInputModel> getInputModels() {
+        return inputModels;
     }
 
-    public void setActivityAssignmentModelSet(Set<cActivityAssignmentModel> activityAssignmentModelSet) {
-        this.activityAssignmentModelSet = activityAssignmentModelSet;
+    public void setInputModels(List<cInputModel> inputModels) {
+        this.inputModels = inputModels;
     }
 
-    public Set<cOutputModel> getChildOutputModelSet() {
-        return childOutputModelSet;
+    @Exclude
+    public List<cTaskModel> getTaskModels() {
+        return taskModels;
     }
 
-    public void setChildOutputModelSet(Set<cOutputModel> childOutputModelSet) {
-        this.childOutputModelSet = childOutputModelSet;
+    public void setTaskModels(List<cTaskModel> taskModels) {
+        this.taskModels = taskModels;
+    }
+
+    @Exclude
+    public List<cOutputModel> getSuboutputModels() {
+        return suboutputModels;
+    }
+
+    public void setSuboutputModels(List<cOutputModel> suboutputModels) {
+        this.suboutputModels = suboutputModels;
     }
 }
 

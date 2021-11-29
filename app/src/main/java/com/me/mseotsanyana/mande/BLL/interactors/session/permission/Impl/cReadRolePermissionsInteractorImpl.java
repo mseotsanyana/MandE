@@ -74,7 +74,7 @@ public class cReadRolePermissionsInteractorImpl extends cAbstractInteractor
 
     /* */
     private void postMessage(List<cTreeModel> treeModels) {
-        mainThread.post(() -> callback.onReadRolePermissionsRetrieved(treeModels));
+        mainThread.post(() -> callback.onReadRolePermissionsSucceeded(treeModels));
     }
 
 
@@ -82,16 +82,16 @@ public class cReadRolePermissionsInteractorImpl extends cAbstractInteractor
     public void run() {
         if ((this.entityBITS & cSharedPreference.PERMISSION) != 0) {
             if ((this.entitypermBITS & cSharedPreference.READ) != 0) {
-                this.permissionRepository.readUserPermissions(organizationServerID,
+                this.permissionRepository.readRolePermissions(organizationServerID,
                         userServerID, primaryTeamBIT, secondaryTeamBITS, statusBITS,
-                        new iPermissionRepository.iReadUserPermissionsCallback() {
+                        new iPermissionRepository.iReadRolePermissionsCallback() {
                             @Override
-                            public void onReadUserPermissionsSucceeded(List<cTreeModel> treeModels) {
+                            public void onReadRolePermissionsSucceeded(List<cTreeModel> treeModels) {
                                 postMessage(treeModels);
                             }
 
                             @Override
-                            public void onReadUserPermissionsFailed(String msg) {
+                            public void onReadRolePermissionsFailed(String msg) {
                                 notifyError(msg);
                             }
                         });
@@ -103,110 +103,3 @@ public class cReadRolePermissionsInteractorImpl extends cAbstractInteractor
         }
     }
 }
-
-//    private void buildAndReadTree(Map<cRoleModel, cPermissionModel> rolePermissionModels){
-//
-//        List<cTreeModel> treeModels = new ArrayList<>();
-//        int parentIndex = 0, childIndex;
-//        for(Map.Entry<cRoleModel, cPermissionModel> entry: rolePermissionModels.entrySet()){
-//            cRoleModel roleModel = entry.getKey();
-//            cPermissionModel permissionModel = entry.getValue();
-//
-//            /* LEVEL 0: add root role node */
-//            treeModels.add(new cTreeModel(new cTreeModel(parentIndex, -1, 0,
-//                    roleModel)));
-//            /* LEVEL 1: add child permission node to the parent role node */
-//            childIndex = parentIndex + 1;
-//            treeModels.add(new cTreeModel(new cTreeModel(childIndex, parentIndex, 1,
-//                    permissionModel)));
-//            parentIndex = childIndex;
-//
-//            // entity permissions
-//            for(Map.Entry<String, List<cEntityModel>> moduleEntry: permissionModel.
-//                    getEntitymodules().entrySet()){
-//                // build module node
-//                String moduleKey =  moduleEntry.getKey();
-//                cModuleModel moduleModel = new cModuleModel();
-//                String moduleName = null;//getModuleFromJson(moduleKey);
-//                moduleModel.setModuleServerID(moduleKey);
-//                moduleModel.setName(moduleName);
-//
-//                /* LEVEL 2: add child module node to the parent permission node */
-//                childIndex = childIndex + 1;
-//                treeModels.add(new cTreeModel(childIndex, parentIndex, 2, moduleModel));
-//                parentIndex = childIndex;
-//
-//                // entity modules
-//                List<cEntityModel> entityModels = moduleEntry.getValue();
-//                for(cEntityModel entityModel: entityModels){
-//                    // get pair of name and description through entity identification
-//                    Pair<String, String> pair = null;//getNameAndDescription(entityModel.);
-//                    entityModel.setName(pair.first);
-//                    entityModel.setDescription(pair.second);
-//
-//                    /* LEVEL 3: add child entity node to the parent module node */
-//                    childIndex = childIndex + 1;
-//                    treeModels.add(new cTreeModel(childIndex, parentIndex, 3, entityModel));
-//                    parentIndex = childIndex;
-//
-//                    // entity operations
-//                    for(Map.Entry<String, List<Integer>> entityEntry : entityModel.
-//                            getEntityperms().entrySet()){
-//                        String operationKey =  entityEntry.getKey();
-//                        Pair<String, String> ops_pair = null;//getNameAndDescription(operationKey);
-//
-//                        cOperationModel operationModel = new cOperationModel();
-//                        operationModel.setName(ops_pair.first);
-//                        operationModel.setDescription(ops_pair.second);
-//
-//                        /* LEVEL 4: add child operation node to the parent entity node */
-//                        childIndex = childIndex + 1;
-//                        treeModels.add(new cTreeModel(childIndex, parentIndex, 4, moduleModel));
-//                        parentIndex = childIndex;
-//
-//                        // operation status
-//                        for(Integer status_id: entityEntry.getValue()){
-//                            Pair<String, String> status_pair = null;//getNameAndDescription(operationKey);
-//
-//                            cStatusModel statusModel = new cStatusModel();
-//                            statusModel.setName(status_pair.first);
-//                            statusModel.setDescription(status_pair.second);
-//
-//                            /* LEVEL 5: add child status node to the parent operation node */
-//                            childIndex = childIndex + 1;
-//                            treeModels.add(new cTreeModel(childIndex, parentIndex, 5, moduleModel));
-//                            parentIndex = childIndex;
-//                        }
-//                    }
-//
-//                    // unix permissions
-//                    List<Integer> unixperms = entityModel.getUnixperms();
-//
-//
-//                }
-//            }
-//
-//            // menu permissions
-//            for(Map.Entry<String, List<Integer>> moduleEntry: permissionModel.
-//                    getMenuitems().entrySet()){
-//
-//                treeModels.add(new cTreeModel(parentIndex, -1, 0, permissionModel));
-//
-//                // build menu nodes and add them to permission node
-//                List<Integer> menu_ids = moduleEntry.getValue();
-//                childIndex = parentIndex;
-//                for(Integer menu_id: menu_ids){
-//                    cMenuModel menuModel = new cMenuModel();
-//                    // get pair of name and description through module id
-//                    Pair<String, String> pair = null;//getNameAndDescription(menu_id);
-//                    menuModel.setName(pair.first);
-//                    menuModel.setDescription(pair.second);
-//
-//                    childIndex = childIndex + 1;
-//                    treeModels.add(new cTreeModel(childIndex, parentIndex, 2, menuModel));
-//                }
-//            }
-//        }
-//
-//        postMessage(treeModels);
-//    }

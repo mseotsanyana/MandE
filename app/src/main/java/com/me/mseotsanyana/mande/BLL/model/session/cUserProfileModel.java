@@ -12,42 +12,48 @@ public class cUserProfileModel implements Parcelable {
 
     private String userOwnerID;
 
-    private String photo;
+    private String photoUrl;
+    private byte[] imageData;
+
     private String name;
     private String surname;
     private String designation;
-
-    private String location;
     private String email;
-    private String website;
-    private String phone;
+    private String password;
+    private String confirmPassword;
 
+    private String phone;
+    private String website;
+    private String location;
 
     private Date createdDate;
     private Date modifiedDate;
 
-    public cUserProfileModel(){}
-
-    public cUserProfileModel(String userServerID, String name, String surname,
-                             String email){
-        this.userServerID = userServerID;
+    public cUserProfileModel(byte[] imageData, String name, String surname,
+                             String designation, String email, String password) {
+        this.imageData = imageData;
         this.name = name;
         this.surname = surname;
+        this.designation = designation;
         this.email = email;
+        this.password = password;
     }
 
-    public cUserProfileModel(String userServerID, String name, String surname,
-                             String designation, String phone, String email,
-                             String website, String location){
+    public cUserProfileModel(String userServerID, String photoUri, String name, String surname,
+                             String designation, String email, String password){
         this.userServerID = userServerID;
+        this.photoUrl = photoUri;
         this.name = name;
         this.surname = surname;
-        this.location = location;
-        this.phone = phone;
+        this.designation = designation;
         this.email = email;
+        this.password = password;
     }
 
-    @Exclude
+    public cUserProfileModel() {
+
+    }
+
     public String getUserServerID() {
         return userServerID;
     }
@@ -64,13 +70,21 @@ public class cUserProfileModel implements Parcelable {
         this.userOwnerID = userOwnerID;
     }
 
-    @Exclude
-    public String getPhoto() {
-        return photo;
+    public String getPhotoUrl() {
+        return photoUrl;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    @Exclude
+    public byte[] getImageData() {
+        return imageData;
+    }
+
+    public void setImageData(byte[] imageData) {
+        this.imageData = imageData;
     }
 
     public String getName() {
@@ -129,6 +143,24 @@ public class cUserProfileModel implements Parcelable {
         this.phone = phone;
     }
 
+    @Exclude
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Exclude
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -152,7 +184,7 @@ public class cUserProfileModel implements Parcelable {
 
     protected cUserProfileModel(Parcel in) {
         userServerID = in.readString();
-        photo = in.readString();
+        photoUrl = in.readString();
         name = in.readString();
         surname = in.readString();
         designation = in.readString();
@@ -177,7 +209,7 @@ public class cUserProfileModel implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(userServerID);
-        parcel.writeString(photo);
+        parcel.writeString(photoUrl);
         parcel.writeString(name);
         parcel.writeString(surname);
         parcel.writeString(designation);

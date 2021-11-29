@@ -16,7 +16,7 @@ import com.me.mseotsanyana.mande.DAL.ìmpl.sqlite.session.cSessionManagerImpl;
 import com.me.mseotsanyana.mande.PL.ui.fragments.common.cCommonDatesFragment;
 import com.me.mseotsanyana.mande.PL.ui.fragments.common.cCustomViewPager;
 import com.me.mseotsanyana.mande.PL.ui.fragments.common.cOwnershipFragment;
-import com.me.mseotsanyana.mande.PL.ui.fragments.common.cPermissionFragment;
+import com.me.mseotsanyana.mande.PL.ui.fragments.common.cPermissionFragment_OLD;
 import com.me.mseotsanyana.mande.PL.ui.fragments.common.cStatusFragment;
 
 import java.util.ArrayList;
@@ -62,7 +62,7 @@ public class cCommonFragmentAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return cPermissionFragment.newInstance(this.permBITS);
+                return cPermissionFragment_OLD.newInstance(this.permBITS);
 
             case 1:
                 return null;
@@ -91,7 +91,7 @@ public class cCommonFragmentAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return cPermissionFragment.TITLE;
+                return cPermissionFragment_OLD.TITLE;
 
             case 1:
                 return cStatusFragment.TITLE;

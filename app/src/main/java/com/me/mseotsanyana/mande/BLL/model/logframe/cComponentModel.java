@@ -3,50 +3,52 @@ package com.me.mseotsanyana.mande.BLL.model.logframe;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.firestore.Exclude;
+
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 public class cComponentModel implements Parcelable {
-	private long componentID;
-	private long parentID;
-	private long serverID;
-    private long ownerID;
-    private long orgID;
-    private int groupBITS;
-    private int permsBITS;
-    private int statusBITS;
-	private String name;
-	private String description;
-	private Date startDate;
-	private Date endDate;
+    private String componentServerID;
+    private cLogFrameModel logFrameModel;
+
+    // common attributes
+    private String userOwnerID;
+    private String organizationOwnerID;
+    private int teamOwnerBIT;
+    private List<Integer> unixpermBITS;
+    private int statusBIT;
+
+    // meta attributes
+    private String name;
+    private String description;
+    private Date startDate;
+    private Date endDate;
     private Date createdDate;
     private Date modifiedDate;
-    private Date syncedDate;
 
     /*** mappings ***/
-    private cLogFrameModel logFrameModel;
-    private Set<cQuestionModel> questionModelSet;
-    private Set<cRaidModel> raidModelSet;
+    private List<cQuestionModel> questionModels;
+    private List<cRaidModel> raidModels;
 
     public cComponentModel(){
         /* mappings */
         logFrameModel = new cLogFrameModel();
-        questionModelSet = new HashSet<>();
-        raidModelSet = new HashSet<>();
+        questionModels = new ArrayList<>();
+        raidModels = new ArrayList<>();
     }
 
     protected cComponentModel(Parcel in) {
-        componentID = in.readLong();
-        parentID = in.readLong();
-        serverID = in.readLong();
-        ownerID = in.readLong();
-        orgID = in.readLong();
-        groupBITS = in.readInt();
-        permsBITS = in.readInt();
-        statusBITS = in.readInt();
+        componentServerID = in.readString();
+        logFrameModel = in.readParcelable(cLogFrameModel.class.getClassLoader());
+        userOwnerID = in.readString();
+        organizationOwnerID = in.readString();
+        teamOwnerBIT = in.readInt();
+        statusBIT = in.readInt();
         name = in.readString();
         description = in.readString();
+        questionModels = in.createTypedArrayList(cQuestionModel.CREATOR);
     }
 
     public static final Creator<cComponentModel> CREATOR = new Creator<cComponentModel>() {
@@ -61,68 +63,60 @@ public class cComponentModel implements Parcelable {
         }
     };
 
-    public long getComponentID() {
-        return componentID;
+    public String getComponentServerID() {
+        return componentServerID;
     }
 
-    public void setComponentID(long componentID) {
-        this.componentID = componentID;
+    public void setComponentServerID(String componentServerID) {
+        this.componentServerID = componentServerID;
     }
 
-    public long getParentID() {
-        return parentID;
+    public cLogFrameModel getLogFrameModel() {
+        return logFrameModel;
     }
 
-    public void setParentID(long parentID) {
-        this.parentID = parentID;
+    public void setLogFrameModel(cLogFrameModel logFrameModel) {
+        this.logFrameModel = logFrameModel;
     }
 
-    public long getServerID() {
-        return serverID;
+    public String getUserOwnerID() {
+        return userOwnerID;
     }
 
-    public void setServerID(long serverID) {
-        this.serverID = serverID;
+    public void setUserOwnerID(String userOwnerID) {
+        this.userOwnerID = userOwnerID;
     }
 
-    public long getOwnerID() {
-        return ownerID;
+    public String getOrganizationOwnerID() {
+        return organizationOwnerID;
     }
 
-    public void setOwnerID(long ownerID) {
-        this.ownerID = ownerID;
+    public void setOrganizationOwnerID(String organizationOwnerID) {
+        this.organizationOwnerID = organizationOwnerID;
     }
 
-    public long getOrgID() {
-        return orgID;
+    public int getTeamOwnerBIT() {
+        return teamOwnerBIT;
     }
 
-    public void setOrgID(long orgID) {
-        this.orgID = orgID;
+    public void setTeamOwnerBIT(int teamOwnerBIT) {
+        this.teamOwnerBIT = teamOwnerBIT;
     }
 
-    public int getGroupBITS() {
-        return groupBITS;
+    public List<Integer> getUnixpermBITS() {
+        return unixpermBITS;
     }
 
-    public void setGroupBITS(int groupBITS) {
-        this.groupBITS = groupBITS;
+    public void setUnixpermBITS(List<Integer> unixpermBITS) {
+        this.unixpermBITS = unixpermBITS;
     }
 
-    public int getPermsBITS() {
-        return permsBITS;
+    public int getStatusBIT() {
+        return statusBIT;
     }
 
-    public void setPermsBITS(int permsBITS) {
-        this.permsBITS = permsBITS;
-    }
-
-    public int getStatusBITS() {
-        return statusBITS;
-    }
-
-    public void setStatusBITS(int statusBITS) {
-        this.statusBITS = statusBITS;
+    public void setStatusBIT(int statusBIT) {
+        this.statusBIT = statusBIT;
     }
 
     public String getName() {
@@ -173,37 +167,16 @@ public class cComponentModel implements Parcelable {
         this.modifiedDate = modifiedDate;
     }
 
-    public Date getSyncedDate() {
-        return syncedDate;
+    @Exclude
+    public List<cQuestionModel> getQuestionModels() {
+        return questionModels;
     }
 
-    public void setSyncedDate(Date syncedDate) {
-        this.syncedDate = syncedDate;
+    @Exclude
+    public List<cRaidModel> getRaidModels() {
+        return raidModels;
     }
 
-    public cLogFrameModel getLogFrameModel() {
-        return logFrameModel;
-    }
-
-    public void setLogFrameModel(cLogFrameModel logFrameModel) {
-        this.logFrameModel = logFrameModel;
-    }
-
-    public Set<cQuestionModel> getQuestionModelSet() {
-        return questionModelSet;
-    }
-
-    public void setQuestionModelSet(Set<cQuestionModel> questionModelSet) {
-        this.questionModelSet = questionModelSet;
-    }
-
-    public Set<cRaidModel> getRaidModelSet() {
-        return raidModelSet;
-    }
-
-    public void setRaidModelSet(Set<cRaidModel> raidModelSet) {
-        this.raidModelSet = raidModelSet;
-    }
 
     @Override
     public int describeContents() {
@@ -212,15 +185,14 @@ public class cComponentModel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeLong(componentID);
-        parcel.writeLong(parentID);
-        parcel.writeLong(serverID);
-        parcel.writeLong(ownerID);
-        parcel.writeLong(orgID);
-        parcel.writeInt(groupBITS);
-        parcel.writeInt(permsBITS);
-        parcel.writeInt(statusBITS);
+        parcel.writeString(componentServerID);
+        parcel.writeParcelable(logFrameModel, i);
+        parcel.writeString(userOwnerID);
+        parcel.writeString(organizationOwnerID);
+        parcel.writeInt(teamOwnerBIT);
+        parcel.writeInt(statusBIT);
         parcel.writeString(name);
         parcel.writeString(description);
+        parcel.writeTypedList(questionModels);
     }
 }

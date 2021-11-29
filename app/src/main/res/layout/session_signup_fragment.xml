@@ -4,21 +4,22 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark">
 
-    <include layout="@layout/me_progress_view"
-        android:id="@+id/progressBar"/>
+    <include
+        android:id="@+id/progressBar"
+        layout="@layout/me_progress_view" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/appCompatImageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profileCircleImageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:src="@drawable/logo" />
+        android:src="@drawable/me_default_avatar" />
 
     <EditText
         android:id="@+id/firstNameEditText"
         style="@style/styleEditText"
-        android:layout_below="@+id/appCompatImageView"
+        android:layout_below="@+id/profileCircleImageView"
         android:layout_marginTop="20dp"
         android:hint="@string/user_hint_firstname" />
 
@@ -29,9 +30,15 @@
         android:hint="@string/user_hint_lastname" />
 
     <EditText
-        android:id="@+id/emailEditText"
+        android:id="@+id/designationEditText"
         style="@style/styleEditText"
         android:layout_below="@+id/surnameEditText"
+        android:hint="@string/user_hint_designation" />
+
+    <EditText
+        android:id="@+id/emailEditText"
+        style="@style/styleEditText"
+        android:layout_below="@+id/designationEditText"
         android:hint="@string/user_hint_email" />
 
     <EditText
@@ -65,9 +72,9 @@
     <include
         layout="@layout/me_bottom_layout"
         android:layout_width="match_parent"
-        android:layout_marginTop="50dp"
         android:layout_height="50dp"
-        android:layout_below="@+id/signUpTextView"/>
+        android:layout_below="@+id/signUpTextView"
+        android:layout_marginTop="20dp" />
 
 </RelativeLayout>
 

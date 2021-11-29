@@ -1,0 +1,257 @@
+<html>
+<head>
+<title>cRaidModel.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #0033b3;}
+.s1 { color: #080808;}
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+cRaidModel.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.logframe;</span>
+
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.common.cFrequencyModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.raid.cRAIDImpactModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.raid.cRAIDLikelihoodModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.raid.cRobotModel;</span>
+<span class="s0">import </span><span class="s1">com.me.mseotsanyana.mande.BLL.model.wpb.cHumanSetModel;</span>
+
+<span class="s0">import </span><span class="s1">java.util.Date;</span>
+
+<span class="s0">public class </span><span class="s1">cRaidModel {</span>
+    <span class="s0">private long </span><span class="s1">raidID;</span>
+    <span class="s0">private long </span><span class="s1">serverID;</span>
+    <span class="s0">private long </span><span class="s1">ownerID;</span>
+    <span class="s0">private long </span><span class="s1">orgID;</span>
+    <span class="s0">private int </span><span class="s1">groupBITS;</span>
+    <span class="s0">private int </span><span class="s1">permsBITS;</span>
+    <span class="s0">private int </span><span class="s1">statusBITS;</span>
+    <span class="s0">private int </span><span class="s1">score;</span>
+    <span class="s0">private </span><span class="s1">String name;</span>
+    <span class="s0">private </span><span class="s1">String description;</span>
+    <span class="s0">private </span><span class="s1">String status;</span>
+    <span class="s0">private </span><span class="s1">Date startDate;</span>
+    <span class="s0">private </span><span class="s1">Date endDate;</span>
+    <span class="s0">private </span><span class="s1">Date createdDate;</span>
+    <span class="s0">private </span><span class="s1">Date modifiedDate;</span>
+    <span class="s0">private </span><span class="s1">Date syncedDate;</span>
+
+    <span class="s0">private </span><span class="s1">cLogFrameModel logFrameModel;</span>
+    <span class="s0">private </span><span class="s1">cRaidCategoryModel raidCategoryModel;</span>
+    <span class="s0">private </span><span class="s1">cHumanSetModel originatorModel;</span>
+    <span class="s0">private </span><span class="s1">cHumanSetModel ownerModel;</span>
+    <span class="s0">private </span><span class="s1">cFrequencyModel frequencyModel;</span>
+    <span class="s0">private </span><span class="s1">cRAIDLikelihoodModel raidLikelihoodModel;</span>
+    <span class="s0">private </span><span class="s1">cRAIDImpactModel raidImpactModel;</span>
+    <span class="s0">private </span><span class="s1">cRobotModel robotModel;</span>
+
+    <span class="s0">public </span><span class="s1">cRaidModel(){</span>
+        <span class="s1">logFrameModel = </span><span class="s0">new </span><span class="s1">cLogFrameModel();</span>
+        <span class="s1">raidCategoryModel = </span><span class="s0">new </span><span class="s1">cRaidCategoryModel();</span>
+        <span class="s1">originatorModel = </span><span class="s0">new </span><span class="s1">cHumanSetModel();</span>
+        <span class="s1">ownerModel = </span><span class="s0">new </span><span class="s1">cHumanSetModel();</span>
+        <span class="s1">frequencyModel = </span><span class="s0">new </span><span class="s1">cFrequencyModel();</span>
+        <span class="s1">raidLikelihoodModel = </span><span class="s0">new </span><span class="s1">cRAIDLikelihoodModel();</span>
+        <span class="s1">raidImpactModel = </span><span class="s0">new </span><span class="s1">cRAIDImpactModel();</span>
+        <span class="s1">robotModel = </span><span class="s0">new </span><span class="s1">cRobotModel();</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public long </span><span class="s1">getRaidID() {</span>
+        <span class="s0">return </span><span class="s1">raidID;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setRaidID(</span><span class="s0">long </span><span class="s1">raidID) {</span>
+        <span class="s0">this</span><span class="s1">.raidID = raidID;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public long </span><span class="s1">getServerID() {</span>
+        <span class="s0">return </span><span class="s1">serverID;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setServerID(</span><span class="s0">long </span><span class="s1">serverID) {</span>
+        <span class="s0">this</span><span class="s1">.serverID = serverID;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public long </span><span class="s1">getOwnerID() {</span>
+        <span class="s0">return </span><span class="s1">ownerID;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setOwnerID(</span><span class="s0">long </span><span class="s1">ownerID) {</span>
+        <span class="s0">this</span><span class="s1">.ownerID = ownerID;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public long </span><span class="s1">getOrgID() {</span>
+        <span class="s0">return </span><span class="s1">orgID;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setOrgID(</span><span class="s0">long </span><span class="s1">orgID) {</span>
+        <span class="s0">this</span><span class="s1">.orgID = orgID;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public int </span><span class="s1">getGroupBITS() {</span>
+        <span class="s0">return </span><span class="s1">groupBITS;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setGroupBITS(</span><span class="s0">int </span><span class="s1">groupBITS) {</span>
+        <span class="s0">this</span><span class="s1">.groupBITS = groupBITS;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public int </span><span class="s1">getPermsBITS() {</span>
+        <span class="s0">return </span><span class="s1">permsBITS;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setPermsBITS(</span><span class="s0">int </span><span class="s1">permsBITS) {</span>
+        <span class="s0">this</span><span class="s1">.permsBITS = permsBITS;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public int </span><span class="s1">getStatusBITS() {</span>
+        <span class="s0">return </span><span class="s1">statusBITS;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setStatusBITS(</span><span class="s0">int </span><span class="s1">statusBITS) {</span>
+        <span class="s0">this</span><span class="s1">.statusBITS = statusBITS;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public int </span><span class="s1">getScore() {</span>
+        <span class="s0">return </span><span class="s1">score;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setScore(</span><span class="s0">int </span><span class="s1">score) {</span>
+        <span class="s0">this</span><span class="s1">.score = score;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getName() {</span>
+        <span class="s0">return </span><span class="s1">name;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setName(String name) {</span>
+        <span class="s0">this</span><span class="s1">.name = name;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getDescription() {</span>
+        <span class="s0">return </span><span class="s1">description;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setDescription(String description) {</span>
+        <span class="s0">this</span><span class="s1">.description = description;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getStatus() {</span>
+        <span class="s0">return </span><span class="s1">status;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setStatus(String status) {</span>
+        <span class="s0">this</span><span class="s1">.status = status;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">Date getStartDate() {</span>
+        <span class="s0">return </span><span class="s1">startDate;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setStartDate(Date startDate) {</span>
+        <span class="s0">this</span><span class="s1">.startDate = startDate;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">Date getEndDate() {</span>
+        <span class="s0">return </span><span class="s1">endDate;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setEndDate(Date endDate) {</span>
+        <span class="s0">this</span><span class="s1">.endDate = endDate;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">Date getCreatedDate() {</span>
+        <span class="s0">return </span><span class="s1">createdDate;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setCreatedDate(Date createdDate) {</span>
+        <span class="s0">this</span><span class="s1">.createdDate = createdDate;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">Date getModifiedDate() {</span>
+        <span class="s0">return </span><span class="s1">modifiedDate;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setModifiedDate(Date modifiedDate) {</span>
+        <span class="s0">this</span><span class="s1">.modifiedDate = modifiedDate;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">Date getSyncedDate() {</span>
+        <span class="s0">return </span><span class="s1">syncedDate;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setSyncedDate(Date syncedDate) {</span>
+        <span class="s0">this</span><span class="s1">.syncedDate = syncedDate;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">cRaidCategoryModel getRaidCategoryModel() {</span>
+        <span class="s0">return </span><span class="s1">raidCategoryModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setRaidCategoryModel(cRaidCategoryModel raidCategoryModel) {</span>
+        <span class="s0">this</span><span class="s1">.raidCategoryModel = raidCategoryModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">cLogFrameModel getLogFrameModel() {</span>
+        <span class="s0">return </span><span class="s1">logFrameModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setLogFrameModel(cLogFrameModel logFrameModel) {</span>
+        <span class="s0">this</span><span class="s1">.logFrameModel = logFrameModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">cHumanSetModel getOriginatorModel() {</span>
+        <span class="s0">return </span><span class="s1">originatorModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setOriginatorModel(cHumanSetModel originatorModel) {</span>
+        <span class="s0">this</span><span class="s1">.originatorModel = originatorModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">cHumanSetModel getOwnerModel() {</span>
+        <span class="s0">return </span><span class="s1">ownerModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setOwnerModel(cHumanSetModel ownerModel) {</span>
+        <span class="s0">this</span><span class="s1">.ownerModel = ownerModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">cFrequencyModel getFrequencyModel() {</span>
+        <span class="s0">return </span><span class="s1">frequencyModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setFrequencyModel(cFrequencyModel frequencyModel) {</span>
+        <span class="s0">this</span><span class="s1">.frequencyModel = frequencyModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">cRAIDLikelihoodModel getRaidLikelihoodModel() {</span>
+        <span class="s0">return </span><span class="s1">raidLikelihoodModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setRaidLikelihoodModel(cRAIDLikelihoodModel raidLikelihoodModel) {</span>
+        <span class="s0">this</span><span class="s1">.raidLikelihoodModel = raidLikelihoodModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">cRAIDImpactModel getRaidImpactModel() {</span>
+        <span class="s0">return </span><span class="s1">raidImpactModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setRaidImpactModel(cRAIDImpactModel raidImpactModel) {</span>
+        <span class="s0">this</span><span class="s1">.raidImpactModel = raidImpactModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">cRobotModel getRobotModel() {</span>
+        <span class="s0">return </span><span class="s1">robotModel;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setRobotModel(cRobotModel robotModel) {</span>
+        <span class="s0">this</span><span class="s1">.robotModel = robotModel;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

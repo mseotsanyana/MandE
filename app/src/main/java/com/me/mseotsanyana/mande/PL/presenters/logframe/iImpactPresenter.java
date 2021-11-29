@@ -1,6 +1,7 @@
 package com.me.mseotsanyana.mande.PL.presenters.logframe;
 
 import com.me.mseotsanyana.mande.BLL.model.logframe.cImpactModel;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cOutcomeModel;
 import com.me.mseotsanyana.mande.BLL.model.logframe.cQuestionModel;
 import com.me.mseotsanyana.mande.PL.presenters.base.iPresenter;
@@ -8,6 +9,7 @@ import com.me.mseotsanyana.mande.PL.ui.iBaseView;
 import com.me.mseotsanyana.treeadapterlibrary.cTreeModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface iImpactPresenter extends iPresenter {
     interface View extends iBaseView {
@@ -22,7 +24,8 @@ public interface iImpactPresenter extends iPresenter {
         void onClickDetailImpact(cOutcomeModel[] outcomeModels, cQuestionModel[] questionModels);
 
         /* pass data from interactor to the view */
-        void onRetrieveImpactsCompleted(String logFrameName, ArrayList<cTreeModel> impactModelSet);
+        void onRetrieveImpactsCompleted(String logFrameName, List<cTreeModel> impactModelSet);
+        void onImpactUpdateFailed(String msg);
 
         /*void onLogFrameCreated(cLogFrameModel logFrameModel, String msg);
         void onLogFrameCreateFailed(String msg);
@@ -49,7 +52,7 @@ public interface iImpactPresenter extends iPresenter {
     /* pass data from view to the interactor */
     //void createLogFrameModel(cLogFrameModel logFrameModel);
     //void createSubLogFrameModel(long logFrameID, cLogFrameModel logSubFrameModel);
-    void readImpacts(long logFrameID);
+    void readImpacts(cLogFrameModel logFrameModel);
     //void updateLogFrame(cLogFrameModel logFrameModel, int position);
     //void deleteLogFrameModel(long logFrameID, int position);
     //void deleteSubLogFrameModel(long logSubFrameID, int position);

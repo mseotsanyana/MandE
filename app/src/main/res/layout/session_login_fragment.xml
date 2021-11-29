@@ -49,8 +49,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:text="@string/user_login"
-        android:textStyle="bold"
-        android:textAppearance="?android:textAppearanceLarge" />
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textStyle="bold" />
 
     <include
         layout="@layout/me_bottom_layout"

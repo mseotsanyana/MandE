@@ -1252,8 +1252,8 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
 
             indicatorModel.setIndicatorID((int) cRow.getCell(0,
                     Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
-            indicatorModel.getLogFrameModel().setLogFrameID((int) cRow.getCell(1,
-                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
+//            indicatorModel.getLogFrameModel().setLogFrameID((int) cRow.getCell(1,
+//                    Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             indicatorModel.getTargetModel().setTargetID((int) cRow.getCell(2,
                     Row.CREATE_NULL_AS_BLANK).getNumericCellValue());
             indicatorModel.getIndicatorTypeModel().setIndicatorTypeID((int) cRow.getCell(3,
@@ -1614,7 +1614,7 @@ public class cUploadMonitoringRepositoryImpl implements iUploadMonitoringReposit
 
         // assign values to the table fields
         cv.put(cSQLDBHelper.KEY_ID, indicatorModel.getIndicatorID());
-        cv.put(cSQLDBHelper.KEY_LOGFRAME_FK_ID, indicatorModel.getLogFrameModel().getLogFrameID());
+//        cv.put(cSQLDBHelper.KEY_LOGFRAME_FK_ID, indicatorModel.getLogFrameModel().getLogFrameID());
         cv.put(cSQLDBHelper.KEY_TARGET_FK_ID, indicatorModel.getTargetModel().getTargetID());
         cv.put(cSQLDBHelper.KEY_INDICATOR_TYPE_FK_ID,
                 indicatorModel.getIndicatorTypeModel().getIndicatorTypeID());

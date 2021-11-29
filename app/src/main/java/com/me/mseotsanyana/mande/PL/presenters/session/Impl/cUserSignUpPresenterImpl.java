@@ -4,6 +4,7 @@ import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.session.user.Impl.cUserSignUpInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.session.user.iUserSignUpInteractor;
+import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
 import com.me.mseotsanyana.mande.BLL.repository.session.iUserProfileRepository;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
 import com.me.mseotsanyana.mande.PL.presenters.session.iUserSignUpPresenter;
@@ -13,12 +14,12 @@ import com.me.mseotsanyana.mande.UTIL.cInputValidation;
 
 public class cUserSignUpPresenterImpl extends cAbstractPresenter implements iUserSignUpPresenter,
         iUserSignUpInteractor.Callback {
-    private static String TAG = cUserSignUpPresenterImpl.class.getSimpleName();
+    //private static String TAG = cUserSignUpPresenterImpl.class.getSimpleName();
 
     private View view;
-    private iUserProfileRepository userProfileRepository;
+    private final iUserProfileRepository userProfileRepository;
 
-    private cInputValidation inputValidation;
+    private final cInputValidation inputValidation;
 
     public cUserSignUpPresenterImpl(iExecutor executor, iMainThread mainThread,
                                     View view,
@@ -33,8 +34,7 @@ public class cUserSignUpPresenterImpl extends cAbstractPresenter implements iUse
 
 
     @Override
-    public void createUserWithEmailAndPassword(String firstName, String surname, String email,
-                                               String password) {
+    public void createUserWithEmailAndPassword(cUserProfileModel userProfileModel) {
         if (!inputValidation.isEditTextFilled(view.getEmailEditText(),
                 view.getResourceString(R.string.error_message_email))) {
             return;
@@ -66,7 +66,7 @@ public class cUserSignUpPresenterImpl extends cAbstractPresenter implements iUse
                 mainThread,
                 userProfileRepository,
                 this,
-                firstName, surname, email, password);
+                userProfileModel);
 
         view.showProgress();
 

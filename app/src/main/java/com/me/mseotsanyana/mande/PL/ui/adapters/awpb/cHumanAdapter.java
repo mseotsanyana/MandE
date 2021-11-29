@@ -66,7 +66,7 @@ public class cHumanAdapter extends RecyclerView.Adapter<cHumanAdapter.cHumanPare
                 R.color.child_body_colour));
 
         HH.textViewParentCaption.setText(R.string.activity_caption);
-        HH.textViewParent.setText(humanModel.getActivityModel().getName());
+//        HH.textViewParent.setText(humanModel.getActivityModel().getName());
         HH.textViewNameCaption.setText(R.string.input_caption);
         //--HH.textViewName.setText(humanModel.getResourceModel().getName());
         HH.textViewNumberCaption.setText(R.string.input_number_caption);

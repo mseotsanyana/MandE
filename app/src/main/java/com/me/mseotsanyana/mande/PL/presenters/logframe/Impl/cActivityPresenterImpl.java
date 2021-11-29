@@ -4,6 +4,7 @@ import com.me.mseotsanyana.mande.BLL.executor.iExecutor;
 import com.me.mseotsanyana.mande.BLL.executor.iMainThread;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.activity.Impl.cReadActivityInteractorImpl;
 import com.me.mseotsanyana.mande.BLL.interactors.logframe.activity.iReadActivityInteractor;
+import com.me.mseotsanyana.mande.BLL.model.logframe.cLogFrameModel;
 import com.me.mseotsanyana.mande.BLL.repository.logframe.iActivityRepository;
 import com.me.mseotsanyana.mande.BLL.repository.session.iSharedPreferenceRepository;
 import com.me.mseotsanyana.mande.PL.presenters.base.cAbstractPresenter;
@@ -22,18 +23,18 @@ public class cActivityPresenterImpl extends cAbstractPresenter implements iActiv
     private View view;
     private iSharedPreferenceRepository sessionManagerRepository;
     private iActivityRepository activityRepository;
-    private long logFrameID;
+    private cLogFrameModel logFrameModel;
 
     public cActivityPresenterImpl(iExecutor executor, iMainThread mainThread,
                                   View view,
                                   iSharedPreferenceRepository sessionManagerRepository,
-                                  iActivityRepository activityRepository, long logFrameID) {
+                                  iActivityRepository activityRepository, cLogFrameModel logFrameModel) {
         super(executor, mainThread);
 
         this.view = view;
         this.sessionManagerRepository = sessionManagerRepository;
         this.activityRepository = activityRepository;
-        this.logFrameID = logFrameID;
+        this.logFrameModel = logFrameModel;
     }
 
     /* ====================================== START CREATE ====================================== */
@@ -105,14 +106,14 @@ public class cActivityPresenterImpl extends cAbstractPresenter implements iActiv
 
     /* ======================================= START READ ======================================= */
     @Override
-    public void readActivityModels(long logFrameID) {
+    public void readActivityModels(cLogFrameModel logFrameModel) {
         iReadActivityInteractor readActivityInteractor = new cReadActivityInteractorImpl(
                 executor,
                 mainThread,
                 sessionManagerRepository,
                 activityRepository,
                 this,
-                logFrameID);
+                logFrameModel);
 
         view.showProgress();
         readActivityInteractor.execute();
@@ -271,7 +272,7 @@ public class cActivityPresenterImpl extends cAbstractPresenter implements iActiv
     /* corresponding view functions */
     @Override
     public void resume() {
-        readActivityModels(this.logFrameID);
+        readActivityModels(this.logFrameModel);
     }
 
     @Override

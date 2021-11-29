@@ -16,7 +16,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.firebase.auth.FirebaseAuth;
 import com.me.mseotsanyana.mande.BLL.executor.Impl.cThreadExecutorImpl;
 import com.me.mseotsanyana.mande.BLL.model.session.cUserProfileModel;
 import com.me.mseotsanyana.mande.DAL.ìmpl.firestore.session.cSharedPreferenceFirestoreRepositoryImpl;
@@ -39,6 +38,7 @@ public class cMyUserProfileFragment extends Fragment implements iMyUserProfilePr
     private Toolbar toolbar;
 
     private iMyUserProfilePresenter userProfilePresenter;
+    private cUserProfileModel userProfileModel;
 
     private TextView nameTextView, surnameTextView, designationTextView, phoneTextView,
             emailTextView, websiteTextView, locationTextView, createdonTextView, modifiedonTextView;
@@ -155,18 +155,8 @@ public class cMyUserProfileFragment extends Fragment implements iMyUserProfilePr
 
                 nameTextView.setText(nameEditText.getText().toString());
 
-                cUserProfileModel userProfileModel = new cUserProfileModel(
-                        FirebaseAuth.getInstance().getUid(),
-                        nameTextView.getText().toString().trim(),
-                        surnameTextView.getText().toString().trim(),
-                        designationTextView.getText().toString().trim(),
-                        phoneTextView.getText().toString().trim(),
-                        emailTextView.getText().toString().trim(),
-                        websiteTextView.getText().toString().trim(),
-                        locationTextView.getText().toString().trim());
-
+                userProfileModel.setName(nameTextView.getText().toString().trim());
                 userProfileModel.setModifiedDate(new Date());
-
                 userProfilePresenter.updateUserProfile(userProfileModel);
 
                 nameButtonEdit.setCompoundDrawablesWithIntrinsicBounds(
@@ -191,18 +181,8 @@ public class cMyUserProfileFragment extends Fragment implements iMyUserProfilePr
 
                 surnameTextView.setText(surnameEditText.getText().toString());
 
-                cUserProfileModel userProfileModel = new cUserProfileModel(
-                        FirebaseAuth.getInstance().getUid(),
-                        nameTextView.getText().toString().trim(),
-                        surnameTextView.getText().toString().trim(),
-                        designationTextView.getText().toString().trim(),
-                        phoneTextView.getText().toString().trim(),
-                        emailTextView.getText().toString().trim(),
-                        websiteTextView.getText().toString().trim(),
-                        locationTextView.getText().toString().trim());
-
+                userProfileModel.setSurname(surnameTextView.getText().toString().trim());
                 userProfileModel.setModifiedDate(new Date());
-
                 userProfilePresenter.updateUserProfile(userProfileModel);
 
                 surnameButtonEdit.setCompoundDrawablesWithIntrinsicBounds(
@@ -227,18 +207,8 @@ public class cMyUserProfileFragment extends Fragment implements iMyUserProfilePr
 
                 designationTextView.setText(designationEditText.getText().toString());
 
-                cUserProfileModel userProfileModel = new cUserProfileModel(
-                        FirebaseAuth.getInstance().getUid(),
-                        nameTextView.getText().toString().trim(),
-                        surnameTextView.getText().toString().trim(),
-                        designationTextView.getText().toString().trim(),
-                        phoneTextView.getText().toString().trim(),
-                        emailTextView.getText().toString().trim(),
-                        websiteTextView.getText().toString().trim(),
-                        locationTextView.getText().toString().trim());
-
                 userProfileModel.setModifiedDate(new Date());
-
+                userProfileModel.setDesignation(designationTextView.getText().toString().trim());
                 userProfilePresenter.updateUserProfile(userProfileModel);
 
                 designationButtonEdit.setCompoundDrawablesWithIntrinsicBounds(
@@ -263,18 +233,8 @@ public class cMyUserProfileFragment extends Fragment implements iMyUserProfilePr
 
                 websiteTextView.setText(websiteEditText.getText().toString());
 
-                cUserProfileModel userProfileModel = new cUserProfileModel(
-                        FirebaseAuth.getInstance().getUid(),
-                        nameTextView.getText().toString().trim(),
-                        surnameTextView.getText().toString().trim(),
-                        designationTextView.getText().toString().trim(),
-                        phoneTextView.getText().toString().trim(),
-                        emailTextView.getText().toString().trim(),
-                        websiteTextView.getText().toString().trim(),
-                        locationTextView.getText().toString().trim());
-
                 userProfileModel.setModifiedDate(new Date());
-
+                userProfileModel.setWebsite(websiteTextView.getText().toString().trim());
                 userProfilePresenter.updateUserProfile(userProfileModel);
 
                 websiteButtonEdit.setCompoundDrawablesWithIntrinsicBounds(
@@ -299,18 +259,18 @@ public class cMyUserProfileFragment extends Fragment implements iMyUserProfilePr
 
                 locationTextView.setText(locationEditText.getText().toString());
 
-                cUserProfileModel userProfileModel = new cUserProfileModel(
-                        FirebaseAuth.getInstance().getUid(),
-                        nameTextView.getText().toString().trim(),
-                        surnameTextView.getText().toString().trim(),
-                        designationTextView.getText().toString().trim(),
-                        phoneTextView.getText().toString().trim(),
-                        emailTextView.getText().toString().trim(),
-                        websiteTextView.getText().toString().trim(),
-                        locationTextView.getText().toString().trim());
+//                cUserProfileModel userProfileModel = new cUserProfileModel(
+//                        FirebaseAuth.getInstance().getUid(),
+//                        nameTextView.getText().toString().trim(),
+//                        surnameTextView.getText().toString().trim(),
+//                        designationTextView.getText().toString().trim(),
+//                        phoneTextView.getText().toString().trim(),
+//                        emailTextView.getText().toString().trim(),
+//                        websiteTextView.getText().toString().trim(),
+//                        locationTextView.getText().toString().trim());
 
                 userProfileModel.setModifiedDate(new Date());
-
+                userProfileModel.setLocation(locationTextView.getText().toString().trim());
                 userProfilePresenter.updateUserProfile(userProfileModel);
 
                 locationButtonEdit.setCompoundDrawablesWithIntrinsicBounds(
@@ -335,18 +295,8 @@ public class cMyUserProfileFragment extends Fragment implements iMyUserProfilePr
 
                 phoneTextView.setText(phoneEditText.getText().toString());
 
-                cUserProfileModel userProfileModel = new cUserProfileModel(
-                        FirebaseAuth.getInstance().getUid(),
-                        nameTextView.getText().toString().trim(),
-                        surnameTextView.getText().toString().trim(),
-                        designationTextView.getText().toString().trim(),
-                        phoneTextView.getText().toString().trim(),
-                        emailTextView.getText().toString().trim(),
-                        websiteTextView.getText().toString().trim(),
-                        locationTextView.getText().toString().trim());
-
                 userProfileModel.setModifiedDate(new Date());
-
+                userProfileModel.setPhone(phoneTextView.getText().toString().trim());
                 userProfilePresenter.updateUserProfile(userProfileModel);
 
                 phoneButtonEdit.setCompoundDrawablesWithIntrinsicBounds(
@@ -366,15 +316,16 @@ public class cMyUserProfileFragment extends Fragment implements iMyUserProfilePr
     @Override
     public void onReadUserProfileSucceeded(cUserProfileModel userProfileModel) {
         if(userProfileModel != null) {
-            nameTextView.setText(userProfileModel.getName());
-            surnameTextView.setText(userProfileModel.getSurname());
-            designationTextView.setText(userProfileModel.getDesignation());
-            websiteTextView.setText(userProfileModel.getWebsite());
-            locationTextView.setText(userProfileModel.getLocation());
-            phoneTextView.setText(userProfileModel.getPhone());
-            emailTextView.setText(userProfileModel.getEmail());
-            createdonTextView.setText(ssdf.format(userProfileModel.getCreatedDate()));
-            modifiedonTextView.setText(ssdf.format(userProfileModel.getModifiedDate()));
+            this.userProfileModel = userProfileModel;
+            this.nameTextView.setText(userProfileModel.getName());
+            this.surnameTextView.setText(userProfileModel.getSurname());
+            this.designationTextView.setText(userProfileModel.getDesignation());
+            this.websiteTextView.setText(userProfileModel.getWebsite());
+            this.locationTextView.setText(userProfileModel.getLocation());
+            this.phoneTextView.setText(userProfileModel.getPhone());
+            this.emailTextView.setText(userProfileModel.getEmail());
+            this.createdonTextView.setText(ssdf.format(userProfileModel.getCreatedDate()));
+            this.modifiedonTextView.setText(ssdf.format(userProfileModel.getModifiedDate()));
         }
     }
 

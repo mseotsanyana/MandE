@@ -163,7 +163,7 @@ public class cUserAddFragment extends Fragment {
         toolBar = (Toolbar) view.findViewById(R.id.me_toolbar);
 
         /** 2. initialize profile picture **/
-        imageViewPhoto = (ImageView) view.findViewById(R.id.imageViewPhoto);
+        imageViewPhoto = null;//(ImageView) view.findViewById(R.id.imageViewPhoto);
         imageViewPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -172,8 +172,7 @@ public class cUserAddFragment extends Fragment {
         });
 
         /** 3. initialize spinner views **/
-        searchSingleSpinnerOrganization = (cSingleSpinnerSearch_old)
-                view.findViewById(R.id.singleSpinnerSearchOrganization);
+        searchSingleSpinnerOrganization = null;//(cSingleSpinnerSearch_old)view.findViewById(R.id.singleSpinnerSearchOrganization);
 
         /***
          * -1 is no by default selection
@@ -194,52 +193,52 @@ public class cUserAddFragment extends Fragment {
             }
         });
 
-        /** 4. initialize the first name view **/
-        textInputEditTextFirstName = (TextInputEditText) view.findViewById(R.id.textInputEditTextFirstName);
-
-        /** 5. initialize the last name view **/
-        textInputEditTextLastName = (TextInputEditText) view.findViewById(R.id.textInputEditTextLastName);
-
-        /** 6. initialize the gender view **/
-        radioGroupGender = (RadioGroup) view.findViewById(R.id.radioGroupGender);
-
-        /** 7. initialize the description view **/
-        textInputEditTextDescription = (TextInputEditText) view.findViewById(R.id.textInputEditTextDescription);
-
-        /** 8. initialize the email view **/
-        textInputEditTextEmail = (TextInputEditText) view.findViewById(R.id.textInputEditTextEmail);
-
-        /** 9. initialize the website view **/
-        textInputEditTextWebsite = (TextInputEditText) view.findViewById(R.id.textInputEditTextWebsite);
-
-        /** 10. initialize the phone view **/
-        textInputEditTextPhone = (TextInputEditText) view.findViewById(R.id.textInputEditTextPhone);
-
-        /** 11. initialize the password view **/
-        textInputEditTextPassword = (TextInputEditText) view.findViewById(R.id.textInputEditTextPassword);
-
-        /** 12. initialize the confirm password view **/
-        textInputEditTextConfirmPassword = (TextInputEditText) view.findViewById(R.id.textInputEditTextConfirmPassword);
-
-        // initialize user address views
-
-        /** 13. initialize the street view **/
-        textInputEditTextStreet = (TextInputEditText) view.findViewById(R.id.textInputEditTextStreet);
-
-        /** 14. initialize the city view **/
-        textInputEditTextCity = (TextInputEditText) view.findViewById(R.id.textInputEditTextCity);
-
-        /** 15. initialize the province view **/
-        textInputEditTextProvice = (TextInputEditText) view.findViewById(R.id.textInputEditTextProvice);
-
-        /** 16. initialize the postal code view **/
-        textInputEditTextPostalCode = (TextInputEditText) view.findViewById(R.id.textInputEditTextPostalCode);
-
-        /** 17. initialize the country view **/
-        textInputEditTextCountry = (TextInputEditText) view.findViewById(R.id.textInputEditTextCountry);
-
-        /** 18. initialize the save button **/
-        appCompatButtonSave = (AppCompatButton) view.findViewById(R.id.appCompatButtonSave);
+//        /** 4. initialize the first name view **/
+//        textInputEditTextFirstName = (TextInputEditText) view.findViewById(R.id.textInputEditTextFirstName);
+//
+//        /** 5. initialize the last name view **/
+//        textInputEditTextLastName = (TextInputEditText) view.findViewById(R.id.textInputEditTextLastName);
+//
+//        /** 6. initialize the gender view **/
+//        radioGroupGender = (RadioGroup) view.findViewById(R.id.radioGroupGender);
+//
+//        /** 7. initialize the description view **/
+//        textInputEditTextDescription = (TextInputEditText) view.findViewById(R.id.textInputEditTextDescription);
+//
+//        /** 8. initialize the email view **/
+//        textInputEditTextEmail = (TextInputEditText) view.findViewById(R.id.textInputEditTextEmail);
+//
+//        /** 9. initialize the website view **/
+//        textInputEditTextWebsite = (TextInputEditText) view.findViewById(R.id.textInputEditTextWebsite);
+//
+//        /** 10. initialize the phone view **/
+//        textInputEditTextPhone = (TextInputEditText) view.findViewById(R.id.textInputEditTextPhone);
+//
+//        /** 11. initialize the password view **/
+//        textInputEditTextPassword = (TextInputEditText) view.findViewById(R.id.textInputEditTextPassword);
+//
+//        /** 12. initialize the confirm password view **/
+//        textInputEditTextConfirmPassword = (TextInputEditText) view.findViewById(R.id.textInputEditTextConfirmPassword);
+//
+//        // initialize user address views
+//
+//        /** 13. initialize the street view **/
+//        textInputEditTextStreet = (TextInputEditText) view.findViewById(R.id.textInputEditTextStreet);
+//
+//        /** 14. initialize the city view **/
+//        textInputEditTextCity = (TextInputEditText) view.findViewById(R.id.textInputEditTextCity);
+//
+//        /** 15. initialize the province view **/
+//        textInputEditTextProvice = (TextInputEditText) view.findViewById(R.id.textInputEditTextProvice);
+//
+//        /** 16. initialize the postal code view **/
+//        textInputEditTextPostalCode = (TextInputEditText) view.findViewById(R.id.textInputEditTextPostalCode);
+//
+//        /** 17. initialize the country view **/
+//        textInputEditTextCountry = (TextInputEditText) view.findViewById(R.id.textInputEditTextCountry);
+//
+//        /** 18. initialize the save button **/
+//        appCompatButtonSave = (AppCompatButton) view.findViewById(R.id.appCompatButtonSave);
 
         // initialize button views
         appCompatButtonSave.setOnClickListener(new View.OnClickListener() {
@@ -267,7 +266,7 @@ public class cUserAddFragment extends Fragment {
         });
 
         // 19. initialize the save button
-        appCompatButtonCancel = (AppCompatButton) view.findViewById(R.id.appCompatButtonCancel);
+        appCompatButtonCancel = null;//(AppCompatButton) view.findViewById(R.id.appCompatButtonCancel);
         appCompatButtonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -300,10 +299,10 @@ public class cUserAddFragment extends Fragment {
             domain.setName(textInputEditTextFirstName.getText().toString());
             domain.setSurname(textInputEditTextLastName.getText().toString());
             int selectedId = radioGroupGender.getCheckedRadioButtonId();
-            if (selectedId == R.id.radioButtonFemale)
-                gender = "Female";
-            else
-                gender = "Male";
+//            if (selectedId == R.id.radioButtonFemale)
+//                gender = "Female";
+//            else
+//                gender = "Male";
             domain.setGender(gender);
             domain.setDescription(textInputEditTextDescription.getText().toString());
             domain.setEmail(textInputEditTextEmail.getText().toString());

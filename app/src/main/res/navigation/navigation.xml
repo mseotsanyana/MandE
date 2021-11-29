@@ -393,6 +393,6 @@
         android:label="cPermissionFragment" />
     <fragment
         android:id="@+id/cUserProfilesFragment"
-        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cUserProfilesFragment"
+        android:name="com.me.mseotsanyana.mande.PL.ui.fragments.session.cUserProfileFragment"
         android:label="cUserProfilesFragment" />
 </navigation>

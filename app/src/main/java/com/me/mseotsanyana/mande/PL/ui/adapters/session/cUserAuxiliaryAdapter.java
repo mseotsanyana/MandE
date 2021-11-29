@@ -117,16 +117,16 @@ public class cUserAuxiliaryAdapter extends cTreeAdapter {
                             //(position%2 == 0) ? R.color.list_even : R.color.list_odd;
                     HPH.cardView.setCardBackgroundColor(ContextCompat.getColor(context,
                             parentBackgroundColor));
-
-                    HPH.textViewParentCaption.setText(R.string.activity_caption);
-                    HPH.textViewParent.setText(humanModel.getActivityModel().getName());
-                    HPH.textViewNameCaption.setText(R.string.input_caption);
-                    HPH.textViewName.setText(humanModel.getResourceTypeModel().getName());
-                    HPH.textViewNumberCaption.setText(R.string.input_number_caption);
-                    HPH.textViewNumber.setText(String.valueOf(humanModel.getQuantity()));
-                    HPH.textViewDescription.setText(humanModel.getResourceTypeModel().getDescription());
-                    HPH.textViewStartDate.setText(sdf.format(humanModel.getStartDate()));
-                    HPH.textViewEndDate.setText(sdf.format(humanModel.getEndDate()));
+//
+//                    HPH.textViewParentCaption.setText(R.string.activity_caption);
+//                    HPH.textViewParent.setText(humanModel.getActivityModel().getName());
+//                    HPH.textViewNameCaption.setText(R.string.input_caption);
+//                    HPH.textViewName.setText(humanModel.getResourceTypeModel().getName());
+//                    HPH.textViewNumberCaption.setText(R.string.input_number_caption);
+//                    HPH.textViewNumber.setText(String.valueOf(humanModel.getQuantity()));
+//                    HPH.textViewDescription.setText(humanModel.getResourceTypeModel().getDescription());
+//                    HPH.textViewStartDate.setText(sdf.format(humanModel.getStartDate()));
+//                    HPH.textViewEndDate.setText(sdf.format(humanModel.getEndDate()));
 
                     /* the collapse and expansion of the parent logframe */
                     if (node.isLeaf()) {

@@ -195,7 +195,7 @@ public class cActivityBodyView {
 
     @Click(R.id.textViewDeleteIcon)
     void onDeleteIconClick(){
-        listener.onClickDeleteActivity(childPosition, activityModel.getComponentID());
+//        listener.onClickDeleteActivity(childPosition, activityModel.getComponentID());
     }
 
     @Click(R.id.textViewSyncIcon)

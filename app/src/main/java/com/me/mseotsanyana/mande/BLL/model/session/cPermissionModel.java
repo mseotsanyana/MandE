@@ -1,6 +1,6 @@
 package com.me.mseotsanyana.mande.BLL.model.session;
 
-import com.google.firebase.database.Exclude;
+import com.google.firebase.firestore.Exclude;
 
 import java.util.List;
 import java.util.Map;
@@ -15,7 +15,7 @@ public class cPermissionModel {
     private String name;
     private String description;
 
-    // module identification and its entities
+    // module identification and its entity permissions
     private Map<String, List<cEntityModel>> entitymodules;
 
     // parent identification and its child menu identification
@@ -52,7 +52,6 @@ public class cPermissionModel {
         return roleServerID;
     }
 
-    @Exclude
     public void setRoleServerID(String roleServerID) {
         this.roleServerID = roleServerID;
     }
@@ -61,7 +60,6 @@ public class cPermissionModel {
         return name;
     }
 
-    @Exclude
     public void setName(String name) {
         this.name = name;
     }
@@ -90,33 +88,3 @@ public class cPermissionModel {
         this.menuitems = menuitems;
     }
 }
-
-//    // moduleServerID, entityServerID, operationServerID, list of statusBITS
-//    private Map<String, Map<String, Map<String, List<Integer>>>> opstatus;
-//    // moduleServerID, entityServerID, list of operationServerID
-//    private Map<String, Map<String, List<Integer>>> unixperms;
-
-
-
-//    public cPermissionModel(Map<String, Map<String, Map<String, List<Integer>>>> opstatus,
-//                            Map<String, Map<String, List<Integer>>> unixperms){
-//        this.setOpstatus(opstatus);
-//        this.setUnixperms(unixperms);
-//
-//    }
-
-//    public Map<String, Map<String, Map<String, List<Integer>>>> getOpstatus() {
-//        return opstatus;
-//    }
-//
-//    public void setOpstatus(Map<String, Map<String, Map<String, List<Integer>>>> opstatus) {
-//        this.opstatus = opstatus;
-//    }
-//
-//    public Map<String, Map<String, List<Integer>>> getUnixperms() {
-//        return unixperms;
-//    }
-//
-//    public void setUnixperms(Map<String, Map<String, List<Integer>>> unixperms) {
-//        this.unixperms = unixperms;
-//    }

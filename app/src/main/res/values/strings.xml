@@ -99,8 +99,14 @@
     <string name="organizationOwner">organization owner:</string>
 
     <!-- start common attributes -->
-    <string name="common_created_on">Created On: </string>
-    <string name="common_modified_on">Modified On: </string>
+    <string name="common_created_on">created on: </string>
+    <string name="common_modified_on">modified on: </string>
+
+    <string name="common_about">About</string>
+    <string name="common_home">Home</string>
+    <string name="common_search">Search</string>
+    <string name="common_upload">Upload</string>
+    <string name="common_download">Download</string>
 
     <!-- the notification strings -->
     <string name="notification_name_caption">notification</string>
@@ -316,9 +322,7 @@
     <string name="app_name">Dashboard Demo</string>
 -->
 
-    <string name="description_about">About</string>
-    <string name="description_home">Home</string>
-    <string name="description_search">Search</string>
+
 
 
     <string name="app_name">iMonitorPerformance</string>
